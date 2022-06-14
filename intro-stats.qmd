@@ -1,12 +1,157 @@
-# What is Statistics {#sec-intro-stats}
+# Sience of Data and Data Science {#sec-intro-stats}
 
-This chapter provides a broad overview of the R language that will get you programming right away. In it, you will build a pair of virtual dice that you can use to generate random numbers. Don't worry if you've never programmed before; the chapter will teach you everything you need to know.
 
-To simulate a pair of dice, you will have to distill each die into its essential features. You cannot place a physical object, like a die, into a computer (well, not without unscrewing some screws), but you can save *information* about the object in your computer's memory.
 
-Which information should you save? In general, a die has six important pieces of information: when you roll a die, it can only result in one of six numbers: 1, 2, 3, 4, 5, and 6. You can capture the essential characteristics of a die by saving the numbers 1, 2, 3, 4, 5, and 6 as a group of values in your computer's memory.
+```{r}
+#| echo: false
+source("./_common.R")
+```
 
-Let's work on saving these numbers first, and then consider a method for "rolling" our die.
+In ordinary conversations, the word **statistics** is used as a term to indicate a set or collection of **numeric records**. as shown in @fig-stats
+```{r, echo=FALSE, out.width="90%", fig.align='center'}
+#| label: fig-stats
+#| fig-cap: >
+#|   Example of statistics or numeric records. Source: https://www.nba.com/stats/player/893/career
+#| fig-alt: > 
+#|   Screenshot showing the "Use native pipe operator" option which can
+#|   be found on the "Editing" panel of the "Code" options.
+#|   
+knitr::include_graphics("./images/img-intro/mj_stats.png")
+```
 
-## The R User Interface
+<!-- ![When R performs element-wise execution, it matches up vectors and then manipulates each pair of elements independently.](images/hopr_0103.png){#fig-elementwise} -->
+
+Interestingly someone defines statistics as the only field where two experts, using identical data, may come to completely opposite conclusions @fig-stat-shirt, which is true in some sense. And we'll see why later in this course. With the same data, different statistical methods may produce different results and lead to difference conclusions.
+
+
+```{r, echo=FALSE, out.width="80%",fig.align='center', fig.cap="Source: shorturl.at/vEMNS"}
+#| label: fig-stat-shirt
+knitr::include_graphics("./images/img-intro/statistics.jpg")
+```
+
+
+## Statistics as a Discipline
+```{r, echo=FALSE, out.width="100%",fig.align='center'}
+#| label: fig-stat-wiki
+#| fig-cap: >
+#|   Source: https://en.wikipedia.org/wiki/Statistics
+knitr::include_graphics("./images/img-intro/stats_wiki.png")
+```
+
+
+- Forget about that useless definition.
+- From Wiki, Statistics is formally defined as the discipline that concerns the collection, organization, analysis, interpretation and presentation of data.
+
+
+- **Statistics** is a **Science of Data**.
+
+- So, **Statistics** is a **Science of Data**.
+- There might be another science of data. I'm not saying statistics is THE science of data.
+
+
+- A __*science of data*__ using **statistical thinking, methods and models**.
+
+
+
+- To me, statistics is a science of data using statistical thinking and methods.
+
+
+`r emo::ji('thinking')` But wait, then what is **DATA SCIENCE** `r emo::ji('question')`
+
+
+- But wait, if statistics is a science of data, then what is  **DATA SCIENCE**?
+
+
+## Difference between Statistics and Data Science
+
+<!-- ![The RStudio environment pane keeps track of the R objects you create.](images/hopr_0102.png){#fig-environment} -->
+
+![](./images/img-intro/data_science_stats.png){#fig-twit-josh}
+
+![](./images/img-intro/data_science_sf.png){#fig-twit-jeremy}
+
+![Twits about what are data sicnece and data scientist](./images/img-intro/data_science_mac.png){#fig-twit-borat}
+
+- [Investopedia](https://www.investopedia.com/terms/d/data-science.asp) defines Data Science is a field of applied mathematics and statistics that provides useful information based on large amounts of complex data or **big data**.
+
+<!-- ??? -->
+<!-- -  -->
+
+<!-- -- -->
+
+![Professor Ariely on big data](./images/img-intro/big_data.png){#fig-bigdata}
+
+- But Dan Ariely, a famous behavioral economist at Duke once said:
+- So What on earth is DS? Maybe nobody has the exactly correct answer.
+
+
+## UC Santa Cruz Department of Statistics Courses
+```{r, echo=FALSE, out.width="60%",fig.align='center'}
+#| label: ucsc-courses
+#| fig-cap: >
+#|   Course offering of department of statistics at UC Santa Cruz. Source: https://courses.soe.ucsc.edu/
+
+knitr::include_graphics("./images/img-intro/ucsc_courses.png")
+```
+
+- Here shows statistics courses offered by UC Santa Cruz the university I graduated from.
+- You can see that statistics focus much more on data analysis, methods and models.
+- The stats department don't talk much about on data collection, organization, and data presentation or data visualization.
+
+---
+## Data Science Is Now a Broader View of Statistics
+- Collection, organization, analysis, interpretation and presentation of data.
+
+```{r, echo=FALSE, out.width="50%",fig.align='center'}
+#| fig-cap: >
+#|   The Data Science process. Created at Harvard by Joe Blitzstein and Hanspeter Pfister.
+knitr::include_graphics("./images/img-intro/ds_process.jpeg")
+```
+
+
+- And now data science is more like a broader view of statistics.
+- Because again, in usual statistics department, we don't really teach or do much research on data collection, cleaning, storage, database management, and data visualization, which all are now a part of DS.
+- Statistics focus very much on data analysis and modeling.
+- Anyway, please don't care about the names.
+- The important thing is, you learn useful methods to help you analyze your data.
+- No matter what it is called statistics or data science.
+
+
+## What Do We Learn In this Course
+
+<!-- - We will discuss most of materials in Chapter 1 to 9. -->
+
+```{r, echo=FALSE, out.width="100%",fig.align='center'}
+knitr::include_graphics("./images/img-intro/book_content.png")
+```
+
+
+- In particular, we will spend most of the time talking about probability and statistical inference methods OK.
+
+## We Focus On Statistical Inference
+
+- We spend most of time on various *statistical methods for analyzing data*.
+- Learn useful information
+  + about the **population** we are interested
+  + from our **sample data**
+  + through **statistical inferential** methods, including **estimation** and **testing**
+
+
+```{r, echo=FALSE, out.width="50%",fig.align='center'}
+knitr::include_graphics("./images/img-intro/population_sample.png")
+```
+
+
+- In fact, we like to learn some information or something useful
+  + about the **population** we are interested
+  + from our **sample** data
+  + through **statistical inferential** methods, including **estimation** and **testing**
+- Don't worry if you have no idea of these terms.
+- These are what we will discuss throughout the course, and I'll explain each term in detail later in class. OK.
+
+
+
+
+
+
 

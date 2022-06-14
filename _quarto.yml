@@ -4,9 +4,11 @@ project:
 
 book:
   title: "Introduction to Statistics"
-  
-  author-meta: "Cheng-Han Yu"
-  date-meta: today
+  author: "Cheng-Han Yu"
+  date: today
+  site-url: https://chenghanyu-introstatsbook.netlify.app/
+  repo-url: https://github.com/chenghanyustats/introstatsbook
+  page-navigation: true
   description-meta: |
     This book serves as a main reference book for my MATH 4720 Statistical Methods 
     and MATH 4740 Biostatistical Methods at Marquette University. Some topics can 
@@ -15,16 +17,17 @@ book:
     such as linear regression using R computing software.
     
   page-footer:
-    left: |
-      Introduction to Statistics was written by Cheng-Han Yu.
-    right: |
-      This book was built with <a href="https://quarto.org/">Quarto</a>.
+    border: false
+    background: light
+    left: "Copyright 2022, Cheng-Han Yu"
+    right:
+      - icon: github
+        href: https://github.com/chenghanyustats/introstatsbook
   
   # cover-image:
   # site-url:
-  repo-url: https://github.com/chenghanyustats/introstatsbook
-  repo-branch: master
-  repo-actions: [edit]
+  repo-branch: main
+  repo-actions: [edit, issue]
   sharing: [twitter, facebook, linkedin]
   chapters:
     - index.qmd
@@ -97,9 +100,18 @@ bibliography: references.bib
 
 format:
   html:
-    theme: cosmo
+    theme: 
+      - cosmo
+      # - introstatsbook.scss
     code-link: true
     # cover-image: cover.png
-    callout-appearance: simple
+    # callout-appearance: defualt, simple or minimal
   pdf:
     documentclass: scrreprt
+    include-in-header: 
+      text: |
+        \usepackage{makeidx}
+        \makeindex
+    include-after-body: 
+      text: |
+        \printindex
