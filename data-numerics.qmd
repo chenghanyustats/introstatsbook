@@ -1,11 +1,412 @@
 # Data Sample Statistics {#sec-data-numeric}
 
-This chapter provides a broad overview of the R language that will get you programming right away. In it, you will build a pair of virtual dice that you can use to generate random numbers. Don't worry if you've never programmed before; the chapter will teach you everything you need to know.
+```{r packages, echo=FALSE, message=FALSE, warning=FALSE, purl=FALSE}
+library(tidyverse)
+library(fontawesome)
+library(fields)
+library(microbenchmark)
+library(openintro)
+library(emoji)
+library(kableExtra)
+``` 
 
-To simulate a pair of dice, you will have to distill each die into its essential features. You cannot place a physical object, like a die, into a computer (well, not without unscrewing some screws), but you can save *information* about the object in your computer's memory.
+```{r, echo=FALSE, message=FALSE, warning=FALSE, purl=FALSE}
+int_rate <- round(loan50$interest_rate, 1)
+```
 
-Which information should you save? In general, a die has six important pieces of information: when you roll a die, it can only result in one of six numbers: 1, 2, 3, 4, 5, and 6. You can capture the essential characteristics of a die by saving the numbers 1, 2, 3, 4, 5, and 6 as a group of values in your computer's memory.
 
-Let's work on saving these numbers first, and then consider a method for "rolling" our die.
 
-## The R User Interface
+## Numerical Summaries of Data
+
+:::{layout-ncol=2}
+
+```{r, echo=FALSE, out.width="100%", purl=FALSE, fig.align='center'}
+knitr::include_graphics("./images/img-data/number.jpeg")
+```
+
+- **Measure of Center**: We typically use the **middle** point. (What does "middle" mean?) 
+- **Measure of Variation**: What values tell us how much variation a variable has?
+
+:::{.callout-note icon=false}
+
+## If you need to choose one value that represents the entire data, what value would you choose?
+
+:::
+
+:::
+## Measures of Center: Mean
+
+- The **(arithmetic) mean or average** is adding up all of the values, then dividing by the total number of them.
+- Let $x_1, x_2, \dots, x_n$ denote the measurements observed in a sample of size $n$. Then the **sample mean** is defined as $$\overline{x} = \frac{\sum_{i=1}^{n} x_i}{n} = \frac{x_1 + x_2 + \dots + x_n}{n}$$
+- In the interest rate example,
+$$\overline{x} = \frac{10.9\% + 9.9\% + \cdots + 6.1\%}{50} = 11.56\%$$
+<!-- - The corresponding **population mean**, is denoted as $\mu$. -->
+
+```{r}
+mean(int_rate)
+```
+
+
+### Balancing Point
+- Think of the mean as the **balancing point** of the distribution.
+
+:::{layout-ncol=2}
+
+```{r, echo=FALSE, cache=TRUE, out.width="100%", purl=FALSE}
+par(mar = c(4, 0, 0, 0))
+par(mfrow = c(1, 1))
+round.to <- 1
+binned <- round.to * round(int_rate / round.to)
+tab <- table(binned)
+cex <- 1
+xlim <- c(0.9 * min(int_rate), 1.05 * max(int_rate))
+plot(0,
+     type = "n",
+     xlab = "Interest Rate, Rounded to Nearest Percent",
+     ylab = "",
+     axes = FALSE,
+     xlim = xlim,
+     ylim = c(-1, 1.5 * max(tab)))
+for (i in 1:length(tab)) {
+  points(rep(as.numeric(names(tab[i])), tab[i]),
+         1.5 * (1:tab[i]) - 0.4,
+         pch = 19,
+         col = 4,
+         cex = 2 * cex)
+}
+abline(h = 0)
+openintro::AxisInPercent(1, pretty(c(0, int_rate)))
+M <- mean(int_rate)
+polygon(M + c(-1, 1, 0) * 1,
+        c(-1.2, -1.2, -0.1),
+        border = "red",
+        col = 2)
+```
+
+
+```{r, echo=FALSE, out.width="100%", purl=FALSE, fig.align='center'}
+knitr::include_graphics("./images/img-data/seesaw.jpeg")
+```
+
+:::
+
+## Measures of Center: Median
+- **Median**: the *middle value* when data values are *sorted*.
+- Half of the values are less than or equal to the median, and the other half are greater than it. 
+- To find the median, we first sort the values.
+- $n$ is **odd**: the median is located in the *exact middle* of the ordered values.
+   + <span style="color:blue"> Data: (0, 2, 10, 14, 8) </span>
+   + <span style="color:blue"> Sorted Data: (0, 2, <span style="color:red">8</span>, 10, 14) </span>
+   + <span style="color:blue"> The median is $8$ </span>
+
+
+- $n$ is **even**: the median is the *average of the two middle numbers*.
+   + <span style="color:blue"> Data: (0, 2, 10, 14, 8, 12) </span>
+   + <span style="color:blue"> Sorted Data: (0, 2, <span style="color:red">8, 10</span>, 12, 14) </span>
+   + <span style="color:blue"> The median is $\frac{8 + 10}{2} = 9$ </span>
+   
+
+### Calculate Median in R
+```{r median, dependson='mean', tiny=FALSE}
+median(int_rate)  ## Compute the median using command median()
+``` 
+
+```{r}
+## Compute the median using definition
+(sort_rate <- sort(int_rate))  ## sort data
+length(int_rate)  ## Check sample size is odd or even
+(sort_rate[25] + sort_rate[26]) / 2  ## Verify the answer
+```
+
+
+```{r}
+(int_rate[25] + int_rate[26]) / 2  ## Using un-sorted data leads to a wrong answer!!
+```
+
+
+## Measures of Center: Mode
+- **Mode**: the value that occurs *most frequently*.
+- For continuous numerical data, it is common to have **no** observations with the same value.
+- Practical definition:  A mode is represented by a **prominent peak** in the distribution.
+
+```{r mode, echo = 1:2}
+## Create a frequency table 
+(table_data <- table(int_rate))
+# sort_table_data <- sort(table_data, decreasing = TRUE)
+# sort_table_data
+# print(paste("The mode is",names(sort_table_data)[1]))
+``` 
+
+
+```{r}
+## Sort the table to find the mode that occurs most frequently
+## the number that happens most frequently will be the first one
+sort(table_data, decreasing = TRUE)
+```
+
+
+## Comparison of Mean, Median and Mode
+- Mean is sensitive to extreme values (outliers). 
+- Median/mode is more **robust** than mean.
+```{r, tidy = FALSE, echo = -(1:2), highlight.output=1}
+data_extreme <- int_rate; data_extreme[1] <- 90 ## replace the first 3 values with 3 large values 
+## In the original data, the maximum value is 42.
+data_extreme
+```
+```{r}
+mean(data_extreme)  ## Large mean! Original mean is 11.56
+median(data_extreme)  ## Median does not change!
+names(sort(table(data_extreme), decreasing = TRUE))[1] ## Mode does not change too!
+```
+
+- Mode is applicable for both categorical and numerical data, while median and mean work for numerical data only.
+- There may be more than one mode, but there is only one median and one mean.
+
+```{r, echo=FALSE, results='hide', out.width="100%",fig.align='center', fig.asp=0.4, purl=FALSE}
+
+knitr::include_graphics("./images/img-data/skew_mean_median_mode.png")
+
+par(mfrow = c(1, 3), mar = c(0.3, 0, 2, 0))
+p <- seq(0, 1, length = 100)
+a <- 2; b <- 5
+max_d <- max(dbeta(p, a, b))
+plot(p, dbeta(p, a, b), type = 'l', axes = FALSE, xlab = "", ylab = "", lwd = 3, ylim = c(0, max_d + 0.2)) + 
+    title(main = "Right-Skewed") + 
+    abline(v = (a - 1) / (a + b - 2), lty = 1, col = 1) + 
+    abline(v = (a - 1/3) / (a + b - 2/3), lty = 2, col = 2) + 
+    abline(v = a /(a + b), lty = 3, col = 4) + 
+    text(x = (a - 1) / (a + b - 2)*0.7, y = max_d + 0.2, 
+         labels = "Mode", col = 1) + 
+    text(x = (a - 1/3) / (a + b - 2/3), y = max_d+0.08, 
+         labels = "Median", col = 2) + 
+    text(x = a /(a + b)*1.3, y = max_d-0.2, 
+         labels = "Mean", col = 4)
+axis(1, labels = FALSE, tick = TRUE)
+
+x <- seq(-4, 4, length = 1000)
+plot(x, dnorm(x), type = "l", ylim = c(0, 0.45), 
+     main = "Symmetric", axes = FALSE, xlab = "", 
+     ylab = "", lwd = 3)
+abline(v = 0, lty = 2)
+text(1.2, dnorm(0) + 0.02, "Mean = Median = Mode")
+axis(1, labels = FALSE, tick = TRUE)
+
+
+p <- seq(0, 1, length = 100)
+a <- 5; b <- 2
+max_d <- max(dbeta(p, a, b))
+
+plot(p, dbeta(p, a, b), type = 'l', ylim = c(0, max_d + 0.2),
+     axes = FALSE, xlab = "", ylab = "", lwd = 3) + 
+    title(main = "Left-Skewed") + 
+    abline(v = (a - 1) / (a + b - 2), lty = 1, col = 1) + 
+    abline(v = (a - 1/3) / (a + b - 2/3), lty = 2, col = 2) + 
+    abline(v = a /(a + b), lty = 3, col = 4) + 
+    text(x = (a - 1) / (a + b - 2)*1.15, y = max_d + 0.2,
+         labels = "Mode", col = 1) + 
+    text(x = (a - 1/3) / (a + b - 2/3), y = max_d + 0.08, 
+         labels = "Median", col = 2) + 
+    text(x = a /(a + b)*0.85, y = max_d - 0.2, 
+         labels = "Mean", col = 4)
+axis(1, labels = FALSE, tick = TRUE)
+```
+
+## Measures of Variation
+```{r variation, echo=FALSE, cache=TRUE, out.width="75%", purl=FALSE, fig.align='center'}
+normal_small <- rnorm(5000, 0, 0.1)
+normal_median <- rnorm(5000, 0, 0.5)
+normal_large <- rnorm(5000, 0, 0.9)
+par(mfrow = c(3, 1))
+par(mar = c(1,1,1,1))
+hist(normal_small, xlim = c(-3.6, 3.6), breaks = 20, main = "Small Variation", 
+     col = "#003366", border = "white", axes = FALSE, ylab = "", ylim = c(0, 1000))
+abline(v = 0, col = "#FFCC00", lwd = 3)
+hist(normal_median, xlim = c(-3.6, 3.6), breaks = 30, main = "Median Variation", 
+     col = "#003366", border = "white", axes = FALSE, ylab = "", ylim = c(0, 1000))
+abline(v = 0, col = "#FFCC00", lwd = 3)
+hist(normal_large, xlim = c(-3.6, 3.6), breaks = 60, main = "Large Variation", 
+     col = "#003366", border = "white",axes = FALSE, ylab = "", ylim = c(0, 1000))
+abline(v = 0, col = "#FFCC00", lwd = 3)
+```
+
+
+### *p*-th percentile
+
+<float-left>
+
+- **p-th percentile (quantile)**: a data value such that 
+  - at most $p\%$ of the values are below it
+  - at most $(1-p)\%$ of the values are above it
+</float-left>
+
+:::{layout-ncol=2}
+
+:::{.callout-note icon=false}
+- Two data sets have the same mean 20. 
+  + One data set has 99-th percentile = 30, and 1-st percentile = 10. 
+  + The other has 99-th percentile = 40, and 1-st percentile = 0. 
+  + Which data set has larger variation?
+
+:::
+
+```{r, echo=FALSE, out.width="36%",fig.align='center', fig.cap= "https://en.wikipedia.org/wiki/ACT_(test)", purl=FALSE}
+knitr::include_graphics("./images/img-data/act_math_percentile.png")
+```
+
+:::
+
+
+
+
+### Interquartile Range (IQR)
+- **First Quartile (Q1)**: the <span style="color:red">25-th</span> percentile
+- **Second Quartile (Q2)**: the <span style="color:red">50-th</span> percentile (Median)
+- **Third Quartile (Q3)**: the <span style="color:red">75-th</span> percentile
+- **Interquartile Range (IQR)**: Q3 - Q1
+
+:::{layout-ncol=2}
+
+```{r, iqr-1, tidy=FALSE}
+## Use quantile() to find any percentile 
+## through specifying the probability
+quantile(x = int_rate, 
+         probs = c(0.25, 0.5, 0.75))
+## IQR by definition
+quantile(x = int_rate, probs = 0.75) - 
+  quantile(x = int_rate, probs = 0.25) 
+```
+
+
+```{r, iqr-2, tidy=FALSE}
+## IQR()
+IQR(int_rate)  
+## summary() to get the numeric summary
+summary(int_rate)
+```
+
+:::
+
+:::{.callout-note icon=false}
+
+## Larger IQR means more or less variation?
+
+:::
+
+### Variance and Standard Deviation 
+-  The distance of an observation from its mean, $x_i - \overline{x}$, its **deviation**.
+- **Sample Variance** is defined as $$ s^2 = \frac{\sum_{i=1}^n(x_i - \overline{x})^2}{n-1} $$
+- **Sample Standard Deviation (SD)** is defined as the square root of the variance 
+ $$ s = \sqrt{\frac{\sum_{i=1}^n(x_i - \overline{x})^2}{n-1}} $$
+<!-- - The corresponding population variance and SD are $\sigma^2$ and $\sigma$ respectively. -->
+- Variance is the average of squared deviation from the sample mean $\overline{x}$ or the **mean squared deviation** from the mean.
+- SD is the **root mean squared deviation** from the mean. It measures, on average, **how far the data spread out around the average**.
+
+### Compute Variance and SD
+```{r}
+var(int_rate)
+sqrt(var(int_rate))
+sd(int_rate)
+```
+
+
+## Visualizing Data Variation: Boxplot
+When plotting the whiskers,
+
+- minimum means the minimal value that is not an potential outlier.
+- maximum means the maximal value that is not an potential outlier.
+
+```{r, out.width="80%", echo=FALSE, purl=FALSE, fig.cap="https://www.leansigmacorporation.com/box-plot-with-minitab/"}
+knitr::include_graphics("./images/img-data/boxplot.png")
+```
+
+
+### Interest Rate Boxplot
+```{r, echo=FALSE, out.width="75%", cache=TRUE, purl=FALSE, fig.align='center'}
+par(mar = c(0, 4, 0, 0))
+par(mfrow = c(1, 1))
+the.seed <- 2
+openintro::boxPlot(int_rate,
+        ylab = 'Interest Rate',
+        xlim = c(0.3, 3),
+        axes = FALSE,
+        ylim = range(int_rate) + sd(int_rate) * c(-1, 1) * 0.2)
+openintro::AxisInPercent(2, c(0, pretty(int_rate)), las = 1)
+arrows(2, min(int_rate) + 1, 1.35, min(int_rate), length = 0.08)
+text(2, min(int_rate) + 1, 'lower whisker (min)', pos = 4)
+arrows(2, quantile(int_rate, 0.25) + sd(int_rate) / 7,
+       1.35, quantile(int_rate, 0.25),
+       length = 0.08)
+text(2, quantile(int_rate, 0.25) + sd(int_rate) / 6.5,
+     expression(Q[1]~~'(first quartile)'), pos = 4)
+m <- median(int_rate)
+arrows(2, m + sd(int_rate) / 5, 1.35, m, length = 0.08)
+text(2,m + sd(int_rate) / 4.7, 'median', pos = 4)
+
+q <- quantile(int_rate, 0.75)
+arrows(2, q + sd(int_rate) / 4, 1.35, q, length = 0.08)
+text(2, q + sd(int_rate) / 3.8,
+     expression(Q[3]~~'(third quartile)'), pos = 4)
+
+arrows(2, rev(sort(int_rate))[3] - sd(int_rate) / 4,
+       1.35, rev(sort(int_rate))[3], length = 0.08)
+text(2, rev(sort(int_rate))[3] - sd(int_rate) / 3.8,
+     'upper whisker', pos = 4)
+
+y <- quantile(int_rate, 0.75) + 1.5 * IQR(int_rate)
+arrows(2, y - 0.1 * sd(int_rate),
+       1.35, y, length = 0.08)
+lines(c(0.72, 1.28), rep(y, 2),
+      lty = 3, col = '#00000066')
+text(2, y - 0.1 * sd(int_rate),
+     'max whisker reach', pos = 4)
+text(2, y + 0.05 * sd(int_rate),
+     'Q3 + 1.5 IQR', pos = 4)
+
+m <- rev(tail(sort(int_rate), 5))
+s <- m[1] - 0.3 * sd(m)
+arrows(2, s, 1.1, m[1] - 0.2, length = 0.08)
+arrows(2, s, 1.1, m[2] + 0.3, length = 0.08)
+text(2, s, 'suspected outliers', pos = 4)
+
+set.seed(the.seed)
+pt.jitter <- 0.05
+nco <- 50
+cutoffs <- seq(0.9 * min(int_rate), max(int_rate), length.out = nco)
+for (i in 2:nco) {
+  these <- which(cutoffs[i - 1] < int_rate & int_rate <= cutoffs[i])
+  lt <- length(these)
+  if (lt == 0) {
+    next
+  }
+  x <- pt.jitter * (1:lt)
+  x <- x - mean(x)
+  points(rep(0.4, lt) + x, int_rate[these],
+      col = rep(COL[1, 3], 25), pch = 19)
+}
+```
+
+
+### Boxplot in R
+
+:::{layout-ncol=2}
+
+```{r boxplot, echo=-c(1, 2), out.width="100%"}
+par(mar = c(0,4,0,0))
+par(mfrow = c(1, 1))
+boxplot(int_rate,ylab ="Interest Rate (%)")
+```
+
+
+```{r}
+sort(int_rate, decreasing = TRUE)[1:5]
+sort(int_rate)[1:5]
+Q3 <- quantile(int_rate, probs = 0.75, 
+               names = FALSE)
+Q1 <- quantile(int_rate, probs = 0.25, 
+               names = FALSE)
+IQR <- Q3 - Q1
+Q1 - 1.5 * IQR
+Q3 + 1.5 * IQR
+```
+
+:::

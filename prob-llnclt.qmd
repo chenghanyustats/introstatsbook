@@ -1,13 +1,141 @@
 # Law of Large Numbers and Central Limit Theorem {#sec-prob-llnclt}
 
-This chapter provides a broad overview of the R language that will get you programming right away. In it, you will build a pair of virtual dice that you can use to generate random numbers. Don't worry if you've never programmed before; the chapter will teach you everything you need to know.
-
-To simulate a pair of dice, you will have to distill each die into its essential features. You cannot place a physical object, like a die, into a computer (well, not without unscrewing some screws), but you can save *information* about the object in your computer's memory.
-
-Which information should you save? In general, a die has six important pieces of information: when you roll a die, it can only result in one of six numbers: 1, 2, 3, 4, 5, and 6. You can capture the essential characteristics of a die by saving the numbers 1, 2, 3, 4, 5, and 6 as a group of values in your computer's memory.
-
-Let's work on saving these numbers first, and then consider a method for "rolling" our die.
-
-## The R User Interface
+## Central Limit Theorem
+- We know if $X_i \stackrel{iid}{\sim} N(\mu, \sigma^2)$ , then $\overline{X} \sim N\left(\mu, \frac{\sigma^2}{n} \right)$.
+- <span style="color:blue"> What if the population distribution is **NOT** normal? </span> 
 
 
+<center>
+The **central limit theorem (CLT)** gives us the answer!
+</center>
+
+## Why Use Normal? <span style="color: red">**Central Limit Theorem**</span>
+- **Central Limit Theorem (CLT)**: 
+Suppose $\overline{X}$ is from a random sample of size $n$ and from a population distribution having mean $\mu$ and standard deviation $\sigma < \infty$. As $n$ increases, the sampling distribution of $\overline{X}$ looks **more and more like $N(\mu, \sigma^2/n)$, regardless of the distribution from which we are sampling!**
+
+```{r echo=FALSE, out.width="85%", fig.cap="https://en.wikipedia.org/wiki/Central_limit_theorem#/media/File:IllustrationCentralTheorem.png", fig.align='center'}
+knitr::include_graphics("./images/img-prob/clt.png")
+```
+
+## CLT Illustration: A Right-Skewed Distribution
+
+```{r clt_right_skewed, out.width="100%", echo=FALSE, cache=TRUE, fig.asp=0.3, fig.align='center'}
+par(mfrow = c(1, 4))
+par(mar = c(4, 1, 1, 0), mgp = c(2, 0.5, 0), las = 1)
+shape <- 1
+rate <- 1/2
+# gamma_sample <- rgamma(1000, shape = shape, rate = rate)
+# hist(gamma_sample, breaks = 30, col = "#FFCC00", border = "white", xlab = "x",
+#      main = "Population distr. w/ mean 2 var 4", prob = TRUE)
+x <- seq(0, 12, length.out = 1000)
+plot(x, dgamma(x, shape = shape, rate = rate), type="n", xlab="x", ylab="", axes = TRUE, ylim = c(0, 0.6),
+     main = "Population distr. w/ mean 2 var 4", cex.main = 0.8)
+lines(x, dgamma(x, shape = shape, rate = rate), col = "#003366", lwd = 3)
+polygon(c(x,rev(x)), c(rep(0, 1000), rev(dgamma(x, shape = shape, rate = rate))), col="#FFCC00")
+
+# lines(density(gamma_sample), col = "red", lwd = 4) 
+n_s <- 2
+n_m <- 10
+n_l <- 1000
+sample_s <- replicate(10000, rgamma(n_s, shape = shape, rate = rate))
+sample_m <- replicate(10000, rgamma(n_m, shape = shape, rate = rate))
+sample_l <- replicate(10000, rgamma(n_l, shape= shape, rate = rate))
+sample_mean_s <- apply(sample_s, 2, mean)
+sample_mean_m <- apply(sample_m, 2, mean)
+sample_mean_l <- apply(sample_l, 2, mean)
+x_s <- seq(-6, 8, length.out = 1000)
+x_m <- seq(-1, 5, length.out = 1000)
+x_l <- seq(1.7, 2.3, length.out = 1000)
+hist(sample_mean_s, breaks = 30, col = 4, border = "white", xlim = range(x_s),
+     xlab = "sample mean", main = paste0("Distr. of X_bar (n = ", n_s, ")"),
+     prob = TRUE, yaxt = "n", ylab = "", cex.main = 0.9)
+# lines(x_s, dnorm(x_s, shape/rate, sqrt(shape/rate^2)/sqrt(n_s)), lwd = 3, col = "red")
+# lines(density(sample_mean_s), col = "red", lwd = 4) 
+hist(sample_mean_m, breaks = 30, col = 4, border = "white", xlim = range(x_m),
+     xlab = "sample mean", main = paste0("Distr. of X_bar (n = ", n_m, ")"), 
+     prob = TRUE, yaxt = "n", ylab = "", cex.main = 0.9)
+# lines(x_m, dnorm(x_m, shape/rate, sqrt(shape/rate^2)/sqrt(n_m)), lwd = 3, col = "red")
+# lines(density(sample_mean_m), col = "red", lwd = 4) 
+hist(sample_mean_l, breaks = 30, col = 4, border = "white", xlim = range(x_l),
+     xlab = "sample mean", main = paste0("Distr. of X_bar (n = ", n_l, ")"), 
+     prob = TRUE, yaxt = "n", ylab = "", cex.main = 0.9)
+lines(x_l, dnorm(x_l, shape/rate, sqrt(shape/rate^2)/sqrt(n_l)), lwd = 1, col = "red")
+# lines(density(sample_mean_l), col = "red", lwd = 4) 
+# paste("Mean of the sample mean of size 1000 =", mean(sample_mean_l))
+# paste("Variance of the sample mean of size 1000 =", var(sample_mean_l))
+# paste("True mean of the sample mean =", shape / rate)
+# paste("True variance of the sample mean =", (shape / rate ^ 2) / n_l)
+```
+
+## CLT Illustration: A U-shaped Distribution
+```{r clt_bowl_like, out.width="100%", echo=FALSE, cache=TRUE, fig.asp=0.3}
+par(mfrow = c(1, 4))
+par(mar = c(4, 1, 1, 0), mgp = c(2, 0.5, 0), las = 1)
+shape1 <- 1/2
+shape2 <- 1/2
+x <- seq(0, 1, length.out = 1000)
+plot(x, dbeta(x, shape1 = shape1, shape2 = shape2), type="n", xlab="x", ylab="", axes = TRUE, ylim = c(0, 3), cex.main = 0.8,
+     main = "Popu. distr. w/ mu 0.5 var 0.125")
+lines(x, dbeta(x, shape1 = shape1, shape2 = shape2), col = "#003366", lwd = 3)
+# polygon(c(x, rev(x)), c(rev(rep(0, 1000)), (dbeta(x, shape1 = shape1, shape2 = shape2))), col="#FFCC00")
+
+# lines(density(gamma_sample), col = "red", lwd = 4) 
+n_s <- 2
+n_m <- 10
+n_l <- 1000
+sample_s <- replicate(10000, rbeta(n_s, shape1 = shape1, shape2 = shape2))
+sample_m <- replicate(10000, rbeta(n_m, shape1 = shape1, shape2 = shape2))
+sample_l <- replicate(10000, rbeta(n_l, shape1 = shape1, shape2 = shape2))
+sample_mean_s <- apply(sample_s, 2, mean)
+sample_mean_m <- apply(sample_m, 2, mean)
+sample_mean_l <- apply(sample_l, 2, mean)
+x_s <- seq(-0.5, 1.5, length.out = 1000)
+x_m <- seq(0, 1, length.out = 1000)
+x_l <- seq(0.45, 0.55, length.out = 1000)
+hist(sample_mean_s, breaks = 20, col = 4, border = "white", xlim = range(x_s),
+     xlab = "sample mean", main = paste0("Distr. of X_bar (n = ", n_s, ")"),
+     prob = TRUE, yaxt = "n", ylab = "", cex.main = 0.9)
+# lines(x_s, dnorm(x_s, shape1/(shape1+shape2), sqrt(0.125)/sqrt(n_s)), lwd = 3, col = "red")
+# lines(density(sample_mean_s), col = "red", lwd = 4) 
+hist(sample_mean_m, breaks = 20, col = 4, border = "white", xlim = range(x_m),
+     xlab = "sample mean", main = paste0("Distr. of X_bar (n = ", n_m, ")"), 
+     prob = TRUE, yaxt = "n", ylab = "", cex.main = 0.9)
+# lines(x_m, dnorm(x_m, shape1/(shape1+shape2), sqrt(0.125)/sqrt(n_m)), lwd = 3, col = "red")
+# lines(density(sample_mean_m), col = "red", lwd = 4) 
+hist(sample_mean_l, breaks = 20, col = 4, border = "white", xlim = range(x_l),
+     xlab = "sample mean", main = paste0("Distr. of X_bar (n = ", n_l, ")"), 
+     prob = TRUE, yaxt = "n", ylab = "", cex.main = 0.9)
+lines(x_l, dnorm(x_l, shape1/(shape1+shape2), sqrt(0.125)/sqrt(n_l)), lwd = 1, col = "red")
+# lines(density(sample_mean_l), col = "red", lwd = 4) 
+# paste("Mean of the sample mean of size 1000 =", mean(sample_mean_l))
+# paste("Variance of the sample mean of size 1000 =", var(sample_mean_l))
+# paste("Theoretical mean of the sample mean =", shape1/(shape1+shape2))
+# paste("Theoretical variance of the sample mean =", 0.125 / n_l)
+```
+
+## Why CLT is Important?
+
+<!-- - Many statistics have distributions that are approximately normal for large sample sizes, even when we are sampling from a distribution that is not normal. -->
+- Many well-developed statistical methods are based on normal distribution assumption.
+- With CLT, we can use those methods even if we are sampling from a non-normal distribution, or we have no idea of the population distribution, provided that the sample size is large.
+
+## CLT Example
+:::{layout-ncol=2}
+- Suppose that selling prices of houses in Milwaukee are known to have a mean of $382,000 and a standard deviation of $150,000. 
+- In 100 randomly selected sales, what is the probability the *average* selling price is more than $400,000?
+- Since the sample size is fairly large $(n = 100)$, by CLT, the sampling distribution of the average selling price is approximately normal with mean 382,000 and SD $150,000 / \sqrt{100}$.
+
+```{r, echo=FALSE, out.width="75%", fig.align='center'}
+knitr::include_graphics("./images/img-prob/house.jpeg")
+```
+:::
+- $P(\overline{X} > 400000) = P\left(\frac{\overline{X} - 382000}{150000/\sqrt{100}}  > \frac{400000 - 382000}{150000/\sqrt{100}}\right) \approx P(Z > 1.2)$ where $Z \sim N(0, 1)$.
+
+<!-- - We need the sampling distribution of the average selling price in order to obtain the probability.  -->
+
+
+
+```{r}
+pnorm(1.2, lower.tail = FALSE)
+pnorm(400000, mean = 382000, sd = 150000/sqrt(100), lower.tail = FALSE)
+```

@@ -1,11 +1,135 @@
 # Definition of Probability {#sec-prob-define}
 
-This chapter provides a broad overview of the R language that will get you programming right away. In it, you will build a pair of virtual dice that you can use to generate random numbers. Don't worry if you've never programmed before; the chapter will teach you everything you need to know.
+```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
+library(emoji)
+library(openintro)
+library(countdown)
+```
 
-To simulate a pair of dice, you will have to distill each die into its essential features. You cannot place a physical object, like a die, into a computer (well, not without unscrewing some screws), but you can save *information* about the object in your computer's memory.
+## Why Study Probability
+- We live in a world full of chances and uncertainty! (Sept 19, 2022)
+```{r, echo=FALSE, out.width="50%", fig.align='center'}
+knitr::include_graphics("./images/img-prob/chance_09_19_2022.png")
+```
 
-Which information should you save? In general, a die has six important pieces of information: when you roll a die, it can only result in one of six numbers: 1, 2, 3, 4, 5, and 6. You can capture the essential characteristics of a die by saving the numbers 1, 2, 3, 4, 5, and 6 as a group of values in your computer's memory.
+:::{layout-ncol=2}
 
-Let's work on saving these numbers first, and then consider a method for "rolling" our die.
+```{r, echo=FALSE, out.width="100%", fig.align='center'}
+knitr::include_graphics("./images/img-prob/monopoly.png")
+```
 
-## The R User Interface
+```{r, echo=FALSE, out.width="100%", fig.align='center'}
+knitr::include_graphics("./images/img-prob/slot.jpeg")
+knitr::include_graphics("./images/img-prob/blackjack.jpeg")
+```
+
+:::
+
+## Why Probability Before Statistics?
+<!-- - Probability is the language of statistical inference and prediction.  -->
+- <span style="color:blue"> **Probability** </span>: We *know* the process generating the data and are interested in properties of observations.
+- <span style="color:blue"> **Statistics** </span>: We *observed* the data (sample) and are interested in determining what is the process generating the data (population).
+```{r, echo=FALSE, out.width="67%",fig.align='center'}
+# knitr::include_graphics("./images/img-prob/data_generating.png")
+# fig.cap="Figure 1.1 in All of Statistics (Wasserman 2003)"
+par(mar = c(0, 0, 0, 0))
+plot(0, 0, type = "n", axes = FALSE, xlab = "", ylab = "")
+plotrix::draw.ellipse(x = -0.56, y = 0, a = 0.52, b = 0.4, lwd = 2)
+plotrix::draw.ellipse(x = 0.56, y = 0, a = 0.45, b = 0.34, lwd = 2)
+text(x = -0.56, y = 0, labels = "Data Generating Process", cex = 1.5)
+text(x = 0.56, y = 0, labels = "Observed Data", cex = 1.5)
+diagram::curvedarrow(from = c(-0.56, 0.47), to = c(0.56, 0.47), 
+                     curve = -0.2, arr.pos = 0.98)
+diagram::curvedarrow(from = c(0.56, -0.47), to = c(-0.56, -0.47), 
+                     curve = -0.2, arr.pos = 0.98)
+text(x = 0, y = 0.8, labels = "Probability", cex = 1.5)
+text(x = 0, y = -0.8, labels = "Statistical Inference", cex = 1.5)
+```
+
+## Interpretation of Probability: **Relative Frequency**
+- <span style="color:blue"> **Relative Frequency** </span>: The probability that some outcome of a process will be obtained is interpreted as the **relative frequency** with which that outcome would be obtained _if the process were repeated **a large number of times** independently under **similar conditions**._
+
+```{r toss_coin, echo=FALSE, fig.align='center'}
+rel_freq_head <- rep(0, 2)
+times <- c(10, 1000)
+for (i in 1:2) {
+  x <- sample(c("Heads", "Tails"), times[i], replace = TRUE)
+  freq_table <- as.matrix(table(x)); colnames(freq_table) <- "Frequency"
+  rel_freq_table <- cbind(freq_table, "Relative Frequency" = freq_table[, 1] / times[i])
+  rel_freq_table <- rbind(rel_freq_table, Total = apply(rel_freq_table, 2, sum))
+  print(rel_freq_table)
+  cat("---------------------\n")
+  rel_freq_head[i] <- rel_freq_table[1, 2]
+}
+```
+- If we repeat tossing the coin 10 times, the probability of obtaining a head is `r rel_freq_head[1] * 100`%. 
+- If 1000 times, the probability is `r rel_freq_head[2] * 100`%.
+
+:::{.callout-note icon=false}
+
+## Any issue of relative frequency probability?
+
+:::
+
+## Issues of **Relative Frequency**
+- `r emoji('confused')` How large of a number is large enough? 
+
+- `r emoji('confused')` Meaning of "under similar conditions"
+
+- `r emoji('confused')` The relative frequency is reliable under identical conditions?
+
+
+- `r emoji('point_right')`  We only obtain an approximation instead of exact value.
+
+- `r emoji('joy')`  How do you compute the probability that Chicago Cubs wins the World Series next year? 
+
+```{r, echo=FALSE, out.width="50%", fig.align='center'}
+knitr::include_graphics("https://media.giphy.com/media/EKURBxKKkw0uY/giphy.gif")
+```
+
+## Interpretation of Probability: **Classical Approach**
+- <span style="color:blue"> **Classical** probability </span>: The probability is based on the concept of **equally likely** outcomes. 
+- If the outcome of some process must be one of $n$ different outcomes, the probability of each outcome is $1/n$. 
+
+
+- Example: 
+  + toss a fair coin (2 outcomes) p*
+  + roll a well-balanced die (6 outcomes)  `r emoji('game_die')` 
+  + draw one from a deck of cards (52 outcomes) `r emoji('black_joker')` 
+
+:::{.callout-note icon=false}
+
+## Any issue of classical probability?
+
+:::
+
+- _The probability that *[you name it]* wins the World Series next year is **1/30**_?!
+
+```{r, echo=FALSE, out.width="15%", fig.align='center'}
+knitr::include_graphics("./images/img-prob/nick_young.png")
+```
+
+## Interpretation of Probability: **Subjective Approach**
+- <span style="color:blue"> **Subjective** probability </span>: The probability is assigned or estimated using people's **knowledge, beliefs and information** about the data generating process.
+
+- A person's *subjective* probability of an outcome, rather than the *true* probability of that outcome.
+
+
+- I think *"the probability that Milwaukee Brewers wins the World Series this year is 30%"*.
+
+- My probability that Milwaukee Brewers wins the World Series next year is *different* from an ESPN MLB analyst's probability. 
+
+:::{layout-ncol=2}
+
+```{r, echo=FALSE, out.width="75%", fig.align='center'}
+knitr::include_graphics("./images/img-prob/espn.jpeg")
+```
+
+
+```{r echo=FALSE, out.width="100%", fig.align='center'}
+knitr::include_graphics("https://upload.wikimedia.org/wikipedia/en/2/2e/ESPN_Major_League_Baseball_TV_logo.jpg")
+```
+
+:::
+
+**Any probability operations and rules do NOT depend on interpretation of probability!**

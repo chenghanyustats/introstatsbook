@@ -8,4 +8,844 @@ Which information should you save? In general, a die has six important pieces of
 
 Let's work on saving these numbers first, and then consider a method for "rolling" our die.
 
+```{r,echo=FALSE}
+library(emoji)
+```
+
+## R and RStudio
+
+:::{layout-ncol=2}
+```{r echo=FALSE, out.width="45%",fig.align="center"}
+library(knitr)
+knitr::include_graphics("./images/img-intro/Rlogo.png")
+```
+
+```{r echo=FALSE, out.width="100%",fig.align="center"}
+knitr::include_graphics("./images/img-intro/RStudio_logo.png")
+```
+:::
+- [R](https://www.r-project.org/): *free open-source* **programming language** `r emoji('chart_with_upwards_trend')`
+- R is mainly for doing *data science* with strength in *statistical modeling, computing and data visualization*
+
+<!-- - It's extensible with **packages** that include reusable R functions and data sets. -->
+
+- [RStudio](https://rstudio.com/) <sup>1</sup>: interface for R, Python, etc called an **IDE** (integrated development environment), e.g. *"I write R code in the RStudio IDE"*.
+- RStudio is not a requirement for programming with R, but it's commonly used by R developers, statisticians and data scientists.
+
+
+[1] RStudio company is becoming [Posit](https://posit.co/) starting October 2022.
+
 ## The R User Interface
+
+- RStudio IDE includes
+  + a viewable environment, a file browser, data viewer, and a plotting pane. `r emoji('+1')`
+  + also features integrated help, syntax highlighting, context-aware tab completion and more! `r emoji('smile')`
+
+:::{layout-ncol=2}
+**R**
+
+**R Studio**
+
+```{r echo=FALSE, out.width="80%",fig.align="center"}
+knitr::include_graphics("./images/img-intro/r_windows.jpg")
+```
+
+```{r echo=FALSE, out.width="100%",fig.align="center"}
+knitr::include_graphics("./images/img-intro/rstudio_ubuntu.png")
+```
+:::
+
+## `r emoji('cloud')` RStudio Cloud - Statistics w/o hardware hassles
+
+- `r emoji('sunglasses')` We can implement R programs *without* installing R and RStudio in your laptop! 
+- `r emoji('sunglasses')` [**RStudio Cloud**](https://rstudio.cloud/) lets you do, share and learn data science **online for free**! 
+
+:::{layout-ncol=2}
+
+### `r emoji('disappointed')` R/RStudio: Lots of friction 
+- Download and install R
+- Download and install RStudio
+- Install wanted R packages:
+  - rmarkdown
+  - tidyverse 
+  - ...
+- Load these packages
+- Download and install tools like Git
+
+### `r emoji('nerd_face')` RStudio Cloud: Much less friction 
+```{r echo=FALSE, out.width="100%",fig.align="center"}
+knitr::include_graphics("./images/img-intro/cloud.png")
+```
+<float-right>
+
+- Go to https://rstudio.cloud/
+- Log in
+
+</float-right>
+
+```{r hello-r, eval=FALSE}
+>hello R!
+```
+
+:::
+
+<!-- <br> -->
+
+
+```{r echo=FALSE, out.width="90%",fig.align="center"}
+knitr::include_graphics("./images/img-intro/rstudio-ide.png")
+```
+
+
+
+- `r emoji('smiley')` We do statistical analysis using RStudio IDE, **directly from a web browser**!
+
+
+```{r echo=FALSE, out.width="83%",fig.align="center"}
+knitr::include_graphics("./images/img-intro/rstudio-cloud.png")
+```
+
+## Install RStudio Cloud
+:::{.callout-note icon=false}
+
+## Lab time!
+
+- *Step 1*: In the RStudio website https://rstudio.com/, please choose **Products > RStudio Cloud** as shown below.
+
+:::
+
+```{r echo=FALSE, out.width="80%", fig.align="center"}
+knitr::include_graphics("./images/img-intro/rstudio_cloud.png")
+```
+
+:::{.callout-note icon=false}
+
+## Lab time!
+
+- *Step 2*: Click **GET STARTED FOR FREE**. 
+- *Step 3*: **Free > Sign Up**. Sign up using your Marquette email address or the one you prefer.
+
+:::
+```{r echo=FALSE, out.width="60%", fig.align="center"}
+knitr::include_graphics("./slides/w2-01-rstudio/img/landing-1.png")
+```
+
+
+## New Projects
+
+In RStudio Cloud, click **New Project > New RStudio Project**, then you are all set!
+
+
+```{r echo=FALSE, out.width="80%", fig.align="center"}
+knitr::include_graphics("./images/img-intro/new-project-cloud.png")
+```
+
+## First R Code in RStudio Cloud!
+- Give your project a nice name (click Untitled Project), **math-4720** for example.
+- First R code: `"Hello WoRld!"` or `2 + 4` after `>` in the **Console** pane.
+- Change the editor theme: **Tools > Global Options > Appearance**
+
+```{r echo=FALSE, out.width="80%", fig.align="center"}
+knitr::include_graphics("./images/img-intro/rcloud_project.png")
+```
+
+## Working in RStudio/RStudio Cloud
+
+### RStudio Panes
+
+```{r rstudio-panes, echo=FALSE, fig.cap="RStudio 4 Panes", out.width="85%",fig.align='center'}
+knitr::include_graphics("./images/img-intro/rstudio_panes.png")
+```
+
+### R Script
+- A R script is a **.R** file that contains R code.
+<!-- - You type code into the Console if the code is short or you want to do some quick calculations or analysis. -->
+<!-- - Try to write your code in R scripts in the source pane, so the code can be saved and reused.  -->
+- To create a R script, go to **File > New > R Script**, or click the green-plus icon on the topleft corner, and select R Script.
+
+```{r run1, echo=FALSE, out.width="100%",fig.align='center'}
+knitr::include_graphics("./images/img-intro/script.png")
+```
+
+### Run Code
+- <span style="color:blue"> **Run** </span>: run the **current line** or **selection of code**. 
+- <span style="color:blue"> **Icon right to the Run** </span>: re-run the **previous** selected code. 
+
+<!-- - <span style="color:blue"> **Source with Echo** </span>: run **all** the code in the R script *and show output* -->
+<!--   + `option+ ctrl + enter` (Windows) or `shift + cmd + enter` (Mac) -->
+```{r run2, echo=FALSE, out.width="100%",fig.align='center'}
+knitr::include_graphics("./images/img-intro/script.png")
+```
+<!-- ![](./img/script.png){height=400px width=500px} -->
+
+
+### Environment Tab
+- The (global) environment is our workspace (*NOT* the RStudio Cloud workspace).
+- Anything created or imported into the current R session is stored in our environment and shown in the **Environment** tab.
+- After we run the R script, objects stored in the environment are
+  + Data set `mtcars`
+  + Object `x` storing integer values 1 to 10.
+  + Object `y` storing three numeric values 3, 5, 9.
+
+```{r env, echo=FALSE, out.width="96%",fig.align='center'}
+knitr::include_graphics("./images/img-intro/environment.png")
+```
+<!-- ![](./images/img-intro/environment.png){height=450px width=900px} -->
+
+### Help
+- Don't know how a function works or what a data set is about `r emoji('question')` 
+- `r emoji('point_right')` Simply type `?` followed by the data name or function name like
+
+```{r help, eval=FALSE}
+?mean
+?mtcars
+```
+
+- A document will show up in the **Help** tab, teaching you how to use the function or explaining the data set.
+
+:::{.callout-note icon=false}
+
+## What does the function `mean()` do?
+
+:::
+
+### Resources
+In RStudio Cloud sidebar,
+
+- R and RStudio [**Cheat Sheats**](https://rstudio.cloud/learn/cheat-sheets)
+- Learn more RStudio and statistical data science: [**Primers**](https://rstudio.cloud/learn/primers)
+
+```{r echo=FALSE, out.width="70%",fig.align="center"}
+knitr::include_graphics("./images/img-intro/primers.png")
+```
+
+:::{.callout-warning icon=false}
+
+## You can do it!
+
+- What is the size of `mtcars` data? 
+- Type `mtcars` and hit Enter in the Console to see the data set.
+- Discuss data type of each variable.
+- Type `mtcars[, 1]` and hit Enter in the Console. What do you see?
+
+:::
+
+## Install R 
+
+### Step 1
+- Go to <https://cloud.r-project.org>
+- Click Download R for [your operating system]
+
+![](./images/img-intro/r_download.png)
+
+### Step 2
+
+- If you are a Mac user, you should see the page as below. You are recommended to download and install the *latest* version of R (now **R-4.2.1 (Funny-Looking Kid)**), if your OS version allows to do so. Otherwise, choose a previous version, R-3.6.3. 
+- If you are a Windows user, after clicking Download R for Windows, please choose **base** version, then click **Download R-4.2.1 for Windows**. 
+<!-- - If you are a Linux user, after clicking Download R for Linux, please choose the distribution you are using, ubuntu for example, and then follow the instruction to complete the installation. -->
+
+![](./images/img-intro/r_version.png)
+
+### Step 3
+- Once you install R successfully, when you open R, you should be able to see the following R terminal or console:
+
+:::{layout-ncol=2}
+
+**Windows**
+![](./images/img-intro/r_windows.jpg)
+
+**Mac**
+![](./images/img-intro/r_mac.png)
+
+:::
+
+## Welcome to the R World! 
+- Now you are ready to use R to do statistical computation. 
+- You can use R like a calculator. After typing your formula, simply hit Enter, you get the answer! For example,
+
+```{r calculator}
+1 + 2
+30 * 42 / 3
+log(5) - exp(3) * sqrt(7)
+```
+
+<!-- --- -->
+<!-- ## Install RStudio -->
+
+<!-- - [RStudio](https://rstudio.com/) is an integrated development environment (IDE) mainly for R.  -->
+<!-- - It provides lots of useful features that help us do statistical analysis and data science projects more efficiently.  -->
+
+## Install RStudio  
+
+### Step 1
+- In the [RStudio website](https://www.rstudio.com/), please choose **Products > RStudio** as shown below.
+
+![](./images/img-intro/rstudio.png)
+
+### Step 2
+- Choose **RStudio Desktop** and click **DOWNLOAD RSTUDIO DESKTOP** for the *free* version.
+```{r echo=FALSE, out.width="67%", fig.align='center'}
+knitr::include_graphics("./images/img-intro/rstudio_desktop.png")
+```
+<!-- ![](./images/img-intro/rstudio_desktop.png){height=500px width=700px} -->
+
+
+### Step 3
+- Click **DOWNLOAD RSTUDIO FOR [YOUR SYSTEM]**. Then follow standard installation steps, you should get the software soon. 
+- Be careful that R should be installed successfully in your computer before you download and install RStudio.
+- **[Note]**: The latest version of RStudio is **2022.07.1+554**.
+
+
+```{r echo=FALSE, out.width="57%", fig.align='center'}
+knitr::include_graphics("./images/img-intro/rstudio_download.png")
+```
+<!-- ![](./images/img-intro/rstudio_download.png) -->
+
+## RStudio Screen
+- When you open RStudio, you should see something similar to the figure below.
+- If you do, congratulations! You are able to do every statistical computation in R using RStudio locally in your computer. 
+```{r echo=FALSE, out.width="78%", fig.align="center"}
+knitr::include_graphics("./images/img-intro/rstudio_ubuntu.png")
+```
+
+## R is a Calculator - Arithmetic Operators
+
+```{r arithmetic-operator, echo=FALSE, out.width="70%", fig.align='center'}
+knitr::include_graphics("./images/img-intro/arithmetic_operator.png")
+```
+
+### Examples
+
+```{r, arithmetic-example}
+2 + 3 * 5 + 4
+2 + 3 * (5 + 4)
+```
+
+- We have to do the operation in the parenthesis first
+
+```{r, echo=FALSE, out.width="80%", fig.align='center'}
+knitr::include_graphics("./images/img-intro/pemdas.jpeg")
+```
+
+## R Does Comparisons - Logical Operators
+
+```{r logical-operator, echo=FALSE, out.width="40%", fig.align='center'}
+knitr::include_graphics("./images/img-intro/logical_operator.png")
+```
+
+### Examples
+
+:::{layout-ncol=2}
+
+```{r, logical-example}
+5 <= 5
+5 <= 4
+# Is 5 is NOT equal to 5? FALSE
+5 != 5
+```
+
+
+```{r}
+## Is TRUE not equal to FALSE?
+TRUE != FALSE
+## Is not TRUE equal to FALSE?
+!TRUE == FALSE
+## TRUE if either one is TRUE or both are TRUE
+TRUE | FALSE
+```
+
+:::
+
+:::{.callout-note icon=false}
+
+## What does `TRUE & FALSE` return?
+
+:::
+
+## Built-in Functions
+
+- R has lots of built-in functions, especially for mathematics, probability and statistics.
+
+```{r numeric-fcns, echo=FALSE, out.width="45%", fig.align='center'}
+knitr::include_graphics("./images/img-intro/numeric_fcns.png")
+```
+
+
+### Examples
+
+:::{layout-ncol=2}
+
+```{r builtin-fcns}
+sqrt(144)
+exp(1)  ## Euler's number
+sin(pi/2)
+abs(-7)
+```
+
+
+
+```{r}
+factorial(5)
+## without specifying base value
+## it is a natural log with base e
+log(100)
+## log function and we specify base = 2
+log(100, base = 10)
+```
+
+:::
+
+## Commenting
+
+:::{.callout-note icon=false}
+
+## You've seen comments a lot! How do we write a comment in R?
+
+:::
+
+- Use `#` to add a comment so that the text after `#` is not read as an R command.
+- Writing (good) comments is highly recommended: help readers and more importantly yourself understand what the code is doing.
+- Comments should explain the **why**, not the what.
+
+:::{layout-ncol=2}
+
+```{r, echo=FALSE, out.width="100%", fig.align='center'}
+knitr::include_graphics("./images/img-intro/cat_comment.png")
+```
+
+
+```{r, echo=FALSE, out.width="100%", fig.align='center'}
+knitr::include_graphics("./images/img-intro/stop_comment.png")
+```
+
+:::
+https://www.reddit.com/r/ProgrammerHumor/comments/8w54mx/code_comments_be_like/
+
+## Objects and Funtions in R
+> <span style="color:red"> Everything that **exists** is an **object**. </span>  
+<span style="color:red"> Everything that **happens** is a **function call**. </span>  
+  -- *[John Chambers](https://bit.ly/3yJJGrC), the creator of the S programming language*.
+
+- We have made lots of things happened!
+- Even arithmetic and logical operators are functions!
+```{r}
+`+`(x = 2, y = 3)
+`&`(TRUE, FALSE)
+```
+
+## Creating Variables
+
+- A variable stores a value that can be changed according to our need.
+- Use `<-` operator to **assign** a value to the variable. (Highly recommended`r emoji('+1')`)
+
+```{r assignment}
+x <- 5  ## we create an object, value 5, and call it x, which is a variable.
+x  ## type the variable name to see the value stored in the object x
+```
+
+<!-- - Can also use `=` symbol to do assignment. (`r emoji('x')` Does not work in some situations) -->
+
+```{r variable}
+(x <- x + 6)  # We can reassign any value to the variable we created
+x == 5  # We can perform any operations on variables
+log(x) # Variables can also be used in any built-in functions
+```
+
+
+```{r, echo=FALSE, out.width="100%", fig.align='center'}
+knitr::include_graphics("./images/img-intro/r_assign_syntax.jpg")
+```
+
+
+
+## Bad Naming
+- `r emoji('x')` Unless you have a very good reason, don't create a variable whose name is the same as any R [*built-in constant*](https://stat.ethz.ch/R-manual/R-devel/library/base/html/Constants.html) or function!
+- `r emoji('worried')` It causes lots of confusion when your code is long and when others read your code.
+
+```{r bad-naming}
+## THIS IS BAD CODING! DON'T DO THIS!
+pi  ## pi is a built-in constant
+(pi <- 20)
+abs ## abs is a built-in function
+(abs <- abs(pi))
+```
+
+## Object Types
+
+### Types of Variables
+- Use **`typeof()`** to check which type a variable belongs to.
+- Common types include **`character`**, **`double`**, **`integer`** and **`logical`**.
+- Check if it???s of a specific type: **`is.character()`**, **`is.double()`**, **`is.integer()`**, **`is.logical()`**.
+<!-- - To specify an integer, we type a number followed by letter `L`.  -->
+
+:::{layout-ncol=2}
+
+```{r type}
+typeof(5)
+typeof(5L)
+typeof("I_love_stat!")
+```
+
+
+```{r}
+typeof(1 > 3)
+is.double(5L)
+```
+
+:::
+
+### Variable Types in R and in Statistics
+- Type `character` and `logical` correspond to **categorical** variables.
+- Type `logical` is a special type of categorical variables that has only two categories (**binary**). 
+<!-- - We usually call it a **binary** variable. -->
+-   Type `double` and `integer` correspond to **numerical** variables. (an exception later)
+  +   Type `double` is for **continuous** variables
+  +   Type `integer` is for **discrete** variables.
+  
+## (Atomic) Vector
+- To create a vector, use `c()`, short for *concatenate* or *combine*.
+- **All** elements of a vector must be of the **same type**. 
+
+:::{layout-ncol=2}
+
+```{r vector}
+(dbl_vec <- c(1, 2.5, 4.5)) 
+(int_vec <- c(1L, 6L, 10L))
+## TRUE and FALSE can be written as T and F
+(log_vec <- c(TRUE, FALSE, F))  
+(chr_vec <- c("pretty", "girl"))
+```
+
+
+```{r}
+## check how many elements in a vector
+length(dbl_vec) 
+## check a compact description of 
+## any R data structure
+str(dbl_vec) 
+```
+
+:::
+
+### Operations on Vectors
+- We can do any operations on vectors as we do on a *scalar* variable (vector of length 1).
+
+:::{layout-ncol=2}
+```{r vector-arithmetic}
+# Create two vectors
+v1 <- c(3, 8)
+v2 <- c(4, 100) 
+
+## All operations happen element-wisely
+# Vector addition
+v1 + v2
+# Vector subtraction
+v1 - v2
+```
+
+
+```{r}
+# Vector multiplication
+v1 * v2
+# Vector division
+v1 / v2
+sqrt(v2)
+```
+
+:::
+
+### Recycling of Vectors
+- If we apply arithmetic operations to two vectors of **unequal** length, the elements of the shorter vector will be **recycled** to complete the operations.
+<!-- - Beware of recycling! -->
+<!-- - The concept of *recycling* helps us write more concise code. -->
+
+```{r recycle}
+v1 <- c(3, 8, 4, 5)
+# The following 2 operations are the same
+v1 * 2
+v1 * c(2, 2, 2, 2)
+v3 <- c(4, 11)
+v1 + v3  ## v3 becomes c(4, 11, 4, 11) when doing the operation
+```
+
+### Subsetting Vectors
+- To extract element(s) in a vector, use a pair of brackets `[]` with element indexing.
+- The indexing **starts with 1**.
+
+:::{layout-ncol=2}
+
+```{r subsetting}
+v1
+v2
+## The first element
+v1[1] 
+## The second element
+v2[2]  
+```
+
+
+```{r}
+v1[c(1, 3)]
+## extract all except a few elements
+## put a negative sign before the vector of 
+## indices
+v1[-c(2, 3)] 
+```
+
+:::
+
+```{r, echo = FALSE, eval=FALSE}
+x <- c(1, 5, 2, 6)
+names(x) <- letters[1:4]
+x["c"]
+```
+
+## Factor
+- A vector of type `factor` can be *ordered in a meaningful way.* 
+- Create a factor by `factor()`. It is a type of **integer**, not **character**. `r emoji('astonished')`  `r emoji('roll_eyes')` 
+
+```{r factor, echo=-1}
+## Create a factor from a character vector using function factor()
+fac <- factor(c("med", "high", "low"))
+typeof(fac)
+levels(fac) ## Each level represents an integer, ordered from the vector alphabetically.
+str(fac)  ## The integers show the level each element in vector fac belongs to.
+order_fac <- factor(c("med", "high", "low"), levels = c("low", "med", "high"))
+str(order_fac)
+```
+
+
+## List (Generic Vectors)
+- Lists are different from vectors: Elements can be of **any type**, including lists.
+- Construct a list by using **`list()`** instead of `c()`.
+
+:::{layout-ncol=2}
+
+```{r list}
+## a list of 3 elements of different types
+x_lst <- list(idx = 1:3, 
+              "a", 
+              c(TRUE, FALSE))
+x_lst
+```
+
+
+```{r}
+str(x_lst)
+names(x_lst)
+length(x_lst)
+```
+
+:::
+
+### Subsetting a List
+
+
+```{r}
+x_lst <- list(idx = 1:3, 
+              "a", 
+              c(TRUE, FALSE))
+```
+
+<br>
+
+:::{layout-ncol=2}
+
+**Return an <span style="color:red"> element </span> of a list**
+
+**Return a <span style="color:red"> sub-list </span> of a list**
+
+```{r}
+## subset by name (a vector)
+x_lst$idx  
+## subset by indexing (a vector)
+x_lst[[1]]  
+typeof(x_lst$idx)
+```
+
+
+```{r}
+## subset by name (still a list)
+x_lst["idx"]  
+## subset by indexing (still a list)
+x_lst[1]  
+typeof(x_lst["idx"])
+```
+
+:::
+
+```{r list_condiment, echo=FALSE, out.width="80%", fig.align='center'}
+knitr::include_graphics("./images/img-intro/list_condiment.png")
+```
+
+
+> If list `x` is a train carrying objects, then `x[[5]]` is
+> the object in car 5; `x[4:6]` is a train of cars 4-6.
+>
+> --- \@RLangTip, <https://twitter.com/RLangTip/status/268375867468681216>
+
+```{r, echo=FALSE, out.width="100%", fig.align='center'}
+knitr::include_graphics("https://raw.githubusercontent.com/hadley/adv-r/master/diagrams/subsetting/train.png")
+```
+
+```{r, echo=FALSE, out.width="100%", fig.align='center'}
+knitr::include_graphics("https://raw.githubusercontent.com/hadley/adv-r/master/diagrams/subsetting/train-single.png")
+```
+
+## Matrix
+
+- A matrix is a *two-dimensional analog of a vector*.
+- Use command `matrix()` to create a matrix.
+
+```{r matrix, tidy=FALSE}
+## Create a 3 by 2 matrix called mat
+(mat <- matrix(data = 1:6, nrow = 3, ncol = 2)) 
+dim(mat); nrow(mat); ncol(mat)
+```
+
+### Subsetting a Matrix
+- To extract a sub-matrix, use the same indexing approach as vectors on rows and columns.
+- Use comma `,` to separate row and column index.
+- `mat[2, 2]` extracts the element of the second row and second column.
+
+:::{layout-ncol=2}
+
+```{r matrix-indexing}
+mat
+## all rows and 2nd column
+## leave row index blank
+## specify 2 in coln index
+mat[, 2]
+```
+
+
+```{r}
+## 2nd row and all columns
+mat[2, ] 
+## The 1st and 3rd rows
+mat[c(1, 3), ] 
+```
+
+:::
+
+### Binding Matrices
+- We can generalize `c()` used in vectors to `cbind()` (binding matrices by adding columns) and `rbind()` (binding matrices by adding rows) for matrices.
+- When matrices are combined by columns (rows), they should have the same number of rows (columns).
+
+:::{layout-ncol=2}
+
+```{r matrix-bind}
+mat
+mat_c <- matrix(data = c(7, 0, 0, 8, 2, 6), 
+                nrow = 3, ncol = 2)
+## should have the same number of rows
+cbind(mat, mat_c)  
+```
+
+
+```{r}
+mat_r <- matrix(data = 1:4, 
+                nrow = 2, 
+                ncol = 2)
+## should have the same number of columns
+rbind(mat, mat_r)  
+```
+
+:::
+
+## Data frame: The Most Common Way of Storing Data
+
+- A data frame is of type **list** of *equal-length* vectors, having a *2-dimensional* structure.
+- More general than matrix: Different columns can have different types.
+- To create a data frame, use `data.frame()` that takes *named* vectors as input.
+
+:::{layout-ncol=2}
+
+```{r dataframe}
+## data frame w/ an dbl column named  
+## and char column named grade.
+(df <- data.frame(age = c(19,21,40), 
+                  gender = c("m","f","m")))
+
+## a data frame has a list structure
+str(df)  
+```
+
+
+```{r}
+## must set column names
+## or they are ugly and non-recognizable
+data.frame(c(19, 21, 40), c("m","f", "m")) 
+```
+
+:::
+
+### Properties of Data Frames
+- Data frame has properties of matrix and list.
+
+:::{layout-ncol=2}
+
+```{r df-fcns, echo=1:5}
+names(df)  ## df as a list
+colnames(df)  ## df as a matrix
+length(df) ## df as a list
+ncol(df) ## df as a matrix
+dim(df) ## df as a matrix
+
+# typeof(df)
+# class(df)
+```
+
+
+```{r}
+## rbind() and cbind() can be used on df
+
+df_r <- data.frame(age = 10, 
+                   gender = "f")
+rbind(df, df_r)
+
+df_c <- 
+    data.frame(col = c("red","blue","gray"))
+(df_new <- cbind(df, df_c))
+```
+
+:::
+
+
+### Subsetting a Data Frame
+- When we subset data frames, we can use either list or matrix subsetting methods.
+
+:::{layout-ncol=2}
+
+```{r df-subset}
+df_new
+## Subset rows
+df_new[c(1, 3), ]
+## select the row where age == 21
+df_new[df_new$age == 21, ]
+```
+
+
+```{r, echo=1:6, eval=1:6}
+## Subset columns
+## like a list
+df_new$age
+df_new[c("age", "gender")] 
+## like a matrix
+df_new[, c("age", "gender")]
+str(df["age"])  ## a data frame with one column
+str(df[, "age"])  ## becomes a vector by default
+```
+
+:::
+
+:::{.callout-warning icon=false}
+
+## You can do it!
+
+- Create a vector object called `x` that has 5 elements 3, 6, 2, 9, 14.
+- Compute the average of elements of `x`.
+- Subset the `mtcars` data set by selecting variables `mpg` and `disp`.
+- Select the cars (rows) in `mtcars` that have 4 cylinders.
+
+:::

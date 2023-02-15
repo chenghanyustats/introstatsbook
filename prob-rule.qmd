@@ -1,13 +1,362 @@
 # Probability Rules {#sec-prob-rule}
 
-This chapter provides a broad overview of the R language that will get you programming right away. In it, you will build a pair of virtual dice that you can use to generate random numbers. Don't worry if you've never programmed before; the chapter will teach you everything you need to know.
+```{r, echo=FALSE}
+library(emoji)
+```
 
-To simulate a pair of dice, you will have to distill each die into its essential features. You cannot place a physical object, like a die, into a computer (well, not without unscrewing some screws), but you can save *information* about the object in your computer's memory.
+## Experiments, Events and Sample Space
+- **Experiment**: any process in which the possible **outcomes** can be identified *ahead of time*. 
+- **Event**: a set of possible outcomes of the experiment.
+- **Sample space** $(\mathcal{S})$ of an experiment: the collection of **ALL** possible outcomes of the experiment.
 
-Which information should you save? In general, a die has six important pieces of information: when you roll a die, it can only result in one of six numbers: 1, 2, 3, 4, 5, and 6. You can capture the essential characteristics of a die by saving the numbers 1, 2, 3, 4, 5, and 6 as a group of values in your computer's memory.
+Experiment    | Possible Outcomes | Some Events                                  | Sample Space
+------------- | ----------------- | -------------------------------------------  | -------------
+Flip a coin  p* | Heads, Tails      | {Heads}, {Heads, Tails}, ...                 | {Heads, Tails}
+Roll a die  `r emoji('game_die')`   | 1, 2, 3, 4, 5, 6  | {1, 3, 5}, {2, 4, 6}, {2}, {3, 4, 5, 6}, ... | {1, 2, 3, 4, 5, 6}
 
-Let's work on saving these numbers first, and then consider a method for "rolling" our die.
 
-## The R User Interface
+:::{.callout-note icon=false}
+
+## Is the sample space also an event?
+
+:::
 
 
+- Yes, the sample space itself is an event because it is also a set of possible outcomes of the experiment.
+
+## Set Concept: Example of Rolling a six-side balanced die
+
+:::{.callout-tip icon=false}
+
+Draw a [**Venn Diagram**](http://www.stat.ucla.edu/~vlew/stat11/lectures/venn/venn.html) every time you get stuck!
+
+:::
+
+- <span style="color:black"> **Complement** </span> of an event (set) $A$, <span style="color:black"> $A^c$ </span>: a set of **all** outcomes (elements) of $\mathcal{S}$ in which $A$ does **not** occur.
+  + <span style="color:blue">Let $A$ be an event that a number greater than 2. Then $A = \{3, 4, 5, 6\}$ and $A^c = \{1, 2\}$.</span> 
+
+
+- <span style="color:black"> **Union** $(A \cup B)$ </span>: a set of all outcomes of $\mathcal{S}$ in $A$ **or** $B$.
+
+  + <span style="color:blue">Let $B$ be an event that an even number is obtained.</span>  (What is $B$ in terms of a set?)
+
+
+  + <span style="color:blue"> $B = \{2, 4, 6\}$, $A \cup B = \{2, 3, 4, 5, 6\}$.</span>
+
+  
+
+- <span style="color:black"> **Intersection** $(A \cap B)$ </span>: a set of all outcomes of $\mathcal{S}$ in both $A$ **and** $B$.
+
+  + <span style="color:blue"> $A \cap B = \{4, 6\}$.</span> 
+
+- $A$ and $B$ are **disjoint** (or **mutually exclusive**) if they have **no outcomes in common** $(A \cap B = \emptyset)$.
+  + $\emptyset$ means an empty set, $\{\}$, i.e., no elements in the set.
+  + <span style="color:blue"> Let $C$ be an event that an odd number is obtained. Then $C = \{1, 3, 5\}$ and $B \cap C = \emptyset$. </span> 
+
+- **Containment** $(A \subset B)$: every elements of $A$ also belongs to $B$. If $A$ occurs then so does $B$.
+```{r, cache=TRUE, echo=FALSE, out.width="20%", fig.align='center'}
+par(mar = c(0,0,0,0))
+plot(c(0, 1), c(0, 1), type = 'n', axes = FALSE, xlab = "", ylab = "")
+temp <- seq(0, 2 * pi, 2 * pi / 100)
+x <- 0.5 + 0.5 * cos(temp)
+y <- 0.5 + 0.5 * sin(temp)
+lines(x, y, lwd = 15, col = 2)
+
+text(0.5, 0.6, 'A', pos = 3, font = 2, cex = 6)
+lines((x - 0.5) * 2 * sqrt(0.07) + 0.55,
+      (y - 0.5) * 2 * sqrt(0.07) + 0.68, lwd = 15, col = 4)
+
+text(0.55, 0.3, 'B', pos = 1, font = 2, cex = 6)
+```
+  + <span style="color:blue"> $B$ is an event that an even number is obtained. </span>
+  + <span style="color:blue"> $D$ is an event that a number greater than 1 is obtained. </span>
+  + <span style="color:blue"> $B = \{2, 4, 6\}$ and $D = \{2, 3, 4, 5, 6\}$. </span>
+
+:::{.callout-note icon=false}
+
+## Is $B \subset D$ or $D \subset B$?
+
+:::
+<!-- -- -->
+
+<!-- - <span style="color:blue"> $B \subset D$ or $D \supset B$. </span> -->
+
+
+<!-- In other words, they cannot occur at the same time when the experiment is performed. -->
+
+## Probability Rules
+Denote the probability of an event $A$ on a sample space $\mathcal{S}$ as $P(A)$.
+
+:::{.callout-tip icon=false}
+
+Treat the probability of an event as the **area** of the event in the Venn diagram.
+
+:::
+
+- **Axioms**
+  + $P(\mathcal{S}) = 1$
+  + For any event $A$, $P(A) \ge 0$
+  + If $A$ and $B$ are **disjoint**, $P(A \cup B) = P(A) + P(B)$
+- **Properties**
+  + $P(\emptyset) = 0$. 
+  + $0 \le P(A) \le 1$
+  + $P(A^c) = 1 - P(A)$
+  + $P(A \cup B) = P(A) + P(B) - P(A \cap B)$  (Addition Rule)
+  + If $A \subset B$, then $P(A) \le P(B)$ 
+
+## Venn Diagram Illustration
+- **Addition Rule**: $P(A \cup B) = P(A) + P(B) - P(A \cap B)$
+
+```{r, echo=FALSE, out.width = "100%", fig.align='center'}
+# ```{r, echo=FALSE, fig.show = "hold", out.width = "25%", fig.align = "default"}
+# knitr::include_graphics("./images/img-prob/union.png")
+# knitr::include_graphics("./images/img-prob/setA.png")
+# knitr::include_graphics("./images/img-prob/setB.png")
+# knitr::include_graphics("./images/img-prob/intersect.png")
+# ```
+knitr::include_graphics("./images/img-prob/addition_rule.png")
+```
+
+- **Disjoint case**: $P(A \cup B) = P(A) + P(B)$ because $P(A \cap B) = 0$!
+
+
+```{r, echo=FALSE, out.width = "100%", fig.align='center'}
+# knitr::include_graphics("./images/img-prob/male_female_set.png")
+# knitr::include_graphics("./images/img-prob/male_set.png")
+# knitr::include_graphics("./images/img-prob/female_set.png")
+knitr::include_graphics("./images/img-prob/disjoint_sex.png")
+```
+
+## Example: M&M Colors
+The makers of the candy M&Ms report that their plain M&Ms are composed of 
+
+  + 15% Yellow; 10% Red; 20% Orange; 25% Blue; 15% Green; 15% Brown
+  
+:::{layout-ncol=2}
+
+```{r, out.width="80%", echo=FALSE, fig.align='center'}
+knitr::include_graphics("./images/img-prob/mm.jpeg")
+```
+
+:::{.callout-note icon=false}
+
+## If you randomly select an M&M, what is the probability of the following? 
+
+  + (1) It is brown. 
+  
+  + (2) It is red or green. 
+  
+  + (3) It is not blue. 
+  
+  + (4) It is red and brown.
+
+:::
+
+:::
+
+
+**Solution:**
+
+- $P(\mathrm{Brown}) = 0.15$
+- $\small \begin{align} P(\mathrm{Red} \cup \mathrm{Green}) &= P(\mathrm{Red}) + P(\mathrm{Green}) - P(\mathrm{Red} \cap \mathrm{Green}) \\ &= 0.10 + 0.15 - 0 = 0.25 \end{align}$
+- $P(\text{Not Blue}) = 1 - P(\text{Blue}) = 1 - 0.25 = 0.75$
+- $P(\text{Red and Brown}) = P(\emptyset) = 0$
+
+:::{.callout-note icon=false}
+
+## By the way, which interpretation of probability is used in this question?
+
+:::
+
+## Conditional Probability
+- The **conditional probability of $A$ given $B$** is
+$$ P(A \mid  B) = \frac{P(A \cap B)}{P(B)} $$ if $P(B) > 0$, and it is undefined if $P(B) = 0$.
+<!-- - Read $A | B$ as "$A$ given $B$" -->
+- "Given $B$" means that event $B$ *has already occurred*. 
+
+```{r, echo=FALSE, out.width = "100%", fig.align='center'}
+# knitr::include_graphics("./images/img-prob/cond_prob.png")
+# knitr::include_graphics("./images/img-prob/intersect_light.png")
+# knitr::include_graphics("./images/img-prob/setB.png")
+knitr::include_graphics("./images/img-prob/conditional.jpg")
+```
+
+<!-- At this moment $P(B)$ is 1. -->
+<!-- - $P(B)$ is scaled up by $1 / P(B)$ so that $P(B) \times \frac{1}{P(B)} = 1$. -->
+
+
+- **Multiplication Rule**: $P(A \cap B) = P(A \mid  B)P(B) = P(B \mid  A)P(A)$
+- $P(A)$ and $P(B)$ are **unconditional** or **marginal probabilities**.
+
+## Difference Between $P(A)$ and $P(A \mid B)$
+<!-- - The marginal probability $P(A)$ is the ratio of area of $A$ and the area of the sample space. -->
+<!-- - The conditional probability $P(A|B)$ is the ratio of area of $A \cap B$ and the area of $B$. -->
+
+```{r, echo=FALSE, out.width="100%", fig.align='center'}
+knitr::include_graphics("./images/img-prob/conditional_prob.jpg")
+```
+
+
+## Example: Peanut Butter and Jelly
+- Suppose 80% of people like peanut butter, 89% like jelly, and 78% like both.
+- Given that a randomly sampled person likes peanut butter, what is the probability that she also likes jelly?
+
+:::{layout-ncol=2}
+
+```{r, echo=FALSE, fig.show='hold', out.width="100%", fig.align='default'}
+knitr::include_graphics("./slides/w3-02-probability/img/peanut_jelly.jpeg")
+```
+
+- We want $P(J\mid PB) = \frac{P(PB \cap J)}{P(PB)}$.
+- From the problem we have $P(PB) = 0.8$, $P(J) = 0.89$, $P(PB \cap J) = 0.78$
+- $P(J\mid PB) = \frac{P(PB \cap J)}{P(PB)} = \frac{0.78}{0.8} = 0.975$
+:::
+
+:::{.callout-note icon=false}
+
+- If we **don't** know if the person loves peanut butter, the probability that she loves jelly is 89%.
+- If we **do** know she loves peanut butter, the probability that she loves jelly is going up to 97.5%.
+:::
+
+## Independence
+- $A$ and $B$ are **independent** if 
+$\begin{align} P(A \mid  B) &= P(A) \text{ or }\\ P(B \mid  A) &= P(B) \text{ or } \\P(A\cap B) &= P(A)P(B)\end{align}$  $\text{ if } P(A) > 0 \text{ and } P(B) > 0$
+- Intuition: *Knowing $B$ occurs does not change the probability that $A$ occurs, and vice versa.*
+
+:::{.callout-note icon=false}
+
+## Can we compute $P(A \cap B)$ if we only know $P(A)$ and $P(B)$?
+:::
+- No, we cannot compute $P(A \cap B)$ since we do not know if $A$ and $B$ are independent. 
+- We only could if $A$ and $B$ were independent.
+- In general, we need the multiplication rule $P(A \cap B) = P(A \mid B)P(B)$.
+
+## Venn Diagram Explanation of Independence
+```{r, echo=FALSE, out.width="100%"}
+knitr::include_graphics("./images/img-prob/independence.jpg")
+```
+
+## Independence Example
+
+:::{.callout-note icon=false}
+## Assuming that events $A$ and $B$ are **independent**. $P(A) = 0.3$ and $P(B) = 0.7$.
+  + $P(A \cap B)$?
+  + $P(A \cup B)$?
+  + $P(A \mid B)$?
+  
+:::  
+<!-- - If $P(A \cap B)= 0.1$, are $A$ and $B$ independent? -->
+<!-- - If $P(A \cap B)= 0.1$, what is $P(A \mid B)$? -->
+
+
+- $P(A \cap B) = P(A)P(B)=0.21$
+
+- $P(A \cup B) = P(A)+P(B)-P(A\cap B) = 0.3+0.7-0.21=0.79$
+
+- $P(A \mid B) = P(A) = 0.3$
+
+<!-- -- -->
+
+<!-- - If $P(A \cap B)= 0.1$, $A$ and $B$ are not independent because $P(A \cap B) \ne P(A)P(B)$ -->
+
+<!-- -- -->
+
+<!-- - $P(A \mid B) =\frac{P(A\cap B)}{P(B)} = \frac{0.1}{0.7} = 0.143$. -->
+
+## Why Bayes' Formula?
+- Often, we know $P(B \mid A)$ but are much more interested in $P(A \mid B)$.
+- Example: diagnostic tests provide $P(\text{positive test result}  \mid \text{COVID})$, but we are interested in $P(\text{COVID} \mid \text{positive test result})$
+
+:::{layout-ncol=2}
+
+```{r, echo=FALSE, out.width="70%", fig.align='center'}
+knitr::include_graphics("./images/img-prob/covid.jpeg")
+```
+
+```{r, echo=FALSE, out.width="70%", fig.align='center'}
+knitr::include_graphics("./images/img-prob/test_table.png")
+```
+
+:::
+
+- Bayes' formula provides a way for finding $P(A \mid B)$ from $P(B \mid A)$
+
+## Bayes' Formula
+- If $A$ and $B$ are any events whose probabilities are not 0 or 1, then
+$$\begin{align*} P(A \mid B) &= \frac{P(A \cap B)}{P(B)} \quad ( \text{def. of cond. prob.}) \\ &= \frac{P(A \cap B)}{P((B \cap A) \cup (B \cap A^c))} \quad ( \text{partition } B) \\ &= \frac{P(B \mid A)P(A)}{P(B \mid A)P(A) + P(B \mid A^c)P(A^c)}  \quad ( \text{multiplication rule}) \end{align*}$$
+
+<!-- - Idea: <span style="color:blue"> Partition $B$ as $B = (B \cap A) \cup (B \cap A^c)$ and apply the multiplication rule.</span>  -->
+
+```{r, echo=FALSE, out.width="30%", fig.align='center'}
+# knitr::include_graphics("./images/img-prob/partition_1.png")
+par(mar = c(0, 0, 0, 0), mfrow = c(1, 1))
+plot(0, 0, type = "n", axes = FALSE, xlab = "", ylab = "")
+box(lwd = 4)
+plotrix::draw.ellipse(x = -0.2, y = 0, a = 0.8, b = 0.6, lwd = 2)
+plotrix::draw.ellipse(x = 0.56, y = 0, a = 0.4, b = 1, lwd = 2)
+text(x = -0.5, y = 0.62, labels = "A", cex = 2)
+text(x = .92, y = 0.62, labels = "B", cex = 2)
+text(x = 0.36, y = 0, labels = "B ??? A", cex = 2)
+text(x = 0.66, y = -0.45, 
+     labels = expression(paste("B ", intersect(A^c))), cex = 2)
+text(x = -1, y = 1, labels = "S", cex = 2, font = 4)
+```
+
+
+## Example: Passing Rate
+:::{layout-ncol=2}
+
+- After taking MATH 4720, $80\%$ of students understand the Bayes' formula.
+  - Of those who understand the Bayes' formula,
+    + $95\%$ passed
+  - Of those who do not understand the Bayes' formula,
+    +  $60\%$ passed
+    
+```{r, echo=FALSE, out.width="100%", fig.align='center'}
+knitr::include_graphics("./images/img-prob/test_pass.jpeg")
+```
+
+:::
+
+:::{.callout-note icon=false}
+
+## Calculate the probability that a student understand the Bayes' formula given the fact that she passed.
+
+:::
+
+## Bayes Formula: Step-by-Step
+
+- <span style="color:blue"> Step 1: Formulate what we would like to compute  </span>
+
+
+  - $P(\text{understand} \mid \text{passed})$
+
+
+- <span style="color:blue"> Step 2: Define relevant events in the formula: $A$, $A^c$ and $B$ </span>
+
+
+  - Let $A =$ understand. $B =$ passed. Then $A^c =$ don't understand and $P(\text{understand} \mid \text{passed}) = P(A \mid B)$.
+
+
+- <span style="color:blue"> Step 3: Find probabilities in the Bayes' formula using provided information. </span>
+
+
+  - $P(B \mid A) = P(\text{passed} \mid \text{understand}) = 0.95$, $P(B \mid A^c) = P(\text{passed} \mid \text{don't understand}) = 0.6$  
+$P(A) = P(\text{understand}) = 0.8$, $P(A^c) = 1 - P(A) = 0.2$.
+
+- <span style="color:blue"> Step 4: Apply Bayes' formula. </span>
+  - $\small P(\text{understand} \mid \text{passed}) = P(A \mid B) = \frac{P(B \mid A)P(A)}{P(B \mid A)P(A) + P(B \mid A^c)P(A^c)} = \frac{(0.95)(0.8)}{(0.95)(0.8) + (0.6)(0.2)} = 0.86$
+
+## Bayes Formula: Tree Diagram Illustration
+- $80\%$ of students understand the Bayes' formula. 
+- Of those who understand the Bayes' formula, $95\%$ passed ( $5\%$ failed).
+- Of those who do not understand the formula, $60\%$ passed ( $40\%$ failed).
+
+:::{layout-ncol=2}
+
+```{r, echo=FALSE, out.width="120%", fig.align='center'}
+knitr::include_graphics("./images/img-prob/bayestree.png")
+```
+
+$$\begin{align*} & P(\text{yes} \mid \text{pass}) \\ &= \frac{P(\text{yes and }  \text{pass})}{P(\text{pass})} \\ &= \frac{P(\text{yes and }  \text{pass})}{P(\text{pass and yes}) + P(\text{pass and no})}\\ &= \frac{P(\text{pass | yes})P(\text{yes})}{P(\text{pass | yes})P(\text{yes}) + P(\text{pass | no})P(\text{no})} \\ &= \frac{0.76}{0.76 + 0.12} = 0.86 \end{align*}$$
+:::

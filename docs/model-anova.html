@@ -2,28 +2,98 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-0.9.462">
+<meta name="generator" content="quarto-1.1.251">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="This book serves as a main reference book for my MATH 4720 Statistical Methods and MATH 4740 Biostatistical Methods at Marquette University. Some topics can also be discussed in an introductory data science course. You’ll learn basic probability and statistical concepts as well as data analysis techniques such as linear regression using R computing software.">
 
 <title>Introduction to Statistics - 23&nbsp; Analysis of Variance</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-span.underline{text-decoration: underline;}
-div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
+
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
-<meta name="quarto:offset" content="./">
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
 <link href="./model-reg.html" rel="next">
 <link href="./model.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
@@ -31,10 +101,10 @@ ul.task-list{list-style: none;}
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link id="quarto-text-highlighting-styles" href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -55,6 +125,7 @@ ul.task-list{list-style: none;}
   }
 }</script>
 
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 </head>
 
@@ -117,189 +188,189 @@ ul.task-list{list-style: none;}
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
-    <div class="sidebar-item-container"> 
-        <a href="./intro.html" class="sidebar-item-text sidebar-link">Statistics and Data</a>
-      <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
-        <i class="bi bi-chevron-right ms-2"></i>
-      </a>
-    </div>
-    <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-        <li class="sidebar-item">
+      <div class="sidebar-item-container"> 
+            <a href="./intro.html" class="sidebar-item-text sidebar-link">Statistics and Data</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./intro-stats.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">What is Statistics</span></a>
+  <a href="./intro-stats.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Science of Data and Data Science</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./intro-data.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">What is Data</span></a>
+  <a href="./intro-data.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./intro-r.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">R for Statistics</span></a>
+  <a href="./intro-r.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Tool foR Data</span></a>
   </div>
 </li>
-    </ul>
+      </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
-    <div class="sidebar-item-container"> 
-        <a href="./datasummary.html" class="sidebar-item-text sidebar-link">Summarizing Data</a>
-      <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
-        <i class="bi bi-chevron-right ms-2"></i>
-      </a>
-    </div>
-    <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-        <li class="sidebar-item">
+      <div class="sidebar-item-container"> 
+            <a href="./datasummary.html" class="sidebar-item-text sidebar-link">Summarizing Data</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./data-graphics.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Visualization</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./data-numerics.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Data Sample Statistics</span></a>
   </div>
 </li>
-    </ul>
+      </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
-    <div class="sidebar-item-container"> 
-        <a href="./prob.html" class="sidebar-item-text sidebar-link">Probability</a>
-      <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
-        <i class="bi bi-chevron-right ms-2"></i>
-      </a>
-    </div>
-    <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
-        <li class="sidebar-item">
+      <div class="sidebar-item-container"> 
+            <a href="./prob.html" class="sidebar-item-text sidebar-link">Probability</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prob-define.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Definition of Probability</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prob-rule.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability Rules</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prob-rv.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Random Variables</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prob-disc.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Discrete Probability Distributions</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prob-cont.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Continuous Probability Distributions</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prob-samdist.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Sampling Distribution</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prob-llnclt.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Law of Large Numbers and Central Limit Theorem</span></a>
   </div>
 </li>
-    </ul>
+      </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
-    <div class="sidebar-item-container"> 
-        <a href="./infer.html" class="sidebar-item-text sidebar-link">Statistical Inference</a>
-      <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
-        <i class="bi bi-chevron-right ms-2"></i>
-      </a>
-    </div>
-    <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
-        <li class="sidebar-item">
+      <div class="sidebar-item-container"> 
+            <a href="./infer.html" class="sidebar-item-text sidebar-link">Statistical Inference</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-ci.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Confidence Interval</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-bt.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Bootstrapping</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-ht.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Hypothesis Testing</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-twomean.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Comparing Two Population Means</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-var.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Inference About Variances</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-prop.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Inference About Proportions</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-goodnessfit.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Test of Goodness of Fit</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-indep.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Test of Independence</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-bayes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-nonpar.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Nonparametric Inference</span></a>
   </div>
 </li>
-    </ul>
+      </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
-    <div class="sidebar-item-container"> 
-        <a href="./model.html" class="sidebar-item-text sidebar-link">Statistical Models</a>
-      <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
-        <i class="bi bi-chevron-right ms-2"></i>
-      </a>
-    </div>
-    <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
-        <li class="sidebar-item">
+      <div class="sidebar-item-container"> 
+            <a href="./model.html" class="sidebar-item-text sidebar-link">Statistical Models</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-anova.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-reg.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Linear Regression</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-logistic.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Logistic Regression</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-bayes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-survival.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Survival Analysis</span></a>
   </div>
 </li>
-    </ul>
+      </ul>
   </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
@@ -311,13 +382,25 @@ ul.task-list{list-style: none;}
 </nav>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc">
+        <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#the-r-user-interface" id="toc-the-r-user-interface" class="nav-link active" data-scroll-target="#the-r-user-interface"> <span class="header-section-number">23.1</span> The R User Interface</a></li>
+  <li><a href="#comparing-more-than-two-population-means" id="toc-comparing-more-than-two-population-means" class="nav-link active" data-scroll-target="#comparing-more-than-two-population-means"><span class="toc-section-number">23.1</span>  Comparing More Than Two Population Means</a></li>
+  <li><a href="#one-way-analysis-of-variance" id="toc-one-way-analysis-of-variance" class="nav-link" data-scroll-target="#one-way-analysis-of-variance"><span class="toc-section-number">23.2</span>  One-Way Analysis of Variance</a></li>
+  <li><a href="#requirements-of-one-way-anova" id="toc-requirements-of-one-way-anova" class="nav-link" data-scroll-target="#requirements-of-one-way-anova"><span class="toc-section-number">23.3</span>  Requirements of One-Way ANOVA</a></li>
+  <li><a href="#rationale-for-anova" id="toc-rationale-for-anova" class="nav-link" data-scroll-target="#rationale-for-anova"><span class="toc-section-number">23.4</span>  Rationale for ANOVA</a></li>
+  <li><a href="#variation-between-samples-variation-within-samples" id="toc-variation-between-samples-variation-within-samples" class="nav-link" data-scroll-target="#variation-between-samples-variation-within-samples"><span class="toc-section-number">23.5</span>  Variation <strong>Between</strong> Samples &amp; Variation <strong>Within</strong> Samples</a></li>
+  <li><a href="#procedure-of-anova" id="toc-procedure-of-anova" class="nav-link" data-scroll-target="#procedure-of-anova"><span class="toc-section-number">23.6</span>  Procedure of ANOVA</a></li>
+  <li><a href="#variance-within-samples" id="toc-variance-within-samples" class="nav-link" data-scroll-target="#variance-within-samples"><span class="toc-section-number">23.7</span>  Variance Within Samples</a></li>
+  <li><a href="#variance-between-samples" id="toc-variance-between-samples" class="nav-link" data-scroll-target="#variance-between-samples"><span class="toc-section-number">23.8</span>  Variance Between Samples</a></li>
+  <li><a href="#anova-table-sum-of-squares" id="toc-anova-table-sum-of-squares" class="nav-link" data-scroll-target="#anova-table-sum-of-squares"><span class="toc-section-number">23.9</span>  ANOVA Table: Sum of Squares</a></li>
+  <li><a href="#sum-of-squares-identity" id="toc-sum-of-squares-identity" class="nav-link" data-scroll-target="#sum-of-squares-identity"><span class="toc-section-number">23.10</span>  Sum of Squares Identity</a></li>
+  <li><a href="#anova-table" id="toc-anova-table" class="nav-link" data-scroll-target="#anova-table"><span class="toc-section-number">23.11</span>  ANOVA Table</a></li>
+  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example"><span class="toc-section-number">23.12</span>  Example</a></li>
+  <li><a href="#example---data" id="toc-example---data" class="nav-link" data-scroll-target="#example---data"><span class="toc-section-number">23.13</span>  Example - Data</a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/chenghanyustats/introstatsbook/edit/master/model-anova.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/model-anova.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -327,6 +410,11 @@ ul.task-list{list-style: none;}
 <h1 class="title"><span id="sec-model-anova" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></span></h1>
 </div>
 
+<div>
+  <div class="description">
+    <p>This book serves as a main reference book for my MATH 4720 Statistical Methods and MATH 4740 Biostatistical Methods at Marquette University. Some topics can also be discussed in an introductory data science course. You’ll learn basic probability and statistical concepts as well as data analysis techniques such as linear regression using R computing software.</p>
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
@@ -338,12 +426,332 @@ ul.task-list{list-style: none;}
 
 </header>
 
-<p>This chapter provides a broad overview of the R language that will get you programming right away. In it, you will build a pair of virtual dice that you can use to generate random numbers. Don’t worry if you’ve never programmed before; the chapter will teach you everything you need to know.</p>
-<p>To simulate a pair of dice, you will have to distill each die into its essential features. You cannot place a physical object, like a die, into a computer (well, not without unscrewing some screws), but you can save <em>information</em> about the object in your computer’s memory.</p>
-<p>Which information should you save? In general, a die has six important pieces of information: when you roll a die, it can only result in one of six numbers: 1, 2, 3, 4, 5, and 6. You can capture the essential characteristics of a die by saving the numbers 1, 2, 3, 4, 5, and 6 as a group of values in your computer’s memory.</p>
-<p>Let’s work on saving these numbers first, and then consider a method for “rolling” our die.</p>
-<section id="the-r-user-interface" class="level2" data-number="23.1">
-<h2 data-number="23.1" class="anchored" data-anchor-id="the-r-user-interface"><span class="header-section-number">23.1</span> The R User Interface</h2>
+<div class="cell">
+
+</div>
+<section id="comparing-more-than-two-population-means" class="level2" data-number="23.1">
+<h2 data-number="23.1" class="anchored" data-anchor-id="comparing-more-than-two-population-means"><span class="header-section-number">23.1</span> Comparing More Than Two Population Means</h2>
+<ul>
+<li>In many research settings, we’d like to compare 3 or more population means.</li>
+</ul>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><span style="color:blue"> 4 types of devices used to determine the pH of soil samples. </span> <span style="color:blue"> Determine whether there are differences in the mean readings of those 4 devices. </span></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><span style="color:blue"> Do different treatments (None, Fertilizer, Irrigation, Fertilizer and Irrigation) affect the mean weights of poplar trees? </span></p>
+</div>
+</div>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/img-model/poplar.jpeg" class="img-fluid figure-img" style="width:78.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/img-model/soil.jpeg" class="img-fluid figure-img" style="width:78.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="one-way-analysis-of-variance" class="level2" data-number="23.2">
+<h2 data-number="23.2" class="anchored" data-anchor-id="one-way-analysis-of-variance"><span class="header-section-number">23.2</span> One-Way Analysis of Variance</h2>
+<ul>
+<li>A <strong>factor</strong> is a property or characteristic (categorical variable) that allows us to <em>distinguish the different populations from one another</em>.<br>
+</li>
+<li><strong>Type of devices</strong> and <strong>treatment of trees</strong> are factors.</li>
+<li>One-way ANOVA examines the effect of a <em>categorical variable</em> on the <em>mean of a numerical variable</em> (response).</li>
+<li>We use analysis of <span style="color:red"> variance </span> to test the equality of 3 or more population <span style="color:red"> means</span>. 🤔</li>
+<li>The method is <strong>one-way</strong> because we use one single property (categorical variable) for categorizing the populations.</li>
+</ul>
+</section>
+<section id="requirements-of-one-way-anova" class="level2" data-number="23.3">
+<h2 data-number="23.3" class="anchored" data-anchor-id="requirements-of-one-way-anova"><span class="header-section-number">23.3</span> Requirements of One-Way ANOVA</h2>
+<ul>
+<li>The populations of each category are <strong>normally</strong> distributed.</li>
+<li>The populations have the <strong>same variance</strong> <span class="math inline">\(\sigma^2\)</span> (two sample pooled <span class="math inline">\(t\)</span>-test).</li>
+<li>The samples are <strong>random samples</strong>.</li>
+<li>The samples are <strong>independent</strong> of each other. (not matched or paired in any way)</li>
+</ul>
+</section>
+<section id="rationale-for-anova" class="level2" data-number="23.4">
+<h2 data-number="23.4" class="anchored" data-anchor-id="rationale-for-anova"><span class="header-section-number">23.4</span> Rationale for ANOVA</h2>
+<ul>
+<li>Data 1 and Data 2 have the same group sample means <span class="math inline">\(\bar{y}_1\)</span>, <span class="math inline">\(\bar{y}_2\)</span> and <span class="math inline">\(\bar{y}_3\)</span> denoted as red dots.</li>
+</ul>
+<div class="cell" data-layout-align="center" data-fig.asp="0.6">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="model-anova_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Which data you are more confident to say the population means <span class="math inline">\(\mu_1\)</span>, <span class="math inline">\(\mu_2\)</span> and <span class="math inline">\(\mu_3\)</span> are not all the same?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
+</div>
+</div>
+</section>
+<section id="variation-between-samples-variation-within-samples" class="level2" data-number="23.5">
+<h2 data-number="23.5" class="anchored" data-anchor-id="variation-between-samples-variation-within-samples"><span class="header-section-number">23.5</span> Variation <strong>Between</strong> Samples &amp; Variation <strong>Within</strong> Samples</h2>
+<ul>
+<li>Data 1: Variability between samples is <strong>large</strong> <em>in comparison to</em> the variation within samples.</li>
+<li>Data 2: Variation between samples is <strong>small</strong> relatively to the variation within samples.</li>
+</ul>
+<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+More confident to conclude there is a difference in population means when variation <strong>between</strong> samples is relatively <em>larger</em> than variation <strong>within</strong> samples.
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/img-model/figure8-1.png" class="img-fluid figure-img" style="width:55.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="procedure-of-anova" class="level2" data-number="23.6">
+<h2 data-number="23.6" class="anchored" data-anchor-id="procedure-of-anova"><span class="header-section-number">23.6</span> Procedure of ANOVA</h2>
+<ul>
+<li><span style="color:blue"> <span class="math inline">\(\begin{align} &amp;H_0: \mu_1 = \mu_2 = \cdots = \mu_k\\ &amp;H_1: \text{Population means are not all equal} \end{align}\)</span> </span></li>
+</ul>
+<!-- - We use $F$-test.  -->
+<ul>
+<li>Statistician Ronald Fisher found a way to define a variable that follows the <span class="math inline">\(F\)</span> distribution: <span class="math display">\[\frac{\text{variance between samples}}{\text{variance within samples}} \sim F_{df_B,\, df_W}\]</span></li>
+<li>If variance <em>between</em> samples is larger than variance <em>within</em> samples, i.e., <span class="math inline">\(F_{test}\)</span> is much greater than 1, as Data 1, we reject <span class="math inline">\(H_0\)</span>.</li>
+</ul>
+<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Key: Define variance between samples and variance within samples so that the ratio is <span class="math inline">\(F\)</span> distributed.
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
+</div>
+</div>
+</section>
+<section id="variance-within-samples" class="level2" data-number="23.7">
+<h2 data-number="23.7" class="anchored" data-anchor-id="variance-within-samples"><span class="header-section-number">23.7</span> Variance Within Samples</h2>
+<ul>
+<li>Back to two-sample pooled <span class="math inline">\(t\)</span>-test with equal variance <span class="math inline">\(\sigma^2\)</span>. We have <span class="math display">\[s_p^2 = \frac{(n_1-1)s_1^2 + (n_2-1)s_2^2}{n_1 + n_2 - 2}\]</span></li>
+</ul>
+<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+How about general <span class="math inline">\(k\)</span> samples?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
+</div>
+</div>
+<ul>
+<li>ANOVA assumes the populations have the <strong>same variance</strong> <span class="math inline">\(\sigma_1^2 = \sigma_2^2 = \cdots = \sigma_k^2 = \sigma^2\)</span>. <span class="math display">\[\boxed{s_W^2 = \frac{(n_1-1)s_1^2 + (n_2-1)s_2^2 + \cdots + (n_k-1)s_k^2}{n_1 + n_2 + \cdots + n_k - k}}\]</span> where <span class="math inline">\(s_i^2\)</span>, <span class="math inline">\(i = 1, \dots ,k\)</span>, is the sample variance of group <span class="math inline">\(i\)</span>.</li>
+<li><span class="math inline">\(s_W^2\)</span> represents a <em>combined</em> estimate of the common variance <span class="math inline">\(\sigma^2\)</span>. It measures variability of the observations within the <span class="math inline">\(k\)</span> populations.</li>
+</ul>
+</section>
+<section id="variance-between-samples" class="level2" data-number="23.8">
+<h2 data-number="23.8" class="anchored" data-anchor-id="variance-between-samples"><span class="header-section-number">23.8</span> Variance Between Samples</h2>
+<p><span class="math display">\[\boxed{s^2_{B} = \frac{\sum_{i=1}^k n_i (\bar{y}_{i\cdot} - \bar{y}_{\cdot\cdot})^2}{k-1}}\]</span></p>
+<ul>
+<li><span class="math inline">\(\bar{y}_{i\cdot}\)</span> is the <span class="math inline">\(i\)</span>-th sample mean.</li>
+<li><span class="math inline">\(\bar{y}_{\cdot\cdot}\)</span> is the <em>grand</em> sample mean with all data points in all groups combined.</li>
+<li><span class="math inline">\(s^2_{B}\)</span> is also an estimate of <span class="math inline">\(\sigma^2\)</span> and measures variability <em>among</em> sample means for the <span class="math inline">\(k\)</span> groups.</li>
+<li>If <span class="math inline">\(H_0\)</span> is true <span class="math inline">\((\mu_1 = \cdots = \mu_k = \mu)\)</span>, any variation in the sample means is due to chance and randomness, and shouldn’t be too large.
+<ul>
+<li><span class="math inline">\(\bar{y}_{1\cdot}, \cdots, \bar{y}_{k\cdot}\)</span> should be close each other, and they are close to <span class="math inline">\(\bar{y}_{\cdot \cdot}\)</span>.</li>
+</ul></li>
+</ul>
+</section>
+<section id="anova-table-sum-of-squares" class="level2" data-number="23.9">
+<h2 data-number="23.9" class="anchored" data-anchor-id="anova-table-sum-of-squares"><span class="header-section-number">23.9</span> ANOVA Table: Sum of Squares</h2>
+<ul>
+<li><p><strong>Total Sum of Squares (SST)</strong> measures total variation around <span class="math inline">\(\bar{y}_{\cdot\cdot}\)</span> in all of the sample data combined (ignoring the groups): <span class="math display">\[\scriptsize{\color{blue}{SST = \sum_{j=1}^{n_i}\sum_{i=1}^{k} \left(y_{ij} - \bar{y}_{\cdot\cdot}\right)^2}}\]</span> where <span class="math inline">\(y_{ij}\)</span> is the <span class="math inline">\(j\)</span>-th data point in the <span class="math inline">\(i\)</span>-th group.</p></li>
+<li><p><strong>Sum of Squares Between Samples (SSB)</strong> measures the variation <strong>between</strong> sample means: <span class="math display">\[\scriptsize{ \color{blue}{SSB = \sum_{i=1}^{k}n_i \left(\bar{y}_{i\cdot} - \bar{y}_{\cdot\cdot}\right)^2}}\]</span></p></li>
+<li><p><strong>Sum of Squares Within Samples (SSW)</strong> measures the variation of an value <span class="math inline">\(y_{ij}\)</span> about its sample mean <span class="math inline">\(\bar{y}_{i\cdot}\)</span>: <span class="math display">\[\scriptsize{ \color{blue}{SSW = \sum_{i=1}^{k} \sum_{j=1}^{n_i} \left(y_{ij} - \bar{y}_{i\cdot}\right)^2 = \sum_{i=1}^{k} (n_i - 1)s_i^2}}\]</span></p></li>
+</ul>
+</section>
+<section id="sum-of-squares-identity" class="level2" data-number="23.10">
+<h2 data-number="23.10" class="anchored" data-anchor-id="sum-of-squares-identity"><span class="header-section-number">23.10</span> Sum of Squares Identity</h2>
+<!-- - $\left(y_{ij} - \bar{y}_{\cdot\cdot}\right) =  \left(y_{ij} - \bar{y}_{i\cdot}\right) + \left(\bar{y}_{i\cdot} - \bar{y}_{\cdot\cdot}\right)$ -->
+<!-- - $\sum_{j=1}^{n_i}\sum_{i=1}^{t} \left(y_{ij} - \bar{y}_{\cdot\cdot}\right)^2 = \sum_{i=1}^{t}n_i \left(\bar{y}_{i\cdot} - \bar{y}_{\cdot\cdot}\right)^2 + \sum_{i=1}^{t} \sum_{j=1}^{n_i}\left(y_{ij} - \bar{y}_{i\cdot}\right)^2$ -->
+<ul>
+<li><p><span class="math inline">\(SST = SSB + SSW\)</span></p></li>
+<li><p><span class="math inline">\(df_{T} = df_{B} + df_{W} \implies N - 1 = (k-1) + (N - k)\)</span> <!-- $\begin{align} &df_{T} = df_{B} + df_{W} \\&n - 1 = (k-1) + (n - k) \end{align}$ --></p></li>
+<li><p><span class="math inline">\(\text{Mean Square (MS)} = \frac{\text{sum of squares}}{\text{degrees of freedom}}\)</span></p></li>
+<li><p><span class="math inline">\(MSB = \frac{SSB}{k-1} = s^2_{B}\)</span></p></li>
+<li><p><span class="math inline">\(MSW = \frac{SSW}{N-k} = s^2_{W}\)</span></p></li>
+<li><p><span class="math inline">\(F_{test} = \frac{MSB}{MSW}\)</span></p></li>
+<li><p>Under <span class="math inline">\(H_0\)</span>, <span class="math inline">\(\frac{S^2_{B}}{S_W^2} \sim F_{k-1, \, N-k}\)</span></p></li>
+<li><p>Reject <span class="math inline">\(H_0\)</span> if</p>
+<ul>
+<li><span class="math inline">\(F_{test} &gt; F_{\alpha, \, k - 1,\, N-k}\)</span></li>
+<li><span class="math inline">\(p\)</span>-value <span class="math inline">\(P(F_{k - 1,\, N-k} &gt; F_{test}) &lt; \alpha\)</span></li>
+</ul></li>
+</ul>
+</section>
+<section id="anova-table" class="level2" data-number="23.11">
+<h2 data-number="23.11" class="anchored" data-anchor-id="anova-table"><span class="header-section-number">23.11</span> ANOVA Table</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/img-model/anova_table_k.png" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="example" class="level2" data-number="23.12">
+<h2 data-number="23.12" class="anchored" data-anchor-id="example"><span class="header-section-number">23.12</span> Example</h2>
+<ul>
+<li>A hypothesis is that a nutrient “Isoflavones” varies among three types of food: (1) cereals and snacks, (2) energy bars, and (3) veggie burgers.</li>
+</ul>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/img-model/cereal.jpeg" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/img-model/energy_bar.png" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/img-model/veggie_burger.jpeg" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>A sample of 5 each is taken and the amount of isoflavones is measured.</li>
+<li>Is there a sufficient evidence to conclude that the mean isoflavone levels vary among these food items? <span class="math inline">\(\alpha = 0.05\)</span>.</li>
+</ul>
+</section>
+<section id="example---data" class="level2" data-number="23.13">
+<h2 data-number="23.13" class="anchored" data-anchor-id="example---data"><span class="header-section-number">23.13</span> Example - Data</h2>
+<!-- - Cereal and snacks: $n_1 = 5$,  $\bar{y}_1 = 9.2$, $s_1^2 = 33.7$. -->
+<!-- - Energy bars: $n_2 = 5$, $\bar{y}_2 = 10.00$, $s_2^2 = 29.0$. -->
+<!-- - Veggie burger: $n_3 = 5$, $\bar{y}_3 = 13.8$, $s_3^2 = 46.7$. -->
+<div class="cell">
+
+</div>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   1  2  3
+1  3 19 25
+2 17 10 15
+3 12  9 12
+4 10  7  9
+5  4  5  8</code></pre>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p>We prefer data format like</p>
+</div>
+</div>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><float-right></float-right></p>
+</div>
+<div class="cell quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data_anova</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    y    food
+1   3 cereals
+2  17 cereals
+3  12 cereals
+4  10 cereals
+5   4 cereals
+6  19  energy
+7  10  energy
+8   9  energy
+9   7  energy
+10  5  energy
+11 25  veggie
+12 15  veggie
+13 12  veggie
+14  9  veggie
+15  8  veggie</code></pre>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p></p>
+</div>
+<div class="callout-note callout callout-style-default no-icon callout-captioned quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+So tell me what is the value of <span class="math inline">\(y_{23}\)</span>!
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
+</div>
+</div>
+</div>
+</div>
 
 
 </section>
@@ -351,6 +759,24 @@ ul.task-list{list-style: none;}
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
@@ -400,7 +826,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   for (var i=0; i<noterefs.length; i++) {
     const ref = noterefs[i];
     tippyHover(ref, function() {
-      let href = ref.getAttribute('href');
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);

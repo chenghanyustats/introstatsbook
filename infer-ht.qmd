@@ -1,12 +1,638 @@
 # Hypothesis Testing {#sec-infer-ht}
 
-This chapter provides a broad overview of the R language that will get you programming right away. In it, you will build a pair of virtual dice that you can use to generate random numbers. Don't worry if you've never programmed before; the chapter will teach you everything you need to know.
+```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
+library(openintro)
+library(knitr)
+library(emoji)
+```
 
-To simulate a pair of dice, you will have to distill each die into its essential features. You cannot place a physical object, like a die, into a computer (well, not without unscrewing some screws), but you can save *information* about the object in your computer's memory.
+## What is a Hypothesis Testing?
 
-Which information should you save? In general, a die has six important pieces of information: when you roll a die, it can only result in one of six numbers: 1, 2, 3, 4, 5, and 6. You can capture the essential characteristics of a die by saving the numbers 1, 2, 3, 4, 5, and 6 as a group of values in your computer's memory.
+<!-- - The two major activities of inferential statistics are the **estimation** and **hypothesis testing** for population parameters. -->
 
-Let's work on saving these numbers first, and then consider a method for "rolling" our die.
+- A **hypothesis** is a claim or statement about a *property of a population*, often the value of a population parameter.
+  + <span style="color:blue"> The mean body temperature of humans is less than $98.6^{\circ}$ F, or $\mu < 98.6$. </span>
+  + <span style="color:blue"> Marquette students' IQ scores has standard deviation equal to 15, or $\sigma = 15$. </span>
+  
+<!-- - A **hypothesis testing** <sup>1</sup> is a procedure for testing a hypothesis. -->
 
-## The R User Interface
+- **Null hypothesis** $(H_0)$: a statement that the value of a parameter is
+  + **equal** to some claim value
+  + the **negation** of the alternative hypothesis
+  + often represents a skeptical perspective to be tested
+
+- **Alternative hypothesis** $(H_1$ or $H_a)$: a claim that the parameter is **less than**, **greater than** or **not equal** to some value. 
+  + usually our **research hypothesis** of some new scientific theory or finding
+
+## Null and Alternative Hypothesis
+
+:::{.callout-note icon=false}
+## A $H_0$ claim or $H_1$ claim?
+:::
+
+- <span style="color:blue"> The percentage of Marquette female students loving Japanese food is **equal** to 80%.</span>
+
+- <span style="color:blue"> On average, Marquette students consume **less than** 3 drinks per week. </span>
+
+- **Hypothesis testing** <sup>1</sup> is a procedure to **decide whether to reject $H_0$ or not** by how much evidence against $H_0$. 
+
+<!-- - If the evidence is strong enough, we reject $H_0$ in favor of $H_1$. -->
+
+
+[1] Null Hypothesis Statistical Testing (NHST), **statistical testing** or **test of significance**.
+
+## Hypothesis Testing Example
+
+:::{layout-ncol=2}
+- A person is charged with a crime. 
+  - A jury decide whether the person is guilty or not.
+  - The accuse is assumed to be innocent until the jury declares otherwise.
+  - Only if overwhelming evidence of the person's guilt can be shown is the jury expected to declare the person guilty, otherwise the person is considered not guilty.
+
+
+```{r, echo=FALSE, out.width="40%", fig.align='center'}
+knitr::include_graphics("./images/img-infer/law.jpeg")
+```
+:::
+:::{.callout-note icon=false}
+## What should $H_0$ and $H_a$ be?
+:::
+
+- $H_0:$ The person is <span style="color:blue"> not guilty </span> `r emoji('slightly_smiling_face')`
+- $H_1:$ The person is <span style="color:blue"> guilty </span> `r emoji('worried')`
+- Evidence: <span style="color:blue"> Photos, videos, witness, fingerprint, DNA </span>
+- Decision Rule: <span style="color:blue"> Jury's voting </span>
+- Conclusion: Verdict <span style="color:blue"> "guilty" </span> or <span style="color:blue"> "NOT enough evidence to convict" </span>
+
+## How to Formally Do a Statistical Hypothesis Testing
+
+**Step 0: Check Method Assumptions**
+  <!-- +  Random sample, normally distributed or $n > 30$, etc -->
+  
+**Step 1: Set the $H_0$ and $H_a$ in Symbolic Form from a Claim**
+  <!-- +  -->
+  
+**Step 2: Set the Significance Level $\alpha$**
+  <!-- + $\alpha = P(\text{Reject } H_0 \mid H_0 \text{ is true})$ -->
+  
+**Step 3: Calculate the Test Statistic** (Evidence)
+  <!-- + A **test statistic** is a value used in making a decision about the $H_0$. -->
+
+:::{layout-ncol=2}
+**Decision Rule I: Critical Value Method**
+
+**Decision Rule II: P-Value Method**
+
+<span style="color:blue"> **Step 4-c: Find the Critical Value** </span>
+
+<span style="color:red"> **Step 4-p: Find the P-Value** </span>
+
+<span style="color:blue"> **Step 5-c: Draw a Conclusion Using Critical Value Method** </span>
+
+<span style="color:red"> **Step 5-p: Draw a Conclusion Using P-Value Method** </span>
+:::
+
+**Step 6: Restate the Conclusion in Nontechnical Terms, and Address the Original Claim**
+
+- `r emoji('sunglasses')` No worries, we will learn this step by step!
+
+## The New Treatment is Effective?
+
+:::{layout-ncol=2}
+- A population of hypertension group is normal and has mean blood pressure (BP) 150. 
+- After 6 months of treatment, BP was recorded on 25 patients of this population, and $\overline{x} = 147.2$ and $s = 5.5$. 
+- **Goal**: Determine whether a new treatment is effective in reducing BP. 
+
+```{r, echo=FALSE, out.width="100%"}
+knitr::include_graphics("./images/img-infer/blood_pressure.jpeg")
+```
+:::
+
+## Step 0: Check Method Assumptions
+The testing methods are based on normality or approximate normality by CLT.
+
+- Random sample
+- Normally distributed and/or $n > 30$
+
+
+```{r, echo=FALSE, out.width="50%", fig.align='center'}
+knitr::include_graphics("./images/img-infer/normal_dist.jpeg")
+```
+
+## Step 1: Set the $H_0$ and $H_1$ from a Claim
+- `r emoji('teacher')` The *mean* IQ score of statistics professors is **higher than** 120.
+  + <span style="color:blue"> $\begin{align}&H_0: \mu \le 120 \\ &H_1: \mu > 120 \end{align}$ </span>
+
+- `r emoji('dollar')` The *mean* starting salary for Marquette graduates who didn't take MATH 4720 is **less than** $60,000.
+  + <span style="color:blue"> $\begin{align} &H_0: \mu \ge 60000 \\ &H_1: \mu < 60000 \end{align}$ </span>
+  
+- `r emoji('tv')` The *mean* time between uses of a TV remote control by males during commercials **equals** 5 sec. 
+  + <span style="color:blue"> $\begin{align} &H_0: \mu = 5 \\ &H_1: \mu \ne 5 \end{align}$ </span>
+
+- The claim that *the new treatment is effective in reducing BP* means the **mean BP is less than 150**. ( $H_1$ claim )
+  - <span style="color:blue"> $\small \begin{align} &H_0: \mu = 150 \\ &H_1: \mu < 150 \end{align}$ </span>
+  
+## Step 2: Set the Significance Level $\alpha$
+- The significant level $\alpha$ determines *how rare or unlikely our evidence must be* in order to represent sufficient evidence against $H_0$.
+
+- An $\alpha$ level of 0.05 implies that evidence occurring with probability lower than 5% will be considered sufficient evidence against $H_0$ (Reject $H_0$).
+
+- $\alpha = P(\text{Reject } H_0 \mid H_0 \text{ is true})$
+
+- $\alpha = 0.05$ means that we **incorrectly reject $H_0$ 5 out of every 100 times** we collect a sample and run the test.
+
+:::{layout-ncol=2}
+```{r alpha, echo=FALSE, out.width='75%'}
+par(mar = c(2, 0, 1, 0), mgp = c(1, .5, 0))
+x <- seq(-10, 10, length=100) + 120
+hx <- dnorm(x, mean = 120, sd = 3)
+plot(x, hx, type="l", lty = 1, xlab = "", lwd = 4, las = 1, cex.main = 1.2,
+  ylab = "", main = "Distribution when H0 is true (mu = 120)", axes = F, 
+  ylim = c(0.005, dnorm(0, sd = 3)))
+z_cri <- qnorm(0.95, mean = 120, sd = 3)
+# abline(v = 0, lty = 2, lwd = 0.5)
+# abline(h = 0)
+# text(-0.2, 0.3*dnorm(0), expression(1 - alpha/2), cex = 2, col = "#003366")
+text(6 + 120, 0.5*dnorm(6, sd = 3), expression(alpha), cex = 3, col = "#003366")
+segments(x0 = z_cri, y0 = 0, y1 = dnorm(z_cri, mean = 120, sd = 3), col = 2, lwd = 3, lty = 2)
+axis(1)
+abline(v = 120, col = 2, lwd = 0.2)
+# axis(1, at = c(-4, -z_cri,0, z_cri, 4), cex.axis = 1.5, pos = 0,
+#      labels = c("", "", "", expression(t[frac(alpha, 2)]), expression(T[n-1])),
+#      tck = 0.01, line = 1)
+```
+
+:::{.callout-note icon=false}
+## **Rare Event Rule**: If, under a given assumption, the probability of a particular observed event is exceptional small, we conclude that the assumption is probably not correct.
+:::
+
+:::
+
+- Let's set $\alpha= 0.05$. 
+- This means we are asking, "*Is there a sufficient evidence at $\alpha= 0.05$ that the new treatment is effective?* "
+
+## Step 3: Calculate the Test Statistic
+
+- A **test statistic** is a statistic value used in making a decision about the $H_0$.
+
+<!-- - If the assumptions are checked (step 0), then decide which statistic is used. -->
+
+- Suppose <span style="color:blue"> $H_0: \mu = \mu_0 \quad H_1: \mu < \mu_0$ </span>
+
+- When computing a test statistic, we assume $H_0$ is **true**.
+
+- When $\sigma$ is **known**, the test statistic for testings about $\mu$ is 
+
+$$\boxed{ z_{test} = \frac{\overline{x} - \color{blue}{\mu_0}}{\sigma/\sqrt{n}} }$$
+
+:::{.callout-note icon=false}
+## Guess what test statistic we use when $\sigma$ is **unknown**!
+:::
+
+- When $\sigma$ is **unknown**, the test statistic for testings about $\mu$ is 
+
+$$\boxed{ t_{test} = \frac{\overline{x} - \color{blue}{\mu_0}}{s/\sqrt{n}} }$$
+
+- <span style="color:blue"> The test statistic is $\small t_{test} = \frac{\overline{x} - \mu_0}{s/\sqrt{n}} =  \frac{147.2 - 150}{5.5/\sqrt{25}} = -2.55$
+
+## Step 4-c: Find the Critical Value 
+
+- The **critical value(s)** separates the **rejection region** or critical region (where we reject $H_0$) from the values of the test statistic that do not lead to rejection of $H_0$.
+  + They depend on whether the test is a **right-tailed**, **left-tailed** or **two-tailed** test.
+  
+```{r test_type, echo=FALSE, out.width="66%", fig.align='center'}
+knitr::include_graphics("./images/img-infer/test_type.jpeg")
+```
+
+- `r emoji('point_right')` $z_{\alpha}$ is such that $P(Z > z_{\alpha}) = \alpha$ and $Z \sim N(0, 1)$.
+
+- `r emoji('point_right')` $t_{\alpha, n-1}$ is such that $P(T > t_{\alpha, n-1}) = \alpha$ and $T \sim t_{n-1}$.
+
+|         Condition   &nbsp; &nbsp;        | **Right**-tailed $(H_1: \mu > \mu_0)$  | **Left**-tailed  $(H_1: \mu < \mu_0)$  | **Two-tailed** $(H_1: \mu \ne \mu_0)$|
+|:------------------------------:|:------------:|:-------------:|:-----------:|
+|   $\sigma$ known   | $z_{\alpha}$      | $-z_{\alpha}$      | $-z_{\alpha/2}$ and $z_{\alpha/2}$|
+|   $\sigma$ unknown | $t_{\alpha, n-1}$ | $-t_{\alpha, n-1}$ | $-t_{\alpha/2, n-1}$ and $t_{\alpha/2, n-1}$|
+
+- $z_{0.025} =$ `r round(qnorm(0.975), 2)`, $z_{0.05} =$ `r round(qnorm(0.95), 2)`
+
+<!-- - $t_{0.025, 20} =$ `r round(qt(0.975, 20), 2)`, $t_{0.05, 20} =$ `r round(qt(0.95, 20), 2)` -->
+
+- $z_{\alpha}$ and $t_{\alpha, n-1}$ are *always positive*.
+- <span style="color:blue"> The critical value is $\small -t_{0.05, 25-1} = -t_{0.05, 24} = -1.711$ </span>
+
+## Step 5-c: Draw a Conclusion Using Critical Value
+- If the test statistic is
+  - in the rejection region, we reject $H_0$.
+  - *not* in the rejection region, we **do not** or **fail to** reject $H_0$.
+
+- **Reject $H_0$ if** 
+
+|         Condition   &nbsp; &nbsp;        | **Right**-tailed $(H_1: \mu > \mu_0)$  | **Left**-tailed  $(H_1: \mu < \mu_0)$  | **Two-tailed** $(H_1: \mu \ne \mu_0)$|
+|:------------------------------:|:------------:|:-------------:|:-----------:|
+| $\sigma$ known   | $z_{test} > z_{\alpha}$      | $z_{test} < -z_{\alpha}$  |   $\mid z_{test}\mid \, > z_{\alpha/2}$    |
+| $\sigma$ unknown | $t_{test} > t_{\alpha, n-1}$ | $t_{test} < -t_{\alpha, n-1}$ | $\mid t_{test}\mid \, > t_{\alpha/2, n-1}$ |
+
+```{r rejection_region, echo=FALSE, out.width="25%", fig.align='center'}
+knitr::include_graphics("./images/img-infer/rejection_region.gif")
+```
+
+- <span style="color:blue"> $\small t_{test} = \frac{\overline{x} - \mu_0}{s/\sqrt{n}} =  \frac{147.2 - 150}{5.5/\sqrt{25}} = -2.55$ </span>
+- <span style="color:blue"> $\small -t_{0.05, 25-1} = -t_{0.05, 24} = -1.711$ </span>
+- <span style="color:blue"> We reject $H_0$ if $t_{test} < -t_{\alpha, n-1}$. Since $\small t_{test} = -2.55 < -1.711 = -t_{\alpha, n-1}$, we reject $H_0$.</span>
+
+## Step 4-p: Find the P-Value
+- The **$p$-value** measures the strength of the evidence against $H_0$ provided by the data.
+- *The smaller the $p$-value, the greater the evidence against $H_0$*.
+- The **$p$-value** is the **probability** of getting a test statistic value that is **at least as extreme as** the one obtained from the data, assuming that **$H_0$ is true. $(\mu = \mu_0)$** 
+  + For example, $p$-value $= P(Z \ge z_{test} \mid H_0)$ for a right-tailed test.
+
+<!-- - The $p$-value depends on the observed test statistic and $H_1$. -->
+
+<!-- - We are more likely to get the $p$-value near 0 when $H_0$ is false than when $H_0$ is true. -->
+
+## P-Value Illustration
+```{r pvalue, echo=FALSE, out.width="95%", fig.asp=0.6}
+par(mar = c(2.2, 0, 1, 0))
+par(mfrow = c(2, 2))
+x <- seq(-4, 4, length=1000)
+hx <- dnorm(x)
+plot(x, hx, type="l", lty=1, xlab="", axes = FALSE, ylim = c(-0.01, 0.4), cex.main = 1.2,
+  ylab="", main = expression(paste("Left-tailed test (H1: ", mu < mu[0], ")")))
+axis(1, labels = FALSE,  tck = -0.01)
+# axis(2, labels = FALSE,  tck = -0.01)
+lb <- qnorm(0.1)
+ub <- qnorm(0.9)
+lb_2 <- qnorm(0.05)
+ub_2 <- qnorm(0.95)
+z_test <- qnorm(0.05)
+i <- x < lb
+i_test <- x < z_test
+# lines(x, hx)
+# polygon(c(lb,x[i]), c(0, hx[i]), col="red")
+polygon(c(z_test, x[i_test]), c(0, hx[i_test]), col="#003366")
+text(lb+0.6, 0, "test statistic", cex = 1)
+text(-2, 0.11, "p-value = blue area", cex = 1)
+arrows(-2.8, 0.07, x1 = -2.5, y1 = 0.02, length = 0.1, angle = 20)
+segments(0, 0, 0, dnorm(x), lty = 2, lwd = 0.5)
+# text(0,-0.05, 0, col = "blue", cex = 1.5)
+# text(0,-0.05, expression(bold(mu[0])), col = "blue", cex = 1.5)
+# ========
+plot(x, hx, type="l", lty=1, xlab="", axes = FALSE,ylim = c(-0.01, 0.4), cex.main = 1.2,
+  ylab="", main = expression(paste("Right-tailed test (H1: ", mu > mu[0], ")")))
+axis(1, labels = FALSE,  tck = -0.01)
+i <- x > ub
+z_test <- qnorm(0.95)
+i_test <- x > z_test
+# lines(x, hx)
+# polygon(c(ub,x[i]), c(0,hx[i]), col="red")
+polygon(c(z_test,x[i_test]), c(0,hx[i_test]), col="#003366")
+text(ub-0.6, 0, "test statistic", cex = 1)
+text(2.5, 0.11, "p-value = blue area", cex = 1)
+arrows(3.3, 0.08, x1 = 2.5, y1 = 0.02, length = 0.1, angle = 20)
+segments(0, 0, 0, dnorm(x), lty = 2, lwd = 0.5)
+# text(0,-0.05, 0, col = "blue", cex = 1.5)
+# text(0,-0.05, expression(bold(mu[0])), col = "blue", cex = 1.5)
+# ========
+plot(x, hx, type="l", lty=1, xlab="", axes = FALSE,ylim = c(-0.01, 0.4), cex.main = 1.2,
+  ylab="", main = expression(paste("Two-tailed test (H1: ", mu != mu[0], ")")))
+axis(1, labels = FALSE,  tck = -0.01)
+i_l <- x < lb_2
+# i_u <- x > ub_2
+# z_test_u <- qnorm(0.975)
+z_test_l <- qnorm(0.025)
+i_test_l <- x < z_test_l
+# i_test_u <- x > z_test_u
+# lines(x, hx)
+# polygon(c(lb_2, x[i_l]), c(0, hx[i_l]), col="red")
+# polygon(c(ub_2, x[i_u]), c(0, hx[i_u]), col="red")
+
+polygon(c(z_test_l, x[i_test_l]), c(0, hx[i_test_l]), col="#003366")
+# polygon(c(z_test_u, x[i_test_u]), c(0, hx[i_test_u]), col="#003366")
+
+text(lb_2+0.6, 0, "test statistic", cex = 1)
+text(-2, 0.11, "p-value = blue area * 2", cex = 1)
+arrows(-2.8, 0.07, x1 = -2.5, y1 = 0.02, length = 0.1, angle = 20)
+segments(0, 0, 0, dnorm(x), lty = 2, lwd = 0.5)
+# text(0,-0.05, 0, col = "blue", cex = 1.5)
+# text(0,-0.05, expression(bold(mu[0])), col = "blue", cex = 1.5)
+# ========
+plot(x, hx, type="l", lty=1, xlab="", axes = FALSE,ylim = c(-0.01, 0.4), cex.main = 1.2,
+  ylab="", main = expression(paste("Two-tailed test (H1: ", mu != mu[0], ")")))
+axis(1, labels = FALSE,  tck = -0.01)
+# i_l <- x < lb_2
+i_u <- x > ub_2
+z_test_u <- qnorm(0.975)
+# z_test_l <- qnorm(0.025)
+# i_test_l <- x < z_test_l
+i_test_u <- x > z_test_u
+# lines(x, hx)
+# polygon(c(lb_2, x[i_l]), c(0, hx[i_l]), col="red")
+# polygon(c(ub_2, x[i_u]), c(0, hx[i_u]), col="red")
+
+# polygon(c(z_test_l, x[i_test_l]), c(0, hx[i_test_l]), col="#003366")
+polygon(c(z_test_u, x[i_test_u]), c(0, hx[i_test_u]), col="#003366")
+
+text(ub_2-0.6, 0, "test statistic", cex = 1)
+text(2.1, 0.1, "p-value = blue area * 2", cex = 1)
+arrows(3.5, 0.08, x1 = 2.5, y1 = 0.02, length = 0.1, angle = 20)
+segments(0, 0, 0, dnorm(x), lty = 2, lwd = 0.5)
+# text(0,-0.05, 0, col = "blue", cex = 1.5)
+# text(0,-0.05, expression(bold(mu[0])), col = "blue", cex = 1.5)
+# polygon(c(z_test_l, z_test_u, x[i_test]), c(0, 0, hx[i_test]), col="#FFCC00")
+```
+
+- <span style="color:blue">This is a left-tailed test, so the $p$-value is $P(T < t_{test})=P(T < -2.55) =$ `r round(pt(-2.55,24), 2)` </span>
+
+## Step 5-p: Draw a Conclusion Using P-Value Method
+
+- If the $p$-value $\le \alpha$ , we reject $H_0$.
+- If the $p$-value $> \alpha$, we do not reject or fail to reject $H_0$.
+
+|         Condition   &nbsp; &nbsp;        | **Right**-tailed $(H_1: \mu > \mu_0)$  | **Left**-tailed  $(H_1: \mu < \mu_0)$  | **Two-tailed** $(H_1: \mu \ne \mu_0)$|
+|:------------------------------:|:------------:|:-------------:|:-----------:|
+| $\sigma$ known   | $P(Z > z_{test} \mid H_0)$   | $P(Z < z_{test} \mid H_0)$   | $2P(Z > \,\mid z_{test} \mid \, \mid H_0)$ |
+| $\sigma$ unknown | $P(T > t_{test} \mid H_0)$  | $P(T < t_{test} \mid H_0)$ | $2P(T > \, \mid t_{test} \mid  \, \mid H_0)$ |
+
+
+<!-- - Notation $\text{abs}(a)$ means absolute value of $a$, i.e. $|a|$. -->
+
+- <span style="color:blue"> We reject $H_0$ if $p$-value < $\alpha$. Since $p$-value $= 0.01 < 0.05 = \alpha$, we reject $H_0$.</span>
+
+## Both Methods Lead to the Same Conclusion
+```{r pvalue_criticalvalue, echo=FALSE, out.width="95%", fig.asp=0.6}
+par(mar = c(2.2, 0, 1, 0))
+par(mfrow = c(2, 2))
+x <- seq(-4, 4, length=1000)
+hx <- dnorm(x)
+plot(x, hx, type="l", lty=1, xlab="", axes = FALSE,
+  ylab="", main=expression(paste("Left-tailed test (H1: ", mu < mu[0], ")")), ylim= c(-0.02, 0.4))
+axis(1, labels = FALSE,  tck = -0.01)
+# axis(2, labels = FALSE,  tck = -0.01)
+lb <- qnorm(0.1)
+ub <- qnorm(0.9)
+lb_2 <- qnorm(0.05)
+ub_2 <- qnorm(0.95)
+z_test <- qnorm(0.05)
+i <- x < lb
+i_test <- x < z_test
+# lines(x, hx)
+polygon(c(z_test, x[i_test]), c(0, hx[i_test]), col=4, border = NA,
+        density = 30, angle = -45, lwd = 0.7)
+polygon(c(lb,x[i]), c(0, hx[i]), col="red", border = NA, density = 30, angle = 45, lwd = 0.5)
+text(lb-0.8,-0.02, "test stat.", cex = 0.8, col = "#003366")
+text(z_test+0.8,-0.02, "cri. val.", cex = 0.8, col = "red")
+text(-2.5, 0.11, "p-value = blue area", cex = 0.8, col = "#003366")
+text(0.8, 0.05, "alpha = red area", cex = 0.8, col = "red")
+arrows(-2.8, 0.07, x1 = -2.5, y1 = 0.02, length = 0.1, angle = 20)
+# ========
+plot(x, hx, type="l", lty=1, xlab="", axes = FALSE,ylim= c(-0.02, 0.4),
+  ylab="", main=expression(paste("Right-tailed test (H1: ", mu > mu[0], ")")))
+axis(1, labels = FALSE,  tck = -0.01)
+i <- x > ub
+z_test <- qnorm(0.95)
+i_test <- x > z_test
+# lines(x, hx)
+polygon(c(z_test,x[i_test]), c(0,hx[i_test]), col=4, border = NA,
+        density = 30, angle = -45, lwd = 0.7)
+polygon(c(ub,x[i]), c(0,hx[i]), col="red", border = NA, density = 30, angle = 45, lwd = 0.5)
+text(ub+0.8, -0.02, "test stat", cex = 0.8, col = "#003366")
+text(z_test-0.8,-0.02, "cri. val.", cex = 0.8, col = "red")
+text(2.4, 0.11, "p-value = blue area", cex = 0.8, col = "#003366")
+text(-0.8, 0.05, "alpha = red area", cex = 0.8, col = "red")
+arrows(3.3, 0.08, x1 = 2.5, y1 = 0.02, length = 0.1, angle = 20)
+
+
+# ========
+plot(x, hx, type="l", lty=1, xlab="", axes = FALSE,ylim= c(-0.02, 0.4),
+  ylab="", main= expression(paste("Two-tailed test (H1: ", mu != mu[0], ")", " left")))
+axis(1, labels = FALSE,  tck = -0.01)
+i_l <- x < lb_2
+# i_u <- x > ub_2
+# z_test_u <- qnorm(0.975)
+z_test_l <- qnorm(0.025)
+i_test_l <- x < z_test_l
+# i_test_u <- x > z_test_u
+# lines(x, hx)
+polygon(c(z_test_l, x[i_test_l]), c(0, hx[i_test_l]), col=4, border = NA,
+        density = 30, angle = -45, lwd = 0.7)
+polygon(c(lb_2, x[i_l]), c(0, hx[i_l]), col="red", border = NA, density = 30, angle = 45, lwd = 0.5)
+# polygon(c(ub_2, x[i_u]), c(0, hx[i_u]), col="red")
+
+
+# polygon(c(z_test_u, x[i_test_u]), c(0, hx[i_test_u]), col="#003366")
+
+text(lb_2-0.8, -0.02, "test stat", cex = 0.8,col="#003366")
+text(z_test_l+0.8,-0.02, "cri. val.", cex = 0.8, col = "red")
+text(-2.4, 0.11, "p-value = blue area * 2", cex = 0.8,col="#003366")
+arrows(-2.8, 0.07, x1 = -2.5, y1 = 0.02, length = 0.1, angle = 20)
+text(1.2, 0.05, "alpha = red area * 2", cex = 0.8, col = "red")
+# ========
+plot(x, hx, type="l", lty=1, xlab="", axes = FALSE,ylim=c(-0.02, 0.4),
+  ylab="", main= expression(paste("Two-tailed test (H1: ", mu != mu[0], ")", " right")))
+axis(1, labels = FALSE,  tck = -0.01)
+# i_l <- x < lb_2
+i_u <- x > ub_2
+z_test_u <- qnorm(0.975)
+# z_test_l <- qnorm(0.025)
+# i_test_l <- x < z_test_l
+i_test_u <- x > z_test_u
+# lines(x, hx)
+# polygon(c(lb_2, x[i_l]), c(0, hx[i_l]), col="red")
+polygon(c(z_test_u, x[i_test_u]), c(0, hx[i_test_u]), col=4, border = NA,
+        density = 30, angle = -45, lwd = 0.7)
+polygon(c(ub_2, x[i_u]), c(0, hx[i_u]), col="red", border = NA, density = 30, angle = 45, lwd = 0.5)
+
+# polygon(c(z_test_l, x[i_test_l]), c(0, hx[i_test_l]), col="#003366")
+
+
+text(ub_2+0.8, -0.02, "test stat", cex = 0.8, col="#003366")
+text(z_test_u-0.8,-0.02, "cri. val.", cex = 0.8, col = "red")
+text(2.4, 0.11, "p-value = blue area * 2", cex = 0.8, col="#003366")
+arrows(3.5, 0.08, x1 = 2.5, y1 = 0.02, length = 0.1, angle = 20)
+text(-0.8, 0.05, "alpha = red area * 2", cex = 0.8, col = "red")
+
+# polygon(c(z_test_l, z_test_u, x[i_test]), c(0, 0, hx[i_test]), col="#FFCC00")
+
+# text(ub+0.8, -0.02, "test stat", cex = 1.3, col = "#003366")
+# text(z_test-0.8,-0.02, "cri. val.", cex = 1.3, col = "red")
+# text(2.8, 0.11, "p-value = blue area", cex = 1.3, col = "#003366")
+# text(-.51, 0.05, "alpha = red and blue area", cex = 1.3, col = "red")
+# arrows(3.3, 0.08, x1 = 2.5, y1 = 0.02, length = 0.1, angle = 20)
+
+```
+
+```{r, echo=FALSE, out.width="95%"}
+par(mar = c(2, 0, 1, 0), mfrow = c(1, 1))
+x <- seq(-4, 4, length=1000)
+alpha <- 0.05
+x_bar <- 147.2
+s <- 5.5
+n <- 25
+mu_0 <- 150
+hx <- dt(x, df = n-1)
+
+cri_val <- qt(alpha, df = n-1, lower.tail = TRUE)
+plot(x, hx, type="l", lty=1, xlab="", axes = FALSE,ylim= c(-0.02, 0.4),
+  ylab="", main="Left-tailed test")
+axis(1, labels = FALSE,  tck = -0.01)
+i <- x < cri_val
+t_test <- (x_bar - mu_0) / (s / sqrt(n))
+i_test <- x < t_test
+# lines(x, hx)
+# polygon(c(cri_val, x[i]), c(0, hx[i]), col="red", border = NA)
+polygon(c(x[i_test], t_test), c(hx[i_test], 0), col=4, border = NA,
+        density = 30, angle = -45, lwd = 0.7)
+polygon(c(x[i], cri_val), c(hx[i], 0), col="red", border = NA,
+        density = 30, angle = 45, lwd = 0.5)
+
+
+text(t_test, -0.02, paste0(round(t_test, 2)), cex = 1.3, col = "#003366")
+text(cri_val,-0.02, paste0(round(qt(alpha, df = n-1), 3)), cex = 1.3, col = "red")
+text(-2.8, 0.11, paste0("p-value=", round(pt(t_test, n-1, lower.tail = TRUE), 2)),
+     cex = 1.3, col = "#003366")
+text(-0.8, 0.05, paste0("alpha=",alpha), cex = 1.3, col = "red")
+arrows(-2.8, 0.08, x1 = -3.1, y1 = 0.02, length = 0.1, angle = 20)
+segments(0, 0, 0, dt(0, df = n-1), lty = 2, lwd = 0.5)
+text(0,-0.02, 0, 
+     col = "blue", cex = 1.5)
+# text(0,-0.02, substitute(paste(bold(mu[0]), "=", mu0), list(mu0 = mu_0)), 
+#      col = "blue", cex = 1.5)
+```
+
+
+## Step 6: Restate the Conclusion in Nontechnical Terms, and Address the Original Claim
+
+
+```{r testing_conclusion, echo=FALSE, out.width="100%", fig.align='center', fig.cap="https://www.drdawnwright.com/category/statistics/"}
+knitr::include_graphics("./images/img-infer/testing_conclusion.png")
+```
+
+```{r yoda, echo=FALSE, out.width="100%", fig.align='center', fig.cap="https://www.pinterest.com/pin/287878601159173631/"}
+knitr::include_graphics("./images/img-infer/yoda.jpeg")
+```
+
+- <span style="color:blue"> **There is sufficient evidence to support the claim that the new treatment is effective**. </span>
+
+## Example Calculation in R
+```{r example2_compute, echo=TRUE, tidy=FALSE}
+## create objects for any information we have
+alpha <- 0.05; mu_0 <- 150; 
+x_bar <- 147.2; s <- 5.5; n <- 25
+
+## Test statistic
+(t_test <- (x_bar - mu_0) / (s / sqrt(n))) 
+## Critical value
+(t_cri <- qt(alpha, df = n - 1, lower.tail = TRUE)) 
+## p-value
+(p_val <- pt(t_test, df = n - 1, lower.tail = TRUE)) 
+```
+
+## Example 2: Two-tailed z-test
+:::{layout-ncol=2}
+
+- The milk price of a gallon of 2% milk is normally distributed with standard deviation of $0.10. 
+  - Last week the mean milk price was 2.78. This week, based on a sample of size 25, the sample mean milk price $\overline{x} = 2.80$. 
+  - Under $\alpha = 0.05$, determine if this week the mean price is different. 
+
+```{r, echo=FALSE, out.width="40%", fig.align='center'}
+knitr::include_graphics("./images/img-infer/milk.jpeg")
+```
+:::
+
+- Step 1: This is a $H_1$ claim <span style="color:blue"> $\small \begin{align}&H_0: \mu = 2.78 \\ &H_1: \mu \ne 2.78 \end{align}$ </span>
+- Step 2:  <span style="color:blue"> $\small \alpha = 0.05$ </span>
+- Step 3: <span style="color:blue"> $\small z_{test} = \frac{\overline{x} - \mu_0}{\sigma/\sqrt{n}} =  \frac{2.8 - 2.78}{0.1/\sqrt{25}} = 1.00$ </span>
+- Step 4-c:  <span style="color:blue"> $\small z_{0.05/2} = 1.96$. </span>
+- Step 5-c:  <span style="color:blue">This is a two-tailed test and we reject $H_0$ if $|z_{test}| > z_{\alpha/2}$. Since $\small |z_{test}| = 1 < 1.96 = z_{\alpha/2}$, we DO NOT reject $H_0$.</span>
+- Step 4-p:  <span style="color:blue">This is a two-tailed test, and the test statistic is on the right $(> 0)$, so the $p$-value is $2P(Z > z_{test})=$ `r round(2*pnorm(1, lower.tail = FALSE), 3)` </span>
+- Step 5-p:  <span style="color:blue"> We reject $H_0$ if $p$-value < $\alpha$. Since $p$-value $= 0.317 > 0.05 = \alpha$, we DO NOT reject $H_0$.</span>
+- Step 6:  <span style="color:blue"> **There is *insufficient* evidence to support the claim that this week the mean milk price is different from the price last week**. </span>
+
+```{r example3_plot, echo=FALSE, out.width="45%", fig.align='center'}
+par(mar = c(2, 0, 1, 0))
+x <- seq(-4, 4, length=1000)
+hx <- dnorm(x)
+alpha <- 0.05
+x_bar <- 2.8
+sigma <- 0.1
+n <- 25
+mu_0 <- 2.78
+cri_val <- qnorm(alpha/2, lower.tail = FALSE)
+plot(x, hx, type="l", lty=1, xlab="x value", axes = FALSE,ylim= c(-0.02, 0.4),
+  ylab="Density", main="two-tailed test")
+axis(1, labels = FALSE,  tck = -0.01)
+i_right <- x > cri_val
+i_left <- x < -cri_val
+z_test <- (x_bar - mu_0) / (sigma / sqrt(n))
+i_test <- x > z_test
+# lines(x, hx)
+
+polygon(c(x[i_left], -cri_val), c(hx[i_left], 0), col="red", border = NA, density = 30, angle = 45, lwd = 0.5)
+
+polygon(c(z_test, x[i_test]), c(0,hx[i_test]), col=4, border = NA,
+        density = 30, angle = -45, lwd = 0.7)
+
+polygon(c(cri_val,x[i_right]), c(0,hx[i_right]), col="red", border = NA, density = 30, angle = 45, lwd = 0.6)
+
+text(z_test, -0.02, paste0(z_test), cex = 1.3, col = "#003366")
+text(cri_val,-0.02, paste0(round(qnorm(alpha/2, lower.tail = FALSE), 3)), 
+     cex = 1.3, col = "red")
+text(2, 0.31, paste0("p-value=2Pr(Z > 1)=", round(2*pnorm(z_test, lower.tail = FALSE), 3)),
+     cex = 1.3, col = "#003366")
+text(3, 0.05, paste0("alpha=",alpha), cex = 1.3, col = "red")
+# arrows(2.8, 0.08, x1 = 3.3, y1 = 0.02, length = 0.1, angle = 20)
+segments(0, 0, 0, dnorm(0), lty = 2, lwd = 0.5)
+text(0,-0.02, 0,
+     col = "blue", cex = 1.5)
+# text(0,-0.02, substitute(paste(bold(mu[0]), "=", mu0), list(mu0 = mu_0)),
+#      col = "blue", cex = 1.5)
+```
+
+## Example 2 Calculation in R
+```{r example3_compute, echo=TRUE, tidy=FALSE}
+## create objects to be used
+alpha <- 0.05; mu_0 <- 2.78; 
+x_bar <- 2.8; sigma <- 0.1; n <- 25
+
+## Test statistic
+(z_test <- (x_bar - mu_0) / (sigma / sqrt(n))) 
+## Critical value
+(z_crit <- qnorm(alpha/2, lower.tail = FALSE)) 
+## p-value
+(p_val <- 2 * pnorm(z_test, lower.tail = FALSE)) 
+```
+
+## Testing Summary
+
+|      | Numerical Data, $\sigma$ known | Numerical Data, $\sigma$ <span style="color:blue"> unknown </span> |
+|:-------------:|:-----------------:|:------------:|
+| **Parameter of Interest** | Population Mean $\mu$  | Population Mean $\mu$ | 
+| **Test Type**   | One sample $\color{blue}{z}$ test $H_0: \mu = \mu_0$ |  One sample $\color{blue}{t}$ test $H_0: \mu = \mu_0$  |
+| **Confidence Interval**   | $\bar{x} \pm z_{\alpha/2} \frac{\sigma}{\sqrt{n}}$ | $\bar{x} \pm t_{\alpha/2, n-1} \frac{\color{blue}{s}}{\sqrt{n}}$           |
+| **Test Stat under $H_0$ **   | $z_{test} = \frac{\overline{x} - \mu_0}{\frac{\sigma}{\sqrt{n}}}$ |  $t_{test} = \frac{\overline{x} - \mu_0}{\frac{\color{blue}{s}}{\sqrt{n}}}$  |
+| ** $p$-value under $H_0$ **  | $H_1: \mu < \mu_0$ <br> $p$-value $=P(Z \le z_{test})$ | $H_1: \mu < \mu_0$ <br> $p$-value $=P(T_{n-1} \le t_{test})$ |
+|    | $H_1: \mu > \mu_0$ <br> $p$-value $=P(Z \ge z_{test})$ | $H_1: \mu < \mu_0$ <br> $p$-value $=P(T_{n-1} \ge t_{test})$ |
+|   | $H_1: \mu \ne \mu_0$ <br> $p$-value $=2P(Z \ge \, \mid z_{test}\mid)$ | $H_1: \mu \ne \mu_0$ <br> $p$-value $=2P(T_{n-1} \ge  \, \mid t_{test} \mid)$ |
+
+## Type I and Type II Errors
+
+Decision        | $H_0$ is true | $H_0$ is false  | 
+---------------- | ----------------- | ------------------
+Reject $H_0$   |  **Type I error**     | Correct decision
+Do not reject $H_0$ | Correct decision | **Type II error**
+
+- Back to the crime example: $H_0:$ The person is <span style="color:blue"> not guilty </span> v.s. $H_1:$ The person is <span style="color:blue"> guilty </span>
+
+
+Decision        | Truth is the person innocent |   Truth is the person guilty
+---------------- | ----------------- | ------------------
+Jury decides the person guilty   |  **Type I error**     | Correct decision
+Jury decides the person innocent  | Correct decision | **Type II error**
+
+- $\alpha = P(\text{type I error}) = P(\text{rejecting } H_0 \text{ when } H_0 \text{ is true})$
+- $\beta = P(\text{type II error}) = P(\text{failing to reject } H_0 \text{ when } H_0 \text{ is false})$
+
+```{r, echo=FALSE, out.width="100%", fig.align='center', fig.cap="https://www.statisticssolutions.com/wp-content/uploads/2017/12/rachnovblog.jpg"}
+knitr::include_graphics("./images/img-infer/error_type.webp")
+```
 

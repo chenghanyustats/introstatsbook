@@ -1,12 +1,203 @@
 # Analysis of Variance {#sec-model-anova}
 
-This chapter provides a broad overview of the R language that will get you programming right away. In it, you will build a pair of virtual dice that you can use to generate random numbers. Don't worry if you've never programmed before; the chapter will teach you everything you need to know.
+```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
+library(openintro)
+library(knitr)
+library(emoji)
+```
 
-To simulate a pair of dice, you will have to distill each die into its essential features. You cannot place a physical object, like a die, into a computer (well, not without unscrewing some screws), but you can save *information* about the object in your computer's memory.
+## Comparing More Than Two Population Means 
+- In many research settings, we'd like to compare 3 or more population means.
 
-Which information should you save? In general, a die has six important pieces of information: when you roll a die, it can only result in one of six numbers: 1, 2, 3, 4, 5, and 6. You can capture the essential characteristics of a die by saving the numbers 1, 2, 3, 4, 5, and 6 as a group of values in your computer's memory.
+:::{layout-ncol=2}
+<span style="color:blue"> 4 types of devices used to determine the pH of soil samples. </span>
+  <span style="color:blue"> Determine whether there are differences in the mean readings of those 4 devices. </span>
 
-Let's work on saving these numbers first, and then consider a method for "rolling" our die.
+<span style="color:blue"> Do different treatments (None, Fertilizer, Irrigation, Fertilizer and Irrigation) affect the mean weights of poplar trees?  </span>
 
-## The R User Interface
+```{r, echo=FALSE, out.width="78%", fig.align='center'}
+knitr::include_graphics("./images/img-model/poplar.jpeg")
+```
 
+```{r, echo=FALSE, out.width="78%", fig.align='center'}
+knitr::include_graphics("./images/img-model/soil.jpeg")
+```
+:::
+
+## One-Way Analysis of Variance
+
+- A **factor** is a property or characteristic (categorical variable) that allows us to *distinguish the different populations from one another*.  
+- **Type of devices** and **treatment of trees** are factors.
+- One-way ANOVA examines the effect of a *categorical variable* on the *mean of a numerical variable* (response).
+- We use analysis of <span style="color:red"> variance </span> to test the equality of 3 or more population  <span style="color:red"> means</span>. `r emoji('thinking')`
+- The method is **one-way** because we use one single property (categorical variable) for categorizing the populations.
+
+## Requirements of One-Way ANOVA
+- The populations of each category are **normally** distributed.
+- The populations have the **same variance** $\sigma^2$ (two sample pooled $t$-test). 
+- The samples are **random samples**.
+- The samples are **independent** of each other. (not matched or paired in any way)
+
+## Rationale for ANOVA 
+- Data 1 and Data 2 have the same group sample means $\bar{y}_1$, $\bar{y}_2$ and $\bar{y}_3$ denoted as red dots.
+
+```{r, out.width="70%", fig.asp=0.6, echo=FALSE, fig.align='center'}
+par(mfrow = c(2, 1), mar = c(2.5, 2.5, 1.5, 0), mgp = c(1.1, 0.5, 0), las = 1)
+y1 <- rnorm(50, 6, 0.08)
+y2 <- rnorm(50, 5.6, 0.08)
+y3 <- rnorm(50, 5.2, 0.08)
+small_var_data <- data.frame(y = c(y1, y2, y3), sample = rep(c(1,2,3), each = 50))
+boxplot(y ~ sample, small_var_data, ylim = c(2, 9),
+        main = "Data 1: Small Variance Within Samples", cex.main = 0.89, 
+        col = "lightblue", horizontal = TRUE)
+points(x=c(6, 5.6, 5.2), y = c(1, 2,3), col = "red", pch = 16)
+
+y1_l <- rnorm(50, sd = 1.0) + 6
+y2_l <- rnorm(50, sd = 1.0) + 5.6
+y3_l <- rnorm(50, sd = 1.0) + 5.2
+large_var_data <- data.frame(y = c(y1_l, y2_l, y3_l), sample = rep(c(1,2,3), each = 50))
+boxplot(y ~ sample, large_var_data, ylim = c(2, 9),
+        main = "Data 2: Large Variance Within Samples", cex.main = 0.89, 
+        col = "lightblue", horizontal = TRUE)
+points(x=c(6, 5.6, 5.2), y = c(1, 2,3), col = "red", pch = 16)
+# points(c(5.9, 5.5, 5))
+```
+
+:::{.callout-note icon=false}
+## Which data you are more confident to say the population means $\mu_1$, $\mu_2$ and $\mu_3$ are not all the same?
+:::
+
+## Variation **Between** Samples & Variation **Within** Samples
+
+- Data 1: Variability between samples is **large** *in comparison to* the variation within samples.
+- Data 2: Variation between samples is **small** relatively to the variation within samples.
+
+:::{.callout-note icon=false}
+## More confident to conclude there is a difference in population means when variation **between** samples is relatively *larger* than variation **within** samples.
+:::
+
+```{r, out.width="55%", echo=FALSE, fig.align='center'}
+knitr::include_graphics("./images/img-model/figure8-1.png")
+```
+
+## Procedure of ANOVA
+
+- <span style="color:blue"> $\begin{align} &H_0: \mu_1 = \mu_2 = \cdots = \mu_k\\  &H_1: \text{Population means are not all equal} \end{align}$ </span>
+
+<!-- - We use $F$-test.  -->
+
+- Statistician Ronald Fisher found a way to define a variable that follows the $F$ distribution:
+$$\frac{\text{variance between samples}}{\text{variance within samples}} \sim F_{df_B,\, df_W}$$
+- If variance *between* samples is larger than variance *within* samples, i.e., $F_{test}$ is much greater than 1, as Data 1, we reject $H_0$.
+
+:::{.callout-note icon=false}
+## Key: Define variance between samples and variance within samples so that the ratio is $F$ distributed.
+:::
+
+## Variance Within Samples
+
+- Back to two-sample pooled $t$-test with equal variance $\sigma^2$. We have 
+$$s_p^2 = \frac{(n_1-1)s_1^2 + (n_2-1)s_2^2}{n_1 + n_2 - 2}$$
+
+:::{.callout-note icon=false}
+## How about general $k$ samples?
+:::
+
+- ANOVA assumes the populations have the **same variance** $\sigma_1^2 = \sigma_2^2 = \cdots = \sigma_k^2 = \sigma^2$. 
+$$\boxed{s_W^2 = \frac{(n_1-1)s_1^2 + (n_2-1)s_2^2 + \cdots + (n_k-1)s_k^2}{n_1 + n_2 + \cdots + n_k - k}}$$
+where $s_i^2$, $i = 1, \dots ,k$, is the sample variance of group $i$.
+- $s_W^2$ represents a *combined* estimate of the common variance $\sigma^2$. It measures variability of the observations within the $k$ populations.
+
+## Variance Between Samples
+$$\boxed{s^2_{B} = \frac{\sum_{i=1}^k n_i (\bar{y}_{i\cdot} - \bar{y}_{\cdot\cdot})^2}{k-1}}$$ 
+
+- $\bar{y}_{i\cdot}$ is the $i$-th sample mean.
+- $\bar{y}_{\cdot\cdot}$ is the *grand* sample mean with all data points in all groups combined.
+- $s^2_{B}$ is also an estimate of $\sigma^2$ and measures variability *among* sample means for the $k$ groups.
+- If $H_0$ is true $(\mu_1 = \cdots = \mu_k = \mu)$, any variation in the sample means is due to chance and randomness, and shouldn't be too large.
+  + $\bar{y}_{1\cdot}, \cdots, \bar{y}_{k\cdot}$ should be close each other, and they are close to $\bar{y}_{\cdot \cdot}$.
+
+## ANOVA Table: Sum of Squares 
+- **Total Sum of Squares (SST)** measures total variation around $\bar{y}_{\cdot\cdot}$ in all of the sample data combined (ignoring the groups):
+$$\scriptsize{\color{blue}{SST = \sum_{j=1}^{n_i}\sum_{i=1}^{k} \left(y_{ij} - \bar{y}_{\cdot\cdot}\right)^2}}$$ where $y_{ij}$ is the $j$-th data point in the $i$-th group.
+
+- **Sum of Squares Between Samples (SSB)** measures the variation **between** sample means:
+$$\scriptsize{ \color{blue}{SSB = \sum_{i=1}^{k}n_i \left(\bar{y}_{i\cdot} - \bar{y}_{\cdot\cdot}\right)^2}}$$
+
+- **Sum of Squares Within Samples (SSW)** measures the variation of an value $y_{ij}$ about its sample mean $\bar{y}_{i\cdot}$:
+$$\scriptsize{ \color{blue}{SSW = \sum_{i=1}^{k} \sum_{j=1}^{n_i} \left(y_{ij} - \bar{y}_{i\cdot}\right)^2 = \sum_{i=1}^{k} (n_i - 1)s_i^2}}$$
+
+## Sum of Squares Identity
+<!-- - $\left(y_{ij} - \bar{y}_{\cdot\cdot}\right) =  \left(y_{ij} - \bar{y}_{i\cdot}\right) + \left(\bar{y}_{i\cdot} - \bar{y}_{\cdot\cdot}\right)$ -->
+
+<!-- - $\sum_{j=1}^{n_i}\sum_{i=1}^{t} \left(y_{ij} - \bar{y}_{\cdot\cdot}\right)^2 = \sum_{i=1}^{t}n_i \left(\bar{y}_{i\cdot} - \bar{y}_{\cdot\cdot}\right)^2 + \sum_{i=1}^{t} \sum_{j=1}^{n_i}\left(y_{ij} - \bar{y}_{i\cdot}\right)^2$ -->
+
+- $SST = SSB + SSW$ 
+- $df_{T} = df_{B} + df_{W} \implies N - 1 = (k-1) + (N - k)$
+<!-- $\begin{align} &df_{T} = df_{B} + df_{W} \\&n - 1 = (k-1) + (n - k) \end{align}$ -->
+
+- $\text{Mean Square (MS)} = \frac{\text{sum of squares}}{\text{degrees of freedom}}$
+- $MSB = \frac{SSB}{k-1} = s^2_{B}$
+- $MSW = \frac{SSW}{N-k} = s^2_{W}$
+- $F_{test} = \frac{MSB}{MSW}$
+- Under $H_0$, $\frac{S^2_{B}}{S_W^2} \sim F_{k-1, \, N-k}$
+- Reject $H_0$ if 
+  + $F_{test} > F_{\alpha, \, k - 1,\, N-k}$
+  + $p$-value $P(F_{k - 1,\, N-k} > F_{test}) < \alpha$
+
+## ANOVA Table
+```{r, out.width="100%", echo=FALSE, fig.align='center'}
+knitr::include_graphics("./images/img-model/anova_table_k.png")
+```
+
+## Example
+- A hypothesis is that a nutrient "Isoflavones" varies among three types of food: (1) cereals and snacks, (2) energy bars, and (3) veggie burgers. 
+
+:::{layout-ncol=3}
+```{r, echo=FALSE, out.width = "100%", fig.align = "center"}
+knitr::include_graphics("./images/img-model/cereal.jpeg")
+```
+
+```{r, echo=FALSE, out.width = "100%", fig.align = "center"}
+knitr::include_graphics("./images/img-model/energy_bar.png")
+```
+
+```{r, echo=FALSE, out.width = "100%", fig.align = "center"}
+knitr::include_graphics("./images/img-model/veggie_burger.jpeg")
+```
+:::
+- A sample of 5 each is taken and the amount of isoflavones is measured.
+- Is there a sufficient evidence to conclude that the mean isoflavone levels vary among these food items? $\alpha = 0.05$.
+
+## Example - Data
+<!-- - Cereal and snacks: $n_1 = 5$,  $\bar{y}_1 = 9.2$, $s_1^2 = 33.7$. -->
+<!-- - Energy bars: $n_2 = 5$, $\bar{y}_2 = 10.00$, $s_2^2 = 29.0$. -->
+<!-- - Veggie burger: $n_3 = 5$, $\bar{y}_3 = 13.8$, $s_3^2 = 46.7$. -->
+  
+```{r, echo=FALSE}
+load("./data/table08-7.rdata")
+data <- `table08-7`
+data_anova <- data.frame("y"=c(data[, 1], data[, 2], data[, 3]),
+                      "food"=rep(c("cereals", "energy", "veggie"), each = 5))
+data_anova[1, 1] <- 3
+data[1, 1] <- 3
+```
+
+:::{layout-ncol=2}
+```{r ex8-1, echo=TRUE}
+data
+```
+
+
+We prefer data format like
+
+<float-right>
+```{r, echo=TRUE}
+data_anova
+```
+</float-right>
+
+:::{.callout-note icon=false}
+## So tell me what is the value of $y_{23}$!
+:::
+:::

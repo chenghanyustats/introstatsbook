@@ -2,28 +2,98 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-0.9.462">
+<meta name="generator" content="quarto-1.1.251">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="This book serves as a main reference book for my MATH 4720 Statistical Methods and MATH 4740 Biostatistical Methods at Marquette University. Some topics can also be discussed in an introductory data science course. You’ll learn basic probability and statistical concepts as well as data analysis techniques such as linear regression using R computing software.">
 
 <title>Introduction to Statistics - 9&nbsp; Discrete Probability Distributions</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-span.underline{text-decoration: underline;}
-div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
+
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
-<meta name="quarto:offset" content="./">
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
 <link href="./prob-cont.html" rel="next">
 <link href="./prob-rv.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
@@ -31,10 +101,10 @@ ul.task-list{list-style: none;}
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link id="quarto-text-highlighting-styles" href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -55,6 +125,7 @@ ul.task-list{list-style: none;}
   }
 }</script>
 
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 </head>
 
@@ -117,189 +188,189 @@ ul.task-list{list-style: none;}
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
-    <div class="sidebar-item-container"> 
-        <a href="./intro.html" class="sidebar-item-text sidebar-link">Statistics and Data</a>
-      <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
-        <i class="bi bi-chevron-right ms-2"></i>
-      </a>
-    </div>
-    <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-        <li class="sidebar-item">
+      <div class="sidebar-item-container"> 
+            <a href="./intro.html" class="sidebar-item-text sidebar-link">Statistics and Data</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./intro-stats.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Sience of Data and Data Science</span></a>
+  <a href="./intro-stats.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Science of Data and Data Science</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./intro-data.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./intro-r.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Tool foR Data</span></a>
   </div>
 </li>
-    </ul>
+      </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
-    <div class="sidebar-item-container"> 
-        <a href="./datasummary.html" class="sidebar-item-text sidebar-link">Summarizing Data</a>
-      <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
-        <i class="bi bi-chevron-right ms-2"></i>
-      </a>
-    </div>
-    <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-        <li class="sidebar-item">
+      <div class="sidebar-item-container"> 
+            <a href="./datasummary.html" class="sidebar-item-text sidebar-link">Summarizing Data</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./data-graphics.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Visualization</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./data-numerics.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Data Sample Statistics</span></a>
   </div>
 </li>
-    </ul>
+      </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
-    <div class="sidebar-item-container"> 
-        <a href="./prob.html" class="sidebar-item-text sidebar-link">Probability</a>
-      <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
-        <i class="bi bi-chevron-right ms-2"></i>
-      </a>
-    </div>
-    <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
-        <li class="sidebar-item">
+      <div class="sidebar-item-container"> 
+            <a href="./prob.html" class="sidebar-item-text sidebar-link">Probability</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prob-define.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Definition of Probability</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prob-rule.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability Rules</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prob-rv.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Random Variables</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prob-disc.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Discrete Probability Distributions</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prob-cont.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Continuous Probability Distributions</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prob-samdist.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Sampling Distribution</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prob-llnclt.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Law of Large Numbers and Central Limit Theorem</span></a>
   </div>
 </li>
-    </ul>
+      </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
-    <div class="sidebar-item-container"> 
-        <a href="./infer.html" class="sidebar-item-text sidebar-link">Statistical Inference</a>
-      <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
-        <i class="bi bi-chevron-right ms-2"></i>
-      </a>
-    </div>
-    <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
-        <li class="sidebar-item">
+      <div class="sidebar-item-container"> 
+            <a href="./infer.html" class="sidebar-item-text sidebar-link">Statistical Inference</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-ci.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Confidence Interval</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-bt.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Bootstrapping</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-ht.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Hypothesis Testing</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-twomean.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Comparing Two Population Means</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-var.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Inference About Variances</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-prop.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Inference About Proportions</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-goodnessfit.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Test of Goodness of Fit</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-indep.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Test of Independence</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-bayes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-nonpar.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Nonparametric Inference</span></a>
   </div>
 </li>
-    </ul>
+      </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
-    <div class="sidebar-item-container"> 
-        <a href="./model.html" class="sidebar-item-text sidebar-link">Statistical Models</a>
-      <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
-        <i class="bi bi-chevron-right ms-2"></i>
-      </a>
-    </div>
-    <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
-        <li class="sidebar-item">
+      <div class="sidebar-item-container"> 
+            <a href="./model.html" class="sidebar-item-text sidebar-link">Statistical Models</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-anova.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-reg.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Linear Regression</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-logistic.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Logistic Regression</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-bayes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-survival.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Survival Analysis</span></a>
   </div>
 </li>
-    </ul>
+      </ul>
   </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
@@ -311,11 +382,25 @@ ul.task-list{list-style: none;}
 </nav>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc">
+        <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#the-r-user-interface" id="toc-the-r-user-interface" class="nav-link active" data-scroll-target="#the-r-user-interface"> <span class="header-section-number">9.1</span> The R User Interface</a></li>
+  <li><a href="#discrete-probability-distribution" id="toc-discrete-probability-distribution" class="nav-link active" data-scroll-target="#discrete-probability-distribution"><span class="toc-section-number">9.1</span>  Discrete Probability Distribution</a></li>
+  <li><a href="#discrete-probability-distribution-as-a-graph" id="toc-discrete-probability-distribution-as-a-graph" class="nav-link" data-scroll-target="#discrete-probability-distribution-as-a-graph"><span class="toc-section-number">9.2</span>  Discrete Probability Distribution as a Graph</a></li>
+  <li><a href="#mean-of-a-discrete-random-variable" id="toc-mean-of-a-discrete-random-variable" class="nav-link" data-scroll-target="#mean-of-a-discrete-random-variable"><span class="toc-section-number">9.3</span>  Mean of a Discrete Random Variable</a></li>
+  <li><a href="#variance-of-a-discrete-random-variable" id="toc-variance-of-a-discrete-random-variable" class="nav-link" data-scroll-target="#variance-of-a-discrete-random-variable"><span class="toc-section-number">9.4</span>  Variance of a Discrete Random Variable</a></li>
+  <li><a href="#binomial-experiment-and-random-variable" id="toc-binomial-experiment-and-random-variable" class="nav-link" data-scroll-target="#binomial-experiment-and-random-variable"><span class="toc-section-number">9.5</span>  Binomial Experiment and Random Variable</a></li>
+  <li><a href="#binomial-distribution" id="toc-binomial-distribution" class="nav-link" data-scroll-target="#binomial-distribution"><span class="toc-section-number">9.6</span>  Binomial Distribution</a></li>
+  <li><a href="#binomial-distribution-example" id="toc-binomial-distribution-example" class="nav-link" data-scroll-target="#binomial-distribution-example"><span class="toc-section-number">9.7</span>  Binomial Distribution Example</a></li>
+  <li><a href="#binomial-distribution-example-x-sim-binomial15-0.2" id="toc-binomial-distribution-example-x-sim-binomial15-0.2" class="nav-link" data-scroll-target="#binomial-distribution-example-x-sim-binomial15-0.2"><span class="toc-section-number">9.8</span>  Binomial Distribution Example <span class="math inline">\(X \sim binomial(15, 0.2)\)</span></a></li>
+  <li><a href="#binomial-example-computation-in-r" id="toc-binomial-example-computation-in-r" class="nav-link" data-scroll-target="#binomial-example-computation-in-r"><span class="toc-section-number">9.9</span>  Binomial Example Computation in R</a></li>
+  <li><a href="#binomial15-0.2" id="toc-binomial15-0.2" class="nav-link" data-scroll-target="#binomial15-0.2"><span class="toc-section-number">9.10</span>  Binomial(15, 0.2)</a></li>
+  <li><a href="#poisson-random-variables" id="toc-poisson-random-variables" class="nav-link" data-scroll-target="#poisson-random-variables"><span class="toc-section-number">9.11</span>  Poisson Random Variables</a></li>
+  <li><a href="#assumptions-and-properties-of-poisson-variables" id="toc-assumptions-and-properties-of-poisson-variables" class="nav-link" data-scroll-target="#assumptions-and-properties-of-poisson-variables"><span class="toc-section-number">9.12</span>  Assumptions and Properties of Poisson Variables</a></li>
+  <li><a href="#poisson-distribution-example" id="toc-poisson-distribution-example" class="nav-link" data-scroll-target="#poisson-distribution-example"><span class="toc-section-number">9.13</span>  Poisson Distribution Example</a></li>
+  <li><a href="#poisson-example-compuatation-in-r" id="toc-poisson-example-compuatation-in-r" class="nav-link" data-scroll-target="#poisson-example-compuatation-in-r"><span class="toc-section-number">9.14</span>  Poisson Example Compuatation in R</a></li>
+  <li><a href="#poisson11.5" id="toc-poisson11.5" class="nav-link" data-scroll-target="#poisson11.5"><span class="toc-section-number">9.15</span>  Poisson(11.5)</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/prob-disc.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -327,6 +412,11 @@ ul.task-list{list-style: none;}
 <h1 class="title"><span id="sec-prob-disc" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Discrete Probability Distributions</span></span></h1>
 </div>
 
+<div>
+  <div class="description">
+    <p>This book serves as a main reference book for my MATH 4720 Statistical Methods and MATH 4740 Biostatistical Methods at Marquette University. Some topics can also be discussed in an introductory data science course. You’ll learn basic probability and statistical concepts as well as data analysis techniques such as linear regression using R computing software.</p>
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
@@ -338,12 +428,471 @@ ul.task-list{list-style: none;}
 
 </header>
 
-<p>This chapter provides a broad overview of the R language that will get you programming right away. In it, you will build a pair of virtual dice that you can use to generate random numbers. Don’t worry if you’ve never programmed before; the chapter will teach you everything you need to know.</p>
-<p>To simulate a pair of dice, you will have to distill each die into its essential features. You cannot place a physical object, like a die, into a computer (well, not without unscrewing some screws), but you can save <em>information</em> about the object in your computer’s memory.</p>
-<p>Which information should you save? In general, a die has six important pieces of information: when you roll a die, it can only result in one of six numbers: 1, 2, 3, 4, 5, and 6. You can capture the essential characteristics of a die by saving the numbers 1, 2, 3, 4, 5, and 6 as a group of values in your computer’s memory.</p>
-<p>Let’s work on saving these numbers first, and then consider a method for “rolling” our die.</p>
-<section id="the-r-user-interface" class="level2" data-number="9.1">
-<h2 data-number="9.1" class="anchored" data-anchor-id="the-r-user-interface"><span class="header-section-number">9.1</span> The R User Interface</h2>
+<div class="cell">
+
+</div>
+<section id="discrete-probability-distribution" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="discrete-probability-distribution"><span class="header-section-number">9.1</span> Discrete Probability Distribution</h2>
+<ul>
+<li>The <strong>probability (mass) function</strong> of a discrete random variable (rv) <span class="math inline">\(X\)</span> is a function <span class="math inline">\(P(X = x)\)</span> (or <span class="math inline">\(p(x)\)</span>) that assigns a probability for <strong>every</strong> possible number <span class="math inline">\(x\)</span>.</li>
+<li>The <strong>probability distribution</strong> for a discrete r.v. <span class="math inline">\(X\)</span> <em>displays</em> its <strong>probability function</strong>.</li>
+<li>The display can be a <em>table</em>, <em>graph</em>, or <em>mathematical formula</em> of <span class="math inline">\(P(X = x)\)</span>.</li>
+</ul>
+<p><span style="color:blue"> <strong>Example:</strong>🪙🪙 Toss a fair coin twice independently and <span class="math inline">\(X\)</span> is the number of heads. </span></p>
+<ul>
+<li>The probability distribution of <span class="math inline">\(X\)</span> as a table is</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+
+<table>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> x </td>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> 2 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> P(X = x) </td>
+   <td style="text-align:left;"> 0.25 </td>
+   <td style="text-align:left;"> 0.5 </td>
+   <td style="text-align:left;"> 0.25 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<div class="callout-tip callout callout-style-default no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+👉 <span class="math inline">\(\{X = x\}\)</span> is an event corresponding to an event of some experiment.
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
+</div>
+</div>
+<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+What is the event that <span class="math inline">\(\{X = 0\}\)</span> corresponds to?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
+</div>
+</div>
+<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+How do we get <span class="math inline">\(P(X = 0)\)</span>, <span class="math inline">\(P(X=1)\)</span> and <span class="math inline">\(P(X=2)\)</span> ?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
+</div>
+</div>
+</section>
+<section id="discrete-probability-distribution-as-a-graph" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="discrete-probability-distribution-as-a-graph"><span class="header-section-number">9.2</span> Discrete Probability Distribution as a Graph</h2>
+<!-- - Probability Histogram -->
+<div class="cell" data-layout-align="center" data-fig.asp="0.5">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="prob-disc_files/figure-html/discrete_prob_dist_graph-1.png" class="img-fluid figure-img" style="width:40.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><p><span class="math inline">\(0 \le P(X = x) \le 1\)</span> for every value <span class="math inline">\(x\)</span> of <span class="math inline">\(X\)</span>.</p>
+<ul>
+<li><span style="color:blue"> <span class="math inline">\(x = 0, 1, 2\)</span> </span></li>
+</ul></li>
+<li><p><span class="math inline">\(\sum_{x}P(X=x) = 1\)</span>, where <span class="math inline">\(x\)</span> assumes all possible values.</p>
+<ul>
+<li><span style="color:blue"> <span class="math inline">\(P(X=0) + P(X = 1) + P(X = 2) = 1\)</span> </span></li>
+</ul></li>
+<li><p>The probabilities for a discrete r.v. are <strong>additive</strong> because <span class="math inline">\(\{X = a\}\)</span> and <span class="math inline">\(\{X = b\}\)</span> are <em>disjoint</em> for any possible values <span class="math inline">\(a \ne b\)</span>.</p>
+<ul>
+<li><span style="color:blue"> <span class="math inline">\(P(X = 1 \text{ or } 2) = P(\{X = 1\} \cup \{X = 2\}) = P(X = 1) + P(X = 2)\)</span>. </span></li>
+</ul></li>
+</ul>
+</section>
+<section id="mean-of-a-discrete-random-variable" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="mean-of-a-discrete-random-variable"><span class="header-section-number">9.3</span> Mean of a Discrete Random Variable</h2>
+<ul>
+<li>Suppose <span class="math inline">\(X\)</span> takes values <span class="math inline">\(x_1, \dots, x_k\)</span> with probabilities <span class="math inline">\(P(X = x_1), \dots, P(X = x_k)\)</span>.</li>
+<li>The <strong>mean</strong> or <strong>expected value</strong> of <span class="math inline">\(X\)</span> is the sum of each outcome multiplied by its corresponding probability: <span class="math display">\[E(X) := x_1 \times P(X = x_1) + \dots + x_k \times P(X = x_k) = \sum_{i=1}^kx_iP(X=x_i)\]</span></li>
+<li>The Greek letter <span class="math inline">\(\mu\)</span> may be used in place of the notation <span class="math inline">\(E(X)\)</span>.</li>
+</ul>
+<div class="callout-tip callout callout-style-default no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+👉 The mean of a discrete random variable <span class="math inline">\(X\)</span> is the <strong>weighted average</strong> of possible values <span class="math inline">\(x\)</span> <em>weighted by their corresponding probability</em>.
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
+</div>
+</div>
+<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+What is the mean of <span class="math inline">\(X\)</span> (the number of heads) in the previous example?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
+</div>
+</div>
+</section>
+<section id="variance-of-a-discrete-random-variable" class="level2" data-number="9.4">
+<h2 data-number="9.4" class="anchored" data-anchor-id="variance-of-a-discrete-random-variable"><span class="header-section-number">9.4</span> Variance of a Discrete Random Variable</h2>
+<ul>
+<li>Suppose <span class="math inline">\(X\)</span> takes values <span class="math inline">\(x_1, \dots , x_k\)</span> with probabilities <span class="math inline">\(P(X = x_1), \dots, P(X = x_k)\)</span> and expected value <span class="math inline">\(\mu = E(X)\)</span>.</li>
+<li>The variance of <span class="math inline">\(X\)</span>, denoted by <span class="math inline">\(Var(X)\)</span> or <span class="math inline">\(\sigma^2\)</span>, is <span class="math display">\[\small Var(X) := (x_1 - \mu)^2 \times P(X = x_1) + \dots + (x_k - \mu)^2 \times P(X = x_k) = \sum_{i=1}^k(x_i - \mu)^2P(X=x_i)\]</span></li>
+<li>The standard deviation of <span class="math inline">\(X\)</span>, <span class="math inline">\(\sigma\)</span>, is the square root of the variance.</li>
+</ul>
+<div class="callout-tip callout callout-style-default no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+👉 The variance of a discrete random variable <span class="math inline">\(X\)</span> is the <em>weighted sum of squared deviation</em> from the mean weighted by probability values.
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
+</div>
+</div>
+<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+What is the variance of <span class="math inline">\(X\)</span> (the number of heads) in the previous example?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
+</div>
+</div>
+</section>
+<section id="binomial-experiment-and-random-variable" class="level2" data-number="9.5">
+<h2 data-number="9.5" class="anchored" data-anchor-id="binomial-experiment-and-random-variable"><span class="header-section-number">9.5</span> Binomial Experiment and Random Variable</h2>
+<ul>
+<li><p>A <strong>binomial experiment</strong> is the one having the following properties:</p>
+<ol type="1">
+<li><p>👉 The experiment consists of a <strong>fixed</strong> number of <strong>identical</strong> trials <span class="math inline">\(n\)</span>.</p></li>
+<li><p>👉 Each trial results in one of <strong>exactly two</strong> outcomes (<em>success</em> (S) and <em>failure</em> (F)).</p></li>
+<li><p>👉 Trials are <strong>independent</strong>, meaning that the outcome of any trial does not affect the outcome of any other trial.</p></li>
+<li><p>👉 The probability of success is <strong>constant</strong> for all trials.</p></li>
+</ol></li>
+<li><p>If <span class="math inline">\(X\)</span> is defined as <span style="color:blue"> the number of successes observed in <span class="math inline">\(n\)</span> trials </span>, <span class="math inline">\(X\)</span> is a binomial random variable.</p></li>
+</ul>
+<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>The word <em>success</em> just means one of the two outcomes, and <em>does not necessarily mean something good. </em></li>
+<li>😲 We can define <em>Drug abuse</em> as success and <em>No drug abuse</em> as failure.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="binomial-distribution" class="level2" data-number="9.6">
+<h2 data-number="9.6" class="anchored" data-anchor-id="binomial-distribution"><span class="header-section-number">9.6</span> Binomial Distribution</h2>
+<ul>
+<li><p>The probability function <span class="math inline">\(P(X = x)\)</span> of a binomial r.v. <span class="math inline">\(X\)</span> can be <em>fully</em> determined by</p>
+<ul>
+<li><p>the number of trials <span class="math inline">\(n\)</span></p></li>
+<li><p>probability of success <span class="math inline">\(\pi\)</span></p></li>
+</ul></li>
+<li><p>Different <span class="math inline">\((n, \pi)\)</span> pairs generate different binomial probability distributions.</p></li>
+<li><p><span class="math inline">\(X\)</span> is said to follow a binomial distribution with <strong>parameters</strong> <span class="math inline">\(n\)</span> and <span class="math inline">\(\pi\)</span>, written as <span class="math inline">\(\color{blue}{X \sim binomial(n, \pi)}\)</span>.</p></li>
+<li><p>The binomial probability function is <span class="math display">\[ \color{blue}{P(X = x \mid n, \pi) = \frac{n!}{x!(n-x)!}\pi^x(1-\pi)^{n-x}, \quad x = 0, 1, 2, \dots, n}\]</span> with mean <span class="math inline">\(\mu = E(X) = n\pi\)</span> and variance <span class="math inline">\(\sigma^2 = Var(X) = n\pi(1-\pi)\)</span>.</p></li>
+</ul>
+<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+If we toss a fair coin two times independently and let <span class="math inline">\(X =\)</span> # of heads, is <span class="math inline">\(X\)</span> a binomial r.v.?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
+</div>
+</div>
+</section>
+<section id="binomial-distribution-example" class="level2" data-number="9.7">
+<h2 data-number="9.7" class="anchored" data-anchor-id="binomial-distribution-example"><span class="header-section-number">9.7</span> Binomial Distribution Example</h2>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<ul>
+<li><p>Assume that 20% of all drivers have a blood alcohol level above the legal limit. For a random sample of 15 vehicles, compute the probability that:</p>
+<ol type="1">
+<li><p>Exactly 6 of the 15 drivers will <em>exceed</em> the legal limit.</p></li>
+<li><p>Of the 15 drivers, 6 or more will <em>exceed</em> the legal limit.</p></li>
+</ol></li>
+</ul>
+</div>
+<div class="cell quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/img-prob/alcohol.jpeg" class="img-fluid figure-img" style="width:30.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>Suppose it is a binomial experiment with <span class="math inline">\(n = 15\)</span> and <span class="math inline">\(\pi = 0.2\)</span>.</li>
+<li>Let <span class="math inline">\(X\)</span> be the number of drivers exceeding limit.</li>
+<li><span class="math inline">\(X \sim binomial(15, 0.2)\)</span>.</li>
+</ul>
+<p><span class="math display">\[ \color{blue}{P(X = x \mid n=15, \pi=0.2) = \frac{15!}{x!(15-x)!}(0.2)^x(1-0.2)^{15-x}, \quad x = 0, 1, 2, \dots, n}\]</span></p>
+<ol type="1">
+<li><p><span class="math inline">\(\small P(X = 6) = \frac{n!}{x!(n-x)!}\pi^x(1-\pi)^{n-x} = \frac{15!}{6!(15-6)!}(0.2)^6(1-0.2)^{15-6} = 0.043\)</span></p></li>
+<li><p><span class="math inline">\(\small P(X \ge 6) = p(6) + \dots + p(15) = 1 - P(X \le 5) = 1 - (p(0) + p(1) + \dots + p(5)) = 0.0611\)</span></p></li>
+</ol>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Never do this by hand. We can compute them using R!</p>
+</div>
+</div>
+</section>
+<section id="binomial-distribution-example-x-sim-binomial15-0.2" class="level2" data-number="9.8">
+<h2 data-number="9.8" class="anchored" data-anchor-id="binomial-distribution-example-x-sim-binomial15-0.2"><span class="header-section-number">9.8</span> Binomial Distribution Example <span class="math inline">\(X \sim binomial(15, 0.2)\)</span></h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="prob-disc_files/figure-html/binomial_plot_noshow-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="binomial-example-computation-in-r" class="level2" data-number="9.9">
+<h2 data-number="9.9" class="anchored" data-anchor-id="binomial-example-computation-in-r"><span class="header-section-number">9.9</span> Binomial Example Computation in R</h2>
+<!-- - R Shiny app is at [Binomial Calculator](http://sctc.mscs.mu.edu:3838/sample-apps/Calculator/) -->
+<ul>
+<li><p>With <code>size</code> the number of trials and <code>prob</code> the probability of success,</p>
+<ul>
+<li><p><strong><code>dbinom(x, size, prob)</code></strong> to compute <span class="math inline">\(P(X = x)\)</span></p></li>
+<li><p><strong><code>pbinom(q, size, prob)</code></strong> to compute <span class="math inline">\(P(X \le q)\)</span></p></li>
+<li><p><strong><code>pbinom(q, size, prob, lower.tail = FALSE)</code></strong> to compute <span class="math inline">\(P(X &gt; q)\)</span></p></li>
+</ul></li>
+</ul>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 1. P(X = 6)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dbinom</span>(<span class="at">x =</span> <span class="dv">6</span>, <span class="at">size =</span> <span class="dv">15</span>, <span class="at">prob =</span> <span class="fl">0.2</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.04299262</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 2. P(X &gt;= 6) = 1 - P(X &lt;= 5)</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span> <span class="fu">pbinom</span>(<span class="at">q =</span> <span class="dv">5</span>, <span class="at">size =</span> <span class="dv">15</span>, <span class="at">prob =</span> <span class="fl">0.2</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.06105143</code></pre>
+</div>
+</div>
+<div class="cell quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 2. P(X &gt;= 6) = P(X &gt; 5)</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pbinom</span>(<span class="at">q =</span> <span class="dv">5</span>, <span class="at">size =</span> <span class="dv">15</span>, <span class="at">prob =</span> <span class="fl">0.2</span>, </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.06105143</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="binomial15-0.2" class="level2" data-number="9.10">
+<h2 data-number="9.10" class="anchored" data-anchor-id="binomial15-0.2"><span class="header-section-number">9.10</span> Binomial(15, 0.2)</h2>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">15</span>, <span class="at">y =</span> <span class="fu">dbinom</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">15</span>, <span class="at">size =</span> <span class="dv">15</span>, <span class="at">prob =</span> <span class="fl">0.2</span>), </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">'h'</span>, <span class="at">xlab =</span> <span class="st">"x"</span>, <span class="at">ylab =</span> <span class="st">"P(X = x)"</span>, </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">lwd =</span> <span class="dv">5</span>, <span class="at">main =</span> <span class="st">"Binomial(15, 0.2)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="prob-disc_files/figure-html/binomial_plot-1.png" class="img-fluid figure-img" style="width:67.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="poisson-random-variables" class="level2" data-number="9.11">
+<h2 data-number="9.11" class="anchored" data-anchor-id="poisson-random-variables"><span class="header-section-number">9.11</span> Poisson Random Variables</h2>
+<ul>
+<li><p>If we like to count <strong>the number of occurrences of some event over a unit of time or space (region)</strong> and its associated probability, we could consider the <strong>Poisson distribution</strong>.</p>
+<ul>
+<li><p>Number of COVID patients arriving at ICU in one hour</p></li>
+<li><p>Number of Marquette students logging onto D2L in one day</p></li>
+<li><p>Number of dandelions per square meter in Marquette campus</p></li>
+</ul></li>
+<li><p>Let <span class="math inline">\(X\)</span> be a Poisson r.v. Then <span class="math inline">\(\color{blue}{X \sim Poisson(\lambda)}\)</span>, where <span class="math inline">\(\lambda\)</span> is the parameter representing the <strong>mean</strong> number of occurrences of the event in the interval. <span class="math display">\[\color{blue}{P(X = x \mid \lambda) = \frac{\lambda^x e^{-\lambda}}{x!}, \quad x = 0, 1, 2, \dots}\]</span> with both mean and variance being equal to <span class="math inline">\(\lambda\)</span>.</p></li>
+</ul>
+</section>
+<section id="assumptions-and-properties-of-poisson-variables" class="level2" data-number="9.12">
+<h2 data-number="9.12" class="anchored" data-anchor-id="assumptions-and-properties-of-poisson-variables"><span class="header-section-number">9.12</span> Assumptions and Properties of Poisson Variables</h2>
+<ul>
+<li>👉 <strong>Events occur one at a time</strong>; two or more events do not occur at the same time or in the same space or spot.</li>
+<li>👉 The occurrence of an event in a given period of time or region of space is <strong>independent</strong> of the occurrence of the event in a <strong>nonoverlapping</strong> time period or region of space.</li>
+<li>👉 <span class="math inline">\(\lambda\)</span> is <strong>constant</strong> of any period or region.</li>
+</ul>
+<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Can you find the difference between Binomial and Poisson distributions?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
+</div>
+</div>
+<ul>
+<li><p>The Poisson distribution</p>
+<ul>
+<li><p>is determined by one single parameter <span class="math inline">\(\lambda\)</span></p></li>
+<li><p>has possible values <span class="math inline">\(x = 0, 1, 2, \dots\)</span> with no upper limit (countable), while a binomial variable has possible values <span class="math inline">\(0, 1, 2, \dots, n\)</span> (finite)</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="poisson-distribution-example" class="level2" data-number="9.13">
+<h2 data-number="9.13" class="anchored" data-anchor-id="poisson-distribution-example"><span class="header-section-number">9.13</span> Poisson Distribution Example</h2>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<ul>
+<li>Last year there were 4200 births at the University of Wisconsin Hospital. Assume <span class="math inline">\(X\)</span> be the number of births in a given day at the center, and <span class="math inline">\(X \sim Poisson(\lambda)\)</span>. Find
+<ol type="1">
+<li><span class="math inline">\(\lambda\)</span>, the mean number of births <strong>per day</strong>.</li>
+<li>the probability that on a randomly selected day, there are exactly 10 births.</li>
+<li><span class="math inline">\(P(X &gt; 10)\)</span>?</li>
+</ol></li>
+</ul>
+</div>
+<div class="cell quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/img-prob/baby.jpeg" class="img-fluid figure-img" style="width:45.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<ol type="1">
+<li><p><span class="math inline">\(\small \lambda = \frac{\text{Number of birth in a year}}{\text{Number of days}} = \frac{4200}{365} = 11.5\)</span></p></li>
+<li><p><span class="math inline">\(\small P(X = 10 \mid \lambda = 11.5) = \frac{\lambda^x e^{-\lambda}}{x!} = \frac{11.5^{10} e^{-11.5}}{10!} = 0.113\)</span></p></li>
+<li><p><span class="math inline">\(\small P(X &gt; 10) = p(11) + p(12) + \dots + p(20) + \dots\)</span> (No end!) <span class="math inline">\(\small P(X &gt; 10) = 1 - P(X \le 10) = 1 - (p(1) + p(2) + \dots + p(10))\)</span>.</p></li>
+</ol>
+</section>
+<section id="poisson-example-compuatation-in-r" class="level2" data-number="9.14">
+<h2 data-number="9.14" class="anchored" data-anchor-id="poisson-example-compuatation-in-r"><span class="header-section-number">9.14</span> Poisson Example Compuatation in R</h2>
+<!-- - R Shiny app is at [Poisson Calculator](http://sctc.mscs.mu.edu:3838/sample-apps/Calculator/) -->
+<!-- P(X <= 10) = 0.392 -->
+<ul>
+<li><p>With <code>lambda</code> the mean of Poisson distribution,</p>
+<ul>
+<li><p><strong><code>dpois(x, lambda)</code></strong> to compute <span class="math inline">\(P(X = x)\)</span></p></li>
+<li><p><strong><code>ppois(q, lambda)</code></strong> to compute <span class="math inline">\(P(X \le q)\)</span></p></li>
+<li><p><strong><code>ppois(q, lambda, lower.tail = FALSE)</code></strong> to compute <span class="math inline">\(P(X &gt; q)\)</span></p></li>
+</ul></li>
+</ul>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>(lam <span class="ot">&lt;-</span> <span class="dv">4200</span> <span class="sc">/</span> <span class="dv">365</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 11.50685</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="do">## P(X = 10)</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dpois</span>(<span class="at">x =</span> <span class="dv">10</span>, <span class="at">lambda =</span> lam)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.112834</code></pre>
+</div>
+</div>
+<div class="cell quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="do">## P(X &gt; 10) = 1 - P(X &lt;= 10)</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span> <span class="fu">ppois</span>(<span class="at">q =</span> <span class="dv">10</span>, <span class="at">lambda =</span> lam)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.5990436</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="do">## P(X &gt; 10)</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ppois</span>(<span class="at">q =</span> <span class="dv">10</span>, <span class="at">lambda =</span> lam, </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">lower.tail =</span> <span class="cn">FALSE</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.5990436</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="poisson11.5" class="level2" data-number="9.15">
+<h2 data-number="9.15" class="anchored" data-anchor-id="poisson11.5"><span class="header-section-number">9.15</span> Poisson(11.5)</h2>
+<ul>
+<li><span class="math inline">\(X\)</span> has no upper limit. The graph is <em>truncated</em> at <span class="math inline">\(x = 24\)</span>.</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">24</span>, <span class="fu">dpois</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">24</span>, <span class="at">lambda =</span> lam), <span class="at">type =</span> <span class="st">'h'</span>, <span class="at">lwd =</span> <span class="dv">5</span>, </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"P(X = x)"</span>, <span class="at">xlab =</span> <span class="st">"x"</span>, <span class="at">main =</span> <span class="st">"Poisson(11.5)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="prob-disc_files/figure-html/poisson_plot-1.png" class="img-fluid figure-img" style="width:60.0%"></p>
+</figure>
+</div>
+</div>
+</div>
 
 
 </section>
@@ -351,6 +900,24 @@ ul.task-list{list-style: none;}
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
@@ -400,7 +967,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   for (var i=0; i<noterefs.length; i++) {
     const ref = noterefs[i];
     tippyHover(ref, function() {
-      let href = ref.getAttribute('href');
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);

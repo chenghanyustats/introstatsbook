@@ -2,28 +2,98 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-0.9.462">
+<meta name="generator" content="quarto-1.1.251">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="This book serves as a main reference book for my MATH 4720 Statistical Methods and MATH 4740 Biostatistical Methods at Marquette University. Some topics can also be discussed in an introductory data science course. You’ll learn basic probability and statistical concepts as well as data analysis techniques such as linear regression using R computing software.">
 
 <title>Introduction to Statistics - 15&nbsp; Hypothesis Testing</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-span.underline{text-decoration: underline;}
-div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
+
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
-<meta name="quarto:offset" content="./">
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
 <link href="./infer-twomean.html" rel="next">
 <link href="./infer-bt.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
@@ -31,10 +101,10 @@ ul.task-list{list-style: none;}
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link id="quarto-text-highlighting-styles" href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -55,6 +125,7 @@ ul.task-list{list-style: none;}
   }
 }</script>
 
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 </head>
 
@@ -117,189 +188,189 @@ ul.task-list{list-style: none;}
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
-    <div class="sidebar-item-container"> 
-        <a href="./intro.html" class="sidebar-item-text sidebar-link">Statistics and Data</a>
-      <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
-        <i class="bi bi-chevron-right ms-2"></i>
-      </a>
-    </div>
-    <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-        <li class="sidebar-item">
+      <div class="sidebar-item-container"> 
+            <a href="./intro.html" class="sidebar-item-text sidebar-link">Statistics and Data</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./intro-stats.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">What is Statistics</span></a>
+  <a href="./intro-stats.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Science of Data and Data Science</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./intro-data.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">What is Data</span></a>
+  <a href="./intro-data.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./intro-r.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">R for Statistics</span></a>
+  <a href="./intro-r.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Tool foR Data</span></a>
   </div>
 </li>
-    </ul>
+      </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
-    <div class="sidebar-item-container"> 
-        <a href="./datasummary.html" class="sidebar-item-text sidebar-link">Summarizing Data</a>
-      <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
-        <i class="bi bi-chevron-right ms-2"></i>
-      </a>
-    </div>
-    <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-        <li class="sidebar-item">
+      <div class="sidebar-item-container"> 
+            <a href="./datasummary.html" class="sidebar-item-text sidebar-link">Summarizing Data</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./data-graphics.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Visualization</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./data-numerics.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Data Sample Statistics</span></a>
   </div>
 </li>
-    </ul>
+      </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
-    <div class="sidebar-item-container"> 
-        <a href="./prob.html" class="sidebar-item-text sidebar-link">Probability</a>
-      <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
-        <i class="bi bi-chevron-right ms-2"></i>
-      </a>
-    </div>
-    <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
-        <li class="sidebar-item">
+      <div class="sidebar-item-container"> 
+            <a href="./prob.html" class="sidebar-item-text sidebar-link">Probability</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prob-define.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Definition of Probability</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prob-rule.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability Rules</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prob-rv.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Random Variables</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prob-disc.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Discrete Probability Distributions</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prob-cont.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Continuous Probability Distributions</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prob-samdist.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Sampling Distribution</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prob-llnclt.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Law of Large Numbers and Central Limit Theorem</span></a>
   </div>
 </li>
-    </ul>
+      </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
-    <div class="sidebar-item-container"> 
-        <a href="./infer.html" class="sidebar-item-text sidebar-link">Statistical Inference</a>
-      <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
-        <i class="bi bi-chevron-right ms-2"></i>
-      </a>
-    </div>
-    <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
-        <li class="sidebar-item">
+      <div class="sidebar-item-container"> 
+            <a href="./infer.html" class="sidebar-item-text sidebar-link">Statistical Inference</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-ci.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Confidence Interval</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-bt.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Bootstrapping</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-ht.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Hypothesis Testing</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-twomean.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Comparing Two Population Means</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-var.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Inference About Variances</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-prop.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Inference About Proportions</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-goodnessfit.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Test of Goodness of Fit</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-indep.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Test of Independence</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-bayes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-nonpar.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Nonparametric Inference</span></a>
   </div>
 </li>
-    </ul>
+      </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
-    <div class="sidebar-item-container"> 
-        <a href="./model.html" class="sidebar-item-text sidebar-link">Statistical Models</a>
-      <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
-        <i class="bi bi-chevron-right ms-2"></i>
-      </a>
-    </div>
-    <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
-        <li class="sidebar-item">
+      <div class="sidebar-item-container"> 
+            <a href="./model.html" class="sidebar-item-text sidebar-link">Statistical Models</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-anova.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-reg.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Linear Regression</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-logistic.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Logistic Regression</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-bayes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-survival.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Survival Analysis</span></a>
   </div>
 </li>
-    </ul>
+      </ul>
   </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
@@ -311,13 +382,33 @@ ul.task-list{list-style: none;}
 </nav>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc">
+        <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#the-r-user-interface" id="toc-the-r-user-interface" class="nav-link active" data-scroll-target="#the-r-user-interface"> <span class="header-section-number">15.1</span> The R User Interface</a></li>
+  <li><a href="#what-is-a-hypothesis-testing" id="toc-what-is-a-hypothesis-testing" class="nav-link active" data-scroll-target="#what-is-a-hypothesis-testing"><span class="toc-section-number">15.1</span>  What is a Hypothesis Testing?</a></li>
+  <li><a href="#null-and-alternative-hypothesis" id="toc-null-and-alternative-hypothesis" class="nav-link" data-scroll-target="#null-and-alternative-hypothesis"><span class="toc-section-number">15.2</span>  Null and Alternative Hypothesis</a></li>
+  <li><a href="#hypothesis-testing-example" id="toc-hypothesis-testing-example" class="nav-link" data-scroll-target="#hypothesis-testing-example"><span class="toc-section-number">15.3</span>  Hypothesis Testing Example</a></li>
+  <li><a href="#how-to-formally-do-a-statistical-hypothesis-testing" id="toc-how-to-formally-do-a-statistical-hypothesis-testing" class="nav-link" data-scroll-target="#how-to-formally-do-a-statistical-hypothesis-testing"><span class="toc-section-number">15.4</span>  How to Formally Do a Statistical Hypothesis Testing</a></li>
+  <li><a href="#the-new-treatment-is-effective" id="toc-the-new-treatment-is-effective" class="nav-link" data-scroll-target="#the-new-treatment-is-effective"><span class="toc-section-number">15.5</span>  The New Treatment is Effective?</a></li>
+  <li><a href="#step-0-check-method-assumptions" id="toc-step-0-check-method-assumptions" class="nav-link" data-scroll-target="#step-0-check-method-assumptions"><span class="toc-section-number">15.6</span>  Step 0: Check Method Assumptions</a></li>
+  <li><a href="#step-1-set-the-h_0-and-h_1-from-a-claim" id="toc-step-1-set-the-h_0-and-h_1-from-a-claim" class="nav-link" data-scroll-target="#step-1-set-the-h_0-and-h_1-from-a-claim"><span class="toc-section-number">15.7</span>  Step 1: Set the <span class="math inline">\(H_0\)</span> and <span class="math inline">\(H_1\)</span> from a Claim</a></li>
+  <li><a href="#step-2-set-the-significance-level-alpha" id="toc-step-2-set-the-significance-level-alpha" class="nav-link" data-scroll-target="#step-2-set-the-significance-level-alpha"><span class="toc-section-number">15.8</span>  Step 2: Set the Significance Level <span class="math inline">\(\alpha\)</span></a></li>
+  <li><a href="#step-3-calculate-the-test-statistic" id="toc-step-3-calculate-the-test-statistic" class="nav-link" data-scroll-target="#step-3-calculate-the-test-statistic"><span class="toc-section-number">15.9</span>  Step 3: Calculate the Test Statistic</a></li>
+  <li><a href="#step-4-c-find-the-critical-value" id="toc-step-4-c-find-the-critical-value" class="nav-link" data-scroll-target="#step-4-c-find-the-critical-value"><span class="toc-section-number">15.10</span>  Step 4-c: Find the Critical Value</a></li>
+  <li><a href="#step-5-c-draw-a-conclusion-using-critical-value" id="toc-step-5-c-draw-a-conclusion-using-critical-value" class="nav-link" data-scroll-target="#step-5-c-draw-a-conclusion-using-critical-value"><span class="toc-section-number">15.11</span>  Step 5-c: Draw a Conclusion Using Critical Value</a></li>
+  <li><a href="#step-4-p-find-the-p-value" id="toc-step-4-p-find-the-p-value" class="nav-link" data-scroll-target="#step-4-p-find-the-p-value"><span class="toc-section-number">15.12</span>  Step 4-p: Find the P-Value</a></li>
+  <li><a href="#p-value-illustration" id="toc-p-value-illustration" class="nav-link" data-scroll-target="#p-value-illustration"><span class="toc-section-number">15.13</span>  P-Value Illustration</a></li>
+  <li><a href="#step-5-p-draw-a-conclusion-using-p-value-method" id="toc-step-5-p-draw-a-conclusion-using-p-value-method" class="nav-link" data-scroll-target="#step-5-p-draw-a-conclusion-using-p-value-method"><span class="toc-section-number">15.14</span>  Step 5-p: Draw a Conclusion Using P-Value Method</a></li>
+  <li><a href="#both-methods-lead-to-the-same-conclusion" id="toc-both-methods-lead-to-the-same-conclusion" class="nav-link" data-scroll-target="#both-methods-lead-to-the-same-conclusion"><span class="toc-section-number">15.15</span>  Both Methods Lead to the Same Conclusion</a></li>
+  <li><a href="#step-6-restate-the-conclusion-in-nontechnical-terms-and-address-the-original-claim" id="toc-step-6-restate-the-conclusion-in-nontechnical-terms-and-address-the-original-claim" class="nav-link" data-scroll-target="#step-6-restate-the-conclusion-in-nontechnical-terms-and-address-the-original-claim"><span class="toc-section-number">15.16</span>  Step 6: Restate the Conclusion in Nontechnical Terms, and Address the Original Claim</a></li>
+  <li><a href="#example-calculation-in-r" id="toc-example-calculation-in-r" class="nav-link" data-scroll-target="#example-calculation-in-r"><span class="toc-section-number">15.17</span>  Example Calculation in R</a></li>
+  <li><a href="#example-2-two-tailed-z-test" id="toc-example-2-two-tailed-z-test" class="nav-link" data-scroll-target="#example-2-two-tailed-z-test"><span class="toc-section-number">15.18</span>  Example 2: Two-tailed z-test</a></li>
+  <li><a href="#example-2-calculation-in-r" id="toc-example-2-calculation-in-r" class="nav-link" data-scroll-target="#example-2-calculation-in-r"><span class="toc-section-number">15.19</span>  Example 2 Calculation in R</a></li>
+  <li><a href="#testing-summary" id="toc-testing-summary" class="nav-link" data-scroll-target="#testing-summary"><span class="toc-section-number">15.20</span>  Testing Summary</a></li>
+  <li><a href="#type-i-and-type-ii-errors" id="toc-type-i-and-type-ii-errors" class="nav-link" data-scroll-target="#type-i-and-type-ii-errors"><span class="toc-section-number">15.21</span>  Type I and Type II Errors</a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/chenghanyustats/introstatsbook/edit/master/infer-ht.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/infer-ht.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -327,6 +418,11 @@ ul.task-list{list-style: none;}
 <h1 class="title"><span id="sec-infer-ht" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Hypothesis Testing</span></span></h1>
 </div>
 
+<div>
+  <div class="description">
+    <p>This book serves as a main reference book for my MATH 4720 Statistical Methods and MATH 4740 Biostatistical Methods at Marquette University. Some topics can also be discussed in an introductory data science course. You’ll learn basic probability and statistical concepts as well as data analysis techniques such as linear regression using R computing software.</p>
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
@@ -338,12 +434,695 @@ ul.task-list{list-style: none;}
 
 </header>
 
-<p>This chapter provides a broad overview of the R language that will get you programming right away. In it, you will build a pair of virtual dice that you can use to generate random numbers. Don’t worry if you’ve never programmed before; the chapter will teach you everything you need to know.</p>
-<p>To simulate a pair of dice, you will have to distill each die into its essential features. You cannot place a physical object, like a die, into a computer (well, not without unscrewing some screws), but you can save <em>information</em> about the object in your computer’s memory.</p>
-<p>Which information should you save? In general, a die has six important pieces of information: when you roll a die, it can only result in one of six numbers: 1, 2, 3, 4, 5, and 6. You can capture the essential characteristics of a die by saving the numbers 1, 2, 3, 4, 5, and 6 as a group of values in your computer’s memory.</p>
-<p>Let’s work on saving these numbers first, and then consider a method for “rolling” our die.</p>
-<section id="the-r-user-interface" class="level2" data-number="15.1">
-<h2 data-number="15.1" class="anchored" data-anchor-id="the-r-user-interface"><span class="header-section-number">15.1</span> The R User Interface</h2>
+<div class="cell">
+
+</div>
+<section id="what-is-a-hypothesis-testing" class="level2" data-number="15.1">
+<h2 data-number="15.1" class="anchored" data-anchor-id="what-is-a-hypothesis-testing"><span class="header-section-number">15.1</span> What is a Hypothesis Testing?</h2>
+<!-- - The two major activities of inferential statistics are the **estimation** and **hypothesis testing** for population parameters. -->
+<ul>
+<li>A <strong>hypothesis</strong> is a claim or statement about a <em>property of a population</em>, often the value of a population parameter.
+<ul>
+<li><span style="color:blue"> The mean body temperature of humans is less than <span class="math inline">\(98.6^{\circ}\)</span> F, or <span class="math inline">\(\mu &lt; 98.6\)</span>. </span></li>
+<li><span style="color:blue"> Marquette students’ IQ scores has standard deviation equal to 15, or <span class="math inline">\(\sigma = 15\)</span>. </span></li>
+</ul></li>
+</ul>
+<!-- - A **hypothesis testing** <sup>1</sup> is a procedure for testing a hypothesis. -->
+<ul>
+<li><strong>Null hypothesis</strong> <span class="math inline">\((H_0)\)</span>: a statement that the value of a parameter is
+<ul>
+<li><strong>equal</strong> to some claim value</li>
+<li>the <strong>negation</strong> of the alternative hypothesis</li>
+<li>often represents a skeptical perspective to be tested</li>
+</ul></li>
+<li><strong>Alternative hypothesis</strong> <span class="math inline">\((H_1\)</span> or <span class="math inline">\(H_a)\)</span>: a claim that the parameter is <strong>less than</strong>, <strong>greater than</strong> or <strong>not equal</strong> to some value.
+<ul>
+<li>usually our <strong>research hypothesis</strong> of some new scientific theory or finding</li>
+</ul></li>
+</ul>
+</section>
+<section id="null-and-alternative-hypothesis" class="level2" data-number="15.2">
+<h2 data-number="15.2" class="anchored" data-anchor-id="null-and-alternative-hypothesis"><span class="header-section-number">15.2</span> Null and Alternative Hypothesis</h2>
+<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+A <span class="math inline">\(H_0\)</span> claim or <span class="math inline">\(H_1\)</span> claim?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
+</div>
+</div>
+<ul>
+<li><p><span style="color:blue"> The percentage of Marquette female students loving Japanese food is <strong>equal</strong> to 80%.</span></p></li>
+<li><p><span style="color:blue"> On average, Marquette students consume <strong>less than</strong> 3 drinks per week. </span></p></li>
+<li><p><strong>Hypothesis testing</strong> <sup>1</sup> is a procedure to <strong>decide whether to reject <span class="math inline">\(H_0\)</span> or not</strong> by how much evidence against <span class="math inline">\(H_0\)</span>.</p></li>
+</ul>
+<!-- - If the evidence is strong enough, we reject $H_0$ in favor of $H_1$. -->
+<p>[1] Null Hypothesis Statistical Testing (NHST), <strong>statistical testing</strong> or <strong>test of significance</strong>.</p>
+</section>
+<section id="hypothesis-testing-example" class="level2" data-number="15.3">
+<h2 data-number="15.3" class="anchored" data-anchor-id="hypothesis-testing-example"><span class="header-section-number">15.3</span> Hypothesis Testing Example</h2>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<ul>
+<li>A person is charged with a crime.
+<ul>
+<li>A jury decide whether the person is guilty or not.</li>
+<li>The accuse is assumed to be innocent until the jury declares otherwise.</li>
+<li>Only if overwhelming evidence of the person’s guilt can be shown is the jury expected to declare the person guilty, otherwise the person is considered not guilty.</li>
+</ul></li>
+</ul>
+</div>
+<div class="cell quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/img-infer/law.jpeg" class="img-fluid figure-img" style="width:40.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+What should <span class="math inline">\(H_0\)</span> and <span class="math inline">\(H_a\)</span> be?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
+</div>
+</div>
+<ul>
+<li><span class="math inline">\(H_0:\)</span> The person is <span style="color:blue"> not guilty </span> 🙂</li>
+<li><span class="math inline">\(H_1:\)</span> The person is <span style="color:blue"> guilty </span> 😟</li>
+<li>Evidence: <span style="color:blue"> Photos, videos, witness, fingerprint, DNA </span></li>
+<li>Decision Rule: <span style="color:blue"> Jury’s voting </span></li>
+<li>Conclusion: Verdict <span style="color:blue"> “guilty” </span> or <span style="color:blue"> “NOT enough evidence to convict” </span></li>
+</ul>
+</section>
+<section id="how-to-formally-do-a-statistical-hypothesis-testing" class="level2" data-number="15.4">
+<h2 data-number="15.4" class="anchored" data-anchor-id="how-to-formally-do-a-statistical-hypothesis-testing"><span class="header-section-number">15.4</span> How to Formally Do a Statistical Hypothesis Testing</h2>
+<p><strong>Step 0: Check Method Assumptions</strong> <!-- +  Random sample, normally distributed or $n > 30$, etc --></p>
+<p><strong>Step 1: Set the <span class="math inline">\(H_0\)</span> and <span class="math inline">\(H_a\)</span> in Symbolic Form from a Claim</strong> <!-- +  --></p>
+<p><strong>Step 2: Set the Significance Level <span class="math inline">\(\alpha\)</span></strong> <!-- + $\alpha = P(\text{Reject } H_0 \mid H_0 \text{ is true})$ --></p>
+<p><strong>Step 3: Calculate the Test Statistic</strong> (Evidence) <!-- + A **test statistic** is a value used in making a decision about the $H_0$. --></p>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><strong>Decision Rule I: Critical Value Method</strong></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><strong>Decision Rule II: P-Value Method</strong></p>
+</div>
+</div>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><span style="color:blue"> <strong>Step 4-c: Find the Critical Value</strong> </span></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><span style="color:red"> <strong>Step 4-p: Find the P-Value</strong> </span></p>
+</div>
+</div>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><span style="color:blue"> <strong>Step 5-c: Draw a Conclusion Using Critical Value Method</strong> </span></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><span style="color:red"> <strong>Step 5-p: Draw a Conclusion Using P-Value Method</strong> </span></p>
+</div>
+</div>
+</div>
+<p><strong>Step 6: Restate the Conclusion in Nontechnical Terms, and Address the Original Claim</strong></p>
+<ul>
+<li>😎 No worries, we will learn this step by step!</li>
+</ul>
+</section>
+<section id="the-new-treatment-is-effective" class="level2" data-number="15.5">
+<h2 data-number="15.5" class="anchored" data-anchor-id="the-new-treatment-is-effective"><span class="header-section-number">15.5</span> The New Treatment is Effective?</h2>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<ul>
+<li>A population of hypertension group is normal and has mean blood pressure (BP) 150.</li>
+<li>After 6 months of treatment, BP was recorded on 25 patients of this population, and <span class="math inline">\(\overline{x} = 147.2\)</span> and <span class="math inline">\(s = 5.5\)</span>.</li>
+<li><strong>Goal</strong>: Determine whether a new treatment is effective in reducing BP.</li>
+</ul>
+</div>
+<div class="cell quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="cell-output-display">
+<p><img src="./images/img-infer/blood_pressure.jpeg" class="img-fluid" style="width:100.0%"></p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="step-0-check-method-assumptions" class="level2" data-number="15.6">
+<h2 data-number="15.6" class="anchored" data-anchor-id="step-0-check-method-assumptions"><span class="header-section-number">15.6</span> Step 0: Check Method Assumptions</h2>
+<p>The testing methods are based on normality or approximate normality by CLT.</p>
+<ul>
+<li>Random sample</li>
+<li>Normally distributed and/or <span class="math inline">\(n &gt; 30\)</span></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/img-infer/normal_dist.jpeg" class="img-fluid figure-img" style="width:50.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="step-1-set-the-h_0-and-h_1-from-a-claim" class="level2" data-number="15.7">
+<h2 data-number="15.7" class="anchored" data-anchor-id="step-1-set-the-h_0-and-h_1-from-a-claim"><span class="header-section-number">15.7</span> Step 1: Set the <span class="math inline">\(H_0\)</span> and <span class="math inline">\(H_1\)</span> from a Claim</h2>
+<ul>
+<li>🧑‍🏫 The <em>mean</em> IQ score of statistics professors is <strong>higher than</strong> 120.
+<ul>
+<li><span style="color:blue"> <span class="math inline">\(\begin{align}&amp;H_0: \mu \le 120 \\ &amp;H_1: \mu &gt; 120 \end{align}\)</span> </span></li>
+</ul></li>
+<li>💵 The <em>mean</em> starting salary for Marquette graduates who didn’t take MATH 4720 is <strong>less than</strong> $60,000.
+<ul>
+<li><span style="color:blue"> <span class="math inline">\(\begin{align} &amp;H_0: \mu \ge 60000 \\ &amp;H_1: \mu &lt; 60000 \end{align}\)</span> </span></li>
+</ul></li>
+<li>📺 The <em>mean</em> time between uses of a TV remote control by males during commercials <strong>equals</strong> 5 sec.&nbsp;
+<ul>
+<li><span style="color:blue"> <span class="math inline">\(\begin{align} &amp;H_0: \mu = 5 \\ &amp;H_1: \mu \ne 5 \end{align}\)</span> </span></li>
+</ul></li>
+<li>The claim that <em>the new treatment is effective in reducing BP</em> means the <strong>mean BP is less than 150</strong>. ( <span class="math inline">\(H_1\)</span> claim )
+<ul>
+<li><span style="color:blue"> <span class="math inline">\(\small \begin{align} &amp;H_0: \mu = 150 \\ &amp;H_1: \mu &lt; 150 \end{align}\)</span> </span></li>
+</ul></li>
+</ul>
+</section>
+<section id="step-2-set-the-significance-level-alpha" class="level2" data-number="15.8">
+<h2 data-number="15.8" class="anchored" data-anchor-id="step-2-set-the-significance-level-alpha"><span class="header-section-number">15.8</span> Step 2: Set the Significance Level <span class="math inline">\(\alpha\)</span></h2>
+<ul>
+<li><p>The significant level <span class="math inline">\(\alpha\)</span> determines <em>how rare or unlikely our evidence must be</em> in order to represent sufficient evidence against <span class="math inline">\(H_0\)</span>.</p></li>
+<li><p>An <span class="math inline">\(\alpha\)</span> level of 0.05 implies that evidence occurring with probability lower than 5% will be considered sufficient evidence against <span class="math inline">\(H_0\)</span> (Reject <span class="math inline">\(H_0\)</span>).</p></li>
+<li><p><span class="math inline">\(\alpha = P(\text{Reject } H_0 \mid H_0 \text{ is true})\)</span></p></li>
+<li><p><span class="math inline">\(\alpha = 0.05\)</span> means that we <strong>incorrectly reject <span class="math inline">\(H_0\)</span> 5 out of every 100 times</strong> we collect a sample and run the test.</p></li>
+</ul>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="cell-output-display">
+<p><img src="infer-ht_files/figure-html/alpha-1.png" class="img-fluid" style="width:75.0%"></p>
+</div>
+</div>
+<div class="callout-note callout callout-style-default no-icon callout-captioned quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+<strong>Rare Event Rule</strong>: If, under a given assumption, the probability of a particular observed event is exceptional small, we conclude that the assumption is probably not correct.
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>Let’s set <span class="math inline">\(\alpha= 0.05\)</span>.</li>
+<li>This means we are asking, “<em>Is there a sufficient evidence at <span class="math inline">\(\alpha= 0.05\)</span> that the new treatment is effective?</em>”</li>
+</ul>
+</section>
+<section id="step-3-calculate-the-test-statistic" class="level2" data-number="15.9">
+<h2 data-number="15.9" class="anchored" data-anchor-id="step-3-calculate-the-test-statistic"><span class="header-section-number">15.9</span> Step 3: Calculate the Test Statistic</h2>
+<ul>
+<li>A <strong>test statistic</strong> is a statistic value used in making a decision about the <span class="math inline">\(H_0\)</span>.</li>
+</ul>
+<!-- - If the assumptions are checked (step 0), then decide which statistic is used. -->
+<ul>
+<li><p>Suppose <span style="color:blue"> <span class="math inline">\(H_0: \mu = \mu_0 \quad H_1: \mu &lt; \mu_0\)</span> </span></p></li>
+<li><p>When computing a test statistic, we assume <span class="math inline">\(H_0\)</span> is <strong>true</strong>.</p></li>
+<li><p>When <span class="math inline">\(\sigma\)</span> is <strong>known</strong>, the test statistic for testings about <span class="math inline">\(\mu\)</span> is</p></li>
+</ul>
+<p><span class="math display">\[\boxed{ z_{test} = \frac{\overline{x} - \color{blue}{\mu_0}}{\sigma/\sqrt{n}} }\]</span></p>
+<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Guess what test statistic we use when <span class="math inline">\(\sigma\)</span> is <strong>unknown</strong>!
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
+</div>
+</div>
+<ul>
+<li>When <span class="math inline">\(\sigma\)</span> is <strong>unknown</strong>, the test statistic for testings about <span class="math inline">\(\mu\)</span> is</li>
+</ul>
+<p><span class="math display">\[\boxed{ t_{test} = \frac{\overline{x} - \color{blue}{\mu_0}}{s/\sqrt{n}} }\]</span></p>
+<ul>
+<li><span style="color:blue"> The test statistic is <span class="math inline">\(\small t_{test} = \frac{\overline{x} - \mu_0}{s/\sqrt{n}} = \frac{147.2 - 150}{5.5/\sqrt{25}} = -2.55\)</span></span></li>
+</ul>
+</section>
+<section id="step-4-c-find-the-critical-value" class="level2" data-number="15.10">
+<h2 data-number="15.10" class="anchored" data-anchor-id="step-4-c-find-the-critical-value"><span class="header-section-number">15.10</span> Step 4-c: Find the Critical Value</h2>
+<ul>
+<li>The <strong>critical value(s)</strong> separates the <strong>rejection region</strong> or critical region (where we reject <span class="math inline">\(H_0\)</span>) from the values of the test statistic that do not lead to rejection of <span class="math inline">\(H_0\)</span>.
+<ul>
+<li>They depend on whether the test is a <strong>right-tailed</strong>, <strong>left-tailed</strong> or <strong>two-tailed</strong> test.</li>
+</ul></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/img-infer/test_type.jpeg" class="img-fluid figure-img" style="width:66.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><p>👉 <span class="math inline">\(z_{\alpha}\)</span> is such that <span class="math inline">\(P(Z &gt; z_{\alpha}) = \alpha\)</span> and <span class="math inline">\(Z \sim N(0, 1)\)</span>.</p></li>
+<li><p>👉 <span class="math inline">\(t_{\alpha, n-1}\)</span> is such that <span class="math inline">\(P(T &gt; t_{\alpha, n-1}) = \alpha\)</span> and <span class="math inline">\(T \sim t_{n-1}\)</span>.</p></li>
+</ul>
+<table class="table">
+<colgroup>
+<col style="width: 43%">
+<col style="width: 18%">
+<col style="width: 20%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Condition &nbsp; &nbsp;</th>
+<th style="text-align: center;"><strong>Right</strong>-tailed <span class="math inline">\((H_1: \mu &gt; \mu_0)\)</span></th>
+<th style="text-align: center;"><strong>Left</strong>-tailed <span class="math inline">\((H_1: \mu &lt; \mu_0)\)</span></th>
+<th style="text-align: center;"><strong>Two-tailed</strong> <span class="math inline">\((H_1: \mu \ne \mu_0)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(\sigma\)</span> known</td>
+<td style="text-align: center;"><span class="math inline">\(z_{\alpha}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-z_{\alpha}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-z_{\alpha/2}\)</span> and <span class="math inline">\(z_{\alpha/2}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(\sigma\)</span> unknown</td>
+<td style="text-align: center;"><span class="math inline">\(t_{\alpha, n-1}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-t_{\alpha, n-1}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-t_{\alpha/2, n-1}\)</span> and <span class="math inline">\(t_{\alpha/2, n-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><span class="math inline">\(z_{0.025} =\)</span> 1.96, <span class="math inline">\(z_{0.05} =\)</span> 1.64</li>
+</ul>
+<!-- - $t_{0.025, 20} =$ 2.09, $t_{0.05, 20} =$ 1.72 -->
+<ul>
+<li><span class="math inline">\(z_{\alpha}\)</span> and <span class="math inline">\(t_{\alpha, n-1}\)</span> are <em>always positive</em>.</li>
+<li><span style="color:blue"> The critical value is <span class="math inline">\(\small -t_{0.05, 25-1} = -t_{0.05, 24} = -1.711\)</span> </span></li>
+</ul>
+</section>
+<section id="step-5-c-draw-a-conclusion-using-critical-value" class="level2" data-number="15.11">
+<h2 data-number="15.11" class="anchored" data-anchor-id="step-5-c-draw-a-conclusion-using-critical-value"><span class="header-section-number">15.11</span> Step 5-c: Draw a Conclusion Using Critical Value</h2>
+<ul>
+<li>If the test statistic is
+<ul>
+<li>in the rejection region, we reject <span class="math inline">\(H_0\)</span>.</li>
+<li><em>not</em> in the rejection region, we <strong>do not</strong> or <strong>fail to</strong> reject <span class="math inline">\(H_0\)</span>.</li>
+</ul></li>
+<li><strong>Reject <span class="math inline">\(H_0\)</span> if</strong></li>
+</ul>
+<table class="table">
+<colgroup>
+<col style="width: 43%">
+<col style="width: 18%">
+<col style="width: 20%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Condition &nbsp; &nbsp;</th>
+<th style="text-align: center;"><strong>Right</strong>-tailed <span class="math inline">\((H_1: \mu &gt; \mu_0)\)</span></th>
+<th style="text-align: center;"><strong>Left</strong>-tailed <span class="math inline">\((H_1: \mu &lt; \mu_0)\)</span></th>
+<th style="text-align: center;"><strong>Two-tailed</strong> <span class="math inline">\((H_1: \mu \ne \mu_0)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(\sigma\)</span> known</td>
+<td style="text-align: center;"><span class="math inline">\(z_{test} &gt; z_{\alpha}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(z_{test} &lt; -z_{\alpha}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\mid z_{test}\mid \, &gt; z_{\alpha/2}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(\sigma\)</span> unknown</td>
+<td style="text-align: center;"><span class="math inline">\(t_{test} &gt; t_{\alpha, n-1}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(t_{test} &lt; -t_{\alpha, n-1}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\mid t_{test}\mid \, &gt; t_{\alpha/2, n-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/img-infer/rejection_region.gif" class="img-fluid figure-img" style="width:25.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><span style="color:blue"> <span class="math inline">\(\small t_{test} = \frac{\overline{x} - \mu_0}{s/\sqrt{n}} = \frac{147.2 - 150}{5.5/\sqrt{25}} = -2.55\)</span> </span></li>
+<li><span style="color:blue"> <span class="math inline">\(\small -t_{0.05, 25-1} = -t_{0.05, 24} = -1.711\)</span> </span></li>
+<li><span style="color:blue"> We reject <span class="math inline">\(H_0\)</span> if <span class="math inline">\(t_{test} &lt; -t_{\alpha, n-1}\)</span>. Since <span class="math inline">\(\small t_{test} = -2.55 &lt; -1.711 = -t_{\alpha, n-1}\)</span>, we reject <span class="math inline">\(H_0\)</span>.</span></li>
+</ul>
+</section>
+<section id="step-4-p-find-the-p-value" class="level2" data-number="15.12">
+<h2 data-number="15.12" class="anchored" data-anchor-id="step-4-p-find-the-p-value"><span class="header-section-number">15.12</span> Step 4-p: Find the P-Value</h2>
+<ul>
+<li>The <strong><span class="math inline">\(p\)</span>-value</strong> measures the strength of the evidence against <span class="math inline">\(H_0\)</span> provided by the data.</li>
+<li><em>The smaller the <span class="math inline">\(p\)</span>-value, the greater the evidence against <span class="math inline">\(H_0\)</span></em>.</li>
+<li>The <strong><span class="math inline">\(p\)</span>-value</strong> is the <strong>probability</strong> of getting a test statistic value that is <strong>at least as extreme as</strong> the one obtained from the data, assuming that <strong><span class="math inline">\(H_0\)</span> is true. <span class="math inline">\((\mu = \mu_0)\)</span></strong>
+<ul>
+<li>For example, <span class="math inline">\(p\)</span>-value <span class="math inline">\(= P(Z \ge z_{test} \mid H_0)\)</span> for a right-tailed test.</li>
+</ul></li>
+</ul>
+<!-- - The $p$-value depends on the observed test statistic and $H_1$. -->
+<!-- - We are more likely to get the $p$-value near 0 when $H_0$ is false than when $H_0$ is true. -->
+</section>
+<section id="p-value-illustration" class="level2" data-number="15.13">
+<h2 data-number="15.13" class="anchored" data-anchor-id="p-value-illustration"><span class="header-section-number">15.13</span> P-Value Illustration</h2>
+<div class="cell" data-fig.asp="0.6">
+<div class="cell-output-display">
+<p><img src="infer-ht_files/figure-html/pvalue-1.png" class="img-fluid" style="width:95.0%"></p>
+</div>
+</div>
+<ul>
+<li><span style="color:blue">This is a left-tailed test, so the <span class="math inline">\(p\)</span>-value is <span class="math inline">\(P(T &lt; t_{test})=P(T &lt; -2.55) =\)</span> 0.01 </span></li>
+</ul>
+</section>
+<section id="step-5-p-draw-a-conclusion-using-p-value-method" class="level2" data-number="15.14">
+<h2 data-number="15.14" class="anchored" data-anchor-id="step-5-p-draw-a-conclusion-using-p-value-method"><span class="header-section-number">15.14</span> Step 5-p: Draw a Conclusion Using P-Value Method</h2>
+<ul>
+<li>If the <span class="math inline">\(p\)</span>-value <span class="math inline">\(\le \alpha\)</span> , we reject <span class="math inline">\(H_0\)</span>.</li>
+<li>If the <span class="math inline">\(p\)</span>-value <span class="math inline">\(&gt; \alpha\)</span>, we do not reject or fail to reject <span class="math inline">\(H_0\)</span>.</li>
+</ul>
+<table class="table">
+<colgroup>
+<col style="width: 43%">
+<col style="width: 18%">
+<col style="width: 20%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Condition &nbsp; &nbsp;</th>
+<th style="text-align: center;"><strong>Right</strong>-tailed <span class="math inline">\((H_1: \mu &gt; \mu_0)\)</span></th>
+<th style="text-align: center;"><strong>Left</strong>-tailed <span class="math inline">\((H_1: \mu &lt; \mu_0)\)</span></th>
+<th style="text-align: center;"><strong>Two-tailed</strong> <span class="math inline">\((H_1: \mu \ne \mu_0)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(\sigma\)</span> known</td>
+<td style="text-align: center;"><span class="math inline">\(P(Z &gt; z_{test} \mid H_0)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(P(Z &lt; z_{test} \mid H_0)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(2P(Z &gt; \,\mid z_{test} \mid \, \mid H_0)\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(\sigma\)</span> unknown</td>
+<td style="text-align: center;"><span class="math inline">\(P(T &gt; t_{test} \mid H_0)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(P(T &lt; t_{test} \mid H_0)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(2P(T &gt; \, \mid t_{test} \mid \, \mid H_0)\)</span></td>
+</tr>
+</tbody>
+</table>
+<!-- - Notation $\text{abs}(a)$ means absolute value of $a$, i.e. $|a|$. -->
+<ul>
+<li><span style="color:blue"> We reject <span class="math inline">\(H_0\)</span> if <span class="math inline">\(p\)</span>-value &lt; <span class="math inline">\(\alpha\)</span>. Since <span class="math inline">\(p\)</span>-value <span class="math inline">\(= 0.01 &lt; 0.05 = \alpha\)</span>, we reject <span class="math inline">\(H_0\)</span>.</span></li>
+</ul>
+</section>
+<section id="both-methods-lead-to-the-same-conclusion" class="level2" data-number="15.15">
+<h2 data-number="15.15" class="anchored" data-anchor-id="both-methods-lead-to-the-same-conclusion"><span class="header-section-number">15.15</span> Both Methods Lead to the Same Conclusion</h2>
+<div class="cell" data-fig.asp="0.6">
+<div class="cell-output-display">
+<p><img src="infer-ht_files/figure-html/pvalue_criticalvalue-1.png" class="img-fluid" style="width:95.0%"></p>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="infer-ht_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" style="width:95.0%"></p>
+</div>
+</div>
+</section>
+<section id="step-6-restate-the-conclusion-in-nontechnical-terms-and-address-the-original-claim" class="level2" data-number="15.16">
+<h2 data-number="15.16" class="anchored" data-anchor-id="step-6-restate-the-conclusion-in-nontechnical-terms-and-address-the-original-claim"><span class="header-section-number">15.16</span> Step 6: Restate the Conclusion in Nontechnical Terms, and Address the Original Claim</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/img-infer/testing_conclusion.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">https://www.drdawnwright.com/category/statistics/</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/img-infer/yoda.jpeg" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">https://www.pinterest.com/pin/287878601159173631/</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><span style="color:blue"> <strong>There is sufficient evidence to support the claim that the new treatment is effective</strong>. </span></li>
+</ul>
+</section>
+<section id="example-calculation-in-r" class="level2" data-number="15.17">
+<h2 data-number="15.17" class="anchored" data-anchor-id="example-calculation-in-r"><span class="header-section-number">15.17</span> Example Calculation in R</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## create objects for any information we have</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.05</span>; mu_0 <span class="ot">&lt;-</span> <span class="dv">150</span>; </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>x_bar <span class="ot">&lt;-</span> <span class="fl">147.2</span>; s <span class="ot">&lt;-</span> <span class="fl">5.5</span>; n <span class="ot">&lt;-</span> <span class="dv">25</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Test statistic</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>(t_test <span class="ot">&lt;-</span> (x_bar <span class="sc">-</span> mu_0) <span class="sc">/</span> (s <span class="sc">/</span> <span class="fu">sqrt</span>(n))) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -2.545455</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Critical value</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>(t_cri <span class="ot">&lt;-</span> <span class="fu">qt</span>(alpha, <span class="at">df =</span> n <span class="sc">-</span> <span class="dv">1</span>, <span class="at">lower.tail =</span> <span class="cn">TRUE</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -1.710882</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="do">## p-value</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>(p_val <span class="ot">&lt;-</span> <span class="fu">pt</span>(t_test, <span class="at">df =</span> n <span class="sc">-</span> <span class="dv">1</span>, <span class="at">lower.tail =</span> <span class="cn">TRUE</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.008878158</code></pre>
+</div>
+</div>
+</section>
+<section id="example-2-two-tailed-z-test" class="level2" data-number="15.18">
+<h2 data-number="15.18" class="anchored" data-anchor-id="example-2-two-tailed-z-test"><span class="header-section-number">15.18</span> Example 2: Two-tailed z-test</h2>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<ul>
+<li>The milk price of a gallon of 2% milk is normally distributed with standard deviation of $0.10.
+<ul>
+<li>Last week the mean milk price was 2.78. This week, based on a sample of size 25, the sample mean milk price <span class="math inline">\(\overline{x} = 2.80\)</span>.</li>
+<li>Under <span class="math inline">\(\alpha = 0.05\)</span>, determine if this week the mean price is different.</li>
+</ul></li>
+</ul>
+</div>
+<div class="cell quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/img-infer/milk.jpeg" class="img-fluid figure-img" style="width:40.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>Step 1: This is a <span class="math inline">\(H_1\)</span> claim <span style="color:blue"> <span class="math inline">\(\small \begin{align}&amp;H_0: \mu = 2.78 \\ &amp;H_1: \mu \ne 2.78 \end{align}\)</span> </span></li>
+<li>Step 2: <span style="color:blue"> <span class="math inline">\(\small \alpha = 0.05\)</span> </span></li>
+<li>Step 3: <span style="color:blue"> <span class="math inline">\(\small z_{test} = \frac{\overline{x} - \mu_0}{\sigma/\sqrt{n}} = \frac{2.8 - 2.78}{0.1/\sqrt{25}} = 1.00\)</span> </span></li>
+<li>Step 4-c: <span style="color:blue"> <span class="math inline">\(\small z_{0.05/2} = 1.96\)</span>. </span></li>
+<li>Step 5-c: <span style="color:blue">This is a two-tailed test and we reject <span class="math inline">\(H_0\)</span> if <span class="math inline">\(|z_{test}| &gt; z_{\alpha/2}\)</span>. Since <span class="math inline">\(\small |z_{test}| = 1 &lt; 1.96 = z_{\alpha/2}\)</span>, we DO NOT reject <span class="math inline">\(H_0\)</span>.</span></li>
+<li>Step 4-p: <span style="color:blue">This is a two-tailed test, and the test statistic is on the right <span class="math inline">\((&gt; 0)\)</span>, so the <span class="math inline">\(p\)</span>-value is <span class="math inline">\(2P(Z &gt; z_{test})=\)</span> 0.317 </span></li>
+<li>Step 5-p: <span style="color:blue"> We reject <span class="math inline">\(H_0\)</span> if <span class="math inline">\(p\)</span>-value &lt; <span class="math inline">\(\alpha\)</span>. Since <span class="math inline">\(p\)</span>-value <span class="math inline">\(= 0.317 &gt; 0.05 = \alpha\)</span>, we DO NOT reject <span class="math inline">\(H_0\)</span>.</span></li>
+<li>Step 6: <span style="color:blue"> <strong>There is <em>insufficient</em> evidence to support the claim that this week the mean milk price is different from the price last week</strong>. </span></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="infer-ht_files/figure-html/example3_plot-1.png" class="img-fluid figure-img" style="width:45.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="example-2-calculation-in-r" class="level2" data-number="15.19">
+<h2 data-number="15.19" class="anchored" data-anchor-id="example-2-calculation-in-r"><span class="header-section-number">15.19</span> Example 2 Calculation in R</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="do">## create objects to be used</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.05</span>; mu_0 <span class="ot">&lt;-</span> <span class="fl">2.78</span>; </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>x_bar <span class="ot">&lt;-</span> <span class="fl">2.8</span>; sigma <span class="ot">&lt;-</span> <span class="fl">0.1</span>; n <span class="ot">&lt;-</span> <span class="dv">25</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Test statistic</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>(z_test <span class="ot">&lt;-</span> (x_bar <span class="sc">-</span> mu_0) <span class="sc">/</span> (sigma <span class="sc">/</span> <span class="fu">sqrt</span>(n))) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Critical value</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>(z_crit <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(alpha<span class="sc">/</span><span class="dv">2</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.959964</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="do">## p-value</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>(p_val <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">pnorm</span>(z_test, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3173105</code></pre>
+</div>
+</div>
+</section>
+<section id="testing-summary" class="level2" data-number="15.20">
+<h2 data-number="15.20" class="anchored" data-anchor-id="testing-summary"><span class="header-section-number">15.20</span> Testing Summary</h2>
+<table class="table">
+<colgroup>
+<col style="width: 31%">
+<col style="width: 39%">
+<col style="width: 29%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;"></th>
+<th style="text-align: center;">Numerical Data, <span class="math inline">\(\sigma\)</span> known</th>
+<th style="text-align: center;">Numerical Data, <span class="math inline">\(\sigma\)</span> <span style="color:blue"> unknown </span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>Parameter of Interest</strong></td>
+<td style="text-align: center;">Population Mean <span class="math inline">\(\mu\)</span></td>
+<td style="text-align: center;">Population Mean <span class="math inline">\(\mu\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Test Type</strong></td>
+<td style="text-align: center;">One sample <span class="math inline">\(\color{blue}{z}\)</span> test <span class="math inline">\(H_0: \mu = \mu_0\)</span></td>
+<td style="text-align: center;">One sample <span class="math inline">\(\color{blue}{t}\)</span> test <span class="math inline">\(H_0: \mu = \mu_0\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Confidence Interval</strong></td>
+<td style="text-align: center;"><span class="math inline">\(\bar{x} \pm z_{\alpha/2} \frac{\sigma}{\sqrt{n}}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\bar{x} \pm t_{\alpha/2, n-1} \frac{\color{blue}{s}}{\sqrt{n}}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Test Stat under <span class="math inline">\(H_0\)</span> </strong></td>
+<td style="text-align: center;"><span class="math inline">\(z_{test} = \frac{\overline{x} - \mu_0}{\frac{\sigma}{\sqrt{n}}}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(t_{test} = \frac{\overline{x} - \mu_0}{\frac{\color{blue}{s}}{\sqrt{n}}}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">** <span class="math inline">\(p\)</span>-value under <span class="math inline">\(H_0\)</span> **</td>
+<td style="text-align: center;"><span class="math inline">\(H_1: \mu &lt; \mu_0\)</span> <br> <span class="math inline">\(p\)</span>-value <span class="math inline">\(=P(Z \le z_{test})\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(H_1: \mu &lt; \mu_0\)</span> <br> <span class="math inline">\(p\)</span>-value <span class="math inline">\(=P(T_{n-1} \le t_{test})\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span class="math inline">\(H_1: \mu &gt; \mu_0\)</span> <br> <span class="math inline">\(p\)</span>-value <span class="math inline">\(=P(Z \ge z_{test})\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(H_1: \mu &lt; \mu_0\)</span> <br> <span class="math inline">\(p\)</span>-value <span class="math inline">\(=P(T_{n-1} \ge t_{test})\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span class="math inline">\(H_1: \mu \ne \mu_0\)</span> <br> <span class="math inline">\(p\)</span>-value <span class="math inline">\(=2P(Z \ge \, \mid z_{test}\mid)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(H_1: \mu \ne \mu_0\)</span> <br> <span class="math inline">\(p\)</span>-value <span class="math inline">\(=2P(T_{n-1} \ge \, \mid t_{test} \mid)\)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="type-i-and-type-ii-errors" class="level2" data-number="15.21">
+<h2 data-number="15.21" class="anchored" data-anchor-id="type-i-and-type-ii-errors"><span class="header-section-number">15.21</span> Type I and Type II Errors</h2>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Decision</th>
+<th><span class="math inline">\(H_0\)</span> is true</th>
+<th><span class="math inline">\(H_0\)</span> is false</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Reject <span class="math inline">\(H_0\)</span></td>
+<td><strong>Type I error</strong></td>
+<td>Correct decision</td>
+</tr>
+<tr class="even">
+<td>Do not reject <span class="math inline">\(H_0\)</span></td>
+<td>Correct decision</td>
+<td><strong>Type II error</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Back to the crime example: <span class="math inline">\(H_0:\)</span> The person is <span style="color:blue"> not guilty </span> v.s. <span class="math inline">\(H_1:\)</span> The person is <span style="color:blue"> guilty </span></li>
+</ul>
+<table class="table">
+<colgroup>
+<col style="width: 31%">
+<col style="width: 33%">
+<col style="width: 35%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Decision</th>
+<th>Truth is the person innocent</th>
+<th>Truth is the person guilty</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Jury decides the person guilty</td>
+<td><strong>Type I error</strong></td>
+<td>Correct decision</td>
+</tr>
+<tr class="even">
+<td>Jury decides the person innocent</td>
+<td>Correct decision</td>
+<td><strong>Type II error</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><span class="math inline">\(\alpha = P(\text{type I error}) = P(\text{rejecting } H_0 \text{ when } H_0 \text{ is true})\)</span></li>
+<li><span class="math inline">\(\beta = P(\text{type II error}) = P(\text{failing to reject } H_0 \text{ when } H_0 \text{ is false})\)</span></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/img-infer/error_type.webp" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">https://www.statisticssolutions.com/wp-content/uploads/2017/12/rachnovblog.jpg</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
 
 
 </section>
@@ -351,6 +1130,24 @@ ul.task-list{list-style: none;}
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
@@ -400,7 +1197,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   for (var i=0; i<noterefs.length; i++) {
     const ref = noterefs[i];
     tippyHover(ref, function() {
-      let href = ref.getAttribute('href');
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
