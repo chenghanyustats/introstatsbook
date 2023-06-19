@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.251">
-
+<meta name="generator" content="quarto-1.2.335">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
 <meta name="description" content="This book serves as a main reference book for my MATH 4720 Statistical Methods and MATH 4740 Biostatistical Methods at Marquette University. Some topics can also be discussed in an introductory data science course. You’ll learn basic probability and statistical concepts as well as data analysis techniques such as linear regression using R computing software.">
-
 <title>Introduction to Statistics - 18&nbsp; Inference About Proportions</title>
 <style>
 code{white-space: pre-wrap;}
@@ -86,7 +83,6 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
-
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
@@ -104,8 +100,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
-<script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -123,50 +118,40 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit"
   }
-}</script>
-
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
+}</script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 </head>
-
 <body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-    <div class="container-fluid d-flex justify-content-between">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }"><div class="container-fluid d-flex justify-content-between">
       <h1 class="quarto-secondary-nav-title"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Inference About Proportions</span></h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Introduction to Statistics</a> 
         <div class="sidebar-tools-main">
     <a href="https://github.com/chenghanyustats/introstatsbook" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
     <a href="" title="Share" id="sidebar-tool-dropdown-0" class="sidebar-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-share"></i></a>
     <ul class="dropdown-menu" aria-labelledby="sidebar-tool-dropdown-0">
-        <li>
-          <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
+<li>
+          <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=%7Curl%7C">
             <i class="bi bi-bi-twitter pe-1"></i>
           Twitter
           </a>
         </li>
         <li>
-          <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=|url|">
+          <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=%7Curl%7C">
             <i class="bi bi-bi-facebook pe-1"></i>
           Facebook
           </a>
         </li>
         <li>
-          <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=|url|">
+          <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=%7Curl%7C">
             <i class="bi bi-bi-linkedin pe-1"></i>
           LinkedIn
           </a>
@@ -182,7 +167,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">Welcome</a>
   </div>
@@ -194,8 +179,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./intro-stats.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Science of Data and Data Science</span></a>
   </div>
@@ -211,7 +196,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./datasummary.html" class="sidebar-item-text sidebar-link">Summarizing Data</a>
@@ -219,8 +204,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./data-graphics.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Visualization</span></a>
   </div>
@@ -231,7 +216,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./prob.html" class="sidebar-item-text sidebar-link">Probability</a>
@@ -239,8 +224,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prob-define.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Definition of Probability</span></a>
   </div>
@@ -276,7 +261,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./infer.html" class="sidebar-item-text sidebar-link">Statistical Inference</a>
@@ -284,8 +269,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-ci.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Confidence Interval</span></a>
   </div>
@@ -336,7 +321,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./model.html" class="sidebar-item-text sidebar-link">Statistical Models</a>
@@ -344,8 +329,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-anova.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></a>
   </div>
@@ -371,57 +356,44 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./references.html" class="sidebar-item-text sidebar-link">References</a>
   </div>
 </li>
     </ul>
-    </div>
-</nav>
-<!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
+</div>
+</nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="toc-section-number">18.1</span>  Introduction</a></li>
+<li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="toc-section-number">18.1</span>  Introduction</a></li>
   <li><a href="#inference-for-a-single-proportion" id="toc-inference-for-a-single-proportion" class="nav-link" data-scroll-target="#inference-for-a-single-proportion"><span class="toc-section-number">18.2</span>  Inference for a Single Proportion</a></li>
   <li><a href="#inference-for-two-proportions" id="toc-inference-for-two-proportions" class="nav-link" data-scroll-target="#inference-for-two-proportions"><span class="toc-section-number">18.3</span>  Inference for Two Proportions</a></li>
   <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="toc-section-number">18.4</span>  Exercises</a></li>
-  </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/infer-prop.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/infer-prop.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
 <h1 class="title"><span id="sec-infer-prop" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Inference About Proportions</span></span></h1>
 </div>
 
-<div>
-  <div class="description">
-    <p>This book serves as a main reference book for my MATH 4720 Statistical Methods and MATH 4740 Biostatistical Methods at Marquette University. Some topics can also be discussed in an introductory data science course. You’ll learn basic probability and statistical concepts as well as data analysis techniques such as linear regression using R computing software.</p>
-  </div>
-</div>
 
 
 <div class="quarto-title-meta">
 
     
+  
     
   </div>
   
 
-</header>
-
-<div class="cell">
+</header><div class="cell">
 
 </div>
-<section id="introduction" class="level2" data-number="18.1">
-<h2 data-number="18.1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">18.1</span> Introduction</h2>
+<section id="introduction" class="level2" data-number="18.1"><h2 data-number="18.1" class="anchored" data-anchor-id="introduction">
+<span class="header-section-number">18.1</span> Introduction</h2>
 <p><span style="color:blue"> <strong>One Categorical Variable with Two Categories</strong> </span></p>
 <ul>
 <li>Let <span class="math inline">\(X\)</span> be the categorical variable Gender with 2 categories, Male and Female.</li>
@@ -429,13 +401,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="columns">
 <div class="column" style="width:49%;">
 <table class="table">
-<thead>
-<tr class="header">
+<thead><tr class="header">
 <th style="text-align: center;">Subject</th>
 <th style="text-align: center;">Male</th>
 <th style="text-align: center;">Female</th>
-</tr>
-</thead>
+</tr></thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: center;">1</td>
@@ -463,12 +433,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <strong>One-way frequency/count table</strong>
 </center>
 <table class="table">
-<thead>
-<tr class="header">
+<thead><tr class="header">
 <th style="text-align: center;"><span class="math inline">\(X\)</span></th>
 <th style="text-align: center;">Count</th>
-</tr>
-</thead>
+</tr></thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: center;">Male</td>
@@ -486,8 +454,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="./images/img-infer/class.jpeg" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="./images/img-infer/class.jpeg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -513,25 +480,31 @@ What probability distribution might be appropriate for the count, <span class="m
 <hr>
 <p><span style="color:blue"> <strong>Probability Distribution for Count Data: Two Levels</strong> </span></p>
 <ul>
-<li><span class="math inline">\(binomial(n, \pi)\)</span> could be a good option for count data with 2 categories.
+<li>
+<span class="math inline">\(binomial(n, \pi)\)</span> could be a good option for count data with 2 categories.
 <ul>
-<li>Fixed number of trials. <span style="color:blue"> (Fixed <span class="math inline">\(n\)</span> subjects) </span></li>
-<li>Each trial results in one of two outcomes. <span style="color:blue"> (Either <span class="math inline">\(M\)</span> or <span class="math inline">\(F\)</span>) </span></li>
-<li>Trials are independent. <span style="color:blue"> (If the subjects are randomly sampled) </span></li>
-</ul></li>
-<li>If the proportion of being in category, <span class="math inline">\(M\)</span>, is <span class="math inline">\(\pi\)</span>, the count, <span class="math inline">\(Y\)</span>, has <span class="math display">\[P(Y = y \mid n, \pi) = \frac{n!}{y!(n-y)!}\pi^{y}(1-\pi)^{n-y}\]</span></li>
-<li>Goal: <strong>Estimate or test the population proportion, <span class="math inline">\(\pi\)</span>, of the category</strong>, <span class="math inline">\(M\)</span>.</li>
+<li>Fixed number of trials. <span style="color:blue"> (Fixed <span class="math inline">\(n\)</span> subjects) </span>
+</li>
+<li>Each trial results in one of two outcomes. <span style="color:blue"> (Either <span class="math inline">\(M\)</span> or <span class="math inline">\(F\)</span>) </span>
+</li>
+<li>Trials are independent. <span style="color:blue"> (If the subjects are randomly sampled) </span>
+</li>
 </ul>
-</section>
-<section id="inference-for-a-single-proportion" class="level2" data-number="18.2">
-<h2 data-number="18.2" class="anchored" data-anchor-id="inference-for-a-single-proportion"><span class="header-section-number">18.2</span> Inference for a Single Proportion</h2>
+</li>
+<li>If the proportion of being in category, <span class="math inline">\(M\)</span>, is <span class="math inline">\(\pi\)</span>, the count, <span class="math inline">\(Y\)</span>, has <span class="math display">\[P(Y = y \mid n, \pi) = \frac{n!}{y!(n-y)!}\pi^{y}(1-\pi)^{n-y}\]</span>
+</li>
+<li>Goal: <strong>Estimate or test the population proportion, <span class="math inline">\(\pi\)</span>, of the category</strong>, <span class="math inline">\(M\)</span>.</li>
+</ul></section><section id="inference-for-a-single-proportion" class="level2" data-number="18.2"><h2 data-number="18.2" class="anchored" data-anchor-id="inference-for-a-single-proportion">
+<span class="header-section-number">18.2</span> Inference for a Single Proportion</h2>
 <p><span style="color:blue"> <strong>Hypothesis Testing for <span class="math inline">\(\pi\)</span> (Exact Binom Test)</strong> </span></p>
 <p><span style="color:red"> Step 0: Method Assumptions </span></p>
 <ul>
-<li><span style="color:blue"> <span class="math inline">\(n\pi_0 \ge 5\)</span> and <span class="math inline">\(n(1-\pi_0) \ge 5\)</span> </span>
+<li>
+<span style="color:blue"> <span class="math inline">\(n\pi_0 \ge 5\)</span> and <span class="math inline">\(n(1-\pi_0) \ge 5\)</span> </span>
 <ul>
 <li>The larger, the better</li>
-</ul></li>
+</ul>
+</li>
 </ul>
 <p><span style="color:red"> Step 1: Set the Null and Alternative Hypothesis </span></p>
 <ul>
@@ -570,10 +543,15 @@ Note
 <ul>
 <li>Assumptions:
 <ul>
-<li><span class="math inline">\(n\hat{\pi} \ge 5\)</span> and <span class="math inline">\(n(1-\hat{\pi}) \ge 5\)</span></li>
-</ul></li>
+<li>
+<span class="math inline">\(n\hat{\pi} \ge 5\)</span> and <span class="math inline">\(n(1-\hat{\pi}) \ge 5\)</span>
+</li>
+</ul>
+</li>
 <li>The <span class="math inline">\(100(1 - \alpha)\%\)</span> confidence interval for <span class="math inline">\(\pi\)</span> is <span class="math display">\[\hat{\pi} \pm z_{\alpha/2}\sqrt{\frac{\pi(1-\pi)}{n}}\]</span> where <span class="math inline">\(\hat{\pi} = y/n\)</span>.</li>
-<li><span class="math inline">\(\pi\)</span> is unknown, so we use the estimate, <span class="math inline">\(\hat{\pi}\)</span>, instead: <span class="math display">\[\hat{\pi} \pm z_{\alpha/2}\sqrt{\frac{\hat{\pi}(1-\hat{\pi})}{n}}\]</span></li>
+<li>
+<span class="math inline">\(\pi\)</span> is unknown, so we use the estimate, <span class="math inline">\(\hat{\pi}\)</span>, instead: <span class="math display">\[\hat{\pi} \pm z_{\alpha/2}\sqrt{\frac{\hat{\pi}(1-\hat{\pi})}{n}}\]</span>
+</li>
 </ul>
 <div class="callout-note callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
@@ -598,13 +576,11 @@ Note
 <div class="columns">
 <div class="column" style="width:49%;">
 <table class="table">
-<thead>
-<tr class="header">
+<thead><tr class="header">
 <th style="text-align: center;">Voter</th>
 <th style="text-align: center;">R</th>
 <th style="text-align: center;">D</th>
-</tr>
-</thead>
+</tr></thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: center;">1</td>
@@ -634,8 +610,7 @@ Note
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="./images/img-infer/vote.jpeg" class="img-fluid figure-img" style="width:80.0%"></p>
+<figure class="figure"><p><img src="./images/img-infer/vote.jpeg" class="img-fluid figure-img" style="width:80.0%"></p>
 </figure>
 </div>
 </div>
@@ -647,11 +622,14 @@ Note
 <li>Let <span class="math inline">\(Y\)</span> be the number of voters that voted for <strong>R</strong>.</li>
 <li>Assume the count, <span class="math inline">\(Y\)</span>, is sampled from <span class="math inline">\(binomial(n = 1000, \pi)\)</span>.
 <ul>
-<li><span class="math inline">\(\pi = P(\text{a voter voted for R}) =\)</span> (population) proportion of all voters that for R
+<li>
+<span class="math inline">\(\pi = P(\text{a voter voted for R}) =\)</span> (population) proportion of all voters that for R
 <ul>
 <li>This is the <strong>unknown</strong> parameter to be estimated or tested.</li>
-</ul></li>
-</ul></li>
+</ul>
+</li>
+</ul>
+</li>
 <li>Predict whether or not <strong>R won the election</strong>.</li>
 </ul>
 <div class="callout-note callout callout-style-default no-icon callout-captioned">
@@ -708,8 +686,10 @@ What are <span class="math inline">\(H_0\)</span> and <span class="math inline">
 <ul>
 <li>Assumptions:
 <ul>
-<li><span class="math inline">\(n\hat{\pi} = 1000(0.52) = 520 \ge 5\)</span> and <span class="math inline">\(n(1-\hat{\pi}) = 480 \ge 5\)</span>.</li>
-</ul></li>
+<li>
+<span class="math inline">\(n\hat{\pi} = 1000(0.52) = 520 \ge 5\)</span> and <span class="math inline">\(n(1-\hat{\pi}) = 480 \ge 5\)</span>.</li>
+</ul>
+</li>
 <li>Estimate the proportion of all voters that voted for <strong>R</strong> using a 95% confidence interval.</li>
 </ul>
 <p><span class="math display">\[\hat{\pi} \pm z_{\alpha/2}\sqrt{\frac{\hat{\pi}(1-\hat{\pi})}{n}} = 0.52 \pm z_{0.025}\sqrt{\frac{0.52(1-0.52)}{1000}} = (0.49, 0.55).\]</span></p>
@@ -717,9 +697,9 @@ What are <span class="math inline">\(H_0\)</span> and <span class="math inline">
 <li>Below is a demonstration of how to perform a binomial test in R.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use alternative = "two.sided" to get CI</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># binom.test()</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.test</span>(<span class="at">x =</span> <span class="dv">520</span>, <span class="at">n =</span> <span class="dv">1000</span>, <span class="at">p =</span> <span class="fl">0.5</span>, <span class="at">alternative =</span> <span class="st">"greater"</span>, <span class="at">correct =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Use alternative = "two.sided" to get CI</span></span>
+<span><span class="co"># binom.test()</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/prop.test.html">prop.test</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">520</span>, n <span class="op">=</span> <span class="fl">1000</span>, p <span class="op">=</span> <span class="fl">0.5</span>, alternative <span class="op">=</span> <span class="st">"greater"</span>, correct <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     1-sample proportions test without continuity correction
@@ -734,26 +714,27 @@ sample estimates:
 0.52 </code></pre>
 </div>
 </div>
-</section>
-<section id="inference-for-two-proportions" class="level2" data-number="18.3">
-<h2 data-number="18.3" class="anchored" data-anchor-id="inference-for-two-proportions"><span class="header-section-number">18.3</span> Inference for Two Proportions</h2>
+</section><section id="inference-for-two-proportions" class="level2" data-number="18.3"><h2 data-number="18.3" class="anchored" data-anchor-id="inference-for-two-proportions">
+<span class="header-section-number">18.3</span> Inference for Two Proportions</h2>
 <div class="columns">
 <div class="column" style="width:53%;">
 <table class="table">
-<thead>
-<tr class="header">
+<thead><tr class="header">
 <th style="text-align: center;">Group 1</th>
 <th style="text-align: center;">Group 2</th>
-</tr>
-</thead>
+</tr></thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(n_1\)</span> trials</td>
-<td style="text-align: center;"><span class="math inline">\(n_2\)</span> trials</td>
+<td style="text-align: center;">
+<span class="math inline">\(n_1\)</span> trials</td>
+<td style="text-align: center;">
+<span class="math inline">\(n_2\)</span> trials</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;"><span class="math inline">\(Y_1\)</span> number of successes</td>
-<td style="text-align: center;"><span class="math inline">\(Y_2\)</span> number of successes</td>
+<td style="text-align: center;">
+<span class="math inline">\(Y_1\)</span> number of successes</td>
+<td style="text-align: center;">
+<span class="math inline">\(Y_2\)</span> number of successes</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><span class="math inline">\(Y_1 \sim binomial(n_1, \pi_1)\)</span></td>
@@ -762,8 +743,10 @@ sample estimates:
 </tbody>
 </table>
 <ul>
-<li><span class="math inline">\(\pi_1\)</span>: Population proportion of success of Group 1</li>
-<li><span class="math inline">\(\pi_2\)</span>: Population proportion of success of Group 2</li>
+<li>
+<span class="math inline">\(\pi_1\)</span>: Population proportion of success of Group 1</li>
+<li>
+<span class="math inline">\(\pi_2\)</span>: Population proportion of success of Group 2</li>
 </ul>
 </div><div class="column" style="width:2%;">
 
@@ -774,8 +757,7 @@ sample estimates:
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="./images/img-infer/trump_rate.png" class="img-fluid figure-img" style="width:90.0%"></p>
+<figure class="figure"><p><img src="./images/img-infer/trump_rate.png" class="img-fluid figure-img" style="width:90.0%"></p>
 </figure>
 </div>
 </div>
@@ -800,22 +782,28 @@ sample estimates:
 <p><span style="color:red"> Step 4-c: Find the Critical Value <span class="math inline">\(z_{\alpha}\)</span> (one-tailed) or <span class="math inline">\(z_{\alpha/2}\)</span> (two-tailed) </span></p>
 <p><span style="color:red"> Step 5-c: Draw a Conclusion Using Critical Value Method </span></p>
 <ul>
-<li><span style="color:blue"> Reject <span class="math inline">\(H_0\)</span> in favor of <span class="math inline">\(H_1\)</span> if </span>
+<li>
+<span style="color:blue"> Reject <span class="math inline">\(H_0\)</span> in favor of <span class="math inline">\(H_1\)</span> if </span>
 <ul>
 <li><span style="color:blue"> <span class="math inline">\(H_1: \pi_1 &gt; \pi_2\)</span>: Reject <span class="math inline">\(H_0\)</span> in favor of <span class="math inline">\(H_1\)</span> if <span class="math inline">\(z &gt; z_{\alpha}\)</span> </span></li>
 <li><span style="color:blue"> <span class="math inline">\(H_1: \pi_1 &lt; \pi_2\)</span>: Reject <span class="math inline">\(H_0\)</span> in favor of <span class="math inline">\(H_1\)</span> if <span class="math inline">\(z &lt; -z_{\alpha}\)</span> </span></li>
 <li><span style="color:blue"> <span class="math inline">\(H_1: \pi_1 \ne \pi_2\)</span>: Reject <span class="math inline">\(H_0\)</span> in favor of <span class="math inline">\(H_1\)</span> if <span class="math inline">\(|z| &gt; z_{\alpha/2}\)</span> </span></li>
-</ul></li>
+</ul>
+</li>
 </ul>
 <p><span style="color:red"> Step 6: Restate the Conclusion in Nontechnical Terms, and Address the Original Claim </span></p>
 <hr>
 <p><span style="color:blue"> <strong>Confidence Interval for <span class="math inline">\(\pi_1 - \pi_2\)</span></strong></span></p>
 <ul>
-<li>The <span class="math inline">\(100(1 - \alpha)\%\)</span> confidence interval for <span class="math inline">\(\pi_1 - \pi_2\)</span> is <span class="math display">\[\hat{\pi}_1 - \hat{\pi}_2 \pm z_{\alpha/2}\sqrt{\frac{\hat{\pi}_1(1-\hat{\pi}_1)}{n_1}+\frac{\hat{\pi}_2(1-\hat{\pi}_2)}{n_2}}\]</span></li>
+<li>The <span class="math inline">\(100(1 - \alpha)\%\)</span> confidence interval for <span class="math inline">\(\pi_1 - \pi_2\)</span> is <span class="math display">\[\hat{\pi}_1 - \hat{\pi}_2 \pm z_{\alpha/2}\sqrt{\frac{\hat{\pi}_1(1-\hat{\pi}_1)}{n_1}+\frac{\hat{\pi}_2(1-\hat{\pi}_2)}{n_2}}\]</span>
+</li>
 <li>Requirements:
 <ul>
-<li><span class="math inline">\(n_1\hat{\pi}_1 \ge 5\)</span>, <span class="math inline">\(n_1(1-\hat{\pi}_1) \ge 5\)</span> and <span class="math inline">\(n_2\hat{\pi}_2 \ge 5\)</span>, <span class="math inline">\(n_2(1-\hat{\pi}_2) \ge 5\)</span></li>
-</ul></li>
+<li>
+<span class="math inline">\(n_1\hat{\pi}_1 \ge 5\)</span>, <span class="math inline">\(n_1(1-\hat{\pi}_1) \ge 5\)</span> and <span class="math inline">\(n_2\hat{\pi}_2 \ge 5\)</span>, <span class="math inline">\(n_2(1-\hat{\pi}_2) \ge 5\)</span>
+</li>
+</ul>
+</li>
 </ul>
 <hr>
 <p><span style="color:blue"> <strong>Example: Effectiveness of Learning</strong> </span></p>
@@ -827,14 +815,14 @@ sample estimates:
 <ul>
 <li>125 students to the online program</li>
 <li>the remaining 175 to the in-person program</li>
-</ul></li>
+</ul>
+</li>
 </ul>
 </div><div class="column" style="width:30%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="./images/img-infer/online_learning.jpeg" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="./images/img-infer/online_learning.jpeg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -842,13 +830,11 @@ sample estimates:
 </div>
 </div>
 <table class="table">
-<thead>
-<tr class="header">
+<thead><tr class="header">
 <th style="text-align: center;">Exam Results</th>
 <th style="text-align: center;">Online Instruction</th>
 <th style="text-align: center;">In-Person Instruction</th>
-</tr>
-</thead>
+</tr></thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: center;">Pass</td>
@@ -888,9 +874,11 @@ Is there sufficient evidence to conclude that the online program is more effecti
 </ul>
 <p><span style="color:red"> Step 1 </span></p>
 <ul>
-<li><span style="color:blue"> <span class="math inline">\(H_0: \pi_1 = \pi_2\)</span> vs.&nbsp;<span class="math inline">\(H_1: \pi_1 &gt; \pi_2\)</span> </span><br>
+<li>
+<span style="color:blue"> <span class="math inline">\(H_0: \pi_1 = \pi_2\)</span> vs.&nbsp;<span class="math inline">\(H_1: \pi_1 &gt; \pi_2\)</span> </span><br>
 </li>
-<li><span class="math inline">\(\pi_1\)</span> <span class="math inline">\((\pi_2)\)</span> is the population proportion of students passing the exam in the online (in-person) program.</li>
+<li>
+<span class="math inline">\(\pi_1\)</span> <span class="math inline">\((\pi_2)\)</span> is the population proportion of students passing the exam in the online (in-person) program.</li>
 </ul>
 <p><span style="color:red"> Step 2 </span></p>
 <ul>
@@ -917,10 +905,12 @@ Is there sufficient evidence to conclude that the online program is more effecti
 <p><span style="color:red"> <strong><em>Confidence Interval</em></strong> </span></p>
 <ul>
 <li>We want to know how effective the online program is.</li>
-<li>Estimate <span class="math inline">\(\pi_1 - \pi_2\)</span> using a <span class="math inline">\(95\%\)</span> confidence interval. <span class="math display">\[\hat{\pi}_1 - \hat{\pi}_2 \pm z_{\alpha/2}\sqrt{\frac{\hat{\pi}_1(1-\hat{\pi}_1)}{n_1}+\frac{\hat{\pi}_2(1-\hat{\pi}_2)}{n_2}}\]</span></li>
+<li>Estimate <span class="math inline">\(\pi_1 - \pi_2\)</span> using a <span class="math inline">\(95\%\)</span> confidence interval. <span class="math display">\[\hat{\pi}_1 - \hat{\pi}_2 \pm z_{\alpha/2}\sqrt{\frac{\hat{\pi}_1(1-\hat{\pi}_1)}{n_1}+\frac{\hat{\pi}_2(1-\hat{\pi}_2)}{n_2}}\]</span>
+</li>
 <li><span class="math inline">\(z_{0.05/2} = 1.96\)</span></li>
 <li>The 95% confidence interval is <span class="math display">\[0.75 - 0.65 \pm 1.96\sqrt{\frac{(0.75)(1-0.75)}{125} + \frac{(0.65)(1-0.65)}{175}}\\
-= (0.002, 0.210)\]</span></li>
+= (0.002, 0.210)\]</span>
+</li>
 <li>Because 0 is not included in this interval, we reach the same conclusion as the hypothesis testing.</li>
 </ul>
 <p><span style="color:red"> <strong><em>Implementation in R</em></strong> </span></p>
@@ -928,8 +918,8 @@ Is there sufficient evidence to conclude that the online program is more effecti
 <li>Below is a demonstration of how to make inferences about two proportions in R.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use alternative = "two.sided" to get CI</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.test</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">94</span>, <span class="dv">113</span>), <span class="at">n =</span> <span class="fu">c</span>(<span class="dv">125</span>, <span class="dv">175</span>), <span class="at">alternative =</span> <span class="st">"greater"</span>, <span class="at">correct =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Use alternative = "two.sided" to get CI</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/prop.test.html">prop.test</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">94</span>, <span class="fl">113</span><span class="op">)</span>, n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">125</span>, <span class="fl">175</span><span class="op">)</span>, alternative <span class="op">=</span> <span class="st">"greater"</span>, correct <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     2-sample test for equality of proportions without continuity correction
@@ -943,30 +933,27 @@ sample estimates:
    prop 1    prop 2 
 0.7520000 0.6457143 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>prop_ci <span class="ot">&lt;-</span> <span class="fu">prop.test</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">94</span>, <span class="dv">113</span>), <span class="at">n =</span> <span class="fu">c</span>(<span class="dv">125</span>, <span class="dv">175</span>), <span class="at">alternative =</span> <span class="st">"two.sided"</span>, <span class="at">correct =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>prop_ci<span class="sc">$</span>conf.int</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">prop_ci</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/prop.test.html">prop.test</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">94</span>, <span class="fl">113</span><span class="op">)</span>, n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">125</span>, <span class="fl">175</span><span class="op">)</span>, alternative <span class="op">=</span> <span class="st">"two.sided"</span>, correct <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">prop_ci</span><span class="op">$</span><span class="va">conf.int</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.002588801 0.209982628
 attr(,"conf.level")
 [1] 0.95</code></pre>
 </div>
 </div>
-</section>
-<section id="exercises" class="level2" data-number="18.4">
-<h2 data-number="18.4" class="anchored" data-anchor-id="exercises"><span class="header-section-number">18.4</span> Exercises</h2>
+</section><section id="exercises" class="level2" data-number="18.4"><h2 data-number="18.4" class="anchored" data-anchor-id="exercises">
+<span class="header-section-number">18.4</span> Exercises</h2>
 <ol type="1">
 <li>Lipitor (atorvastatin) is a drug used to control cholesterol. In clinical trials of Lipitor, 98 subjects were treated with Lipitor and 245 subjects were given a placebo. Among those treated with Lipitor, 6 developed infections. Among those given a placebo, 24 developed infections. Use a 0.05 significance level to test the claim that the rate of inflections was the same for those treated with Lipitor and those given a placebo.
 <ol type="a">
 <li>Test the claim using the critical-value and p-value methods.</li>
 <li>Test the claim by constructing a confidence interval.</li>
-</ol></li>
+</ol>
+</li>
 </ol>
 
 
-</section>
-
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -1007,7 +994,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
     button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
     setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
       button.setAttribute("title", currentTitle);
       button.classList.remove('code-copy-button-checked');
     }, 1000);
@@ -1043,29 +1047,45 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
   var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
   for (var i=0; i<bibliorefs.length; i++) {
     const ref = bibliorefs[i];
-    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-    tippyHover(ref, function() {
-      var popup = window.document.createElement('div');
-      cites.forEach(function(cite) {
-        var citeDiv = window.document.createElement('div');
-        citeDiv.classList.add('hanging-indent');
-        citeDiv.classList.add('csl-entry');
-        var biblioDiv = window.document.getElementById('ref-' + cite);
-        if (biblioDiv) {
-          citeDiv.innerHTML = biblioDiv.innerHTML;
-        }
-        popup.appendChild(citeDiv);
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
       });
-      return popup.innerHTML;
-    });
+    }
   }
 });
-</script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./infer-var.html" class="pagination-link">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Inference About Variances</span></span>
       </a>          
@@ -1077,22 +1097,20 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<footer class="footer">
-  <div class="nav-footer">
+<footer class="footer"><div class="nav-footer">
     <div class="nav-footer-left">Copyright 2022, Cheng-Han Yu</div>   
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
-    <li class="nav-item compact">
+<li class="nav-item compact">
     <a class="nav-link active" href="https://github.com/chenghanyustats/introstatsbook" aria-current="page">
       <i class="bi bi-github" role="img">
 </i> 
     </a>
   </li>  
 </ul>
-    </div>
+</div>
   </div>
 </footer>
-
 
 
 </body></html>

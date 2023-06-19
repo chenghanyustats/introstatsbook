@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.251">
-
+<meta name="generator" content="quarto-1.2.335">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
 <meta name="description" content="This book serves as a main reference book for my MATH 4720 Statistical Methods and MATH 4740 Biostatistical Methods at Marquette University. Some topics can also be discussed in an introductory data science course. You’ll learn basic probability and statistical concepts as well as data analysis techniques such as linear regression using R computing software.">
-
 <title>Introduction to Statistics - 27&nbsp; Survival Analysis</title>
 <style>
 code{white-space: pre-wrap;}
@@ -22,7 +19,6 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 </style>
-
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
@@ -41,8 +37,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
-<script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -60,50 +55,40 @@ ul.task-list li input[type="checkbox"] {
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit"
   }
-}</script>
-
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
+}</script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 </head>
-
 <body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-    <div class="container-fluid d-flex justify-content-between">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }"><div class="container-fluid d-flex justify-content-between">
       <h1 class="quarto-secondary-nav-title"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Survival Analysis</span></h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Introduction to Statistics</a> 
         <div class="sidebar-tools-main">
     <a href="https://github.com/chenghanyustats/introstatsbook" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
     <a href="" title="Share" id="sidebar-tool-dropdown-0" class="sidebar-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-share"></i></a>
     <ul class="dropdown-menu" aria-labelledby="sidebar-tool-dropdown-0">
-        <li>
-          <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
+<li>
+          <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=%7Curl%7C">
             <i class="bi bi-bi-twitter pe-1"></i>
           Twitter
           </a>
         </li>
         <li>
-          <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=|url|">
+          <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=%7Curl%7C">
             <i class="bi bi-bi-facebook pe-1"></i>
           Facebook
           </a>
         </li>
         <li>
-          <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=|url|">
+          <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=%7Curl%7C">
             <i class="bi bi-bi-linkedin pe-1"></i>
           LinkedIn
           </a>
@@ -119,7 +104,7 @@ ul.task-list li input[type="checkbox"] {
       </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">Welcome</a>
   </div>
@@ -131,8 +116,8 @@ ul.task-list li input[type="checkbox"] {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./intro-stats.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Science of Data and Data Science</span></a>
   </div>
@@ -148,7 +133,7 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./datasummary.html" class="sidebar-item-text sidebar-link">Summarizing Data</a>
@@ -156,8 +141,8 @@ ul.task-list li input[type="checkbox"] {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./data-graphics.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Visualization</span></a>
   </div>
@@ -168,7 +153,7 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./prob.html" class="sidebar-item-text sidebar-link">Probability</a>
@@ -176,8 +161,8 @@ ul.task-list li input[type="checkbox"] {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prob-define.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Definition of Probability</span></a>
   </div>
@@ -213,7 +198,7 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./infer.html" class="sidebar-item-text sidebar-link">Statistical Inference</a>
@@ -221,8 +206,8 @@ ul.task-list li input[type="checkbox"] {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-ci.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Confidence Interval</span></a>
   </div>
@@ -273,7 +258,7 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./model.html" class="sidebar-item-text sidebar-link">Statistical Models</a>
@@ -281,8 +266,8 @@ ul.task-list li input[type="checkbox"] {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-anova.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></a>
   </div>
@@ -308,52 +293,39 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./references.html" class="sidebar-item-text sidebar-link">References</a>
   </div>
 </li>
     </ul>
-    </div>
-</nav>
-<!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
+</div>
+</nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#life-table" id="toc-life-table" class="nav-link active" data-scroll-target="#life-table"><span class="toc-section-number">27.1</span>  Life Table</a></li>
+<li><a href="#life-table" id="toc-life-table" class="nav-link active" data-scroll-target="#life-table"><span class="toc-section-number">27.1</span>  Life Table</a></li>
   <li><a href="#applications-of-life-tables" id="toc-applications-of-life-tables" class="nav-link" data-scroll-target="#applications-of-life-tables"><span class="toc-section-number">27.2</span>  Applications of Life Tables</a></li>
   <li><a href="#kaplan-meier-survival-analysis" id="toc-kaplan-meier-survival-analysis" class="nav-link" data-scroll-target="#kaplan-meier-survival-analysis"><span class="toc-section-number">27.3</span>  Kaplan-Meier Survival Analysis</a></li>
-  </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/model-survival.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/model-survival.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
 <h1 class="title"><span id="sec-model-survival" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Survival Analysis</span></span></h1>
 </div>
 
-<div>
-  <div class="description">
-    <p>This book serves as a main reference book for my MATH 4720 Statistical Methods and MATH 4740 Biostatistical Methods at Marquette University. Some topics can also be discussed in an introductory data science course. You’ll learn basic probability and statistical concepts as well as data analysis techniques such as linear regression using R computing software.</p>
-  </div>
-</div>
 
 
 <div class="quarto-title-meta">
 
     
+  
     
   </div>
   
 
-</header>
-
-<div class="cell">
+</header><div class="cell">
 
 </div>
 <p><span style="color:blue"> <strong>Is the Cluster of Deaths <em>Significantly</em> High?</strong> </span></p>
@@ -369,8 +341,7 @@ ul.task-list li input[type="checkbox"] {
 <div class="cell quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="./images/img-model/pollution.jpeg" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="./images/img-model/pollution.jpeg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -392,14 +363,15 @@ How do we objectively address this issue?
 </ul>
 </div>
 </div>
-<section id="life-table" class="level2" data-number="27.1">
-<h2 data-number="27.1" class="anchored" data-anchor-id="life-table"><span class="header-section-number">27.1</span> Life Table</h2>
+<section id="life-table" class="level2" data-number="27.1"><h2 data-number="27.1" class="anchored" data-anchor-id="life-table">
+<span class="header-section-number">27.1</span> Life Table</h2>
 <ul>
 <li>A <strong>period life table</strong> describes mortality and longevity data for a <em>hypothetical</em> cohort.</li>
 <li>The data is computed with the assumption that <strong>the conditions affecting mortality in a particular year remain the same throughout the lives of everyone in the hypothetical cohort.</strong>
 <ul>
 <li>For example, a 1-year-old toddler and an elderly 70-year-old live their entire life in a world with <strong>the same constant death rates</strong> that were present in a given year.</li>
-</ul></li>
+</ul>
+</li>
 <li>An example of a life table is shown in <a href="#fig-life-table">Figure&nbsp;<span>27.1</span></a>.</li>
 </ul>
 <div class="columns">
@@ -407,8 +379,7 @@ How do we objectively address this issue?
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="./images/img-model/toddler.jpeg" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="./images/img-model/toddler.jpeg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -419,8 +390,7 @@ How do we objectively address this issue?
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="./images/img-model/elderly.jpeg" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="./images/img-model/elderly.jpeg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -431,8 +401,7 @@ How do we objectively address this issue?
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="./images/img-model/life_table.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="./images/img-model/life_table.png" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -440,8 +409,7 @@ How do we objectively address this issue?
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-life-table" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./images/img-model/life_table1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="./images/img-model/life_table1.png" class="img-fluid figure-img" style="width:100.0%"></p>
 <p></p><figcaption class="figure-caption">Figure&nbsp;27.1: Life table for total population in the United States in 2018</figcaption><p></p>
 </figure>
 </div>
@@ -452,13 +420,13 @@ How do we objectively address this issue?
 <li>Mortality experiences are different for various gender and race groups, so it is common to have tables for specific groups.
 <ul>
 <li>For example, <a href="#fig-female-life">Figure&nbsp;<span>27.2</span></a> below is a table for females in the United States.</li>
-</ul></li>
+</ul>
+</li>
 </ul>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-female-life" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./images/img-model/life_table_female.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="./images/img-model/life_table_female.png" class="img-fluid figure-img" style="width:100.0%"></p>
 <p></p><figcaption class="figure-caption">Figure&nbsp;27.2: Life table for females in the United States in 2018</figcaption><p></p>
 </figure>
 </div>
@@ -471,8 +439,7 @@ How do we objectively address this issue?
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-life-mortality-people" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./images/img-model/life_table_year_hypo.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="./images/img-model/life_table_year_hypo.png" class="img-fluid figure-img" style="width:100.0%"></p>
 <p></p><figcaption class="figure-caption">Figure&nbsp;27.3: The life table lists its basis year and number of hypothetical individuals</figcaption><p></p>
 </figure>
 </div>
@@ -484,8 +451,7 @@ How do we objectively address this issue?
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-age-range" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./images/img-model/life_table_age.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="./images/img-model/life_table_age.png" class="img-fluid figure-img" style="width:100.0%"></p>
 <p></p><figcaption class="figure-caption">Figure&nbsp;27.4: The first column lists the age intervals of the individuals</figcaption><p></p>
 </figure>
 </div>
@@ -498,8 +464,7 @@ How do we objectively address this issue?
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-prob-dying" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./images/img-model/life_table_prob.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="./images/img-model/life_table_prob.png" class="img-fluid figure-img" style="width:100.0%"></p>
 <p></p><figcaption class="figure-caption">Figure&nbsp;27.5: The second column lists the probability of dying between two ages</figcaption><p></p>
 </figure>
 </div>
@@ -512,8 +477,7 @@ How do we objectively address this issue?
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-alive-beginning" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./images/img-model/life_table_survive.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="./images/img-model/life_table_survive.png" class="img-fluid figure-img" style="width:100.0%"></p>
 <p></p><figcaption class="figure-caption">Figure&nbsp;27.6: The third column lists the number of individuals alive at the beginning of the age interval</figcaption><p></p>
 </figure>
 </div>
@@ -538,8 +502,7 @@ How is this column related to the previous two columns?
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-dying-interval" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./images/img-model/life_table_death.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="./images/img-model/life_table_death.png" class="img-fluid figure-img" style="width:100.0%"></p>
 <p></p><figcaption class="figure-caption">Figure&nbsp;27.7: The fourth column lists the number of individuals who die during a given age interval</figcaption><p></p>
 </figure>
 </div>
@@ -553,8 +516,7 @@ How is this column related to the previous two columns?
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-years-lived" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./images/img-model/life_table_year_lived.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="./images/img-model/life_table_year_lived.png" class="img-fluid figure-img" style="width:100.0%"></p>
 <p></p><figcaption class="figure-caption">Figure&nbsp;27.8: The fifth column lists the total number of person-years lived within a given age interval</figcaption><p></p>
 </figure>
 </div>
@@ -566,8 +528,7 @@ How is this column related to the previous two columns?
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-total-years-lived" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./images/img-model/life_table_total_year_lived.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="./images/img-model/life_table_total_year_lived.png" class="img-fluid figure-img" style="width:100.0%"></p>
 <p></p><figcaption class="figure-caption">Figure&nbsp;27.9: The fifth column lists the total number of person-years lived above a given age</figcaption><p></p>
 </figure>
 </div>
@@ -592,8 +553,7 @@ Why does the age interval of 1-2 have an expected remaining lifetime of 78.2 yea
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-remaining-life" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./images/img-model/life_table_life_time.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="./images/img-model/life_table_life_time.png" class="img-fluid figure-img" style="width:100.0%"></p>
 <p></p><figcaption class="figure-caption">Figure&nbsp;27.10: The final column lists the expectation of life at a given age</figcaption><p></p>
 </figure>
 </div>
@@ -607,9 +567,8 @@ Why does the age interval of 1-2 have an expected remaining lifetime of 78.2 yea
 <p><span class="math display">\[\begin{align*} Pr(\text{die in } [15, 20)) &amp;= Pr([15, 16) \cup [16, 17) \cup \cdots \cup [19, 20)) \\ &amp;= Pr([15, 16) + Pr([16, 17)) + \cdots + Pr([19, 20)) \\ &amp;= 0.000214 + 0.000253 + 0.000292 + 0.000329 + 0.000365 = 0.001453 \end{align*}\]</span></p>
 <p><span class="math display">\[\begin{align*} Pr(\text{surviving between 15th and 20th birthdays}) &amp;= \frac{\text{Number of people alive on their 20th birthday}}{\text{Number of people alive on their 15th birthday}} \\ &amp;= \frac{99,151}{99,296} \\ &amp;= 0.99854 \end{align*}\]</span></p>
 <p><span class="math display">\[Pr(\text{die in } [15, 20)) = 1-Pr(\text{survive in } [15, 20)) = 1 - 0.99854 = 0.00146\]</span></p>
-</section>
-<section id="applications-of-life-tables" class="level2" data-number="27.2">
-<h2 data-number="27.2" class="anchored" data-anchor-id="applications-of-life-tables"><span class="header-section-number">27.2</span> Applications of Life Tables</h2>
+</section><section id="applications-of-life-tables" class="level2" data-number="27.2"><h2 data-number="27.2" class="anchored" data-anchor-id="applications-of-life-tables">
+<span class="header-section-number">27.2</span> Applications of Life Tables</h2>
 <p><span style="color:blue"> <strong>Social Security</strong> </span></p>
 <div class="columns">
 <div class="column" style="width:49%;">
@@ -623,8 +582,7 @@ Why does the age interval of 1-2 have an expected remaining lifetime of 78.2 yea
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="./images/img-model/money.jpeg" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="./images/img-model/money.jpeg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -650,8 +608,7 @@ Why does the age interval of 1-2 have an expected remaining lifetime of 78.2 yea
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="./images/img-model/death.jpeg" class="img-fluid figure-img" style="width:80.0%"></p>
+<figure class="figure"><p><img src="./images/img-model/death.jpeg" class="img-fluid figure-img" style="width:80.0%"></p>
 </figure>
 </div>
 </div>
@@ -660,15 +617,16 @@ Why does the age interval of 1-2 have an expected remaining lifetime of 78.2 yea
 </div>
 <ul>
 <li>The probability of dying for the age interval of 16-17 is 0.000405.</li>
-<li>This is a <span class="math inline">\(H_1\)</span> claim. <span style="color:blue"> <span class="math inline">\(\small \begin{align} &amp;H_0: \pi = 0.000405 \\ &amp;H_1: \pi &gt; 0.000405\end{align}\)</span> </span></li>
-<li><span class="math inline">\(\hat{\pi} = 25/5000 = 0.005\)</span>.</li>
+<li>This is a <span class="math inline">\(H_1\)</span> claim. <span style="color:blue"> <span class="math inline">\(\small \begin{align} &amp;H_0: \pi = 0.000405 \\ &amp;H_1: \pi &gt; 0.000405\end{align}\)</span> </span>
+</li>
+<li>
+<span class="math inline">\(\hat{\pi} = 25/5000 = 0.005\)</span>.</li>
 <li><span class="math inline">\(z = \frac{0.005 - 0.000405}{\sqrt{\frac{(0.000405)(0.999595)}{5000}}} = 16.15\)</span></li>
-<li><span class="math inline">\(P\)</span>-value <span class="math inline">\(\approx 0\)</span>.</li>
+<li>
+<span class="math inline">\(P\)</span>-value <span class="math inline">\(\approx 0\)</span>.</li>
 <li>There is sufficient evidence to conclude that the proportion of deaths is <em>significantly</em> higher than the proportion that is usually expected for this age interval.</li>
-</ul>
-</section>
-<section id="kaplan-meier-survival-analysis" class="level2" data-number="27.3">
-<h2 data-number="27.3" class="anchored" data-anchor-id="kaplan-meier-survival-analysis"><span class="header-section-number">27.3</span> Kaplan-Meier Survival Analysis</h2>
+</ul></section><section id="kaplan-meier-survival-analysis" class="level2" data-number="27.3"><h2 data-number="27.3" class="anchored" data-anchor-id="kaplan-meier-survival-analysis">
+<span class="header-section-number">27.3</span> Kaplan-Meier Survival Analysis</h2>
 <p><span style="color:blue"> <strong>Survival Analysis</strong> </span></p>
 <div class="columns">
 <div class="column" style="width:69%;">
@@ -678,7 +636,8 @@ Why does the age interval of 1-2 have an expected remaining lifetime of 78.2 yea
 <ul>
 <li>is based on intervals that <strong>vary</strong> according to <em>the times of survival to some particular terminating event</em>.</li>
 <li>is used to describe the <em>probability of surviving for a specific period of time</em>.</li>
-</ul></li>
+</ul>
+</li>
 <li><span style="color:green"> What is the probability of surviving for 5 more years after cancer chemotherapy? </span></li>
 </ul>
 </div><div class="column" style="width:2%;">
@@ -687,8 +646,7 @@ Why does the age interval of 1-2 have an expected remaining lifetime of 78.2 yea
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="./images/img-model/cancer.jpeg" class="img-fluid figure-img" style="width:70.0%"></p>
+<figure class="figure"><p><img src="./images/img-model/cancer.jpeg" class="img-fluid figure-img" style="width:70.0%"></p>
 </figure>
 </div>
 </div>
@@ -703,8 +661,7 @@ Why does the age interval of 1-2 have an expected remaining lifetime of 78.2 yea
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-survival-time" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./images/img-model/survival_time.jpeg" class="img-fluid figure-img" style="width:70.0%"></p>
+<figure class="figure"><p><img src="./images/img-model/survival_time.jpeg" class="img-fluid figure-img" style="width:70.0%"></p>
 <p></p><figcaption class="figure-caption">Figure&nbsp;27.11: Graph of survival time</figcaption><p></p>
 </figure>
 </div>
@@ -730,7 +687,8 @@ Note
 <ul>
 <li>A patient trying to stop smoking is a survivor if smoking has not resumed.</li>
 <li>Your iPhone that worked for some particular length of time can be considered a survivor.</li>
-</ul></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -739,8 +697,7 @@ Note
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="./images/img-model/smoke.jpeg" class="img-fluid figure-img" style="width:80.0%"></p>
+<figure class="figure"><p><img src="./images/img-model/smoke.jpeg" class="img-fluid figure-img" style="width:80.0%"></p>
 </figure>
 </div>
 </div>
@@ -751,8 +708,7 @@ Note
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="./images/img-model/iphone.jpeg" class="img-fluid figure-img" style="width:80.0%"></p>
+<figure class="figure"><p><img src="./images/img-model/iphone.jpeg" class="img-fluid figure-img" style="width:80.0%"></p>
 </figure>
 </div>
 </div>
@@ -760,19 +716,20 @@ Note
 </div>
 </div>
 <hr>
-<p><soan style="color:blue"> <strong>Censored Data</strong> </soan></p>
+<p><soan style="color:blue"><strong>Censored Data</strong> </soan></p>
 <ul>
 <li>Survival times are <strong>censored data</strong> if the subjects
 <ul>
-<li>survive <strong>past the end of the study</strong></li>
+<li>survive <strong>past the end of the study</strong>
+</li>
 <li>are <strong>dropped from the study</strong> for reasons not related to the terminating event being studied.</li>
-</ul></li>
+</ul>
+</li>
 </ul>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-censored-data" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./images/img-model/censor.png" class="img-fluid figure-img" style="width:66.0%"></p>
+<figure class="figure"><p><img src="./images/img-model/censor.png" class="img-fluid figure-img" style="width:66.0%"></p>
 <p></p><figcaption class="figure-caption">Figure&nbsp;27.12: Illustration of censored data (https://unc.live/3K1ph8f)</figcaption><p></p>
 </figure>
 </div>
@@ -789,16 +746,14 @@ Note
 <col style="width: 19%">
 <col style="width: 19%">
 </colgroup>
-<thead>
-<tr class="header">
+<thead><tr class="header">
 <th style="text-align: center;">Day</th>
 <th style="text-align: center;">Status (0 = censored, 1 = Smoke Again)</th>
 <th style="text-align: center;">Number of Patients</th>
 <th style="text-align: center;">Patients Not Smoking</th>
 <th style="text-align: center;">Proportion Not Smoking</th>
 <th style="text-align: center;">Cumulative Proportion Not Smoking</th>
-</tr>
-</thead>
+</tr></thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: center;">1</td>
@@ -850,10 +805,14 @@ Note
 <li>The table above also provides information regarding the study.
 <ul>
 <li>2nd row: Subject 2 resumed smoking 3 days after the start of the program.</li>
-<li>3rd row: <span class="math inline">\(0.5 = (3/4)(2/3)\)</span></li>
-<li>4th row: <span class="math inline">\(0.25 = (3/4)(2/3)(1/2)\)</span></li>
-<li>5th row: <span class="math inline">\(0 = (3/4)(2/3)(1/2)(0)\)</span></li>
-</ul></li>
+<li>3rd row: <span class="math inline">\(0.5 = (3/4)(2/3)\)</span>
+</li>
+<li>4th row: <span class="math inline">\(0.25 = (3/4)(2/3)(1/2)\)</span>
+</li>
+<li>5th row: <span class="math inline">\(0 = (3/4)(2/3)(1/2)(0)\)</span>
+</li>
+</ul>
+</li>
 </ul>
 </div><div class="column" style="width:2%;">
 
@@ -861,8 +820,7 @@ Note
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-survival-medication" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="model-survival_files/figure-html/fig-survival-medication-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="model-survival_files/figure-html/fig-survival-medication-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
 <p></p><figcaption class="figure-caption">Figure&nbsp;27.13: Survival time for five subjects receiving the medication treatment</figcaption><p></p>
 </figure>
 </div>
@@ -881,16 +839,14 @@ Note
 <col style="width: 19%">
 <col style="width: 19%">
 </colgroup>
-<thead>
-<tr class="header">
+<thead><tr class="header">
 <th style="text-align: center;">Day</th>
 <th style="text-align: center;">Status <br> (0 = censored, 1 = Smoke Again)</th>
 <th style="text-align: center;">Number of Patients</th>
 <th style="text-align: center;">Patients Not Smoking</th>
 <th style="text-align: center;">Proportion Not Smoking</th>
 <th style="text-align: center;">Cumulative Proportion Not Smoking</th>
-</tr>
-</thead>
+</tr></thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: center;">2</td>
@@ -998,8 +954,7 @@ Why is the cumulative proportion on Day 8 0.686?
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-counseling-survival" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="model-survival_files/figure-html/fig-counseling-survival-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="model-survival_files/figure-html/fig-counseling-survival-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
 <p></p><figcaption class="figure-caption">Figure&nbsp;27.14: Survival time for ten subjects receiving the counseling treatment</figcaption><p></p>
 </figure>
 </div>
@@ -1025,8 +980,7 @@ Which treatment is better for quitting smoking?
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-kaplan-meier-plot" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="model-survival_files/figure-html/fig-kaplan-meier-plot-1.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<figure class="figure"><p><img src="model-survival_files/figure-html/fig-kaplan-meier-plot-1.png" class="img-fluid figure-img" style="width:70.0%"></p>
 <p></p><figcaption class="figure-caption">Figure&nbsp;27.15: Data from the medication treatment group and the counseling treatment group are compared using a Kaplan-Meier plot</figcaption><p></p>
 </figure>
 </div>
@@ -1034,10 +988,7 @@ Which treatment is better for quitting smoking?
 </div>
 
 
-</section>
-
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -1078,7 +1029,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
     button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
     setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
       button.setAttribute("title", currentTitle);
       button.classList.remove('code-copy-button-checked');
     }, 1000);
@@ -1114,29 +1082,45 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
   var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
   for (var i=0; i<bibliorefs.length; i++) {
     const ref = bibliorefs[i];
-    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-    tippyHover(ref, function() {
-      var popup = window.document.createElement('div');
-      cites.forEach(function(cite) {
-        var citeDiv = window.document.createElement('div');
-        citeDiv.classList.add('hanging-indent');
-        citeDiv.classList.add('csl-entry');
-        var biblioDiv = window.document.getElementById('ref-' + cite);
-        if (biblioDiv) {
-          citeDiv.innerHTML = biblioDiv.innerHTML;
-        }
-        popup.appendChild(citeDiv);
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
       });
-      return popup.innerHTML;
-    });
+    }
   }
 });
-</script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./model-bayes.html" class="pagination-link">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></span>
       </a>          
@@ -1148,22 +1132,20 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<footer class="footer">
-  <div class="nav-footer">
+<footer class="footer"><div class="nav-footer">
     <div class="nav-footer-left">Copyright 2022, Cheng-Han Yu</div>   
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
-    <li class="nav-item compact">
+<li class="nav-item compact">
     <a class="nav-link active" href="https://github.com/chenghanyustats/introstatsbook" aria-current="page">
       <i class="bi bi-github" role="img">
 </i> 
     </a>
   </li>  
 </ul>
-    </div>
+</div>
   </div>
 </footer>
-
 
 
 </body></html>

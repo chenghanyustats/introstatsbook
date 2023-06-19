@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.251">
-
+<meta name="generator" content="quarto-1.2.335">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
 <meta name="description" content="This book serves as a main reference book for my MATH 4720 Statistical Methods and MATH 4740 Biostatistical Methods at Marquette University. Some topics can also be discussed in an introductory data science course. You’ll learn basic probability and statistical concepts as well as data analysis techniques such as linear regression using R computing software.">
-
 <title>Introduction to Statistics - 13&nbsp; Confidence Interval</title>
 <style>
 code{white-space: pre-wrap;}
@@ -86,7 +83,6 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
-
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
@@ -104,8 +100,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
-<script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -123,50 +118,40 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit"
   }
-}</script>
-
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
+}</script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 </head>
-
 <body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-    <div class="container-fluid d-flex justify-content-between">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }"><div class="container-fluid d-flex justify-content-between">
       <h1 class="quarto-secondary-nav-title"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Confidence Interval</span></h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Introduction to Statistics</a> 
         <div class="sidebar-tools-main">
     <a href="https://github.com/chenghanyustats/introstatsbook" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
     <a href="" title="Share" id="sidebar-tool-dropdown-0" class="sidebar-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-share"></i></a>
     <ul class="dropdown-menu" aria-labelledby="sidebar-tool-dropdown-0">
-        <li>
-          <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
+<li>
+          <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=%7Curl%7C">
             <i class="bi bi-bi-twitter pe-1"></i>
           Twitter
           </a>
         </li>
         <li>
-          <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=|url|">
+          <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=%7Curl%7C">
             <i class="bi bi-bi-facebook pe-1"></i>
           Facebook
           </a>
         </li>
         <li>
-          <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=|url|">
+          <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=%7Curl%7C">
             <i class="bi bi-bi-linkedin pe-1"></i>
           LinkedIn
           </a>
@@ -182,7 +167,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">Welcome</a>
   </div>
@@ -194,8 +179,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./intro-stats.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Science of Data and Data Science</span></a>
   </div>
@@ -211,7 +196,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./datasummary.html" class="sidebar-item-text sidebar-link">Summarizing Data</a>
@@ -219,8 +204,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./data-graphics.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Visualization</span></a>
   </div>
@@ -231,7 +216,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./prob.html" class="sidebar-item-text sidebar-link">Probability</a>
@@ -239,8 +224,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prob-define.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Definition of Probability</span></a>
   </div>
@@ -276,7 +261,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./infer.html" class="sidebar-item-text sidebar-link">Statistical Inference</a>
@@ -284,8 +269,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-ci.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Confidence Interval</span></a>
   </div>
@@ -336,7 +321,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./model.html" class="sidebar-item-text sidebar-link">Statistical Models</a>
@@ -344,8 +329,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-anova.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></a>
   </div>
@@ -371,79 +356,69 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./references.html" class="sidebar-item-text sidebar-link">References</a>
   </div>
 </li>
     </ul>
-    </div>
-</nav>
-<!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
+</div>
+</nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#foundations-for-inference" id="toc-foundations-for-inference" class="nav-link active" data-scroll-target="#foundations-for-inference"><span class="toc-section-number">13.1</span>  Foundations for Inference</a></li>
+<li><a href="#foundations-for-inference" id="toc-foundations-for-inference" class="nav-link active" data-scroll-target="#foundations-for-inference"><span class="toc-section-number">13.1</span>  Foundations for Inference</a></li>
   <li><a href="#point-estimator" id="toc-point-estimator" class="nav-link" data-scroll-target="#point-estimator"><span class="toc-section-number">13.2</span>  Point Estimator</a></li>
   <li><a href="#confidence-intervals" id="toc-confidence-intervals" class="nav-link" data-scroll-target="#confidence-intervals"><span class="toc-section-number">13.3</span>  Confidence Intervals</a></li>
   <li><a href="#confidence-intervals-for-mu-when-sigma-is-known" id="toc-confidence-intervals-for-mu-when-sigma-is-known" class="nav-link" data-scroll-target="#confidence-intervals-for-mu-when-sigma-is-known"><span class="toc-section-number">13.4</span>  Confidence Intervals for <span class="math inline">\(\mu\)</span> When <span class="math inline">\(\sigma\)</span> is Known</a></li>
   <li><a href="#confidence-intervals-for-mu-when-sigma-is-unknown" id="toc-confidence-intervals-for-mu-when-sigma-is-unknown" class="nav-link" data-scroll-target="#confidence-intervals-for-mu-when-sigma-is-unknown"><span class="toc-section-number">13.5</span>  Confidence Intervals for <span class="math inline">\(\mu\)</span> When <span class="math inline">\(\sigma\)</span> is Unknown</a></li>
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="toc-section-number">13.6</span>  Summary</a></li>
   <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="toc-section-number">13.7</span>  Exercises</a></li>
-  </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/infer-ci.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/infer-ci.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
 <h1 class="title"><span id="sec-infer-ci" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Confidence Interval</span></span></h1>
 </div>
 
-<div>
-  <div class="description">
-    <p>This book serves as a main reference book for my MATH 4720 Statistical Methods and MATH 4740 Biostatistical Methods at Marquette University. Some topics can also be discussed in an introductory data science course. You’ll learn basic probability and statistical concepts as well as data analysis techniques such as linear regression using R computing software.</p>
-  </div>
-</div>
 
 
 <div class="quarto-title-meta">
 
     
+  
     
   </div>
   
 
-</header>
-
-<div class="cell">
+</header><div class="cell">
 
 </div>
 <div class="cell">
 
 </div>
-<section id="foundations-for-inference" class="level2" data-number="13.1">
-<h2 data-number="13.1" class="anchored" data-anchor-id="foundations-for-inference"><span class="header-section-number">13.1</span> Foundations for Inference</h2>
+<section id="foundations-for-inference" class="level2" data-number="13.1"><h2 data-number="13.1" class="anchored" data-anchor-id="foundations-for-inference">
+<span class="header-section-number">13.1</span> Foundations for Inference</h2>
 <p><span style="color:blue"> <strong>Inference Framework</strong> </span></p>
 <ul>
-<li><strong>Inferential statistics uses sample data to learn about an unknown population</strong>.</li>
-<li><strong>Idea</strong>: Assume the target population follows some distribution but with <strong>unknown</strong> parameters.
+<li>
+<strong>Inferential statistics uses sample data to learn about an unknown population</strong>.</li>
+<li>
+<strong>Idea</strong>: Assume the target population follows some distribution but with <strong>unknown</strong> parameters.
 <ul>
 <li><span style="color:blue"> Assume the population is normally distributed but its mean and/or variance are unknown. </span></li>
-</ul></li>
-<li><strong>Goal</strong>: Learn the unknown parameters of the assumed population distribution.</li>
+</ul>
+</li>
+<li>
+<strong>Goal</strong>: Learn the unknown parameters of the assumed population distribution.</li>
 </ul>
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell" data-layout-align="center" data-hash="infer-ci_cache/html/fig-sampling_0a4688dd29448aa741a295e3086ff492">
 <div class="cell-output-display">
 <div id="fig-sampling" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="infer-ci_files/figure-html/fig-sampling-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
+<figure class="figure"><p><img src="infer-ci_files/figure-html/fig-sampling-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
 <p></p><figcaption class="figure-caption">Figure&nbsp;13.1: Sampling from a population</figcaption><p></p>
 </figure>
 </div>
@@ -453,8 +428,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-data-generating" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="infer-ci_files/figure-html/fig-data-generating-1.png" class="img-fluid figure-img" style="width:77.0%"></p>
+<figure class="figure"><p><img src="infer-ci_files/figure-html/fig-data-generating-1.png" class="img-fluid figure-img" style="width:77.0%"></p>
 <p></p><figcaption class="figure-caption">Figure&nbsp;13.2: Relationship between probabiltity and statistical inference</figcaption><p></p>
 </figure>
 </div>
@@ -467,11 +441,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li><strong>Estimation</strong></li>
 <li><strong>Hypothesis Testing</strong></li>
-</ul></li>
 </ul>
-</section>
-<section id="point-estimator" class="level2" data-number="13.2">
-<h2 data-number="13.2" class="anchored" data-anchor-id="point-estimator"><span class="header-section-number">13.2</span> Point Estimator</h2>
+</li>
+</ul></section><section id="point-estimator" class="level2" data-number="13.2"><h2 data-number="13.2" class="anchored" data-anchor-id="point-estimator">
+<span class="header-section-number">13.2</span> Point Estimator</h2>
 <div class="callout-note callout callout-style-default no-icon callout-captioned">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -489,12 +462,16 @@ If you could <strong>only use a single number</strong> to guess the unknown popu
 <li>The single point used to estimate the unknown parameter is known as a <strong>point estimator</strong>.</li>
 <li>A <strong>point estimator</strong> is any function of data <span class="math inline">\((X_1, X_2, \dots, X_n)\)</span>.
 <ul>
-<li><strong>Any statistic is considered a point estimator</strong> <em>(before actually being collected).</em></li>
-</ul></li>
+<li>
+<strong>Any statistic is considered a point estimator</strong> <em>(before actually being collected).</em>
+</li>
+</ul>
+</li>
 <li>A <strong>point estimate</strong> is a value of a point estimator used to estimate a population parameter.
 <ul>
 <li>This is a value calculated from the collected data.</li>
-</ul></li>
+</ul>
+</li>
 <li>The sample mean, <span class="math inline">\((\overline{X})\)</span>, is a statistic and a point estimator for the population mean, <span class="math inline">\(\mu\)</span>.</li>
 </ul>
 <hr>
@@ -508,31 +485,28 @@ If you could <strong>only use a single number</strong> to guess the unknown popu
 <div class="cell">
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
-<thead>
-<tr class="header">
+<thead><tr class="header">
 <th style="text-align: center;">x1</th>
 <th style="text-align: center;">x2</th>
 <th style="text-align: center;">x3</th>
 <th style="text-align: center;">x4</th>
 <th style="text-align: center;">x5</th>
 <th style="text-align: center;">sample mean</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
+</tr></thead>
+<tbody><tr class="odd">
 <td style="text-align: center;">1.64</td>
 <td style="text-align: center;">1.84</td>
 <td style="text-align: center;">1.23</td>
 <td style="text-align: center;">0.83</td>
 <td style="text-align: center;">1.68</td>
 <td style="text-align: center;">1.45</td>
-</tr>
-</tbody>
+</tr></tbody>
 </table>
 </div>
 </div>
 <ul>
-<li><span class="math inline">\(\mu = 2\)</span>, and we use the point estimate <span class="math inline">\(\overline{x}=\)</span> 1.45 to estimate it.</li>
+<li>
+<span class="math inline">\(\mu = 2\)</span>, and we use the point estimate <span class="math inline">\(\overline{x}=\)</span> 1.45 to estimate it.</li>
 </ul>
 <div class="callout-note callout callout-style-default no-icon callout-captioned">
 <div class="callout-header d-flex align-content-center">
@@ -552,8 +526,7 @@ Why is <span class="math inline">\(\overline{x}\)</span> not equal to <span clas
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-sample-mean" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="infer-ci_files/figure-html/fig-sample-mean-1.png" class="img-fluid figure-img" style="width:35.0%"></p>
+<figure class="figure"><p><img src="infer-ci_files/figure-html/fig-sample-mean-1.png" class="img-fluid figure-img" style="width:35.0%"></p>
 <p></p><figcaption class="figure-caption">Figure&nbsp;13.3: Sample mean has randomness associated with it</figcaption><p></p>
 </figure>
 </div>
@@ -568,26 +541,22 @@ Why is <span class="math inline">\(\overline{x}\)</span> not equal to <span clas
 <div class="cell">
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
-<thead>
-<tr class="header">
+<thead><tr class="header">
 <th style="text-align: center;">x1</th>
 <th style="text-align: center;">x2</th>
 <th style="text-align: center;">x3</th>
 <th style="text-align: center;">x4</th>
 <th style="text-align: center;">x5</th>
 <th style="text-align: center;">sample mean</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
+</tr></thead>
+<tbody><tr class="odd">
 <td style="text-align: center;">1.65</td>
 <td style="text-align: center;">1.41</td>
 <td style="text-align: center;">0.41</td>
 <td style="text-align: center;">3.69</td>
 <td style="text-align: center;">2.56</td>
 <td style="text-align: center;">1.95</td>
-</tr>
-</tbody>
+</tr></tbody>
 </table>
 </div>
 </div>
@@ -612,8 +581,7 @@ Why do the first sample and the second sample give us different sample means?
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-samp-dist" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="infer-ci_files/figure-html/fig-samp-dist-1.png" class="img-fluid figure-img" style="width:35.0%"></p>
+<figure class="figure"><p><img src="infer-ci_files/figure-html/fig-samp-dist-1.png" class="img-fluid figure-img" style="width:35.0%"></p>
 <p></p><figcaption class="figure-caption">Figure&nbsp;13.4: Sampling Distribution of Sampling Mean</figcaption><p></p>
 </figure>
 </div>
@@ -652,8 +620,7 @@ If you want to catch a fish, would you prefer to use a spear or a net?
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="./images/img-infer/spear.png" class="img-fluid figure-img" style="width:80.0%"></p>
+<figure class="figure"><p><img src="./images/img-infer/spear.png" class="img-fluid figure-img" style="width:80.0%"></p>
 </figure>
 </div>
 </div>
@@ -662,8 +629,7 @@ If you want to catch a fish, would you prefer to use a spear or a net?
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="./images/img-infer/net.png" class="img-fluid figure-img" style="width:80.0%"></p>
+<figure class="figure"><p><img src="./images/img-infer/net.png" class="img-fluid figure-img" style="width:80.0%"></p>
 </figure>
 </div>
 </div>
@@ -673,20 +639,20 @@ If you want to catch a fish, would you prefer to use a spear or a net?
 <ul>
 <li>Due to the variation of <span class="math inline">\(\overline{X}\)</span>, if we report a point estimate <span class="math inline">\(\overline{x}\)</span>, we probably won’t hit the exact <span class="math inline">\(\mu\)</span>.</li>
 <li>If we report <em>a range of plausible values</em>, we have a better shot at capturing the parameter!</li>
-</ul>
-</section>
-<section id="confidence-intervals" class="level2" data-number="13.3">
-<h2 data-number="13.3" class="anchored" data-anchor-id="confidence-intervals"><span class="header-section-number">13.3</span> Confidence Intervals</h2>
+</ul></section><section id="confidence-intervals" class="level2" data-number="13.3"><h2 data-number="13.3" class="anchored" data-anchor-id="confidence-intervals">
+<span class="header-section-number">13.3</span> Confidence Intervals</h2>
 <ul>
 <li>A plausible range of values for <span class="math inline">\(\mu\)</span> is called a <strong>confidence interval (CI)</strong>.
 <ul>
 <li>This range depends on how <em>precise</em> and <em>reliable</em> our statistic is as an estimate of the parameter.</li>
-</ul></li>
+</ul>
+</li>
 <li>To construct a CI for <span class="math inline">\(\mu\)</span>, we first need to quantify the variability of our sample mean.</li>
 <li>Quantifying this uncertainty requires a measurement of how much we would expect the sample statistic to vary from sample to sample.
 <ul>
 <li>This is the <em>variance</em> of the sampling distribution of the sample mean!</li>
-</ul></li>
+</ul>
+</li>
 </ul>
 <div class="callout-note callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
@@ -705,7 +671,8 @@ Note
 <li>Do we know the variance of <span class="math inline">\(\overline{X}\)</span>?
 <ul>
 <li>By CLT, <span class="math inline">\(\overline{X} \sim N(\mu, \sigma^2/n)\)</span> <strong>regardless of what the population distribution is</strong>.</li>
-</ul></li>
+</ul>
+</li>
 </ul>
 <hr>
 <p><span style="color:blue"> <strong>Precision vs.&nbsp;Reliability</strong> </span></p>
@@ -725,8 +692,7 @@ If we want to be very certain that we capture <span class="math inline">\(\mu\)<
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-garfield" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./images/img-infer/garfield.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="./images/img-infer/garfield.png" class="img-fluid figure-img" style="width:100.0%"></p>
 <p></p><figcaption class="figure-caption">Figure&nbsp;13.5: Balance between precision and reliability</figcaption><p></p>
 </figure>
 </div>
@@ -736,7 +702,8 @@ If we want to be very certain that we capture <span class="math inline">\(\mu\)<
 <li>With a fixed sample size, precision and reliability have a trade-off relationship.
 <ul>
 <li>Narrower intervals are more precise but less reliable, while wider intervals are more reliable but less precise.</li>
-</ul></li>
+</ul>
+</li>
 </ul>
 <hr>
 <p><span style="color:blue"> <strong>A Confidence Interval Is for a Parameter</strong> </span></p>
@@ -744,9 +711,12 @@ If we want to be very certain that we capture <span class="math inline">\(\mu\)<
 <li>A confidence interval is <strong>for a parameter, NOT a statistic.</strong>
 <ul>
 <li>For example, we use the sample mean to form a confidence interval for the population mean.</li>
-</ul></li>
-<li>We <strong>never say</strong> <em>“The confidence interval of the sample mean, <span class="math inline">\(\overline{X}\)</span>, is …”</em></li>
-<li>We <strong>say</strong> <em>“The confidence interval for the true population mean, <span class="math inline">\(\mu\)</span>, is …”</em></li>
+</ul>
+</li>
+<li>We <strong>never say</strong> <em>“The confidence interval of the sample mean, <span class="math inline">\(\overline{X}\)</span>, is …”</em>
+</li>
+<li>We <strong>say</strong> <em>“The confidence interval for the true population mean, <span class="math inline">\(\mu\)</span>, is …”</em>
+</li>
 <li>In general, a confidence interval for <span class="math inline">\(\mu\)</span> has the form</li>
 </ul>
 <center>
@@ -754,7 +724,8 @@ If we want to be very certain that we capture <span class="math inline">\(\mu\)<
 </center>
 <ul>
 <li>The <span class="math inline">\(m\)</span> is called the <strong>margin of error</strong>.</li>
-<li><span class="math inline">\(\overline{x} - m\)</span> is the <strong>lower bound</strong> and <span class="math inline">\(\overline{x} + m\)</span> is the <strong>upper bound</strong> of the confidence interval.</li>
+<li>
+<span class="math inline">\(\overline{x} - m\)</span> is the <strong>lower bound</strong> and <span class="math inline">\(\overline{x} + m\)</span> is the <strong>upper bound</strong> of the confidence interval.</li>
 <li>The point estimate, <span class="math inline">\(\overline{x}\)</span>, and margin of error, <span class="math inline">\(m\)</span>, can be obtained from known quantities and our data once sampled.</li>
 </ul>
 <hr>
@@ -763,21 +734,30 @@ If we want to be very certain that we capture <span class="math inline">\(\mu\)<
 <li>The <strong>confidence level</strong> <span class="math inline">\(1-\alpha\)</span>: <strong>the proportion of times that the CI contains the population parameter, assuming that the estimation process is repeated a large number of times</strong>.</li>
 <li>Common choices for the confidence level include
 <ul>
-<li>90% <span class="math inline">\((\alpha = 0.10)\)</span></li>
-<li>95% <span class="math inline">\((\alpha = 0.05)\)</span></li>
-<li>99% <span class="math inline">\((\alpha = 0.01)\)</span></li>
-</ul></li>
+<li>90% <span class="math inline">\((\alpha = 0.10)\)</span>
+</li>
+<li>95% <span class="math inline">\((\alpha = 0.05)\)</span>
+</li>
+<li>99% <span class="math inline">\((\alpha = 0.01)\)</span>
+</li>
+</ul>
+</li>
 <li>95% is the most common level because it has a good balance between precision (width of the CI) and reliability (confidence level).
 <ul>
-<li><span style="color:blue"> <strong>High reliability and Low precision</strong>: I am 100% confident that the mean height of Marquette students is between 3’0” and 8’0”. </span>
+<li>
+<span style="color:blue"> <strong>High reliability and Low precision</strong>: I am 100% confident that the mean height of Marquette students is between 3’0” and 8’0”. </span>
 <ul>
 <li>Duh…🤷</li>
-</ul></li>
-<li><span style="color:blue"> <strong>Low reliability and High precision</strong>: I am 20% confident that mean height of Marquette students is between 5’6” and 5’7”. </span>
+</ul>
+</li>
+<li>
+<span style="color:blue"> <strong>Low reliability and High precision</strong>: I am 20% confident that mean height of Marquette students is between 5’6” and 5’7”. </span>
 <ul>
 <li>This is far from the truth… 🙅</li>
-</ul></li>
-</ul></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 <hr>
 <p><span style="color:blue"> <strong><span class="math inline">\(95\%\)</span> Confidence Intervals for <span class="math inline">\(\mu\)</span></strong> </span></p>
@@ -786,8 +766,10 @@ If we want to be very certain that we capture <span class="math inline">\(\mu\)<
 <div class="column" style="width:50%;">
 <ul>
 <li><span class="math inline">\(\alpha = 0.05\)</span></li>
-<li>Start with the sampling distribution of <span class="math inline">\(\overline{X} \sim N\left(\mu, \frac{\sigma^2}{n}\right)\)</span></li>
-<li><span class="math inline">\(\overline{x}\)</span> will be within 1.96 SDs of the population mean, <span class="math inline">\(\mu\)</span>, <span class="math inline">\(95\%\)</span> of the time.</li>
+<li>Start with the sampling distribution of <span class="math inline">\(\overline{X} \sim N\left(\mu, \frac{\sigma^2}{n}\right)\)</span>
+</li>
+<li>
+<span class="math inline">\(\overline{x}\)</span> will be within 1.96 SDs of the population mean, <span class="math inline">\(\mu\)</span>, <span class="math inline">\(95\%\)</span> of the time.</li>
 <li>The <span class="math inline">\(z\)</span>-score of 1.96 is associated with 2.5% area <em>to the right</em> and is called a <strong>critical value</strong> denoted as <strong><span class="math inline">\(z_{0.025}\)</span> </strong>.</li>
 </ul>
 </div><div class="column" style="width:50%;">
@@ -813,7 +795,8 @@ Is the interval <span class="math inline">\(\left(\mu-1.96\frac{\sigma}{\sqrt{n}
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li>❌ <strong>No! We don’t know <span class="math inline">\(\mu\)</span>, which is the quantity we want to estimate, but we’re almost there!</strong></li>
+<li>❌ <strong>No! We don’t know <span class="math inline">\(\mu\)</span>, which is the quantity we want to estimate, but we’re almost there!</strong>
+</li>
 </ul>
 </div>
 </div>
@@ -844,22 +827,25 @@ Is the interval <span class="math inline">\(\left(\mu-1.96\frac{\sigma}{\sqrt{n}
 </div>
 </div>
 </div>
-</section>
-<section id="confidence-intervals-for-mu-when-sigma-is-known" class="level2" data-number="13.4">
-<h2 data-number="13.4" class="anchored" data-anchor-id="confidence-intervals-for-mu-when-sigma-is-known"><span class="header-section-number">13.4</span> Confidence Intervals for <span class="math inline">\(\mu\)</span> When <span class="math inline">\(\sigma\)</span> is Known</h2>
+</section><section id="confidence-intervals-for-mu-when-sigma-is-known" class="level2" data-number="13.4"><h2 data-number="13.4" class="anchored" data-anchor-id="confidence-intervals-for-mu-when-sigma-is-known">
+<span class="header-section-number">13.4</span> Confidence Intervals for <span class="math inline">\(\mu\)</span> When <span class="math inline">\(\sigma\)</span> is Known</h2>
 <ul>
-<li><strong>Requirements</strong> for estimating <span class="math inline">\(\mu\)</span> when <span class="math inline">\(\sigma\)</span> is known:
+<li>
+<strong>Requirements</strong> for estimating <span class="math inline">\(\mu\)</span> when <span class="math inline">\(\sigma\)</span> is known:
 <ul>
 <li>👉 The sample should be a <strong>random sample</strong>, such that all data <span class="math inline">\(X_i\)</span> are drawn from the same population and <span class="math inline">\(X_i\)</span> and <span class="math inline">\(X_j\)</span> are independent.
 <ul>
 <li><span style="color:blue"> Any methods in this course are based on the assumption of a random sample </span></li>
-</ul></li>
+</ul>
+</li>
 <li>👉 The population standard deviation, <span class="math inline">\(\sigma\)</span>, is <strong>known</strong>.</li>
 <li>👉 The population is either <strong>normally distributed</strong>, <span class="math inline">\(n &gt; 30\)</span> or both, i.e., <span class="math inline">\(X_i \sim N(\mu, \sigma^2)\)</span>.
 <ul>
 <li><span style="color:blue"> <span class="math inline">\(n &gt; 30\)</span> allows the Central Limit Theorem to be applied and hence normality is satisfied. </span></li>
-</ul></li>
-</ul></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 <hr>
 <p><span style="color:blue"> <strong><span class="math inline">\((1-\alpha)100\%\)</span> Confidence Intervals for <span class="math inline">\(\mu\)</span></strong> </span></p>
@@ -886,14 +872,16 @@ Is the interval <span class="math inline">\(\left(\mu-1.96\frac{\sigma}{\sqrt{n}
 </div>
 <p><br></p>
 <ul>
-<li><strong>Procedures</strong> for constructing a confidence interval for <span class="math inline">\(\mu\)</span> when <span class="math inline">\(\sigma\)</span> is known:
+<li>
+<strong>Procedures</strong> for constructing a confidence interval for <span class="math inline">\(\mu\)</span> when <span class="math inline">\(\sigma\)</span> is known:
 <ol type="1">
 <li>Check that the <strong>requirements</strong> are satisfied.</li>
 <li>Decide <span class="math inline">\(\alpha\)</span> or the <em>confidence level</em> <span class="math inline">\((1 - \alpha)\)</span>.</li>
 <li>Find the <em>critical value</em>, <span class="math inline">\(z_{\alpha/2}\)</span>.</li>
 <li>Evaluate <em>margin of error</em>, <span class="math inline">\(m = z_{\alpha/2} \cdot \frac{\sigma}{\sqrt{n}}\)</span>.</li>
 <li>Construct the <span class="math inline">\((1 - \alpha)100\%\)</span> CI for <span class="math inline">\(\mu\)</span> using the sample mean, <span class="math inline">\(\overline{x}\)</span>, and margin of error, <span class="math inline">\(m\)</span>:</li>
-</ol></li>
+</ol>
+</li>
 </ul>
 <center>
 <span style="color:red"> <span class="math display">\[\boxed{\overline{x} \pm z_{\alpha/2}\frac{\sigma}{\sqrt{n}} \text{  or  } \left( \overline{x} -z_{\alpha/2}\frac{\sigma}{\sqrt{n}}, \, \overline{x} + z_{\alpha/2} \frac{\sigma}{\sqrt{n}}\right)}\]</span></span>
@@ -920,48 +908,53 @@ Is the interval <span class="math inline">\(\left(\mu-1.96\frac{\sigma}{\sqrt{n}
 <li>Requirements:
 <ul>
 <li><span style="color:blue"> Normality is assumed, <span class="math inline">\(\sigma = 5\)</span> is known and a random sample is collected.</span></li>
-</ul></li>
+</ul>
+</li>
 <li>Decide <span class="math inline">\(\alpha\)</span>:
 <ul>
 <li><span style="color:blue"> <span class="math inline">\(\alpha = 0.05\)</span> </span></li>
-</ul></li>
+</ul>
+</li>
 <li>Find the <em>critical value</em> <span class="math inline">\(z_{\alpha/2}\)</span>:
 <ul>
 <li><span style="color:blue"> <span class="math inline">\(z_{\alpha/2} = z_{0.025} = 1.96\)</span> </span></li>
-</ul></li>
+</ul>
+</li>
 <li>Evaluate <em>margin of error</em> <span class="math inline">\(m = z_{\alpha/2} \frac{\sigma}{\sqrt{n}}\)</span>:
 <ul>
 <li><span style="color:blue"> <span class="math inline">\(m = (1.96) \frac{5}{\sqrt{16}} = 2.45\)</span> </span></li>
-</ul></li>
+</ul>
+</li>
 <li>Construct the <span class="math inline">\((1 - \alpha)100\%\)</span> CI:
 <ul>
 <li><span style="color:blue"> The 95% CI for the mean SBP is <span class="math inline">\(\overline{x} \pm z_{\alpha/2}\frac{\sigma}{\sqrt{n}} = (121.5 -2.45, 121.5 + 2.45) = (119.05, 123.95)\)</span> </span></li>
-</ul></li>
+</ul>
+</li>
 </ol>
 <p><span style="color:red"> <strong><em>Computation in R</em></strong> </span></p>
 <ul>
 <li>Below is a demonstration of how to find the 95% CI for SBP using R.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## save all information we have</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">16</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>x_bar <span class="ot">&lt;-</span> <span class="fl">121.5</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>sig <span class="ot">&lt;-</span> <span class="dv">5</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 95% CI</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="do">## z-critical value</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>(cri_z <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(<span class="at">p =</span> alpha <span class="sc">/</span> <span class="dv">2</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>))  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## save all information we have</span></span>
+<span><span class="va">alpha</span> <span class="op">&lt;-</span> <span class="fl">0.05</span></span>
+<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">16</span></span>
+<span><span class="va">x_bar</span> <span class="op">&lt;-</span> <span class="fl">121.5</span></span>
+<span><span class="va">sig</span> <span class="op">&lt;-</span> <span class="fl">5</span></span>
+<span></span>
+<span><span class="co">## 95% CI</span></span>
+<span><span class="co">## z-critical value</span></span>
+<span><span class="op">(</span><span class="va">cri_z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">qnorm</a></span><span class="op">(</span>p <span class="op">=</span> <span class="va">alpha</span> <span class="op">/</span> <span class="fl">2</span>, lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1.959964</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">## margin of error</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>(m_z <span class="ot">&lt;-</span> cri_z <span class="sc">*</span> (sig <span class="sc">/</span> <span class="fu">sqrt</span>(n)))  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## margin of error</span></span>
+<span><span class="op">(</span><span class="va">m_z</span> <span class="op">&lt;-</span> <span class="va">cri_z</span> <span class="op">*</span> <span class="op">(</span><span class="va">sig</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2.449955</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 95% CI for mu when sigma is known</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>x_bar <span class="sc">+</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>) <span class="sc">*</span> m_z  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## 95% CI for mu when sigma is known</span></span>
+<span><span class="va">x_bar</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="va">m_z</span>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 119.05 123.95</code></pre>
 </div>
@@ -981,25 +974,33 @@ Construct a 99% CI for the mean SBP. Do you expect it to have a wider or narrowe
 </div>
 <p><span style="color:red"> <strong><em>Interpreting the Confidence Interval</em></strong></span></p>
 <ul>
-<li><strong>WRONG</strong> ❌ <em>“There is a 95% chance/probability that the true population mean will fall between 119.1 mm and 123.9 mm.”</em></li>
-<li><strong>WRONG</strong> ❌ <em>“The probability that the true population mean falls between 119.1 mm and 123.9 mm is 95%.”</em></li>
+<li>
+<strong>WRONG</strong> ❌ <em>“There is a 95% chance/probability that the true population mean will fall between 119.1 mm and 123.9 mm.”</em>
+</li>
+<li>
+<strong>WRONG</strong> ❌ <em>“The probability that the true population mean falls between 119.1 mm and 123.9 mm is 95%.”</em>
+</li>
 <li><span style="color:blue"> 👉 <strong>The sample mean is a random variable with a sampling distribution, so it makes sense to compute a probability of it being in some interval.</strong> </span></li>
-<li><span style="color:blue"> 👉 <strong>The population mean is unknown and FIXED, so we cannot assign or compute any probability of it.</strong> </span>
+<li>
+<span style="color:blue"> 👉 <strong>The population mean is unknown and FIXED, so we cannot assign or compute any probability of it.</strong> </span>
 <ul>
 <li>If we were using <strong>Bayesian inference</strong>, a different inference method, we could compute a probability associated with <span class="math inline">\(\mu\)</span> because <span class="math inline">\(\mu\)</span> is treated as a random variable.</li>
-</ul></li>
-<li>Instead we say, <span style="color:blue"> <strong><em>“We are 95% confident that the mean SBP lies between 119.1 mm and 123.9 mm.”</em></strong> </span></li>
+</ul>
+</li>
+<li>Instead we say, <span style="color:blue"> <strong><em>“We are 95% confident that the mean SBP lies between 119.1 mm and 123.9 mm.”</em></strong> </span>
+</li>
 <li>This means if we were able to collect our data many times and build the corresponding CIs, we would expect that about 95% of those intervals would contain the true population parameter, which, in this case, is the mean systolic blood pressure.</li>
-<li><span style="color:blue"> Remember: <strong><span class="math inline">\(\overline{x}\)</span> varies from sample to sample and so does its corresponding CI </strong>.</span>
+<li>
+<span style="color:blue"> Remember: <strong><span class="math inline">\(\overline{x}\)</span> varies from sample to sample and so does its corresponding CI </strong>.</span>
 <ul>
 <li>This idea is shown in <a href="#fig-ci">Figure&nbsp;<span>13.6</span></a>.</li>
-</ul></li>
+</ul>
+</li>
 </ul>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-ci" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="infer-ci_files/figure-html/fig-ci-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
+<figure class="figure"><p><img src="infer-ci_files/figure-html/fig-ci-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
 <p></p><figcaption class="figure-caption">Figure&nbsp;13.6: Illustration of 100 95% confidence intervals</figcaption><p></p>
 </figure>
 </div>
@@ -1020,20 +1021,22 @@ Note
 </ul>
 </div>
 </div>
-</section>
-<section id="confidence-intervals-for-mu-when-sigma-is-unknown" class="level2" data-number="13.5">
-<h2 data-number="13.5" class="anchored" data-anchor-id="confidence-intervals-for-mu-when-sigma-is-unknown"><span class="header-section-number">13.5</span> Confidence Intervals for <span class="math inline">\(\mu\)</span> When <span class="math inline">\(\sigma\)</span> is Unknown</h2>
+</section><section id="confidence-intervals-for-mu-when-sigma-is-unknown" class="level2" data-number="13.5"><h2 data-number="13.5" class="anchored" data-anchor-id="confidence-intervals-for-mu-when-sigma-is-unknown">
+<span class="header-section-number">13.5</span> Confidence Intervals for <span class="math inline">\(\mu\)</span> When <span class="math inline">\(\sigma\)</span> is Unknown</h2>
 <ul>
-<li><span class="math inline">\(\sigma^2 = \frac{\sum_{i=1}^{N}(x_i - \mu)^2}{N}\)</span>, where <span class="math inline">\(N\)</span> is the population size.</li>
+<li>
+<span class="math inline">\(\sigma^2 = \frac{\sum_{i=1}^{N}(x_i - \mu)^2}{N}\)</span>, where <span class="math inline">\(N\)</span> is the population size.</li>
 <li>It’s rare that we don’t know <span class="math inline">\(\mu\)</span> but know <span class="math inline">\(\sigma\)</span>, so what do we do if <span class="math inline">\(\sigma\)</span> is unknown?
 <ul>
 <li>We use the <strong>Student t</strong> distribution to construct a confidence interval for <span class="math inline">\(\mu\)</span> when <span class="math inline">\(\sigma\)</span> is <strong>unknown</strong>.</li>
-</ul></li>
+</ul>
+</li>
 <li>To construct these confidence intervals we still need
 <ul>
 <li>A random sample</li>
 <li>A population that is normally distributed and/or <span class="math inline">\(n &gt; 30\)</span>.</li>
-</ul></li>
+</ul>
+</li>
 </ul>
 <div class="callout-note callout callout-style-default no-icon callout-captioned">
 <div class="callout-header d-flex align-content-center">
@@ -1059,8 +1062,10 @@ What is a natural estimator for the unknown <span class="math inline">\(\sigma\)
 <li><span class="math inline">\(\overline{X} \sim N\left(\mu, \frac{\sigma^2}{n} \right)\)</span></li>
 <li><span class="math inline">\(Z = \frac{\overline{X} - \mu}{\color{red}\sigma/\sqrt{n}} \sim N(0, 1)\)</span></li>
 <li><span style="color:blue"> <span class="math inline">\(T = \frac{\overline{X} - \mu}{\color{red}S/\sqrt{n}} \sim t_{n-1}\)</span> </span></li>
-<li><span class="math inline">\(t_{n-1}\)</span> denotes the Student t distribution with <strong>degrees of freedom (df)</strong> <span class="math inline">\(n-1\)</span>.</li>
-</ul></li>
+<li>
+<span class="math inline">\(t_{n-1}\)</span> denotes the Student t distribution with <strong>degrees of freedom (df)</strong> <span class="math inline">\(n-1\)</span>.</li>
+</ul>
+</li>
 </ul>
 <p><span style="color:red"> <strong><em>Properties</em></strong> </span></p>
 <ul>
@@ -1069,13 +1074,13 @@ What is a natural estimator for the unknown <span class="math inline">\(\sigma\)
 <li>The variability is different for different sample sizes (degrees of freedom).
 <ul>
 <li>As <span class="math inline">\(n \rightarrow \infty\)</span> <span class="math inline">\((df \rightarrow \infty)\)</span>, the Student t distribution approaches <span class="math inline">\(N(0, 1)\)</span>.</li>
-</ul></li>
+</ul>
+</li>
 </ul>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-student-t" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="infer-ci_files/figure-html/fig-student-t-1.png" class="img-fluid figure-img" style="width:52.0%"></p>
+<figure class="figure"><p><img src="infer-ci_files/figure-html/fig-student-t-1.png" class="img-fluid figure-img" style="width:52.0%"></p>
 <p></p><figcaption class="figure-caption">Figure&nbsp;13.7: Student t distributions with various degrees of freedom</figcaption><p></p>
 </figure>
 </div>
@@ -1088,8 +1093,7 @@ What is a natural estimator for the unknown <span class="math inline">\(\sigma\)
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-cv-t" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="infer-ci_files/figure-html/fig-cv-t-1.png" class="img-fluid figure-img" style="width:60.0%"></p>
+<figure class="figure"><p><img src="infer-ci_files/figure-html/fig-cv-t-1.png" class="img-fluid figure-img" style="width:60.0%"></p>
 <p></p><figcaption class="figure-caption">Figure&nbsp;13.8: Illustration of critical value for Student t distribution</figcaption><p></p>
 </figure>
 </div>
@@ -1120,8 +1124,7 @@ With the same <span class="math inline">\(\alpha\)</span>, is <span class="math 
 <col style="width: 17%">
 <col style="width: 8%">
 </colgroup>
-<thead>
-<tr class="header">
+<thead><tr class="header">
 <th style="text-align: center;">Level</th>
 <th style="text-align: center;">t df = 5</th>
 <th style="text-align: center;">t df = 15</th>
@@ -1129,8 +1132,7 @@ With the same <span class="math inline">\(\alpha\)</span>, is <span class="math 
 <th style="text-align: center;">t df = 1000</th>
 <th style="text-align: center;">t df = inf</th>
 <th style="text-align: center;">z</th>
-</tr>
-</thead>
+</tr></thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: center;">90%</td>
@@ -1166,7 +1168,8 @@ With the same <span class="math inline">\(\alpha\)</span>, is <span class="math 
 <hr>
 <p><span style="color:blue"> <strong><span class="math inline">\((1-\alpha)100\%\)</span> Confidence Intervals for <span class="math inline">\(\mu\)</span> When <span class="math inline">\(\sigma\)</span> is Unknown</strong> </span></p>
 <ul>
-<li>The <span class="math inline">\((1-\alpha)100\%\)</span> confidence interval for <span class="math inline">\(\mu\)</span> when <span class="math inline">\(\sigma\)</span> is <strong>unknown</strong> is <span style="color:blue"> <span class="math display">\[\left(\overline{x} - t_{\alpha/2, n-1} \frac{s}{\sqrt{n}}, \overline{x} + t_{\alpha/2, n-1} \frac{s}{\sqrt{n}}\right)\]</span> </span></li>
+<li>The <span class="math inline">\((1-\alpha)100\%\)</span> confidence interval for <span class="math inline">\(\mu\)</span> when <span class="math inline">\(\sigma\)</span> is <strong>unknown</strong> is <span style="color:blue"> <span class="math display">\[\left(\overline{x} - t_{\alpha/2, n-1} \frac{s}{\sqrt{n}}, \overline{x} + t_{\alpha/2, n-1} \frac{s}{\sqrt{n}}\right)\]</span> </span>
+</li>
 <li>Given the same confidence level <span class="math inline">\(1-\alpha\)</span>, <span class="math inline">\(t_{\alpha/2, n-1} &gt; z_{\alpha/2}\)</span>, which means the confidence interval for <span class="math inline">\(\mu\)</span> is wider when <span class="math inline">\(\sigma\)</span> is unknown.</li>
 </ul>
 <div class="callout-note callout callout-style-default callout-captioned">
@@ -1187,51 +1190,51 @@ Note
 <p><span style="color:red"> <strong><em>Computation in R</em></strong> </span></p>
 <ul>
 <li>Back to the systolic blood pressure (SBP) example. We have <span class="math inline">\(n=16\)</span> and <span class="math inline">\(\overline{x} = 121.5\)</span>.</li>
-<li>Estimate the mean SBP with a 95% confidence interval with <strong>unknown <span class="math inline">\(\sigma\)</span> and <span class="math inline">\(s = 5\)</span>.</strong></li>
+<li>Estimate the mean SBP with a 95% confidence interval with <strong>unknown <span class="math inline">\(\sigma\)</span> and <span class="math inline">\(s = 5\)</span>.</strong>
+</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">16</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>x_bar <span class="ot">&lt;-</span> <span class="fl">121.5</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="dv">5</span>  <span class="do">## sigma is unknown and s = 5</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="do">## t-critical value</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>(cri_t <span class="ot">&lt;-</span> <span class="fu">qt</span>(<span class="at">p =</span> alpha <span class="sc">/</span> <span class="dv">2</span>, <span class="at">df =</span> n <span class="sc">-</span> <span class="dv">1</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">alpha</span> <span class="op">&lt;-</span> <span class="fl">0.05</span></span>
+<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">16</span></span>
+<span><span class="va">x_bar</span> <span class="op">&lt;-</span> <span class="fl">121.5</span></span>
+<span><span class="va">s</span> <span class="op">&lt;-</span> <span class="fl">5</span>  <span class="co">## sigma is unknown and s = 5</span></span>
+<span></span>
+<span><span class="co">## t-critical value</span></span>
+<span><span class="op">(</span><span class="va">cri_t</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">qt</a></span><span class="op">(</span>p <span class="op">=</span> <span class="va">alpha</span> <span class="op">/</span> <span class="fl">2</span>, df <span class="op">=</span> <span class="va">n</span> <span class="op">-</span> <span class="fl">1</span>, lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2.13145</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="do">## margin of error</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>(m_t <span class="ot">&lt;-</span> cri_t <span class="sc">*</span> (s <span class="sc">/</span> <span class="fu">sqrt</span>(n)))  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## margin of error</span></span>
+<span><span class="op">(</span><span class="va">m_t</span> <span class="op">&lt;-</span> <span class="va">cri_t</span> <span class="op">*</span> <span class="op">(</span><span class="va">s</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2.664312</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 95% CI for mu when sigma is unknown</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>x_bar <span class="sc">+</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>) <span class="sc">*</span> m_t  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## 95% CI for mu when sigma is unknown</span></span>
+<span><span class="va">x_bar</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="va">m_t</span>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 118.8357 124.1643</code></pre>
 </div>
 </div>
-</section>
-<section id="summary" class="level2" data-number="13.6">
-<h2 data-number="13.6" class="anchored" data-anchor-id="summary"><span class="header-section-number">13.6</span> Summary</h2>
+</section><section id="summary" class="level2" data-number="13.6"><h2 data-number="13.6" class="anchored" data-anchor-id="summary">
+<span class="header-section-number">13.6</span> Summary</h2>
 <table class="table">
 <colgroup>
 <col style="width: 31%">
 <col style="width: 39%">
 <col style="width: 29%">
 </colgroup>
-<thead>
-<tr class="header">
+<thead><tr class="header">
 <th style="text-align: center;"></th>
 <th style="text-align: center;">Numerical Data, <span class="math inline">\(\sigma\)</span> known</th>
 <th style="text-align: center;">Numerical Data, <span class="math inline">\(\sigma\)</span> unknown</th>
-</tr>
-</thead>
+</tr></thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: center;"><strong>Parameter of Interest</strong></td>
-<td style="text-align: center;">Population Mean <span class="math inline">\(\mu\)</span></td>
-<td style="text-align: center;">Population Mean <span class="math inline">\(\mu\)</span></td>
+<td style="text-align: center;">Population Mean <span class="math inline">\(\mu\)</span>
+</td>
+<td style="text-align: center;">Population Mean <span class="math inline">\(\mu\)</span>
+</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;"><strong>Confidence Interval</strong></td>
@@ -1245,31 +1248,31 @@ Note
 <li>What if the population is not normal and <span class="math inline">\(n \le 30\)</span>?
 <ul>
 <li>Use a so-called <strong>nonparametric</strong> method, for example <strong>bootstrapping</strong>.</li>
-</ul></li>
 </ul>
-</section>
-<section id="exercises" class="level2" data-number="13.7">
-<h2 data-number="13.7" class="anchored" data-anchor-id="exercises"><span class="header-section-number">13.7</span> Exercises</h2>
+</li>
+</ul></section><section id="exercises" class="level2" data-number="13.7"><h2 data-number="13.7" class="anchored" data-anchor-id="exercises">
+<span class="header-section-number">13.7</span> Exercises</h2>
 <ol type="1">
-<li><p>Here are summary statistics for randomly selected weights of newborn boys: <span class="math inline">\(n =207\)</span>, <span class="math inline">\(\bar{x} = 30.2\)</span>hg (1hg = 100 grams), <span class="math inline">\(s = 7.3\)</span>hg.</p>
+<li>
+<p>Here are summary statistics for randomly selected weights of newborn boys: <span class="math inline">\(n =207\)</span>, <span class="math inline">\(\bar{x} = 30.2\)</span>hg (1hg = 100 grams), <span class="math inline">\(s = 7.3\)</span>hg.</p>
 <ol type="a">
 <li>Compute a 95% confidence interval for <span class="math inline">\(\mu\)</span>, the mean weight of newborn boys.</li>
 <li>Is the result in (a) very different from the 95% confidence interval if <span class="math inline">\(\sigma = 7.3\)</span>?</li>
-</ol></li>
+</ol>
+</li>
 <li><p>A 95% confidence interval for a population mean <span class="math inline">\(\mu\)</span> is given as (18.635, 21.125). This confidence interval is based on a simple random sample of 32 observations. Calculate the sample mean and standard deviation. Assume that all conditions necessary for inference are satisfied. Use the t-distribution in any calculations.</p></li>
 <li><p>A market researcher wants to evaluate car insurance savings at a competing company. Based on past studies he is assuming that the standard deviation of savings is $95. He wants to collect data such that he can get a margin of error of no more than $12 at a 95% confidence level. How large of a sample should he collect?</p></li>
-<li><p>The 95% confidence interval for the mean rent of one bedroom apartments in Chicago was calculated as ($2400, $3200).</p>
+<li>
+<p>The 95% confidence interval for the mean rent of one bedroom apartments in Chicago was calculated as ($2400, $3200).</p>
 <ol type="a">
 <li>Interpret the meaning of the 95% interval.</li>
 <li>Find the sample mean rent from the interval.</li>
-</ol></li>
+</ol>
+</li>
 </ol>
 
 
-</section>
-
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -1310,7 +1313,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
     button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
     setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
       button.setAttribute("title", currentTitle);
       button.classList.remove('code-copy-button-checked');
     }, 1000);
@@ -1346,29 +1366,45 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
   var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
   for (var i=0; i<bibliorefs.length; i++) {
     const ref = bibliorefs[i];
-    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-    tippyHover(ref, function() {
-      var popup = window.document.createElement('div');
-      cites.forEach(function(cite) {
-        var citeDiv = window.document.createElement('div');
-        citeDiv.classList.add('hanging-indent');
-        citeDiv.classList.add('csl-entry');
-        var biblioDiv = window.document.getElementById('ref-' + cite);
-        if (biblioDiv) {
-          citeDiv.innerHTML = biblioDiv.innerHTML;
-        }
-        popup.appendChild(citeDiv);
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
       });
-      return popup.innerHTML;
-    });
+    }
   }
 });
-</script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./infer.html" class="pagination-link">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Statistical Inference</span>
       </a>          
@@ -1380,22 +1416,20 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<footer class="footer">
-  <div class="nav-footer">
+<footer class="footer"><div class="nav-footer">
     <div class="nav-footer-left">Copyright 2022, Cheng-Han Yu</div>   
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
-    <li class="nav-item compact">
+<li class="nav-item compact">
     <a class="nav-link active" href="https://github.com/chenghanyustats/introstatsbook" aria-current="page">
       <i class="bi bi-github" role="img">
 </i> 
     </a>
   </li>  
 </ul>
-    </div>
+</div>
   </div>
 </footer>
-
 
 
 </body></html>
