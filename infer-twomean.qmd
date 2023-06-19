@@ -7,37 +7,48 @@ library(emoji)
 library(ggplot2)
 ```
 
-## Why Compare Two Populations?
+## Introduction
+
+<span style="color:blue"> **Why Compare Two Populations?** </span>
 
 - Often we are faced with a comparison of parameters from different populations.
   + <span style="color:blue"> Comparing the _mean_ annual income for _Male_ and _Female_ groups. </span>
   + <span style="color:blue"> Testing if a diet used for losing weight is effective from _Placebo_ samples and _New Diet_ samples. </span>
-- If these two samples are drawn from populations with means $\mu_1$ and $\mu_2$ respectively, the testing problem can be formulated as
+- If these two samples are drawn from populations with means, $\mu_1$ and $\mu_2$ respectively, the testing problem can be formulated as
 <span style="color:blue"> $$\begin{align} 
   &H_0: \mu_1 = \mu_2 \\ &H_1: \mu_1 > \mu_2 
   \end{align}$$ </span>
   + $\mu_1$: *male* mean annual income; $\mu_2$: *female* mean annual income 
   + $\mu_1$: mean weight loss from the *New Diet* group; $\mu_2$: mean weight loss from the *Placebo* group
 
-## Dependent and Independent Samples
+-----------------------------------------------------------------
+
+<span style="color:blue"> **Dependent and Independent Samples** </span>
+
 - The two samples collected can be *independent* or *dependent*.
 
-:::{layout-ncol=2}
+::::{.columns}
+:::{.column width="65%"}
 - Two samples are **dependent** or **matched pairs** if the sample values are matched, where *the matching is based on some inherent relationship*.
-  + <span style="color:blue"> Height data of fathers and daughters. The height of each dad is **matched** with the height of his daughter. </span>
-  + <span style="color:blue"> Weights of subjects measure before and after some diet treatment. The subjects are the **same before and after measurements**. </span>
+  - <span style="color:blue"> Height data of fathers and daughters, where the height of each dad is **matched** with the height of his daughter. </span>
+  - <span style="color:blue"> Weights of subjects measure before and after some diet treatment, where the subjects are the **same both before and after measurements**. </span>
+:::
 
+:::{.column width="35%"}
 ```{r, out.width="60%", echo=FALSE, fig.align='center'}
 knitr::include_graphics("./images/img-infer/dad_daughter.jpeg")
 ```
 :::
+::::
 
-## Dependent Samples (Matched Pairs)
+<span style="color:red"> ***Dependent Samples (Matched Pairs)*** </span>
+
 - Subject 1 may refer to 
   + the *same* person with two measurements (before and after)
-  + the *first matched pair* (dad-daughter).
+  + the *first matched pair* (dad-daughter)
 
-:::{layout-ncol=2}
+::::{.columns}
+:::{.column width="50%"}
 
 | Subject  |  (Dad) Before |  (Daughter) After 
 | :--------------: | :-----------------: | :------------------:
@@ -46,24 +57,32 @@ knitr::include_graphics("./images/img-infer/dad_daughter.jpeg")
 | 3 | $x_{b3}$ | $x_{a3}$
 | $\vdots$ | $\vdots$ |  $\vdots$ 
 | $n$ | $x_{bn}$ | $x_{an}$
+:::
 
+:::{.column width="50%"}
 
-```{r, out.width="80%", echo=FALSE, fig.align='center'}
+<br>
+
+```{r, out.width="70%", echo=FALSE, fig.align='center'}
 knitr::include_graphics("./images/img-infer/weight.jpeg")
 ```
 :::
+::::
 
-## Independent Samples
-:::{layout-ncol=2}
+<span style="color:red"> ***Independent Samples*** </span>
+
+::::{.columns}
+:::{.column width="70%"}
 - Two samples are **independent** if the sample values from one population are *not related to* the sample values from the other.
-  + <span style="color:blue"> Salary samples of men and women. Two samples are drawn independently from the male and female groups. </span>
+  + <span style="color:blue"> Salary samples of men and women, where the two samples are drawn independently from the male and female groups. </span>
+:::
 
-
-```{r, out.width="60%", echo=FALSE, fig.align='center'}
+:::{.column width="30%"}
+```{r, out.width="95%", echo=FALSE, fig.align='center'}
 knitr::include_graphics("./images/img-infer/male_female.jpeg")
 ```
 :::
-
+::::
 - Subject 1 of the Group 1 has nothing to do with the Subject 1 of the Group 2.
 
 |Subject of Group 1 (Male)  | Measurement of Group 1   | Subject of Group 2 (Female) |  Measurement of Group 2 
@@ -75,25 +94,28 @@ knitr::include_graphics("./images/img-infer/male_female.jpeg")
 | $n_1$ | $x_{1n_1}$ | $\vdots$ | $\vdots$
 |  |  |  $n_2$ | $x_{2n_2}$
 
-## Inference from Two Samples 
-<!-- - We start with the inference methods for independent samples. -->
+-----------------------------------------------------------------
 
-<!-- - Remember, the inference methods include estimation and hypothesis testing, and we start with hypothesis testing.-->
+<span style="color:blue"> **Inference from Two Samples** </span> 
 
-<!-- - To do inference for independent two samples, we start with the sampling distribution of $\$ -->
 - The statistical methods are different for these two types of samples.
-- **Good news**: The concepts of CI and HT for one population can be applied to two-population cases.
-- **$\text{CI = point estimate} \pm \text{margin of error (E)}$**, e.g., $\overline{x} \pm t_{\alpha/2, n-1} \frac{s}{\sqrt{n}}$
+- The good news is the concepts of confidence intervals and hypothesis testing for one population can be applied to two-population cases.
+- **$\text{CI = point estimate} \pm \text{margin of error (E)}$**
+  + e.g., $\overline{x} \pm t_{\alpha/2, n-1} \frac{s}{\sqrt{n}}$
 - Margin of error = critical value $\times$ standard error of the point estimator
-- The 6 testing steps are the same, and both critical value and $p$-value method can be applied too, e.g., $t_{test} = \frac{\overline{x} - \mu_0}{s/\sqrt{n}}$
+- The 6 testing steps are the same, and both critical value and $p$-value method can be applied too
+  + e.g., $t_{test} = \frac{\overline{x} - \mu_0}{s/\sqrt{n}}$
 
-## Hypothesis Testing for Dependent Samples
+## Inferences About Two Means: Dependent Samples (Matched Pairs)
+
+<span style="color:blue"> **Hypothesis Testing for Dependent Samples** </span>
 
 :::{.callout-note icon=false}
-## To analyze a **paired** data set, simply analyze the differences! 
+## To analyze a **paired** data set, we can simply analyze the differences! 
 :::
 
-:::{layout-ncol=2}
+::::{.columns}
+:::{.column width="50%"}
 
 | Subject  |  $x_1$  | $x_2$ | **Difference $d = x_1 - x_2$** 
 | :--------------: | :-----------------: | :------------------: | :------------------:
@@ -102,36 +124,47 @@ knitr::include_graphics("./images/img-infer/male_female.jpeg")
 | 3 | $x_{13}$ | $x_{23}$ | $\color{red}{d_3}$
 | $\vdots$ | $\vdots$ |  $\vdots$ | $\color{red}{\vdots}$
 | $n$ | $x_{1n}$ | $x_{2n}$ | $\color{red}{d_n}$
+:::
 
+:::{.column width="50%"}
 - $\mu_d = \mu_1 - \mu_2$
+
 - <span style="color:blue"> $\begin{align} & H_0: \mu_1 - \mu_2 = 0 \iff \mu_d = 0 \\ & H_1: \mu_1 - \mu_2 > 0 \iff \mu_d > 0 \\ & H_1: \mu_1 - \mu_2 < 0 \iff \mu_d < 0  \\ & H_1: \mu_1 - \mu_2 \ne 0 \iff \mu_d \ne 0 \end{align}$ </span>
 :::
+::::
 
 :::{.callout-note icon=false}
 ## The point estimate of $\mu_1 - \mu_2$ is $\overline{x}_1 - \overline{x}_2 = \overline{d}$.
 :::
 
-## Inference for Paired Data
+--------------------------------------------------------------
+
+<span style="color:blue"> **Inference for Paired Data** </span>
 
 - Requirements: the sample differences $\color{blue}{d_i}$s are
-  + random sample
-  + from a normal distribution and/or $n > 30$ (tested by QQ-plot of $d_i$s)
+  + from a random sample
+  + from a normal distribution and/or $n > 30$ 
+    - This can be confirmed using the QQ-plot of $d_i$s.
 - Follow the same procedure as the **one-sample $t$-test**!
 - The **test statistic** is 
 $\color{blue}{t_{test} = \frac{\overline{d}-0}{s_d/\sqrt{n}}} \sim T_{n-1}$ under $H_0$ where $\overline{d}$ and $s_d$ are the mean and SD of the difference samples $(d_1, d_2, \dots, d_n)$.
-- The **critical value** $t_{\alpha, n-1}$ and $t_{\alpha/2, n-1}$.
+- The **critical value** is either $t_{\alpha, n-1}$ and $t_{\alpha/2, n-1}$ depending on if it is a one-tailed or two-tailed test.
+- Below is a table that summarizes information necessary to make inferences about paired data. 
 
 Paired $t$-test| Test Statistic  | Confidence Interval for $\mu_d = \mu_1 - \mu_2$
 ---------------------- | ----------------- | ------------------
 $\sigma_d$ is unknown | $\large t_{test} = \frac{\overline{d}}{s_d/\sqrt{n}}$ | $\large \overline{d} \pm t_{\alpha/2, n-1} \frac{s_d}{\sqrt{n}}$
 
-- The test from matched pairs is called a **paired $t$-test**.
+- The test for matched pairs is called a **paired $t$-test**.
 
-## Example
-- Consider a capsule used to reduce blood pressure (BP) for the hypertensive individuals. Sample of 10 hypertensive individuals take the medicine for 4 weeks.
+-------------------------------------------------------------
+
+<span style="color:blue"> **Example** </span>
+
+- Consider a capsule used to reduce blood pressure (BP) for individuals with hypertension. 
+- A sample of 10 individuals with hypertension takes the medicine for 4 weeks.
 - Does the data provide sufficient evidence that the treatment is effective in reducing BP?
 
-:::{layout-ncol=2}
 | Subject  | Before $(x_b)$  | After $(x_a)$ | **Difference $d = x_b - x_a$** 
 | :--------------: | :-----------------: | :------------------: | :------------------:
 | 1 | 143 | 124 | 19
@@ -145,25 +178,37 @@ $\sigma_d$ is unknown | $\large t_{test} = \frac{\overline{d}}{s_d/\sqrt{n}}$ | 
 | 9 | 140 | 145 | -5
 | 10 | 169| 160 | 9
 
-```{r, out.width="90%", echo=FALSE, fig.align='center'}
-knitr::include_graphics("./images/img-infer/drug.jpeg")
-```
-:::
 
 - $\overline{d} = 13.5$, $s_d= 12.48$.
 - $\mu_1 =$ Mean Before, $\mu_2 =$ Mean After, and $\mu_d = \mu_1 - \mu_2$.
-- Step 1: <span style="color:blue"> $\begin{align} &H_0: \mu_1 = \mu_2 \iff \mu_d = 0\\ &H_1: \mu_1 > \mu_2 \iff \mu_d > 0 \end{align}$ </span>
-- Step 2:  <span style="color:blue"> $\alpha = 0.05$ </span>
-- Step 3: 
-<span style="color:blue"> $t_{test} = \frac{\overline{d}}{s_d/\sqrt{n}} = \frac{13.5}{12.48/\sqrt{10}} = 3.42$ </span>
-- Step 4-c:  <span style="color:blue"> $t_{\alpha, n-1} = t_{0.05, 9} = 1.833$.</span>
-- Step 5-c:  <span style="color:blue"> We reject $H_0$ if $\small t_{test} > t_{\alpha, n-1}$. Since $\small t_{test} = 3.42 > 1.833  = t_{\alpha, n-1}$, we reject $H_0$.</span>
-<!-- > - Step 4-p:  <span style="color:blue"> The $p$-value is $P(T < t_{test}) \approx 0$ </span> -->
 
-<!-- > - Step 5-p:  <span style="color:blue"> We reject $H_0$ if $p$-value < $\alpha$. Since $p$-value $\approx 0 < 0.05  = \alpha$, we reject $H_0$.</span> -->
-- Step 6:  <span style="color:blue"> **There is sufficient evidence to support the claim that the drug is effective in reducing blood pressure.** </span>
+<span style="color:red"> ***Step 1*** </span>
+
+- <span style="color:blue"> $\begin{align} &H_0: \mu_1 = \mu_2 \iff \mu_d = 0\\ &H_1: \mu_1 > \mu_2 \iff \mu_d > 0 \end{align}$ </span>
+
+<span style="color:red"> ***Step 2*** </span>
+
+- <span style="color:blue"> $\alpha = 0.05$ </span>
+
+<span style="color:red"> ***Step 3*** </span> 
+
+- <span style="color:blue"> $t_{test} = \frac{\overline{d}}{s_d/\sqrt{n}} = \frac{13.5}{12.48/\sqrt{10}} = 3.42$ </span>
+
+<span style="color:red"> ***Step 4-c*** </span> 
+
+- <span style="color:blue"> $t_{\alpha, n-1} = t_{0.05, 9} = 1.833$.</span>
+
+<span style="color:red"> ***Step 5-c*** </span> 
+
+- <span style="color:blue"> We reject $H_0$ if $\small t_{test} > t_{\alpha, n-1}$. Since $\small t_{test} = 3.42 > 1.833  = t_{\alpha, n-1}$, we reject $H_0$.</span>
+
+<span style="color:red"> ***Step 6*** </span> 
+
+- <span style="color:blue"> **There is sufficient evidence to support the claim that the drug is effective in reducing blood pressure.** </span>
 
 ```{r, echo=FALSE, out.width="75%", fig.align='center'}
+#| label: fig-rt-test
+#| fig-cap: Illustration of right-tailed test for blood pressure example
 par(mar = c(2, 0, 1, 0), mfrow = c(1, 1))
 x <- seq(-4, 4, length=1000)
 alpha <- 0.05
@@ -198,19 +243,30 @@ text(0,-0.02, 0,
 ```
 
 - The 95% CI for $\mu_d = \mu_1 - \mu_2$ is $$\begin{align}\overline{d} \pm t_{\alpha/2, df} \frac{s_d}{\sqrt{n}} &= 13.5 \pm t_{0.025, 9}\frac{12.48}{\sqrt{10}}\\ &= 13.5 \pm 8.927 \\ &= (4.573, 22.427).\end{align}$$
-- 95% confident that the *mean difference* in blood pressure is between 4.57 and 22.43. 
+- We are 95% confident that the *mean difference* in blood pressure is between 4.57 and 22.43. 
 - Since the interval *does NOT include 0*, it leads to the same conclusion as rejection of $H_0$.
 
-## Two-Sample Paired Test in R
-:::{layout-ncol=2}
+---------------------------------------------------------------------
+
+<span style="color:blue"> **Two-Sample Paired T-Test in R** </span>
+
+- Below is the same data as in the previous hypertension example.
+- These figures illustrate how to perform the hypothesis testing for paired data in R.
+
+::::{.columns}
+:::{.column width="49.5%"}
 ```{r, echo=-1, eval=TRUE}
 load("../introstatsbook/data/pair_data.RDS")
 pair_data
 (d <- pair_data$before - pair_data$after)
 (d_bar <- mean(d))
 ```
+:::
 
+:::{.column width="2%"}
+:::
 
+:::{.column width="48.5%"}
 ```{r, echo=TRUE, eval=TRUE}
 (s_d <- sd(d))
 ## t_test
@@ -222,11 +278,17 @@ pt(q = t_test, df = length(d) - 1,
    lower.tail = FALSE)
 ```
 :::
+::::
 
-## Two-Sample Paired Test in R
+- Below  is an example of how to calculate the confidence interval for the change in blood pressure.
+
 ```{r echo=TRUE}
 d_bar + c(-1, 1) * qt(p = 0.975, df = length(d) - 1) * (s_d / sqrt(length(d))) ## CI
 ```
+
+- We can see that performing these calculations in R leads us to the same conclusions we previously made.
+
+- There is also a t-test function in R.
 
 ```{r echo=TRUE, highlight.output = c(5, 6)}
 ## t.test() function
@@ -234,15 +296,26 @@ t.test(x = pair_data$before, y = pair_data$after,
        alternative = "greater", mu = 0, paired = TRUE)
 ```
 
-- Be careful about the one-sided CI! **We should use the two-sided CI!** 
+<br>
 
-## Compare Population Means: Independent Samples
-- Whether stem cells can improve heart function.
-- The relationship between pregnant womens' smoking habits and newborns' weights.
-- Whether one variation of an exam is harder than another variation.
+:::{.callout-note}
+- Be careful about the one-sided CI listed in the table above! **We should use the two-sided CI!** 
+:::
 
-:::{layout-ncol=2}
+## Inference About Two Means: Independent Samples
+
+<span style="color:blue"> **Compare Population Means: Independent Samples** </span>
+
+- Examples of independent data:
+  + Whether stem cells can improve heart function.
+  + The relationship between pregnant women's smoking habits and newborns' weights.
+  + Whether one variation of an exam is harder than another variation.
+
+::::{.columns}
+:::{.column width="50%"}
 ```{r, echo=FALSE, out.width="100%", fig.align='center'}
+#| label: fig-boxplots
+#| fig-cap: Boxplots for two variations of an exam
 set.seed(1234)
 a_sample <- rnorm(30, 80, 14)
 a_sample[a_sample > 100] <- 100
@@ -256,35 +329,36 @@ bp <- ggplot(df, aes(x=version, y=score, fill = version)) +
   geom_boxplot()
 bp + theme_classic() + coord_flip()
 ```
+:::
 
-
+:::{.column width="50%"}
 ```{r, out.width="90%", echo=FALSE, fig.align='center'}
 knitr::include_graphics("./images/img-infer/exam.jpeg")
 ```
 :::
+::::
 
-## Inferences from Two Independent Samples: Overview
-```{r, echo=FALSE, out.width="100%", fig.align='center'}
-knitr::include_graphics("./images/img-infer/indept_samples_framework.jpg")
-```
+-------------------------------------------------------------------
 
-## Testing for Independent Samples $(\sigma_1 \ne \sigma_2)$
+<span style="color:blue"> **Testing for Independent Samples $(\sigma_1 \ne \sigma_2)$** </span>
+
 - Requirements:
   + The two samples are *independent*.
-  + Both samples are a *random sample*.
+  + Both samples are *random samples*.
   + $n_1 > 30$, $n_2 > 30$ and/or both samples are from a *normally* distributed population.
-- Interested in whether the two population means ** $\mu_1$ and $\mu_2$ are equal or not **, or one is larger than the other. 
+- We are interested in whether the two population means, **$\mu_1$ and $\mu_2$**, are equal or if one is larger than the other. 
 - $H_0: \mu_1 = \mu_2$
-- It is equivalent to testing if **their difference is zero**. 
+  + This is equivalent to testing if **their difference is zero**. 
 - $H_0: \mu_1 - \mu_2 = 0$
 
-<!-- - We start with finding a point estimate for $\mu_1 - \mu_2$.  -->
-:::{.callout-note icon=false}
-## We start with finding a point estimate for $\mu_1 - \mu_2$. What is the best point estimator for $\mu_1 - \mu_2$?
-:::
-- $\overline{X}_1 - \overline{X}_2$ is the **best point estimator** for $\mu_1 - \mu_2$!
 
-## Sampling Distribution of $\overline{X}_1 - \overline{X}_2$
+:::{.callout-note icon=false}
+## We start by finding a point estimate for $\mu_1 - \mu_2$. What is the best point estimator for $\mu_1 - \mu_2$?
+- $\overline{X}_1 - \overline{X}_2$ is the **best point estimator** for $\mu_1 - \mu_2$!
+:::
+
+
+<span style="color:red"> ***Sampling Distribution of $\overline{X}_1 - \overline{X}_2$*** </span>
 
 - If the two samples are from *independent normally* distributed populations or $n_1 > 30$ and $n_2 > 30$,
 $$\small \overline{X}_1 \sim N\left(\mu_1, \frac{\sigma_1^2}{n_1} \right), \quad \overline{X}_2 \sim N\left(\mu_2, 
@@ -295,76 +369,86 @@ $$\small \overline{X}_1 - \overline{X}_2 \sim N\left(\mu_1 - \mu_2, \frac{\sigma
 
 $$\small Z = \frac{(\overline{X}_1 - \overline{X}_2) - (\mu_1 - \mu_2)}{\sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}}} \sim N(0, 1)$$
 
-## Test Statistic for Independent Samples $(\sigma_1 \ne \sigma_2)$
+<span style="color:red"> ***Test Statistic for Independent Samples $(\sigma_1 \ne \sigma_2)$*** </span>
 
-- With $D_0$ a hypothesized value (often 0), our testing problem is
-
+- With $D_0$ being a hypothesized value (often 0), our testing problem is
   + <span style="color:blue"> $\small \begin{align} &H_0: \mu_1 - \mu_2 \le D_0\\ &H_1: \mu_1 - \mu_2 > D_0 \end{align}$ </span> (right-tailed)
-
+  
   + <span style="color:blue"> $\small \begin{align} &H_0: \mu_1 - \mu_2 \ge D_0\\ &H_1: \mu_1 - \mu_2 < D_0 \end{align}$ </span> (left-tailed)
   
   + <span style="color:blue"> $\small \begin{align} &H_0: \mu_1 - \mu_2 = D_0\\ &H_1: \mu_1 - \mu_2 \ne D_0 \end{align}$ </span> (two-tailed)
-  
 - If $\sigma_1$ and $\sigma_2$ are **known**, the **test statistic** is the z-score of $\small \overline{X}_1 - \overline{X}_2$ under $H_0$: $$z_{test} = \frac{(\overline{x}_1 - \overline{x}_2) - (\mu_1 - \mu_2)}{\sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}}} = \frac{(\overline{x}_1 - \overline{x}_2) - \color{blue}{D_0}}{\sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}}} $$
-
-- Then find $z_{\alpha}$ or $z_{\alpha/2}$ and follow our testing steps!
-
-## Test Statistic for Independent Samples $(\sigma_1 \ne \sigma_2)$
-
+- Then we find $z_{\alpha}$ or $z_{\alpha/2}$ and follow our testing steps!
 - If $\sigma_1$ and $\sigma_2$ are **unknown**, the test statistic becomes $t_{test}$:
 
 $$t_{test} = \frac{(\overline{x}_1 - \overline{x}_2) - (\mu_1 - \mu_2)}{\sqrt{\frac{\color{red}{s_1^2}}{n_1} + \frac{\color{red}{s_2^2}}{n_2}}} = \frac{(\overline{x}_1 - \overline{x}_2) - \color{blue}{D_0}}{\sqrt{\frac{\color{red}{s_1^2}}{n_1} + \frac{\color{red}{s_2^2}}{n_2}}} $$
-<!-- If $\sigma_1$ and $\sigma_2$ are **known** -->
 
-- The **critical value** $t_{\alpha, df}$ (one-tailed) and $t_{\alpha/2, df}$ (two-tailed), and the $t$ distribution used to compute the **$p$-value** has the degrees of freedom
+- The **critical value** is either $t_{\alpha, df}$ (one-tailed) pr $t_{\alpha/2, df}$ (two-tailed), and the $t$ distribution used to compute the **$p$-value** has the degrees of freedom
 $$\small df = \dfrac{(A+B)^2}{\dfrac{A^2}{n_1-1}+ \dfrac{B^2}{n_2-1}},$$ where $\small A = \dfrac{s_1^2}{n_1}$ and $\small B = \dfrac{s_2^2}{n_2}$.
 
-<!-- $$ df = \frac{(n_1-1)(n_2-1)}{(1-c)^2(n_1-1)+c^2(n_2-1)},$$ where $c = \frac{\frac{s_1^2}{n_1}}{\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}}$. -->
-- If the $df$ is not an integer, we round it down to an integer.
-<!-- > - <span style="color:blue"> No need to memorize it. No need to know why this ugly value. Just use it! </span> -->
+- If the $df$ is not an integer, we round it down to the nearest integer.
 
-## Inference from Independent Samples $(\sigma_1 \ne \sigma_2)$
+<span style="color:red"> ***Inference About Independent Samples $(\sigma_1 \ne \sigma_2)$*** </span>
+
+- Below is a table that summarizes ways to make inferences about independent samples when $(\sigma_1 \ne \sigma_2)$.
 
 $\large \color{red}{\sigma_1 \ne \sigma_2}$       | Test Statistic  | Confidence Interval for $\mu_1 - \mu_2$
 ---------- | ----------------- | ------------------
 known   | $\large z_{test} = \frac{(\overline{x}_1 - \overline{x}_2) - \color{blue}{D_0}}{\sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}}}$    |  $\large (\overline{x}_1 - \overline{x}_2) \pm z_{\alpha/2} \sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}}$
 unknown | $\large t_{test} = \frac{(\overline{x}_1 - \overline{x}_2) - \color{blue}{D_0}}{\sqrt{\frac{\color{red}{s_1^2}}{n_1} + \frac{\color{red}{s_2^2}}{n_2}}}$ | $\large (\overline{x}_1 - \overline{x}_2) \pm t_{\alpha/2, df} \sqrt{\frac{\color{red}{s_1^2}}{n_1} + \frac{\color{red}{s_2^2}}{n_2}}$
 
-<!-- - use $df = \frac{(n_1-1)(n_2-1)}{(1-c)^2(n_1-1)+c^2(n_2-1)}$ where $c = \frac{\frac{s_1^2}{n_1}}{\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}}$ to get the $p$-value, critical value, and CI. -->
-
-- Use $\small df = \dfrac{(A+B)^2}{\dfrac{A^2}{n_1-1}+ \dfrac{B^2}{n_2-1}},$ where $\small A = \dfrac{s_1^2}{n_1}$ and $\small B = \dfrac{s_2^2}{n_2}$ to get the $p$-value, critical value, and CI.
+- Use $\small df = \dfrac{(A+B)^2}{\dfrac{A^2}{n_1-1}+ \dfrac{B^2}{n_2-1}},$ where $\small A = \dfrac{s_1^2}{n_1}$ and $\small B = \dfrac{s_2^2}{n_2}$ to get the $p$-value, critical value and confidence interval.
 - The unequal-variance t-test is called **Welch's t-test**.
 
-## Example: Two-Sample t-Test
-:::{layout-ncol=2}
-- Does an oversized tennis racket exert less stress/force on the elbow? The data show
-  + **Oversized**: $n_1 = 33$, $\overline{x}_1 = 25.2$, $s_1 = 8.6$
-  + **Conventional**: $n_2 = 12$, $\overline{x}_2 = 33.9$, $s_2 = 17.4$
+<span style="color:red"> ***Example: Two-Sample t-Test*** </span>
+
+::::{.columns}
+:::{.column width="65%"}
+- Does an over-sized tennis racket exert less stress/force on the elbow?
+  - **Over-sized**: $n_1 = 33$, $\overline{x}_1 = 25.2$, $s_1 = 8.6$
+  - **Conventional**: $n_2 = 12$, $\overline{x}_2 = 33.9$, $s_2 = 17.4$
   - The two populations are nearly normal. 
   - The large difference in the sample SD suggests $\sigma_1 \ne \sigma_2$. 
-  - Form a hypothesis test with $\alpha = 0.05$ and construct a 95% CI for the mean difference of force on the elbow.
+- Form a hypothesis test with $\alpha = 0.05$, and construct a 95% CI for the mean difference of force on the elbow.
+:::
 
-
+:::{.column width="35%"}
 ```{r, out.width="75%", echo=FALSE, fig.align='center'}
 knitr::include_graphics("./images/img-infer/tennis.jpeg")
 ```
 :::
+::::
 
-- Step 1: <span style="color:blue"> $\begin{align} &H_0: \mu_1 = \mu_2 \\ &H_1: \mu_1 < \mu_2 \end{align}$ </span>
-- Step 2: <span style="color:blue"> $\alpha = 0.05$ </span>
-- Step 3: <span style="color:blue"> $t_{test} = \frac{(\overline{x}_1 - \overline{x}_2) - (\mu_1-\mu_2)}{\sqrt{\frac{\color{red}{s_1^2}}{n_1} + \frac{\color{red}{s_2^2}}{n_2}}} = \frac{(25.2 - 33.9) - 0}{\sqrt{\frac{\color{red}{8.6^2}}{33} + \frac{\color{red}{17.4^2}}{12}}} = -1.66$</span>
+<span style="color:red"> Step 1 </span> 
+
+- <span style="color:blue"> $\begin{align} &H_0: \mu_1 = \mu_2 \\ &H_1: \mu_1 < \mu_2 \end{align}$ </span>
+
+<span style="color:red"> Step 2 </span>  
+
+- <span style="color:blue"> $\alpha = 0.05$ </span>
+
+<span style="color:red"> Step 3 </span> 
+
+- <span style="color:blue"> $t_{test} = \frac{(\overline{x}_1 - \overline{x}_2) - (\mu_1-\mu_2)}{\sqrt{\frac{\color{red}{s_1^2}}{n_1} + \frac{\color{red}{s_2^2}}{n_2}}} = \frac{(25.2 - 33.9) - 0}{\sqrt{\frac{\color{red}{8.6^2}}{33} + \frac{\color{red}{17.4^2}}{12}}} = -1.66$</span>
 - $\small df = \dfrac{(A+B)^2}{\dfrac{A^2}{n_1-1}+ \dfrac{B^2}{n_2-1}},$ $\small A = \dfrac{s_1^2}{n_1}$ and $\small B = \dfrac{s_2^2}{n_2}$
 - $\small A = \dfrac{8.6^2}{33}$, $\small B = \dfrac{17.4^2}{12}$, $\small df = \dfrac{(A+B)^2}{\dfrac{A^2}{33-1}+ \dfrac{B^2}{12-1}} = 13.01$
 
-<!-- - $\small c = \frac{\frac{8.6^2}{33}}{\frac{8.6^2}{33} + \frac{17.4^2}{12}} = 0.0816$, $\small df = \frac{(33-1)(12-1)}{(1-0.0816)^2(33-1)+0.0816^2(12-1)} =13.01$ -->
 
-:::{.callout-note icon=false}
-## If the computed value of $df$ is not an integer, always **round down** to the nearest integer.
+:::{.callout-note}
+If the computed value of $df$ is not an integer, always **round down** to the nearest integer.
 :::
-- Step 4-c:  <span style="color:blue"> $-t_{0.05, 13} = -1.771$. </span>
-- Step 5-c:  <span style="color:blue"> We reject $H_0$ if $\small t_{test} < -t_{\alpha, df}$. $\small t_{test} = -1.66 > -1.771 = -t_{\alpha, df}$, we fail to reject $H_0$. </span>
-- Step 6:  <span style="color:blue"> **There is insufficient evidence to support the claim that the the oversized racket delivers less stress to the elbow**. </span>
 
+<span style="color:red"> Step 4-c </span> 
+
+- <span style="color:blue"> $-t_{0.05, 13} = -1.771$. </span>
+
+<span style="color:red"> Step 5-c </span> 
+
+- <span style="color:blue"> We reject $H_0$ if $\small t_{test} < -t_{\alpha, df}$. $\small t_{test} = -1.66 > -1.771 = -t_{\alpha, df}$, we fail to reject $H_0$. </span>
+
+<span style="color:red"> Step 6 </span>   
+
+- <span style="color:blue"> **There is insufficient evidence to support the claim that the the oversized racket delivers less stress to the elbow**. </span>
 - The 95% CI for $\mu_1 - \mu_2$ is
 
 $$\begin{align}(\overline{x}_1 - \overline{x}_2) \pm t_{\alpha/2, df} \sqrt{\frac{\color{red}{s_1^2}}{n_1} + \frac{\color{red}{s_2^2}}{n_2}} &= (25.2 - 33.9) \pm t_{0.025,13}\sqrt{\frac{8.6^2}{33} + \frac{17.4^2}{12}}\\&= -8.7 \pm 11.32 = (-20.02, 2.62).\end{align}$$ 
@@ -372,7 +456,8 @@ $$\begin{align}(\overline{x}_1 - \overline{x}_2) \pm t_{\alpha/2, df} \sqrt{\fra
 - We are 95% confident that the difference in the mean forces is between -20.02 and 2.62. 
 - Since the interval includes 0, it leads to the same conclusion as failing to reject $H_0$.
 
-## Two-Sample t-Test in R
+<span style="color:red"> ***Two-Sample t-Test in R*** </span>
+
 ```{r, echo=TRUE, eval=TRUE}
 n1 = 33; x1_bar = 25.2; s1 = 8.6
 n2 = 12; x2_bar = 33.9; s2 = 17.4
@@ -387,79 +472,104 @@ qt(p = 0.05, df = df)
 pt(q = t_test, df = df)
 ```
 
-## Sampling Distribution of $\overline{X}_1 - \overline{X}_2$ when $\sigma_1 = \sigma_2 = \sigma$
+----------------------------------------------------------------------
+
+<span style="color:blue"> **Testing for Independent Samples ($\sigma_1 = \sigma_2 = \sigma$)** </span>
+
+<span style="color:red"> ***Sampling Distribution of $\overline{X}_1 - \overline{X}_2$*** </span>
 
 $$\overline{X}_1 - \overline{X}_2 \sim N\left(\mu_1 - \mu_2, \frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2} \right) $$
 If $\sigma_1 = \sigma_2 = \sigma$,
 $$\overline{X}_1 - \overline{X}_2 \sim N\left(\mu_1 - \mu_2, \sigma^2\left(\frac{1}{n_1} + \frac{1}{n_2} \right) \right) $$
 $$ Z = \frac{(\overline{X}_1 - \overline{X}_2) - (\mu_1 - \mu_2)}{\sigma\sqrt{\frac{1}{n_1} + \frac{1}{n_2}}} \sim N(0, 1)$$
 
-## Test Statistic for Independent Samples $(\sigma_1 = \sigma_2 = \sigma)$
+<span style="color:red"> ***Test Statistic for Independent Samples $(\sigma_1 = \sigma_2 = \sigma)$*** </span>
 
 - If $\sigma_1$ and $\sigma_2$ are **known**, the **test statistic** is the z-score of $\overline{X}_1 - \overline{X}_2$ under $H_0$: $$z_{test} = \frac{(\overline{x}_1 - \overline{x}_2) - (\mu_1 - \mu_2)}{\sigma\sqrt{\frac{1}{n_1} + \frac{1}{n_2}}} = \frac{(\overline{x}_1 - \overline{x}_2) - \color{blue}{D_0}}{\sigma\sqrt{\frac{1}{n_1} + \frac{1}{n_2}}} $$
-
-- If $\sigma_1$ and $\sigma_2$ are **unknown**, similar to the one sample case, we use $t_{test}$. 
-
-- As $\sigma_1 = \sigma_2 = \sigma$, we don't need two but **one** sample SD to replace the population SD $\sigma$.
-
-- Use the **pooled sample variance** to estimate the common population variance $\sigma^2$:
+- If $\sigma_1$ and $\sigma_2$ are **unknown**, we use $t_{test}$ just like we would for the one-sample case. 
+- As $\sigma_1 = \sigma_2 = \sigma$, we just need **one** sample SD to replace the population SD, $\sigma$.
+- Use the **pooled sample variance** to estimate the common population variance, $\sigma^2$:
 $$ s_p^2 = \frac{(n_1-1)s_1^2 + (n_2-1)s_2^2}{n_1+n_2-2} $$ which is the *weighted average* of $s_1^2$ and $s_2^2$.
-
-## Test Statistic for Independent Samples $(\sigma_1 = \sigma_2 = \sigma)$
-
 - If $\sigma_1$ and $\sigma_2$ are **unknown**,
-$$t_{test} = \frac{(\overline{x}_1 - \overline{x}_2) - (\mu_1 - \mu_2)}{\color{red}{s_p}\sqrt{\frac{1}{n_1} + \frac{1}{n_2}}} = \frac{(\overline{x}_1 - \overline{x}_2) - \color{blue}{D_0}}{\color{red}{s_p}\sqrt{\frac{1}{n_1} + \frac{1}{n_2}}}$$
-- Here, the **critical value** $t_{\alpha, df}$ (for one-tailed tests) and $t_{\alpha/2, df}$ (for two-tailed tests), and the $t$ distribution used to compute the **$p$-value** have the degrees of freedom
+$$t_{test} = \frac{(\overline{x}_1 - \overline{x}_2) - (\mu_1 - \mu_2)}{{\color{red}{s_p}}\sqrt{\frac{1}{n_1} + \frac{1}{n_2}}} = \frac{(\overline{x}_1 - \overline{x}_2) - \color{blue}{D_0}}{{\color{red}{s_p}}\sqrt{\frac{1}{n_1} + \frac{1}{n_2}}}$$
+- Here, the **critical value** is either $t_{\alpha, df}$ (for one-tailed tests) or $t_{\alpha/2, df}$ (for two-tailed tests), and the $t$ distribution used to compute the **$p$-value** has the degrees of freedom
 $$df = n_1 + n_2 - 2$$
 
-## Inference from Independent Samples $(\sigma_1 = \sigma_2 = \sigma)$
+<span style="color:red"> ***Inference from Independent Samples $(\sigma_1 = \sigma_2 = \sigma)$*** </span>
+
+- Below is a table that summarizes ways to make inferences about independent samples when $(\sigma_1 = \sigma_2)$.
 
 $\large \color{red}{\sigma_1 = \sigma_2}$       | Test Statistic  | Confidence Interval for $\mu_1 - \mu_2$
 ---------- | ----------------- | ------------------
 known   | $\large z_{test} = \frac{(\overline{x}_1 - \overline{x}_2) - \color{blue}{D_0}}{\sigma\sqrt{\frac{1}{n_1} + \frac{1}{n_2}}}$    |  $\large (\overline{x}_1 - \overline{x}_2) \pm z_{\alpha/2} \sigma \sqrt{\frac{1}{n_1} + \frac{1}{n_2}}$
-unknown | $\large t_{test} = \frac{(\overline{x}_1 - \overline{x}_2) - \color{blue}{D_0}}{\color{red}{s_p}\ \color{black} sqrt{\frac{1}{n_1} + \frac{1}{n_2}}}$ | $\large (\overline{x}_1 - \overline{x}_2) \pm t_{\alpha/2, df} \color{red}{s_p}\ \color{black} sqrt{\frac{1}{n_1} + \frac{1}{n_2}}$
+unknown | $\large t_{test} = \frac{(\overline{x}_1 - \overline{x}_2) - \color{blue}{D_0}}{{\color{red}{s_p}}\sqrt{\frac{1}{n_1} + \frac{1}{n_2}}}$ | $\large (\overline{x}_1 - \overline{x}_2) \pm t_{\alpha/2, df} {\color{red}{s_p}}\sqrt{\frac{1}{n_1} + \frac{1}{n_2}}$
 
 - $s_p = \sqrt{\frac{(n_1-1)s_1^2 + (n_2-1)s_2^2}{n_1+n_2-2}}$
-- Use $df = n_1+n_2-2$ get the $p$-value, critical value and CI.
+- Use $df = n_1+n_2-2$ to get the $p$-value, critical value and confidence interval.
 - The test from two independent samples with $\sigma_1 = \sigma_2  = \sigma$ is usually called **two-sample pooled $z$-test** or **two-sample pooled $t$-test**.
 
-## Example: Weight Loss
-:::{layout-ncol=2}
+<span style="color:red"> ***Example: Weight Loss*** </span>
 
-- A study was conducted to see the effectiveness of a weight loss program. 
-  - Two groups (Control and Experimental) of 10 subjects were selected.
-  - The two populations are normally distributed and have the same SD.
+::::{.columns}
+:::{.column width="80%"}
+- A study was conducted to see the effectiveness of a weight loss program.
+- Two groups (Control and Experimental) of 10 subjects were selected.
+- The two populations are normally distributed and have the same SD.
+:::
 
-```{r, out.width="70%", echo=FALSE, fig.align='center'}
+:::{.column width="20%"}
+```{r, out.width="100%", echo=FALSE, fig.align='center'}
 knitr::include_graphics("./images/img-infer/weight.jpeg")
 ```
 :::
+::::
 
 - The data on weight loss was collected at the end of six months
   + **Control**: $n_1 = 10$, $\overline{x}_1 = 2.1\, lb$, $s_1 = 0.5\, lb$
   + **Experimental**: $n_2 = 10$, $\overline{x}_2 = 4.2\, lb$, $s_2 = 0.7\, lb$
 - Is there a sufficient evidence at $\alpha = 0.05$ to conclude that the program is effective?
-- If yes, construct a 95% CI for $\mu_1 - \mu_2$ to show how much effective it is. 
-- Step 1: <span style="color:blue"> $\begin{align} &H_0: \mu_1 = \mu_2 \\ &H_1: \mu_1 < \mu_2 \end{align}$ </span>
-- Step 2:  <span style="color:blue"> $\alpha = 0.05$ </span>
-- Step 3: 
-<span style="color:blue"> $t_{test} = \frac{(\overline{x}_1 - \overline{x}_2) - \color{blue}{D_0}}{\color{red}{s_p}\sqrt{\frac{1}{n_1} + \frac{1}{n_2}}}$. </span>
-- $s_p = \sqrt{\frac{(n_1-1)s_1^2 + (n_2-1)s_2^2}{n_1+n_2-2}} = \sqrt{\frac{(10-1)0.5^2 + (10-1)0.7^2}{10+10-2}}=0.6083$
-- <span style="color:blue"> $t_{test} = \frac{(2.1 - 4.2) - 0}{0.6083\sqrt{\frac{1}{10} + \frac{1}{10}}} = -7.72$</span>
-- Step 4-c:  <span style="color:blue"> $df = n_1 + n_2 - 2 = 10 + 10 - 2 = 18$. So $-t_{0.05, df = 18} = -1.734$. </span>
-- Step 5-c:  <span style="color:blue"> We reject $H_0$ if $\small t_{test} < -t_{\alpha, df}$. Since $\small t_{test} = -7.72 < -1.734  = -t_{\alpha, df}$, we reject $H_0$.</span>
-- Step 4-p:  <span style="color:blue"> The $p$-value is $P(T_{df=18} < t_{test}) \approx 0$ </span>
-- Step 5-p:  <span style="color:blue"> We reject $H_0$ if $p$-value < $\alpha$. Since $p$-value $\approx 0 < 0.05  = \alpha$, we reject $H_0$.</span>
-- Step 6:  <span style="color:blue"> **There is sufficient evidence to support the claim that the weight loss program is effective.** </span>
+  + If yes, construct a 95% CI for $\mu_1 - \mu_2$ to show how much effective it is. 
+  
+<span style="color:red"> Step 1 </span>
 
-## Example Cont'd 
+- <span style="color:blue"> $\begin{align} &H_0: \mu_1 = \mu_2 \\ &H_1: \mu_1 < \mu_2 \end{align}$ </span>
 
-- The 95% CI for $\mu_1 - \mu_2$ is $$\begin{align}(\overline{x}_1 - \overline{x}_2) \pm t_{\alpha/2, df} \color{red}{s_p}\sqrt{\frac{1}{n_1} + \frac{1}{n_2}} &= (2.1 - 4.2) \pm t_{0.025, 18} (0.6083)\sqrt{\frac{1}{10} + \frac{1}{10}}\\ &= -2.1 \pm 0.572 = (-2.672, -1.528) \end{align}$$
+<span style="color:red"> Step 2 </span>  
 
+- <span style="color:blue"> $\alpha = 0.05$ </span>
+
+<span style="color:red"> Step 3 </span>
+
+- <span style="color:blue"> $t_{test} = \frac{(\overline{x}_1 - \overline{x}_2) - \color{blue}{D_0}}{{\color{red}{s_p}}\sqrt{\frac{1}{n_1} + \frac{1}{n_2}}}$. </span>
+  - $s_p = \sqrt{\frac{(n_1-1)s_1^2 + (n_2-1)s_2^2}{n_1+n_2-2}} = \sqrt{\frac{(10-1)0.5^2 + (10-1)0.7^2}{10+10-2}}=0.6083$
+  - <span style="color:blue"> $t_{test} = \frac{(2.1 - 4.2) - 0}{0.6083\sqrt{\frac{1}{10} + \frac{1}{10}}} = -7.72$</span>
+  
+<span style="color:red"> Step 4-c </span>
+
+- <span style="color:blue"> $df = n_1 + n_2 - 2 = 10 + 10 - 2 = 18$. So $-t_{0.05, df = 18} = -1.734$. </span>
+
+<span style="color:red"> Step 5-c </span>
+
+- <span style="color:blue"> We reject $H_0$ if $\small t_{test} < -t_{\alpha, df}$. Since $\small t_{test} = -7.72 < -1.734  = -t_{\alpha, df}$, we reject $H_0$.</span>
+
+<span style="color:red"> Step 4-p </span>  
+
+- <span style="color:blue"> The $p$-value is $P(T_{df=18} < t_{test}) \approx 0$ </span>
+
+<span style="color:red"> Step 5-p </span>
+
+- <span style="color:blue"> We reject $H_0$ if $p$-value < $\alpha$. Since $p$-value $\approx 0 < 0.05  = \alpha$, we reject $H_0$.</span>
+
+<span style="color:red"> Step 6 </span>
+
+- <span style="color:blue"> **There is sufficient evidence to support the claim that the weight loss program is effective.** </span>
+
+- The 95% CI for $\mu_1 - \mu_2$ is $$\begin{align}(\overline{x}_1 - \overline{x}_2) \pm t_{\alpha/2, df} {\color{red}{s_p}}\sqrt{\frac{1}{n_1} + \frac{1}{n_2}} &= (2.1 - 4.2) \pm t_{0.025, 18} (0.6083)\sqrt{\frac{1}{10} + \frac{1}{10}}\\ &= -2.1 \pm 0.572 = (-2.672, -1.528) \end{align}$$
 - We are 95% confident that the difference in the mean weight is between -2.672 and -1.528. 
 - Since the interval does not include 0, it leads to the same conclusion as rejection of $H_0$.
 
-## Two-Sample Pooled t-Test in R
+<span style="color:red"> ***Two-Sample Pooled t-Test in R*** </span>
+
 ```{r, echo=TRUE, eval=TRUE}
 n1 = 10; x1_bar = 2.1; s1 = 0.5
 n2 = 10; x2_bar = 4.2; s2 = 0.7
@@ -474,4 +584,18 @@ qt(p = 0.05, df = df)
 pt(q = t_test, df = df)
 ```
 
+## Exercises
+
+1. A study was conducted to assess the effects that occur when children are expected to cocaine before birth.  Children were tested at age 4 for object assembly skill, which was described as "a task requiring visual-spatial skills related to mathematical competence."  The 187 children born to cocaine users had a mean of 7.1 and a standard deviation of 2.5. The 183 children not exposed to cocaine had a mean score of 8.4 and a standard deviation of 2.5.
+    (a) With $\alpha = 0.05$, use the critical-value method and p-value method to perform a 2-sample t-test on the claim that prenatal cocaine exposure is associated with lower scores of 4-year-old children on the test of object assembly.
+    (b) Test the claim in part (a) by using a confidence interval.
+    
+2. Listed below are heights (in.) of mothers and their first daughters. 
+    (a) Use $\alpha = 0.05$ to test the claim that there is no difference in heights between mothers and their first daughters.
+    (b) Test the claim in part (a) by using a confidence interval.
+
+|                    |      |    |      |      |    |      |    |    |      |    |
+|--------------------|------|----|------|------|----|------|----|----|------|----|
+| Height of Mother   | 66   | 62 | 62   | 63.5 | 67 | 64   | 69 | 65 | 62.5 | 67 |
+| Height of Daughter | 67.5 | 60 | 63.5 | 66.5 | 68 | 65.5 | 69 | 68 | 65.5 | 64 |
 

@@ -1,12 +1,662 @@
 # Inference About Variances {#sec-infer-var}
 
-This chapter provides a broad overview of the R language that will get you programming right away. In it, you will build a pair of virtual dice that you can use to generate random numbers. Don't worry if you've never programmed before; the chapter will teach you everything you need to know.
+```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
+library(openintro)
+library(knitr)
+library(emoji)
+```
 
-To simulate a pair of dice, you will have to distill each die into its essential features. You cannot place a physical object, like a die, into a computer (well, not without unscrewing some screws), but you can save *information* about the object in your computer's memory.
+## Inference for One Population Variance
 
-Which information should you save? In general, a die has six important pieces of information: when you roll a die, it can only result in one of six numbers: 1, 2, 3, 4, 5, and 6. You can capture the essential characteristics of a die by saving the numbers 1, 2, 3, 4, 5, and 6 as a group of values in your computer's memory.
+<span style="color:blue"> **Why Inference for Population Variances?** </span>
 
-Let's work on saving these numbers first, and then consider a method for "rolling" our die.
+- We want to know if $\sigma_1 = \sigma_2$, because the method we use depends on whether or not this is true. 
 
-## The R User Interface
+:::{.callout-note icon=false}
+## Which test did we learn that needs $\sigma_1 = \sigma_2$?
+- Two-sample pooled test
+:::
 
+<center>
+**In some situations, we care about *variation*!**
+</center>
+
+<br>
+
+::::{.columns}
+:::{.column width="50%"}
+- <span style="color:blue"> The variation in potency of drugs</span>: *affects patients' health*
+
+```{r, echo=FALSE, out.width="78%", fig.align='center'}
+knitr::include_graphics("./images/img-infer/drugs.jpeg")
+```
+:::
+
+:::{.column width="50%"}
+- <span style="color:blue"> The variance of stock prices </span>: *the higher the variance, the riskier the investment*
+```{r, echo=FALSE, out.width="78%", fig.align='center'}
+knitr::include_graphics("./images/img-infer/stock.jpeg")
+```
+:::
+::::
+
+------------------------------------------------------------------
+
+<span style="color:blue"> **Inference for Population Variances** </span>
+
+- The sample variance $S^2 = \frac{\sum_{i=1}^n(X_i - \overline{X})^2}{n-1}$ is our **point estimator** for the population variance, $\sigma^2$.
+- $S^2$ is an **unbiased estimator** for $\sigma^2$.
+  + This means $E(S^2) = \sigma^2$.
+- The inference methods for $\sigma^2$ require the population to be **normal**. 
+
+:::{.callout-note}
+- The inference methods can **work poorly if normality is violated, even if the sample is large**.
+:::
+
+```{r, echo=FALSE, out.width="40%", fig.align='center'}
+knitr::include_graphics("./images/img-infer/normal_dist.jpeg")
+```
+
+---------------------------------------------------------------------
+
+<span style="color:blue"> **Chi-Square $\chi^2$ Distribution** </span>
+
+- The inference for $\sigma^2$ involves the so called $\chi^2$ distribution.
+
+::::{.columns}
+:::{.column width="50%"}
+
+<br>
+
+- Parameter: degrees of freedom $df$
+- *Right-skewed* distribution
+- Defined over *positive* numbers
+- More symmetric as $df$ gets larger
+- [Chi-Square Distribution](http://sctc.mscs.mu.edu:3838/sample-apps/Calculator/)
+:::
+
+:::{.column width="50%"}
+```{r chi_sq_dist, echo = FALSE, out.width="80%", fig.align='center'}
+#| label: fig-chi-dist
+#| fig-cap: Illustration of $\chi^2$ distributions with varying degrees of freedom 
+par(mgp = c(2.2, 0.5, 0))
+par(mar = c(4,4,2,1))
+x <- seq(0, 40, length=1000)
+df_vec <- c(3, 5, 10, 20)
+hx <- dchisq(x, df = df_vec[1])
+plot(x, hx, type="l", lty=1, xlab="x", axes = FALSE, col = 1, lwd = 2,
+  ylab="Density", main= "Chi-Square Distributions with different dfs")
+axis(1)
+axis(2, las = 2)
+text(df_vec[1], max(dchisq(x, df = df_vec[1])), paste("df =", df_vec[1]), col = 1)
+for (i in 2:length(df_vec)) {
+  hx <- dchisq(x, df = df_vec[i])
+  lines(x, hx, col = i, lwd = 2)
+  text(df_vec[i]+2, max(dchisq(x, df = df_vec[i]))+0.01, 
+       paste("df =", df_vec[i]), col = i)
+}
+```
+:::
+::::
+
+<span style="color:red"> ***Upper Tail and Lower Tail of Chi-Square*** </span>
+
+- $\chi^2_{\frac{\alpha}{2},\, df}$ has area to the **right** of $\alpha/2$.
+- $\chi^2_{1-\frac{\alpha}{2},\, df}$ has area to the **left** of $\alpha/2$.
+- In $N(0, 1)$, $z_{1-\frac{\alpha}{2}} = -z_{\frac{\alpha}{2}}$, but $\chi^2_{1-\frac{\alpha}{2},\,df} \ne -\chi^2_{\frac{\alpha}{2},\,df}$.
+
+```{r chisq, out.width="50%", echo=FALSE, fig.align='center'}
+#| label: fig-chisq-alpha
+#| fig-cap: Illustration of $\alpha/2$ significance levels for $\chi^2_{df}$ distribution
+par(mar = c(2, 0, 0, 0), mgp = c(2.1, 0.6, 0))
+chi_sq_upper_tail <- function(U, df, xlim = c(0, 10), col = fadeColor("black", "22"),
+                               axes = TRUE, ...) {
+    x <- c(0, seq(xlim[1], xlim[2] + 3, length.out = 300))
+    y <- c(0, stats::dchisq(x[-1], df))
+    graphics::plot(x, y, type = "l", axes = FALSE, xlim = xlim)
+    graphics::abline(h = 0)
+    if (axes) {
+        axis(1)
+    }
+    these <- which(x >= U)
+    X <- x[c(these[1], these, rev(these)[1])]
+    Y <- c(0, y[these], 0)
+    graphics::polygon(X, Y, col = col)
+}
+chi_sq_lower_tail <- function (L, df, xlim = c(0, 10), 
+                               col = fadeColor("black", "22"),
+                               axes = TRUE, ...) {
+    x <- c(0, seq(xlim[1], xlim[2] + 3, length.out = 300))
+    y <- c(0, stats::dchisq(x[-1], df))
+    graphics::plot(x, y, type = "l", axes = FALSE, xlim = xlim)
+    graphics::abline(h = 0)
+    if (axes) {
+        axis(1)
+    }
+    these <- which(x <= L)
+    X <- x[c(these[1], these, rev(these)[1])]
+    Y <- c(0, y[these], 0)
+    graphics::polygon(X, Y, col = col)
+}
+chi_sq_two_tail <- function (U, L, df, xlim = c(0, 10), 
+                             col = fadeColor("black", "22"), axes = TRUE, ...) {
+    x <- c(0, seq(xlim[1], xlim[2] + 3, length.out = 300))
+    y <- c(0, stats::dchisq(x[-1], df))
+    graphics::plot(x, y, type = "l", axes = FALSE, xlim = xlim)
+    graphics::abline(h = 0)
+    if (axes) {
+        axis(1)
+    }
+    these_U <- which(x >= U)
+    X_U <- x[c(these_U[1], these_U, rev(these_U)[1])]
+    Y_U <- c(0, y[these_U], 0)
+    graphics::polygon(X_U, Y_U, col = col)
+    these_L <- which(x <= L)
+    X_L <- x[c(these_L[1], these_L, rev(these_L)[1])]
+    Y_L <- c(0, y[these_L], 0)
+    graphics::polygon(X_L, Y_L, col = col)
+}
+
+chi_sq_two_tail(U = 15, L = 2, df = 6, xlim = c(0, 20), col = 4, axes = FALSE)
+axis(1, at = c(0, 2, 15), labels = c(0, expression(chi[1-frac(alpha, 2)]^2),
+                                  expression(chi[frac(alpha, 2)]^2)), font = 3,
+     cex.axis = 2, tick = FALSE)
+text(5, 0.05, expression(1-alpha), cex = 3)
+text(1, 0.02, expression(frac(alpha, 2)), cex = 2)
+text(18, 0.02, expression(frac(alpha, 2)), cex = 2)
+```
+
+<span style="color:red"> ***Sampling Distribution*** </span> 
+
+- When a random sample of size $n$ is from $\color{red}{N(\mu, \sigma^2)}$, 
+$$ \frac{(n-1)S^2}{\sigma^2} \sim \chi^2_{n-1} $$
+
+- Reminder: The inference method for $\sigma^2$ introduced here can work poorly if the normality assumption is violated, even for large samples.
+
+
+<span style="color:red"> ***$(1-\alpha)100\%$ Confidence Interval for $\sigma^2$*** </span>
+
+- The $(1-\alpha)100\%$ confidence interval for $\sigma^2$ is 
+$$\color{blue}{\boxed{\left( \frac{(n-1)S^2}{\chi^2_{\frac{\alpha}{2}, \, n-1}}, \frac{(n-1)S^2}{\chi^2_{1-\frac{\alpha}{2}, \, n-1}} \right)}}$$ 
+
+:::{.callout-note}
+- The CI for $\sigma^2$ **cannot** be expressed as $(S^2-m, S^2+m)$ anymore!
+:::
+
+
+----------------------------------------------------------------------
+
+<span style="color:blue"> **Example: Supermodel Heights** </span>
+
+::::{.columns}
+:::{.column width="70%"}
+- Listed below are heights (cm) for the simple random sample of 16 female supermodels.
+
+```{r, echo=TRUE}
+heights <- c(178, 177, 176, 174, 175, 178, 175, 178, 
+             178, 177, 180, 176, 180, 178, 180, 176)
+```
+
+- The supermodels' heights are normally distributed.
+- Construct a $95\%$ confidence interval for population standard deviation $\sigma$.
+:::
+
+:::{.column width="30%"}
+```{r, echo=FALSE, out.width="80%", fig.align='center'}
+knitr::include_graphics("./images/img-infer/models.jpeg")
+```
+:::
+::::
+- $n = 16$, $s^2 = 3.4$, $\alpha = 0.05$.
+- $\chi^2_{\alpha/2, n-1} = \chi^2_{0.025, 15} = 27.49$
+- $\chi^2_{1-\alpha/2, n-1} = \chi^2_{0.975, 15} = 6.26$
+- The $95\%$ CI for $\sigma$ is $\small \left( \sqrt{\frac{(n-1)s^2}{\chi^2_{\frac{\alpha}{2}, \, n-1}}}, \sqrt{\frac{(n-1)s^2}{\chi^2_{1-\frac{\alpha}{2}, \, n-1}}} \right) = \left( \sqrt{\frac{(16-1)(3.4)}{27.49}}, \sqrt{\frac{(16-1)(3.4)}{6.26}}\right) = (1.36, 2.85)$
+
+<span style="color:red"> ***Computation in R*** </span>
+
+```{r, echo=TRUE}
+n <- 16
+s2 <- var(heights)
+alpha <- 0.05
+
+## two chi-square critical values
+chi2_right <- qchisq(alpha/2, n - 1, lower.tail = FALSE)
+chi2_left <- qchisq(alpha/2, n - 1, lower.tail = TRUE)
+
+## two bounds of CI for sigma2
+ci_sig2_lower <- (n - 1) * s2 / chi2_right
+ci_sig2_upper <- (n - 1) * s2 / chi2_left
+
+## two bounds of CI for sigma
+(ci_sig_lower <- sqrt(ci_sig2_lower))
+(ci_sig_upper <- sqrt(ci_sig2_upper))
+```
+
+<span style="color:red"> ***Testing*** </span>
+
+- Use $\alpha = 0.05$ to test the claim that "*supermodels have heights with a standard deviation that is less than the standard deviation, $\sigma = 7.5$ cm, for the population of women*". 
+
+<span style="color:red"> Step 1 </span>
+
+- $H_0: \sigma = \sigma_0$ vs. $H_1: \sigma < \sigma_0$, where $\sigma_0 = 7.5$ cm.
+
+<span style="color:red"> Step 2 </span>
+
+- $\alpha = 0.05$
+
+<span style="color:red"> Step 3 </span>
+
+- Under $H_0$, $\chi_{test}^2 = \frac{(n-1)s^2}{\sigma_0^2} = \frac{(16-1)(3.4)}{7.5^2} = 0.91$, drawn from $\chi^2_{n-1}$.
+
+::::{.columns}
+:::{.column width="50%"}
+<span style="color:red"> Step 4-c </span>
+
+- This is a left-tailed test. 
+- The critical value is $\chi_{1-\alpha, df}^2 = \chi_{0.95, 15}^2 = 7.26$
+
+<span style="color:red"> Step 5-c </span>
+
+- Reject $H_0$ in favor of $H_1$ if $\chi_{test}^2 < \chi_{1-\alpha, df}^2$.
+- Since $0.91 < 7.26$, we reject $H_0$.
+
+<span style="color:red"> Step 6 </span>
+
+- There is sufficient evidence to support the claim that supermodels have heights with a SD that is less than the SD for the population of all women.
+:::
+
+:::{.column width="50%"}
+
+<br> 
+
+```{r, out.width="80%", echo=FALSE, fig.align='center'}
+#| label: fig-chisq-models
+#| fig-cap: $\chi_{0.95,15}^2$ distribution for supermodel heights 
+par(mar = c(2, 0, 0, 0), mgp = c(1, 1, 0))
+
+chi_sq_lower_tail <- function(L, df, xlim = c(0, 10), 
+                               col = fadeColor("black", "22"),
+                               axes = TRUE, ...) {
+    x <- c(0, seq(xlim[1], xlim[2] + 3, length.out = 300))
+    y <- c(0, stats::dchisq(x[-1], df))
+    graphics::plot(x, y, type = "l", axes = FALSE, xlim = xlim, xlab = "")
+    graphics::abline(h = 0)
+    if (axes) {
+        axis(1)
+    }
+    these <- which(x <= L)
+    X <- x[c(these[1], these, rev(these)[1])]
+    Y <- c(0, y[these], 0)
+    graphics::polygon(X, Y, col = col)
+}
+
+
+chi_sq_lower_tail(L = 7.26, df = 15, xlim = c(0, 50), col = 4, axes = FALSE)
+# axis(1, at = c(2, 15), labels = c(expression(chi[1-frac(0.05, 2)]^2),
+#                                   expression(chi[frac(0.05, 2)]^2)), font = 3,
+#      cex.axis = 2, tick = FALSE)
+axis(1, at = c(-0.6, 0.907, 7.26), labels = c(0, expression(chi[test]^2), expression(chi[1-0.05]^2)), font = 3, 
+     cex.axis = 1, tick = TRUE)
+# text(0.907, 0.001, expression(chi[test]^2), cex = 1)
+text(5.5, 0.0025, expression(0.05), cex = 0.9)
+text(22, 0.05, expression(chi[15]^2), cex = 2)
+# text(0, 0, 0, cex = 1)
+# text(18, 0.02, expression(frac(0.05, 2)), cex = 2)
+```
+:::
+::::
+
+- We conclude that the *heights of supermodels vary less than heights of women in the general population.*
+
+---------------------------------------------------------------
+
+<span style="color:blue"> **Back to Pooled t-Test** </span>
+
+- In a pooled t-test, we assume
+  - <span style="color:blue"> $n_1 \ge 30$ and $n_2 \ge 30$ or that both samples are drawn from normal populations. </span>
+  - <span style="color:blue"> $\sigma_1 = \sigma_2$ </span>
+- We can use a QQ-plot (and normality tests, Anderson, Shapiro, etc.) to check the assumption of a normal distribution. 
+- We will now learn how to check the assumption $\sigma_1 = \sigma_2$.
+
+## Inference for Comparing Two Population Variances
+
+<span style="color:blue"> **F Distribution** </span>
+
+- We use the **$F$ distribution** for inference about **two** population variances.
+
+::::{.columns}
+:::{.column width="40%"}
+
+<br>
+
+- Two parameters: $df_1$, $df_2$
+- *Right-skewed* distribution
+- Defined over *positive* numbers
+- R Shiny app: [F Distribution](http://sctc.mscs.mu.edu:3838/sample-apps/Calculator/)
+:::
+
+:::{.column width="60%"}
+```{r f_dist, echo = FALSE, out.width="110%", fig.align='center'}
+#| label: fig-f-dist
+#| fig-cap: F distributions with different parameters
+par(mgp = c(2.5, 1, 0))
+x <- seq(0, 3, length=1000)
+df1_vec <- c(3, 100)
+df2_vec <- c(5, 10, 100)
+# hx <- df(x, df1 = df1_vec[1], df2 = df2_vec[1])
+# plot(x, hx, type="l", lty=1, xlab="x", axes = FALSE, col = 1, lwd = 2, ylim = c(0, 2.2),
+#   ylab="Density", main= "F Distribution with different df_1 and df_2")
+# axis(1)
+# axis(2, las = 2)
+# f_mode <- ((df1_vec[1] - 2) / df1_vec[1]) * (df2_vec[1] / (df2_vec[1] + 2))
+# text(f_mode, max(df(x, df1 = df1_vec[1], df2 = df2_vec[1])), 
+#      paste("df1 =", df1_vec[1], "df2 =", df2_vec[1]), col = 1)
+legend_text <- paste("df1 = ", df1_vec[1], ", df2 = ", df2_vec[1], sep = "")
+col_idx <- c(1)
+k <- 2
+for (i in 1:length(df1_vec)) {
+    for (j in 1:length(df2_vec)) {
+        if (i == 1 && j == 1) {
+            hx <- df(x, df1 = df1_vec[1], df2 = df2_vec[1])
+            plot(x, hx, type="l", lty=1, xlab="x", axes = FALSE, col = 1, lwd = 3, ylim = c(0, 2.2),
+                    ylab="Density", main= "F Distribution with different df_1 and df_2")
+            axis(1)
+            axis(2, las = 2)
+            # legend_text <- c(legend_text, paste("df1 =", df1_vec[i], "df2 =", df2_vec[j]))
+        } else {
+            hx <- df(x, df1 = df1_vec[i], df2 = df2_vec[j])
+            lines(x, hx, col = k, lwd = 3)
+            legend_text <- c(legend_text, paste("df1 = ", df1_vec[i], ", df2 = ", df2_vec[j], sep = ""))
+            col_idx <- c(col_idx, k)
+        }
+        k <- k + 1
+        # f_mode <- ((df1_vec[i] - 2) / df1_vec[i]) * (df2_vec[j] / (df2_vec[j] + 2))
+        # text(f_mode, max(df(x, df1 = df1_vec[i], df2 = df2_vec[j])) + 0.1,
+        #      paste("df1 =", df1_vec[i], "df2 =", df2_vec[j]), col = k)
+    }
+    k <- k + 1
+}
+# print(k)
+legend("topright", legend_text, lwd = rep(3, 6), col = col_idx, bty = "n")
+```
+:::
+::::
+
+<span style="color:red"> ***Upper and Lower Tail of F Distribution*** </span>
+
+- We denote $F_{\alpha, \, df_1, \, df_2}$ as the $F$ quantile such that $P(F_{df_1, df_2} > F_{\alpha, \, df_1, \, df_2}) = \alpha$.
+
+```{r, out.width="70%", echo=FALSE, fig.align='center'}
+#| label: fig-f-sig-level
+#| fig-cap: Illustration of $\alpha/2$ significance levels for $F_{df_1, df_2}$ distribution
+par(mar = c(2, 0, 0, 0), mgp = c(2.1, 0.6, 0))
+f_upper_tail <- function(U, df1, df2, xlim = c(0, 10), col = fadeColor("black", "22"),
+                               axes = TRUE, ...) {
+    x <- c(0, seq(xlim[1], xlim[2] + 3, length.out = 300))
+    y <- c(0, stats::df(x[-1], df1, df2))
+    graphics::plot(x, y, type = "l", axes = FALSE, xlim = xlim)
+    graphics::abline(h = 0)
+    if (axes) {
+        axis(1)
+    }
+    these <- which(x >= U)
+    X <- x[c(these[1], these, rev(these)[1])]
+    Y <- c(0, y[these], 0)
+    graphics::polygon(X, Y, col = col)
+}
+f_lower_tail <- function (L, df1, df2, xlim = c(0, 10), 
+                               col = fadeColor("black", "22"),
+                               axes = TRUE, ...) {
+    x <- c(0, seq(xlim[1], xlim[2] + 3, length.out = 300))
+    y <- c(0, stats::df(x[-1], df1, df2))
+    graphics::plot(x, y, type = "l", axes = FALSE, xlim = xlim)
+    graphics::abline(h = 0)
+    if (axes) {
+        axis(1)
+    }
+    these <- which(x <= L)
+    X <- x[c(these[1], these, rev(these)[1])]
+    Y <- c(0, y[these], 0)
+    graphics::polygon(X, Y, col = col)
+}
+f_two_tail <- function (U, L, df1, df2, xlim = c(0, 10), 
+                             col = fadeColor("black", "22"), axes = TRUE, ...) {
+    x <- c(0, seq(xlim[1], xlim[2] + 3, length.out = 300))
+    y <- c(0, stats::df(x[-1], df1, df2))
+    graphics::plot(x, y, type = "l", axes = FALSE, xlim = xlim)
+    graphics::abline(h = 0)
+    if (axes) {
+        axis(1)
+    }
+    these_U <- which(x >= U)
+    X_U <- x[c(these_U[1], these_U, rev(these_U)[1])]
+    Y_U <- c(0, y[these_U], 0)
+    graphics::polygon(X_U, Y_U, col = col)
+    these_L <- which(x <= L)
+    X_L <- x[c(these_L[1], these_L, rev(these_L)[1])]
+    Y_L <- c(0, y[these_L], 0)
+    graphics::polygon(X_L, Y_L, col = col)
+}
+
+f_two_tail(U=2.5,L=0.3, df1=3, df2=100, xlim = c(0, 6), col = 4, axes = FALSE)
+axis(1, at = c(0.3, 2.5), labels = c(expression(F[1-frac(alpha, 2)]),
+                                     expression(F[frac(alpha, 2)])), 
+     font = 3, cex.axis = 1.5,
+     tick = FALSE)
+text(1, 0.2, expression(1-alpha), cex = 2)
+text(2.7, 0.05, expression(frac(alpha, 2)), cex = 1.5)
+text(0.15, 0.05, expression(frac(alpha, 2)), cex = 1.5)
+```
+
+<sample style="color:red"> ***Sampling Distribution*** </span>
+
+- When random samples of sizes $n_1$ and $n_2$ have been *independently* drawn from two normally distributed populations, $N(\mu_1, \sigma_1^2)$ and $N(\mu_2, \sigma_2^2)$, the ratio $$\frac{s_1^2/s_2^2}{\sigma_1^2/\sigma_2^2} \sim F_{n_1-1, \, n_2-1}$$
+
+
+<span style="color:red"> ***$(1-\alpha)100\%$ Confidence Interval for $\sigma_1^2 / \sigma_2^2$*** </span>
+
+
+- The $(1-\alpha)100\%$ confidence interval for $\sigma_1^2 / \sigma_2^2$ is 
+$$\color{blue}{\boxed{\left( \frac{s_1^2/s_2^2}{F_{\alpha/2, \, n_1 - 1, \, n_2 - 1}}, \frac{s_1^2/s_2^2}{F_{1-\alpha/2, \, \, n_1 - 1, \, n_2 - 1}} \right)}}$$ 
+
+:::{.callout-note}
+- The CI for $\sigma_1^2 / \sigma_2^2$ **cannot** be expressed as $\left(\frac{s_1^2}{s_2^2}-m, \frac{s_1^2}{s_2^2} + m\right)$ anymore!
+:::
+
+-------------------------------------------------------------------
+
+<span style="color:blue"> **F test for comparing $\sigma_1^2$ and $\sigma_2^2$** </span>
+
+<span style="color:red"> Step 1 </span>
+
+- Right-tailed: <span style="color:blue"> $\small \begin{align} &H_0: \sigma_1 \le \sigma_2 \\ &H_1: \sigma_1 > \sigma_2 \end{align}$ </span>
+- Two-tailed: <span style="color:green"> $\small \begin{align} &H_0: \sigma_1 = \sigma_2 \\ &H_1: \sigma_1 \ne \sigma_2 \end{align}$ </span>
+
+<span style="color:red"> Step 2 </span>
+
+- $\alpha = 0.05$
+
+<span style="color:red"> Step 3 </span>
+
+- Under $H_0$, $\sigma_1 = \sigma_2$, and the test statistic is $$\small F_{test} = \frac{s_1^2/s_2^2}{\sigma_1^2/\sigma_2^2} = \frac{s_1^2}{s_2^2} \sim F_{n_1-1, \, n_2-1}$$
+
+<span style="color:red"> Step 4-c </span>
+
+- Right-tailed: <span style="color:blue"> $F_{\alpha, \, n_1-1, \, n_2-1}$ </span>. 
+- Two-tailed: <span style="color:green"> $F_{\alpha/2, \, n_1-1, \, n_2-1}$ or $F_{1-\alpha/2, \, n_1-1, \, n_2-1}$ </span>
+
+<span style="color:red"> Step 5-c </span>
+
+- Right-tailed: reject $H_0$ if <span style="color:blue"> $F_{test} \ge F_{\alpha, \, n_1-1, \, n_2-1}$</span>. 
+- Two-tailed: reject $H_0$ if <span style="color:green"> $F_{test} \ge F_{\alpha/2, \, n_1-1, \, n_2-1}$ or $F_{test} \le F_{1-\alpha/2, \, n_1-1, \, n_2-1}$</span>
+
+-------------------------------------------------------------------
+
+<span style="color:blue"> **Example: Weight Loss** </span>
+
+::::{.columns}
+:::{.column width="70%"}
+- A study was conducted to see the effectiveness of a weight loss program. 
+  - Two groups (Control and Experimental) of 10 subjects were selected.
+  - The two populations are normally distributed and have the same SD.
+:::
+
+:::{.column width="30%"}
+```{r, out.width="70%", echo=FALSE, fig.align='center'}
+knitr::include_graphics("./images/img-infer/weight.jpeg")
+```
+:::
+::::
+
+- The data on weight loss was collected at the end of six months.
+  + **Control**: $n_1 = 10$, $\overline{x}_1 = 2.1\, lb$, $s_1 = 0.5\, lb$
+  + **Experimental**: $n_2 = 10$, $\overline{x}_2 = 4.2\, lb$, $s_2 = 0.7\, lb$
+- Assumptions:
+  + <span style="color:blue"> $\sigma_1 = \sigma_2$ </span>
+  + The weight loss for both groups are normally distributed.
+
+<span style="color:red"> ***Check if $\sigma_1 = \sigma_2$*** </span>
+
+- $n_1 = 10$, $s_1 = 0.5 \, lb$
+- $n_2 = 10$, $s_2 = 0.7 \, lb$
+
+<span style="color:red"> Step 1 </span>
+
+- $\begin{align} &H_0: \sigma_1 = \sigma_2 \\ &H_1: \sigma_1 \ne \sigma_2 \end{align}$
+
+<span style="color:red"> Step 2 </span>
+
+- $\alpha = 0.05$
+
+<span style="color:red"> Step 3 </span>
+
+- The test statistic is $F_{test} = \frac{s_1^2}{s_2^2} = \frac{0.5^2}{0.7^2} = 0.51$.
+
+<span style="color:red"> Step 4-c </span>
+
+- This is a two-tailed test.
+- The critical value is $F_{0.05/2, \, 10-1, \, 10-1} = 4.03$ or $F_{1-0.05/2, \, 10-1, \, 10-1} = 0.25$.
+
+```{r, out.width="80%", echo=FALSE, fig.align='center'}
+#| label: fig-weight-fdist
+#| fig-cap: F Distribution for Weight Loss Example
+f_two_tail(U=4.03,L=0.22, df1=9, df2=9, xlim = c(0, 6), col = 4, axes = FALSE)
+axis(1, at = c(0.22, 0.51, 4.03), 
+     labels = c(expression(F[.975]),
+                expression(F[test]),
+                expression(F[.025])), 
+     font = 3, cex.axis = 0.73, tick = TRUE)
+abline(v = 0.51, col = 2, lwd = 0.4)
+# text(0.51, 0.01, expression(1-alpha), cex = 2)
+
+
+text(2.5, 0.2, expression(F[paste(9, ",", 9)]), cex = 2)
+# text(2.7, 0.05, expression(frac(alpha, 2)), cex = 1.5)
+# text(0.15, 0.05, expression(frac(alpha, 2)), cex = 1.5)
+```
+
+<span style="color:red"> Step 5-c </span>
+
+- Is $F_{test} > 4.03$ or $F_{test} < 0.25$?
+  - No. 
+
+<span style="color:red"> Step 6 </span> 
+
+- The evidence is not sufficient to reject the claim that $\sigma_1 = \sigma_2$.
+
+<span style="color:red"> ***95% CI for $\sigma_1^2 / \sigma_2^2$*** </span>
+
+::::{.columns}
+:::{.column width="50%"}
+- $\small F_{\alpha/2, \, df_1, \, df_2} = F_{0.05/2, \, 10-1, \, 10-1} = 4.03$ 
+- $\small F_{1-\alpha/2, \, df_1, \, df_2} = F_{1-0.05/2, \, 10-1, \, 10-1} = 0.25$
+- $\small \frac{s_1^2}{s_2^2} = \frac{0.5^2}{0.7^2} = 0.51$
+- The 95% CI for $\sigma_1^2 / \sigma_2^2$ is 
+$$\small \begin{align} &\left( \frac{s_1^2/s_2^2}{F_{\alpha/2, \, df_1, \, df_2}}, \frac{s_1^2/s_2^2}{F_{1-\alpha/2, \, df_1, \, df_2}} \right) \\ &= \left( \frac{0.51}{4.03}, \frac{0.51}{0.25} \right) = \left(0.127, 2.04\right)\end{align}$$
+:::
+
+:::{.column width="50%"}
+```{r, out.width="100%", echo=FALSE, fig.align='center'}
+#| label: fig-weight-sig-level
+#| fig-cap: F Distribution for significance level 0.05
+f_two_tail(U=4.03,L=0.22, df1=9, df2=9, xlim = c(0, 6), col = 4, axes = FALSE)
+axis(1, at = c(0.22, 4.03), 
+     labels = c(expression(F[.975]),
+                expression(F[.025])), 
+     font = 3, cex.axis = 0.73, tick = TRUE)
+# abline(v = 0.51, col = 2, lwd = 0.4)
+# text(0.51, 0.01, expression(1-alpha), cex = 2)
+
+
+text(2.5, 0.2, expression(F[paste(9, ",", 9)]), cex = 2)
+# text(2.7, 0.05, expression(frac(alpha, 2)), cex = 1.5)
+# text(0.15, 0.05, expression(frac(alpha, 2)), cex = 1.5)
+```
+:::
+::::
+
+- We are 95% confident that the ratio $\sigma_1^2 / \sigma_2^2$ is between 0.127 and 2.04.
+- Because 1 is included in this interval, it leads to the same conclusion as the F test.
+
+<span style="color:red"> ***Implementing F-test in R*** </span>
+
+<!-- - **`qf(p = alpha, df1 = n1 - 1, df2 = n2 - 1, lower.tail = FALSE)`** to find $F_{\alpha, \, n_1-1, \, n_2-1}$. -->
+
+::::{.columns}
+:::{.column width="49%"}
+```{r f_test_two_sigma_ci, tidy=FALSE, echo=TRUE}
+n1 <- 10; n2 <- 10
+s1 <- 0.5; s2 <- 0.7
+alpha <- 0.05
+
+## 95% CI for sigma_1^2 / sigma_2^2
+f_small <- qf(p = alpha / 2, 
+              df1 = n1 - 1, df2 = n2 - 1, 
+              lower.tail = TRUE)
+f_big <- qf(p = alpha / 2, 
+            df1 = n1 - 1, df2 = n2 - 1, 
+            lower.tail = FALSE)
+
+## lower bound
+(s1 ^ 2 / s2 ^ 2) / f_big
+
+## upper bound
+(s1 ^ 2 / s2 ^ 2) / f_small
+```
+:::
+
+:::{.column width="2%"}
+:::
+
+:::{.column width="49%"}
+```{r f_test_two_sigma_test, tidy=FALSE, echo=TRUE}
+## Testing sigma_1 = sigma_2
+(test_stats <- s1 ^ 2 / s2 ^ 2)
+(cri_val_big <- qf(p = alpha/2, 
+                   df1 = n1 - 1, 
+                   df2 = n2 - 1, 
+                   lower.tail = FALSE))
+(cri_val_small <- qf(p = alpha/2, 
+                     df1 = n1 - 1, 
+                     df2 = n2 - 1, 
+                     lower.tail = TRUE))
+# var.test(x, y, alternative = "two.sided")
+```
+:::
+::::
+
+## Exercises
+
+1. The data about male and female pulse rates are summarized below.
+    (a) Construct a 95\% CI for $\sigma_{male}$ of pulse rates for males. 
+    (b) Construct a 95\% CI for $\sigma_{male}/\sigma_{female}$.
+    (c) Does it appear that the population standard deviations for males and females are different? Why or why not?
+
+
+<center>
+|                | Male       | Female |
+|----------------|------------|--------|
+| $\overline{x}$ | 71         | 75     |
+| $s$            | 9          | 12     |
+| $n$            | 14         | 12     |
+</center>

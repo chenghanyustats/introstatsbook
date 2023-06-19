@@ -7,25 +7,29 @@ library(kableExtra)
 library(openintro)
 ```
 
-## Continuous Probability Distributions
-- A continuous r.v. can take on **any** values from *an interval of the real line*.
-- Instead of probability functions, a continuous r.v. $X$ has the **probability density function (pdf)** $f(x)$ such that for any real value $a < b$,
+## Introduction
+
+- A continuous random variable can take on **any** values from *an interval of the real line*.
+- Instead of probability functions, a continuous random variable, $X$, has the **probability density function (pdf)** $f(x)$ such that for any real value $a < b$,
 $$P(a < X < b) = \int_{a}^b f(x) dx$$
 - The **cumulative distribution function (cdf)** of $X$ is defined as
 $$F(x) := P(X \le x) = \int_{-\infty}^x f(t)dt$$
-- Every pdf must satisfy <span style="color:blue"> (1) $f(x) \ge 0$ for all $x$; (2) $\int_{-\infty}^{\infty} f(x) dx = 1$ </span>
+- Every probability density function must satisfy <span style="color:blue"> (1) $f(x) \ge 0$ for all $x$; (2) $\int_{-\infty}^{\infty} f(x) dx = 1$ </span>
 
+- `r emoji('sunglasses')` Luckily, we don't deal with integrals in this course.
 
+--------------------------------------------------------------------
 
-`r emoji('sunglasses')` Luckily we don't deal with integrals in this course.
+<span style="color:blue"> **Density Curve** </span>
 
+- A probability distribution function generates a graph called a **density curve** that shows the *likelihood* of a random variable at all possible values.
+- **The area under the density curve between $a$ and $b$:** $P(a < X < b) = \int_{a}^b f(x) dx$.
+- **The total area under any density curve is equal to 1:** $\int_{-\infty}^{\infty} f(x) dx = 1$
 
-## Density Curve
-- A pdf generates a graph called the **density curve** that shows the *likelihood* of a random variable at all possible values.
-- $P(a < X < b) = \int_{a}^b f(x) dx$: **The area under the density curve between $a$ and $b$.**
-- $\int_{-\infty}^{\infty} f(x) dx = 1$: **The total area under any density curve is equal to 1.**
 
 ```{r, echo=FALSE, out.width="50%", fig.align='center'}
+#| label: fig-density
+#| fig-cap: Density curve for a random variable
 # knitr::include_graphics("./images/img-prob/density.png")
 par(mar = c(2, 2, 0, 0), mgp = c(0.5, 0.2, 0), mfrow = c(1, 1))
 x = seq(0,10,length=1000)
@@ -44,22 +48,26 @@ text(6, dgamma(6, 2, 1/2)/3, "Total Area = 1", cex = 1.8)
 text(7.5, dgamma(5.6, 2, 1/2), "density curve", cex = 1.8)
 ```
 
+---------------------------------------------------------------------
 
-## Commonly Used Continuous Distributions
-- R Shiny app is at [Continuous Distribution](http://sctc.mscs.mu.edu:3838/sample-apps/Calculator/)
-- In this course, we will touch **normal (Gaussian)**, **student's t**, **chi-square**, **F**
+<span style="color:blue"> **Commonly Used Continuous Distributions** </span>
+
+- R Shiny app is a [Continuous Distribution](http://sctc.mscs.mu.edu:3838/sample-apps/Calculator/) calculator.
+- In this course, we will touch on **normal (Gaussian)**, **student's t**, **chi-square**, **F**
 - Some other common distributions include **uniform**, **exponential**, **gamma**, **beta**, **inverse gamma**, **Cauchy**, etc. (MATH 4700)
 
-
 ## Normal (Gaussian) Distribution
--  The normal distribution, $N(\mu, \sigma^2$), has the pdf given by 
+-  The normal distribution, $N(\mu, \sigma^2$), has the probability distribution function given by 
 $$\small f(x) = \frac{1}{\sqrt{2\pi}\sigma}e^{\frac{-(x-\mu)^2}{2\sigma^2}}, \quad -\infty < x < \infty$$
-    - Two parameters mean $\mu$ and variance $\sigma^2$ (standard deviation $\sigma$)
-    - Always bell shaped, and symmetric about the mean $\mu$
+    - This distribution has two parameters: mean, $\mu$, and variance, $\sigma^2$ (standard deviation $\sigma$).
+    - It is always bell-shaped and symmetric about the mean, $\mu$.
     - When $\mu = 0$ and $\sigma = 1$, $N(0, 1)$ is called **standard normal**.
 
-```{r normal_density, echo=FALSE, out.width='35%', fig.align='center'}
+- Below are examples of normal distribution curves and how they change with different means and standard deviations.
 
+```{r normal_density, echo=FALSE, out.width='35%', fig.align='center'}
+#| label: fig-normal-density
+#| fig-cap: Normal density curve with mean 100 and standard deviation 15
 par(mfrow = c(1, 1))
 par(mar = c(1.8, 0, 1.2, 0), mgp = c(0.5, 0.2, 0), las = 1)
 mean=100; sd=15
@@ -79,8 +87,9 @@ axis(1, at=seq(40, 160, 20), pos=0, tick = -0.005)
 ```
 
 
-## Normal Density Curves
 ```{r normal_densities, echo=FALSE, out.width='75%', fig.align='center'}
+#| label: fig-normal-densities
+#| fig-cap: Normal density curves with varying means and standard deviations
 mean=100; sd=10
 x <- seq(-4,4,length=100)*sd + mean
 hx <- dnorm(x,mean,sd)
@@ -102,44 +111,29 @@ legend("topright", c(expression(N(100, 10^2)),
        col = c("#003366", "#FFCC00", 2), lwd = 3, bty = "n")
 ```
 
-## Standardization and Z-Scores 
-- **Standardization**: Convert $N(\mu, \sigma^2)$ to $N(0, 1)$.
-- **Why standardization**: Put data onto a *standardized scale*, making comparisons easier!
+## Standardization and Z-Scores
 
-:::{.callout-note icon=false}
-
-|Measure        | SAT               | ACT         |
-|:-------------:|:-----------------:|:-----------:|
-| Mean          | 1100              | 21          |  
-| SD            | 200               | 6           |
-
-  + The distribution of SAT and ACT scores are both nearly normal. 
-  + Suppose Anna scored 1300 on her SAT and Tommy scored 24 on his ACT. Who performed better?
-:::
-
-```{r, echo=FALSE, out.width="50%", fig.align='center'}
-knitr::include_graphics("./images/img-prob/sat_act.jpeg")
-```
-
-
--  If $x$ is an observation from a distribution with mean $\mu$ and standard deviation $\sigma$, the standardized value of $x$ is so-called **$z$-score**:
+- **Standardization** allows us to convert $N(\mu, \sigma^2)$ to $N(0, 1)$.
+- **Why do we perform standardization?**
+  - We want to put data on a *standardized scale*, because it helps us make comparisons more easily!
+-  If $x$ is an observation from a distribution with mean $\mu$ and standard deviation $\sigma$, the standardized value of $x$ is its so-called **$z$-score**:
 $$z = \frac{x - \mu}{\sigma}$$
+- The $z$-score tells us how many standard deviations $x$ falls away from the mean and in which direction. 
+  + Observations **larger** than the mean have **positive** $z$-scores. 
+  + Observations **smaller** than the mean have **negative** $z$-scores.
+  + A $z$-score -1.2 means that $x$ is 1.2 standard deviations to the **left** of or **below** the mean. 
+  + A $z$-score 1.8 means that $x$ is 1.8 standard deviations to the **right** of or **above** the mean. 
+- <span style="color:blue">  If $X \sim N(\mu, \sigma^2)$, $Z = \frac{X - \mu}{\sigma}$ follows the standard normal distribution $Z \sim N(0, 1)$. </span>
 
-- A $z$-score tells us how many standard deviations $x$ falls away from the mean, and in which direction. 
+-----------------------------------------------------------------
 
-  + Observations **larger (smaller)** than the mean have **positive (negative)** $z$-scores. 
-  
-  + A $z$-score -1.2 means that $x$ is 1.2 standard deviations to the **left** of (**below**) the mean. 
-  
-  + A $z$-score 1.8 means that $x$ is 1.8 standard deviations to the **right** of (**above**) the mean. 
-  
-- <span style="color:blue">  If $X \sim N(\mu, \sigma^2)$, $Z = \frac{X - \mu}{\sigma}$ follows the standard normal distribution, i.e., $Z \sim N(0, 1)$. </span>
+<span style="color:blue"> **Illustration** </span>
 
-
-## Standardization Illustration
-- $X - \mu$ shifts the mean from $\mu$ to 0
+- $X - \mu$ shifts the mean from $\mu$ to 0.
 
 ```{r standardization_shift, echo=FALSE, out.width='65%', fig.asp=0.3, fig.align='center'}
+#| label: fig-standardization-mean
+#| fig-cap: Standardization shifts mean from 3 to 0
 mean = 3; sd = 2
 par(mar = c(2, 0, 1, 0), mgp = c(1, 0.2, 0), las = 1)
 x <- seq(-6, 9, length = 100)
@@ -157,10 +151,11 @@ segments(x0 = mean, y0 = 0, y1 = dnorm(mean, mean, sd), col = "#003366", lwd = 2
 arrows(x0 = 3, y0 = 0.1, x1 = 0, col = "darkgray", lwd = 2)
 ```
 
-
-- $\frac{X - \mu}{\sigma}$ scales the variation from 4 to 1
+- $\frac{X - \mu}{\sigma}$ scales the variation from 4 to 1.
 
 ```{r standardization_scale, echo=FALSE, out.width='65%', fig.asp=0.3, fig.align='center'}
+#| label: fig-standarization-variance
+#| fig-cap: Standardization scales variance from 4 to 1
 par(mar = c(2, 0, 1, 0), mgp = c(1, 0.2, 0), las = 1)
 x <- seq(-6, 9, length = 100)
 # z <- seq(-3, 13, length = 100)
@@ -176,33 +171,43 @@ arrows(x0 = 3, y0 = 0.05, x1 = 2, col = "darkgray", lwd = 2)
 arrows(x0 = 0.5, y0 = dnorm(0, 0, 2), x1 = 0.5, y1 = dnorm(0, 0, 1), col = "darkgray", lwd = 2)
 ```
 
+- A value of $x$ that is 2 standard deviation below the mean, $\mu$, corresponds to $z = -2$.
+  - $z = \frac{x  -\mu}{\sigma} \iff x = \mu + z\sigma$. If $z = -2$, $x = \mu - 2\sigma$.
 
-- A value of $x$ that is 2 standard deviation below $\mu$ corresponds to $z = -2$.
-- $z = \frac{x  -\mu}{\sigma} \iff x = \mu + z\sigma$. If $z = -2$, $x = \mu - 2\sigma$.
+- @fig-distribution-standardized depicts how the values on the x-axis change when standardization is performed.
 
-```{r z_score, echo=FALSE, out.width='70%', fig.align='center'}
-par(mar = c(4, 0, 0, 0), mgp = c(0, 0.5, 0), las = 1)
-z <- seq(-3, 3, length = 100)
-hz <- dnorm(z)
-plot(z, hz, type="n", xlab="", ylab="", ylim = c(0, dnorm(0, 0, 1)),
-  main = "", axes = FALSE)
-lines(z, hz, col = 4, lwd = 4)
-segments(x0 = 0, y0 = 0, y1 = dnorm(0, 0, 1), col = 4, lwd = 1, lty = 2)
-segments(x0 = 1, y0 = 0, y1 = dnorm(1, 0, 1), col = 4, lwd = 1, lty = 2)
-segments(x0 = 2, y0 = 0, y1 = dnorm(2, 0, 1), col = 4, lwd = 1, lty = 2)
-segments(x0 = 3, y0 = 0, y1 = 5*dnorm(3, 0, 1), col = 4, lwd = 1, lty = 2)
-segments(x0 = -1, y0 = 0, y1 = dnorm(-1, 0, 1), col = 4, lwd = 1, lty = 2)
-segments(x0 = -2, y0 = 0, y1 = dnorm(-2, 0, 1), col = 4, lwd = 1, lty = 2)
-segments(x0 = -3, y0 = 0, y1 = 5*dnorm(-3, 0, 1), col = 4, lwd = 1, lty = 2)
-axis(1, at = seq(-3, 3, 1), pos=0, line = 1)
-axis(1, at = seq(-3, 3, 1), labels = TRUE , tick = 0.01, line = 2)
+```{r, echo=FALSE, out.width='90%', fig.align='center'}
+#| label: fig-distribution-standardized
+#| fig-cap: Standardized Normal Distribution
+knitr::include_graphics("./images/img-prob/standardization.png")
 ```
 
+-----------------------------------------------------------------------
 
+<span style="color:blue"> **SAT and ACT Example** </span>
 
-## SAT and ACT Example
+- Standardization can help us compare the performance of students on the SAT and ACT, which both have nearly normal distributions.
+  - The table below lists the parameters for each distribution.
+
+|Measure        | SAT               | ACT         |
+|:-------------:|:-----------------:|:-----------:|
+| Mean          | 1100              | 21          |  
+| SD            | 200               | 6           |
+
+```{r, echo=FALSE, out.width="50%", fig.align='center'}
+knitr::include_graphics("./images/img-prob/sat_act.jpeg")
+```
+
+- We want to determine whether Anna or Tommy performed better on their respective tests.
+  - Anna scored a 1300 on her SAT and Tommy scored a 24 on his ACT.
+
+<span style="color:red"> ***Standardization*** </span>
+
 - $z_{A} = \frac{x_{A} - \mu_{SAT}}{\sigma_{SAT}} = \frac{1300-1100}{200} = 1$; $z_{T} = \frac{x_{T} - \mu_{ACT}}{\sigma_{ACT}} = \frac{24-21}{6} = 0.5$.
+
 ```{r sat, echo=FALSE, out.width='70%', fig.align='center'}
+#| label: fig-standardization-sat-act
+#| fig-cap: Standardization of Anna and Tommy's scores
 par(mfrow = c(2, 1),
     las = 1,
     mar = c(2.5, 0, 0.5, 0))
@@ -258,54 +263,72 @@ text(m + 3,
      col = COL[1])
 ```
 
-## Finding Tail Areas $P(X < x)$
-:::{.callout-note icon=false}
-## What fraction of students have an SAT score below Anna's score of 1300?
-:::
-- This is the same as the percentile Anna is at, which is the percentage of cases that have lower scores than Anna.
-- Need $P(X < 1300 \mid \mu = 1100, \sigma = 200)$ or $P(Z < 1 \mid \mu = 0, \sigma = 1)$.
+- This standardization tells us that Anna scored 1 standard deviation above the mean and Tommy scored 0.5 standard deviations above the mean.
+- From this information, we can conclude that Anna performed better on teh SAT than Tommy performed on the ACT.
+
+## Tail Areas and Normal Percentiles
+
+<span style="color:blue"> **Finding Tail Areas $P(X < x)$** </span>
+
+- Finding tail areas allows us to determine the percentage of cases that are above or below a certain score.
+- Going back to the SAT and ACT example, this can help us determine the fraction of students have an SAT score below Anna's score of 1300.
+  - This is the same as determining what percentile Anna scored at, which is the percentage of cases that had lower scores than Anna.
+- Therefore, we are looking for $P(X < 1300 \mid \mu = 1100, \sigma = 200)$ or $P(Z < 1 \mid \mu = 0, \sigma = 1)$.
+  - We can calculate this value by using R.
 
 ```{r tail, echo=FALSE, out.width='50%', fig.align='center'}
+#| label: fig-tail-area
+#| fig-cap: Tail area for scores below 1300
 par(mfrow = c(1, 1), las = 1, mar = c(2.5, 0, 0, 0), mgp = c(0, 1, 0))
 normTail(m = 1100, s = 200, L = 1300, col = 4, cex.axis = 1.3)
 ```
 
-## Finding Tail Areas $P(X < x)$ in R
+<span style="color:red"> ***Calculation in R*** </span>
 
-- With **`mean`** and **`sd`** representing the mean and standard deviation of a normal distribution
+- With **`mean`** and **`sd`** representing the mean and standard deviation of a normal distribution,
+  + use **`pnorm(q, mean, sd)`** to compute $P(X \le q)$
+  + use **`pnorm(q, mean, sd, lower.tail = FALSE)`** to compute $P(X > q)$
 
-  + **`pnorm(q, mean, sd)`** to compute $P(X \le q)$
-  
-  + **`pnorm(q, mean, sd, lower.tail = FALSE)`** to compute $P(X > q)$
-
-
-
-:::{layout-ncol=2}
-```{r, ref.label="tail", echo=FALSE, out.width='100%'}
+::::{.columns}
+:::{.column width="50%"}
+```{r, ref.label="fig-tail-area", echo=FALSE, out.width='100%'}
 ```
+:::
 
+:::{.column width="50%"}
 ```{r}
 pnorm(1, mean = 0, sd = 1)
 pnorm(1300, mean = 1100, sd = 200)
 ```
+
+- The shaded area represents the 84.1% of SAT test takers who had z-score below 1.
+:::
+::::
+
+<span style="color:red"> ***Second ACT and SAT Example*** </span>
+
+:::{.callout-note icon=false}
+## What is the probability Shannon SAT scores at least 1190?
+- SAT score follows $N(1100, 200^2)$. 
+- Shannon is an SAT taker, and nothing else is known about her SAT aptitude. 
 :::
 
-- The shaded area represents the proportion 84.1% of SAT test takers who had z-score below 1.
-
-## SAT Example Cont'd
-- SAT score follows $N(1100, 200^2)$. Shannon is a SAT taker, and nothing is known about Shannon's SAT aptitude. What is the probability Shannon SAT scores at least 1190?
 - <span style="color:red"> Step 1: State the problem </span>
-
-  +  <span style="color:blue"> We like to compute $P(X \ge 1190)$. </span>
+  +  <span style="color:blue"> We want to compute $P(X \ge 1190)$. </span>
 
 - <span style="color:red"> Step 2: Draw a picture
+
 ```{r, echo=FALSE, out.width='40%', fig.align='center'}
+#| label: fig-tail-right
+#| fig-cap: Tail area for scores greater than 1190
 par(mfrow = c(1, 1), las = 1, mar = c(4, 0, 0, 0), mgp = c(1, 1, 0))
 normTail(m = 1100, s = 200, U = 1190, col = 4, cex.axis = 1.3)
 ```
 
 
 ```{r echo=FALSE, out.width='100%', fig.asp=0.2, fig.align='center'}
+#| label: fig-tail-subtraction
+#| fig-cap: Method to determine right tail areas
 AddShadedPlot <- function(x, y, offset,
                           shade.start = -8,
                           shade.until = 8, col = 4) {
@@ -335,44 +358,39 @@ lines(c(11.5, 12.5), c(0.21, 0.21), lwd = 3)
 
 ```
 
-- <span style="color:red"> Step 3: Find $z$-score </span>: 
-
-  + <span style="color:blue"> $z = \frac{1190 - 1100}{200} = 0.45$ and we like to compute $P(X > 1190) = P\left( \frac{X - \mu}{\sigma} > \frac{1190 - 1000}{200} \right) = P(Z > 0.45) = 1 - P(Z \le 0.45)$ </span>
-
+- <span style="color:red"> Step 3: Find $z$-score </span> 
+  + <span style="color:blue"> $z = \frac{1190 - 1100}{200} = 0.45$ and we want to compute $P(X > 1190) = P\left( \frac{X - \mu}{\sigma} > \frac{1190 - 1000}{200} \right) = P(Z > 0.45) = 1 - P(Z \le 0.45)$ </span>
 - <span style="color:red"> Step 4: Find the area using `pnorm()` </span>
+
 ```{r}
 1 - pnorm(0.45)
 ```
 
+------------------------------------------------------------------------
 
-## Normal Percentiles in R
+<span style="color:blue"> **Normal Percentiles in R** </span>
 
-- To get the $100p$-th percentile (or the $p$ quantile $q$ ), given probability $p$, we use
+- To get the $100p$-th percentile (or the $p$ quantile $q$ ), given probability $p$,
+  + use **`qnorm(p, mean, sd)`** to get a value of $X$, $q$, such that $P(X \le q) = p$ 
+  + use **`qnorm(p, mean, sd, lower.tail = FALSE)`** to get $q$ such that $P(X \ge q) = p$
+  
+<span style="color:red"> ***SAT and ACT Example*** </span>
 
-  + **`qnorm(p, mean, sd)`** to get a value of $X$, $q$, such that $P(X \le q) = p$ 
-
-  + **`qnorm(p, mean, sd, lower.tail = FALSE)`** to get $q$ such that $P(X \ge q) = p$
-
-
-
-## SAT Example
 - What is the 95th percentile for SAT scores?
 - <span style="color:red"> Step 1: State the problem </span>
-  
   +  <span style="color:blue"> We want to find $x$ s.t $P(X < x) = 0.95$. </span>
-  
 - <span style="color:red"> Step 2: Draw a picture
+
 ```{r, echo=FALSE, out.width='40%', fig.align='center'}
+#| label: fig-percentile
+#| fig-cap: Picture for the 95th percentile of SAT scores
 par(mfrow = c(1, 1), las = 1, mar = c(2, 0, 0, 0), mgp = c(1, 1, 0))
 normTail(m = 1100, s = 200, L = qnorm(0.95, 1100, 200), col = 4, cex.axis = 1.3)
 ```
 
-:::{.callout-note icon=false}
-## **Find an $x$ value of the normal distribution, not an area (probability), which is 0.95.**
+:::{.callout-note}
+**We want to find an $x$ value of the normal distribution, which is greater than 95% of all other cases.**
 :::
-
-
-## SAT Example Cont'd
 
 - <span style="color:red"> Step 3: Find $z$-score s.t. $P(Z < z) = 0.95$ using `qnorm()`</span>: 
 
@@ -381,7 +399,6 @@ normTail(m = 1100, s = 200, L = qnorm(0.95, 1100, 200), col = 4, cex.axis = 1.3)
 ```
 
 - <span style="color:red"> Step 4: Find the $x$ of the original scale </span>
-
   + <span style="color:blue"> $z_{0.95} = \frac{x-\mu}{\sigma}$. So $x = \mu + z_{0.95}\sigma$. </span>
   
 ```{r}
@@ -389,71 +406,57 @@ normTail(m = 1100, s = 200, L = qnorm(0.95, 1100, 200), col = 4, cex.axis = 1.3)
 ```
 - The 95th percentile for SAT scores is 1429.
 
-
 ```{r}
 qnorm(p = 0.95, mean = 1100, sd = 200)
 ```
-
 
 ## Finding Probabilties
 
 `r emoji('point_right')` **ALWAYS draw and label the normal curve and shade the area of interest.**
 
 - `r emoji('point_right')` **Less than**
-
   + $\small P(X < x) = P(Z < z)$
-
   + `pnorm(z, mean = 0, sd = 1)`
-  
   + `pnorm(x, mean = mu, sd = sigma)`
-
 - `r emoji('point_right')` **Greater than**
-
   + $\small P(X > x) = P(Z > z) = 1 - P(Z \le z)$
-
   + `1 - pnorm(z)`
 
 :::{.callout-note icon=false}
-`r emoji('point_right')` Standardization is not a must.
-
-`r emoji('point_right')` We have to specify the mean and SD of the original distribution of $X$, like `pnorm(x, mean = mu, sd = sigma)`.
+- Standardization is not a must.
+- If we don't standardize, we must specify the mean and SD of the original distribution of $X$, like `pnorm(x, mean = mu, sd = sigma)`.
 :::
 
 - `r emoji('point_right')` **Between two numbers**
-
   + $\small P(a < X < b) = P(z_a < Z < z_b) = P(Z < z_b) - P(Z < z_a)$
-  
   + `pnorm(z_b) - pnorm(z_a)`
-
 - `r emoji('point_right')` **Outside of two numbers** $(a < b)$
 $$\small \begin{align} P(X < a \text{ or } X > b) &= P(Z < z_a \text{ or } Z > z_b) \\ &= P(Z < z_a) + P(Z > z_b) \\ &= P(Z < z_a) + 1 - P(Z < z_b) \end{align}$$
 
   + `pnorm(z_a) + 1 - pnorm(z_b)`
-  
   + `pnorm(z_a) + pnorm(z_b, lower.tail = FALSE)`
 
 :::{.callout-note icon=false}
-`r emoji('point_right')` Any probability can be computed using the *"less than"* form (*lower* or *left* tail).
-
- `r emoji('point_right')` If the calculation involves the "greater than" form, add `lower.tail = FALSE` in `pnorm()`.
+- Any probability can be computed using the *"less than"* form (*lower* or *left* tail).
+- If the calculation involves the "greater than" form, add `lower.tail = FALSE` in `pnorm()`.
 :::
 
-
-
 ## Checking Normality: Normal Quantile Plot
+
 - Many statistical methods assume variables are normally distributed.
-- Testing the appropriateness of the normal assumption is a key step.
-- A **normal quantile plot (normal probability plot)** or a **Quantile-Quantile plot (QQ plot)** helps us check normality assumption.
-
+- Therefore, testing the appropriateness of the normal assumption is a key step.
+- We can check this normality assumption using a **normal quantile plot (normal probability plot)** or a **Quantile-Quantile plot (QQ plot)**.
   + $X$-axis: Quantiles of the *ordered* data if the data were normally distributed.
-  
   + $Y$-axis: *Ordered* data values
-  
-- If the data are like normally distributed, the points on the QQ plot will lie close to a **straight line**.
+- If the data are normally distributed, the points on the QQ plot will lie close to a **straight line**.
 
+-----------------------------------------------------------------
 
-## QQ plot in R
+<span style="color:blue"> **QQ plot in R** </span>
+
 ```{r qqplot, fig.height=4.5, out.width='60%', echo = -c(1,2,3, 4, 7), fig.align='center'}
+#| label: fig-qqplot
+#| fig-cap: QQ plots for normal and right-skewed data samples
 par(mfcol = c(2, 2), las = 1, mar = c(3.5, 3.5, 2, 1), mgp = c(2, 0.5, 0))
 normal_sample <- rnorm(1000)
 right_skewed_sample <- rgamma(1000, 2, 1 / 2)
@@ -465,6 +468,18 @@ qqnorm(right_skewed_sample, main = "Right-skewed data", col = 6)
 qqline(right_skewed_sample)
 ```
 
+## Exercises
 
+1. What percentage of data that follow a standard normal distribution $N(\mu=0, \sigma=1)$ is found in each region? Drawing a normal graph may help.
+    (a) $Z < -1.75$
+    (b) $-0.7 < Z < 1.3$
+    (c) $|Z| > 1$
+  
+2. The average daily high temperature in June in Chicago is 74$^{\circ}$F with a standard deviation of 4$^{\circ}$F. Suppose that the temperatures in June closely follows a normal distribution.
+    (a) What is the probability of observing an 81$^{\circ}$ F temperature or higher in Chigcago during a randomly chosen day in June?
+    (b) How cool are the coldest 15\% of the days (days with lowest average high temperature) during June in Chicago?
 
-
+3. Head lengths of Virginia opossums follow a normal distribution with mean 104 mm and standard deviation 6 mm. 
+    (a) Compute the $z$-scores for opossums with head lengths of 97 mm and 108 mm.
+    (b) Which observation (97 mm or 108 mm) is more unusual or less likely to happen than another observation? Why?
+    

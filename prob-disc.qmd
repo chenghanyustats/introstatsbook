@@ -7,17 +7,17 @@ library(kableExtra)
 library(openintro)
 ```
 
+## Introduction
 
-## Discrete Probability Distribution
-
-- The **probability (mass) function** of a discrete random variable (rv) $X$ is a function $P(X = x)$ (or $p(x)$) that assigns a probability for **every** possible number $x$. 
+- The **probability (mass) function** of a discrete random variable (rv) $X$ is a function $P(X = x)$ (or $p(x)$) that assigns a probability to **every** possible number $x$. 
 - The **probability distribution** for a discrete r.v. $X$ *displays* its **probability function**.
-- The display can be a *table*, *graph*, or *mathematical formula* of $P(X = x)$. 
+- The display can be a *table*, *graph* or *mathematical formula* of $P(X = x)$. 
 
-<span style="color:blue"> **Example:**🪙🪙 Toss a fair coin twice independently and $X$ is the number of heads. </span>
+<span style="color:blue"> **Example:**🪙🪙 Toss a fair coin twice independently where $X$ is the number of heads. </span>
 
 - The probability distribution of $X$ as a table is 
 
+<center>
 ```{r discrete_prob_dist_table, echo=FALSE, fig.align='center'}
 prob_function <- cbind("x" = c(0, 1, 2), "P(X = x)" = c(0.25, 0.5, 0.25))
 # kable(prob_function, format = "pipe")
@@ -27,28 +27,19 @@ prob_function_horizontal <- rbind("x" = c("0", "1", "2"), "P(X = x)" = c(0.25, 0
 # print(unname(as.data.frame(prob_function_horizontal)))
 kable(prob_function_horizontal)
 ```
-
-:::{.callout-tip icon=false}
-
-## `r emoji('point_right')` $\{X = x\}$ is an event corresponding to an event of some experiment.
-
-:::
+</center>
 
 :::{.callout-note icon=false}
-
-## What is the event that $\{X = 0\}$ corresponds to?
-
+## `r emoji('point_right')` $\{X = x\}$ corresponds to an event of some experiment.
+- What is the event that $\{X = 0\}$ corresponds to?
+- How do we determine $P(X = 0)$, $P(X=1)$ and $P(X=2)$ ?
 :::
 
-:::{.callout-note icon=false}
+<br>
 
-## How do we get $P(X = 0)$, $P(X=1)$ and $P(X=2)$ ?
-
-:::
-
-## Discrete Probability Distribution as a Graph 
-<!-- - Probability Histogram -->
 ```{r discrete_prob_dist_graph, echo=FALSE, out.width="40%", fig.asp=0.5, fig.align='center'}
+#| label: fig-prob-histogram
+#| fig-cap: Discrete probability distribution of two coin flips as a graph 
 par(mar = c(4, 4, 0, 0))
 plot(c("0", "1", "2"), c(0.25, 0.5, 0.25), type = "h", ylim = c(0, 0.75),
      lwd = 5, col = "#003366", ylab = "P(X = x)", xlab = "x", las = 1, axes = F)
@@ -56,159 +47,153 @@ points(c("0", "1", "2"), c(0.25, 0.5, 0.25), pch = 16, cex = 2, col = "#FFCC00")
 axis(1, 0:2, c("0", "1", "2"), col.axis = "black")
 axis(2, seq(0, 0.75, by = 0.25), col.axis = "black", las = 2)
 ```
+
 - $0 \le P(X = x) \le 1$ for every value $x$ of $X$.
-
   + <span style="color:blue"> $x = 0, 1, 2$ </span>
-  
-
-
 - $\sum_{x}P(X=x) = 1$, where $x$ assumes all possible values.
-
   + <span style="color:blue"> $P(X=0) + P(X = 1) + P(X = 2) = 1$ </span>
-  
-
-
 - The probabilities for a discrete r.v. are **additive** because $\{X = a\}$ and $\{X = b\}$ are *disjoint* for any possible values $a \ne b$.
-
   + <span style="color:blue"> $P(X = 1 \text{ or } 2) = P(\{X = 1\} \cup \{X = 2\}) = P(X = 1) + P(X = 2)$. </span>
 
-## Mean of a Discrete Random Variable
+------------------------------------------------------------
+
+<span style="color:blue"> **Mean** </span>
+
 - Suppose $X$ takes values $x_1, \dots, x_k$ with probabilities $P(X = x_1), \dots, P(X = x_k)$.
 - The **mean** or **expected value** of $X$ is the sum of each outcome multiplied by its corresponding probability:
 $$E(X) := x_1 \times P(X = x_1) + \dots + x_k \times P(X = x_k) = \sum_{i=1}^kx_iP(X=x_i)$$
-- The Greek letter $\mu$ may be used in place of the notation $E(X)$.
+- The Greek letter $\mu$ may also be used in place of the notation $E(X)$.
 
-:::{.callout-tip icon=false}
-
-## `r emoji('point_right')` The mean of a discrete random variable $X$ is the **weighted average** of possible values $x$ *weighted by their corresponding probability*.
-
+:::{.callout-note}
+- The mean of a discrete random variable $X$ is a **weighted average**.
+- The possible values, $x$, are *weighted by their corresponding probability*.
 :::
 
 :::{.callout-note icon=false}
-
 ## What is the mean of $X$ (the number of heads) in the previous example?
-
 :::
 
-## Variance of a Discrete Random Variable
+-----------------------------------------------------------------
+
+<span style="color:blue"> **Variance** </span>
+
 - Suppose $X$ takes values $x_1, \dots , x_k$ with probabilities $P(X = x_1), \dots, P(X = x_k)$ and expected value $\mu = E(X)$.
 - The variance of $X$, denoted by $Var(X)$ or $\sigma^2$, is $$\small Var(X) := (x_1 - \mu)^2 \times P(X = x_1) + \dots + (x_k - \mu)^2 \times P(X = x_k) = \sum_{i=1}^k(x_i - \mu)^2P(X=x_i)$$
 - The standard deviation of $X$, $\sigma$, is the square root of the variance.
 
-:::{.callout-tip icon=false}
-
-## `r emoji('point_right')` The variance of a discrete random variable $X$ is the *weighted sum of squared deviation* from the mean weighted by probability values.
-
+:::{.callout-note}
+- The variance of a discrete random variable $X$ is also weighted.
+- It is the sum of squared deviation from the mean weighted by probability values.
 :::
 
 :::{.callout-note icon=false}
-
 ## What is the variance of $X$ (the number of heads) in the previous example?
-
 :::
 
-## Binomial Experiment and Random Variable
-- A **binomial experiment** is the one having the following properties:
+## Binomial Distribution
 
+<span style="color:blue"> **Binomial Experiment and Random Variable** </span>
+
+- A **binomial experiment** is one that has the following properties:
   1. `r emoji('point_right')` The experiment consists of a **fixed** number of **identical** trials $n$.
-  
   2. `r emoji('point_right')` Each trial results in one of **exactly two** outcomes (*success* (S) and *failure* (F)).
-  
-  3. `r emoji('point_right')` Trials are **independent**, meaning that the outcome of any trial does not affect the outcome of any other trial.
-  
+  3. `r emoji('point_right')` Trials are **independent**, meaning that the outcome of one trial does not affect the outcome of any other trial.
   4. `r emoji('point_right')` The probability of success is **constant** for all trials.
-  
-- If $X$ is defined as  <span style="color:blue"> the number of successes observed in $n$ trials </span>, $X$ is a binomial random variable.
 
-:::{.callout-note icon=false}
-- The word *success* just means one of the two outcomes, and *does not necessarily mean something good. *
+- If $X$ is defined as  <span style="color:blue"> the number of successes observed in $n$ trials </span>, then $X$ is a binomial random variable.
+
+:::{.callout-note}
+- The word *success* just means one of the two outcomes and *does not necessarily mean something good. *
 - `r emoji('astonished')` We can define *Drug abuse* as success and *No drug abuse* as failure.
 :::
 
+-----------------------------------------------------------------
 
-## Binomial Distribution
+<span style="color:blue"> **Distribution** </span>
+
 - The probability function $P(X = x)$ of a binomial r.v. $X$ can be *fully* determined by 
-
-  + the number of trials $n$
-  
-  + probability of success $\pi$
-  
+  + the number of trials, $n$
+  + probability of success, $\pi$
 - Different $(n, \pi)$ pairs generate different binomial probability distributions.
 - $X$ is said to follow a binomial distribution with **parameters** $n$ and $\pi$, written as $\color{blue}{X \sim binomial(n, \pi)}$.
 - The binomial probability function is 
-$$ \color{blue}{P(X = x \mid n, \pi) = \frac{n!}{x!(n-x)!}\pi^x(1-\pi)^{n-x}, \quad x = 0, 1, 2, \dots, n}$$ with mean $\mu = E(X) = n\pi$ and variance $\sigma^2 = Var(X) = n\pi(1-\pi)$.
+$$ \color{blue}{P(X = x \mid n, \pi) = \frac{n!}{x!(n-x)!}\pi^x(1-\pi)^{n-x}, \quad x = 0, 1, 2, \dots, n}$$
+- This distribution has a mean $\mu = E(X) = n\pi$ and variance $\sigma^2 = Var(X) = n\pi(1-\pi)$.
 
 :::{.callout-note icon=false}
 ## If we toss a fair coin two times independently and let $X =$ # of heads, is $X$ a binomial r.v.?
 :::
 
-## Binomial Distribution Example
-:::{layout-ncol=2}
-- Assume that 20% of all drivers have a blood alcohol level above the legal limit. For a random sample of 15 vehicles, compute the probability that:
+<span style="color:blue"> **Example** </span>
 
+::::{.columns}
+:::{.column width="75%"}
+- Assume that 20% of all drivers have a blood alcohol level above the legal limit. For a random sample of 15 vehicles, compute the probability that:
   1. Exactly 6 of the 15 drivers will *exceed* the legal limit.
-  
   2. Of the 15 drivers, 6 or more will *exceed* the legal limit.
-  
-```{r, echo=FALSE, out.width="30%", fig.align='center'}
+:::
+
+:::{.column width="25%"}
+```{r, echo=FALSE, out.width="40%", fig.align='center'}
 knitr::include_graphics("./images/img-prob/alcohol.jpeg")
 ```
 :::
-  - Suppose it is a binomial experiment with $n = 15$ and $\pi = 0.2$. 
-  - Let $X$ be the number of drivers exceeding limit. 
-  - $X \sim binomial(15, 0.2)$.
+::::
+- Suppose it's a binomial experiment with $n = 15$ and $\pi = 0.2$. 
+- Let $X$ be the number of drivers exceeding limit. 
+- $X \sim binomial(15, 0.2)$.
   
 $$ \color{blue}{P(X = x \mid n=15, \pi=0.2) = \frac{15!}{x!(15-x)!}(0.2)^x(1-0.2)^{15-x}, \quad x = 0, 1, 2, \dots, n}$$
 
+```{r binomial_plot_noshow, echo = FALSE, out.width="80%", fig.align='center'}
+#| label: fig-binomial-plot
+#| fig-cap: Binomial Distribution Example $X \sim binomial(15, 0.2)$
+par(mar = c(4, 4, 2, 0), mgp = c(2.7, 1, 0), las = 1)
+plot(x = 0:15, y = dbinom(0:15, size = 15, prob = 0.2), type = 'h', xlab = "x", 
+     ylab = "P(X = x)", lwd = 5, main = "Binomial(15, 0.2)")
+```
 
   1. $\small P(X = 6) = \frac{n!}{x!(n-x)!}\pi^x(1-\pi)^{n-x} = \frac{15!}{6!(15-6)!}(0.2)^6(1-0.2)^{15-6} = 0.043$
-  
-
-
   2. $\small P(X \ge 6) = p(6) + \dots + p(15) = 1 - P(X \le 5) = 1 - (p(0) + p(1) + \dots + p(5)) = 0.0611$
   
 :::{.callout-tip}
 Never do this by hand. We can compute them using R!
 :::
 
-## Binomial Distribution Example $X \sim binomial(15, 0.2)$
+-------------------------------------------------------------
 
+<span style="color:blue"> **Computation in R**
 
-```{r binomial_plot_noshow, echo = FALSE, out.width="80%", fig.align='center'}
-par(mar = c(4, 4, 2, 0), mgp = c(2.7, 1, 0), las = 1)
-plot(x = 0:15, y = dbinom(0:15, size = 15, prob = 0.2), type = 'h', xlab = "x", 
-     ylab = "P(X = x)", lwd = 5, main = "Binomial(15, 0.2)")
-```
-
-
-## Binomial Example Computation in R
 <!-- - R Shiny app is at [Binomial Calculator](http://sctc.mscs.mu.edu:3838/sample-apps/Calculator/) -->
-- With `size` the number of trials and `prob` the probability of success,
-
-  + **`dbinom(x, size, prob)`** to compute $P(X = x)$
+- With `size` being the number of trials and `prob` being the probability of success,
+  + use **`dbinom(x, size, prob)`** to compute $P(X = x)$
+  + use **`pbinom(q, size, prob)`** to compute $P(X \le q)$
+  + use **`pbinom(q, size, prob, lower.tail = FALSE)`** to compute $P(X > q)$
   
-  + **`pbinom(q, size, prob)`** to compute $P(X \le q)$
-  
-  + **`pbinom(q, size, prob, lower.tail = FALSE)`** to compute $P(X > q)$
-  
-:::{layout-ncol=2}
+::::{.columns}
+:::{.column width="49.5%"}
 ```{r binomial_r_1}
 ## 1. P(X = 6)
 dbinom(x = 6, size = 15, prob = 0.2) 
 ## 2. P(X >= 6) = 1 - P(X <= 5)
 1 - pbinom(q = 5, size = 15, prob = 0.2) 
 ```
+:::
 
+:::{.column width="2%"}
+:::
 
-
+:::{.column width="48.5%"}
 ```{r binomial_r_2}
 ## 2. P(X >= 6) = P(X > 5)
 pbinom(q = 5, size = 15, prob = 0.2, 
        lower.tail = FALSE)  
 ```
 :::
+::::
 
-## Binomial(15, 0.2)
+- Below is an example of how to generate the binomial probability distribution as a graph.
+
 ```{r binomial_plot, echo = -1, out.width="67%", fig.align='center'}
 par(mar = c(4, 4, 2, 0), mgp = c(2.7, 1, 0), las = 1)
 plot(x = 0:15, y = dbinom(0:15, size = 15, prob = 0.2), 
@@ -216,84 +201,88 @@ plot(x = 0:15, y = dbinom(0:15, size = 15, prob = 0.2),
      lwd = 5, main = "Binomial(15, 0.2)")
 ```
 
-## Poisson Random Variables
-- If we like to count **the number of occurrences of some event over a unit of time or space (region)** and its associated probability, we could consider the **Poisson distribution**.
 
-  + Number of COVID patients arriving at ICU in one hour
-  
-  + Number of Marquette students logging onto D2L in one day
-  
-  + Number of dandelions per square meter in Marquette campus
+## Poisson Distribution
 
+<span style="color:blue"> **Poisson Random Variables** </span>
 
-
-- Let $X$ be a Poisson r.v. Then $\color{blue}{X \sim Poisson(\lambda)}$, where $\lambda$ is the parameter representing the **mean** number of occurrences of the event in the interval.
-$$\color{blue}{P(X = x \mid \lambda) = \frac{\lambda^x e^{-\lambda}}{x!}, \quad x = 0, 1, 2, \dots}$$ with both mean and variance being equal to $\lambda$.
-
-
+- If we want to count **the number of occurrences of some event over a unit of time or space (region)** and observe its associated probability, we could consider the **Poisson distribution**.
+- For example,
+  + The number of COVID patients arriving at ICU in one hour
+  + The number of Marquette students logging onto D2L in one day
+  + The number of dandelions per square meter on Marquette's campus
+- Let $X$ be a Poisson random variable. Then $\color{blue}{X \sim Poisson(\lambda)}$, where $\lambda$ is the parameter representing the **mean** number of occurrences of the event in the interval.
+$$\color{blue}{P(X = x \mid \lambda) = \frac{\lambda^x e^{-\lambda}}{x!}, \quad x = 0, 1, 2, \dots}$$ 
+- Both the mean and the variance are equal to $\lambda$.
 
 
-## Assumptions and Properties of Poisson Variables
+-----------------------------------------------------------------------
+
+<span style="color:blue"> **Assumptions and Properties of Poisson Variables** </span>
 
 - `r emoji('point_right')` **Events occur one at a time**; two or more events do not occur at the same time or in the same space or spot.
 - `r emoji('point_right')` The occurrence of an event in a given period of time or region of space is **independent** of the occurrence of the event in a **nonoverlapping** time period or region of space.
-- `r emoji('point_right')` $\lambda$ is **constant** of any period or region.
+- `r emoji('point_right')` $\lambda$ is **constant** for any period or region.
 
 :::{.callout-note icon=false}
-## Can you find the difference between Binomial and Poisson distributions?
+## What are the differences between Binomial and Poisson distributions?
+- The Poisson distribution
+  + is determined by one single parameter $\lambda$
+  + has possible values $x = 0, 1, 2, \dots$ with no upper limit (countable), while a binomial variable has possible values $0, 1, 2, \dots, n$ (finite)
 :::
 
-- The Poisson distribution
-
-  + is determined by one single parameter $\lambda$
-  
-  + has possible values $x = 0, 1, 2, \dots$ with no upper limit (countable), while a binomial variable has possible values $0, 1, 2, \dots, n$ (finite)
 
 
+------------------------------------------------------------
 
-## Poisson Distribution Example 
-:::{layout-ncol=2}
+<span style="color:blue"> **Example** </span> 
+
+::::{.columns}
+:::{.column width="75%"}
 - Last year there were 4200 births at the University of Wisconsin Hospital. Assume $X$ be the number of births in a given day at the center, and $X \sim Poisson(\lambda)$. Find
   1. $\lambda$, the mean number of births **per day**.
   2. the probability that on a randomly selected day, there are exactly 10 births.
   3. $P(X > 10)$? 
+:::
 
-```{r, echo=FALSE, out.width="45%", fig.align='center'}
+:::{.column width="25%"}
+```{r, echo=FALSE, out.width="75%", fig.align='center'}
 knitr::include_graphics("./images/img-prob/baby.jpeg")
 ```
 :::
+::::
 
 1. $\small \lambda = \frac{\text{Number of birth in a year}}{\text{Number of days}} = \frac{4200}{365} = 11.5$
 
-
 2. $\small P(X = 10 \mid \lambda = 11.5) = \frac{\lambda^x e^{-\lambda}}{x!} = \frac{11.5^{10} e^{-11.5}}{10!} = 0.113$
-
-
 
 3. $\small P(X > 10) = p(11) + p(12) + \dots + p(20) + \dots$ (No end!)
 $\small P(X > 10) = 1 - P(X \le 10) = 1 - (p(1) + p(2) + \dots + p(10))$.
 
+---------------------------------------------------------------
 
+<span style="color:blue"> **Computation in R** </span>
 
-## Poisson Example Compuatation in R
 <!-- - R Shiny app is at [Poisson Calculator](http://sctc.mscs.mu.edu:3838/sample-apps/Calculator/) -->
 <!-- P(X <= 10) = 0.392 -->
-- With `lambda` the mean of Poisson distribution, 
-
-  + **`dpois(x, lambda)`** to compute $P(X = x)$
+- With `lambda` being the mean of Poisson distribution, 
+  + use **`dpois(x, lambda)`** to compute $P(X = x)$
+  + use **`ppois(q, lambda)`** to compute $P(X \le q)$
+  + use **`ppois(q, lambda, lower.tail = FALSE)`** to compute $P(X > q)$
   
-  + **`ppois(q, lambda)`** to compute $P(X \le q)$
-  
-  + **`ppois(q, lambda, lower.tail = FALSE)`** to compute $P(X > q)$
-  
-:::{layout-ncol=2}
+::::{.columns}
+:::{.column width="49%"}
 ```{r poisson_r_1}
 (lam <- 4200 / 365)
 ## P(X = 10)
 dpois(x = 10, lambda = lam)  
 ```
+:::
 
+:::{.column width="2%"}
+:::
 
+:::{.column width="49%"}
 ```{r poisson_r_2}
 ## P(X > 10) = 1 - P(X <= 10)
 1 - ppois(q = 10, lambda = lam)  
@@ -302,13 +291,30 @@ ppois(q = 10, lambda = lam,
       lower.tail = FALSE) 
 ```
 :::
+::::
 
-## Poisson(11.5)
-- $X$ has no upper limit. The graph is *truncated* at $x = 24$. 
+- Below is an example of how to generate the Poisson probability distribution as a graph.
+
 ```{r poisson_plot, out.width="60%", fig.align='center'}
 plot(0:24, dpois(0:24, lambda = lam), type = 'h', lwd = 5, 
      ylab = "P(X = x)", xlab = "x", main = "Poisson(11.5)")
 ```
 
+:::{.callout-note}
+- $X$ has no upper limit; the graph is *truncated* at $x = 24$. 
+:::
+
+## Exercises
+
+1. Data collected by the Substance Abuse and Mental Health Services Administration (SAMSHA) suggests that 65\% of 18-20 year olds consumed alcoholic beverages in any given year.
+    (a) Suppose a random sample of twelve 18-20 year olds is taken. When does it make sense to use binomial distribution for calculating the probability that exactly five consumed alcoholic beverages?
+    (b) What is the probability that exactly five out of twelve 18-20 year olds have \textit{not} consumed an alcoholic beverage?
+    (c) What is the probability that at most 3 out of 7 randomly sampled 18-20 year olds have consumed alcoholic beverages?
+
+2. A Dunkin' Donuts in Milwaukee serves an average of 65 customers per hour during the morning rush.
+    (a) Which distribution have we studied that is most appropriate for calculating the probability of a given number of customers arriving within one hour during this time of day?
+    (b) What are the mean and the standard deviation of the number of customers this Starbucks serves in one hour during this time of day?
+    (c) Calculate the probability that this Dunkin' Donuts serves 55 customers in 
+one hour during this time of day.
 
 

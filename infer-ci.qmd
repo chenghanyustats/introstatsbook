@@ -11,14 +11,20 @@ knitr::opts_knit$set(global.par = TRUE)
 # options(reindent.spaces = 4)
 ```
 
-## Inference Framework
-- **Inferential statistics uses sample data to learn about an unknown population**.
-- Idea: Assume the target population follows some distribution but with **unknown** parameters.
-  + <span style="color:blue"> Assume the population is normally distributed, but don't know its mean and/or variance. Marquette students' mean GPA for example. </span>
-- Goal: **Learning the unknown parameters** of the assumed population distribution.
+## Foundations for Inference
 
-:::{layout-ncol=2}
+<span style="color:blue"> **Inference Framework** </span>
+
+- **Inferential statistics uses sample data to learn about an unknown population**.
+- **Idea**: Assume the target population follows some distribution but with **unknown** parameters.
+  + <span style="color:blue"> Assume the population is normally distributed but its mean and/or variance are unknown. </span>
+- **Goal**: Learn the unknown parameters of the assumed population distribution.
+
+::::{.columns}
+:::{.column width="50%"}
 ```{r sample, cache=TRUE, echo=FALSE, out.width="80%",fig.align='center'}
+#| label: fig-sampling
+#| fig-cap: Sampling from a population
 par(mar = 0*c(1,1,1,1))
 plot(c(0, 2),
      c(0, 1.1),
@@ -60,8 +66,12 @@ for (i in these) {
          length = 0.08, col = COL[5], lwd = 1.5)
 }
 ```
+:::
 
+:::{.column width="50%"}
 ```{r, echo=FALSE, out.width="77%",fig.align='center'}
+#| label: fig-data-generating
+#| fig-cap: Relationship between probabiltity and statistical inference
 # knitr::include_graphics("./img/data_generating.png")
 # fig.cap="Figure 1.1 in All of Statistics (Wasserman 2003)"
 par(mar = c(0, 0, 0, 0))
@@ -87,28 +97,31 @@ text(x = 0, y = -0.8, labels = "Statistical Inference", cex = 1.5)
 # text(x = 0, y = -0.4, labels = "Set of data selected from the population:", cex = 1.2)
 ```
 :::
+::::
 
-
-- Two approaches in parameter learning: **Estimation** and **Hypothesis testing**.
+- There are two approaches in parameter learning.
+  - **Estimation** 
+  - **Hypothesis Testing**
 
 ## Point Estimator
-<!-- - We discuss estimation this week and testing next week.  -->
-<!-- - It's natural to seek a "good" estimator of a parameter. -->
 
 :::{.callout-note icon=false}
-## If you could **only use one single number** to guess the unknown population mean $\mu$, what would you like to use?
+## If you could **only use a single number** to guess the unknown population mean, $\mu$, what number would you like to use?
 :::
-- The one single point used to estimate the unknown parameter is called a **point estimator**.
-- A **point estimator** is any function of data $(X_1, X_2, \dots, X_n)$ *(before actually being collected).*
 
-    + **Any statistic is a point estimator**.
-- A **point estimate** is a value of a point estimator used to estimate a population parameter. *(A value calculated by the collected data)*
-- Sample mean $(\overline{X})$ is a statistic and a point estimator for the population mean $\mu$.
+- The single point used to estimate the unknown parameter is known as a **point estimator**.
+- A **point estimator** is any function of data $(X_1, X_2, \dots, X_n)$.
+  + **Any statistic is considered a point estimator** *(before actually being collected).*
+- A **point estimate** is a value of a point estimator used to estimate a population parameter. 
+  + This is a value calculated from the collected data.
+- The sample mean, $(\overline{X})$, is a statistic and a point estimator for the population mean, $\mu$.
 
+--------------------------------------------------------------------
 
-## Sample Mean as an Point Estimator 
+<span style="color:blue"> **Sample Mean as an Point Estimator** </span>
+
 - Draw 5 values from the population that follows $N(2, 1)$ as sample data $(x_1, x_2, x_3, x_4, x_5)$.
-```{r}
+```{r, echo=FALSE}
 ## Generate sample data x1, x2, x3, x4, x5, each from population distribution N(2, 1)
 x_data_1 <- rnorm(n = 5, mean = 2, sd = 1)
 ```
@@ -123,11 +136,14 @@ kable(t(x_vec), digits = 2, align = "c")
 - $\mu = 2$, and we use the point estimate $\overline{x}=$ `r round(mean(x_data_1), 2)` to estimate it.
 
 :::{.callout-note icon=false}
-## Why $\overline{x}$ is not equal to $\mu$?
+## Why is $\overline{x}$ not equal to $\mu$?
+- Due to its **randomness** nature
 :::
 
--   Due to its **randomness** nature:
+
 ```{r, echo=FALSE, out.width="35%", fig.align='center'}
+#| label: fig-sample-mean
+#| fig-cap: Sample mean has randomness associated with it
 par(mar = c(2, 0, 1, 0), mgp = c(3, 1, 0))
 z <- 2 + seq(-3, 3, by = 0.001)
 hz <- dnorm(z, mean = 2)
@@ -138,10 +154,9 @@ axis(1)
 points(x_data_1, y = rep(0, length(x_data_1)), col = "red", pch = 16, cex = 2)
 ```
 
-## Variability in Estimates
-- If another sample of size $5$ is drawn from the same population:
+- If another sample of size $5$ is drawn from the same population,
 
-```{r}
+```{r, echo=FALSE}
 x_data_2 <- rnorm(5, mean = 2, sd = 1)
 ```
 
@@ -152,14 +167,17 @@ names(x_vec) <- c("x1", "x2", "x3", "x4", "x5", "sample mean")
 kable(t(x_vec), digits = 2, align = "c")
 ```
 
-- The second sample mean $\overline{x} =$ `r round(mean(x_data_2), 2)` is different from the first one.
+- The second sample mean, $\overline{x} =$ `r round(mean(x_data_2), 2)`, is different from the first one.
 
 :::{.callout-note icon=false}
 ## Why do the first sample and the second sample give us different sample means?
+- A point estimator has its own *sampling distribution*.
 :::
 
--   A point estimator has its own *sampling distribution*.
+
 ```{r, echo=FALSE, out.width="35%", fig.align='center'}
+#| label: fig-samp-dist
+#| fig-cap: Sampling Distribution of Sampling Mean
 par(mar = c(3, 0, 2, 0), mgp = c(3, 1, 0))
 z <- 2 + seq(-3, 3, by = 0.001)
 hz <- dnorm(z, mean = 2, sd = 1/sqrt(5))
@@ -172,102 +190,118 @@ points(c(mean(x_data_1), mean(x_data_2)),
        pch = 16, cex = 2)
 ```
 
-## Why Point Estimates Are Not Enough
+--------------------------------------------------------------------
+
+<span style="color:blue"> **Why Point Estimates Are Not Enough** </span>
+
 :::{.callout-note icon=false}
-## If you want to estimate $\mu$, do you prefer to report a range of values the parameter might be in, or a single estimate like $\overline{x}$?
+## If you want to estimate $\mu$, would you prefer to report a range of values the parameter might be in or a single estimate like $\overline{x}$?
 :::
 
 :::{.callout-note icon=false}
-## If you want to catch a fish, do you prefer a spear or a net?
+## If you want to catch a fish, would you prefer to use a spear or a net?
 :::
 
-:::{layout-ncol=2}
+::::{.columns}
+:::{.column width="50%"}
 ```{r echo=FALSE, out.width="80%", fig.align='center'}
 knitr::include_graphics("./images/img-infer/spear.png")
 ```
+:::
 
+:::{.column width="50%"}
 ```{r echo=FALSE, out.width="80%", fig.align='center'}
 knitr::include_graphics("./images/img-infer/net.png")
 ```
 :::
+::::
 
-- Due to variation of $\overline{X}$, if we report a point estimate $\overline{x}$, we probably won't hit the exact $\mu$.
+- Due to the variation of $\overline{X}$, if we report a point estimate $\overline{x}$, we probably won't hit the exact $\mu$.
 - If we report *a range of plausible values*, we have a better shot at capturing the parameter!
 
 ## Confidence Intervals
-A plausible range of values for $\mu$ is called a **confidence interval (CI)**.
 
--   To construct a CI we need to quantify the variability of our sample mean.
-<!-- - For example, if we want to construct a confidence interval for a population mean, we need to come up with a plausible range of values around our observed sample mean. -->
-<!-- - This range depends on how *precise* and *reliable* our $\overline{X}$ is as an estimate of $\mu$. -->
-
+- A plausible range of values for $\mu$ is called a **confidence interval (CI)**.
+  - This range depends on how *precise* and *reliable* our statistic is as an estimate of the parameter.
+- To construct a CI for $\mu$, we first need to quantify the variability of our sample mean.
 - Quantifying this uncertainty requires a measurement of how much we would expect the sample statistic to vary from sample to sample. 
-  + That is the *variance* of the sampling distribution of the sample mean!
+  + This is the *variance* of the sampling distribution of the sample mean!
 
 :::{.callout-note}
-`r emoji('point_right')` The larger variation of $\overline{X}$ is, the wider the CI for $\mu$ will be given the same "level of confidence".
+The larger the variation of $\overline{X}$ is, the wider the CI for $\mu$ will be given the same "level of confidence".
 :::
 
-:::{.callout-note icon=false}
-## Do we know the variance of $\overline{X}$? 
-:::
 
-- By CLT, $\overline{X} \sim N(\mu, \sigma^2/n)$ **regardless of what the population distribution is**.
+- Do we know the variance of $\overline{X}$? 
+  - By CLT, $\overline{X} \sim N(\mu, \sigma^2/n)$ **regardless of what the population distribution is**.
 
-<!-- - We can quantify the variability of sample statistics using *theory via Central Limit Theorem* $\overline{X} \sim N(\mu, \sigma^2/n)$ (MATH 4720) or *simulation via Bootstrapping* (Later). -->
 
-## Precision vs. Reliability
+--------------------------------------------------------------------
+
+<span style="color:blue"> **Precision vs. Reliability** </span>
+
 :::{.callout-note icon=false}
 ## If we want to be very certain that we capture $\mu$, should we use a wider or a narrower interval? What drawbacks are associated with using a wider interval?
 :::
 
 ```{r echo=FALSE, out.width="100%"}
+#| label: fig-garfield
+#| fig-cap: Balance between precision and reliability
 knitr::include_graphics("./images/img-infer/garfield.png")
 ```
 
-:::{.callout-note icon=false}
-## With the sample size fixed, precision and reliability have a trade-off relationship.
-:::
+- With a fixed sample size, precision and reliability have a trade-off relationship.
+  - Narrower intervals are more precise but less reliable, while wider intervals are more reliable but less precise.
 
-## Confidence Interval Is for a Parameter
+
+--------------------------------------------------------------------
+
+<span style="color:blue"> **A Confidence Interval Is for a Parameter** </span>
+
 - A confidence interval is **for a parameter, NOT a statistic.**
-  + Use the sample mean to form a confidence interval for the population mean.
-
-- We **never say** *"The confidence interval of the sample mean $\overline{X}$ is ..."*
-- We **say** *"The confidence interval for the true population mean $\mu$ is ..."*
-
-
+  + For example, we use the sample mean to form a confidence interval for the population mean.
+- We **never say** *"The confidence interval of the sample mean, $\overline{X}$, is ..."*
+- We **say** *"The confidence interval for the true population mean, $\mu$, is ..."*
 - In general, a confidence interval for $\mu$ has the form
 
 <center>
 $\large \overline{x} \pm m = (\overline{x} - m, \overline{x} + m)$
 </center>
 
-- The $m$ is called **margin of error**.
+- The $m$ is called the **margin of error**.
 - $\overline{x} - m$ is the **lower bound** and $\overline{x} + m$ is the **upper bound** of the confidence interval.
-- The point estimate $\overline{x}$ and margin of error $m$ can be obtained from known quantities and our data once sampled.
+- The point estimate, $\overline{x}$, and margin of error, $m$, can be obtained from known quantities and our data once sampled.
 
-## $(1 - \alpha)100\%$ Confidence Intervals
+--------------------------------------------------------------------
+
+<span style="color:blue"> **$(1 - \alpha)100\%$ Confidence Intervals** </span>
 
 - The **confidence level** $1-\alpha$: **the proportion of times that the CI contains the population parameter, assuming that the estimation process is repeated a large number of times**.
-- The common choices for the confidence level are 
+- Common choices for the confidence level include
   + 90% $(\alpha = 0.10)$
   + 95% $(\alpha = 0.05)$
   + 99% $(\alpha = 0.01)$
-- 95% is the most common level because of good balance between precision (width of the CI) and reliability (confidence level)
+- 95% is the most common level because it has a good balance between precision (width of the CI) and reliability (confidence level).
+  + <span style="color:blue"> **High reliability and Low precision**: I am 100% confident that the mean height of Marquette students is between 3'0" and 8'0". </span> 
+    - Duh...`r emoji('shrug')`
+  + <span style="color:blue"> **Low reliability and High precision**: I am 20% confident that mean height of Marquette students is between 5'6" and 5'7". </span> 
+    - This is far from the truth... `r emoji('no_good')`
 
+--------------------------------------------------------------------
 
-  + <span style="color:blue"> **High reliability and Low precision**. I am 100% confident that the mean height of Marquette students is between 3'0" and 8'0". </span> duh...`r emoji('shrug')`
-  + <span style="color:blue"> **Low reliability and High precision**. I am 20% confident that mean height of Marquette students is between 5'6" and 5'7". </span> far from it...`r emoji('no_good')`
+<span style="color:blue"> **$95\%$ Confidence Intervals for $\mu$** </span>
 
+<span style="color:red"> ***Z-score*** </span>
 
-## $95\%$ Confidence Intervals for $\mu$: Z-score
-:::{layout-ncol=2}
+::::{.columns}
+:::{.column width="50%"}
 - $\alpha = 0.05$
 - Start with the sampling distribution of $\overline{X} \sim N\left(\mu, \frac{\sigma^2}{n}\right)$
-- $\overline{x}$ will be within 1.96 SDs of the population mean $\mu$  $95\%$ of the time.
-- The $z$-score of 1.96 is associated with 2.5% area *to the right*, and called a **critical value** denoted as **$z_{0.025}$ **.
+- $\overline{x}$ will be within 1.96 SDs of the population mean, $\mu$, $95\%$ of the time.
+- The $z$-score of 1.96 is associated with 2.5% area *to the right* and is called a **critical value** denoted as **$z_{0.025}$ **.
+:::
 
+:::{.column width="50%"}
 ```{r ci_95, echo=FALSE, out.width='100%'}
 par(mar = c(6, 0, 1.5, 0), mgp = c(3, 2, 0), las = 1)
 z <- seq(-3, 3, by = 0.001)
@@ -307,20 +341,31 @@ axis(1, at = c(-3, -z_cri,0, z_cri, 3), cex.axis = 1.5,
      labels = c("", -1.96, 0, 1.96, "Z"), tck = 0.01, line = 3)
 ```
 :::
+::::
 
-## $95\%$ Confidence Intervals for $\mu$: Probability
+<span style="color:red"> ***Probability*** </span>
 
+::::{.columns}
+:::{.column width="50%"}
 $$P\left(\mu-1.96\frac{\sigma}{\sqrt{n}} < \overline{X} < \mu + 1.96\frac{\sigma}{\sqrt{n}} \right) = 0.95$$
  
 :::{.callout-note icon=false}
 ## Is the interval $\left(\mu-1.96\frac{\sigma}{\sqrt{n}}, \mu+1.96\frac{\sigma}{\sqrt{n}} \right)$ our confidence interval?
+- `r emoji('x')` **No! We don't know $\mu$, which is the quantity we want to estimate, but we're almost there!**
+:::
 :::
 
-- `r emoji('x')` **No! We don't know $\mu$, the quantity we like to estimate!**
-- But we're almost there!
+:::{.column width="50%"}
+```{r ref.label='ci_95', echo=FALSE, out.width='100%'}
 
-## $95\%$ Confidence Intervals for $\mu$: Formula
+```
+:::
+::::
 
+<span style="color:red"> ***Formula***
+
+::::{.columns}
+:::{.column width=50%}
 $$\begin{align}
 &P\left(\mu-1.96\frac{\sigma}{\sqrt{n}} < \overline{X} < \mu + 1.96\frac{\sigma}{\sqrt{n}} \right) = 0.95\\
 &P\left( \boxed{\overline{X}-1.96\frac{\sigma}{\sqrt{n}} < \mu < \overline{X} + 1.96\frac{\sigma}{\sqrt{n}}} \right) = 0.95
@@ -328,26 +373,41 @@ $$\begin{align}
 
 - <span style="color:blue"> With sample data of size $n$, $\left(\overline{x}-1.96\frac{\sigma}{\sqrt{n}},  \overline{x} + 1.96\frac{\sigma}{\sqrt{n}}\right)$ is our $95\%$ CI for $\mu$ if $\sigma$ is **known** to us! </span>
 - The margin of error $m = 1.96\frac{\sigma}{\sqrt{n}}$.
+:::
 
+:::{.column width="50%"}
+```{r ref.label='ci_95', echo=FALSE, out.width='100%'}
+
+```
+:::
+::::
 
 ## Confidence Intervals for $\mu$ When $\sigma$ is Known
-**Requirements** for estimating $\mu$ when $\sigma$ is known:
 
-- `r emoji('point_right')` The sample should be a **random sample**, i.e. All data $X_i$ are drawn from the same population, and $X_i$ and $X_j$ are independent.
-  + <span style="color:blue"> Any methods in the course are based on a random sample </span>
-- `r emoji('point_right')` The population standard deviation $\sigma$ is **known**.
-- `r emoji('point_right')` The population is either **normally distributed** or $n > 30$ or both, i.e., $X_i \sim N(\mu, \sigma^2)$.
-  + <span style="color:blue"> $n > 30$ allows CLT to be applied and hence normality is satisfied. </span>
+- **Requirements** for estimating $\mu$ when $\sigma$ is known:
+  + `r emoji('point_right')` The sample should be a **random sample**, such that all data $X_i$ are drawn from the same population and $X_i$ and $X_j$ are independent.
+    - <span style="color:blue"> Any methods in this course are based on the assumption of a random sample </span>
+  + `r emoji('point_right')` The population standard deviation, $\sigma$, is **known**.
+  + `r emoji('point_right')` The population is either **normally distributed**, $n > 30$ or both, i.e., $X_i \sim N(\mu, \sigma^2)$.
+    - <span style="color:blue"> $n > 30$ allows the Central Limit Theorem to be applied and hence normality is satisfied. </span>
   
-## $(1-\alpha)100\%$ Confidence Intervals for $\mu$:
+-------------------------------------------------------------------
 
-:::{layout-ncol=2}
+<span style="color:blue"> **$(1-\alpha)100\%$ Confidence Intervals for $\mu$** </span>
+
+::::{.columns}
+:::{.column width="50%"}
 ```{r ref.label='ci_95', echo=FALSE, out.width='100%'}
 
 ```
 
+<center>
+<span style="color:blue"> $\left(\overline{x}-1.96\frac{\sigma}{\sqrt{n}},  \overline{x} + 1.96\frac{\sigma}{\sqrt{n}}\right)$ </span>
+<span style="color:blue"> $\left(\overline{x}-z_{0.025}\frac{\sigma}{\sqrt{n}},  \overline{x} + z_{0.025}\frac{\sigma}{\sqrt{n}}\right)$ </span>
+</center>
+:::
 
-
+:::{.column width="50%"}
 ```{r ci_alpha, echo=FALSE, out.width='100%'}
 par(mar = c(6, 0, 1.5, 0), mgp = c(3, 2, 0), las = 1)
 z <- seq(-3, 3, by = 0.001)
@@ -378,59 +438,61 @@ axis(1, at = c(-3, -z_cri,0, z_cri, 3), cex.axis = 1.5,
      labels = c("", expression(-z[frac(alpha, 2)]), 0, expression(z[frac(alpha, 2)]), "Z"), tck = 0.01, line = 3)
 
 ```
-:::
 
 <center>
-:::{layout-ncol=2}
-<span style="color:blue"> $\left(\overline{x}-1.96\frac{\sigma}{\sqrt{n}},  \overline{x} + 1.96\frac{\sigma}{\sqrt{n}}\right)$ </span>
-<span style="color:blue"> $\left(\overline{x}-z_{0.025}\frac{\sigma}{\sqrt{n}},  \overline{x} + z_{0.025}\frac{\sigma}{\sqrt{n}}\right)$ </span>
-
 <span style="color:red"> $\left(\overline{x}-z_{\alpha/2}\frac{\sigma}{\sqrt{n}},  \overline{x} + z_{\alpha/2}\frac{\sigma}{\sqrt{n}}\right)$ </span>
-:::
 </center>
+:::
+::::
 
-## Confidence Intervals for $\mu$ When $\sigma$ is Known
-**Procedures** for constructing a confidence interval for $\mu$ when $\sigma$ known:
+<br>
 
+- **Procedures** for constructing a confidence interval for $\mu$ when $\sigma$ is known:
   1. Check that the **requirements** are satisfied.
-  
-  2. Decide $\alpha$ or *confidence level* $(1 - \alpha)$.
-  
-  3. Find the *critical value* $z_{\alpha/2}$.
-  
-  4. Evaluate *margin of error* $m = z_{\alpha/2} \cdot \frac{\sigma}{\sqrt{n}}$ 
-  
-  5. Construct the $(1 - \alpha)100\%$ CI for $\mu$ using sample mean $\overline{x}$ and margin of error $m$: 
+  2. Decide $\alpha$ or the *confidence level* $(1 - \alpha)$.
+  3. Find the *critical value*, $z_{\alpha/2}$.
+  4. Evaluate *margin of error*, $m = z_{\alpha/2} \cdot \frac{\sigma}{\sqrt{n}}$. 
+  5. Construct the $(1 - \alpha)100\%$ CI for $\mu$ using the sample mean, $\overline{x}$, and margin of error, $m$: 
 
 <center>
 <span style="color:red"> $$\boxed{\overline{x} \pm z_{\alpha/2}\frac{\sigma}{\sqrt{n}} \text{  or  } \left( \overline{x} -z_{\alpha/2}\frac{\sigma}{\sqrt{n}}, \, \overline{x} + z_{\alpha/2} \frac{\sigma}{\sqrt{n}}\right)}$$</span>
 </center>
 
-## Example: CI for $\mu$ When $\sigma$ is Known
+---------------------------------------------------------------------
 
-:::{layout-ncol=2}
+<span style="color:blue"> **Example** </span>
+
+::::{.columns}
+:::{.column width="50%"}
 - Suppose we want to know the mean systolic blood pressure (SBP) of a population.
-  + Assume that the population distribution is normal with the standard deviation of 5 mmHg. 
-  + We have a random sample of 16 subjects of this population with mean 121.5.
-  + Estimate the mean SBP with a 95% confidence interval.
+- Assume that the population distribution is normal and has a standard deviation of 5 mmHg. 
+- We have a random sample of 16 subjects from this population with a mean of 121.5 mmHg.
+- Estimate the mean SBP with a 95% confidence interval.
+:::
 
-
+:::{.column width="50%"}
 ```{r, echo=FALSE, out.width="100%"}
 knitr::include_graphics("./images/img-infer/blood_pressure.jpeg")
 ```
 :::
+::::
 
-1. Requirements: <span style="color:blue">  Normality is assumed, $\sigma = 5$ is known and a random sample is collected.
-2. Decide $\alpha$: <span style="color:blue">  $\alpha = 0.05$  </span>
-3. Find the *critical value* $z_{\alpha/2}$: <span style="color:blue">  $z_{\alpha/2} = z_{0.025} = 1.96$  </span> 
-4. Evaluate *margin of error* $m = z_{\alpha/2} \frac{\sigma}{\sqrt{n}}$: <span style="color:blue"> $m = (1.96) \frac{5}{\sqrt{16}} = 2.45$ </span> 
-5. Construct the $(1 - \alpha)100\%$ CI: <span style="color:blue"> The 95% CI for the mean SBP is $\overline{x} \pm z_{\alpha/2}\frac{\sigma}{\sqrt{n}} = (121.5 -2.45, 121.5 + 2.45) = (119.05, 123.95)$ </span> 
+1. Requirements: 
+    - <span style="color:blue">  Normality is assumed, $\sigma = 5$ is known and a random sample is collected.
+2. Decide $\alpha$: 
+    - <span style="color:blue">  $\alpha = 0.05$  </span>
+3. Find the *critical value* $z_{\alpha/2}$: 
+    - <span style="color:blue">  $z_{\alpha/2} = z_{0.025} = 1.96$  </span> 
+4. Evaluate *margin of error* $m = z_{\alpha/2} \frac{\sigma}{\sqrt{n}}$: 
+    - <span style="color:blue"> $m = (1.96) \frac{5}{\sqrt{16}} = 2.45$ </span> 
+5. Construct the $(1 - \alpha)100\%$ CI: 
+    - <span style="color:blue"> The 95% CI for the mean SBP is $\overline{x} \pm z_{\alpha/2}\frac{\sigma}{\sqrt{n}} = (121.5 -2.45, 121.5 + 2.45) = (119.05, 123.95)$ </span> 
 
 
-<!-- - Try to construct a 99% confidence interval for the mean SBP. Everything is the same except now the critical value is $z_{\alpha/2} = z_{0.005} = 2.58$. -->
-<!-- > - The 99% CI for the mean SBP is $121.5 \pm 2.58\frac{5}{\sqrt{16}} = (118.28, 124.72)$. -->
+<span style="color:red"> ***Computation in R*** </span>
 
-## Computation in R
+- Below is a demonstration of how to find the 95% CI for SBP using R.
+
 ```{r ci_normal, echo=TRUE, tidy=FALSE}
 ## save all information we have
 alpha <- 0.05
@@ -450,19 +512,24 @@ x_bar + c(-1, 1) * m_z
 ```
 
 :::{.callout-note icon=false}
-## Construct a 99% CI for the mean SBP. Do you expect to have a wider or narrower interval? Why?
+## Construct a 99% CI for the mean SBP. Do you expect it to have a wider or narrower interval than the 95% CI? Why?
 :::
 
-## Interpreting a Confidence Interval
+<span style="color:red"> ***Interpreting the Confidence Interval***
 
-- <span style="color:blue"> ***"We are 95% confident that the mean SBP lies between 119.1 mm and 123.9 mm."*** </span>
-- Suppose we were able to collect our dataset many times and build the corresponding CIs. 
-- We would expect about 95% of those intervals would contain the true population parameter, here the mean systolic blood pressure.
-  + <span style="color:blue"> Remember: **$\overline{x}$ varies from sample to sample, so does its corresponding CI **.</span>
-- We never know if in fact 95% of them do, or whether any interval contains the true parameter!
+- **WRONG** `r emoji('x')` *"There is a 95% chance/probability that the true population mean will fall between 119.1 mm and 123.9 mm."*
+- **WRONG** `r emoji('x')` *"The probability that the true population mean falls between 119.1 mm and 123.9 mm is 95%."*
+- <span style="color:blue"> `r emoji('point_right')` **The sample mean is a random variable with a sampling distribution, so it makes sense to compute a probability of it being in some interval.** </span>
+- <span style="color:blue"> `r emoji('point_right')` **The population mean is unknown and FIXED, so we cannot assign or compute any probability of it.** </span> 
+  + If we were using **Bayesian inference**, a different inference method, we could compute a probability associated with $\mu$ because $\mu$ is treated as a random variable. 
+- Instead we say, <span style="color:blue"> ***"We are 95% confident that the mean SBP lies between 119.1 mm and 123.9 mm."*** </span>
+- This means if we were able to collect our data many times and build the corresponding CIs, we would expect that about 95% of those intervals would contain the true population parameter, which, in this case, is the mean systolic blood pressure.
+- <span style="color:blue"> Remember: **$\overline{x}$ varies from sample to sample and so does its corresponding CI **.</span>
+  + This idea is shown in @fig-ci. 
 
-## Generate 100 Confidence Intervals Assuming $\mu = 120$.
-```{r ci_mean_known_sig, echo=FALSE, out.width='80%'}
+```{r ci_mean_known_sig, echo=FALSE, out.width='80%', fig.align='center'}
+#| label: fig-ci
+#| fig-cap: Illustration of 100 95% confidence intervals
 par(mar = c(4, 4, 2, 1), mgp = c(2.5, 1, 0))
 mu <- 120; sigma <- 5
 alpha <- 0.05
@@ -489,45 +556,46 @@ segments(x0 = ci_lower[contained], y0 = (1:M)[contained], x1 = ci_upper[containe
 abline(v = mu, col = "#FFCC00", lwd = 2)
 ```
 
-## Interpreting a Confidence Interval DO NOT SAY
-- **WRONG** `r emoji('x')` *"There is a 95% chance/probability that the true population mean will fall between 119.1 mm and 123.9 mm."*
-- **WRONG** `r emoji('x')` *"The probability that the true population mean falls between 119.1 mm and 123.9 mm is 95%."*
+:::{.callout-note}
+- We never know with certainty that 95% of the intervals, or any single interval for that matter, contains the true population parameter.
+:::
 
-- <span style="color:blue"> `r emoji('point_right')` **The sample mean is a random variable with a sampling distribution, so it makes sense to compute a probability of it being in some interval.** </span>
-- <span style="color:blue"> `r emoji('point_right')` **The population mean is unknown and FIXED. We cannot assign or compute any probability of it.** </span> 
-
-- Another inference method, **Bayesian inference**, treats $\mu$ as a random variable and therefore we can compute any probability associated with it. (MATH 4790 Bayesian Statistics)
 
 ## Confidence Intervals for $\mu$ When $\sigma$ is Unknown
-<!-- - So far we estimate unknown mean $\mu$ with known standard deviation $\sigma$. -->
-- $\sigma^2 = \frac{\sum_{i=1}^{N}(x_i - \mu)^2}{N}$, $N$ is the population size.
-- It's rare that we do not know $\mu$, but know $\sigma$.
-- We use the **Student t** distribution to construct a confidence interval for $\mu$ when $\sigma$ is **unknown**.
-- Still need
-  + Random sample
-  + Population is normally distributed and/or $n > 30$.
+
+- $\sigma^2 = \frac{\sum_{i=1}^{N}(x_i - \mu)^2}{N}$, where $N$ is the population size.
+- It's rare that we don't know $\mu$ but know $\sigma$, so what do we do if $\sigma$ is unknown?
+  + We use the **Student t** distribution to construct a confidence interval for $\mu$ when $\sigma$ is **unknown**.
+- To construct these confidence intervals we still need
+  + A random sample
+  + A population that is normally distributed and/or $n > 30$.
   
 :::{.callout-note icon=false}
 ## What is a natural estimator for the unknown $\sigma$?
 :::
 
-- Since $\sigma$ is unknown, we use the *sample standard deviation* $S = \sqrt{\frac{\sum_{i=1}^{n}(X_i - \overline{X})^2}{n-1}}$ instead when constructing the CI.
+- When $\sigma$ is unknown, we use the *sample standard deviation*, $S = \sqrt{\frac{\sum_{i=1}^{n}(X_i - \overline{X})^2}{n-1}}$, instead when constructing the CI.
 
-## Student t Distribution
+---------------------------------------------------------------
+
+<span style="color:blue"> **Student t Distribution** </span>
+
 - If the population is normally distributed or $n > 30$,
   + $\overline{X} \sim N\left(\mu, \frac{\sigma^2}{n} \right)$
   + $Z = \frac{\overline{X} - \mu}{\color{red}\sigma/\sqrt{n}} \sim N(0, 1)$
   + <span style="color:blue">  $T = \frac{\overline{X} - \mu}{\color{red}S/\sqrt{n}} \sim t_{n-1}$ </span> 
   + $t_{n-1}$ denotes the Student t distribution with **degrees of freedom (df)** $n-1$.
 
-## Properties of Student t Distribution
+<span style="color:red"> ***Properties*** </span>
 
-- Symmetric about the mean 0 and bell-shaped as $N(0, 1)$.
-- More variability than $N(0, 1)$ (heavier tails and lower peak).
+- It is symmetric about the mean 0 and bell-shaped like $N(0, 1)$.
+- It has more variability than $N(0, 1)$ (heavier tails and lower peak).
 - The variability is different for different sample sizes (degrees of freedom).
-- As $n \rightarrow \infty$ $(df \rightarrow \infty)$, the Student t distribution approaches to $N(0, 1)$.
+  + As $n \rightarrow \infty$ $(df \rightarrow \infty)$, the Student t distribution approaches $N(0, 1)$.
 
 ```{r student_t, echo=FALSE, out.width='52%', fig.align='center'}
+#| label: fig-student-t
+#| fig-cap: Student t distributions with various degrees of freedom
 # Display the Student's t distributions with various
 # degrees of freedom and compare to the normal distribution
 par(mar = c(4, 4, 1, 0), mgp = c(2, 1, 0))
@@ -548,9 +616,13 @@ legend("topright", inset = .05, labels, lwd = 2, lty = c(1, 1, 1, 1),
        col = colors, bty = "n")
 ```
 
-## Critical Values of $t_{\alpha/2, n-1}$
+<span style="color:blue"> **Critical Values of $t_{\alpha/2, n-1}$** </span>
+
 - When $\sigma$ is unknown, we use $t_{\alpha/2, n-1}$ as the critical value, instead of $z_{\alpha/2}$.
+
 ```{r, echo=FALSE, out.width="60%", fig.align='center'}
+#| label: fig-cv-t
+#| fig-cap: Illustration of critical value for Student t distribution
 par(mar = c(3, 0, 1, 0), mgp = c(2, 1, 0))
 x <- seq(-4, 4, length=100)
 hx <- dt(x, df = 1)
@@ -566,10 +638,9 @@ axis(1, at = c(-4, -t_cri,0, t_cri, 4), cex.axis = 1.5, pos = 0,
 ```
 
 :::{.callout-note icon=false}
-## With the same $\alpha$, $t_{\alpha, n-1}$ or $z_{\alpha}$ is larger?
+## With the same $\alpha$, is $t_{\alpha, n-1}$ or $z_{\alpha}$ larger?
 :::
 
-- Given the same confidence level $1-\alpha$, $t_{\alpha/2, n-1} > z_{\alpha/2}$.
 
 ```{r critical_value, echo=FALSE}
 critical_t_5 <- round(c(qt(0.95, df=5), qt(0.975, df=5), qt(0.995, df=5)), 2)
@@ -594,15 +665,19 @@ kable(critical_value_table, col.names = c("Level",
                                          "z"), align = "c")
 ```
 
-## CI for $\mu$ When $\sigma$ is Unknown
-- The $(1-\alpha)100\%$ confidence interval for $\mu$ when $\sigma$ is **unknown** is <span style="color:blue"> $$\left(\overline{x} - t_{\alpha/2, n-1} \frac{s}{\sqrt{n}}, \overline{x} + t_{\alpha/2, n-1} \frac{s}{\sqrt{n}}\right)$$ </span>
-- Given the same confidence level $1-\alpha$, $t_{\alpha/2, n-1} > z_{\alpha/2}$.
+----------------------------------------------------------------------
 
-:::{.callout-note icon=false}
-## We are more "uncertain" when doing inference about $\mu$ because we also don't have information about $\sigma$, and replacing it with $s$ adds additional uncertainty.
+<span style="color:blue"> **$(1-\alpha)100\%$ Confidence Intervals for $\mu$ When $\sigma$ is Unknown** </span> 
+
+- The $(1-\alpha)100\%$ confidence interval for $\mu$ when $\sigma$ is **unknown** is <span style="color:blue"> $$\left(\overline{x} - t_{\alpha/2, n-1} \frac{s}{\sqrt{n}}, \overline{x} + t_{\alpha/2, n-1} \frac{s}{\sqrt{n}}\right)$$ </span>
+- Given the same confidence level $1-\alpha$, $t_{\alpha/2, n-1} > z_{\alpha/2}$, which means the confidence interval for $\mu$ is wider when $\sigma$ is unknown.
+
+:::{.callout-note}
+- We are more "uncertain" when doing inference about $\mu$ because don't have information about $\sigma$ and replacing it with $s$ adds additional uncertainty.
 :::
 
-## Computation in R (t interval)
+<span style="color:red"> ***Computation in R*** </span>
+
 - Back to the systolic blood pressure (SBP) example. We have $n=16$ and $\overline{x} = 121.5$. 
 - Estimate the mean SBP with a 95% confidence interval with **unknown $\sigma$ and $s = 5$.**
 
@@ -628,582 +703,24 @@ x_bar + c(-1, 1) * m_t
 | **Confidence Interval**   | $\bar{x} \pm z_{\alpha/2} \frac{\sigma}{\sqrt{n}}$ | $\bar{x} \pm t_{\alpha/2, n-1} \frac{s}{\sqrt{n}}$           |
 
 
-- Remember to check if the population is normally distributed or $n>30$.
+- Remember to check if the population is normally distributed and/or $n>30$.
 - What if the population is not normal and $n \le 30$?
-- Use a so-called **nonparametric** method, for example **bootstrapping**. 
-<!-- (MATH 4750 Statistical Computing) -->
+  + Use a so-called **nonparametric** method, for example **bootstrapping**. 
 
-<!-- --- -->
-<!-- ## $(1 - \alpha)\%$ Confidence Intervals for $\mu$ -->
-<!-- $$ -->
-<!-- \begin{align} -->
-<!-- &P\left(-z_{\alpha/2} < Z < z_{\alpha/2} \right) = 1 - \alpha\\ -->
-<!-- \iff &P\left(-z_{\alpha/2} < \frac{\overline{X} - \mu}{\frac{\sigma}{\sqrt{n}} } < z_{\alpha/2} \right) = 1 - \alpha\\ -->
-<!-- \iff &P\left(-z_{\alpha/2}\frac{\sigma}{\sqrt{n}} < \overline{X} - \mu < z_{\alpha/2}\frac{\sigma}{\sqrt{n}} \right) = 1 - \alpha\\ -->
-<!-- \iff &P\left(\mu-z_{\alpha/2}\frac{\sigma}{\sqrt{n}} < \overline{X} < \mu + z_{\alpha/2}\frac{\sigma}{\sqrt{n}} \right) = 1 - \alpha\\ -->
-<!-- \iff &P\left( \boxed{\overline{X}-z_{\alpha/2}\frac{\sigma}{\sqrt{n}} < \mu < \overline{X} + z_{\alpha/2}\frac{\sigma}{\sqrt{n}}} \right) = 1 - \alpha -->
-<!-- \end{align} -->
-<!-- $$ -->
+## Exercises
 
-<!-- --- -->
-<!-- - With CLT, $\overline{X}$ is approximately $N\left(\mu, \frac{\sigma^2}{n}\right)$. -->
-<!-- - With $z_{\alpha/2}$ being $(1-\alpha/2)$ quantile of $N(0, 1)$, $(1 - \alpha)100\%$ confidence interval for $\mu$ is $\left(\overline{X} - z_{\alpha/2} \frac{\sigma}{\sqrt{n}}, \overline{X} + z_{\alpha/2}\frac{\sigma}{\sqrt{n}}\right)$ -->
+1. Here are summary statistics for randomly selected weights of newborn boys: $n =207$, $\bar{x} = 30.2$hg (1hg = 100 grams), $s = 7.3$hg.
+    (a) Compute a 95% confidence interval for $\mu$, the mean weight of newborn boys.
+    (b) Is the result in (a) very different from the 95% confidence interval if $\sigma = 7.3$?
+    
+2. A 95% confidence interval for a population mean $\mu$ is given as (18.635,
+21.125). This confidence interval is based on a simple random sample of 32 observations. Calculate the sample mean and standard deviation. Assume that all conditions necessary for inference are satisfied. Use the t-distribution in any calculations. 
 
-## Why Inference for Population Variances?
+3. A market researcher wants to evaluate car insurance savings at a competing company. Based on past studies he is assuming that the standard deviation of savings is \$95. He wants to collect data such that he can get a margin of error of no more than \$12 at a 95% confidence level. How large of a sample should he collect?
 
-- We want to know if $\sigma_1 = \sigma_2$, so a correct or better method can be used. 
+4. The 95% confidence interval for the mean rent of one bedroom apartments in Chicago was calculated as (\$2400, \$3200). 
+    (a) Interpret the meaning of the 95% interval. 
+    (b) Find the sample mean rent from the interval.
 
-:::{.callout-note icon=false}
-## Which test we learned needs $\sigma_1 = \sigma_2$?
-:::
 
-<center>
-In some situations, we care about *variation*!
-</center>
 
-
-:::{layout-ncol=2}
-```{r, echo=FALSE, out.width="78%", fig.align='center'}
-knitr::include_graphics("./images/img-infer/drugs.jpeg")
-```
-
-```{r, echo=FALSE, out.width="78%", fig.align='center'}
-knitr::include_graphics("./images/img-infer/stock.jpeg")
-```
-
-<span style="color:blue"> The variation in potency of drugs</span>: *affects patients' health*
-
-<span style="color:blue"> The variance of stock prices </span>: *the higher the variance, the riskier the investment*
-:::
-
-## Inference for Population Variances
-- The sample variance $S^2 = \frac{\sum_{i=1}^n(X_i - \overline{X})^2}{n-1}$ is our **point estimator** for the population variance $\sigma^2$.
-  + $S^2$ is an **unbiased estimator** for $\sigma^2$, i.e., $E(S^2) = \sigma^2$
-- The inference methods for $\sigma^2$ needs the population to be **normal**. 
-
-:::{.callout-note icon=false}
-## `r emoji('exclamation')` The methods can **work poorly if the normality is violated, even the sample is large**.
-:::
-
-```{r, echo=FALSE, out.width="40%", fig.align='center'}
-knitr::include_graphics("./images/img-infer/normal_dist.jpeg")
-```
-
-## Chi-Square $\chi^2$ Distribution
-The inference for $\sigma^2$ involves the so called $\chi^2$ distribution.
-
-:::{layout-ncol=2}
-- Parameter: degrees of freedom $df$
-- *Right* skewed distribution
-- Defined over *positive* numbers
-- More symmetric as $df$ gets larger
-- [Chi-Square Distribution](http://sctc.mscs.mu.edu:3838/sample-apps/Calculator/)
-
-
-```{r chi_sq_dist, echo = FALSE, out.width="80%", fig.align='center'}
-par(mgp = c(2.2, 0.5, 0))
-par(mar = c(4,4,2,1))
-x <- seq(0, 40, length=1000)
-df_vec <- c(3, 5, 10, 20)
-hx <- dchisq(x, df = df_vec[1])
-plot(x, hx, type="l", lty=1, xlab="x", axes = FALSE, col = 1, lwd = 2,
-  ylab="Density", main= "Chi-Square Distributions with different dfs")
-axis(1)
-axis(2, las = 2)
-text(df_vec[1], max(dchisq(x, df = df_vec[1])), paste("df =", df_vec[1]), col = 1)
-for (i in 2:length(df_vec)) {
-  hx <- dchisq(x, df = df_vec[i])
-  lines(x, hx, col = i, lwd = 2)
-  text(df_vec[i]+2, max(dchisq(x, df = df_vec[i]))+0.01, 
-       paste("df =", df_vec[i]), col = i)
-}
-```
-:::
-
-## Upper Tail and Lower Tail of Chi-Square
-<!-- - $\chi^2_{c,\, df}$ is the $\chi^2$ value of $\chi^2_{df}$ distribution that has area to the **right** of $c$. -->
-- $\chi^2_{\frac{\alpha}{2},\, df}$ has area to the **right** of $\alpha/2$.
-- $\chi^2_{1-\frac{\alpha}{2},\, df}$ has area to the **left** of $\alpha/2$.
-- In $N(0, 1)$, $z_{1-\frac{\alpha}{2}} = -z_{\frac{\alpha}{2}}$. But $\chi^2_{1-\frac{\alpha}{2},\,df} \ne -\chi^2_{\frac{\alpha}{2},\,df}$.
-
-```{r chisq, out.width="50%", echo=FALSE, fig.align='center'}
-par(mar = c(2, 0, 0, 0), mgp = c(2.1, 0.6, 0))
-chi_sq_upper_tail <- function(U, df, xlim = c(0, 10), col = fadeColor("black", "22"),
-                               axes = TRUE, ...) {
-    x <- c(0, seq(xlim[1], xlim[2] + 3, length.out = 300))
-    y <- c(0, stats::dchisq(x[-1], df))
-    graphics::plot(x, y, type = "l", axes = FALSE, xlim = xlim)
-    graphics::abline(h = 0)
-    if (axes) {
-        axis(1)
-    }
-    these <- which(x >= U)
-    X <- x[c(these[1], these, rev(these)[1])]
-    Y <- c(0, y[these], 0)
-    graphics::polygon(X, Y, col = col)
-}
-chi_sq_lower_tail <- function (L, df, xlim = c(0, 10), 
-                               col = fadeColor("black", "22"),
-                               axes = TRUE, ...) {
-    x <- c(0, seq(xlim[1], xlim[2] + 3, length.out = 300))
-    y <- c(0, stats::dchisq(x[-1], df))
-    graphics::plot(x, y, type = "l", axes = FALSE, xlim = xlim)
-    graphics::abline(h = 0)
-    if (axes) {
-        axis(1)
-    }
-    these <- which(x <= L)
-    X <- x[c(these[1], these, rev(these)[1])]
-    Y <- c(0, y[these], 0)
-    graphics::polygon(X, Y, col = col)
-}
-chi_sq_two_tail <- function (U, L, df, xlim = c(0, 10), 
-                             col = fadeColor("black", "22"), axes = TRUE, ...) {
-    x <- c(0, seq(xlim[1], xlim[2] + 3, length.out = 300))
-    y <- c(0, stats::dchisq(x[-1], df))
-    graphics::plot(x, y, type = "l", axes = FALSE, xlim = xlim)
-    graphics::abline(h = 0)
-    if (axes) {
-        axis(1)
-    }
-    these_U <- which(x >= U)
-    X_U <- x[c(these_U[1], these_U, rev(these_U)[1])]
-    Y_U <- c(0, y[these_U], 0)
-    graphics::polygon(X_U, Y_U, col = col)
-    these_L <- which(x <= L)
-    X_L <- x[c(these_L[1], these_L, rev(these_L)[1])]
-    Y_L <- c(0, y[these_L], 0)
-    graphics::polygon(X_L, Y_L, col = col)
-}
-
-chi_sq_two_tail(U = 15, L = 2, df = 6, xlim = c(0, 20), col = 4, axes = FALSE)
-axis(1, at = c(0, 2, 15), labels = c(0, expression(chi[1-frac(alpha, 2)]^2),
-                                  expression(chi[frac(alpha, 2)]^2)), font = 3,
-     cex.axis = 2, tick = FALSE)
-text(5, 0.05, expression(1-alpha), cex = 3)
-text(1, 0.02, expression(frac(alpha, 2)), cex = 2)
-text(18, 0.02, expression(frac(alpha, 2)), cex = 2)
-```
-
-## Sampling Distribution 
-
-- When a random sample of size $n$ is from $\color{red}{N(\mu, \sigma^2)}$, 
-$$ \frac{(n-1)S^2}{\sigma^2} \sim \chi^2_{n-1} $$
-
-<!-- - The sampling distribution is approximately normal for large sample sizes. -->
-
-- The inference method for $\sigma^2$ introduced here can work poorly if the normality assumption is violated, even for large samples.
-```{r, out.width="45%", echo=FALSE, fig.align='center'}
-chi_sq_two_tail(U = 15, L = 2, df = 6, xlim = c(0, 20), col = 4, axes = FALSE)
-axis(1, at = c(0, 2, 15), labels = c(0, expression(chi[1-frac(alpha, 2)]^2),
-                                  expression(chi[frac(alpha, 2)]^2)), font = 3,
-     cex.axis = 2, tick = FALSE)
-text(5, 0.05, expression(1-alpha), cex = 3)
-text(1, 0.02, expression(frac(alpha, 2)), cex = 2)
-text(18, 0.02, expression(frac(alpha, 2)), cex = 2)
-```
-
-## $(1-\alpha)100\%$ Confidence Interval for $\sigma^2$
-
-:::{layout-ncol=2}
-$(1-\alpha)100\%$ confidence interval for $\sigma^2$ is 
-$$\color{blue}{\boxed{\left( \frac{(n-1)S^2}{\chi^2_{\frac{\alpha}{2}, \, n-1}}, \frac{(n-1)S^2}{\chi^2_{1-\frac{\alpha}{2}, \, n-1}} \right)}}$$ 
-
-
-```{r, out.width="100%", echo=FALSE, fig.align='center'}
-chi_sq_two_tail(U = 15, L = 2, df = 6, xlim = c(0, 20), col = 4, axes = FALSE)
-axis(1, at = c(0, 2, 15), labels = c(0, expression(chi[1-frac(alpha, 2)]^2),
-                                  expression(chi[frac(alpha, 2)]^2)), font = 3,
-     cex.axis = 2, tick = FALSE)
-text(5, 0.05, expression(1-alpha), cex = 3)
-text(1, 0.02, expression(frac(alpha, 2)), cex = 2)
-text(18, 0.02, expression(frac(alpha, 2)), cex = 2)
-text(9, 0.08, expression(chi[n-1]^2), cex = 2)
-```
-:::
-
-:::{.callout-note icon=false}
-## `r emoji('exclamation')` The CI for $\sigma^2$ **cannot** be expressed as $(S^2-m, S^2+m)$ anymore!
-:::
-
-
-<!-- - $\chi_U^2$ is the upper-tail value of chi-square for $df = n-1$ with area $\alpha/2$ to its right. -->
-
-<!-- - $\chi_L^2$ is the lower-tail value of chi-square for $df = n-1$ with area $\alpha/2$ to its left. -->
-
-## Example: Supermodel Heights
-
-
-Listed below are heights (cm) for the simple random sample of 16 female supermodels:
-```{r, echo=TRUE}
-heights <- c(178, 177, 176, 174, 175, 178, 175, 178, 
-             178, 177, 180, 176, 180, 178, 180, 176)
-```
-
-:::{layout-ncol=2}
-
-- The supermodels' height is normally distributed.
-- Construct a $95\%$ confidence interval for population standard deviation $\sigma$.
-- $n = 16$, $s^2 = 3.4$, $\alpha = 0.05$.
-- $\chi^2_{\alpha/2, n-1} = \chi^2_{0.025, 15} = 27.49$
-- $\chi^2_{1-\alpha/2, n-1} = \chi^2_{0.975, 15} = 6.26$
-
-```{r, echo=FALSE, out.width="35%", fig.align='center'}
-knitr::include_graphics("./images/img-infer/models.jpeg")
-```
-:::
-
-- The $95\%$ CI for $\sigma$ is $\small \left( \sqrt{\frac{(n-1)s^2}{\chi^2_{\frac{\alpha}{2}, \, n-1}}}, \sqrt{\frac{(n-1)s^2}{\chi^2_{1-\frac{\alpha}{2}, \, n-1}}} \right) = \left( \sqrt{\frac{(16-1)(3.4)}{27.49}}, \sqrt{\frac{(16-1)(3.4)}{6.26}}\right) = (1.36, 2.85)$
-
-## Example: Computation in R
-```{r, echo=TRUE}
-n <- 16
-s2 <- var(heights)
-alpha <- 0.05
-
-## two chi-square critical values
-chi2_right <- qchisq(alpha/2, n - 1, lower.tail = FALSE)
-chi2_left <- qchisq(alpha/2, n - 1, lower.tail = TRUE)
-
-## two bounds of CI for sigma2
-ci_sig2_lower <- (n - 1) * s2 / chi2_right
-ci_sig2_upper <- (n - 1) * s2 / chi2_left
-
-## two bounds of CI for sigma
-(ci_sig_lower <- sqrt(ci_sig2_lower))
-(ci_sig_upper <- sqrt(ci_sig2_upper))
-```
-
-## Example Cont'd: Testing
-Use $\alpha = 0.05$ to test the claim that "*supermodels have heights with a standard deviation that is less than $\sigma = 7.5$ cm for the population of women*". 
-
-- **Step 1**: $H_0: \sigma = \sigma_0$ vs. $H_1: \sigma < \sigma_0$. Here $\sigma_0 = 7.5$ cm
-- **Step 2**: $\alpha = 0.05$
-- **Step 3**: Under $H_0$, $\chi_{test}^2 = \frac{(n-1)s^2}{\sigma_0^2} = \frac{(16-1)(3.4)}{7.5^2} = 0.91$, a statistic drawn from $\chi^2_{n-1}$.
-
-:::{layout-ncol=2}
-- **Step 4-c**: This is a left-tailed test. The critical value is $\chi_{1-\alpha, df}^2 = \chi_{0.95, 15}^2 = 7.26$
-- **Step-5-c**: Reject $H_0$ in favor of $H_1$ if $\chi_{test}^2 < \chi_{1-\alpha, df}^2$. Since $0.91 < 7.26$, we reject $H_0$.
-- **Step 6**: There is sufficient evidence to support the claim that supermodels have heights with a SD that is less than the SD for the population of women.
-
-```{r, out.width="80%", echo=FALSE, fig.align='center'}
-par(mar = c(2, 0, 0, 0), mgp = c(1, 1, 0))
-
-chi_sq_lower_tail <- function(L, df, xlim = c(0, 10), 
-                               col = fadeColor("black", "22"),
-                               axes = TRUE, ...) {
-    x <- c(0, seq(xlim[1], xlim[2] + 3, length.out = 300))
-    y <- c(0, stats::dchisq(x[-1], df))
-    graphics::plot(x, y, type = "l", axes = FALSE, xlim = xlim, xlab = "")
-    graphics::abline(h = 0)
-    if (axes) {
-        axis(1)
-    }
-    these <- which(x <= L)
-    X <- x[c(these[1], these, rev(these)[1])]
-    Y <- c(0, y[these], 0)
-    graphics::polygon(X, Y, col = col)
-}
-
-
-chi_sq_lower_tail(L = 7.26, df = 15, xlim = c(0, 50), col = 4, axes = FALSE)
-# axis(1, at = c(2, 15), labels = c(expression(chi[1-frac(0.05, 2)]^2),
-#                                   expression(chi[frac(0.05, 2)]^2)), font = 3,
-#      cex.axis = 2, tick = FALSE)
-axis(1, at = c(-0.6, 0.907, 7.26), labels = c(0, expression(chi[test]^2), expression(chi[1-0.05]^2)), font = 3, 
-     cex.axis = 1, tick = TRUE)
-# text(0.907, 0.001, expression(chi[test]^2), cex = 1)
-text(5.5, 0.0025, expression(0.05), cex = 0.9)
-text(22, 0.05, expression(chi[15]^2), cex = 2)
-# text(0, 0, 0, cex = 1)
-# text(18, 0.02, expression(frac(0.05, 2)), cex = 2)
-```
-
-*Heights of supermodels vary less than heights of women in the general population.*
-:::
-
-## Back to Pooled t-Test
-- In a pooled t-test, we assume
-  + <span style="color:blue"> $n_1 \ge 30$ and $n_2 \ge 30$. If not, we assume that both samples are drawn from normal populations. </span>
-  + <span style="color:blue"> $\sigma_1 = \sigma_2$ </span>
-- Use QQ-plot (and normality tests, Anderson, Shapiro, etc) to check the assumption of normal distribution. 
-- We learn to check the assumption $\sigma_1 = \sigma_2$.
-
-## F Distribution
-
-<!-- - We use **$\chi^2$ distribution** for the inference about **one** population variance. -->
-
-We use ** $F$ distribution ** for the inference about **two** population variances.
-
-:::{layout-ncol=2}
-
-- Two parameters: $df_1$, $df_2$
-- *Right* skewed distribution
-- Defined over *positive* numbers
-- R Shiny app: [F Distribution](http://sctc.mscs.mu.edu:3838/sample-apps/Calculator/)
-
-
-```{r f_dist, echo = FALSE, out.width="110%", fig.align='center'}
-par(mgp = c(2.5, 1, 0))
-x <- seq(0, 3, length=1000)
-df1_vec <- c(3, 100)
-df2_vec <- c(5, 10, 100)
-# hx <- df(x, df1 = df1_vec[1], df2 = df2_vec[1])
-# plot(x, hx, type="l", lty=1, xlab="x", axes = FALSE, col = 1, lwd = 2, ylim = c(0, 2.2),
-#   ylab="Density", main= "F Distribution with different df_1 and df_2")
-# axis(1)
-# axis(2, las = 2)
-# f_mode <- ((df1_vec[1] - 2) / df1_vec[1]) * (df2_vec[1] / (df2_vec[1] + 2))
-# text(f_mode, max(df(x, df1 = df1_vec[1], df2 = df2_vec[1])), 
-#      paste("df1 =", df1_vec[1], "df2 =", df2_vec[1]), col = 1)
-legend_text <- paste("df1 = ", df1_vec[1], ", df2 = ", df2_vec[1], sep = "")
-col_idx <- c(1)
-k <- 2
-for (i in 1:length(df1_vec)) {
-    for (j in 1:length(df2_vec)) {
-        if (i == 1 && j == 1) {
-            hx <- df(x, df1 = df1_vec[1], df2 = df2_vec[1])
-            plot(x, hx, type="l", lty=1, xlab="x", axes = FALSE, col = 1, lwd = 3, ylim = c(0, 2.2),
-                    ylab="Density", main= "F Distribution with different df_1 and df_2")
-            axis(1)
-            axis(2, las = 2)
-            # legend_text <- c(legend_text, paste("df1 =", df1_vec[i], "df2 =", df2_vec[j]))
-        } else {
-            hx <- df(x, df1 = df1_vec[i], df2 = df2_vec[j])
-            lines(x, hx, col = k, lwd = 3)
-            legend_text <- c(legend_text, paste("df1 = ", df1_vec[i], ", df2 = ", df2_vec[j], sep = ""))
-            col_idx <- c(col_idx, k)
-        }
-        k <- k + 1
-        # f_mode <- ((df1_vec[i] - 2) / df1_vec[i]) * (df2_vec[j] / (df2_vec[j] + 2))
-        # text(f_mode, max(df(x, df1 = df1_vec[i], df2 = df2_vec[j])) + 0.1,
-        #      paste("df1 =", df1_vec[i], "df2 =", df2_vec[j]), col = k)
-    }
-    k <- k + 1
-}
-# print(k)
-legend("topright", legend_text, lwd = rep(3, 6), col = col_idx, bty = "n")
-```
-:::
-
-## Upper and Lower Tail of F Distribution
-- We denote $F_{\alpha, \, df_1, \, df_2}$ as the $F$ quantile so that $P(F_{df_1, df_2} > F_{\alpha, \, df_1, \, df_2}) = \alpha$.
-
-```{r, out.width="70%", echo=FALSE, fig.align='center'}
-par(mar = c(2, 0, 0, 0), mgp = c(2.1, 0.6, 0))
-f_upper_tail <- function(U, df1, df2, xlim = c(0, 10), col = fadeColor("black", "22"),
-                               axes = TRUE, ...) {
-    x <- c(0, seq(xlim[1], xlim[2] + 3, length.out = 300))
-    y <- c(0, stats::df(x[-1], df1, df2))
-    graphics::plot(x, y, type = "l", axes = FALSE, xlim = xlim)
-    graphics::abline(h = 0)
-    if (axes) {
-        axis(1)
-    }
-    these <- which(x >= U)
-    X <- x[c(these[1], these, rev(these)[1])]
-    Y <- c(0, y[these], 0)
-    graphics::polygon(X, Y, col = col)
-}
-f_lower_tail <- function (L, df1, df2, xlim = c(0, 10), 
-                               col = fadeColor("black", "22"),
-                               axes = TRUE, ...) {
-    x <- c(0, seq(xlim[1], xlim[2] + 3, length.out = 300))
-    y <- c(0, stats::df(x[-1], df1, df2))
-    graphics::plot(x, y, type = "l", axes = FALSE, xlim = xlim)
-    graphics::abline(h = 0)
-    if (axes) {
-        axis(1)
-    }
-    these <- which(x <= L)
-    X <- x[c(these[1], these, rev(these)[1])]
-    Y <- c(0, y[these], 0)
-    graphics::polygon(X, Y, col = col)
-}
-f_two_tail <- function (U, L, df1, df2, xlim = c(0, 10), 
-                             col = fadeColor("black", "22"), axes = TRUE, ...) {
-    x <- c(0, seq(xlim[1], xlim[2] + 3, length.out = 300))
-    y <- c(0, stats::df(x[-1], df1, df2))
-    graphics::plot(x, y, type = "l", axes = FALSE, xlim = xlim)
-    graphics::abline(h = 0)
-    if (axes) {
-        axis(1)
-    }
-    these_U <- which(x >= U)
-    X_U <- x[c(these_U[1], these_U, rev(these_U)[1])]
-    Y_U <- c(0, y[these_U], 0)
-    graphics::polygon(X_U, Y_U, col = col)
-    these_L <- which(x <= L)
-    X_L <- x[c(these_L[1], these_L, rev(these_L)[1])]
-    Y_L <- c(0, y[these_L], 0)
-    graphics::polygon(X_L, Y_L, col = col)
-}
-
-f_two_tail(U=2.5,L=0.3, df1=3, df2=100, xlim = c(0, 6), col = 4, axes = FALSE)
-axis(1, at = c(0.3, 2.5), labels = c(expression(F[1-frac(alpha, 2)]),
-                                     expression(F[frac(alpha, 2)])), 
-     font = 3, cex.axis = 1.5,
-     tick = FALSE)
-text(1, 0.2, expression(1-alpha), cex = 2)
-text(2.7, 0.05, expression(frac(alpha, 2)), cex = 1.5)
-text(0.15, 0.05, expression(frac(alpha, 2)), cex = 1.5)
-```
-
-## Sampling Distribution
-<!-- - If $U_1 \sim \chi^2_{n_1-1}$ and $U_2 \sim \chi^2_{n_2-1}$ and $U_1$ and $U_2$ are independent, the random variable $$X =  \frac{\frac{U_1}{n_1-1}}{\frac{U_2}{n_2-1}}$$ follows $F_{n_1-1, \, n_2-1}$ distribution. -->
- 
-- When random samples of sizes $n_1$ and $n_2$ have been *independently* drawn from two normally distributed populations, $N(\mu_1, \sigma_1^2)$ and $N(\mu_2, \sigma_2^2)$, the ratio $$\frac{s_1^2/s_2^2}{\sigma_1^2/\sigma_2^2} \sim F_{n_1-1, \, n_2-1}$$
-
-## $(1-\alpha)100\%$ Confidence Interval for $\sigma_1^2 / \sigma_2^2$
-:::{layout-ncol=2}
-$(1-\alpha)100\%$ confidence interval for $\sigma_1^2 / \sigma_2^2$ is 
-$$\color{blue}{\left( \frac{s_1^2/s_2^2}{F_{\alpha/2, \, n_1 - 1, \, n_2 - 1}}, \frac{s_1^2/s_2^2}{F_{1-\alpha/2, \, \, n_1 - 1, \, n_2 - 1}} \right)}$$ 
-
-
-```{r, out.width="100%", echo=FALSE, fig.align='center'}
-f_two_tail(U=2.5,L=0.3, df1=3, df2=100, xlim = c(0, 6), col = 4, axes = FALSE)
-axis(1, at = c(0.3, 2.5), labels = c(expression(F[1-frac(alpha, 2)]),
-                                     expression(F[frac(alpha, 2)])), 
-     font = 3, cex.axis = 1.5,
-     tick = FALSE)
-text(1, 0.2, expression(1-alpha), cex = 2)
-text(2.7, 0.05, expression(frac(alpha, 2)), cex = 1.5)
-text(0.15, 0.05, expression(frac(alpha, 2)), cex = 1.5)
-text(2, 0.4, expression(F[paste("n1-1", ",", "n2-1")]), cex = 1.5)
-```
-:::
-
-:::{.callout-note icon=false}
-## `r emoji('exclamation')` The CI for $\sigma_1^2 / \sigma_2^2$ **cannot** be expressed as $\left(\frac{s_1^2}{s_2^2}-m, \frac{s_1^2}{s_2^2} + m\right)$ anymore!
-:::
-
-## F test for comparing $\sigma_1^2$ and $\sigma_2^2$
-
-- **Step 1**: right-tailed <span style="color:blue"> $\small \begin{align} &H_0: \sigma_1 \le \sigma_2 \\ &H_1: \sigma_1 > \sigma_2 \end{align}$ </span>
-  and two-tailed <span style="color:green"> $\small \begin{align} &H_0: \sigma_1 = \sigma_2 \\ &H_1: \sigma_1 \ne \sigma_2 \end{align}$ </span>
-- **Step 2**: $\alpha = 0.05$
-- **Step 3**: Under $H_0$, $\sigma_1 = \sigma_2$, and the test statistic is $$\small F_{test} = \frac{s_1^2/s_2^2}{\sigma_1^2/\sigma_2^2} = \frac{s_1^2}{s_2^2} \sim F_{n_1-1, \, n_2-1}$$
-- **Step 4-c**: 
-  + Right-tailed: <span style="color:blue"> $F_{\alpha, \, n_1-1, \, n_2-1}$ </span>. 
-  + Two-tailed: <span style="color:green"> $F_{\alpha/2, \, n_1-1, \, n_2-1}$ or $F_{1-\alpha/2, \, n_1-1, \, n_2-1}$ </span>
-- **Step 5-c**: 
-  + Right-tailed: reject $H_0$ if <span style="color:blue"> $F_{test} \ge F_{\alpha, \, n_1-1, \, n_2-1}$</span>. 
-  + Two-tailed: reject $H_0$ if <span style="color:green"> $F_{test} \ge F_{\alpha/2, \, n_1-1, \, n_2-1}$ or $F_{test} \le F_{1-\alpha/2, \, n_1-1, \, n_2-1}$</span>
-
-## Back to the Weight Loss Example
-:::{layout-ncol=2}
-- A study was conducted to see the effectiveness of a weight loss program. 
-  - Two groups (Control and Experimental) of 10 subjects were selected.
-  - The two populations are normally distributed and have the same SD.
-
-```{r, out.width="70%", echo=FALSE, fig.align='center'}
-knitr::include_graphics("./images/img-infer/weight.jpeg")
-```
-:::
-
-- The data on weight loss was collected at the end of six months
-  + **Control**: $n_1 = 10$, $\overline{x}_1 = 2.1\, lb$, $s_1 = 0.5\, lb$
-  + **Experimental**: $n_2 = 10$, $\overline{x}_2 = 4.2\, lb$, $s_2 = 0.7\, lb$
-- Assumptions:
-  + <span style="color:blue"> $\sigma_1 = \sigma_2$ </span>
-  + The weight loss for both groups are normally distributed.
-
-## Back to the Weight Loss Example: Check if $\sigma_1 = \sigma_2$
-:::{layout-ncol=2}
-
-- $n_1 = 10$, $s_1 = 0.5 \, lb$
-- $n_2 = 10$, $s_2 = 0.7 \, lb$
-- **Step 1**: 
-  $\begin{align} &H_0: \sigma_1 = \sigma_2 \\ &H_1: \sigma_1 \ne \sigma_2 \end{align}$
-- **Step 2**: $\alpha = 0.05$
-- **Step 3**: The test statistic is $F_{test} = \frac{s_1^2}{s_2^2} = \frac{0.5^2}{0.7^2} = 0.51$.
-
-```{r, out.width="100%", echo=FALSE, fig.align='center'}
-f_two_tail(U=4.03,L=0.22, df1=9, df2=9, xlim = c(0, 6), col = 4, axes = FALSE)
-axis(1, at = c(0.22, 0.51, 4.03), 
-     labels = c(expression(F[.975]),
-                expression(F[test]),
-                expression(F[.025])), 
-     font = 3, cex.axis = 0.73, tick = TRUE)
-abline(v = 0.51, col = 2, lwd = 0.4)
-# text(0.51, 0.01, expression(1-alpha), cex = 2)
-
-
-text(2.5, 0.2, expression(F[paste(9, ",", 9)]), cex = 2)
-# text(2.7, 0.05, expression(frac(alpha, 2)), cex = 1.5)
-# text(0.15, 0.05, expression(frac(alpha, 2)), cex = 1.5)
-```
-:::
-
-- **Step 4-c**: This is a two-tailed test, the critical value is $F_{0.05/2, \, 10-1, \, 10-1} = 4.03$ or $F_{1-0.05/2, \, 10-1, \, 10-1} = 0.25$.
-- **Step 5-c**: Is $F_{test} > 4.03$ or $F_{test} < 0.25$? No. 
-- **Step 6**: The evidence is not sufficient to reject the claim that $\sigma_1 = \sigma_2$.
-
-## Back to the Weight Loss Example: 95% CI for $\sigma_1^2 / \sigma_2^2$
-:::{layout-ncol=2}
-
-- $\small F_{\alpha/2, \, df_1, \, df_2} = F_{0.05/2, \, 10-1, \, 10-1} = 4.03$ 
-- $\small F_{1-\alpha/2, \, df_1, \, df_2} = F_{1-0.05/2, \, 10-1, \, 10-1} = 0.25$
-- $\small \frac{s_1^2}{s_2^2} = \frac{0.5^2}{0.7^2} = 0.51$
-- The 95% CI for $\sigma_1^2 / \sigma_2^2$ is 
-$$\small \begin{align} &\left( \frac{s_1^2/s_2^2}{F_{\alpha/2, \, df_1, \, df_2}}, \frac{s_1^2/s_2^2}{F_{1-\alpha/2, \, df_1, \, df_2}} \right) \\ &= \left( \frac{0.51}{4.03}, \frac{0.51}{0.25} \right) = \left(0.127, 2.04\right)\end{align}$$
-
-
-```{r, out.width="100%", echo=FALSE, fig.align='center'}
-f_two_tail(U=4.03,L=0.22, df1=9, df2=9, xlim = c(0, 6), col = 4, axes = FALSE)
-axis(1, at = c(0.22, 4.03), 
-     labels = c(expression(F[.975]),
-                expression(F[.025])), 
-     font = 3, cex.axis = 0.73, tick = TRUE)
-# abline(v = 0.51, col = 2, lwd = 0.4)
-# text(0.51, 0.01, expression(1-alpha), cex = 2)
-
-
-text(2.5, 0.2, expression(F[paste(9, ",", 9)]), cex = 2)
-# text(2.7, 0.05, expression(frac(alpha, 2)), cex = 1.5)
-# text(0.15, 0.05, expression(frac(alpha, 2)), cex = 1.5)
-```
-:::
-
-- We are 95% confident that the ratio $\sigma_1^2 / \sigma_2^2$ is between 0.127 and 2.04.
-
-## Implementing F-test in R
-
-<!-- - **`qf(p = alpha, df1 = n1 - 1, df2 = n2 - 1, lower.tail = FALSE)`** to find $F_{\alpha, \, n_1-1, \, n_2-1}$. -->
-
-:::{layout-ncol=2}
-```{r f_test_two_sigma_ci, tidy=FALSE, echo=TRUE}
-n1 <- 10; n2 <- 10
-s1 <- 0.5; s2 <- 0.7
-alpha <- 0.05
-
-## 95% CI for sigma_1^2 / sigma_2^2
-f_small <- qf(p = alpha / 2, 
-              df1 = n1 - 1, df2 = n2 - 1, 
-              lower.tail = TRUE)
-f_big <- qf(p = alpha / 2, 
-            df1 = n1 - 1, df2 = n2 - 1, 
-            lower.tail = FALSE)
-
-## lower bound
-(s1 ^ 2 / s2 ^ 2) / f_big
-
-## upper bound
-(s1 ^ 2 / s2 ^ 2) / f_small
-```
-
-
-```{r f_test_two_sigma_test, tidy=FALSE, echo=TRUE}
-## Testing sigma_1 = sigma_2
-(test_stats <- s1 ^ 2 / s2 ^ 2)
-(cri_val_big <- qf(p = alpha/2, 
-                   df1 = n1 - 1, 
-                   df2 = n2 - 1, 
-                   lower.tail = FALSE))
-(cri_val_small <- qf(p = alpha/2, 
-                     df1 = n1 - 1, 
-                     df2 = n2 - 1, 
-                     lower.tail = TRUE))
-# var.test(x, y, alternative = "two.sided")
-```
-:::

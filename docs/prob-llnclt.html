@@ -317,12 +317,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./infer-goodnessfit.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Test of Goodness of Fit</span></a>
+  <a href="./infer-goodnessfit.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Inference about Categorical Data</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./infer-indep.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Test of Independence</span></a>
+  <a href="./infer-indep.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">infer-indep.html</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -387,11 +387,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
    
   <ul>
   <li><a href="#central-limit-theorem" id="toc-central-limit-theorem" class="nav-link active" data-scroll-target="#central-limit-theorem"><span class="toc-section-number">12.1</span>  Central Limit Theorem</a></li>
-  <li><a href="#why-use-normal-central-limit-theorem" id="toc-why-use-normal-central-limit-theorem" class="nav-link" data-scroll-target="#why-use-normal-central-limit-theorem"><span class="toc-section-number">12.2</span>  Why Use Normal? <span style="color: red"><strong>Central Limit Theorem</strong></span></a></li>
-  <li><a href="#clt-illustration-a-right-skewed-distribution" id="toc-clt-illustration-a-right-skewed-distribution" class="nav-link" data-scroll-target="#clt-illustration-a-right-skewed-distribution"><span class="toc-section-number">12.3</span>  CLT Illustration: A Right-Skewed Distribution</a></li>
-  <li><a href="#clt-illustration-a-u-shaped-distribution" id="toc-clt-illustration-a-u-shaped-distribution" class="nav-link" data-scroll-target="#clt-illustration-a-u-shaped-distribution"><span class="toc-section-number">12.4</span>  CLT Illustration: A U-shaped Distribution</a></li>
-  <li><a href="#why-clt-is-important" id="toc-why-clt-is-important" class="nav-link" data-scroll-target="#why-clt-is-important"><span class="toc-section-number">12.5</span>  Why CLT is Important?</a></li>
-  <li><a href="#clt-example" id="toc-clt-example" class="nav-link" data-scroll-target="#clt-example"><span class="toc-section-number">12.6</span>  CLT Example</a></li>
+  <li><a href="#central-limit-theorem-example" id="toc-central-limit-theorem-example" class="nav-link" data-scroll-target="#central-limit-theorem-example"><span class="toc-section-number">12.2</span>  Central Limit Theorem Example</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/prob-llnclt.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -422,69 +418,72 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="central-limit-theorem" class="level2" data-number="12.1">
 <h2 data-number="12.1" class="anchored" data-anchor-id="central-limit-theorem"><span class="header-section-number">12.1</span> Central Limit Theorem</h2>
 <ul>
-<li>We know if <span class="math inline">\(X_i \stackrel{iid}{\sim} N(\mu, \sigma^2)\)</span> , then <span class="math inline">\(\overline{X} \sim N\left(\mu, \frac{\sigma^2}{n} \right)\)</span>.</li>
-<li><span style="color:blue"> What if the population distribution is <strong>NOT</strong> normal? </span></li>
+<li>We know if <span class="math inline">\(X_i \stackrel{iid}{\sim} N(\mu, \sigma^2)\)</span> , then <span class="math inline">\(\overline{X} \sim N\left(\mu, \frac{\sigma^2}{n} \right)\)</span>.
+<ul>
+<li><span style="color:blue"> But what if the population distribution is <strong>NOT</strong> normal? </span></li>
+</ul></li>
 </ul>
 <center>
 The <strong>central limit theorem (CLT)</strong> gives us the answer!
 </center>
-</section>
-<section id="why-use-normal-central-limit-theorem" class="level2" data-number="12.2">
-<h2 data-number="12.2" class="anchored" data-anchor-id="why-use-normal-central-limit-theorem"><span class="header-section-number">12.2</span> Why Use Normal? <span style="color: red"><strong>Central Limit Theorem</strong></span></h2>
+<p><br></p>
 <ul>
-<li><strong>Central Limit Theorem (CLT)</strong>: Suppose <span class="math inline">\(\overline{X}\)</span> is from a random sample of size <span class="math inline">\(n\)</span> and from a population distribution having mean <span class="math inline">\(\mu\)</span> and standard deviation <span class="math inline">\(\sigma &lt; \infty\)</span>. As <span class="math inline">\(n\)</span> increases, the sampling distribution of <span class="math inline">\(\overline{X}\)</span> looks <strong>more and more like <span class="math inline">\(N(\mu, \sigma^2/n)\)</span>, regardless of the distribution from which we are sampling!</strong></li>
+<li><strong>Central Limit Theorem (CLT)</strong>:
+<ul>
+<li>Suppose <span class="math inline">\(\overline{X}\)</span> is from a random sample of size <span class="math inline">\(n\)</span> and from a population distribution having mean <span class="math inline">\(\mu\)</span> and standard deviation <span class="math inline">\(\sigma &lt; \infty\)</span>.</li>
+<li>As <span class="math inline">\(n\)</span> increases, the sampling distribution of <span class="math inline">\(\overline{X}\)</span> looks <strong>more and more like <span class="math inline">\(N(\mu, \sigma^2/n)\)</span> regardless of the distribution from which we are sampling!</strong></li>
+</ul></li>
 </ul>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
+<div id="fig-clt" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <p><img src="./images/img-prob/clt.png" class="img-fluid figure-img" style="width:85.0%"></p>
-<p></p><figcaption class="figure-caption">https://en.wikipedia.org/wiki/Central_limit_theorem#/media/File:IllustrationCentralTheorem.png</figcaption><p></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;12.1: Illustration of Central Limit Theorem (https://en.wikipedia.org/wiki/Central_limit_theorem#/media/File:IllustrationCentralTheorem.png)</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
-</section>
-<section id="clt-illustration-a-right-skewed-distribution" class="level2" data-number="12.3">
-<h2 data-number="12.3" class="anchored" data-anchor-id="clt-illustration-a-right-skewed-distribution"><span class="header-section-number">12.3</span> CLT Illustration: A Right-Skewed Distribution</h2>
-<div class="cell" data-layout-align="center" data-fig.asp="0.3" data-hash="prob-llnclt_cache/html/clt_right_skewed_772ca93d70761e280498c42c2f2aff13">
+<hr>
+<p><span style="color:blue"> <strong>Illustration of the Central Limit Theorem</strong> </span></p>
+<div class="cell" data-layout-align="center" data-fig.asp="0.3">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
+<div id="fig-clt-right" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
-<p><img src="prob-llnclt_files/figure-html/clt_right_skewed-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p><img src="prob-llnclt_files/figure-html/fig-clt-right-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;12.2: CLT Illustration: A Right-Skewed Distribution</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
-</section>
-<section id="clt-illustration-a-u-shaped-distribution" class="level2" data-number="12.4">
-<h2 data-number="12.4" class="anchored" data-anchor-id="clt-illustration-a-u-shaped-distribution"><span class="header-section-number">12.4</span> CLT Illustration: A U-shaped Distribution</h2>
-<div class="cell" data-fig.asp="0.3" data-hash="prob-llnclt_cache/html/clt_bowl_like_6fda6fc4a2c3a0bea649b00e90d54ca1">
+<div class="cell" data-fig.asp="0.3">
 <div class="cell-output-display">
-<p><img src="prob-llnclt_files/figure-html/clt_bowl_like-1.png" class="img-fluid" style="width:100.0%"></p>
+<div id="fig-clt-u" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="prob-llnclt_files/figure-html/fig-clt-u-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;12.3: CLT Illustration: A U-shaped Distribution</figcaption><p></p>
+</figure>
 </div>
 </div>
-</section>
-<section id="why-clt-is-important" class="level2" data-number="12.5">
-<h2 data-number="12.5" class="anchored" data-anchor-id="why-clt-is-important"><span class="header-section-number">12.5</span> Why CLT is Important?</h2>
-<!-- - Many statistics have distributions that are approximately normal for large sample sizes, even when we are sampling from a distribution that is not normal. -->
+</div>
+<hr>
+<p><span style="color:blue"> <strong>Why is the Central Limit Theorem Important?</strong> </span></p>
 <ul>
-<li>Many well-developed statistical methods are based on normal distribution assumption.</li>
-<li>With CLT, we can use those methods even if we are sampling from a non-normal distribution, or we have no idea of the population distribution, provided that the sample size is large.</li>
+<li>Many well-developed statistical methods are based on the normal distribution assumption.</li>
+<li>With the Central Limit Theorem, we can use these methods even if we are sampling from a non-normal distribution or if we have no idea what the population distribution is, provided that the sample size is large enough.</li>
 </ul>
 </section>
-<section id="clt-example" class="level2" data-number="12.6">
-<h2 data-number="12.6" class="anchored" data-anchor-id="clt-example"><span class="header-section-number">12.6</span> CLT Example</h2>
-<div class="quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<section id="central-limit-theorem-example" class="level2" data-number="12.2">
+<h2 data-number="12.2" class="anchored" data-anchor-id="central-limit-theorem-example"><span class="header-section-number">12.2</span> Central Limit Theorem Example</h2>
+<div class="columns">
+<div class="column" style="width:75%;">
 <ul>
-<li>Suppose that selling prices of houses in Milwaukee are known to have a mean of $382,000 and a standard deviation of $150,000.</li>
+<li>Suppose that the selling prices of houses in Milwaukee are known to have a mean of $382,000 and a standard deviation of $150,000.</li>
 <li>In 100 randomly selected sales, what is the probability the <em>average</em> selling price is more than $400,000?</li>
-<li>Since the sample size is fairly large <span class="math inline">\((n = 100)\)</span>, by CLT, the sampling distribution of the average selling price is approximately normal with mean 382,000 and SD <span class="math inline">\(150,000 / \sqrt{100}\)</span>.</li>
+<li>Since the sample size is fairly large <span class="math inline">\((n = 100)\)</span>, by the Central Limit Theorem, the sampling distribution of the average selling price is approximately normal with a mean of $382,000 and a SD of <span class="math inline">\(150,000 / \sqrt{100}\)</span>.</li>
 </ul>
-</div>
-<div class="cell quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+</div><div class="column" style="width:25%;">
+<div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">

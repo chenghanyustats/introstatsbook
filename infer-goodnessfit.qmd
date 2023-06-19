@@ -1,12 +1,244 @@
-# Test of Goodness of Fit  {#sec-infer-goodnessfit}
+# Inference about Categorical Data
 
-This chapter provides a broad overview of the R language that will get you programming right away. In it, you will build a pair of virtual dice that you can use to generate random numbers. Don't worry if you've never programmed before; the chapter will teach you everything you need to know.
+## Test of Goodness of Fit  {#sec-infer-goodnessfit}
 
-To simulate a pair of dice, you will have to distill each die into its essential features. You cannot place a physical object, like a die, into a computer (well, not without unscrewing some screws), but you can save *information* about the object in your computer's memory.
+```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
+library(openintro)
+library(knitr)
+library(emoji)
+library(kableExtra)
+set.seed(1234)
+```
 
-Which information should you save? In general, a die has six important pieces of information: when you roll a die, it can only result in one of six numbers: 1, 2, 3, 4, 5, and 6. You can capture the essential characteristics of a die by saving the numbers 1, 2, 3, 4, 5, and 6 as a group of values in your computer's memory.
+<span style="color:blue"> **Categorical Variable with More Than 2 Categories** </span>
 
-Let's work on saving these numbers first, and then consider a method for "rolling" our die.
+::::{.columns}
+:::{.column width="49%"}
+- A categorical variable has $k$ categories $A_1, \dots, A_k$.
 
-## The R User Interface
+| Subject     | $A_1$ | $A_2$ | $\cdots$ | $\cdots$ | $A_k$|  
+|:--------:|:--------:|:--------:|:--------:|:--------:|:--------:|
+| 1 | x |   |  |  |   |
+| 2 |   | x |  |  |   | 
+| 3 |   |  |   |  |  x |
+| $\vdots$  |  |   |  |  |   |
+| $n$ |   |   |  | x |  |
+:::
+
+:::{.column width="2%"}
+:::
+
+:::{.column width="49%"}
+- With the size $n$, for categories $A_1, \dots , A_k$, their observed count is $O_1, \dots, O_k$, and $\sum_{i=1}^kO_i = n$.
+
+- One-way count table:
+
+| $A_1$  | $A_2$ | $\cdots$ | $A_k$ | Total |
+|:-----:|:-----:|:-----:|:-----:|:-----:|
+| $O_1$ | $O_2$   |  $\cdots$ |  $O_k$  | $n$ | 
+:::
+::::
+
+<span style="color:red"> ***Example*** </span>
+
+::::{.columns}
+:::{.column width="50%"}
+- *Are the selected jurors racially representative of the population?*
+- If the jury is representative of the population, the proportions in the sample should reflect the proportions of the population of eligible jurors (i.e. registered voters).
+:::
+
+:::{.column width="50%"}
+```{r, echo=FALSE, out.width="95%", fig.align='center'}
+knitr::include_graphics("./images/img-infer/diversity.jpeg")
+```
+:::
+::::
+
+|  | White  | Black | Hispanic | Asian | Total |
+|:-----:|:-----:|:-----:|:-----:|:-----:|
+| Representation in juries | 205 | 26   |  25 |  19  | 275 | 
+| Registered voters | 0.72 | 0.07   |  0.12 |  0.09  | 1.00 | 
+
+|  | White  | Black | Hispanic | Asian | Total |
+|:-----:|:-----:|:-----:|:-----:|:-----:|
+| Representation in juries | 0.745 | 0.095   |  0.091 | 0.069  | 1.00 | 
+| Registered voters | 0.72 | 0.07   |  0.12 |  0.09  | 1.00 | 
+
+:::{.callout-note icon=false}
+## Are the proportions of juries *close enough* to the proportions of registered voters, so that we are confident saying that the jurors really were *randomly sampled* from the registered voters?
+:::
+
+-----------------------------------------------------------------------
+
+<span style="color:blue"> **Goodness-of-Fit Test** </span>
+
+- A **goodness-of-fit test** tests the hypothesis that the observed frequency distribution fits or conforms to some claim distribution.
+
+:::{.callout-note icon=false}
+## In the jury example, what is our observed frequency distribution, and what is our claim distribution?
+:::
+
+:::{.callout-note icon=false}
+## If the individuals are randomly selected to serve on a jury, about how many of the 275 people would we expect to be white? How about black?
+:::
+
+|  | White  | Black | Hispanic | Asian | Total |
+|:-----:|:-----:|:-----:|:-----:|:-----:|
+| Registered voters | 0.72 | 0.07   |  0.12 |  0.09  | 1.00 | 
+
+
+- About $72\%$ of the population is white, so we would expect about $72\%$ of the jurors to be white. 
+  + $0.72 \times 275 = 198$.
+- We expect about $7\%$ of the jurors to be black.
+  + This corresponds to about $0.07 \times 275 = 19.25$ black jurors.
+
+|  | White  | Black | Hispanic | Asian | Total |
+|:-----:|:-----:|:-----:|:-----:|:-----:|
+| **Observed** Count | 205 | 26   |  25 |  19  | 275 | 
+| **Expected** Count | **198** | **19.25**   |  **33** | **24.75** | 275 | 
+| Population Proportion $(H_0)$ | **0.72** | **0.07** |  **0.12** |  **0.09**  | 1.00 |  
+
+- The **observed** count and **expected** count will be similar if there was no bias in selecting the members of the jury.
+- We want to test whether the differences are strong enough to provide convincing evidence that the jurors were not selected from a random sample of all registered voters.
+
+<span style="color:red"> ***Example*** </span>
+
+- <span style="color:blue"> $\begin{align} &H_0: \text{No racial bias in who serves on a jury, and } \\ &H_1: \text{There is racial bias in juror selection} \end{align}$ </span>
+
+- <span style="color:blue"> $\begin{align} &H_0: \pi_1 = \pi_1^0,  \pi_2 = \pi_2^0, \dots, \pi_k = \pi_k^0\\ &H_1: \pi_i \ne \pi_i^0 \text{ for some } i \end{align}$ </span>
+
+- <span style="color:blue">  Under $H_0$, $\chi^2_{test} = \frac{(O_1 - E_1)^2}{E_1} + \frac{(O_2 - E_2)^2}{E_2} + \cdots + \frac{(O_k - E_k)^2}{E_k}$, $E_i = n\pi_i^0, i = 1, \dots, k$ </span>
+- Reject $H_0$ if <span style="color:blue"> $\chi^2_{test} > \chi^2_{\alpha, df}$, $df = k-1$ </span>
+- Require each $E_i \ge 5$, $i = 1, \dots, k$.
+
+|  | White  | Black | Hispanic | Asian | Total |
+|:-----:|:-----:|:-----:|:-----:|:-----:|
+| Observed Count | $O_1 = 205$ | $O_2 = 26$   |  $O_3 = 25$ |  $O_4 = 19$  | $n = 275$ | 
+| Expected Count | $E_1 = 198$ | $E_2 = 19.25$   |  $E_3 = 33$ |  $E_4 = 24.75$  | $n = 275$ |
+| Proportion under $H_0$ | $\pi_1^0 = 0.72$ | $\pi_2^0 = 0.07$ |  $\pi_3^0 = 0.12$ |  $\pi_4^0 = 0.09$  | $1.00$ | 
+
+- Under $H_0$, $\chi^2_{test} = \frac{(205 - 198)^2}{198} + \frac{(26 - 19.25)^2}{19.25} + \frac{(25 - 33)^2}{33} + \frac{(19 - 24.75)^2}{24.75} = 5.89$
+- $\chi^2_{0.05, 3} = 7.81$.
+- Because $5.89 < 7.81$, we fail to reject $H_0$ in favor of $H_1$. 
+- We do not have convincing evidence of racial bias in the juror selection process.
+
+<span style="color:red"> ***Goodness-of-Fit Test in R*** </span>
+
+- Below is an example of how to perform a Goodness-of-Fit test in R.
+```{r, echo=TRUE}
+obs <- c(205, 26, 25, 19)
+pi_0 <- c(0.72, 0.07, 0.12, 0.09)
+
+## Use chisq.test() function
+chisq.test(x = obs, p = pi_0)
+```
+
+
+## Test of Independence
+
+<span style="color:blue"> **Contingency Table and Expected Count**
+
+<span style="color:red"> ***Contingency Table*** </span>
+
+- We have TWO categorical variables, and we want to test **whether or not the two variables are independent**.
+
+- <span style="color:blue"> Does the opinion of the President's job performance depend on gender?  </span>
+
+::::{.columns}
+:::{.column width="49%"}
+- **Job performance**: approve, disapprove, no opinion
+- **Gender**: male, female
+
+|  | Approve  | Disapprove | No Opinion 
+|:-----:|:-----:|:-----:|:-----:|
+| **Male** | 18 | 22  |  10 |
+| **Female** | 23 | 20 | 12 |
+:::
+
+:::{.column width="2%"}
+:::
+
+:::{.column width="49%"}
+```{r, echo=FALSE, out.width="100%", fig.align='center'}
+knitr::include_graphics("./images/img-infer/approval_rate.png")
+```
+:::
+::::
+
+<span style="color:red"> ***Expected Count*** </span>
+
+- Compute the *expected* count of each cell in the two-way table under the condition that the *two variables __are independent__* of each other.
+
+
+|  | Approve  | Disapprove | No Opinion | Total | 
+|:-----:|:-----:|:-----:|:-----:|
+| **Male** | 18 (19.52) | 22 (20)  |  10 (10.48) | 50 |
+| **Female** | 23 (21.48) | 20 (22) | 12  (11.52)| 55 |
+| **Total** | 41 | 42 | 22 | 105 |
+
+- The expected count for the $i$-th row and $j$-th column, which is listed in parentheses in the table above, is:
+$$\text{Expected Count}_{\text{row i; col j}} = \frac{\text{(row i total}) \times (\text{col j total})}{\text{table total}}$$
+
+--------------------------------------------------------------------
+
+<span style="color:blue"> **Test of Independence Procedure** </span>
+
+- Requirements:
+  + Every $E_{ij} \ge 5$ in the contingency table. 
+- <span style="color:blue"> $\begin{align} &H_0: \text{Two variables are independent }\\ &H_1: \text{The two are dependent (associated) } \end{align}$</span>
+- $\chi^2_{test} = \sum_{i=1}^r\sum_{j=1}^c\frac{(O_{ij} - E_{ij})^2}{E_{ij}}$, where $r$ is the number of rows and $c$ is the number of columns in the table.
+- Reject $H_0$ if $\chi^2_{test} > \chi^2_{\alpha, \, df}$, $df = (r-1)(c-1)$.
+
+<span style="color:red"> ***Example*** </span>
+
+|  | Approve  | Disapprove | No Opinion | Total | 
+|:-----:|:-----:|:-----:|:-----:|
+| **Male** | 18 (19.52) | 22 (20)  |  10 (10.48) | 50 |
+| **Female** | 23 (21.48) | 20 (22) | 12  (11.52)| 55 |
+| **Total** | 41 | 42 | 22 | 105 |
+
+- <span style="color:blue"> $\begin{align} &H_0: \text{ Opinion does not depend on gender } \\ &H_1: \text{ Opinion and gender are dependent } \end{align}$</span>
+- $\small \chi^2_{test} = \frac{(18 - 19.52)^2}{19.52} + \frac{(22 - 20)^2}{20} + \frac{(10 - 10.48)^2}{10.48} + \frac{(23 - 21.48)^2}{21.48} + \frac{(20 - 22)^2}{22} + \frac{(12 - 11.52)^2}{11.52}= 0.65$
+- $\chi^2_{\alpha, df} =\chi^2_{0.05, (2-1)(3-1)} = 5.991$.
+- Since $\chi_{test}^2 < \chi^2_{\alpha, df}$, we do not reject $H_0$. 
+- We fail to conclude that the opinion of the President's job performance depends on gender.
+
+<span style="color:red"> ***Test of Independence in R*** </span>
+
+- Below is an example of how to perform the test of independence using R. 
+
+```{r independence_test, tidy=FALSE, echo=2:7}
+## (4) Test of Independence ## Job Performance Example
+(contingency_table <- matrix(c(18, 23, 22, 20, 10, 12), nrow = 2, ncol = 3))
+
+## Using chisq.test() function
+(indept_test <- chisq.test(contingency_table))
+
+qchisq(0.05, df = (2 - 1) * (3 - 1), lower.tail = FALSE)  ## critical value
+
+# indept_test$expected; indept_test$statistic; indept_test$p.value
+```
+
+## Exercises
+
+1. A researcher has developed a model for predicting eye color. After examining a random sample of parents, she predicts the eye color of the first child. The table below lists the eye colors of offspring. On the basis of her theory, she predicted that 87% of the offspring would have brown eyes, 8% would have blue eyes, and 5% would have green eyes. Use 0.05 significance level to test the claim that the actual frequencies correspond to her predicted distribution.
+                             
+
+|           |        |      |       |
+|-----------|--------|------|-------|
+| Eye Color | Brown  | Blue | Green |
+| Frequency | 127    | 21   | 5     |
+
+
+2. In a study of high school students at least 16 years of age, researchers obtained survey results summarized in the accompanying table. Use a 0.05 significance level to test the claim of independence between texting while driving and driving when drinking alcohol. Are these two risky behaviors independent of one another? 
+
+|                            | Drove after drinking alcohol? |
+|----------------------------|-------------------------------|----|
+|                            | Yes                           | No |
+| Texted while driving       |              720              |  3027 |
+| Did not text while driving |               145             |  4472  |
+
+
+ 
+
 

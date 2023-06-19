@@ -6,30 +6,46 @@ library(openintro)
 library(countdown)
 ```
 
-## Why Study Probability
-- We live in a world full of chances and uncertainty! (Sept 19, 2022)
-```{r, echo=FALSE, out.width="50%", fig.align='center'}
-knitr::include_graphics("./images/img-prob/chance_09_19_2022.png")
-```
+## Language of Uncertainty
 
-:::{layout-ncol=2}
+<span style="color:blue"> **Why Study Probability** </span>
 
-```{r, echo=FALSE, out.width="100%", fig.align='center'}
+- We live in a world full of chances and uncertainty, and probability is the language of uncertainty!
+- Probability is the language of statistical inference and prediction.
+- Below are a few real world examples of where probability plays a role.
+
+::::{.columns}
+:::{.column width="49%"}
+```{r, echo=FALSE, out.width="100%"}
 knitr::include_graphics("./images/img-prob/monopoly.png")
 ```
-
-```{r, echo=FALSE, out.width="100%", fig.align='center'}
-knitr::include_graphics("./images/img-prob/slot.jpeg")
-knitr::include_graphics("./images/img-prob/blackjack.jpeg")
-```
-
 :::
 
-## Why Probability Before Statistics?
-<!-- - Probability is the language of statistical inference and prediction.  -->
-- <span style="color:blue"> **Probability** </span>: We *know* the process generating the data and are interested in properties of observations.
-- <span style="color:blue"> **Statistics** </span>: We *observed* the data (sample) and are interested in determining what is the process generating the data (population).
+:::{.column width="2%"}
+:::
+
+:::{.column width="49%"}
+```{r, echo=FALSE, out.width="100%", fig.align='center'}
+knitr::include_graphics("./images/img-prob/slot.jpeg")
+```
+
+```{r, echo=FALSE, out.width="100%", fig.align='center'}
+knitr::include_graphics("./images/img-prob/blackjack.jpeg")
+```
+:::
+::::
+
+-----------------------------------------------------------------
+
+<span style="color:blue"> **Why Probability Before Statistics?** </span>
+
+- For **probability**, we *know* the process generating the data and are interested in properties of observations.
+- For **statistics**, we *observe* the data (sample) and are interested in determining what process is generating the data (population).
+- These principles are illustrated below in @fig-prob-stats.
+
 ```{r, echo=FALSE, out.width="67%",fig.align='center'}
+#| label: fig-prob-stats
+#| fig-cap: Relationship between probability and statistical inference
 # knitr::include_graphics("./images/img-prob/data_generating.png")
 # fig.cap="Figure 1.1 in All of Statistics (Wasserman 2003)"
 par(mar = c(0, 0, 0, 0))
@@ -46,9 +62,14 @@ text(x = 0, y = 0.8, labels = "Probability", cex = 1.5)
 text(x = 0, y = -0.8, labels = "Statistical Inference", cex = 1.5)
 ```
 
-## Interpretation of Probability: **Relative Frequency**
-- <span style="color:blue"> **Relative Frequency** </span>: The probability that some outcome of a process will be obtained is interpreted as the **relative frequency** with which that outcome would be obtained _if the process were repeated **a large number of times** independently under **similar conditions**._
+## Interpretation of Probability
 
+<span style="color:blue"> **Relative Frequency** </span>
+
+- The probability that some outcome of a process will be obtained is interpreted as the **relative frequency** with which that outcome would be obtained _if the process were repeated **a large number of times** independently under **similar conditions**._
+- Below is an example depicting the relative frequency of flipping a coin and getting heads or tails.
+
+<center>
 ```{r toss_coin, echo=FALSE, fig.align='center'}
 rel_freq_head <- rep(0, 2)
 times <- c(10, 1000)
@@ -62,74 +83,71 @@ for (i in 1:2) {
   rel_freq_head[i] <- rel_freq_table[1, 2]
 }
 ```
-- If we repeat tossing the coin 10 times, the probability of obtaining a head is `r rel_freq_head[1] * 100`%. 
-- If 1000 times, the probability is `r rel_freq_head[2] * 100`%.
+</center>
+
+- If we flip the coin 10 times, the probability of obtaining a head is `r rel_freq_head[1] * 100`%. 
+- If we flip it 1000 times, the probability is `r rel_freq_head[2] * 100`%.
 
 :::{.callout-note icon=false}
-
-## Any issue of relative frequency probability?
-
+## Do you see any issues with relative frequency probability?
 :::
 
-## Issues of **Relative Frequency**
+<span style="color:red"> ***Issues with Relative Frequency*** </span>
+
 - `r emoji('confused')` How large of a number is large enough? 
-
-- `r emoji('confused')` Meaning of "under similar conditions"
-
-- `r emoji('confused')` The relative frequency is reliable under identical conditions?
-
-
-- `r emoji('point_right')`  We only obtain an approximation instead of exact value.
-
-- `r emoji('joy')`  How do you compute the probability that Chicago Cubs wins the World Series next year? 
+- `r emoji('confused')` What is the meaning of "under similar conditions"?
+- `r emoji('confused')` Is the relative frequency reliable under identical conditions?
+- `r emoji('point_right')` We can only obtain an approximation instead of exact value for the probability.
+- `r emoji('joy')`  How do you compute the probability that Chicago Cubs win the World Series next year? 
 
 ```{r, echo=FALSE, out.width="50%", fig.align='center'}
 knitr::include_graphics("https://media.giphy.com/media/EKURBxKKkw0uY/giphy.gif")
 ```
 
-## Interpretation of Probability: **Classical Approach**
-- <span style="color:blue"> **Classical** probability </span>: The probability is based on the concept of **equally likely** outcomes. 
+------------------------------------------------------------------------
+
+<span style="color:blue"> **Classical Approach** </span>
+
+- For the **classical approach**, the probability is based on the concept of **equally likely** outcomes. 
 - If the outcome of some process must be one of $n$ different outcomes, the probability of each outcome is $1/n$. 
-
-
 - Example: 
-  + toss a fair coin (2 outcomes) p*
-  + roll a well-balanced die (6 outcomes)  `r emoji('game_die')` 
-  + draw one from a deck of cards (52 outcomes) `r emoji('black_joker')` 
+  + If you toss a fair coin (2 outcomes) 🪙, the probability of each is 1/2.
+  + If you roll a well-balanced die (6 outcomes)  `r emoji('game_die')`, the probability of each is 1/6.
+  + If you draw one from a deck of cards (52 outcomes) `r emoji('black_joker')`, the probability of each is 1/52. 
 
 :::{.callout-note icon=false}
-
-## Any issue of classical probability?
-
+## Do you see any issues with classical probability?
 :::
 
-- _The probability that *[you name it]* wins the World Series next year is **1/30**_?!
+- It wouldn't make sense to say that _the probability that *[you name it]* wins the World Series next year is **1/30**_.
+  - Even thought there are 30 teams in the MLB, each team is not equally likely to win the World Series.
 
-```{r, echo=FALSE, out.width="15%", fig.align='center'}
-knitr::include_graphics("./images/img-prob/nick_young.png")
-```
+-----------------------------------------------------------------
 
-## Interpretation of Probability: **Subjective Approach**
-- <span style="color:blue"> **Subjective** probability </span>: The probability is assigned or estimated using people's **knowledge, beliefs and information** about the data generating process.
+<span style="color:blue">  **Subjective Approach** </span>
 
-- A person's *subjective* probability of an outcome, rather than the *true* probability of that outcome.
+- For the **subjective approach**, the probability is assigned or estimated using people's **knowledge, beliefs and information** about the data generating process.
+- In this case, it is a person's *subjective* probability of an outcome, rather than the *true* probability of that outcome.
+- For example, I think *"the probability that the Milwaukee Brewers win the World Series this year is 30%"*.
+  - My probability that the Milwaukee Brewers win the World Series this year is likely *different* from an ESPN analyst's probability. 
 
-
-- I think *"the probability that Milwaukee Brewers wins the World Series this year is 30%"*.
-
-- My probability that Milwaukee Brewers wins the World Series next year is *different* from an ESPN MLB analyst's probability. 
-
-:::{layout-ncol=2}
-
+::::{.columns}
+:::{.column width="50%"}
 ```{r, echo=FALSE, out.width="75%", fig.align='center'}
 knitr::include_graphics("./images/img-prob/espn.jpeg")
 ```
+:::
 
-
+:::{.column width="50%"}
 ```{r echo=FALSE, out.width="100%", fig.align='center'}
 knitr::include_graphics("https://upload.wikimedia.org/wikipedia/en/2/2e/ESPN_Major_League_Baseball_TV_logo.jpg")
 ```
+:::
+::::
 
+<br>
+
+:::{.callout-note}
+**Probability operations and rules do NOT depend on the interpretation of probability!**
 :::
 
-**Any probability operations and rules do NOT depend on interpretation of probability!**

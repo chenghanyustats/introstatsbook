@@ -1,267 +1,559 @@
 # Tool foR Data {#sec-intro-r}
 
-This chapter provides a broad overview of the R language that will get you programming right away. In it, you will build a pair of virtual dice that you can use to generate random numbers. Don't worry if you've never programmed before; the chapter will teach you everything you need to know.
+This chapter provides a broad overview of the R language that will get you programming right away. 
 
-To simulate a pair of dice, you will have to distill each die into its essential features. You cannot place a physical object, like a die, into a computer (well, not without unscrewing some screws), but you can save *information* about the object in your computer's memory.
-
-Which information should you save? In general, a die has six important pieces of information: when you roll a die, it can only result in one of six numbers: 1, 2, 3, 4, 5, and 6. You can capture the essential characteristics of a die by saving the numbers 1, 2, 3, 4, 5, and 6 as a group of values in your computer's memory.
-
-Let's work on saving these numbers first, and then consider a method for "rolling" our die.
-
-```{r,echo=FALSE}
+```{r,echo=FALSE, warning=FALSE}
 library(emoji)
-```
-
-## R and RStudio
-
-:::{layout-ncol=2}
-```{r echo=FALSE, out.width="45%",fig.align="center"}
 library(knitr)
-knitr::include_graphics("./images/img-intro/Rlogo.png")
 ```
 
-```{r echo=FALSE, out.width="100%",fig.align="center"}
-knitr::include_graphics("./images/img-intro/RStudio_logo.png")
+## Let's get equipped with our tools!
+
+<span style="color:blue"> **Integrated Development Environment** </span>
+
+:::: {.columns}
+::: {.column width="33%"}
+```{r, echo=FALSE}
+#| out-width: "60%"
+#| fig-align: "center"
+knitr::include_graphics("./images/img-intro/posit.png")
 ```
 :::
-- [R](https://www.r-project.org/): *free open-source* **programming language** `r emoji('chart_with_upwards_trend')`
-- R is mainly for doing *data science* with strength in *statistical modeling, computing and data visualization*
 
-<!-- - It's extensible with **packages** that include reusable R functions and data sets. -->
+::: {.column width="34%"}
 
-- [RStudio](https://rstudio.com/) <sup>1</sup>: interface for R, Python, etc called an **IDE** (integrated development environment), e.g. *"I write R code in the RStudio IDE"*.
-- RStudio is not a requirement for programming with R, but it's commonly used by R developers, statisticians and data scientists.
+<br>
 
+```{r, echo=FALSE}
+#| out-width: "100%"
+#| fig-align: "center"
+knitr::include_graphics("images/img-intro/rstudio-logo.png")
+```
+:::
 
-[1] RStudio company is becoming [Posit](https://posit.co/) starting October 2022.
+::: {.column width="33%"}
+```{r, echo=FALSE}
+#| out-width: "50%"
+#| fig-align: "center"
+knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/3/38/Jupyter_logo.svg")
+```
+:::
+::::
 
-## The R User Interface
+- R and Python are programming languages.
+- [Posit Cloud](https://posit.cloud/) offers two integrated development environments (IDE). 
+  + [RStudio](https://posit.co/products/open-source/rstudio/)
+  + [JupyterLab/Jupyter Notebook](https://jupyter.org/)
+- These IDEs are software for efficiently writing computer programs.
 
-- RStudio IDE includes
-  + a viewable environment, a file browser, data viewer, and a plotting pane. `r emoji('+1')`
-  + also features integrated help, syntax highlighting, context-aware tab completion and more! `r emoji('smile')`
+<span style="color:blue"> **R and Posit** </span>
 
-:::{layout-ncol=2}
-**R**
+::::{.columns}
+:::{.column width="50%"}
 
-**R Studio**
-
-```{r echo=FALSE, out.width="80%",fig.align="center"}
-knitr::include_graphics("./images/img-intro/r_windows.jpg")
+```{r echo=FALSE, out.width="45%",fig.align="center"}
+knitr::include_graphics("./images/img-intro/r-logo.png")
 ```
 
+- [R](https://www.r-project.org/): *free open-source* **programming language** `r emoji('chart_with_upwards_trend')`
+- R is mainly for doing *data science* with strength in *statistical modeling, computing and data visualization*
+:::
+
+:::{.column width="50%"}
+```{r echo=FALSE, out.width="35%",fig.align="center"}
+knitr::include_graphics("./images/img-intro/posit.png")
+```
+- [Posit](https://posit.co/): interface for R, Python, etc. called an **IDE** (integrated development environment), e.g. *"I write R code in the RStudio IDE"*.
+- Posit is not a requirement for programming with R, but it's commonly used by R developers, statisticians and data scientists.
+:::
+::::
+
+--------------------------------------------------------------------
+
+<span style="color:blue"> **The R User Interface** </span>
+
+- RStudio IDE includes
+  + a viewable environment, a file browser, data viewer and a plotting pane. `r emoji('+1')`
+  + also features integrated help, syntax highlighting, context-aware tab completion and more! `r emoji('smile')`
+
+::::{.columns}
+:::{.column width="40%"}
+
+<center>
+**R**
+</center>
+
+```{r echo=FALSE, out.width="80%",fig.align="center"}
+#| label: fig-R-console
+#| fig-cap: R Console
+knitr::include_graphics("./images/img-intro/r_windows.jpg")
+```
+:::
+
+:::{.column width="60%"}
+
+<center>
+**RStudio**
+</center>
+
 ```{r echo=FALSE, out.width="100%",fig.align="center"}
+#| label: fig-R-studio-console
+#| fig-cap: RStudio Console
 knitr::include_graphics("./images/img-intro/rstudio_ubuntu.png")
 ```
 :::
+::::
 
-## `r emoji('cloud')` RStudio Cloud - Statistics w/o hardware hassles
+---------------------------------------------------------------------
 
-- `r emoji('sunglasses')` We can implement R programs *without* installing R and RStudio in your laptop! 
-- `r emoji('sunglasses')` [**RStudio Cloud**](https://rstudio.cloud/) lets you do, share and learn data science **online for free**! 
+<span style="color:blue"> `r emoji('cloud')` **Posit Cloud - Statistics w/o hardware hassles** </span>
 
-:::{layout-ncol=2}
+- `r emoji('sunglasses')` You can implement R/Python programs *without* installing R/Python and the IDE on your laptop! 
+- `r emoji('sunglasses')` [**Posit Cloud**](https://rstudio.cloud/) lets you do, share and learn data science **online for free**! 
 
-### `r emoji('disappointed')` R/RStudio: Lots of friction 
-- Download and install R
-- Download and install RStudio
-- Install wanted R packages:
-  - rmarkdown
+::::{.columns}
+:::{.column width="50%"}
+`r emoji('disappointed')` **Getting everything ready locally: Lots of friction**
+
+- Download and install R/Python
+- Download and install IDE
+- Install wanted R/Python packages:
+  - tidymodels
   - tidyverse 
+  - NumPy
   - ...
 - Load these packages
 - Download and install tools like Git
+:::
 
-### `r emoji('nerd_face')` RStudio Cloud: Much less friction 
-```{r echo=FALSE, out.width="100%",fig.align="center"}
+:::{.column width="50%"}
+`r emoji('nerd_face')` **Posit Cloud: Much less friction** 
+
+```{r echo=FALSE, out.width="40%",fig.align="center"}
 knitr::include_graphics("./images/img-intro/cloud.png")
 ```
-<float-right>
-
-- Go to https://rstudio.cloud/
+- Go to https://posit.cloud/
 - Log in
-
-</float-right>
 
 ```{r hello-r, eval=FALSE}
 >hello R!
 ```
-
 :::
+::::
 
-<!-- <br> -->
+-----------------------------------------------------------------------
 
+<span style="color:blue"> **Install Posit Cloud** </span>
 
-```{r echo=FALSE, out.width="90%",fig.align="center"}
-knitr::include_graphics("./images/img-intro/rstudio-ide.png")
-```
-
-
-
-- `r emoji('smiley')` We do statistical analysis using RStudio IDE, **directly from a web browser**!
-
-
-```{r echo=FALSE, out.width="83%",fig.align="center"}
-knitr::include_graphics("./images/img-intro/rstudio-cloud.png")
-```
-
-## Install RStudio Cloud
 :::{.callout-note icon=false}
-
-## Lab time!
-
-- *Step 1*: In the RStudio website https://rstudio.com/, please choose **Products > RStudio Cloud** as shown below.
-
+## Lab Time!
+- ***Step 1***: In the Posit website [https://posit.co/](https://posit.co/), choose **Products > Posit Cloud** as shown below.
 :::
 
-```{r echo=FALSE, out.width="80%", fig.align="center"}
-knitr::include_graphics("./images/img-intro/rstudio_cloud.png")
+```{r, echo=FALSE}
+#| label: fig-posit-web
+#| fig-cap: Posit website
+#| out-width: "100%"
+#| fig-align: "center"
+knitr::include_graphics("./images/img-intro/posit-cloud.png")
 ```
 
 :::{.callout-note icon=false}
-
-## Lab time!
-
-- *Step 2*: Click **GET STARTED FOR FREE**. 
-- *Step 3*: **Free > Sign Up**. Sign up using your Marquette email address or the one you prefer.
-
+## Lab Time!
+- ***Step 2***: Click **GET STARTED**. 
+- ***Step 3***: **Free^[You are encouraged to choose Plus version for more hours usage per month.] > Sign Up**. Please sign up with *GitHub* if you have one or use your *Marquette email address*.
 :::
-```{r echo=FALSE, out.width="60%", fig.align="center"}
-knitr::include_graphics("./slides/w2-01-rstudio/img/landing-1.png")
+
+:::: {.columns}
+::: {.column width="50%"}
+```{r, echo=FALSE}
+#| out-width: "80%"
+#| fig-align: "center"
+knitr::include_graphics("./images/img-intro/landing-1-posit.png")
+```
+:::
+
+::: {.column width="50%"}
+```{r, echo=FALSE}
+#| out-width: "100%"
+#| fig-align: "center"
+knitr::include_graphics("./images/img-intro/posit-free-plan.png")
+```
+:::
+::::
+
+--------------------------------------------------------------------------
+
+<span style="color:blue"> **New Projects** </span>
+
+:::: {.columns}
+::: {.column width="85%"}
+```{r, echo=FALSE}
+#| out-width: "100%"
+#| fig-align: "center"
+knitr::include_graphics("./images/img-intro/new-project-cloud-posit.png")
+```
+:::
+
+::: {.column width="15%"}
+
+```{r, echo=FALSE}
+#| out-width: "100%"
+#| fig-align: "center"
+knitr::include_graphics("./images/img-intro/new-project-option.png")
+```
+:::
+::::
+
+- To create a new project, click **New Project** in the top right corner as shown above.
+
+-------------------------------------------------------------------
+
+<span style="color:blue"> **Workspaces** </span>
+
+- When you create an account on Posit Cloud, you get a **workspace** of your own.
+- You can add a new workspace (click **+ New Space** in sidebar) and control its permissions.
+
+```{r, echo=FALSE}
+#| out-width: "100%"
+#| fig-align: "center"
+knitr::include_graphics("./images/img-intro/posit-cloud-hide-sidebar.png")
 ```
 
+--------------------------------------------------------------------
 
-## New Projects
+<span style="color:blue"> **First R Code in Posit Cloud!** </span>
 
-In RStudio Cloud, click **New Project > New RStudio Project**, then you are all set!
-
-
-```{r echo=FALSE, out.width="80%", fig.align="center"}
-knitr::include_graphics("./images/img-intro/new-project-cloud.png")
-```
-
-## First R Code in RStudio Cloud!
-- Give your project a nice name (click Untitled Project), **math-4720** for example.
-- First R code: `"Hello WoRld!"` or `2 + 4` after `>` in the **Console** pane.
+:::{.callout-note icon=false}
+## Lab Time!
+- In the bar, click the desired workspace.
+- Click **New Project > New RStudio Project** to get into the IDE.
+- Click Untitled Project and give your project a nice name, **math-4720** for example.
+- In the Console pane, write your first R code: a string **`"Hello WoRld!"`** or math **`2 + 4`**.
 - Change the editor theme: **Tools > Global Options > Appearance**
+:::
 
 ```{r echo=FALSE, out.width="80%", fig.align="center"}
+#| label: fig-theme
+#| fig-cap: How to change the editor theme
 knitr::include_graphics("./images/img-intro/rcloud_project.png")
 ```
 
-## Working in RStudio/RStudio Cloud
+--------------------------------------------------------------------------
 
-### RStudio Panes
+<span style="color:blue"> **More Tips** </span>
 
-```{r rstudio-panes, echo=FALSE, fig.cap="RStudio 4 Panes", out.width="85%",fig.align='center'}
+- For more help, read the [Posit Cloud guide](https://posit.cloud/learn/guide).
+
+```{r echo=FALSE, out.width="80%", fig.align="center"}
+#| label: fig-guide
+#| fig-cap: "Posit Cloud Guide"
+#| out-width: "70%"
+#| fig-align: "center"
+knitr::include_graphics("./images/img-intro/posit-cloud-guide.png")
+```
+
+## Working in Posit Cloud
+
+<span style="color:blue"> **Panes** </span>
+
+```{r rstudio-panes, echo=FALSE, out.width="85%",fig.align='center'}
+#| label: fig-panes
+#| fig-cap: RStudio Panes
 knitr::include_graphics("./images/img-intro/rstudio_panes.png")
 ```
 
-### R Script
-- A R script is a **.R** file that contains R code.
-<!-- - You type code into the Console if the code is short or you want to do some quick calculations or analysis. -->
-<!-- - Try to write your code in R scripts in the source pane, so the code can be saved and reused.  -->
-- To create a R script, go to **File > New > R Script**, or click the green-plus icon on the topleft corner, and select R Script.
+-----------------------------------------------------------------------
+
+<span style="color:blue"> **Source Pane** </span>
+
+<span style="color:red"> ***R Script*** </span>
+
+- An R script is a **.R** file that contains R code.
+- To create an R script, go to **File > New > R Script**, or click the green-plus icon on the top left corner and select R Script.
 
 ```{r run1, echo=FALSE, out.width="100%",fig.align='center'}
+#| label: fig-R-script
+#| fig-cap: Creating an R script
 knitr::include_graphics("./images/img-intro/script.png")
 ```
 
-### Run Code
+<span style="color:red"> ***Python Script*** </span>
+
+- A Python script is a **.py** file that contains Python code.
+- To create a Python script, go to **File > New > Python Script**, or click the green-plus icon on the topleft corner and select Python Script.
+
+```{r, echo=FALSE}
+#| out-width: "85%"
+#| fig-align: "center"
+#| label: fig-script-py
+#| fig-cap: Creating a Python script
+knitr::include_graphics("./images/img-intro/script-py.png")
+```
+
+<span style="color:red"> ***Run Code*** </span>
+
 - <span style="color:blue"> **Run** </span>: run the **current line** or **selection of code**. 
-- <span style="color:blue"> **Icon right to the Run** </span>: re-run the **previous** selected code. 
+  + `ctrl + enter` (Win) or `cmd + enter` (Mac)
+- <span style="color:blue"> **Icon to the right of Run** </span>: re-run the **previous** code. 
+  + `alt + ctrl + p` (Win) or `option + cmd + p` (Mac)
+- <span style="color:blue"> **Source** </span>: run **all** the code in the R script.
+  + `shift + ctrl + s` (Win) or `shift + cmd + s` (Mac)
+- <span style="color:blue"> **Source with Echo** </span>: run **all** the code in the R script *with the code printed in the console*.
+  + `shift + ctrl + enter` (Win) or `shift + cmd + enter` (Mac)
 
-<!-- - <span style="color:blue"> **Source with Echo** </span>: run **all** the code in the R script *and show output* -->
-<!--   + `option+ ctrl + enter` (Windows) or `shift + cmd + enter` (Mac) -->
-```{r run2, echo=FALSE, out.width="100%",fig.align='center'}
+```{r run2, echo=FALSE, out.width="80%",fig.align='center'}
+#| label: fig-running-code
+#| fig-cap: Running R Code
 knitr::include_graphics("./images/img-intro/script.png")
 ```
-<!-- ![](./img/script.png){height=400px width=500px} -->
+
+<span style="color:red"> ***Run Python Code*** </span>
+
+- Running Python code may require you to update some packages. Please say *YES!*
+- When you run the Python code in the R console, the console will switch from R to Python.
+- Type `quit` in the Python console to switch back to the R console.
 
 
-### Environment Tab
-- The (global) environment is our workspace (*NOT* the RStudio Cloud workspace).
-- Anything created or imported into the current R session is stored in our environment and shown in the **Environment** tab.
-- After we run the R script, objects stored in the environment are
+```{r, echo=FALSE}
+#| label: "run-py"
+#| out-width: "40%"
+#| fig-align: "center"
+knitr::include_graphics("./images/img-intro/run-py-pkg.png")
+```
+
+--------------------------------------------------------------------
+
+<span style="color:blue"> **Environment Tab** </span>
+
+- The (global) environment is where we are currently working.
+- Anything created or imported into the current R/Python session is stored in our environment and shown in the **Environment** tab.
+- After we run the R script from @fig-R-script, the following objects are stored in the environment:
   + Data set `mtcars`
   + Object `x` storing integer values 1 to 10.
   + Object `y` storing three numeric values 3, 5, 9.
 
 ```{r env, echo=FALSE, out.width="96%",fig.align='center'}
+#| label: fig-environment
+#| fig-cap: Environment Pane
 knitr::include_graphics("./images/img-intro/environment.png")
 ```
-<!-- ![](./images/img-intro/environment.png){height=450px width=900px} -->
 
-### Help
-- Don't know how a function works or what a data set is about `r emoji('question')` 
-- `r emoji('point_right')` Simply type `?` followed by the data name or function name like
+- After we run the Python script from @fig-script-py, the following object is stored in the environment:
+  + Object `b` storing a string `Hello World!`
+
+```{r, echo=FALSE}
+#| label: "env-py"
+#| out-width: "80%"
+#| fig-align: "center"
+knitr::include_graphics("./images/img-intro/environment-py.png")
+```
+
+-------------------------------------------------------------------
+
+<span style="color:blue"> **History Tab** </span>
+
+- The **History** tab keeps a record of all previous commands.
+  + <span style="color:blue">**Save icon**</span>: save all history to a file
+  + <span style="color:blue">**To Console**</span>: send the selected commands to the console.
+  + <span style="color:blue">**To Source** </span>: inserted the selected commands into the current script.
+
+```{r history, echo=FALSE, out.width="100%",fig.align='center'}
+#| label: "history"
+knitr::include_graphics("./images/img-intro/history.png")
+```
+
+
+:::{.callout-tip}
+In the console pane, use `r emoji('arrow_up')` to show the previous commands.
+:::
+
+------------------------------------------------------------------
+
+<span style="color:blue"> **R Packages `r emoji('package')`** </span>
+
+- When we start an R session, only built-in packages like **base**, **stats**, **graphics**, etc. are available.
+- Installing packages is an easy way to get access to other data and functions.
+
+<center>
+![](https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/readr.png){width="150"}![](https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/readxl.png){width="150"}![](https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/haven.png){width="150"}![](https://raw.githubusercontent.com/rstudio/hex-stickers/main/PNG/tidyverse.png){width="150"}![](https://raw.githubusercontent.com/rstudio/hex-stickers/master/thumbs/tidyr.png){width="150"}![](https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/dplyr.png){width="150"}![](https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/sparklyr.png){width="150"}![](https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/ggplot2.png){width="150"}![](https://raw.githubusercontent.com/slowkow/ggrepel/master/man/figures/logo.svg){width="150"}![](https://raw.githubusercontent.com/thomasp85/gganimate/master/man/figures/logo.png){width="150"}![](https://raw.githubusercontent.com/sjmgarnier/viridis/master/hex_logo/viridis.svg){width="150"}![](https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/tibble.png){width="150"}![](https://raw.githubusercontent.com/rstudio/hex-stickers/main/PNG/gt.png){width="150"}![](https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/purrr.png){width="150"}![](https://raw.githubusercontent.com/rstudio/hex-stickers/master/thumbs/lubridate.png){width="150"}![](https://raw.githubusercontent.com/rstudio/hex-stickers/master/thumbs/stringr.png){width="150"}![](https://raw.githubusercontent.com/rstudio/hex-stickers/master/thumbs/rvest.png){width="150"}![](https://raw.githubusercontent.com/rstudio/hex-stickers/master/thumbs/rmarkdown.png){width="150"}![](https://raw.githubusercontent.com/rstudio/hex-stickers/master/thumbs/knitr.png){width="150"}![](https://raw.githubusercontent.com/rstudio/hex-stickers/main/PNG/quarto.png){width="150"}![](https://raw.githubusercontent.com/rstudio/hex-stickers/master/thumbs/shiny.png){width="150"}![](https://raw.githubusercontent.com/rstudio/hex-stickers/main/PNG/devtools.png){width="150"}![](https://raw.githubusercontent.com/rstudio/hex-stickers/main/PNG/flexdashboard.png){width="150"}![](https://raw.githubusercontent.com/rstudio/hex-stickers/master/thumbs/reticulate.png){width="150"}![](https://raw.githubusercontent.com/rstudio/hex-stickers/master/thumbs/broom.png){width="150"}![](https://raw.githubusercontent.com/rstudio/hex-stickers/master/thumbs/tidymodels.png){width="150"}![](https://raw.githubusercontent.com/rstudio/hex-stickers/master/thumbs/tidyposterior.png){width="150"}![](https://raw.githubusercontent.com/rstudio/hex-stickers/master/thumbs/tidypredict.png){width="150"}[](https://github.com/rstudio/hex-stickers)!
+</center>
+
+<br>
+
+<span style="color:red"> ***Installing R Packages*** </span>
+
+:::: {.columns}
+::: {.column width="50%"}
+- To install a package, such as the [**ggplot2**](https://ggplot2.tidyverse.org/) package, we use the command
+
+```{r package, echo=5, eval=FALSE}
+# install.packages("car", repos = "http://cran.us.r-project.org")
+r = getOption("repos")
+r["CRAN"] = "http://cran.us.r-project.org"
+options(repos = r)
+install.packages("ggplot2")
+# install.packages("car")
+```
+
+- A different option in the right-bottom pane is **Packages > Install**.
+
+```{r, echo=FALSE, out.width="100%", fig.align='center'}
+knitr::include_graphics("./images/img-intro/pkg_install.png")
+```
+:::
+
+::: {.column width="50%"}
+
+<br>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/ggplot2.png" style="width:240px;" />
+</p>
+
+:::
+::::
+
+<span style="color:red"> ***Loading R Packages `r emoji('package')`*** </span>
+
+:::: {.columns}
+::: {.column width="49%"}
+- To use any function or data in **ggplot2**, we write `ggplot2::` followed by the name of the function or data.
+
+```{r}
+#| echo: true
+#| eval: false
+ggplot2::ggplot(ggplot2::mpg, 
+                ggplot2::aes(
+                    x = displ, 
+                    y = hwy, 
+                    colour = class)
+                ) + 
+    ggplot2::geom_point()
+```
+
+
+:::{.callout-note icon=false}
+## Question
+What happens when you run the code shown below?
+```{r}
+#| echo: true
+#| eval: false
+ggplot(mpg, aes(x = displ, 
+                y = hwy, 
+                colour = class)) + 
+    geom_point()
+```
+:::
+:::
+
+:::{.column width="2%"}
+:::
+
+:::{.column width="49%"}
+- We can load the package into our R session using `library()`. 
+- **With library(ggplot2)**, R knows the function and data are from the **ggplot2** package.
+```{r}
+#| echo: true
+#| eval: false
+library(ggplot2)
+ggplot(mpg, aes(x = displ, 
+                y = hwy, 
+                colour = class)) + 
+    geom_point()
+```
+:::
+::::
+
+----------------------------------------------------------------
+
+<span style="color:blue"> **Help** </span>
+
+- What if you don't know how a function works or what a data set is about `r emoji('question')` 
+  - `r emoji('point_right')` Simply type `?` followed by the data name or function name to get more information.
 
 ```{r help, eval=FALSE}
 ?mean
 ?mtcars
 ```
 
-- A document will show up in the **Help** tab, teaching you how to use the function or explaining the data set.
-
 :::{.callout-note icon=false}
-
-## What does the function `mean()` do?
-
+## What does the function `mean()` do? What is the size of mpg?
 :::
 
-### Resources
-In RStudio Cloud sidebar,
+- A document will show up in the **Help** tab, teaching you how to use the function or explaining the data set.
+  - An example is shown for the mpg data set in @fig-help-tab below. 
 
-- R and RStudio [**Cheat Sheats**](https://rstudio.cloud/learn/cheat-sheets)
-- Learn more RStudio and statistical data science: [**Primers**](https://rstudio.cloud/learn/primers)
-
-```{r echo=FALSE, out.width="70%",fig.align="center"}
-knitr::include_graphics("./images/img-intro/primers.png")
+```{r, echo=FALSE, fig.align='center'}
+#| label: fig-help-tab
+#| fig-cap: Document explaining the mpg data set in the Help tab
+#| out-width: "50%"
+knitr::include_graphics("./images/img-intro/mpg_help.png")
 ```
 
-:::{.callout-warning icon=false}
+----------------------------------------------------------------
 
+:::{.callout-warning icon=false}
 ## You can do it!
 
 - What is the size of `mtcars` data? 
-- Type `mtcars` and hit Enter in the Console to see the data set.
-- Discuss data type of each variable.
-- Type `mtcars[, 1]` and hit Enter in the Console. What do you see?
-
+- Type `mtcars` and hit enter in the console to see the data set.
+- Discuss the data type of each variable.
+- Type `mtcars[, 1]` and hit enter in the console and discuss what you see.
 :::
 
-## Install R 
+## Install R and R Studio Locally to Your Computer
 
-### Step 1
-- Go to <https://cloud.r-project.org>
-- Click Download R for [your operating system]
+<span style="color:blue"> **Install R** </span>
 
-![](./images/img-intro/r_download.png)
+<span style="color:red"> ***Step 1*** </span>
 
-### Step 2
+- Go to <https://cloud.r-project.org>.
+- Click Download R for [your operating system].
 
-- If you are a Mac user, you should see the page as below. You are recommended to download and install the *latest* version of R (now **R-4.2.1 (Funny-Looking Kid)**), if your OS version allows to do so. Otherwise, choose a previous version, R-3.6.3. 
-- If you are a Windows user, after clicking Download R for Windows, please choose **base** version, then click **Download R-4.2.1 for Windows**. 
-<!-- - If you are a Linux user, after clicking Download R for Linux, please choose the distribution you are using, ubuntu for example, and then follow the instruction to complete the installation. -->
+![Downloading R](./images/img-intro/r_download.png){#fig-download}
 
-![](./images/img-intro/r_version.png)
+<span style="color:red"> ***Step 2*** </span>
 
-### Step 3
-- Once you install R successfully, when you open R, you should be able to see the following R terminal or console:
+- If you are a Mac user, you should see the page shown below in @fig-windows-mac. 
+- You are recommended to download and install the *latest* version of R (now **R-4.2.1**) if your OS version allows to do so. 
+- Otherwise, choose a previous version, such as R-3.6.3. 
 
-:::{layout-ncol=2}
+![Downloading R for Mac](./images/img-intro/r_version.png){#fig-windows-mac}
 
+- If you are a Windows user, after clicking Download R for Windows, please choose **base** version and then click **Download R-4.2.1 for Windows**.
+
+<span style="color:red"> ***Step 3*** </span>
+
+- Once you successfully install R, when you open R, you should be able to see the following R terminal or console:
+
+::::{.columns}
+:::{.column width="49%"}
+<center>
 **Windows**
-![](./images/img-intro/r_windows.jpg)
+</center>
 
-**Mac**
-![](./images/img-intro/r_mac.png)
-
+![Windows R Console](./images/img-intro/r_windows.jpg){#fig-windows}
 :::
 
-## Welcome to the R World! 
-- Now you are ready to use R to do statistical computation. 
-- You can use R like a calculator. After typing your formula, simply hit Enter, you get the answer! For example,
+:::{.column width="2%"}
+:::
+
+:::{.column width="49%"}
+
+<center>
+**Mac**
+</center>
+
+![Mac R Console](./images/img-intro/r_mac.png){#fig-mac}
+:::
+::::
+
+<span style="color:red"> ***Welcome to the R World!*** </span> 
+
+- Now you are ready to use R for statistical computation. 
+- You can use R like a calculator. 
+  - After typing your formula, simply hit enter and you get the answer! 
 
 ```{r calculator}
 1 + 2
@@ -269,82 +561,111 @@ knitr::include_graphics("./images/img-intro/primers.png")
 log(5) - exp(3) * sqrt(7)
 ```
 
-<!-- --- -->
-<!-- ## Install RStudio -->
+--------------------------------------------------------------------
 
-<!-- - [RStudio](https://rstudio.com/) is an integrated development environment (IDE) mainly for R.  -->
-<!-- - It provides lots of useful features that help us do statistical analysis and data science projects more efficiently.  -->
+<span style="color:blue"> **Install RStudio** </span>  
 
-## Install RStudio  
+<span style="color:red"> ***Step 1*** </span>
 
-### Step 1
-- In the [RStudio website](https://www.rstudio.com/), please choose **Products > RStudio** as shown below.
+- In the [RStudio website](https://www.rstudio.com/), please choose **Products > RStudio** as shown in @fig-website.
 
-![](./images/img-intro/rstudio.png)
+![R Studio Website](./images/img-intro/rstudio.png){#fig-website}
 
-### Step 2
+<span style="color:red"> ***Step 2*** </span>
+
 - Choose **RStudio Desktop** and click **DOWNLOAD RSTUDIO DESKTOP** for the *free* version.
+
 ```{r echo=FALSE, out.width="67%", fig.align='center'}
+#| label: fig-download-desktop
+#| fig-cap: Downloading RStudio Desktop
 knitr::include_graphics("./images/img-intro/rstudio_desktop.png")
 ```
-<!-- ![](./images/img-intro/rstudio_desktop.png){height=500px width=700px} -->
 
 
-### Step 3
-- Click **DOWNLOAD RSTUDIO FOR [YOUR SYSTEM]**. Then follow standard installation steps, you should get the software soon. 
-- Be careful that R should be installed successfully in your computer before you download and install RStudio.
-- **[Note]**: The latest version of RStudio is **2022.07.1+554**.
+<span style="color:red"> ***Step 3*** </span>
 
+- Click **DOWNLOAD RSTUDIO FOR [YOUR SYSTEM]** (@fig-R-latest).
+- Follow the standard installation steps and you should get the software. 
+- Make sure that R is installed successfully on your computer before you download and install RStudio.
+
+:::{.callout-note icon=false}
+The latest version of RStudio is **2022.07.1+554**.
+:::
 
 ```{r echo=FALSE, out.width="57%", fig.align='center'}
+#| label: fig-R-latest
+#| fig-cap: Latest version of RStudio
 knitr::include_graphics("./images/img-intro/rstudio_download.png")
 ```
 <!-- ![](./images/img-intro/rstudio_download.png) -->
 
-## RStudio Screen
-- When you open RStudio, you should see something similar to the figure below.
-- If you do, congratulations! You are able to do every statistical computation in R using RStudio locally in your computer. 
+<span style="color:red"> ***RStudio Screen*** </span>
+
+- When you open RStudio, you should see something similar to @fig-RStudio-screen below.
+- If you do, congratulations! 
+- You can now do any statistical computation in R using RStudio locally on your computer. 
+
 ```{r echo=FALSE, out.width="78%", fig.align="center"}
+#| label: fig-RStudio-screen
+#| fig-cap: R Studio Screen
 knitr::include_graphics("./images/img-intro/rstudio_ubuntu.png")
 ```
 
-## R is a Calculator - Arithmetic Operators
+## Operators
+
+<span style="color:blue"> **R is a Calculator** </span>
+
+<span style="color:red"> ***Arithmetic Operators*** </span>
 
 ```{r arithmetic-operator, echo=FALSE, out.width="70%", fig.align='center'}
+#| label: fig-arithmetic-operators
+#| fig-cap: Table of arithmetic operators
 knitr::include_graphics("./images/img-intro/arithmetic_operator.png")
 ```
 
-### Examples
+<span style="color:red"> ***Examples*** </span>
 
 ```{r, arithmetic-example}
 2 + 3 * 5 + 4
 2 + 3 * (5 + 4)
 ```
 
-- We have to do the operation in the parenthesis first
+- We have to do the operation in the parentheses first, as the PEMDAS rule describes in @fig-pemdas below.
 
 ```{r, echo=FALSE, out.width="80%", fig.align='center'}
+#| label: fig-pemdas
+#| fig-cap: Order of operations
 knitr::include_graphics("./images/img-intro/pemdas.jpeg")
 ```
 
-## R Does Comparisons - Logical Operators
+-----------------------------------------------------------------------
+
+<span style="color:blue"> **R Does Comparisons** </span> 
+
+<span style="color:red"> ***Logical Operators*** </span>
 
 ```{r logical-operator, echo=FALSE, out.width="40%", fig.align='center'}
+#| label: fig-logical-operators
+#| fig-cap: Table of logical operators
 knitr::include_graphics("./images/img-intro/logical_operator.png")
 ```
 
-### Examples
+<span style="color:red"> ***Examples*** </span>
 
-:::{layout-ncol=2}
-
+::::{.columns}
+:::{.column width="39%"}
 ```{r, logical-example}
 5 <= 5
 5 <= 4
 # Is 5 is NOT equal to 5? FALSE
 5 != 5
 ```
+:::
 
+:::{.column width="2%"}
+:::
 
+:::{.column width="59%"}
 ```{r}
 ## Is TRUE not equal to FALSE?
 TRUE != FALSE
@@ -353,37 +674,42 @@ TRUE != FALSE
 ## TRUE if either one is TRUE or both are TRUE
 TRUE | FALSE
 ```
-
 :::
+::::
 
 :::{.callout-note icon=false}
-
 ## What does `TRUE & FALSE` return?
-
 :::
 
-## Built-in Functions
+-----------------------------------------------------------------------
+
+<span style="color:blue"> **Built-in Functions** </span>
 
 - R has lots of built-in functions, especially for mathematics, probability and statistics.
 
 ```{r numeric-fcns, echo=FALSE, out.width="45%", fig.align='center'}
+#| label: fig-built-functions
+#| fig-cap: R Built-in functions
 knitr::include_graphics("./images/img-intro/numeric_fcns.png")
 ```
 
 
-### Examples
+<span style="color:red"> ***Examples*** </span>
 
-:::{layout-ncol=2}
-
+::::{.columns}
+:::{.column width="49%"}
 ```{r builtin-fcns}
 sqrt(144)
 exp(1)  ## Euler's number
 sin(pi/2)
 abs(-7)
 ```
+:::
 
+:::{.column width="2%"}
+:::
 
-
+:::{.column width="49%"}
 ```{r}
 factorial(5)
 ## without specifying base value
@@ -392,51 +718,58 @@ log(100)
 ## log function and we specify base = 2
 log(100, base = 10)
 ```
-
 :::
+::::
 
-## Commenting
+-----------------------------------------------------------------------
+
+<span style="color:blue"> **Commenting** </span>
 
 :::{.callout-note icon=false}
-
 ## You've seen comments a lot! How do we write a comment in R?
-
 :::
 
 - Use `#` to add a comment so that the text after `#` is not read as an R command.
-- Writing (good) comments is highly recommended: help readers and more importantly yourself understand what the code is doing.
-- Comments should explain the **why**, not the what.
+- Writing (good) comments is highly recommended.
+- Comments help readers, and more importantly yourself, understand what the code is doing.
+- They should explain the **why**, not the what.
 
-:::{layout-ncol=2}
-
-```{r, echo=FALSE, out.width="100%", fig.align='center'}
+::::{.columns}
+:::{.column width="50%"}
+```{r, echo=FALSE, out.width="100%", fig.align='center', fig.cap= "https://www.reddit.com/r/ProgrammerHumor /comments/8w54mx/code_comments_be_like/"}
 knitr::include_graphics("./images/img-intro/cat_comment.png")
 ```
+:::
 
-
+:::{.column width="50%"}
 ```{r, echo=FALSE, out.width="100%", fig.align='center'}
 knitr::include_graphics("./images/img-intro/stop_comment.png")
 ```
-
 :::
-https://www.reddit.com/r/ProgrammerHumor/comments/8w54mx/code_comments_be_like/
+::::
 
-## Objects and Funtions in R
+-----------------------------------------------------------------------
+
+<span style="color:blue"> **Objects and Funtions in R** </span>
+
 > <span style="color:red"> Everything that **exists** is an **object**. </span>  
 <span style="color:red"> Everything that **happens** is a **function call**. </span>  
   -- *[John Chambers](https://bit.ly/3yJJGrC), the creator of the S programming language*.
 
-- We have made lots of things happened!
+- We have made lots of things happen!
 - Even arithmetic and logical operators are functions!
+
 ```{r}
 `+`(x = 2, y = 3)
 `&`(TRUE, FALSE)
 ```
 
-## Creating Variables
+-----------------------------------------------------------------------
+
+<span style="color:blue"> **Creating Variables** </span>
 
 - A variable stores a value that can be changed according to our need.
-- Use `<-` operator to **assign** a value to the variable. (Highly recommended`r emoji('+1')`)
+- Use the `<-` operator to **assign** a value to the variable. (Highly recommended`r emoji('+1')`)
 
 ```{r assignment}
 x <- 5  ## we create an object, value 5, and call it x, which is a variable.
@@ -456,11 +789,12 @@ log(x) # Variables can also be used in any built-in functions
 knitr::include_graphics("./images/img-intro/r_assign_syntax.jpg")
 ```
 
+-----------------------------------------------------------------------
 
+<span style="color:blue"> **Bad Naming** </span>
 
-## Bad Naming
 - `r emoji('x')` Unless you have a very good reason, don't create a variable whose name is the same as any R [*built-in constant*](https://stat.ethz.ch/R-manual/R-devel/library/base/html/Constants.html) or function!
-- `r emoji('worried')` It causes lots of confusion when your code is long and when others read your code.
+- `r emoji('worried')` It causes lots of confusion when your code is long and when others read it.
 
 ```{r bad-naming}
 ## THIS IS BAD CODING! DON'T DO THIS!
@@ -472,42 +806,50 @@ abs ## abs is a built-in function
 
 ## Object Types
 
-### Types of Variables
+<span style="color:blue"> **Types of Variables** </span>
+
 - Use **`typeof()`** to check which type a variable belongs to.
 - Common types include **`character`**, **`double`**, **`integer`** and **`logical`**.
-- Check if it???s of a specific type: **`is.character()`**, **`is.double()`**, **`is.integer()`**, **`is.logical()`**.
-<!-- - To specify an integer, we type a number followed by letter `L`.  -->
+- To check if it's of a specific type, use **`is.character()`**, **`is.double()`**, **`is.integer()`**, **`is.logical()`**.
 
-:::{layout-ncol=2}
-
+::::{.columns}
+:::{.column width="49%"}
 ```{r type}
 typeof(5)
 typeof(5L)
-typeof("I_love_stat!")
+typeof("I_love_stats!")
 ```
+:::
 
+:::{.column width="2%"}
+:::
 
+:::{.column width="49%"}
 ```{r}
 typeof(1 > 3)
 is.double(5L)
 ```
-
 :::
+::::
 
-### Variable Types in R and in Statistics
+<span style="color:red"> ***Variable Types in R and in Statistics*** </span>
+
 - Type `character` and `logical` correspond to **categorical** variables.
-- Type `logical` is a special type of categorical variables that has only two categories (**binary**). 
-<!-- - We usually call it a **binary** variable. -->
--   Type `double` and `integer` correspond to **numerical** variables. (an exception later)
-  +   Type `double` is for **continuous** variables
-  +   Type `integer` is for **discrete** variables.
-  
-## (Atomic) Vector
-- To create a vector, use `c()`, short for *concatenate* or *combine*.
+  + Type `logical` is a special type of categorical variables that has only two categories (**binary**). 
+    - We usually call it a **binary** variable.
+- Type `double` and `integer` correspond to **numerical** variables. (an exception later)
+  + Type `double` is for **continuous** variables
+  + Type `integer` is for **discrete** variables.
+
+## R Data Structures
+
+<span style="color:blue"> **(Atomic) Vector** </span>
+
+- To create a vector, use `c()`, which is short for *concatenate* or *combine*.
 - **All** elements of a vector must be of the **same type**. 
 
-:::{layout-ncol=2}
-
+::::{.columns}
+:::{.column width="52%"}
 ```{r vector}
 (dbl_vec <- c(1, 2.5, 4.5)) 
 (int_vec <- c(1L, 6L, 10L))
@@ -515,8 +857,12 @@ is.double(5L)
 (log_vec <- c(TRUE, FALSE, F))  
 (chr_vec <- c("pretty", "girl"))
 ```
+:::
 
+:::{.column width="2%"}
+:::
 
+:::{.column width="46%"}
 ```{r}
 ## check how many elements in a vector
 length(dbl_vec) 
@@ -524,13 +870,15 @@ length(dbl_vec)
 ## any R data structure
 str(dbl_vec) 
 ```
-
 :::
+::::
 
-### Operations on Vectors
-- We can do any operations on vectors as we do on a *scalar* variable (vector of length 1).
+<span style="color:red"> ***Operations on Vectors*** </span>
 
-:::{layout-ncol=2}
+- We can do the same operations on vectors that we do on a *scalar* variable (vector of length 1).
+
+::::{.columns}
+:::{.column width="49%"}
 ```{r vector-arithmetic}
 # Create two vectors
 v1 <- c(3, 8)
@@ -542,8 +890,12 @@ v1 + v2
 # Vector subtraction
 v1 - v2
 ```
+:::
 
+:::{.column width="2%"}
+:::
 
+:::{.column width="49%"}
 ```{r}
 # Vector multiplication
 v1 * v2
@@ -551,10 +903,11 @@ v1 * v2
 v1 / v2
 sqrt(v2)
 ```
-
 :::
+::::
 
-### Recycling of Vectors
+<span style="color:red"> ***Recycling of Vectors*** </span>
+
 - If we apply arithmetic operations to two vectors of **unequal** length, the elements of the shorter vector will be **recycled** to complete the operations.
 <!-- - Beware of recycling! -->
 <!-- - The concept of *recycling* helps us write more concise code. -->
@@ -568,12 +921,13 @@ v3 <- c(4, 11)
 v1 + v3  ## v3 becomes c(4, 11, 4, 11) when doing the operation
 ```
 
-### Subsetting Vectors
+<span style="color:red"> ***Subsetting Vectors*** </span>
+
 - To extract element(s) in a vector, use a pair of brackets `[]` with element indexing.
 - The indexing **starts with 1**.
 
-:::{layout-ncol=2}
-
+::::{.columns}
+:::{.column width="44%"}
 ```{r subsetting}
 v1
 v2
@@ -582,8 +936,12 @@ v1[1]
 ## The second element
 v2[2]  
 ```
+:::
 
+:::{.column width="2%"}
+:::
 
+:::{.column width="54%"}
 ```{r}
 v1[c(1, 3)]
 ## extract all except a few elements
@@ -591,18 +949,16 @@ v1[c(1, 3)]
 ## indices
 v1[-c(2, 3)] 
 ```
-
 :::
+::::
 
-```{r, echo = FALSE, eval=FALSE}
-x <- c(1, 5, 2, 6)
-names(x) <- letters[1:4]
-x["c"]
-```
+---------------------------------------------------------------------
 
-## Factor
+<span style="color:blue"> **Factor** </span>
+
 - A vector of type `factor` can be *ordered in a meaningful way.* 
-- Create a factor by `factor()`. It is a type of **integer**, not **character**. `r emoji('astonished')`  `r emoji('roll_eyes')` 
+- Create a factor by `factor()`. 
+- It is a type of **integer**, not **character**. `r emoji('astonished')`  `r emoji('roll_eyes')`
 
 ```{r factor, echo=-1}
 ## Create a factor from a character vector using function factor()
@@ -614,13 +970,16 @@ order_fac <- factor(c("med", "high", "low"), levels = c("low", "med", "high"))
 str(order_fac)
 ```
 
+---------------------------------------------------------------------
 
-## List (Generic Vectors)
-- Lists are different from vectors: Elements can be of **any type**, including lists.
+<span style="color:blue"> **List (Generic Vectors)** </span>
+
+- Lists are different from vectors.
+  - Elements can be of **any type**, including lists.
 - Construct a list by using **`list()`** instead of `c()`.
 
-:::{layout-ncol=2}
-
+::::{.columns}
+:::{.column width="52%"}
 ```{r list}
 ## a list of 3 elements of different types
 x_lst <- list(idx = 1:3, 
@@ -628,17 +987,21 @@ x_lst <- list(idx = 1:3,
               c(TRUE, FALSE))
 x_lst
 ```
+:::
 
+:::{.column width="2%"}
+:::
 
+:::{.column width="46%"}
 ```{r}
 str(x_lst)
 names(x_lst)
 length(x_lst)
 ```
-
 :::
+::::
 
-### Subsetting a List
+<span style="color:red"> ***Subsetting a List*** </span>
 
 
 ```{r}
@@ -647,13 +1010,13 @@ x_lst <- list(idx = 1:3,
               c(TRUE, FALSE))
 ```
 
-<br>
 
-:::{layout-ncol=2}
+::::{.columns}
+:::{.column width="49%"}
 
+<center>
 **Return an <span style="color:red"> element </span> of a list**
-
-**Return a <span style="color:red"> sub-list </span> of a list**
+</center>
 
 ```{r}
 ## subset by name (a vector)
@@ -662,7 +1025,16 @@ x_lst$idx
 x_lst[[1]]  
 typeof(x_lst$idx)
 ```
+:::
 
+:::{.column width="2%"}
+:::
+
+:::{.column width="49%"}
+
+<center>
+**Return a <span style="color:red"> sub-list </span> of a list**
+</center>
 
 ```{r}
 ## subset by name (still a list)
@@ -671,13 +1043,18 @@ x_lst["idx"]
 x_lst[1]  
 typeof(x_lst["idx"])
 ```
-
 :::
+::::
+
+<br>
 
 ```{r list_condiment, echo=FALSE, out.width="80%", fig.align='center'}
+#| label: fig-subsetting-list
+#| fig-cap: Condiment analogy for subsetting lists
 knitr::include_graphics("./images/img-intro/list_condiment.png")
 ```
 
+<br>
 
 > If list `x` is a train carrying objects, then `x[[5]]` is
 > the object in car 5; `x[4:6]` is a train of cars 4-6.
@@ -689,10 +1066,14 @@ knitr::include_graphics("https://raw.githubusercontent.com/hadley/adv-r/master/d
 ```
 
 ```{r, echo=FALSE, out.width="100%", fig.align='center'}
+#| label: fig-subsetting-train
+#| fig-cap: Train analogy for subsetting a list
 knitr::include_graphics("https://raw.githubusercontent.com/hadley/adv-r/master/diagrams/subsetting/train-single.png")
 ```
 
-## Matrix
+-------------------------------------------------------------------
+
+<span style="color:blue"> **Matrix** </span>
 
 - A matrix is a *two-dimensional analog of a vector*.
 - Use command `matrix()` to create a matrix.
@@ -703,13 +1084,14 @@ knitr::include_graphics("https://raw.githubusercontent.com/hadley/adv-r/master/d
 dim(mat); nrow(mat); ncol(mat)
 ```
 
-### Subsetting a Matrix
-- To extract a sub-matrix, use the same indexing approach as vectors on rows and columns.
-- Use comma `,` to separate row and column index.
-- `mat[2, 2]` extracts the element of the second row and second column.
+<span style="color:red"> ***Subsetting a Matrix*** </span>
 
-:::{layout-ncol=2}
+- To extract a sub-matrix, use the same indexing approach as vectors.
+- Use comma `,` to separate the row and column index.
+  - `mat[2, 2]` extracts the element of the second row and second column.
 
+::::{.columns}
+:::{.column width="49%"}
 ```{r matrix-indexing}
 mat
 ## all rows and 2nd column
@@ -717,23 +1099,29 @@ mat
 ## specify 2 in coln index
 mat[, 2]
 ```
+:::
 
+:::{.column width="2%"}
+:::
 
+:::{.column width="49%"}
 ```{r}
 ## 2nd row and all columns
 mat[2, ] 
 ## The 1st and 3rd rows
 mat[c(1, 3), ] 
 ```
-
 :::
+::::
 
-### Binding Matrices
+<span style="color:red"> ***Binding Matrices*** </span>
+
 - We can generalize `c()` used in vectors to `cbind()` (binding matrices by adding columns) and `rbind()` (binding matrices by adding rows) for matrices.
-- When matrices are combined by columns (rows), they should have the same number of rows (columns).
+- When matrices are combined by columns, they should have the same number of rows. 
+- When matrices are combined by rows, they should have the same number of columns.
 
-:::{layout-ncol=2}
-
+::::{.columns}
+:::{.column width="49.25%"}
 ```{r matrix-bind}
 mat
 mat_c <- matrix(data = c(7, 0, 0, 8, 2, 6), 
@@ -741,8 +1129,12 @@ mat_c <- matrix(data = c(7, 0, 0, 8, 2, 6),
 ## should have the same number of rows
 cbind(mat, mat_c)  
 ```
+:::
 
+:::{.column width="1.5%"}
+:::
 
+:::{.column width="49.25%"}
 ```{r}
 mat_r <- matrix(data = 1:4, 
                 nrow = 2, 
@@ -750,17 +1142,20 @@ mat_r <- matrix(data = 1:4,
 ## should have the same number of columns
 rbind(mat, mat_r)  
 ```
-
 :::
+::::
 
-## Data frame: The Most Common Way of Storing Data
+-------------------------------------------------------------------
+
+<span style="color:blue"> **Data Frame: The Most Common Way of Storing Data** </span>
 
 - A data frame is of type **list** of *equal-length* vectors, having a *2-dimensional* structure.
-- More general than matrix: Different columns can have different types.
+- It is more general than a matrix.
+  - Different columns can have different types.
 - To create a data frame, use `data.frame()` that takes *named* vectors as input.
 
-:::{layout-ncol=2}
-
+::::{.columns}
+:::{.column width="49%"}
 ```{r dataframe}
 ## data frame w/ an dbl column named  
 ## and char column named grade.
@@ -770,21 +1165,26 @@ rbind(mat, mat_r)
 ## a data frame has a list structure
 str(df)  
 ```
+:::
 
+:::{.column width="2%"}
+:::
 
+:::{.column width="49%"}
 ```{r}
 ## must set column names
 ## or they are ugly and non-recognizable
 data.frame(c(19, 21, 40), c("m","f", "m")) 
 ```
-
 :::
+::::
 
-### Properties of Data Frames
+<span style="color:red"> ***Properties of Data Frames*** </span>
+
 - Data frame has properties of matrix and list.
 
-:::{layout-ncol=2}
-
+::::{.columns}
+:::{.column width="44%"}
 ```{r df-fcns, echo=1:5}
 names(df)  ## df as a list
 colnames(df)  ## df as a matrix
@@ -795,8 +1195,12 @@ dim(df) ## df as a matrix
 # typeof(df)
 # class(df)
 ```
+:::
 
+:::{.column width="2%"}
+:::
 
+:::{.column width="54%"}
 ```{r}
 ## rbind() and cbind() can be used on df
 
@@ -808,15 +1212,16 @@ df_c <-
     data.frame(col = c("red","blue","gray"))
 (df_new <- cbind(df, df_c))
 ```
-
 :::
+::::
 
 
-### Subsetting a Data Frame
+<span style="color:red"> ***Subsetting a Data Frame*** </span>
+
 - When we subset data frames, we can use either list or matrix subsetting methods.
 
-:::{layout-ncol=2}
-
+::::{.columns}
+:::{.column width="49%"}
 ```{r df-subset}
 df_new
 ## Subset rows
@@ -824,8 +1229,12 @@ df_new[c(1, 3), ]
 ## select the row where age == 21
 df_new[df_new$age == 21, ]
 ```
+:::
 
+:::{.column width="2%"}
+:::
 
+:::{.column width="49%"}
 ```{r, echo=1:6, eval=1:6}
 ## Subset columns
 ## like a list
@@ -836,16 +1245,88 @@ df_new[, c("age", "gender")]
 str(df["age"])  ## a data frame with one column
 str(df[, "age"])  ## becomes a vector by default
 ```
-
 :::
+::::
+
+-------------------------------------------------------------------
 
 :::{.callout-warning icon=false}
-
 ## You can do it!
-
 - Create a vector object called `x` that has 5 elements 3, 6, 2, 9, 14.
 - Compute the average of elements of `x`.
 - Subset the `mtcars` data set by selecting variables `mpg` and `disp`.
 - Select the cars (rows) in `mtcars` that have 4 cylinders.
-
 :::
+
+## Exercises
+
+```{r}
+# ==============================================================================
+## Vector
+# ==============================================================================
+poker_vec <- c(170, -20, 50, -140, 210)
+roulette_vec <- c(-30, -40, 70, -340, 20)
+days_vec <- c("Mon", "Tue", "Wed", "Thu", "Fri")
+names(poker_vec) <- days_vec
+names(roulette_vec) <- days_vec
+```
+
+1. **Vector**
+
+  The code above shows a Marquette student poker and roulette winnings from Monday to Friday. Copy and paste them into your R and complete problem 1.
+
+(a) Assign to the variable `total_daily` how much you won or lost on each day in total (poker and roulette combined).
+(b) Calculate the winnings overall `total_week`. Print it out.
+
+<br>
+
+```{r}
+# ==============================================================================
+## Factor
+# ==============================================================================
+# Create speed_vector
+speed_vec <- c("medium", "low", "low", "medium", "high")
+```
+
+2. **Factor**
+(a) `speed_vec` above should be converted to an **ordinal** factor since its categories have a natural ordering. Create an ordered factor vector `speed_fac` by completing the code below. Set `ordered` to `TRUE`, and set `levels` to `c("low", "medium", "high")`. Print `speed_fac`.
+
+```{r, eval=FALSE}
+_________ <- factor(________, ordered = ______, 
+                    levels = ______________________)
+```
+    
+<br>    
+    
+```{r}
+# ==============================================================================
+## Data frame
+# ==============================================================================
+# Definition of vectors
+name <- c("Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", 
+          "Uranus", "Neptune")
+type <- c("Terrestrial planet", "Terrestrial planet", "Terrestrial planet", 
+          "Terrestrial planet", "Gas giant", "Gas giant", 
+          "Gas giant", "Gas giant")
+diameter <- c(0.375, 0.947, 1, 0.537, 11.219, 9.349, 4.018, 3.843)
+rotation <- c(57.63, -242.03, 1, 1.05, 0.42, 0.44, -0.73, 0.65)
+rings <- c(FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE)
+```  
+
+3. **Data Frame**  
+
+Data frames have properties of lists and matrices, so we skip lists and matrices and focus on data frames.  You want to construct a data frame that describes the main characteristics of eight planets in our solar system. You feel confident enough to create the necessary vectors: `name`, `type`, `diameter`, `rotation` and `rings` that have already been coded up as above. The first element in each of these vectors corresponds to the first observation.  
+
+(a) Use the function `data.frame()` to construct a data frame. Pass the vectors `name`, `type`, `diameter`, `rotation` and `rings` as arguments to `data.frame()`, in this order. Call the resulting data frame `planets_df`.
+    
+```{r, eval=FALSE}
+________ <- data.frame(______, ______, ______, ______, ______)
+```
+    
+(b) Use `str()` to investigate the structure of the new `planets_df` variable. Which are categorical (qualitative) variables and which are numerical (quantitative) variables? For those that are categorical, are they nominal or ordinal? For those numerical variables, are they interval or ratio level? discrete or continuous?
+(c) From `planets_df`, select the diameter of Mercury: this is the value at the first row and the third column. Simply print out the result.
+(d) From `planets_df`, select all data on Mars (the fourth row). Simply print out the result.
+(e) Select and print out the first 5 values in the `diameter` column of `planets_df`.
+(f) Use `$` to select the `rings` variable from `planets_df`.
+(g) Use (f) to select all columns for planets that have rings.
+

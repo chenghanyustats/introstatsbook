@@ -1,12 +1,486 @@
 # Logistic Regression {#sec-model-logistic}
 
-This chapter provides a broad overview of the R language that will get you programming right away. In it, you will build a pair of virtual dice that you can use to generate random numbers. Don't worry if you've never programmed before; the chapter will teach you everything you need to know.
+```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
+set.seed(1234)
+library(ISLR)
+library(tidyverse)
+library(performance)
+library(ggplot2)
+```
 
-To simulate a pair of dice, you will have to distill each die into its essential features. You cannot place a physical object, like a die, into a computer (well, not without unscrewing some screws), but you can save *information* about the object in your computer's memory.
+## Regression vs. Classification
 
-Which information should you save? In general, a die has six important pieces of information: when you roll a die, it can only result in one of six numbers: 1, 2, 3, 4, 5, and 6. You can capture the essential characteristics of a die by saving the numbers 1, 2, 3, 4, 5, and 6 as a group of values in your computer's memory.
+- Linear regression assumes that the response $Y$ is *numerical*.
+- In many situations, $Y$ is **categorical**.
 
-Let's work on saving these numbers first, and then consider a method for "rolling" our die.
+::::{.columns}
+:::{.column width="49%"}
+**Normal vs. COVID vs. Smoker's Lungs**
 
-## The R User Interface
+```{r echo=FALSE, out.width="100%", fig.align='center'}
+knitr::include_graphics("./images/img-model/covid_lung.jpeg")
+```
+:::
 
+:::{.column width="2%"}
+:::
+
+:::{.column width="49%"}
+**Fake vs. Fact**
+
+```{r echo=FALSE, out.width="100%", fig.align='center'}
+knitr::include_graphics("./images/img-model/fake_news.jpeg")
+```
+:::
+::::
+
+- The process of predicting a categorical response is known as **classification**.   
+
+--------------------------------------------------------------------
+
+<span style="color:blue"> **Regression Function $f(x)$ vs. Classifier $C(x)$** </span>
+
+```{r echo=FALSE, out.width="100%"}
+knitr::include_graphics("./images/img-model/regression.png")
+```
+
+```{r echo=FALSE, out.width="100%", fig.align='center'}
+#| label: fig-classification-regression
+#| fig-cap: Difference between classification and regression (https://daviddalpiaz.github.io/r4sl/classification-overview.html)
+knitr::include_graphics("./images/img-model/classification.png")
+```
+
+
+-------------------------------------------------------------------
+
+<span style="color:blue"> **Classification Example** </span>
+
+- Predict whether people will default on their credit card payment, where $(Y)$ is `yes` or `no`, based on their monthly credit card balance, $(X)$.
+- We use the sample data $\{(x_1, y_1), \dots, (x_n, y_n)\}$ to build a classifier.
+
+::::{.columns}
+:::{.column width="60%"}
+```{r, echo=FALSE, out.width="100%", fig.align='center'}
+#| label: fig-credit-boxplot
+#| fig-cap: Boxplot of Default vs. Balance
+Default_tbl <- as_tibble(Default)
+Default_tbl %>% 
+    ggplot(aes(default, balance, fill = default)) +
+    geom_boxplot(color="black") + 
+    theme_minimal() +
+    theme(legend.position="bottom") +
+    labs(title = "Default vs. Balance")
+```
+:::
+
+:::{.column width="40%"}
+```{r echo=FALSE, out.width="100%", fig.align='center'}
+knitr::include_graphics("./images/img-model/credit_card.jpeg")
+```
+:::
+::::
+
+------------------------------------------------------------------
+
+<span style="color:blue"> **Why Not Linear Regression?** </span>
+
+$$Y =\begin{cases}
+    0  & \quad \text{if not default}\\
+    1  & \quad \text{if default}
+     \end{cases}$$
+     
+- $Y = \beta_0 + \beta_1X + \epsilon$, $\, X =$ credit card balance 
+
+:::{.callout-note icon=false}
+## What is the problem with this dummy variable approach?
+:::
+
+- $\hat{Y} = b_0 + b_1X$ estimates $P(Y = 1 \mid X) = P(default = yes \mid balance)$
+
+
+```{r lm_default, echo = FALSE, out.width="72%", fig.align='center', warning=FALSE, message=FALSE}
+#| label: fig-simple-regression
+#| fig-cap: Graphical illustration of why a simple linear regression model won't work for Default ~ Balance
+Default_tbl %>% 
+    ggplot(aes(x = balance, y = as.numeric(default)-1), colour=default) +
+    geom_point(aes(colour=default), alpha = 0.1) + 
+    geom_smooth(method = lm, se = FALSE) +
+    theme_minimal() +
+    theme(legend.position = "none") +
+    ylab("default") +
+    labs(title = "Simple Linear Regression: Default vs. Balance")
+```
+- **Some estimates might be outside $[0, 1]$**, which doesn't make sense given that $Y$ is a probability.
+
+------------------------------------------------------------------
+
+<span style="color:blue"> **Why Logistic Regression?** </span>
+
+- We first predict the **probability** of each category of $Y$.
+- Then, we predict the probability of `default` using an <span style="color:blue">**S-shaped** curve</span>.
+
+```{r glm_default, echo=FALSE, out.width="65%", warning=FALSE, message=FALSE, fig.align='center'}
+#| label: fig-logistic-reg
+#| fig-cap: Graphical illustration of why a logistic regression model works better for Default ~ Balance
+Default_tbl %>% 
+    ggplot(aes(x = balance, y = as.numeric(default)-1), colour=default) +
+    geom_point(aes(colour=default), alpha = 0.1) + 
+    geom_smooth(method = "glm", method.args = list(family="binomial"), se = FALSE) +
+    theme_minimal() +
+    theme(legend.position = "none") +
+    ylab("Probability of Default") +
+    labs(title = "Simple Logistic Regression: Default vs. Balance")
+```
+
+## Introduction to Logistic Regression 
+
+<span style="color:blue"> **Binary Responses** </span>
+
+- Treat each outcome, default $(y = 1)$ and not default $(y = 0)$, as success and failure arising from separate **Bernoulli** trials.
+
+:::{.callout-note icon=false}
+## What is a Bernoulli trial?
+- A Bernoulli trial is a special case of a binomial trial when the number of trials is $m = 1$.
+  - There are **exactly two** possible outcomes, "success" and "failure".
+  - The probability of success, $\pi$, is **constant**.
+:::
+
+:::{.callout-note icon=false}
+## In the default credit card example, 
+- Do we have exactly two outcomes? 
+- Do we have constant probability? $P(y_1 = 1) = P(y_2 = 1) = \cdots = P(y_n = 1) = \pi?$
+:::
+
+<span style="color:red"> ***Nonconstant Probability***
+
+:::{.columns}
+:::{.column width="49%"}
+- Two outcomes: Default $(y = 1)$ and Not Default $(y = 0)$
+- The probability of success, $\pi$, *changes with* the value of predictor, $X$!
+- With a different value of $x_i$, each Bernoulli trial outcome, $y_i$, has a *different* probability of success, $\pi_i$.
+:::
+
+:::{.column width="2%"}
+:::
+
+:::{.column width="49%"}
+```{r, ref.label="fig-logistic-reg", echo=FALSE, message=FALSE, out.width="100%"}
+
+```
+:::
+::::
+
+$$ y_i \mid x_i \stackrel{indep}{\sim} \text{Bernoulli}(\pi(x_i)) = binomial(m=1,\pi = \pi(x_i)) $$
+
+- $X =$ `balance`. $x_1 = 2000$ has a larger $\pi_1 = \pi(2000)$ than $\pi_2 = \pi(500)$ with $x_2 = 500$ because credit cards with a higher balance are more likely to default.
+
+------------------------------------------------------------------
+
+<span style="color:blue"> **Logistic Regression** </span>
+
+- **Logistic regression** models a **binary** response $(Y)$ using predictors $X_1, \dots, X_k$.
+  + $k = 1$: simple logistic regression
+  + $k > 1$: multiple logistic regression
+- Instead of predicting $y_i$ directly, we use the predictors to model its *probability* of success, $\pi_i$.
+
+
+<center>
+**But how?**
+</center>
+
+<br>
+
+<span style="color:red"> ***Logit function $\eta = logit(\pi) = \ln\left(\frac{\pi}{1-\pi}\right)$*** </span>
+
+- **Transform $\pi \in (0, 1)$ into another variable $\eta \in (-\infty, \infty)$. Then fit a linear regression on $\eta$.**
+- **Logit function:** For $0 < \pi < 1$
+
+$$\eta = logit(\pi) = \ln\left(\frac{\pi}{1-\pi}\right)$$
+
+```{r echo=FALSE, out.width="72%", cache=TRUE, fig.align='center'}
+#| label: fig-logit-function
+#| fig-cap: Graphical illustration of the logit function
+d <- tibble(p = seq(0.0001, 0.9999, length.out = 2000)) %>%
+    mutate(logit_p = log(p/(1-p)))
+
+ggplot(d, aes(x = p, y = logit_p)) + 
+    geom_line() + 
+    xlim(0,1) + 
+    xlab(expression(pi)) + 
+    ylab(expression(paste("logit(", pi, ")"))) +
+    labs(title = expression(paste("logit(", pi, ") vs. ", pi))) +
+    theme_bw()
+```
+
+<span style="color:red"> ***Logistic Function $\pi = logistic(\eta) = \frac{\exp(\eta)}{1+\exp(\eta)}$*** </span>
+
+- The *logit* function $\eta = logit(\pi) = \ln\left(\frac{\pi}{1-\pi}\right)$ takes a value $\pi \in (0, 1)$ and maps it to a value $\eta \in (-\infty, \infty)$.
+- **Logistic function**:
+$$\pi = logistic(\eta) = \frac{\exp(\eta)}{1+\exp(\eta)} = \frac{1}{1+\exp(-\eta)} \in (0, 1)$$
+- The *logistic* function takes a value $\eta \in (-\infty, \infty)$ and maps it to a value $\pi \in (0, 1)$.
+- So once $\eta$ is estimated by the linear regression, we use the logistic function to transform $\eta$ back to the probability.
+
+
+```{r echo=FALSE, out.width="72%", cache=TRUE, fig.align='center'}
+#| label: fig-logistic-function
+#| fig-cap: Graphical illustration of the logistic function
+d <- tibble(eta = seq(-5, 5, length.out = 2000)) %>%
+    mutate(logistic = (1/(1+exp(-eta))))
+
+ggplot(d, aes(x = eta, y = logistic)) + 
+    geom_line() + 
+    xlim(-5,5) + 
+    xlab(expression(eta)) + 
+    ylab(expression(paste("logistic(", eta, ")"))) +
+    labs(title = expression(paste("logistic(", eta, ") vs. ", eta))) +
+    theme_bw()
+```
+
+
+## Simple Logistic Regression Model
+
+- For $i = 1, \dots, n$ and with one predictor $X$:
+  $$(Y_i \mid X = x_i) \stackrel{indep}{\sim} \text{Bernoulli}(\pi(x_i))$$
+  $$\text{logit}(\pi_i) = \ln \left( \frac{\pi(x_i)}{1 - \pi(x_i)} \right) = \eta_i = \beta_0+\beta_1 x_{i}$$
+
+
+$$\small \pi_i = \frac{\exp(\beta_0+\beta_1 x_{i})}{1+\exp(\beta_0+\beta_1 x_{i})} = \frac{\exp(\eta_i)}{1 + \exp(\eta_i)}$$
+
+$$\small \hat{\pi}_i = \frac{\exp(\hat{\beta}_0+\hat{\beta}_1 x_{i} )}{1+\exp(\hat{\beta}_0+\hat{\beta}_1 x_{i})}$$
+
+--------------------------------------------------------------------
+
+<span style="color:blue"> **Probability Curve** </span>
+
+::::{.columns}
+:::{.column width="49%"}
+- The relationship between $\pi(x)$ and $x$ is not linear!
+$$\pi(x) = \frac{\exp(\beta_0+\beta_1 x)}{1+\exp(\beta_0+\beta_1 x)}$$
+- The amount that $\pi(x)$ changes due to a one-unit change in $x$ depends on the current value of $x$.
+- Regardless of the value of $x$, if $\beta_1 > 0$, increasing $x$ will increase $\pi(x)$.
+:::
+
+:::{.column width="2%"}
+:::
+
+:::{.column width="49%"}
+```{r, ref.label="fig-logistic-reg", echo=FALSE, out.width="100%", fig.align='center', warning=FALSE, message=FALSE}
+
+```
+:::
+::::
+
+----------------------------------------------------------------------
+
+<span style="color:blue"> **Interpretation of Coefficients** </span>
+
+- The ratio $\frac{\pi}{1-\pi} \in (0, \infty)$ is called the **odds** of some event.
+- Example: If 1 in 5 people will default, the odds is 1/4 since $\pi = 0.2$ implies an odds of $0.2/(1−0.2) = 1/4$.
+
+$$\ln \left( \frac{\pi(x)}{1 - \pi(x)} \right)= \beta_0 + \beta_1x$$
+
+-Increasing $x$ by one unit changes the **log-odds** by $\beta_1$, or it multiplies the odds by $e^{\beta_1}$.
+
+
+:::{.callout-note}
+- $\beta_1$ does *not* correspond to the change in $\pi(x)$ associated with a one-unit
+increase in $x$.
+- $\beta_1$ is the change in **log odds** associated with one-unit increase in $x$.
+:::
+
+## Logistic Regression in R
+
+::::{.columns}
+:::{.column width="49%"}
+- `GENDER = 1` if male
+- `GENDER = 0` if female
+- Use HEIGHT (centimeter, 1 cm = 0.3937 in) to predict/classify GENDER: whether the person is male or female.
+:::
+
+:::{.column width="2%"}
+:::
+
+:::{.column width="49%"}
+```{r echo=FALSE, out.width="100%", fig.align='center'}
+knitr::include_graphics("./images/img-model/height.jpeg")
+```
+:::
+::::
+
+```{r}
+body <- read.table("./data/01 - Body Data.txt", header = TRUE)
+head(body)
+```
+
+-------------------------------------------------------------------
+
+<span style="color:blue"> **Data Summary** </span>
+
+::::{.columns}
+:::{.column width="49%"}
+```{r}
+table(body$GENDER)
+summary(body[body$GENDER == 1, ]$HEIGHT)
+summary(body[body$GENDER == 0, ]$HEIGHT)
+```
+:::
+
+:::{.column width="2%"}
+:::
+
+:::{.column width="49%"}
+```{r, echo=2, out.width="100%"}
+par(mar = c(4, 4, 0, 0))
+boxplot(body$HEIGHT ~ body$GENDER)
+```
+:::
+::::
+
+---------------------------------------------------------------------
+
+<span style="color:blue"> **Model Fitting** </span>
+
+```{r, highlight.output = 10:12, output.lines = -1}
+logit_fit <- glm(GENDER ~ HEIGHT, data = body, family = "binomial")
+(summ_logit_fit <- summary(logit_fit))
+```
+
+<br>
+
+```{r}
+summ_logit_fit$coefficients
+```
+
+- $\hat{\eta} = \ln \left( \frac{\hat{\pi}}{1 - \hat{\pi}}\right) = -40.55 + 0.24 \times \text{HEIGHT}$
+- $\hat{\eta}(x) = \hat{\beta}_0 + \hat{\beta}_1x$
+- $\hat{\eta}(x+1) = \hat{\beta}_0 + \hat{\beta}_1(x+1)$
+- $\hat{\eta}(x+1) - \hat{\eta}(x) = \hat{\beta}_1 = \ln(\text{odds}_{x+1}) - \ln(\text{odds}_{x}) = \ln \left( \frac{\text{odds}_{x+1}}{\text{odds}_{x}} \right)$
+- A one centimeter increase in `HEIGHT` increases the *log odds* of being male by 0.24 units.
+- The **odds ratio**, $\widehat{OR} = \frac{\text{odds}_{x+1}}{\text{odds}_{x}} = e^{\hat{\beta}_1} = e^{0.24} = 1.273$.
+- The odds of being male increases by 27.3% with an additional one centimeter of `HEIGHT`.
+
+------------------------------------------------------------------------
+
+<span style="color:blue"> **Prediction** </span>
+
+<span style="color:red"> ***Pr(GENDER = 1) When HEIGHT is 170 cm*** </span>
+
+<!-- $$\log\left(\frac{\hat{\pi}}{1-\hat{\pi}}\right) = -40.55+0.24 \times 170$$ -->
+
+$$ \hat{\pi}(x = 170) = \frac{\exp(\hat{\beta}_0+\hat{\beta}_1 x)}{1+\exp(\hat{\beta}_0+\hat{\beta}_1 x)} = \frac{\exp(-40.55+0.24 \times 170)}{1+\exp(-40.55+0.24 \times 170)} = 0.633 = 63.3\%$$
+
+```{r, echo=TRUE}
+pi_hat <- predict(logit_fit, type = "response")
+eta_hat <- predict(logit_fit, type = "link")  ## default gives us b0 + b1*x
+predict(logit_fit, newdata = data.frame(HEIGHT = 170), type = "response")
+```
+
+<span style="color:red"> ***Probability Curve*** </span>
+
+:::{.callout-note icon=false}
+## What is the probability of being male when the `HEIGHT` is 160 cm? What about when the `HEIGHT`is 180 cm?
+:::
+
+```{r}
+predict(logit_fit, newdata = data.frame(HEIGHT = c(160, 170, 180)), type = "response")
+```
+
+::::{.columns}
+:::{.column width="60%"}
+```{r default-predict-viz, echo=FALSE, out.width = "90%", fig.asp=0.7}
+height_0 <- body$HEIGHT[body$GENDER == 0]
+height_1 <- body$HEIGHT[body$GENDER == 1]
+newdata <- data.frame(HEIGHT = sort(body$HEIGHT))
+pi_hat <- predict(logit_fit, newdata = newdata, type = "response")
+par(mar = c(3, 3, 0, 0), mgp = c(2, 0.5, 0), las = 1)
+plot(sort(body$HEIGHT), pi_hat, col = 4, xlab = "balance",
+     ylab = "Probability of GENDER = 1", type = "l", lwd = 5)
+points(height_0, rep(0, length(height_0)), pch = 3, cex = 0.2,
+       col = alpha("black", alpha = 0.5))
+points(height_1, rep(1, length(height_1)), pch = 3, cex = 0.2,
+       col = alpha("red", alpha = 0.5))
+abline(h = 0.5, lwd = 0.5, lty = 2)
+
+pi_new <- predict(logit_fit, newdata = data.frame(HEIGHT = c(160, 170, 180)), 
+                  type = "response")
+points(c(160, 170, 180), pi_new, pch = c(15, 16, 17), cex = 2,
+       col = c("#ffb3a3", "#d1bc26", "#18ad90"))
+```
+:::
+
+:::{.column width="40%"}
+- **<span style="color:pink"> `r paste0(160, " cm, Pr(male) = ", round(pi_new[1], 2))`</span>**
+- **<span style="color:gold"> `r paste0(170, " cm, Pr(male) = ", round(pi_new[2], 2))`</span>**
+- **<span style="color:green"> `r paste0(180, " cm, Pr(male) = ", round(pi_new[3], 2))`</span>**
+:::
+::::
+
+## Evaluation Metrics
+
+<span style="color:blue"> **Sensitivity and Specificity** </span>
+
+
+|                        | 1               | 0             |
+|------------------------|-------------------------------|-------------------------------|
+| **Labeled 1**     | **True Positive  (TP)**           | **False Positive (FP)**|
+| **Labeled 0** | **False Negative (FN)**| **True Negative  (TN)** 
+
+
+- **Sensitivity (True Positive Rate)** $= P( \text{Labeled 1} \mid \text{1}) = \frac{TP}{TP+FN}$
+- **Specificity (True Negative Rate)** $= P( \text{Labeled 0} \mid \text{0}) = \frac{TN}{FP+TN}$ 
+- **Accuracy** $= \frac{TP + TN}{TP+FN+FP+TN}$
+<!-- - **F1 score** $= \frac{2TP}{2TP+FP+FN}$ -->
+- More on [Wiki page](https://en.wikipedia.org/wiki/Sensitivity_and_specificity)
+
+-------------------------------------------------------------------
+
+<span style="color:blue"> **Confusion Matrix** </span>
+
+```{r confusion, echo=TRUE, eval=TRUE}
+prob <- predict(logit_fit, type = "response")
+
+## true observations
+gender_true <- body$GENDER
+
+## predicted labels
+gender_predict <- (prob > 0.5) * 1
+
+## confusion matrix
+table(gender_predict, gender_true)
+```
+
+--------------------------------------------------------------------
+
+<span style="color:blue"> **Receiver Operating Characteristic (ROC) Curve** </span>
+
+- **Receiver operating characteristic (ROC) curve** 
+  + Plots True Positive Rate (Sensitivity) vs. False Positive Rate (1 - Specificity)
+- R packages for ROC curves: [ROCR](http://ipa-tys.github.io/ROCR/) and [pROC](https://web.expasy.org/pROC/), [yardstick of Tidymodels](https://yardstick.tidymodels.org/)
+
+```{r, echo=FALSE, out.width="60%", warning=FALSE, message=FALSE, fig.align='center'}
+#| label: fig-roc-curve
+#| fig-cap: ROC curve for Gender ~ Height
+library(ROCR)
+# create an object of class prediction 
+pred <- ROCR::prediction(
+    predictions = prob, 
+    labels = gender_true)
+
+# calculates the ROC curve
+roc <- ROCR::performance(
+    prediction.obj = pred, 
+    measure = "tpr",
+    x.measure = "fpr")
+par(mar = c(3, 3, 0, 3))
+plot(roc, colorize = TRUE)
+```
+
+
+## Exercises
+
+1. The following logistic regression equation is used for predicting whether a bear is male or female. The value of $\pi$ is the probability that the bear is male.
+$$\log\left(\frac{\pi}{1-\pi}\right) = 2.3 - 0.0573 (\text{Length}) + 0.00842(\text{Weight})$$
+    (a) Identify the predictor and response variables. Which of these are dummy variables?
+    (b) Given that the variable `Length`is in the model, does a heavier weight increase or decrease the probability that the bear is a male? Please explain.
+    (c) The given regression equation has an overall p-value of 0.218. What does that suggest about the quality of predictions made using the regression equation?
+    (d) Use a length of 60 in. and a weight of 300 lb to find the probability that the bear is a male. Also, what is the probability that the bear is a female?

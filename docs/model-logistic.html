@@ -2,28 +2,98 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-0.9.462">
+<meta name="generator" content="quarto-1.1.251">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="This book serves as a main reference book for my MATH 4720 Statistical Methods and MATH 4740 Biostatistical Methods at Marquette University. Some topics can also be discussed in an introductory data science course. You’ll learn basic probability and statistical concepts as well as data analysis techniques such as linear regression using R computing software.">
 
 <title>Introduction to Statistics - 25&nbsp; Logistic Regression</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-span.underline{text-decoration: underline;}
-div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
+
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
-<meta name="quarto:offset" content="./">
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
 <link href="./model-bayes.html" rel="next">
 <link href="./model-reg.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
@@ -31,10 +101,10 @@ ul.task-list{list-style: none;}
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link id="quarto-text-highlighting-styles" href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -55,6 +125,7 @@ ul.task-list{list-style: none;}
   }
 }</script>
 
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 </head>
 
@@ -117,189 +188,189 @@ ul.task-list{list-style: none;}
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
-    <div class="sidebar-item-container"> 
-        <a href="./intro.html" class="sidebar-item-text sidebar-link">Statistics and Data</a>
-      <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
-        <i class="bi bi-chevron-right ms-2"></i>
-      </a>
-    </div>
-    <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-        <li class="sidebar-item">
+      <div class="sidebar-item-container"> 
+            <a href="./intro.html" class="sidebar-item-text sidebar-link">Statistics and Data</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./intro-stats.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">What is Statistics</span></a>
+  <a href="./intro-stats.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Science of Data and Data Science</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./intro-data.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">What is Data</span></a>
+  <a href="./intro-data.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./intro-r.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">R for Statistics</span></a>
+  <a href="./intro-r.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Tool foR Data</span></a>
   </div>
 </li>
-    </ul>
+      </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
-    <div class="sidebar-item-container"> 
-        <a href="./datasummary.html" class="sidebar-item-text sidebar-link">Summarizing Data</a>
-      <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
-        <i class="bi bi-chevron-right ms-2"></i>
-      </a>
-    </div>
-    <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-        <li class="sidebar-item">
+      <div class="sidebar-item-container"> 
+            <a href="./datasummary.html" class="sidebar-item-text sidebar-link">Summarizing Data</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./data-graphics.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Visualization</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./data-numerics.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Data Sample Statistics</span></a>
   </div>
 </li>
-    </ul>
+      </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
-    <div class="sidebar-item-container"> 
-        <a href="./prob.html" class="sidebar-item-text sidebar-link">Probability</a>
-      <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
-        <i class="bi bi-chevron-right ms-2"></i>
-      </a>
-    </div>
-    <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
-        <li class="sidebar-item">
+      <div class="sidebar-item-container"> 
+            <a href="./prob.html" class="sidebar-item-text sidebar-link">Probability</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prob-define.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Definition of Probability</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prob-rule.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability Rules</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prob-rv.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Random Variables</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prob-disc.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Discrete Probability Distributions</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prob-cont.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Continuous Probability Distributions</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prob-samdist.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Sampling Distribution</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prob-llnclt.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Law of Large Numbers and Central Limit Theorem</span></a>
   </div>
 </li>
-    </ul>
+      </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
-    <div class="sidebar-item-container"> 
-        <a href="./infer.html" class="sidebar-item-text sidebar-link">Statistical Inference</a>
-      <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
-        <i class="bi bi-chevron-right ms-2"></i>
-      </a>
-    </div>
-    <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
-        <li class="sidebar-item">
+      <div class="sidebar-item-container"> 
+            <a href="./infer.html" class="sidebar-item-text sidebar-link">Statistical Inference</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-ci.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Confidence Interval</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-bt.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Bootstrapping</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-ht.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Hypothesis Testing</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-twomean.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Comparing Two Population Means</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-var.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Inference About Variances</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-prop.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Inference About Proportions</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./infer-goodnessfit.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Test of Goodness of Fit</span></a>
+  <a href="./infer-goodnessfit.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Inference about Categorical Data</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./infer-indep.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Test of Independence</span></a>
+  <a href="./infer-indep.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">infer-indep.html</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-bayes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-nonpar.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Nonparametric Inference</span></a>
   </div>
 </li>
-    </ul>
+      </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
-    <div class="sidebar-item-container"> 
-        <a href="./model.html" class="sidebar-item-text sidebar-link">Statistical Models</a>
-      <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
-        <i class="bi bi-chevron-right ms-2"></i>
-      </a>
-    </div>
-    <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
-        <li class="sidebar-item">
+      <div class="sidebar-item-container"> 
+            <a href="./model.html" class="sidebar-item-text sidebar-link">Statistical Models</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-anova.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-reg.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Linear Regression</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-logistic.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Logistic Regression</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-bayes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-survival.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Survival Analysis</span></a>
   </div>
 </li>
-    </ul>
+      </ul>
   </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
@@ -311,13 +382,18 @@ ul.task-list{list-style: none;}
 </nav>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc">
+        <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#the-r-user-interface" id="toc-the-r-user-interface" class="nav-link active" data-scroll-target="#the-r-user-interface"> <span class="header-section-number">25.1</span> The R User Interface</a></li>
+  <li><a href="#regression-vs.-classification" id="toc-regression-vs.-classification" class="nav-link active" data-scroll-target="#regression-vs.-classification"><span class="toc-section-number">25.1</span>  Regression vs.&nbsp;Classification</a></li>
+  <li><a href="#introduction-to-logistic-regression" id="toc-introduction-to-logistic-regression" class="nav-link" data-scroll-target="#introduction-to-logistic-regression"><span class="toc-section-number">25.2</span>  Introduction to Logistic Regression</a></li>
+  <li><a href="#simple-logistic-regression-model" id="toc-simple-logistic-regression-model" class="nav-link" data-scroll-target="#simple-logistic-regression-model"><span class="toc-section-number">25.3</span>  Simple Logistic Regression Model</a></li>
+  <li><a href="#logistic-regression-in-r" id="toc-logistic-regression-in-r" class="nav-link" data-scroll-target="#logistic-regression-in-r"><span class="toc-section-number">25.4</span>  Logistic Regression in R</a></li>
+  <li><a href="#evaluation-metrics" id="toc-evaluation-metrics" class="nav-link" data-scroll-target="#evaluation-metrics"><span class="toc-section-number">25.5</span>  Evaluation Metrics</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="toc-section-number">25.6</span>  Exercises</a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/chenghanyustats/introstatsbook/edit/master/model-logistic.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/model-logistic.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -327,6 +403,11 @@ ul.task-list{list-style: none;}
 <h1 class="title"><span id="sec-model-logistic" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Logistic Regression</span></span></h1>
 </div>
 
+<div>
+  <div class="description">
+    <p>This book serves as a main reference book for my MATH 4720 Statistical Methods and MATH 4740 Biostatistical Methods at Marquette University. Some topics can also be discussed in an introductory data science course. You’ll learn basic probability and statistical concepts as well as data analysis techniques such as linear regression using R computing software.</p>
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
@@ -338,12 +419,574 @@ ul.task-list{list-style: none;}
 
 </header>
 
-<p>This chapter provides a broad overview of the R language that will get you programming right away. In it, you will build a pair of virtual dice that you can use to generate random numbers. Don’t worry if you’ve never programmed before; the chapter will teach you everything you need to know.</p>
-<p>To simulate a pair of dice, you will have to distill each die into its essential features. You cannot place a physical object, like a die, into a computer (well, not without unscrewing some screws), but you can save <em>information</em> about the object in your computer’s memory.</p>
-<p>Which information should you save? In general, a die has six important pieces of information: when you roll a die, it can only result in one of six numbers: 1, 2, 3, 4, 5, and 6. You can capture the essential characteristics of a die by saving the numbers 1, 2, 3, 4, 5, and 6 as a group of values in your computer’s memory.</p>
-<p>Let’s work on saving these numbers first, and then consider a method for “rolling” our die.</p>
-<section id="the-r-user-interface" class="level2" data-number="25.1">
-<h2 data-number="25.1" class="anchored" data-anchor-id="the-r-user-interface"><span class="header-section-number">25.1</span> The R User Interface</h2>
+<div class="cell">
+
+</div>
+<section id="regression-vs.-classification" class="level2" data-number="25.1">
+<h2 data-number="25.1" class="anchored" data-anchor-id="regression-vs.-classification"><span class="header-section-number">25.1</span> Regression vs.&nbsp;Classification</h2>
+<ul>
+<li>Linear regression assumes that the response <span class="math inline">\(Y\)</span> is <em>numerical</em>.</li>
+<li>In many situations, <span class="math inline">\(Y\)</span> is <strong>categorical</strong>.</li>
+</ul>
+<div class="columns">
+<div class="column" style="width:49%;">
+<p><strong>Normal vs.&nbsp;COVID vs.&nbsp;Smoker’s Lungs</strong></p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/img-model/covid_lung.jpeg" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:2%;">
+
+</div><div class="column" style="width:49%;">
+<p><strong>Fake vs.&nbsp;Fact</strong></p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/img-model/fake_news.jpeg" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>The process of predicting a categorical response is known as <strong>classification</strong>.</li>
+</ul>
+<hr>
+<p><span style="color:blue"> <strong>Regression Function <span class="math inline">\(f(x)\)</span> vs.&nbsp;Classifier <span class="math inline">\(C(x)\)</span></strong> </span></p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="./images/img-model/regression.png" class="img-fluid" style="width:100.0%"></p>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-classification-regression" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="./images/img-model/classification.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;25.1: Difference between classification and regression (https://daviddalpiaz.github.io/r4sl/classification-overview.html)</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+<p><span style="color:blue"> <strong>Classification Example</strong> </span></p>
+<ul>
+<li>Predict whether people will default on their credit card payment, where <span class="math inline">\((Y)\)</span> is <code>yes</code> or <code>no</code>, based on their monthly credit card balance, <span class="math inline">\((X)\)</span>.</li>
+<li>We use the sample data <span class="math inline">\(\{(x_1, y_1), \dots, (x_n, y_n)\}\)</span> to build a classifier.</li>
+</ul>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-credit-boxplot" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="model-logistic_files/figure-html/fig-credit-boxplot-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;25.2: Boxplot of Default vs.&nbsp;Balance</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:40%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/img-model/credit_card.jpeg" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<hr>
+<p><span style="color:blue"> <strong>Why Not Linear Regression?</strong> </span></p>
+<p><span class="math display">\[Y =\begin{cases}
+    0  &amp; \quad \text{if not default}\\
+    1  &amp; \quad \text{if default}
+     \end{cases}\]</span></p>
+<ul>
+<li><span class="math inline">\(Y = \beta_0 + \beta_1X + \epsilon\)</span>, <span class="math inline">\(\, X =\)</span> credit card balance</li>
+</ul>
+<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+What is the problem with this dummy variable approach?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
+</div>
+</div>
+<ul>
+<li><span class="math inline">\(\hat{Y} = b_0 + b_1X\)</span> estimates <span class="math inline">\(P(Y = 1 \mid X) = P(default = yes \mid balance)\)</span></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-simple-regression" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="model-logistic_files/figure-html/fig-simple-regression-1.png" class="img-fluid figure-img" style="width:72.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;25.3: Graphical illustration of why a simple linear regression model won’t work for Default ~ Balance</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><strong>Some estimates might be outside <span class="math inline">\([0, 1]\)</span></strong>, which doesn’t make sense given that <span class="math inline">\(Y\)</span> is a probability.</li>
+</ul>
+<hr>
+<p><span style="color:blue"> <strong>Why Logistic Regression?</strong> </span></p>
+<ul>
+<li>We first predict the <strong>probability</strong> of each category of <span class="math inline">\(Y\)</span>.</li>
+<li>Then, we predict the probability of <code>default</code> using an <span style="color:blue"><strong>S-shaped</strong> curve</span>.</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-logistic-reg" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="model-logistic_files/figure-html/fig-logistic-reg-1.png" class="img-fluid figure-img" style="width:65.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;25.4: Graphical illustration of why a logistic regression model works better for Default ~ Balance</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="introduction-to-logistic-regression" class="level2" data-number="25.2">
+<h2 data-number="25.2" class="anchored" data-anchor-id="introduction-to-logistic-regression"><span class="header-section-number">25.2</span> Introduction to Logistic Regression</h2>
+<p><span style="color:blue"> <strong>Binary Responses</strong> </span></p>
+<ul>
+<li>Treat each outcome, default <span class="math inline">\((y = 1)\)</span> and not default <span class="math inline">\((y = 0)\)</span>, as success and failure arising from separate <strong>Bernoulli</strong> trials.</li>
+</ul>
+<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+What is a Bernoulli trial?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>A Bernoulli trial is a special case of a binomial trial when the number of trials is <span class="math inline">\(m = 1\)</span>.
+<ul>
+<li>There are <strong>exactly two</strong> possible outcomes, “success” and “failure”.</li>
+<li>The probability of success, <span class="math inline">\(\pi\)</span>, is <strong>constant</strong>.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+In the default credit card example,
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Do we have exactly two outcomes?</li>
+<li>Do we have constant probability? <span class="math inline">\(P(y_1 = 1) = P(y_2 = 1) = \cdots = P(y_n = 1) = \pi?\)</span></li>
+</ul>
+</div>
+</div>
+<p><span style="color:red"> <strong><em>Nonconstant Probability</em></strong></span></p>
+<div class="columns">
+<div class="column" style="width:49%;">
+<ul>
+<li>Two outcomes: Default <span class="math inline">\((y = 1)\)</span> and Not Default <span class="math inline">\((y = 0)\)</span></li>
+<li>The probability of success, <span class="math inline">\(\pi\)</span>, <em>changes with</em> the value of predictor, <span class="math inline">\(X\)</span>!</li>
+<li>With a different value of <span class="math inline">\(x_i\)</span>, each Bernoulli trial outcome, <span class="math inline">\(y_i\)</span>, has a <em>different</em> probability of success, <span class="math inline">\(\pi_i\)</span>.</li>
+</ul>
+</div><div class="column" style="width:2%;">
+
+</div><div class="column" style="width:49%;">
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="model-logistic_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" style="width:100.0%"></p>
+</div>
+</div>
+</div>
+</div>
+<p><span class="math display">\[ y_i \mid x_i \stackrel{indep}{\sim} \text{Bernoulli}(\pi(x_i)) = binomial(m=1,\pi = \pi(x_i)) \]</span></p>
+<ul>
+<li><span class="math inline">\(X =\)</span> <code>balance</code>. <span class="math inline">\(x_1 = 2000\)</span> has a larger <span class="math inline">\(\pi_1 = \pi(2000)\)</span> than <span class="math inline">\(\pi_2 = \pi(500)\)</span> with <span class="math inline">\(x_2 = 500\)</span> because credit cards with a higher balance are more likely to default.</li>
+</ul>
+<hr>
+<p><span style="color:blue"> <strong>Logistic Regression</strong> </span></p>
+<ul>
+<li><strong>Logistic regression</strong> models a <strong>binary</strong> response <span class="math inline">\((Y)\)</span> using predictors <span class="math inline">\(X_1, \dots, X_k\)</span>.
+<ul>
+<li><span class="math inline">\(k = 1\)</span>: simple logistic regression</li>
+<li><span class="math inline">\(k &gt; 1\)</span>: multiple logistic regression</li>
+</ul></li>
+<li>Instead of predicting <span class="math inline">\(y_i\)</span> directly, we use the predictors to model its <em>probability</em> of success, <span class="math inline">\(\pi_i\)</span>.</li>
+</ul>
+<center>
+<strong>But how?</strong>
+</center>
+<p><br></p>
+<p><span style="color:red"> <strong><em>Logit function <span class="math inline">\(\eta = logit(\pi) = \ln\left(\frac{\pi}{1-\pi}\right)\)</span></em></strong> </span></p>
+<ul>
+<li><strong>Transform <span class="math inline">\(\pi \in (0, 1)\)</span> into another variable <span class="math inline">\(\eta \in (-\infty, \infty)\)</span>. Then fit a linear regression on <span class="math inline">\(\eta\)</span>.</strong></li>
+<li><strong>Logit function:</strong> For <span class="math inline">\(0 &lt; \pi &lt; 1\)</span></li>
+</ul>
+<p><span class="math display">\[\eta = logit(\pi) = \ln\left(\frac{\pi}{1-\pi}\right)\]</span></p>
+<div class="cell" data-layout-align="center" data-hash="model-logistic_cache/html/fig-logit-function_f13f0b55fe6374074806ddc7bd0ef754">
+<div class="cell-output-display">
+<div id="fig-logit-function" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="model-logistic_files/figure-html/fig-logit-function-1.png" class="img-fluid figure-img" style="width:72.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;25.5: Graphical illustration of the logit function</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p><span style="color:red"> <strong><em>Logistic Function <span class="math inline">\(\pi = logistic(\eta) = \frac{\exp(\eta)}{1+\exp(\eta)}\)</span></em></strong> </span></p>
+<ul>
+<li>The <em>logit</em> function <span class="math inline">\(\eta = logit(\pi) = \ln\left(\frac{\pi}{1-\pi}\right)\)</span> takes a value <span class="math inline">\(\pi \in (0, 1)\)</span> and maps it to a value <span class="math inline">\(\eta \in (-\infty, \infty)\)</span>.</li>
+<li><strong>Logistic function</strong>: <span class="math display">\[\pi = logistic(\eta) = \frac{\exp(\eta)}{1+\exp(\eta)} = \frac{1}{1+\exp(-\eta)} \in (0, 1)\]</span></li>
+<li>The <em>logistic</em> function takes a value <span class="math inline">\(\eta \in (-\infty, \infty)\)</span> and maps it to a value <span class="math inline">\(\pi \in (0, 1)\)</span>.</li>
+<li>So once <span class="math inline">\(\eta\)</span> is estimated by the linear regression, we use the logistic function to transform <span class="math inline">\(\eta\)</span> back to the probability.</li>
+</ul>
+<div class="cell" data-layout-align="center" data-hash="model-logistic_cache/html/fig-logistic-function_08143f437a4d1322616cfd8215775a62">
+<div class="cell-output-display">
+<div id="fig-logistic-function" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="model-logistic_files/figure-html/fig-logistic-function-1.png" class="img-fluid figure-img" style="width:72.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;25.6: Graphical illustration of the logistic function</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="simple-logistic-regression-model" class="level2" data-number="25.3">
+<h2 data-number="25.3" class="anchored" data-anchor-id="simple-logistic-regression-model"><span class="header-section-number">25.3</span> Simple Logistic Regression Model</h2>
+<ul>
+<li>For <span class="math inline">\(i = 1, \dots, n\)</span> and with one predictor <span class="math inline">\(X\)</span>: <span class="math display">\[(Y_i \mid X = x_i) \stackrel{indep}{\sim} \text{Bernoulli}(\pi(x_i))\]</span> <span class="math display">\[\text{logit}(\pi_i) = \ln \left( \frac{\pi(x_i)}{1 - \pi(x_i)} \right) = \eta_i = \beta_0+\beta_1 x_{i}\]</span></li>
+</ul>
+<p><span class="math display">\[\small \pi_i = \frac{\exp(\beta_0+\beta_1 x_{i})}{1+\exp(\beta_0+\beta_1 x_{i})} = \frac{\exp(\eta_i)}{1 + \exp(\eta_i)}\]</span></p>
+<p><span class="math display">\[\small \hat{\pi}_i = \frac{\exp(\hat{\beta}_0+\hat{\beta}_1 x_{i} )}{1+\exp(\hat{\beta}_0+\hat{\beta}_1 x_{i})}\]</span></p>
+<hr>
+<p><span style="color:blue"> <strong>Probability Curve</strong> </span></p>
+<div class="columns">
+<div class="column" style="width:49%;">
+<ul>
+<li>The relationship between <span class="math inline">\(\pi(x)\)</span> and <span class="math inline">\(x\)</span> is not linear! <span class="math display">\[\pi(x) = \frac{\exp(\beta_0+\beta_1 x)}{1+\exp(\beta_0+\beta_1 x)}\]</span></li>
+<li>The amount that <span class="math inline">\(\pi(x)\)</span> changes due to a one-unit change in <span class="math inline">\(x\)</span> depends on the current value of <span class="math inline">\(x\)</span>.</li>
+<li>Regardless of the value of <span class="math inline">\(x\)</span>, if <span class="math inline">\(\beta_1 &gt; 0\)</span>, increasing <span class="math inline">\(x\)</span> will increase <span class="math inline">\(\pi(x)\)</span>.</li>
+</ul>
+</div><div class="column" style="width:2%;">
+
+</div><div class="column" style="width:49%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="model-logistic_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<hr>
+<p><span style="color:blue"> <strong>Interpretation of Coefficients</strong> </span></p>
+<ul>
+<li>The ratio <span class="math inline">\(\frac{\pi}{1-\pi} \in (0, \infty)\)</span> is called the <strong>odds</strong> of some event.</li>
+<li>Example: If 1 in 5 people will default, the odds is 1/4 since <span class="math inline">\(\pi = 0.2\)</span> implies an odds of <span class="math inline">\(0.2/(1−0.2) = 1/4\)</span>.</li>
+</ul>
+<p><span class="math display">\[\ln \left( \frac{\pi(x)}{1 - \pi(x)} \right)= \beta_0 + \beta_1x\]</span></p>
+<p>-Increasing <span class="math inline">\(x\)</span> by one unit changes the <strong>log-odds</strong> by <span class="math inline">\(\beta_1\)</span>, or it multiplies the odds by <span class="math inline">\(e^{\beta_1}\)</span>.</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><span class="math inline">\(\beta_1\)</span> does <em>not</em> correspond to the change in <span class="math inline">\(\pi(x)\)</span> associated with a one-unit increase in <span class="math inline">\(x\)</span>.</li>
+<li><span class="math inline">\(\beta_1\)</span> is the change in <strong>log odds</strong> associated with one-unit increase in <span class="math inline">\(x\)</span>.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="logistic-regression-in-r" class="level2" data-number="25.4">
+<h2 data-number="25.4" class="anchored" data-anchor-id="logistic-regression-in-r"><span class="header-section-number">25.4</span> Logistic Regression in R</h2>
+<div class="columns">
+<div class="column" style="width:49%;">
+<ul>
+<li><code>GENDER = 1</code> if male</li>
+<li><code>GENDER = 0</code> if female</li>
+<li>Use HEIGHT (centimeter, 1 cm = 0.3937 in) to predict/classify GENDER: whether the person is male or female.</li>
+</ul>
+</div><div class="column" style="width:2%;">
+
+</div><div class="column" style="width:49%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/img-model/height.jpeg" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>body <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"./data/01 - Body Data.txt"</span>, <span class="at">header =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(body)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  AGE GENDER PULSE SYSTOLIC DIASTOLIC HDL LDL WHITE  RED PLATE WEIGHT HEIGHT
+1  43      0    80      100        70  73  68   8.7 4.80   319   98.6  172.0
+2  57      1    84      112        70  35 116   4.9 4.73   187   96.9  186.0
+3  38      0    94      134        94  36 223   6.9 4.47   297  108.2  154.4
+4  80      1    74      126        64  37  83   7.5 4.32   170   73.1  160.5
+5  34      1    50      114        68  50 104   6.1 4.95   140   83.1  179.0
+6  77      1    60      134        60  55  75   5.7 3.95   192   86.5  166.7
+  WAIST ARM_CIRC  BMI
+1 120.4     40.7 33.3
+2 107.8     37.0 28.0
+3 120.3     44.3 45.4
+4  97.2     30.3 28.4
+5  95.1     34.0 25.9
+6 112.0     31.4 31.1</code></pre>
+</div>
+</div>
+<hr>
+<p><span style="color:blue"> <strong>Data Summary</strong> </span></p>
+<div class="columns">
+<div class="column" style="width:49%;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(body<span class="sc">$</span>GENDER)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  0   1 
+147 153 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(body[body<span class="sc">$</span>GENDER <span class="sc">==</span> <span class="dv">1</span>, ]<span class="sc">$</span>HEIGHT)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  155.0   169.1   173.8   174.1   179.4   193.3 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(body[body<span class="sc">$</span>GENDER <span class="sc">==</span> <span class="dv">0</span>, ]<span class="sc">$</span>HEIGHT)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  134.5   156.5   162.2   161.7   166.8   181.4 </code></pre>
+</div>
+</div>
+</div><div class="column" style="width:2%;">
+
+</div><div class="column" style="width:49%;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(body<span class="sc">$</span>HEIGHT <span class="sc">~</span> body<span class="sc">$</span>GENDER)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="model-logistic_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" style="width:100.0%"></p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+<p><span style="color:blue"> <strong>Model Fitting</strong> </span></p>
+<div class="cell" data-highlight.output="[10,11,12]" data-output.lines="-1">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>logit_fit <span class="ot">&lt;-</span> <span class="fu">glm</span>(GENDER <span class="sc">~</span> HEIGHT, <span class="at">data =</span> body, <span class="at">family =</span> <span class="st">"binomial"</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>(summ_logit_fit <span class="ot">&lt;-</span> <span class="fu">summary</span>(logit_fit))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = GENDER ~ HEIGHT, family = "binomial", data = body)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.5839  -0.6660   0.1078   0.6554   2.4998  
+
+Coefficients:
+             Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept) -40.54809    4.63084  -8.756   &lt;2e-16 ***
+HEIGHT        0.24173    0.02758   8.764   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 415.77  on 299  degrees of freedom
+Residual deviance: 251.50  on 298  degrees of freedom
+AIC: 255.5
+
+Number of Fisher Scoring iterations: 5</code></pre>
+</div>
+</div>
+<p><br></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>summ_logit_fit<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>               Estimate Std. Error   z value     Pr(&gt;|z|)
+(Intercept) -40.5480864 4.63083742 -8.756102 2.021182e-18
+HEIGHT        0.2417325 0.02758399  8.763507 1.892674e-18</code></pre>
+</div>
+</div>
+<ul>
+<li><span class="math inline">\(\hat{\eta} = \ln \left( \frac{\hat{\pi}}{1 - \hat{\pi}}\right) = -40.55 + 0.24 \times \text{HEIGHT}\)</span></li>
+<li><span class="math inline">\(\hat{\eta}(x) = \hat{\beta}_0 + \hat{\beta}_1x\)</span></li>
+<li><span class="math inline">\(\hat{\eta}(x+1) = \hat{\beta}_0 + \hat{\beta}_1(x+1)\)</span></li>
+<li><span class="math inline">\(\hat{\eta}(x+1) - \hat{\eta}(x) = \hat{\beta}_1 = \ln(\text{odds}_{x+1}) - \ln(\text{odds}_{x}) = \ln \left( \frac{\text{odds}_{x+1}}{\text{odds}_{x}} \right)\)</span></li>
+<li>A one centimeter increase in <code>HEIGHT</code> increases the <em>log odds</em> of being male by 0.24 units.</li>
+<li>The <strong>odds ratio</strong>, <span class="math inline">\(\widehat{OR} = \frac{\text{odds}_{x+1}}{\text{odds}_{x}} = e^{\hat{\beta}_1} = e^{0.24} = 1.273\)</span>.</li>
+<li>The odds of being male increases by 27.3% with an additional one centimeter of <code>HEIGHT</code>.</li>
+</ul>
+<hr>
+<p><span style="color:blue"> <strong>Prediction</strong> </span></p>
+<p><span style="color:red"> <strong><em>Pr(GENDER = 1) When HEIGHT is 170 cm</em></strong> </span></p>
+<!-- $$\log\left(\frac{\hat{\pi}}{1-\hat{\pi}}\right) = -40.55+0.24 \times 170$$ -->
+<p><span class="math display">\[ \hat{\pi}(x = 170) = \frac{\exp(\hat{\beta}_0+\hat{\beta}_1 x)}{1+\exp(\hat{\beta}_0+\hat{\beta}_1 x)} = \frac{\exp(-40.55+0.24 \times 170)}{1+\exp(-40.55+0.24 \times 170)} = 0.633 = 63.3\%\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>pi_hat <span class="ot">&lt;-</span> <span class="fu">predict</span>(logit_fit, <span class="at">type =</span> <span class="st">"response"</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>eta_hat <span class="ot">&lt;-</span> <span class="fu">predict</span>(logit_fit, <span class="at">type =</span> <span class="st">"link"</span>)  <span class="do">## default gives us b0 + b1*x</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(logit_fit, <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="at">HEIGHT =</span> <span class="dv">170</span>), <span class="at">type =</span> <span class="st">"response"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        1 
+0.6333105 </code></pre>
+</div>
+</div>
+<p><span style="color:red"> <strong><em>Probability Curve</em></strong> </span></p>
+<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+What is the probability of being male when the <code>HEIGHT</code> is 160 cm? What about when the <code>HEIGHT</code>is 180 cm?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(logit_fit, <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="at">HEIGHT =</span> <span class="fu">c</span>(<span class="dv">160</span>, <span class="dv">170</span>, <span class="dv">180</span>)), <span class="at">type =</span> <span class="st">"response"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        1         2         3 
+0.1334399 0.6333105 0.9509103 </code></pre>
+</div>
+</div>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="cell" data-fig.asp="0.7">
+<div class="cell-output-display">
+<p><img src="model-logistic_files/figure-html/default-predict-viz-1.png" class="img-fluid" style="width:90.0%"></p>
+</div>
+</div>
+</div><div class="column" style="width:40%;">
+<ul>
+<li><strong><span style="color:pink"> 160 cm, Pr(male) = 0.13</span></strong></li>
+<li><strong><span style="color:gold"> 170 cm, Pr(male) = 0.63</span></strong></li>
+<li><strong><span style="color:green"> 180 cm, Pr(male) = 0.95</span></strong></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="evaluation-metrics" class="level2" data-number="25.5">
+<h2 data-number="25.5" class="anchored" data-anchor-id="evaluation-metrics"><span class="header-section-number">25.5</span> Evaluation Metrics</h2>
+<p><span style="color:blue"> <strong>Sensitivity and Specificity</strong> </span></p>
+<table class="table">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 36%">
+<col style="width: 36%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>1</th>
+<th>0</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Labeled 1</strong></td>
+<td><strong>True Positive (TP)</strong></td>
+<td><strong>False Positive (FP)</strong></td>
+</tr>
+<tr class="even">
+<td><strong>Labeled 0</strong></td>
+<td><strong>False Negative (FN)</strong></td>
+<td><strong>True Negative (TN)</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Sensitivity (True Positive Rate)</strong> <span class="math inline">\(= P( \text{Labeled 1} \mid \text{1}) = \frac{TP}{TP+FN}\)</span></li>
+<li><strong>Specificity (True Negative Rate)</strong> <span class="math inline">\(= P( \text{Labeled 0} \mid \text{0}) = \frac{TN}{FP+TN}\)</span></li>
+<li><strong>Accuracy</strong> <span class="math inline">\(= \frac{TP + TN}{TP+FN+FP+TN}\)</span> <!-- - **F1 score** $= \frac{2TP}{2TP+FP+FN}$ --></li>
+<li>More on <a href="https://en.wikipedia.org/wiki/Sensitivity_and_specificity">Wiki page</a></li>
+</ul>
+<hr>
+<p><span style="color:blue"> <strong>Confusion Matrix</strong> </span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>prob <span class="ot">&lt;-</span> <span class="fu">predict</span>(logit_fit, <span class="at">type =</span> <span class="st">"response"</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="do">## true observations</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>gender_true <span class="ot">&lt;-</span> body<span class="sc">$</span>GENDER</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="do">## predicted labels</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>gender_predict <span class="ot">&lt;-</span> (prob <span class="sc">&gt;</span> <span class="fl">0.5</span>) <span class="sc">*</span> <span class="dv">1</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="do">## confusion matrix</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(gender_predict, gender_true)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>              gender_true
+gender_predict   0   1
+             0 118  29
+             1  29 124</code></pre>
+</div>
+</div>
+<hr>
+<p><span style="color:blue"> <strong>Receiver Operating Characteristic (ROC) Curve</strong> </span></p>
+<ul>
+<li><strong>Receiver operating characteristic (ROC) curve</strong>
+<ul>
+<li>Plots True Positive Rate (Sensitivity) vs.&nbsp;False Positive Rate (1 - Specificity)</li>
+</ul></li>
+<li>R packages for ROC curves: <a href="http://ipa-tys.github.io/ROCR/">ROCR</a> and <a href="https://web.expasy.org/pROC/">pROC</a>, <a href="https://yardstick.tidymodels.org/">yardstick of Tidymodels</a></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-roc-curve" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="model-logistic_files/figure-html/fig-roc-curve-1.png" class="img-fluid figure-img" style="width:60.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;25.7: ROC curve for Gender ~ Height</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="exercises" class="level2" data-number="25.6">
+<h2 data-number="25.6" class="anchored" data-anchor-id="exercises"><span class="header-section-number">25.6</span> Exercises</h2>
+<ol type="1">
+<li>The following logistic regression equation is used for predicting whether a bear is male or female. The value of <span class="math inline">\(\pi\)</span> is the probability that the bear is male. <span class="math display">\[\log\left(\frac{\pi}{1-\pi}\right) = 2.3 - 0.0573 (\text{Length}) + 0.00842(\text{Weight})\]</span>
+<ol type="a">
+<li>Identify the predictor and response variables. Which of these are dummy variables?</li>
+<li>Given that the variable <code>Length</code>is in the model, does a heavier weight increase or decrease the probability that the bear is a male? Please explain.</li>
+<li>The given regression equation has an overall p-value of 0.218. What does that suggest about the quality of predictions made using the regression equation?</li>
+<li>Use a length of 60 in. and a weight of 300 lb to find the probability that the bear is a male. Also, what is the probability that the bear is a female?</li>
+</ol></li>
+</ol>
 
 
 </section>
@@ -351,6 +994,24 @@ ul.task-list{list-style: none;}
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
@@ -400,7 +1061,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   for (var i=0; i<noterefs.length; i++) {
     const ref = noterefs[i];
     tippyHover(ref, function() {
-      let href = ref.getAttribute('href');
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);

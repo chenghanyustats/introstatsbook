@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>MATH 4720/MSSC 5720 Introduction to Statistics</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Dr. Cheng-Han Yu   Department of Mathematical and Statistical Sciences   Marquette University" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link rel="stylesheet" href="square_bullet.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: left, inverse, middle, title-slide
+
+.title[
+# MATH 4720/MSSC 5720 Introduction to Statistics
+]
+.subtitle[
+## You RRR a Beginner: R, RStudio and RStudio Cloud 👩‍💻
+]
+.author[
+### Dr. Cheng-Han Yu <br> Department of Mathematical and Statistical Sciences <br> Marquette University
+]
+.date[
+### September 07 2022
+]
+
+---
+
+
+
+
+
+
+
+
+
+layout: true
+
+&lt;style&gt;
+p.caption {
+  font-size: 0.6em;
+}
+&lt;/style&gt;
+
+&lt;!-- &lt;div class="my-footer"&gt; --&gt;
+&lt;!-- &lt;span&gt; --&gt;
+&lt;!-- &lt;a href="https://d2l.mu.edu/d2l/home/431031" target="_blank"&gt;D2L Website&lt;/a&gt; --&gt;
+&lt;!-- &lt;/span&gt; --&gt;
+&lt;!-- &lt;/div&gt; --&gt;
+
+&lt;!-- &lt;style type="text/css"&gt; --&gt;
+&lt;!-- .caption { --&gt;
+&lt;!--     font-size: x-small; --&gt;
+&lt;!--     text-align: center; --&gt;
+&lt;!-- } --&gt;
+&lt;!-- &lt;/style&gt; --&gt;
+
+
+---
+
+
+
+
+
+
+
+class: center, middle, inverse
+
+# **Let's get equipped with our tools!**
+
+
+
+
+---
+## R and RStudio
+
+.pull-left[
+&lt;img src="img/r-logo.png" width="45%" style="display: block; margin: auto;" /&gt;
+- [R](https://www.r-project.org/): *free open-source* **programming language** 📈
+- R is mainly for doing *data science* with strength in *statistical modeling, computing and data visualization*
+&lt;!-- - It's extensible with **packages** that include reusable R functions and data sets. --&gt;
+]
+
+
+--
+
+.pull-right[
+&lt;img src="img/RStudio-Logo.png" width="100%" style="display: block; margin: auto;" /&gt;
+- [RStudio](https://rstudio.com/) &lt;sup&gt;1&lt;/sup&gt;: interface for R, Python, etc called an **IDE** (integrated development environment), e.g. *"I write R code in the RStudio IDE"*.
+- RStudio is not a requirement for programming with R, but it's commonly used by R developers, statisticians and data scientists.
+]
+
+
+.footnote[[1] RStudio company is becoming [Posit](https://posit.co/) starting October 2022.]
+
+
+
+---
+## R and RStudio Interface
+
+- RStudio IDE includes
+  + a viewable environment, a file browser, data viewer, and a plotting pane. 👍
+  + also features integrated help, syntax highlighting, context-aware tab completion and more! 😄
+
+.pull-left-narrow[
+.center[**R**]
+&lt;img src="img/r_windows.jpg" width="100%" style="display: block; margin: auto;" /&gt;
+]
+.pull-right-wide[
+.center[**RStudio**]
+&lt;img src="img/rstudio_ubuntu.png" width="80%" style="display: block; margin: auto;" /&gt;
+]
+
+
+---
+exclude:true
+## R Packages 📦
+
+- **Packages** wrap up reusable R functions, the documentation that describes how to use them, and data sets all together.&lt;sup&gt;1&lt;/sup&gt;
+- As of January 2022, there are about 19,000 R packages available on [**CRAN**](https://cran.r-project.org/) (the Comprehensive R Archive Network)!&lt;sup&gt;2&lt;/sup&gt;
+- Let's work with an important subset of these!
+
+&lt;img src="img/hex-australia.png" width="40%" style="display: block; margin: auto;" /&gt;
+&lt;!-- &lt;sup&gt;3&lt;/sup&gt; --&gt;
+
+
+
+
+&lt;!-- ![:scale 10%](https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/readr.png)![:scale 10%](https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/readxl.png)![:scale 10%](https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/feather.png)![:scale 10%](https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/fs.png)![:scale 10%](https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/ggplot2.png)![:scale 10%](https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/dplyr.png)![:scale 10%](https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/tibble.png)![:scale 10%](https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/pipe.png)![:scale 10%](https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/purrr.png)![:scale 10%](https://raw.githubusercontent.com/rstudio/hex-stickers/master/thumbs/tidyr.png)![:scale 10%](https://raw.githubusercontent.com/rstudio/hex-stickers/master/thumbs/lubridate.png)![:scale 10%](https://raw.githubusercontent.com/rstudio/hex-stickers/master/thumbs/stringr.png)![:scale 10%](https://raw.githubusercontent.com/rstudio/hex-stickers/master/thumbs/rvest.png)![:scale 10%](https://raw.githubusercontent.com/rstudio/hex-stickers/master/thumbs/rmarkdown.png)![:scale 10%](https://raw.githubusercontent.com/rstudio/hex-stickers/master/thumbs/knitr.png)![:scale 10%](https://raw.githubusercontent.com/rstudio/hex-stickers/master/thumbs/xaringan.png)![:scale 10%](https://raw.githubusercontent.com/rstudio/hex-stickers/master/thumbs/shiny.png)![:scale 10%](https://raw.githubusercontent.com/rstudio/hex-stickers/master/thumbs/bookdown.png)![:scale 10%](https://raw.githubusercontent.com/rstudio/hex-stickers/master/thumbs/reticulate.png)![:scale 10%](https://raw.githubusercontent.com/rstudio/hex-stickers/master/thumbs/broom.png) --&gt;
+.footnote[
+&lt;sup&gt;1&lt;/sup&gt; Wickham and Bryan, [R Packages](https://r-pkgs.org/).
+
+&lt;sup&gt;2&lt;/sup&gt; [CRAN contributed packages](https://cran.r-project.org/web/packages/).
+
+&lt;sup&gt;3&lt;/sup&gt; Mitchell O'Hara-Wild, [useR! 2018 feature wall](https://www.mitchelloharawild.com/blog/user-2018-feature-wall/).
+]
+
+
+---
+exclude:true
+&lt;img src="install_r_student_files/figure-html/unnamed-chunk-9-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+## ☁️ RStudio Cloud - Statistics w/o hardware hassles
+
+- 😎 We can implement R programs *without* installing R and RStudio in your laptop! 
+- 😎 [**RStudio Cloud**](https://rstudio.cloud/) lets you do, share and learn data science **online for free**! 
+
+--
+
+.pull-left[
+### 😞 R/RStudio: Lots of friction 
+
+- Download and install R
+- Download and install RStudio
+- Install wanted R packages:
+  - rmarkdown
+  - tidyverse 
+  - ...
+- Load these packages
+- Download and install tools like Git
+]
+
+--
+
+.pull-right[
+### 🤓 RStudio Cloud: Much less friction 
+&lt;img src="img/cloud.png" width="40%" style="display: block; margin: auto;" /&gt;
+- Go to https://rstudio.cloud/
+- Log in
+
+
+```r
+&gt;hello R!
+```
+]
+
+---
+&lt;!-- &lt;br&gt; --&gt;
+
+.center[
+&lt;img src="img/rstudio-ide.png" width="90%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+- 😃 We do statistical analysis using RStudio IDE, **directly from a web browser**!
+
+.center[
+&lt;img src="img/rstudio-cloud.png" width="83%" style="display: block; margin: auto;" /&gt;
+]
+
+
+
+
+---
+## Install RStudio Cloud
+.lab[
+- *Step 1*: In the RStudio website https://rstudio.com/, please choose **Products &gt; RStudio Cloud** as shown below.
+]
+&lt;img src="img/rstudio_cloud.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+---
+## Install RStudio Cloud
+.lab[
+- *Step 2*: Click **GET STARTED FOR FREE**. 
+- *Step 3*: **Free &gt; Sign Up**. Sign up using your Marquette email address or the one you prefer.
+]
+&lt;img src="img/landing-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+
+
+---
+## New Projects
+
+In RStudio Cloud, click **New Project &gt; New RStudio Project**, then you are all set!
+
+.pull-left-wide[
+&lt;img src="img/new-project-cloud.png" width="80%" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right-narrow[
+**New RStudio Project**  
+**New Project from Git Repo**
+&lt;img src="img/new-project-option.png" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+- We will talk about Git/GitHub shortly.
+
+
+
+---
+exclude:true
+## New Projects
+
+.pull-left[
+A new project in RStudio Cloud
+&lt;img src="img/new-project-cloud.png" width="110%" style="display: block; margin: auto;" /&gt;
+]
+.pull-right[
+is a new project in RStudio IDE
+&lt;img src="img/new-project-local.png" width="90%" style="display: block; margin: auto;" /&gt;
+]
+
+.alert[
+If you use RStudio, use projects! Trust me, you won’t regret it. Find out more on [R for Data Science](https://r4ds.had.co.nz/workflow-projects.html).
+]
+
+
+---
+exclude:true
+## New Projects from Git
+
+.pull-left[
+A new project from Git repo in RStudio Cloud
+&lt;img src="img/new-project-git-cloud.png" width="110%" style="display: block; margin: auto;" /&gt;
+]
+.pull-right[
+is the same as a new project from Git in RStudio IDE
+&lt;img src="img/new-project-git-local.png" width="90%" style="display: block; margin: auto;" /&gt;
+]
+
+Both options `clone` a Git repo. 
+
+We will talk more about using Git/GitHub in RStudio next week.
+
+
+---
+exclude:true
+## Workspaces
+
+- When you create an account on RStudio Cloud you get a **workspace** of your own.
+- You can add a new workspace (click **+ New Space** in sidebar) and control its permissions.
+&lt;img src="img/rstudio-cloud-hide-sidebar.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+
+---
+## First R Code in RStudio Cloud!
+- Give your project a nice name (click Untitled Project), **math-4720** for example.
+- First R code: `"Hello WoRld!"` or `2 + 4` after `&gt;` in the **Console** pane.
+- Change the editor theme: **Tools &gt; Global Options &gt; Appearance**
+
+&lt;img src="img/rcloud_project.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+---
+exclude:true
+## More Tips
+
+- Read the [RStudio Cloud guide](https://rstudio.cloud/learn/guide)
+
+&lt;img src="img/rstudio-cloud-guide.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+
+
+---
+class: center, middle, inverse
+
+# Working in RStudio/RStudio Cloud
+
+---
+## RStudio Panes
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="./img/rstudio_panes.png" alt="RStudio 4 panes" width="85%" /&gt;
+&lt;p class="caption"&gt;RStudio 4 panes&lt;/p&gt;
+&lt;/div&gt;
+
+
+---
+## R Script
+- A R script is a **.R** file that contains R code.
+&lt;!-- - You type code into the Console if the code is short or you want to do some quick calculations or analysis. --&gt;
+&lt;!-- - Try to write your code in R scripts in the source pane, so the code can be saved and reused.  --&gt;
+- To create a R script, go to **File &gt; New &gt; R Script**, or click the green-plus icon on the topleft corner, and select R Script.
+
+&lt;img src="./img/script.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+
+
+---
+## Run Code
+- &lt;span style="color:blue"&gt; **Run** &lt;/span&gt;: run the **current line** or **selection of code**. 
+- &lt;span style="color:blue"&gt; **Icon right to the Run** &lt;/span&gt;: re-run the **previous** selected code. 
+
+&lt;!-- - &lt;span style="color:blue"&gt; **Source with Echo** &lt;/span&gt;: run **all** the code in the R script *and show output* --&gt;
+&lt;!--   + `option+ ctrl + enter` (Windows) or `shift + cmd + enter` (Mac) --&gt;
+&lt;img src="./img/script.png" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;!-- ![](./img/script.png){height=400px width=500px} --&gt;
+
+
+
+
+
+
+
+---
+## Environment Tab
+- The (global) environment is our workspace (*NOT* the RStudio Cloud workspace).
+- Anything created or imported into the current R session is stored in our environment and shown in the **Environment** tab.
+- After we run the R script, objects stored in the environment are
+  + Data set `mtcars`
+  + Object `x` storing integer values 1 to 10.
+  + Object `y` storing three numeric values 3, 5, 9.
+
+&lt;img src="./img/environment.png" width="96%" style="display: block; margin: auto;" /&gt;
+&lt;!-- ![](./img/environment.png){height=450px width=900px} --&gt;
+
+
+---
+exclude:true
+## History Tab
+- The **History** tab keeps a record of all previous commands.
+  + &lt;span style="color:blue"&gt;**save icon**&lt;/span&gt;: save all history to a file
+  + &lt;span style="color:blue"&gt;**To Console**&lt;/span&gt;: send the selected commands to the R console.
+  + &lt;span style="color:blue"&gt;**To Source** &lt;/span&gt;: inserted the selected commands into the current R script.
+
+&lt;img src="./img/history.png" width="96%" style="display: block; margin: auto;" /&gt;
+&lt;!-- ![](./img/history.png){height=450px width=900px} --&gt;
+
+---
+exclude:true
+## History Tab
+- The **History** tab keeps a record of all previous commands.
+  + &lt;span style="color:blue"&gt;**save icon**&lt;/span&gt;: save all history to a file
+  + &lt;span style="color:blue"&gt;**To Console**&lt;/span&gt;: send the selected commands to the R console.
+  + &lt;span style="color:blue"&gt;**To Source** &lt;/span&gt;: inserted the selected commands into the current R script.
+
+.tip[
+In R Console pane, use ⬆️  to show the previous commands.
+]
+
+
+---
+exclude:true
+## R Packages 📦
+- R **packages** are a collection of reusable R functions, code and data. 
+- When we start a R session, only built-in packages like `base`, `stats`, etc are available.
+- Installing a package is an easy way to access to others data and functions.
+
+
+---
+exclude:true
+
+background-image: url(./img/hex_laptop.jpeg)
+background-position: 50% 50%
+background-size: cover
+class: center, bottom
+
+###### ohi-science.org/news/takeaways-from-rstudioconf
+
+
+
+---
+exclude:true
+## Installing R Packages 📦
+.pull-left[
+- To install a package, for example, the [`ggplot2` package](https://ggplot2.tidyverse.org/), we use the command
+
+```r
+install.packages("ggplot2")
+```
+- **Packages &gt; Install**
+]
+
+
+.pull-right[
+&lt;p align="center"&gt;
+  &lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/ggplot2.png" style="width:400px;" /&gt;
+&lt;/p&gt;
+]
+
+
+---
+exclude:true
+## Loading R Packages 📦
+.pull-left[
+- To use any function or data in **ggplot2**, we write `ggplot2::` followed by the name of the function or data.
+
+
+```r
+ggplot2::ggplot(ggplot2::mpg, 
+                ggplot2::aes(
+                    x = displ, 
+                    y = hwy, 
+                    colour = class)
+                ) + 
+    ggplot2::geom_point()
+```
+
+.question[
+What happened when you run
+
+```r
+ggplot(mpg, aes(x = displ, 
+                y = hwy, 
+                colour = class)) + 
+    geom_point()
+```
+]
+]
+
+.pull-right[
+- We can load the package into our R session using `library()`. 
+- **With library(ggplot2)**, R knows the function and data are from the ggplot2 package.
+
+```r
+library(ggplot2)
+ggplot(mpg, aes(x = displ, 
+                y = hwy, 
+                colour = class)) + 
+    geom_point()
+```
+]
+
+
+
+---
+exclude:true
+## Installing and Loading R Packages
+- Now we are able to use the functions and data stored in the **ggplot2** package. For example, the data set `USPop` is stored in the `carData` package, and we can simply type its name to see the data:
+
+
+```r
+mpg
+```
+
+```
+## # A tibble: 234 × 11
+##   manufacturer model displ  year   cyl trans      drv     cty   hwy fl    class 
+##   &lt;chr&gt;        &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;      &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt; 
+## 1 audi         a4      1.8  1999     4 auto(l5)   f        18    29 p     compa…
+## 2 audi         a4      1.8  1999     4 manual(m5) f        21    29 p     compa…
+## 3 audi         a4      2    2008     4 manual(m6) f        20    31 p     compa…
+## 4 audi         a4      2    2008     4 auto(av)   f        21    30 p     compa…
+## 5 audi         a4      2.8  1999     6 auto(l5)   f        16    26 p     compa…
+## 6 audi         a4      2.8  1999     6 manual(m5) f        18    26 p     compa…
+## # … with 228 more rows
+```
+
+
+
+
+---
+exclude:true
+## Package Tab
+- The package tab shows the list of packages installed in your computer.
+- If checked, the package is loaded into R. If not, any command related to that package won't work unless you call the package explicitly, for example `carData::USPop`.
+- To load a package you want, simply check the box of that package (same as `library()`).
+- You can also install other packages by clicking on the **Install** icon.
+
+
+
+
+
+---
+## Help
+- Don't know how a function works or what a data set is about ❓ 
+- 👉 Simply type `?` followed by the data name or function name like
+
+```r
+?mean
+?mtcars
+```
+
+- A document will show up in the **Help** tab, teaching you how to use the function or explaining the data set.
+
+--
+
+.question[
+What does the function `mean()` do?
+]
+
+
+---
+exclude:true
+## Running R Script
+.lab[
+- Install and load R package **ggplot2** into your RStudio.
+- Create a new R script file named `lab01-run-script.R` in your project **lab-yourname**, then copy the following code into the script, and save it.
+
+```r
+x &lt;- 4
+y &lt;- 3
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy))
+```
+- Source the script. What happened?
+- Change `4` to `12` and `3` to `20`. Hit Run line by line. What happened?
+- Use `?mpg` to see what `displ` and `hwy` mean, and use `?ggplot` and `?geom_point` to see more on creating a ggplot.
+]
+
+
+---
+## Resources
+In RStudio Cloud sidebar,
+- R and RStudio [**Cheat Sheats**](https://rstudio.cloud/learn/cheat-sheets)
+- Learn more RStudio and statistical data science: [**Primers**](https://rstudio.cloud/learn/primers)
+.center[
+&lt;img src="img/primers.png" width="70%" style="display: block; margin: auto;" /&gt;
+]
+
+
+
+---
+.your-turn[
+- What is the size of `mtcars` data? 
+- Type `mtcars` and hit Enter in the Console to see the data set.
+- Discuss data type of each variable.
+- Type `mtcars[, 1]` and hit Enter in the Console. What do you see?
+]
+
+
+
+---
+class: center, middle, inverse
+
+# Install R and RStudio Locally to Your Computer
+
+---
+## Install R -- Step 1
+- Go to &lt;https://cloud.r-project.org&gt;
+- Click Download R for [your operating system]
+
+![](./img/r_download.png)
+
+
+---
+## Install R -- Step 2
+
+- If you are a Mac user, you should see the page as below. You are recommended to download and install the *latest* version of R (now **R-4.2.1 (Funny-Looking Kid)**), if your OS version allows to do so. Otherwise, choose a previous version, R-3.6.3. 
+- If you are a Windows user, after clicking Download R for Windows, please choose **base** version, then click **Download R-4.2.1 for Windows**. 
+&lt;!-- - If you are a Linux user, after clicking Download R for Linux, please choose the distribution you are using, ubuntu for example, and then follow the instruction to complete the installation. --&gt;
+
+![](./img/r_version.png)
+
+---
+## Install R -- Step 3
+- Once you install R successfully, when you open R, you should be able to see the following R terminal or console:
+
+.pull-left[
+**Windows**
+![](./img/r_windows.jpg)
+]
+.pull-right[
+**Mac**
+![](./img/r_mac.png)
+]
+
+---
+## Welcome to the R World! 
+- Now you are ready to use R to do statistical computation. 
+- You can use R like a calculator. After typing your formula, simply hit Enter, you get the answer! For example,
+
+
+```r
+1 + 2
+```
+
+```
+## [1] 3
+```
+
+```r
+30 * 42 / 3
+```
+
+```
+## [1] 420
+```
+
+```r
+log(5) - exp(3) * sqrt(7)
+```
+
+```
+## [1] -51.5319
+```
+
+&lt;!-- --- --&gt;
+&lt;!-- ## Install RStudio --&gt;
+
+&lt;!-- - [RStudio](https://rstudio.com/) is an integrated development environment (IDE) mainly for R.  --&gt;
+&lt;!-- - It provides lots of useful features that help us do statistical analysis and data science projects more efficiently.  --&gt;
+
+
+
+---
+## Install RStudio -- Step 1
+- In the [RStudio website](https://www.rstudio.com/), please choose **Products &gt; RStudio** as shown below.
+
+![](./img/rstudio.png)
+
+
+
+---
+## Install RStudio -- Step 2
+- Choose **RStudio Desktop** and click **DOWNLOAD RSTUDIO DESKTOP** for the *free* version.
+&lt;img src="./img/rstudio_desktop.png" width="67%" style="display: block; margin: auto;" /&gt;
+&lt;!-- ![](./img/rstudio_desktop.png){height=500px width=700px} --&gt;
+
+
+
+---
+## Install RStudio -- Step 3
+- Click **DOWNLOAD RSTUDIO FOR [YOUR SYSTEM]**. Then follow standard installation steps, you should get the software soon. 
+- Be careful that R should be installed successfully in your computer before you download and install RStudio.
+- **[Note]**: The latest version of RStudio is **2022.07.1+554**.
+
+
+&lt;img src="./img/rstudio_download.png" width="57%" style="display: block; margin: auto;" /&gt;
+&lt;!-- ![](./img/rstudio_download.png) --&gt;
+
+
+
+---
+## RStudio Screen
+- When you open RStudio, you should see something similar to the figure below.
+- If you do, congratulations! You are able to do every statistical computation in R using RStudio locally in your computer. 
+&lt;img src="./img/rstudio_ubuntu.png" width="78%" style="display: block; margin: auto;" /&gt;
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="macros.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9.5",
+"highlightLines": true,
+"highlightStyle": "tomorrow-night-bright",
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

@@ -5,38 +5,54 @@ library(emoji)
 library(openintro)
 ```
 
-## Parameter
+## Introduction
+
+<span style="color:blue"> **Parameter** </span>
+
 - A **parameter** is a number that describes a probability distribution. 
-  + <span style="color:blue"> Binomial: two parameters $n$ and $\pi$ </span>
-  + <span style="color:blue"> Poisson: one parameter $\mu$ </span>
-  + <span style="color:blue"> Normal: two parameters $\mu$ and $\sigma$ </span>
-  
+  + <span style="color:blue"> Binomial: two parameters, $n$ and $\pi$ </span>
+  + <span style="color:blue"> Poisson: one parameter, $\lambda$ </span>
+  + <span style="color:blue"> Normal: two parameters, $\mu$ and $\sigma$ </span>
 - In statistics, we usually assume our target population follows some distribution, but _its parameters are **unknown** to us_.
 
-:::{layout-ncol=2}
-<span style="color:blue"> Human weight follows $N(\mu, \sigma^2)$ </span>
+::::{.columns}
+:::{.column width="50%"}
 
-<span style="color:blue"> # of snowstorms in one year follows $Poisson(\lambda)$ </span>
+<center>
+<span style="color:blue"> Human weight follows $N(\mu, \sigma^2)$ </span>
+</center>
 
 ```{r, echo=FALSE, out.width = "60%", fig.align='center'}
 # https://unsplash.com/photos/5jctAMjz21A
 knitr::include_graphics("./images/img-prob/weight.jpeg")
 ```
+:::
+
+:::{.column width="50%"}
+
+<center>
+<span style="color:blue"> # of snowstorms in one year follows $Poisson(\lambda)$ </span>
+</center>
 
 ```{r, echo=FALSE, out.width = "55%", fig.align='center'}
 
 knitr::include_graphics("./images/img-prob/storm.jpeg")
 ```
 :::
-## Treat Each Data Point as a Random Variable
+::::
+
+--------------------------------------------------------------------
+
+<span style="color:blue"> **Treat Each Data Point as a Random Variable** </span>
+
 - $n$ random variables: $X_1, X_2, \dots, X_n$.
 - Assume $X_1, X_2, \dots, X_n$ follow the **same** distribution.
+- View $X_i$ as *a data point to be drawn* from a population with some distribution, say $N(\mu, \sigma^2)$.
 
-:::{.callout-note icon=false}
-## View $X_i$ as *a data point to be drawn* from a population with some distribution, say $N(\mu, \sigma^2)$.
-:::
 
 ```{r sample, cache=TRUE, echo=FALSE, out.width="56%", fig.align='center'}
+#| label: fig-sampling
+#| fig-cap: Illustration of sampling from a population
 par(mar = 0*c(1,1,1,1))
 plot(c(0, 2),
      c(0, 1.1),
@@ -79,83 +95,63 @@ for (i in these) {
 }
 ```
 
+- Assume that $X_1, X_2, \dots, X_n$ are **independent**, meaning the distribution/value of $X_i$ is not affected by any other $X_j$.
+- With the same distribution, $X_1, X_2, \dots, X_n$ are _**i**ndependent and **i**dentically **d**istributed_ (iid).
+<center>
+<span style="color:blue"> $X_1, X_2, \dots, X_n \stackrel{iid}{\sim} N(\mu, \sigma^2)$ </span>
+</center>
 
-- Assume that $X_1, X_2, \dots, X_n$ are **independent**, i.e., the distribution/value of $X_i$ is not affected by any other $X_j$.
-- With the same distribution, $X_1, X_2, \dots, X_n$ are _**i**ndependent and **i**dentically **d**istributed_ (i.i.d.), for example, <span style="color:blue"> $X_1, X_2, \dots, X_n \stackrel{iid}{\sim} N(\mu, \sigma^2)$ </span>
 - $(X_1, X_2, \dots, X_n)$ is a **random sample** of size $n$ from the population. 
-  + <span style="color:blue"> $X_1, X_2, \dots, X_{50}$ are randomly selected SAT scores from the SAT score population that follows $N(1100, 200^2)$ </span>
+  + <span style="color:blue"> Example: $X_1, X_2, \dots, X_{50}$ are randomly selected SAT scores from the SAT score population that follows $N(1100, 200^2)$ </span>
 
-:::{.callout-note icon=false}
+:::{.callout-note}
 - *Before* we actually collect the data, the data $X_1, X_2, \dots, X_n$ are random variables from the population distribution $N(\mu, \sigma^2)$.
 - Once we collect the data, we know the *realized* value of these random variables: $x_1, x_2, \dots, x_n$.
 :::
 
 ## Sampling Distribution
 - Any value computed from a sample $(X_1, X_2, \dots, X_n)$ is called a **(sample) statistic**.
-  + <span style="color:blue"> Sample mean $\frac{1}{n}\sum_{i=1}^n X_i$ is a statistic. </span>
+  + <span style="color:blue"> The sample mean $\frac{1}{n}\sum_{i=1}^n X_i$ is a statistic. </span>
+  + <span style="color:blue"> Sample variance $\frac{\sum_{i=1}^n \left(X_i -             \overline{X}\right)^2}{n-1}$ is also a statistic. </span>
 
-:::{.callout-note icon=false}
-## Can you provide another statistic?
-:::
-- <span style="color:blue"> Sample variance $\frac{\sum_{i=1}^n \left(X_i -             \overline{X}\right)^2}{n-1}$ is a statistic. </span>
-
-
-- Since $X_1, X_2, \dots, X_n$ are random variables, any transformation or function of $(X_1, X_2, \dots, X_n)$, or statistic, is also a random variable. 
+- Since $X_1, X_2, \dots, X_n$ are random variables, any transformation or function of $(X_1, X_2, \dots, X_n)$ or its statistics is also a random variable. 
 - The probability distribution of a statistic is called the **sampling distribution** of that statistic.
+  - It is the probability distribution of that statistic if we *__were to repeatedly__ draw samples of the same size from the population*.
 
 :::{.callout-note icon=false}
 ## Does the sample mean $\overline{X} = \frac{1}{n}\sum_{i=1}^n X_i$ have a sampling distribution?
+- Yes!
 :::
-- It is the probability distribution of that statistic if we *__were to repeatedly__ draw samples of the same size from the population*.
 
-```{r, echo=FALSE, out.width="100%", fig.cap="Biostatistics for the Biological and Health Sciences p.241", fig.align='center'}
+----------------------------------------------------------------
+
+<span style="color:blue"> **Sampling Distribution of Sample Mean** </span>
+
+```{r, echo=FALSE, out.width="100%", fig.align='center'}
+#| label: fig-sampling-distribution
+#| fig-cap: Sampling distribution of sample means (Biostatistics for the Biological and Health Sciences p.241)
 knitr::include_graphics("./images/img-prob/sampling_dist_mean.png")
 ```
 
 - [Sampling Distribution Applet](https://www.statcrunch.com/applets/type3&samplingdist)
 
 :::{.callout-note icon=false}
-## What are the differences between the sampling distribution of $\overline{X}$ and the population distribution each individual r.v. $X_i$ is drawn from?
-:::
+## What are the differences between the sampling distribution of $\overline{X}$ and the population distribution each individual random variable, $X_i$, is drawn from?
+
 - Sample means $(\overline{X})$ are <span style="color:red"> **less variable** </span> than individual observations $X_i$. 
-- Sample means $(\overline{X})$ are <span style="color:red"> **more normal** </span> than individual observations $X_i$. 
-
-## Example: Sampling Distribution of the Sample Mean
-- Roll a fair die 3 times `r emoji('game_die')``r emoji('game_die')` `r emoji('game_die')` independently to obtain 3 values from the population $\{1, 2, 3, 4, 5, 6\}$. 
-- Repeat the process 10,000 times and plot the histogram of the sampling mean.
-
-:::{layout-ncol=2}
-
-```{r sampling_dist_population, out.width='100%', echo=FALSE, tidy=FALSE, fig.align='center'}
-plot(c("1", "2", "3", "4", "5", "6"), rep(1/6, 6), type = "h", ylim = c(0, 0.2),
-     lwd = 5, col = "#003366", ylab = "P(X = x)", xlab = "x", las = 1, axes = F, 
-     main = "Population Distribution")
-abline(v = 3.5, col = "#FFCC00", lwd = 5)
-axis(1, 1:6, c("1", "2", "3", "4", "5", "6"), col.axis = "black")
-axis(2, c(0, 1/3, 1/6), c("0", "1/3", "1/6"), col.axis = "black", las = 2)
-```
-
-```{r sampling_dist,  out.width='100%', echo=FALSE, tidy=FALSE, fig.align='center'}
-total_sample <- replicate(10000, sample(1:6, 3, replace = TRUE))
-sample_of_sample_mean <- apply(total_sample, 2, mean)
-hist(sample_of_sample_mean, main = "Sampling distribution of sample mean", 
-     xlab = "sample mean", col = "#003366", border = "white", breaks = 60, las = 1)
-abline(v = 3.5, col = "#FFCC00", lwd = 5)
-legend("topright", c("population mean"), col = "#FFCC00", lwd = 5, bty = "n")
-```
+- Sample means $(\overline{X})$ are <span style="color:red"> **more normal** </span> than individual observations $X_i$.
 :::
 
-## Sampling Distribution of Sample Mean
-
-<!-- - Assume that the population distribution has mean $\mu$ and standard deviation $\sigma$. -->
-- Suppose $(X_1, \dots, X_n)$ is the random sample from a population distribution with mean $\mu$ and standard deviation $\sigma$.
+- Suppose $(X_1, \dots, X_n)$ is the random sample from a population distribution with mean, $\mu$, and standard deviation, $\sigma$.
 - The mean of the sampling distribution of the sample mean, $\overline{X} = \frac{\sum_{i=1}^nX_i}{n}$, is <span style="color:blue"> $\mu_{\overline{X}} = \mu$ </span>.
-- The standard deviation of the sampling distribution of the sample mean $\overline{X}$ is <span style="color:blue"> $\sigma_{\overline{X}} = \frac{\sigma}{\sqrt{n}}$ </span>.
-<!-- - $\sigma_{\overline{X}}$ is also known as the **standard error** of $\overline{X}$. -->
-- If the population distribution is <span style="color:blue"> $N(\mu, \sigma^2)$ </span>, the sampling distribution of $\overline{X}$ is **exactly** <span style="color:blue"> $N\left(\mu, \frac{\sigma^2}{n} \right)$ </span>.
-
+- The standard deviation of the sampling distribution of the sample mean, $\overline{X}$, is <span style="color:blue"> $\sigma_{\overline{X}} = \frac{\sigma}{\sqrt{n}}$ </span>.
+  - $\sigma_{\overline{X}}$ is also known as the **standard error** of $\overline{X}$.
+- If the population distribution is <span style="color:blue"> $N(\mu, \sigma^2)$ </span>, the sampling distribution of $\overline{X}$ is <span style="color:blue"> $N\left(\mu, \frac{\sigma^2}{n} \right)$ </span>.
+- @fig-sampling-dist-normal depicts that sampling distributions are less variable and more normal than the population distribution.
 
 ```{r sampling_dist_normal, echo=FALSE, out.width='75%', fig.align='center'}
+#| label: fig-sampling-dist-normal
+#| fig-cap: Comparison between sampling distributions and the population distribution
 par(mar = c(1, 0, 2, 0), mgp = c(0, 0.5, 0), las = 1)
 x <- seq(-5,7,length=100)
 hx <- dnorm(x, 1, 2)
@@ -167,9 +163,9 @@ lines(x, dnorm(x, 1, 2/sqrt(n_vec[1])), col = "red", lwd = 3)
 lines(x, dnorm(x, 1, 2/sqrt(n_vec[2])), col = "blue", lwd = 3)
 lines(x, dnorm(x, 1, 2/sqrt(n_vec[3])), col = "green", lwd = 3)
 legend("topright", c("Population distribution: N(mean = 1, var = 4)", 
-                     expression(paste("Sampling distributioin of ", bar(X), " (n = 2): N(1, 4/2)")), 
-                     expression(paste("Sampling distributioin of ", bar(X), " (n = 4): N(1, 4/4)")),
-                     expression(paste("Sampling distributioin of ", bar(X), " (n = 8): N(1, 4/8)"))),
+                     expression(paste("Sampling distribution of ", bar(X), " (n = 2): N(1, 4/2)")), 
+                     expression(paste("Sampling distribution of ", bar(X), " (n = 4): N(1, 4/4)")),
+                     expression(paste("Sampling distribution of ", bar(X), " (n = 8): N(1, 4/8)"))),
        bty = "n", col = c("black", "red", "blue", "green"), lwd = c(3, 3, 3, 3))
 # qq <- round(qnorm(c(0.5, 1.5, 2.5, 3.5, 4.5)/5), 2)
 axis(1, pos=0, cex.axis = 1)
@@ -178,23 +174,63 @@ segments(1, 0, 1, dnorm(1, 1, 2/sqrt(n_vec[3])), lty = 2, lwd = 0.5)
 
 ```
 
+
+<span style="color:red"> ***Example: Rolling a Die*** </span>
+
+- Roll a fair die 3 times `r emoji('game_die')``r emoji('game_die')` `r emoji('game_die')` independently to obtain 3 values from the population $\{1, 2, 3, 4, 5, 6\}$. 
+- Repeat the process 10,000 times and plot the histogram of the sampling mean.
+- @fig-die-pop shows that the population distribution is not normal, but the sampling distribution of the sample mean is normal.
+
+::::{.columns}
+:::{.column width="50%"}
+```{r sampling_dist_population, out.width='100%', echo=FALSE, tidy=FALSE, fig.align='center'}
+#| label: fig-die-pop
+#| fig-cap: Population distribution is Binomial
+plot(c("1", "2", "3", "4", "5", "6"), rep(1/6, 6), type = "h", ylim = c(0, 0.2),
+     lwd = 5, col = "#003366", ylab = "P(X = x)", xlab = "x", las = 1, axes = F, 
+     main = "Population Distribution")
+abline(v = 3.5, col = "#FFCC00", lwd = 5)
+axis(1, 1:6, c("1", "2", "3", "4", "5", "6"), col.axis = "black")
+axis(2, c(0, 1/3, 1/6), c("0", "1/3", "1/6"), col.axis = "black", las = 2)
+```
+:::
+
+:::{.column width="50%"}
+```{r sampling_dist,  out.width='100%', echo=FALSE, tidy=FALSE, fig.align='center'}
+#| label: fig-die-sample
+#| fig-cap: Sampling distribution of sample means is normal
+total_sample <- replicate(10000, sample(1:6, 3, replace = TRUE))
+sample_of_sample_mean <- apply(total_sample, 2, mean)
+hist(sample_of_sample_mean, main = "Sampling distribution of sample mean", 
+     xlab = "sample mean", col = "#003366", border = "white", breaks = 60, las = 1)
+abline(v = 3.5, col = "#FFCC00", lwd = 5)
+legend("topright", c("population mean"), col = "#FFCC00", lwd = 5, bty = "n")
+```
+:::
+::::
+
 ## Standardization of Sample Mean 
 
 - For a single random variable $X \sim N(\mu, \sigma^2)$, $Z = \frac{X - \mu}{\sigma} \sim N(0, 1)$.
-- For the sample mean of $n$ variables, $\overline{X} \sim N(\mu_{\overline{X}}, \sigma^2_{\overline{X}}) = N(\mu, \frac{\sigma^2}{n})$, and hence <span style="color:blue"> $$Z = \frac{\overline{X} - \mu_{\overline{X}}}{\sigma_{\overline{X}}} = \frac{\overline{X} - \mu}{\sigma/\sqrt{n}} \sim N(0, 1)$$</span>
-  <!-- + The solution is the **Central Limit Theorem**! -->
-  
-## Example - Psychomotor retardation
+- For the sample mean of $n$ variables, $\overline{X} \sim N(\mu_{\overline{X}}, \sigma^2_{\overline{X}}) = N(\mu, \frac{\sigma^2}{n})$.
+- Hence, <span style="color:blue"> $$Z = \frac{\overline{X} - \mu_{\overline{X}}}{\sigma_{\overline{X}}} = \frac{\overline{X} - \mu}{\sigma/\sqrt{n}} \sim N(0, 1)$$</span>
 
-:::{layout-ncol=2}
+<span style="color:blue"> **Example: Psychomotor Retardation** </span>
+
+::::{.columns}
+:::{.column width="80%"}
 - Psychomotor retardation scores for a group of patients have a normal distribution with a mean of 930 and a standard deviation of 130. 
 - What is the probability that the *mean* retardation score of a random sample of 20 patients was between 900 and 960?
+- $X_1, \dots, X_{20}  \stackrel{iid}{\sim} N(930, 130^2)$, then $\overline{X} = \frac{\sum_{i=1}^{20}X_i}{20} \sim N\left(930, \frac{130^2}{20} \right)$.
+:::
 
-```{r, echo=FALSE, out.width="50%", fig.align='center'}
+:::{.column width="20%"}
+```{r, echo=FALSE, out.width="70%", fig.align='center'}
 knitr::include_graphics("./images/img-prob/depression.jpeg")
 ```
 :::
-- $X_1, \dots, X_{20}  \stackrel{iid}{\sim} N(930, 130^2)$, then $\overline{X} = \frac{\sum_{i=1}^{20}X_i}{20} \sim N\left(930, \frac{130^2}{20} \right)$.
+::::
+
 
 $$\small \begin{align} 
 P(900 < \overline{X} < 960) &= P\left( \frac{900-930}{130/\sqrt{20}} < \frac{\overline{X}-930}{130/\sqrt{20}} < \frac{960-930}{130/\sqrt{20}}\right)=P(-1.03 < Z < 1.03)\\
@@ -208,5 +244,16 @@ pnorm(1.03) - pnorm(-1.03)
 ```{r}
 pnorm(960, mean = 930, sd = 130/sqrt(20)) - pnorm(900, mean = 930, sd = 130/sqrt(20))
 ```
+
+- The probability that the mean psychomotor retardation score of a random sample of 20 patients is between 900 and 960 is about 70%.
+
+## Exercises
+
+1. Head lengths of Virginia possums follow a normal distribution with mean 104 mm and standard deviation 6 mm. 
+    (a) What is the sampling distribution of the sample mean of the head length when the sample size $n = 18$?
+
+2. Assume that females have pulse rates that are normally distributed with a mean of 76.0 beats per minute and a standard deviation of 11.5 beats per minute.
+    (a) If 1 adult female is randomly selected, find the probability that her pulse rate is less than 81 beats per minute.
+    (b) If 18 adult female are randomly selected, find the probability that their mean pulse rate is less than 81 beats per minute.
 
 
