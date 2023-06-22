@@ -322,19 +322,29 @@ ul.task-list li input[type="checkbox"] {
 </header><div class="cell">
 
 </div>
+<p>In this chapter, we define three types of probability. The good news is that probability operations and rules do not depend on the interpretation of probability. It is better to keep in mind which probability interpretation we use in the statistical analysis. Otherwise, the data analysis results may be misinterpreted.</p>
 <section id="language-of-uncertainty" class="level2" data-number="6.1"><h2 data-number="6.1" class="anchored" data-anchor-id="language-of-uncertainty">
 <span class="header-section-number">6.1</span> Language of Uncertainty</h2>
 <p><span style="color:blue"> <strong>Why Study Probability</strong> </span></p>
-<ul>
-<li>We live in a world full of chances and uncertainty, and probability is the language of uncertainty!</li>
-<li>Probability is the language of statistical inference and prediction.</li>
-<li>Below are a few real world examples of where probability plays a role.</li>
-</ul>
+<p>It goes without saying that we live in a world full of chances and uncertainty. People do care about chances and usually make decisions given the information about some uncertain situations. <a href="#fig-chance-09-19-2022">Figure&nbsp;<span>6.1</span></a> shows the Google search result of “what are chances” on my personal computer on September 19, 2022. It looks like people are curious about getting pregnant, getting COVID of course at that time, and getting struck by lightning or tornado. And of course, it is the chance or uncertainty that makes so many games so fun, amusing and even additive, for example, the board game monopoly, and the gambling machines like slots and blackjacks.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-chance-09-19-2022" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="./images/img-prob/chance_09_19_2022.png" class="img-fluid figure-img" style="width:60.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;6.1: Google search result of “what are chances”.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
 <div class="columns">
 <div class="column" style="width:49%;">
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="./images/img-prob/monopoly.png" class="img-fluid" style="width:100.0%"></p>
+<div id="fig-monopoly" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="./images/img-prob/monopoly.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;6.2: Monopoly baord game</figcaption><p></p>
+</figure>
+</div>
 </div>
 </div>
 </div><div class="column" style="width:2%;">
@@ -342,66 +352,67 @@ ul.task-list li input[type="checkbox"] {
 </div><div class="column" style="width:49%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
+<div id="fig-slot" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="./images/img-prob/slot.jpeg" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;6.3: Slots</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
+<div id="fig-blackjack" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="./images/img-prob/blackjack.jpeg" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;6.4: Blackjacks</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
 </div>
+<p>Apparently most people want to quantify uncertainty about something happening, or measure the chances of some event happening for better decision making. The question is, how? We need a consistent way of measuring chances and uncertainty so that our society can be operated in order. Thanks to great enthusiasm for gambling, the mathematical study of chances starts quite early, and nowadays, the most formal and rigorous way of studying chances is to use <a href="https://en.wikipedia.org/wiki/Probability"><strong>probability</strong></a>. Therefore, we could probably view probability as the <em>language of uncertainty</em>.</p>
+<p>Most of the time, we cannot do statistical inference or prediction using machine learning without probability because we usually assume our data at hand are random realizations from some targeted population that are described by a probability distribution. In other words, we are doing data analysis in the world of uncertainty. For example, we are interested in the mean height of Marquette female students, which is usually assumed to be bell-shaped distributed. By chances, our collected sample of girls may all have heights below 5’4”, which is not representative of the target population, and the sample mean is far from the true population mean height being interested. Examining the chance of getting such biased data set becomes important and helps us quantify the plausibility of the numerical results we obtain from the data.</p>
+<p>As a result, before jumping into statistical inference or data analysis, we need to have basic understanding of probability definitions, rules, and operations that are frequently used in the data science community.</p>
 <hr>
 <p><span style="color:blue"> <strong>Why Probability Before Statistics?</strong> </span></p>
-<ul>
-<li>For <strong>probability</strong>, we <em>know</em> the process generating the data and are interested in properties of observations.</li>
-<li>For <strong>statistics</strong>, we <em>observe</em> the data (sample) and are interested in determining what process is generating the data (population).</li>
-<li>These principles are illustrated below in <a href="#fig-prob-stats">Figure&nbsp;<span>6.1</span></a>.</li>
-</ul>
+<p>Although probability and statistics are closely related and usually taught in one single introductory course, they are two distinct subjects. Since the randomness of sampling from the target population, statistical inference and data analysis usually involve uncertainty quantification, and hence probability is used in the analysis.</p>
+<p>In a typical statistical analysis, we assume the target population, for example the Marquette students’ height follows some <em>probability distribution</em>, and the collected sample data are the realized data points from the distribution. With this, the population probability distribution is a mechanism that generates data. In probability theory, we examine how this mechanism generates data, and how the observed data will behave given the fact that they are from the probabilistic data generating process. For example, we assume the height follows some probability distribution, and we are curious about the probability that the sample mean is larger than 5’10”, or that the sample mean is between 5’6” and 5’11”.</p>
+<p>In the probability theory, the process generating the data is assumed known and we are interested in properties of observations. However, in reality, the data generating process, or the target population distribution, is unknown to us, and is what we would like to infer to using the sample data we collect. For example, we want to estimate the unknown mean height of Marquette students using the data of 100 Marquette students sampled at random from the unknown target population distribution. This is what statistical inference is all about. For statistics, we observe the data (sample) and are interested in determining what process generates such data (population). These principles are illustrated below in <a href="#fig-prob-stats">Figure&nbsp;<span>6.5</span></a>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-prob-stats" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="prob-define_files/figure-html/fig-prob-stats-1.png" class="img-fluid figure-img" style="width:67.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;6.1: Relationship between probability and statistical inference</figcaption><p></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;6.5: Relationship between probability and statistical inference</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
+<p>Even though the data generating process is fixed and unchanged every time a data set is collected, the data replicates are all different due to the random sampling from the population probability distribution. Such randomness creates the uncertainty about how we do the inference about the population properties because a different data set represents only a part of, and probably biased, information about the the whole distribution. As a result, when doing inference, we prefer probabilistic statements to deterministic statements.</p>
 </section><section id="interpretation-of-probability" class="level2" data-number="6.2"><h2 data-number="6.2" class="anchored" data-anchor-id="interpretation-of-probability">
 <span class="header-section-number">6.2</span> Interpretation of Probability</h2>
 <p><span style="color:blue"> <strong>Relative Frequency</strong> </span></p>
-<ul>
-<li>The probability that some outcome of a process will be obtained is interpreted as the <strong>relative frequency</strong> with which that outcome would be obtained <em>if the process were repeated <strong>a large number of times</strong> independently under <strong>similar conditions</strong>.</em>
-</li>
-<li>Below is an example depicting the relative frequency of flipping a coin and getting heads or tails.</li>
-</ul>
+<p>There are several ways of interpreting probability. The first interpretation is relative frequency. Formally speaking, the probability that some outcome of a process will be obtained is interpreted as the <strong>relative frequency</strong> with which that outcome would be obtained <em>if the process were repeated <strong>a large number of times</strong> independently under <strong>similar conditions</strong>.</em></p>
+<p>Think about the following scenario. Your mom gave you a unfair coin, but she does not know the probability of getting heads when one tosses the coin. How do you obtain, or at least approximate the probability? Well, we can use the concept of relative frequency. First, we decide how many times we want to flip the coin. Each time after flipping the coin, we record either heads or tails shows up. Once we are done all the flips, we count the frequency or the total number of times heads shows up among all the flips. To obtain the probability of getting heads, we calculate the relative frequency, the ratio of the frequency of heads to the number of tosses.</p>
+<p>Below is an example depicting the relative frequency of flipping a coin and getting heads or tails.</p>
 <center>
-<div class="cell" data-layout-align="center">
+<div class="center">
+<div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>      Frequency Relative Frequency
-Heads         5                0.5
-Tails         5                0.5
+Heads         4                0.4
+Tails         6                0.6
 Total        10                1.0
 ---------------------
       Frequency Relative Frequency
-Heads       467              0.467
-Tails       533              0.533
+Heads       514              0.514
+Tails       486              0.486
 Total      1000              1.000
 ---------------------</code></pre>
 </div>
 </div>
+</div>
 </center>
-<ul>
-<li>If we flip the coin 10 times, the probability of obtaining a head is 50%.</li>
-<li>If we flip it 1000 times, the probability is 46.7%.</li>
-</ul>
+<p>When we flip the coin 10 times, 4 of them end up being heads, and the probability of getting heads is 40%. You may be skeptical of the result, and want to have more replicates. Some day you have lots of spare time, and you decide to flip the coin 1000 times. The relative frequency, or the probability of getting heads, now becomes 51.4%.</p>
 <div class="callout-note callout callout-style-default no-icon callout-captioned">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -415,35 +426,40 @@ Do you see any issues with relative frequency probability?
 
 </div>
 </div>
+<p>Apparently, we don’t know the <em>true</em> probability if it does exist. And as you learned in the coin-flipping example, we don’t have one unique answer for that if we use relative frequency as the way of interpreting probability. In fact, there are some issues when we treat relative frequency as probability.</p>
 <p><span style="color:red"> <strong><em>Issues with Relative Frequency</em></strong> </span></p>
 <ul>
 <li>😕 How large of a number is large enough?</li>
+</ul>
+<p>There is no correct answer for how many replicates of the experiment we should have. We may think 10 times is not enough, but how about 1000 times? one million times? How well the relative frequency approximates the <em>true</em> probability depends on the complexity of the experiments. In general, the larger the number of times of repeating the process, the better the approximation of the relative frequency. This is the result of the so-called <em>law of large numbers</em> that is discussed in <a href="prob-llnclt.html">Chapter&nbsp;<span>12</span></a>.</p>
+<ul>
 <li>😕 What is the meaning of “under similar conditions”?</li>
+</ul>
+<p>In the definition, the experiment or process needs to be repeated “under similar conditions”. What does that mean? The definition itself is not rigorous enough. Do we need to control the airflow when the experiment is conducted? How about temperature? Can your mom and you take turns to flip the coin? Be honest, there is no answer for that.</p>
+<ul>
 <li>😕 Is the relative frequency reliable under identical conditions?</li>
+</ul>
+<p>Can we trust the relative frequency when the experiment is conducted under identical conditions? If there is a skilled person who can control whether heads or tails shows up every time he flips a coin, should we believe the relative frequency is a good approximation to the <em>true</em> probability?</p>
+<ul>
 <li>👉 We can only obtain an approximation instead of exact value for the probability.</li>
+</ul>
+<p>You may already find out that the relative frequency is only an approximation instead of exact value for the probability. If we want to get the <em>true</em> probability (if it does exist), we need to get the relative frequency whose process is repeated <em>infinitely</em> many of times, which is unrealistic. Such probability stems from the <strong>frequentist philosophy</strong> that interprets probability as the long-run relative frequency of a repeatable experiment.</p>
+<ul>
 <li>😂 How do you compute the probability that Chicago Cubs win the World Series next year?</li>
 </ul>
+<p>In the real world and our daily lives, lots of times we want to compute the probability of something happening where the <em>something</em> cannot be a repeatable process or experiment. For example, it is impossible to compute the probability that Chicago Cubs win the World Series next year because we would never to able to obtain the relative frequency of Chicago Cubs winning the World Series next year.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="https://media.giphy.com/media/EKURBxKKkw0uY/giphy.gif" class="img-fluid figure-img" style="width:50.0%"></p>
+<figure class="figure"><p><img src="https://media.giphy.com/media/EKURBxKKkw0uY/giphy.gif" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Source: https://media.giphy.com/media/EKURBxKKkw0uY/giphy.gif</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
 <hr>
 <p><span style="color:blue"> <strong>Classical Approach</strong> </span></p>
-<ul>
-<li>For the <strong>classical approach</strong>, the probability is based on the concept of <strong>equally likely</strong> outcomes.</li>
-<li>If the outcome of some process must be one of <span class="math inline">\(n\)</span> different outcomes, the probability of each outcome is <span class="math inline">\(1/n\)</span>.</li>
-<li>Example:
-<ul>
-<li>If you toss a fair coin (2 outcomes) 🪙, the probability of each is 1/2.</li>
-<li>If you roll a well-balanced die (6 outcomes) 🎲, the probability of each is 1/6.</li>
-<li>If you draw one from a deck of cards (52 outcomes) 🃏, the probability of each is 1/52.</li>
-</ul>
-</li>
-</ul>
+<p>Another interpretation of probability follows the <strong>classical approach</strong>, whose probability is based on the concept of <strong>equally likely</strong> outcomes. If the outcome of some process must be one of <span class="math inline">\(n\)</span> different outcomes, the probability of each outcome is simply <span class="math inline">\(1/n\)</span>. For example, if you toss a fair coin (2 outcomes) 🪙, the probability of getting heads is 1/2. If you roll a well-balanced die (6 outcomes) 🎲, the probability of each outcome being shown is 1/6. If you draw one from a deck of cards (52 outcomes) 🃏, the probability of each card being drawn is 1/52.</p>
 <div class="callout-note callout callout-style-default no-icon callout-captioned">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -457,30 +473,17 @@ Do you see any issues with classical probability?
 
 </div>
 </div>
-<ul>
-<li>It wouldn’t make sense to say that <em>the probability that <em>[you name it]</em> wins the World Series next year is <strong>1/30</strong></em>.
-<ul>
-<li>Even thought there are 30 teams in the MLB, each team is not equally likely to win the World Series.</li>
-</ul>
-</li>
-</ul>
+<p>It wouldn’t make sense to say that <em>the probability that <em>[you name it]</em> wins the World Series next year is <strong>1/30</strong></em>. Even though there are 30 teams in the MLB, each team is not equally likely to win the World Series. Don’t you agree?!</p>
 <hr>
 <p><span style="color:blue"> <strong>Subjective Approach</strong> </span></p>
-<ul>
-<li>For the <strong>subjective approach</strong>, the probability is assigned or estimated using people’s <strong>knowledge, beliefs and information</strong> about the data generating process.</li>
-<li>In this case, it is a person’s <em>subjective</em> probability of an outcome, rather than the <em>true</em> probability of that outcome.</li>
-<li>For example, I think <em>“the probability that the Milwaukee Brewers win the World Series this year is 30%”</em>.
-<ul>
-<li>My probability that the Milwaukee Brewers win the World Series this year is likely <em>different</em> from an ESPN analyst’s probability.</li>
-</ul>
-</li>
-</ul>
+<p>The last interpretation of probability we discuss here is the <strong>subjective approach</strong>, whose probability is assigned or estimated using people’s <strong>knowledge, beliefs and information</strong> about the data generating process. In this case, it is a person’s <em>subjective</em> probability of an outcome, rather than the <em>true</em> probability of that outcome. For example, I think <em>“the probability that the Milwaukee Brewers win the World Series this year is 30%”</em>. My probability that the Milwaukee Brewers win the World Series this year is likely to be <em>different</em> from an ESPN analyst’s probability.</p>
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="./images/img-prob/espn.jpeg" class="img-fluid figure-img" style="width:75.0%"></p>
+<p></p><figcaption class="figure-caption">Source: https://www.nj.com/yankees/2020/02/mlb-rumors-espns-sunday-night-baseball-will-feature-a-lot-of-ex-yankee-alex-rodriguez-and-not-much-else.html</figcaption><p></p>
 </figure>
 </div>
 </div>
@@ -490,12 +493,14 @@ Do you see any issues with classical probability?
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="https://upload.wikimedia.org/wikipedia/en/2/2e/ESPN_Major_League_Baseball_TV_logo.jpg" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Source: Wiki: ESPN Major League Baseball</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
 </div>
+<p>Here, a probability measures the <em>relative plausibility of some event or outcome</em>, and such probability stems from the so-called Bayesian philosophy. With this, we can claim that candidate A has a 0.9 probability of winning because the probability represents our plausibility or belief about the winning chance of the candidate A. A Bayesian statistician would say based on analysis the candidate A is 9 times more likely to win than to lose. For a statistician with the frequentist philosophy, he might say the statement is wrong or there is no such claim. Or he might weirdly say in long-run hypothetical repetitions of the election, candidate A would win roughly 90% of the time.</p>
 <p><br></p>
 <div class="callout-note callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">

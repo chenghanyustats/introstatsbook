@@ -4,19 +4,37 @@
 library(emoji)
 library(openintro)
 library(countdown)
+library(plotrix)
+library(diagram)
 ```
+
+In this chapter, we define three types of probability. The good news is that probability operations and rules do not depend on the interpretation of probability. It is better to keep in mind which probability interpretation we use in the statistical analysis. Otherwise, the data analysis results may be misinterpreted.
+
 
 ## Language of Uncertainty
 
 <span style="color:blue"> **Why Study Probability** </span>
 
-- We live in a world full of chances and uncertainty, and probability is the language of uncertainty!
-- Probability is the language of statistical inference and prediction.
-- Below are a few real world examples of where probability plays a role.
+It goes without saying that we live in a world full of chances and uncertainty. People do care about chances and usually make decisions given the information about some uncertain situations. @fig-chance-09-19-2022 shows the Google search result of "what are chances" on my personal computer on September 19, 2022. It looks like people are curious about getting pregnant, getting COVID of course at that time, and getting struck by lightning or tornado. And of course, it is the chance or uncertainty that makes so many games so fun, amusing and even additive, for example, the board game monopoly, and the gambling machines like slots and blackjacks.
+
+
+```{r}
+#| label: fig-chance-09-19-2022
+#| echo: false
+#| out-width: "60%"
+#| fig-align: center
+#| fig-cap: Google search result of "what are chances".
+knitr::include_graphics("./images/img-prob/chance_09_19_2022.png")
+```
+
 
 ::::{.columns}
 :::{.column width="49%"}
-```{r, echo=FALSE, out.width="100%"}
+```{r}
+#| label: fig-monopoly
+#| echo: false
+#| out-width: "100%"
+#| fig-cap: "Monopoly baord game"
 knitr::include_graphics("./images/img-prob/monopoly.png")
 ```
 :::
@@ -25,29 +43,51 @@ knitr::include_graphics("./images/img-prob/monopoly.png")
 :::
 
 :::{.column width="49%"}
-```{r, echo=FALSE, out.width="100%", fig.align='center'}
+```{r}
+#| label: fig-slot
+#| echo: false
+#| out-width: "100%"
+#| fig-align: center
+#| fig-cap: "Slots"
 knitr::include_graphics("./images/img-prob/slot.jpeg")
 ```
 
 ```{r, echo=FALSE, out.width="100%", fig.align='center'}
+#| label: fig-blackjack
+#| echo: false
+#| out-width: "100%"
+#| fig-align: center
+#| fig-cap: "Blackjacks"
 knitr::include_graphics("./images/img-prob/blackjack.jpeg")
 ```
 :::
 ::::
 
+Apparently most people want to quantify uncertainty about something happening, or measure the chances of some event happening for better decision making. The question is, how? We need a consistent way of measuring chances and uncertainty so that our society can be operated in order. Thanks to great enthusiasm for gambling, the mathematical study of chances starts quite early, and nowadays, the most formal and rigorous way of studying chances is to use [**probability**](https://en.wikipedia.org/wiki/Probability). Therefore, we could probably view probability as the _language of uncertainty_. 
+
+Most of the time, we cannot do statistical inference or prediction using machine learning without probability because we usually assume our data at hand are random realizations from some targeted population that are described by a probability distribution. In other words, we are doing data analysis in the world of uncertainty. For example, we are interested in the mean height of Marquette female students, which is usually assumed to be bell-shaped distributed. By chances, our collected sample of girls may all have heights below 5'4", which is not representative of the target population, and the sample mean is far from the true population mean height being interested. Examining the chance of getting such biased data set becomes important and helps us quantify the plausibility of the numerical results we obtain from the data. 
+
+As a result, before jumping into statistical inference or data analysis, we need to have basic understanding of probability definitions, rules, and operations that are frequently used in the data science community.
+
+
 -----------------------------------------------------------------
 
 <span style="color:blue"> **Why Probability Before Statistics?** </span>
 
-- For **probability**, we *know* the process generating the data and are interested in properties of observations.
-- For **statistics**, we *observe* the data (sample) and are interested in determining what process is generating the data (population).
-- These principles are illustrated below in @fig-prob-stats.
+Although probability and statistics are closely related and usually taught in one single introductory course, they are two distinct subjects. Since the randomness of sampling from the target population, statistical inference and data analysis usually involve uncertainty quantification, and hence probability is used in the analysis.
 
-```{r, echo=FALSE, out.width="67%",fig.align='center'}
+In a typical statistical analysis, we assume the target population, for example the Marquette students' height follows some *probability distribution*, and the collected sample data are the realized data points from the distribution. With this, the population probability distribution is a mechanism that generates data. In probability theory, we examine how this mechanism generates data, and how the observed data will behave given the fact that they are from the probabilistic data generating process. For example, we assume the height follows some probability distribution, and we are curious about the probability that the sample mean is larger than 5'10", or that the sample mean is between 5'6" and 5'11".
+
+In the probability theory, the process generating the data is assumed known and we are interested in properties of observations. However, in reality, the data generating process, or the target population distribution, is unknown to us, and is what we would like to infer to using the sample data we collect. For example, we want to estimate the unknown mean height of Marquette students using the data of 100 Marquette students sampled at random from the unknown target population distribution. This is what statistical inference is all about. For statistics, we observe the data (sample) and are interested in determining what process generates such data (population). These principles are illustrated below in @fig-prob-stats.
+
+
+
+```{r}
 #| label: fig-prob-stats
 #| fig-cap: Relationship between probability and statistical inference
-# knitr::include_graphics("./images/img-prob/data_generating.png")
-# fig.cap="Figure 1.1 in All of Statistics (Wasserman 2003)"
+#| fig-align: center
+#| out-width: "67%"
+#| echo: false
 par(mar = c(0, 0, 0, 0))
 plot(0, 0, type = "n", axes = FALSE, xlab = "", ylab = "")
 plotrix::draw.ellipse(x = -0.56, y = 0, a = 0.52, b = 0.4, lwd = 2)
@@ -62,15 +102,29 @@ text(x = 0, y = 0.8, labels = "Probability", cex = 1.5)
 text(x = 0, y = -0.8, labels = "Statistical Inference", cex = 1.5)
 ```
 
+
+
+Even though the data generating process is fixed and unchanged every time a data set is collected, the data replicates are all different due to the random sampling from the population probability distribution. Such randomness creates the uncertainty about how we do the inference about the population properties because a different data set represents only a part of, and probably biased, information about the the whole distribution. As a result, when doing inference, we prefer probabilistic statements to deterministic statements.
+
+
+
 ## Interpretation of Probability
 
 <span style="color:blue"> **Relative Frequency** </span>
 
-- The probability that some outcome of a process will be obtained is interpreted as the **relative frequency** with which that outcome would be obtained _if the process were repeated **a large number of times** independently under **similar conditions**._
-- Below is an example depicting the relative frequency of flipping a coin and getting heads or tails.
+There are several ways of interpreting probability. The first interpretation is relative frequency. Formally speaking, the probability that some outcome of a process will be obtained is interpreted as the **relative frequency** with which that outcome would be obtained _if the process were repeated **a large number of times** independently under **similar conditions**._ 
+
+Think about the following scenario. Your mom gave you a unfair coin, but she does not know the probability of getting heads when one tosses the coin. How do you obtain, or at least approximate the probability? Well, we can use the concept of relative frequency. First, we decide how many times we want to flip the coin. Each time after flipping the coin, we record either heads or tails shows up. Once we are done all the flips, we count the frequency or the total number of times heads shows up among all the flips. To obtain the probability of getting heads, we calculate the relative frequency, the ratio of the frequency of heads to the number of tosses.
+
+Below is an example depicting the relative frequency of flipping a coin and getting heads or tails. 
+
 
 <center>
-```{r toss_coin, echo=FALSE, fig.align='center'}
+::: center
+```{r}
+#| label: toss-coin
+#| echo: false
+set.seed(1234)
 rel_freq_head <- rep(0, 2)
 times <- c(10, 1000)
 for (i in 1:2) {
@@ -83,24 +137,47 @@ for (i in 1:2) {
   rel_freq_head[i] <- rel_freq_table[1, 2]
 }
 ```
+:::
 </center>
 
-- If we flip the coin 10 times, the probability of obtaining a head is `r rel_freq_head[1] * 100`%. 
-- If we flip it 1000 times, the probability is `r rel_freq_head[2] * 100`%.
+When we flip the coin 10 times, 4 of them end up being heads, and the probability of getting heads is `r rel_freq_head[1] * 100`%. You may be skeptical of the result, and want to have more replicates. Some day you have lots of spare time, and you decide to flip the coin 1000 times. The relative frequency, or the probability of getting heads, now becomes `r rel_freq_head[2] * 100`%. 
 
 :::{.callout-note icon=false}
 ## Do you see any issues with relative frequency probability?
 :::
 
+Apparently, we don't know the *true* probability if it does exist. And as you learned in the coin-flipping example, we don't have one unique answer for that if we use relative frequency as the way of interpreting probability. In fact, there are some issues when we treat relative frequency as probability.
+
+
 <span style="color:red"> ***Issues with Relative Frequency*** </span>
 
 - `r emoji('confused')` How large of a number is large enough? 
+
+There is no correct answer for how many replicates of the experiment we should have. We may think 10 times is not enough, but how about 1000 times? one million times? How well the relative frequency approximates the *true* probability depends on the complexity of the experiments. In general, the larger the number of times of repeating the process, the better the approximation of the relative frequency. This is the result of the so-called *law of large numbers* that is discussed in [Chapter -@sec-prob-llnclt].
+
+
 - `r emoji('confused')` What is the meaning of "under similar conditions"?
+
+In the definition, the experiment or process needs to be repeated "under similar conditions". What does that mean? The definition itself is not rigorous enough. Do we need to control the airflow when the experiment is conducted? How about temperature? Can your mom and you take turns to flip the coin? Be honest, there is no answer for that.
+
 - `r emoji('confused')` Is the relative frequency reliable under identical conditions?
+
+Can we trust the relative frequency when the experiment is conducted under identical conditions? If there is a skilled person who can control whether heads or tails shows up every time he flips a coin, should we believe the relative frequency is a good approximation to the *true* probability?
+
 - `r emoji('point_right')` We can only obtain an approximation instead of exact value for the probability.
+
+You may already find out that the relative frequency is only an approximation instead of exact value for the probability. If we want to get the *true* probability (if it does exist), we need to get the relative frequency whose process is repeated *infinitely* many of times, which is unrealistic. Such probability stems from the **frequentist philosophy** that interprets probability as the long-run relative frequency of a repeatable experiment.
+
+
 - `r emoji('joy')`  How do you compute the probability that Chicago Cubs win the World Series next year? 
 
-```{r, echo=FALSE, out.width="50%", fig.align='center'}
+In the real world and our daily lives, lots of times we want to compute the probability of something happening where the *something* cannot be a repeatable process or experiment. For example, it is impossible to compute the probability that Chicago Cubs win the World Series next year because we would never to able to obtain the relative frequency of Chicago Cubs winning the World Series next year.
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| out-width: 100%
+#| fig-cap: "Source: https://media.giphy.com/media/EKURBxKKkw0uY/giphy.gif"
 knitr::include_graphics("https://media.giphy.com/media/EKURBxKKkw0uY/giphy.gif")
 ```
 
@@ -108,42 +185,47 @@ knitr::include_graphics("https://media.giphy.com/media/EKURBxKKkw0uY/giphy.gif")
 
 <span style="color:blue"> **Classical Approach** </span>
 
-- For the **classical approach**, the probability is based on the concept of **equally likely** outcomes. 
-- If the outcome of some process must be one of $n$ different outcomes, the probability of each outcome is $1/n$. 
-- Example: 
-  + If you toss a fair coin (2 outcomes) 🪙, the probability of each is 1/2.
-  + If you roll a well-balanced die (6 outcomes)  `r emoji('game_die')`, the probability of each is 1/6.
-  + If you draw one from a deck of cards (52 outcomes) `r emoji('black_joker')`, the probability of each is 1/52. 
+Another interpretation of probability follows the **classical approach**, whose probability is based on the concept of **equally likely** outcomes. If the outcome of some process must be one of $n$ different outcomes, the probability of each outcome is simply $1/n$. For example, if you toss a fair coin (2 outcomes) 🪙, the probability of getting heads is 1/2. If you roll a well-balanced die (6 outcomes)  `r emoji('game_die')`, the probability of each outcome being shown is 1/6. If you draw one from a deck of cards (52 outcomes) `r emoji('black_joker')`, the probability of each card being drawn is 1/52. 
 
 :::{.callout-note icon=false}
 ## Do you see any issues with classical probability?
 :::
 
-- It wouldn't make sense to say that _the probability that *[you name it]* wins the World Series next year is **1/30**_.
-  - Even thought there are 30 teams in the MLB, each team is not equally likely to win the World Series.
+It wouldn't make sense to say that _the probability that *[you name it]* wins the World Series next year is **1/30**_. Even though there are 30 teams in the MLB, each team is not equally likely to win the World Series. Don't you agree?!
 
 -----------------------------------------------------------------
 
 <span style="color:blue">  **Subjective Approach** </span>
 
-- For the **subjective approach**, the probability is assigned or estimated using people's **knowledge, beliefs and information** about the data generating process.
-- In this case, it is a person's *subjective* probability of an outcome, rather than the *true* probability of that outcome.
-- For example, I think *"the probability that the Milwaukee Brewers win the World Series this year is 30%"*.
-  - My probability that the Milwaukee Brewers win the World Series this year is likely *different* from an ESPN analyst's probability. 
+The last interpretation of probability we discuss here is the **subjective approach**, whose probability is assigned or estimated using people's **knowledge, beliefs and information** about the data generating process. In this case, it is a person's *subjective* probability of an outcome, rather than the *true* probability of that outcome. For example, I think *"the probability that the Milwaukee Brewers win the World Series this year is 30%"*. My probability that the Milwaukee Brewers win the World Series this year is likely to be *different* from an ESPN analyst's probability. 
 
 ::::{.columns}
 :::{.column width="50%"}
-```{r, echo=FALSE, out.width="75%", fig.align='center'}
+```{r}
+#| fig-align: center
+#| label: img-prob-espn
+#| echo: false
+#| out-width: "75%"
+#| fig-cap: "Source: https://www.nj.com/yankees/2020/02/mlb-rumors-espns-sunday-night-baseball-will-feature-a-lot-of-ex-yankee-alex-rodriguez-and-not-much-else.html"
 knitr::include_graphics("./images/img-prob/espn.jpeg")
 ```
 :::
 
 :::{.column width="50%"}
-```{r echo=FALSE, out.width="100%", fig.align='center'}
+```{r}
+#| fig-align: center
+#| label: img-prob-mlb
+#| echo: false
+#| out-width: "100%"
+#| fig-cap: "Source: Wiki: ESPN Major League Baseball"
 knitr::include_graphics("https://upload.wikimedia.org/wikipedia/en/2/2e/ESPN_Major_League_Baseball_TV_logo.jpg")
 ```
 :::
 ::::
+
+Here, a probability measures the *relative plausibility of some event or outcome*, and such probability stems from the so-called Bayesian philosophy. With this, we can claim that candidate A has a 0.9 probability of winning because the probability represents our plausibility or belief about the winning chance of the candidate A. A Bayesian statistician would say based on analysis the candidate A is 9 times more likely to win than to lose. For a statistician with the frequentist philosophy, he might say the statement is wrong or there is no such claim. Or he might weirdly say in long-run hypothetical repetitions of the election, candidate A would win roughly 90% of the time.
+
+
 
 <br>
 

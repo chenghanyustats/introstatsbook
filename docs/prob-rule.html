@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.2.335">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta name="description" content="This book serves as a main reference book for my MATH 4720 Statistical Methods and MATH 4740 Biostatistical Methods at Marquette University. Some topics can also be discussed in an introductory data science course. You’ll learn basic probability and statistical concepts as well as data analysis techniques such as linear regression using R computing software.">
+<meta name="description" content="An comprehensive introductory statistical data science book.">
 <title>Introduction to Statistics - 7&nbsp; Probability Rules</title>
 <style>
 code{white-space: pre-wrap;}
@@ -239,22 +239,17 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./infer-goodnessfit.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Inference about Categorical Data</span></a>
+  <a href="./infer-cat.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Inference about Categorical Data</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./infer-indep.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">infer-indep.html</span></a>
+  <a href="./infer-bayes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./infer-bayes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./infer-nonpar.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Nonparametric Inference</span></a>
+  <a href="./infer-nonpar.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Nonparametric Inference</span></a>
   </div>
 </li>
       </ul>
@@ -269,27 +264,27 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./model-anova.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></a>
+  <a href="./model-anova.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./model-reg.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Linear Regression</span></a>
+  <a href="./model-reg.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Linear Regression</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./model-logistic.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Logistic Regression</span></a>
+  <a href="./model-logistic.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Logistic Regression</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./model-bayes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></a>
+  <a href="./model-bayes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./model-survival.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Survival Analysis</span></a>
+  <a href="./model-survival.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Survival Analysis</span></a>
   </div>
 </li>
       </ul>
@@ -326,18 +321,43 @@ ul.task-list li input[type="checkbox"] {
   </div>
   
 
-</header><div class="cell">
+</header><p>In this chapter, we formally define some terms used in probability, and learn some basic probability operations.</p>
+<div class="cell">
 
 </div>
 <section id="probability-operations-and-rules" class="level2" data-number="7.1"><h2 data-number="7.1" class="anchored" data-anchor-id="probability-operations-and-rules">
 <span class="header-section-number">7.1</span> Probability Operations and Rules</h2>
 <p><span style="color:blue"> <strong>Experiments, Events and Sample Space</strong> </span></p>
+<p>Probability starts with the concept of <strong>sets</strong>. When we calculate the probability of “something”, that something is represented as a set, which is a collection of some outcomes generated by an process or experiment associated to the <em>something</em> we are interested. To denote a set, we usually use a pair of curly braces { }, and the <strong>elements</strong> of the set is put inside the braces, each separated by a comma, for example, {red, green, yellow} is a set with three color elements.</p>
+<p>Here we define some terminology that are commonly used in set and probability concepts.</p>
 <ul>
 <li>An <strong>experiment</strong> is any process in which the possible <strong>outcomes</strong> can be identified <em>ahead of time</em>.</li>
-<li>An <strong>event</strong> is a set of possible outcomes of the experiment.</li>
-<li>The <strong>sample space</strong> <span class="math inline">\((\mathcal{S})\)</span> of an experiment is the collection of <strong>ALL</strong> possible outcomes of the experiment.</li>
-<li>The table below gives an example of the events and sample space that are associated with the experiment of flipping a coin.</li>
 </ul>
+<p>The key words is <em>ahead of time</em>. For example, we know what is the result of flipping a coin, which is heads or tails showing up, before we actually do it. Therefore, flipping a coin is an experiment. Similarly, before we roll a six-sided die, we already know the possible outcome of doing that, which is 1, 2, 3, 4, 5, 6, so rolling a die is also an experiment.</p>
+<ul>
+<li>An <strong>event</strong> is a set of possible outcomes of the experiment.</li>
+</ul>
+<p>Generally there are two or more potential outcomes for some experiment. Any collection of those outcomes is called an event. For example, there are 6 possible outcomes for rolling a die, 1, 2, 3, 4, 5, 6. Then any collection of those 6 numbers is an event. So “<em>An odd number showing up</em>” which corresponds to the collection {1, 3, 5} is an event. <em>“An even number showing up</em>” that is represented by {2, 4, 6} is also an event.</p>
+<ul>
+<li>The <strong>sample space</strong> <span class="math inline">\((\mathcal{S})\)</span> of an experiment is the collection of <strong>ALL</strong> possible outcomes of the experiment.</li>
+</ul>
+<p>Based on the definition, the sample space the largest set associated with an experiment because it collects all possible outcomes. In other words, when an experiment is conducted, no matter what outcome shows up, it is always in the sample space.</p>
+<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Is the sample space also an event?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Yes, the sample space itself is an event because it is also a set of possible outcomes of the experiment.</li>
+</ul>
+</div>
+</div>
+<p>The table below provides a summary of experiments flipping a coin and rolling a die.</p>
 <table class="table">
 <colgroup>
 <col style="width: 15%">
@@ -366,21 +386,6 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
-<div class="callout-note callout callout-style-default no-icon callout-captioned">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-caption-container flex-fill">
-Is the sample space also an event?
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li>Yes, the sample space itself is an event because it is also a set of possible outcomes of the experiment.</li>
-</ul>
-</div>
-</div>
 <hr>
 <p><span style="color:blue"> <strong>Set Concept: Example of Rolling a six-side balanced die</strong></span></p>
 <div class="callout-tip callout callout-style-default callout-captioned">
@@ -393,68 +398,84 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Draw a <a href="http://www.stat.ucla.edu/~vlew/stat11/lectures/venn/venn.html"><strong>Venn Diagram</strong></a> every time you get stuck!</p>
+<p>Draw a <a href="http://www.stat.ucla.edu/~vlew/stat11/lectures/venn/venn.html"><strong>Venn Diagram</strong></a> every time you get stuck! Venn diagram is a very useful tool for identifying a set, so I encourage you to draw a venn diagram when you get stuck on complicated set operations.</p>
 </div>
 </div>
 <ul>
 <li>
-<span style="color:black"> The <strong>complement</strong> </span> of an event (set) <span class="math inline">\(A\)</span>, is denoted <span style="color:black"> <span class="math inline">\(A^c\)</span> </span>.
-<ul>
-<li>It is the set of <strong>all</strong> outcomes (elements) of <span class="math inline">\(\mathcal{S}\)</span> in which <span class="math inline">\(A\)</span> does <strong>not</strong> occur.</li>
-<li><span style="color:blue">For the die example, let <span class="math inline">\(A\)</span> be an event that a number greater than 2 is rolled. Then <span class="math inline">\(A = \{3, 4, 5, 6\}\)</span> and <span class="math inline">\(A^c = \{1, 2\}\)</span>.</span></li>
-</ul>
-</li>
-<li>The <span style="color:black"> <strong>union</strong> <span class="math inline">\((A \cup B)\)</span> </span> is the set of all outcomes of <span class="math inline">\(\mathcal{S}\)</span> in <span class="math inline">\(A\)</span> <strong>or</strong> <span class="math inline">\(B\)</span>.
-<ul>
-<li><span style="color:blue"> For the die example, let <span class="math inline">\(B\)</span> be an event that an even number is rolled. Then <span class="math inline">\(B = \{2, 4, 6\}\)</span> and <span class="math inline">\(A \cup B = \{2, 3, 4, 5, 6\}\)</span>. </span></li>
-</ul>
-</li>
-<li>The <span style="color:black"> <strong>intersection</strong> <span class="math inline">\((A \cap B)\)</span> </span> is the set of all outcomes of <span class="math inline">\(\mathcal{S}\)</span> in both <span class="math inline">\(A\)</span> <strong>and</strong> <span class="math inline">\(B\)</span>.
-<ul>
-<li><span style="color:blue"> For the die example, <span class="math inline">\(A \cap B = \{4, 6\}\)</span>.</span></li>
-</ul>
-</li>
-<li>
-<span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are <strong>disjoint</strong> or <strong>mutually exclusive</strong> if they have <strong>no outcomes in common</strong> <span class="math inline">\((A \cap B = \emptyset)\)</span>.
-<ul>
-<li>
-<span class="math inline">\(\emptyset\)</span> means an empty set, <span class="math inline">\(\{\}\)</span>, i.e., no elements in the set.</li>
-<li><span style="color:blue"> For the die example, let <span class="math inline">\(C\)</span> be an event that an odd number is obtained. Then <span class="math inline">\(C = \{1, 3, 5\}\)</span> and <span class="math inline">\(B \cap C = \emptyset\)</span>. </span></li>
-</ul>
-</li>
-<li>The <strong>containment</strong> <span class="math inline">\((A \subset B)\)</span> means every elements of <span class="math inline">\(A\)</span> also belongs to <span class="math inline">\(B\)</span>.
-<ul>
-<li>If <span class="math inline">\(A\)</span> occurs, then so does <span class="math inline">\(B\)</span>.</li>
-<li><span style="color:blue"> For the die example, let <span class="math inline">\(B\)</span> be the event that an even number is obtained and <span class="math inline">\(D\)</span> be the event that a number greater than 1 is obtained. Then <span class="math inline">\(B = \{2, 4, 6\}\)</span> and <span class="math inline">\(D = \{2, 3, 4, 5, 6\}\)</span>. </span></li>
-</ul>
+<span style="color:black"> The <strong>complement</strong> </span> of an event (set) <span class="math inline">\(A\)</span>, is denoted <span style="color:black"> <span class="math inline">\(A^c\)</span> </span>. It is the set of <strong>all</strong> outcomes (elements) of <span class="math inline">\(\mathcal{S}\)</span> in which <span class="math inline">\(A\)</span> does <strong>not</strong> occur. <span style="color:black">For the die example, let <span class="math inline">\(A\)</span> be an event that a number greater than 2 is rolled. Then <span class="math inline">\(A = \{3, 4, 5, 6\}\)</span> and <span class="math inline">\(A^c = \{1, 2\}\)</span>.</span>
 </li>
 </ul>
-<div class="callout-note callout callout-style-default no-icon callout-captioned">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-caption-container flex-fill">
-Is <span class="math inline">\(B \subset D\)</span> or <span class="math inline">\(D \subset B\)</span>?
-</div>
-</div>
-<div class="callout-body-container callout-body">
-
-</div>
-</div>
-<div class="cell" data-layout-align="center" data-hash="prob-rule_cache/html/unnamed-chunk-2_f1816e873bb7ca257d38430f863b0b9f">
+<div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="prob-rule_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" style="width:20.0%"></p>
+<figure class="figure"><p><img src="http://www.stat.ucla.edu/~vlew/stat11/lectures/venn/set10.gif" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
+<ul>
+<li>The <span style="color:black"> <strong>union</strong> <span class="math inline">\((A \cup B)\)</span> </span> is the set of all outcomes of <span class="math inline">\(\mathcal{S}\)</span> in <span class="math inline">\(A\)</span> <strong>or</strong> <span class="math inline">\(B\)</span>. <span style="color:black"> For the die example, let <span class="math inline">\(B\)</span> be an event that an even number is rolled. Then <span class="math inline">\(B = \{2, 4, 6\}\)</span> and <span class="math inline">\(A \cup B = \{2, 3, 4, 5, 6\}\)</span>. </span> Basically, as long as an element is in either <span class="math inline">\(A\)</span> or <span class="math inline">\(B\)</span>, not necessarily in both <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>, the element is collected in the set <span class="math inline">\((A \cup B)\)</span>.</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="http://www.stat.ucla.edu/~vlew/stat11/lectures/venn/set12.gif" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>The <span style="color:black"> <strong>intersection</strong> <span class="math inline">\((A \cap B)\)</span> </span> is the set of all outcomes of <span class="math inline">\(\mathcal{S}\)</span> in both <span class="math inline">\(A\)</span> <strong>and</strong> <span class="math inline">\(B\)</span>. <span style="color:black"> For the die example, <span class="math inline">\(A \cap B = \{4, 6\}\)</span>.</span> Basically, for any element in the set <span class="math inline">\((A \cap B)\)</span>, it must be an element of <span class="math inline">\(A\)</span> and of <span class="math inline">\(B\)</span>.</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="http://www.stat.ucla.edu/~vlew/stat11/lectures/venn/set2.gif" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>
+<span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are <strong>disjoint</strong> or <strong>mutually exclusive</strong> if they have <strong>no outcomes in common</strong> <span class="math inline">\((A \cap B = \emptyset)\)</span>. <span class="math inline">\(\emptyset\)</span> means an empty set, <span class="math inline">\(\{\}\)</span>, i.e., no elements in the set. If the two events are disjoint, it means that they cannot occur at the same time for one single trial of the experiment. <span style="color:black"> For the die example, let <span class="math inline">\(C\)</span> be an event that an odd number is obtained. Then <span class="math inline">\(C = \{1, 3, 5\}\)</span> and <span class="math inline">\(B \cap C = \emptyset\)</span>. </span> When we roll a die one time, we cannot get a number that is odd and even at the same time.</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="prob-rule_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" style="width:20.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>The <strong>containment</strong> <span class="math inline">\((A \subset B)\)</span> means every elements of <span class="math inline">\(A\)</span> also belongs to <span class="math inline">\(B\)</span>. In other words, if <span class="math inline">\(A\)</span> occurs, then so does <span class="math inline">\(B\)</span>. <span style="color:black"> For the die example, let <span class="math inline">\(B\)</span> be the event that an even number is obtained and <span class="math inline">\(D\)</span> be the event that a number greater than 1 is obtained. Then <span class="math inline">\(B = \{2, 4, 6\}\)</span> and <span class="math inline">\(D = \{2, 3, 4, 5, 6\}\)</span>. </span> In this case, every even number is greater than one, therefore <span class="math inline">\(B\)</span> is a subset of <span class="math inline">\(D\)</span>, i.e., <span class="math inline">\(B \subset D\)</span>.</li>
+</ul>
+<!-- :::{.callout-note icon=false} --><!-- ## Is $B \subset D$ or $D \subset B$? --><!-- ::: --><div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="prob-rule_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" style="width:20.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Keep in mind that every event (set) being considered is a subset of the sample space <span class="math inline">\((\mathcal{S})\)</span> because it only makes sense to discuss the events that are possibly to be occurred. As a result, for any event <span class="math inline">\(A\)</span>, <span class="math inline">\(A \subset \mathcal{S}\)</span>.</p>
+</div>
+</div>
 <hr>
 <p><span style="color:blue"> <strong>Probability Rules</strong> </span></p>
-<ul>
-<li>We denote the probability of an event <span class="math inline">\(A\)</span> on a sample space <span class="math inline">\(\mathcal{S}\)</span> as <span class="math inline">\(P(A)\)</span>.</li>
-</ul>
+<p>We have learned how to represent an event in terms of sets and set operations. Here we are going to learn several probability rules for events.</p>
+<p>First, we denote the probability of an event <span class="math inline">\(A\)</span> on a sample space <span class="math inline">\(\mathcal{S}\)</span> as <span class="math inline">\(P(A)\)</span>.</p>
 <div class="callout-tip callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -468,9 +489,7 @@ Tip
 <p>Treat the probability of an event as the <strong>area</strong> of the event in the Venn diagram.</p>
 </div>
 </div>
-<ul>
-<li>
-<strong>Axioms</strong>
+<p>In order to have a coherent and logically consistent set of probability rules, we need some axioms that are self-evident to anyone. The three axioms are as follows.</p>
 <ul>
 <li><span class="math inline">\(P(\mathcal{S}) = 1\)</span></li>
 <li>For any event <span class="math inline">\(A\)</span>, <span class="math inline">\(P(A) \ge 0\)</span>
@@ -478,28 +497,26 @@ Tip
 <li>If <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are <strong>disjoint</strong> or <strong>mutually exclusive</strong>, <span class="math inline">\(P(A \cup B) = P(A) + P(B)\)</span>
 </li>
 </ul>
-</li>
-<li>
-<strong>Properties</strong>
+<p>If we treat the sample space as an event, the probability of the entire sample space is always equal to one because this event must happen every time the experiment is conducted. In the Venn diagram, the sample space is the entire rectangle, and in probability, we presume the area of the rectangle is one.</p>
+<p>Because any event is a collection of some outcomes that could possibly occur or not occur, its probability is greater than or equal to zero. Any probability cannot be negative. It is clearly shown in terms of Venn diagram because an area of any shape of an object is greater than or equal to zero.</p>
+<p>Finally, if the two events are disjoint, the probability of the union of the two is just the sum of their own probability. For example, if the probability of getting a green M&amp;M is 20% and that of getting a blue M&amp;M is 15%, then the probability of getting a green or blue M&amp;M is 20% + 15% = 35%. It is clearly shown in the Venn diagram too because the total area of the two disjoint events in the sample space is the sum of the individual area.</p>
+<p>With the three axioms, the entire probability operation system can be constructed. Some basic properties are listed here.</p>
 <ul>
 <li>
 <span class="math inline">\(P(\emptyset) = 0\)</span>.</li>
 <li><span class="math inline">\(0 \le P(A) \le 1\)</span></li>
-<li><span class="math inline">\(P(A^c) = 1 - P(A)\)</span></li>
 <li>
 <strong>Addition Rule</strong>: <span class="math inline">\(P(A \cup B) = P(A) + P(B) - P(A \cap B)\)</span><br>
 </li>
+<li><span class="math inline">\(P(A^c) = 1 - P(A)\)</span></li>
 <li>If <span class="math inline">\(A \subset B\)</span>, then <span class="math inline">\(P(A) \le P(B)\)</span>
 </li>
 </ul>
-</li>
-</ul>
-<p><span style="color:red"> <strong><em>Venn Diagram Illustration</em></strong> </span></p>
-<ul>
-<li>
-<strong>Addition Rule</strong>: <span class="math inline">\(P(A \cup B) = P(A) + P(B) - P(A \cap B)\)</span>
-</li>
-</ul>
+<p>The empty set does not contain any possible outcomes of an experiment. Because some outcome must be occurred after an experiment is conducted, it is impossible for some event to happen without any outcome involved. Therefore, the probability of the empty set is zero. In terms of Venn diagram, an empty set is a set with area zero because it does not occupy any part (outcome) of the entire sample space.</p>
+<p>Since every event being considered must be a subset of the sample space, the area of any event is smaller than the area of the sample space which is one. Therefore, for any event <span class="math inline">\(A\)</span>, <span class="math inline">\(P(A) \le 1\)</span>. <span class="math inline">\(P(A) = 1\)</span> if and only if <span class="math inline">\(A = \mathcal{S}\)</span>.</p>
+<!-- <span style="color:red"> ***Venn Diagram Illustration*** </span> -->
+<!-- - **Addition Rule**: $P(A \cup B) = P(A) + P(B) - P(A \cap B)$ -->
+<p>The addition rule can be clearly understood using the Venn diagram. <a href="#fig-addition-rule">Figure&nbsp;<span>7.1</span></a> shows how <span class="math inline">\(P(A \cup B)\)</span> is expressed by <span class="math inline">\(P(A)\)</span>, <span class="math inline">\(P(B)\)</span> and <span class="math inline">\(P(A \cap B)\)</span>. To get the area of <span class="math inline">\(A \cup B\)</span>, we can first consider the sum of the area of <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>, the left and right circles. However, the middle part which is <span class="math inline">\(A \cap B\)</span> is counted twice when we take the sum, so the one piece of area of <span class="math inline">\(A \cap B\)</span> should be removed from the sum of the area.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-addition-rule" class="quarto-figure quarto-figure-center anchored">
@@ -509,10 +526,8 @@ Tip
 </div>
 </div>
 </div>
-<ul>
-<li>
-<strong>Disjoint Case</strong>: <span class="math inline">\(P(A \cup B) = P(A) + P(B)\)</span> because <span class="math inline">\(P(A \cap B) = 0\)</span>!</li>
-</ul>
+<p>In fact, the third axiom is a special case of the addition rule. <a href="#fig-disjoint-addition">Figure&nbsp;<span>7.2</span></a> illustrates the case. Since the two events are disjoint, <span class="math inline">\(A \cap B = \emptyset\)</span>, and the area of <span class="math inline">\(A \cap B\)</span>, or <span class="math inline">\(P(A \cap B)\)</span> is zero.</p>
+<!-- - **Disjoint Case**: $P(A \cup B) = P(A) + P(B)$ because $P(A \cap B) = 0$! -->
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-disjoint-addition" class="quarto-figure quarto-figure-center anchored">
@@ -522,6 +537,8 @@ Tip
 </div>
 </div>
 </div>
+<p>Since <span class="math inline">\(A \cup A^c = \mathcal{S}\)</span> and <span class="math inline">\(A \cap A^c = \emptyset\)</span>, we have <span class="math display">\[P(A \cup A^c) = P(\mathcal{S}) = P(A) + P(A^c)\]</span> Therefore, <span class="math inline">\(P(A) + P(A^c) = 1\)</span> and <span class="math inline">\(P(A^c) = 1 - P(A)\)</span>.</p>
+<p>If <span class="math inline">\(A \subset B\)</span>, the area of <span class="math inline">\(A\)</span> is smaller or equal to the area of <span class="math inline">\(B\)</span>. Therefore, <span class="math inline">\(P(A) \le P(B)\)</span>.</p>
 <p><span style="color:red"> <strong><em>Example: M&amp;M Colors</em></strong></span></p>
 <ul>
 <li>The makers of the M&amp;Ms report that their plain M&amp;Ms are composed of
@@ -536,6 +553,7 @@ Tip
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="./images/img-prob/mm.jpeg" class="img-fluid figure-img" style="width:80.0%"></p>
+<p></p><figcaption class="figure-caption">Source: Unsplash: Robert Anasch</figcaption><p></p>
 </figure>
 </div>
 </div>
@@ -588,17 +606,16 @@ Which interpretation of probability is used in this question?
 </section><section id="conditional-probability-and-independence" class="level2" data-number="7.2"><h2 data-number="7.2" class="anchored" data-anchor-id="conditional-probability-and-independence">
 <span class="header-section-number">7.2</span> Conditional Probability and Independence</h2>
 <p><span style="color:blue"> <strong>Conditional Probability</strong> </span></p>
-<ul>
-<li>As shown in <a href="#fig-conditional">Figure&nbsp;<span>7.3</span></a> below, the <strong>conditional probability of <span class="math inline">\(A\)</span> given <span class="math inline">\(B\)</span></strong> is</li>
-</ul>
-<center>
-<span class="math display">\[ P(A \mid  B) = \frac{P(A \cap B)}{P(B)}\]</span>
-</center>
-<ul>
-<li>It is defined if <span class="math inline">\(P(B) &gt; 0\)</span> and undefined if <span class="math inline">\(P(B) = 0\)</span>.</li>
-<li>
-<strong>“Given <span class="math inline">\(B\)</span>”</strong> means that event <span class="math inline">\(B\)</span> <em>has already occurred</em>.</li>
-</ul>
+<p>Quite often people are interested in the probability of something happening given the fact that some other event has been occurred or some information about the experiment or its outcomes have been known. In this case, we can calculate the <strong>conditional probability</strong> that takes the occurred event or known information into account. The conditional probability would be more appropriate for quantifying uncertainty about what we are interested because knowing some event being occurred is a piece of valuable information that helps us properly adjust the chance of something happening.</p>
+<p>By definition, the <strong>conditional probability of <span class="math inline">\(A\)</span> given <span class="math inline">\(B\)</span></strong> is <span class="math display">\[ P(A \mid  B) = \frac{P(A \cap B)}{P(B)}.\]</span></p>
+<p>The vertical bar “<span class="math inline">\(\mid\)</span>” is read as given or conditional on. Therefore, we consider the event <span class="math inline">\(A\)</span> not in the entire sample space, but the event <span class="math inline">\(A\)</span> that is conditional on the event <span class="math inline">\(B\)</span>, or <span class="math inline">\(A \mid B\)</span>. In other words, we don’t consider all possible parts of <span class="math inline">\(A\)</span>. Instead, we only care about the part of <span class="math inline">\(A\)</span> for which <span class="math inline">\(B\)</span> <em>has already occurred</em>.</p>
+<p>The formula is well defined when <span class="math inline">\(P(B) &gt; 0\)</span> and undefined if <span class="math inline">\(P(B) = 0\)</span>. Intuitively, one cannot calculate the probability of <span class="math inline">\(A\)</span> given <span class="math inline">\(B\)</span> when <span class="math inline">\(B\)</span> is not occurred by any chance. <a href="#fig-conditional">Figure&nbsp;<span>7.3</span></a> illustrates the conditional probability of <span class="math inline">\(A\)</span> given <span class="math inline">\(B\)</span> using the Venn diagram. When we compute the probability of <span class="math inline">\(A\)</span>, the information about <span class="math inline">\(B\)</span> have been given, and the probability of <span class="math inline">\(A\)</span> is adjusted, according to this information. The conditional probability is the ratio of <span class="math inline">\(P(A \cap B)\)</span> to <span class="math inline">\(P(B)\)</span>.</p>
+<!-- - As shown in @fig-conditional below, the **conditional probability of $A$ given $B$** is -->
+<!-- <center> -->
+<!-- $$ P(A \mid  B) = \frac{P(A \cap B)}{P(B)}$$  -->
+<!-- </center> -->
+<!-- - It is defined if $P(B) > 0$ and undefined if $P(B) = 0$. -->
+<!-- - **"Given $B$"** means that event $B$ *has already occurred*.  -->
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-conditional" class="quarto-figure quarto-figure-center anchored">
@@ -608,22 +625,13 @@ Which interpretation of probability is used in this question?
 </div>
 </div>
 </div>
-<ul>
-<li>
-<strong>Multiplication Rule</strong>: <span class="math inline">\(P(A \cap B) = P(A \mid B)P(B) = P(B \mid A)P(A)\)</span>
-<ul>
-<li>This is a rearranged form of the equation for conditional probability.</li>
-</ul>
-</li>
-<li>
-<span class="math inline">\(P(A)\)</span> and <span class="math inline">\(P(B)\)</span> are <strong>unconditional</strong> or <strong>marginal probabilities</strong>.
-<ul>
-<li>The marginal probability <span class="math inline">\(P(A)\)</span> is the ratio of area of <span class="math inline">\(A\)</span> to the area of the sample space.</li>
-<li>The conditional probability <span class="math inline">\(P(A|B)\)</span> is the ratio of area of <span class="math inline">\(A \cap B\)</span> to the area of <span class="math inline">\(B\)</span>.</li>
-</ul>
-</li>
-<li>The difference between marginal probabilities and conditional probabilities is depicted in <a href="#fig-conditional-prob">Figure&nbsp;<span>7.4</span></a>.</li>
-</ul>
+<p>So what is the difference between <span class="math inline">\(P(A)\)</span> and <span class="math inline">\(P(A \mid B)\)</span>? How knowing event <span class="math inline">\(B\)</span> occurred affects the probability of <span class="math inline">\(A\)</span>? Well, <a href="#fig-conditional-prob">Figure&nbsp;<span>7.4</span></a> describes the difference. When we calculate <span class="math inline">\(P(A)\)</span>, we assume we don’t have any specific information at hand. What we can base on is the entire sample space because we need to take all possible outcomes into account, and see if any outcome is related to the event <span class="math inline">\(A\)</span>. Therefore, although we just write <span class="math inline">\(P(A)\)</span>, the probability is actually calculated conditional on the entire sample space, i.e., <span class="math inline">\(P(A \mid \mathcal{S})\)</span>, which is the ratio of area of <span class="math inline">\(A\)</span> to the area of <span class="math inline">\(\mathcal{S}\)</span> that is one. Such probability is usually called <strong>unconditional</strong> or <strong>marginal probability</strong> because being conditional on <span class="math inline">\(\mathcal{S}\)</span> is like being not conditional on some specific event, and “marginal” means all other possible events or outcomes have been “marginalized” out, and only event <span class="math inline">\(A\)</span> is of our interest.</p>
+<p>Now if we know <span class="math inline">\(B\)</span> has occurred, we don’t need to consider the entire sample space any more. Instead, we can focus only on <span class="math inline">\(B\)</span> since we know <span class="math inline">\(B\)</span> has occurred, and anything not related to <span class="math inline">\(B\)</span>, or <span class="math inline">\(B^c\)</span> becomes irrelevant. We shrink the search pool from <span class="math inline">\(\mathcal{S}\)</span> to the smaller space <span class="math inline">\(B\)</span>. To find <span class="math inline">\(P(A \mid B)\)</span>, we just need to find how large part of <span class="math inline">\(B\)</span> that also belongs to <span class="math inline">\(A\)</span>. Intuitively speaking, the event <span class="math inline">\(B\)</span> has become our <em>new sample space</em> that are smaller than the original <span class="math inline">\(\mathcal{S}\)</span>. We calculate the probability of <span class="math inline">\(A\)</span> based on <span class="math inline">\(B\)</span>, not <span class="math inline">\(\mathcal{S}\)</span>. Since <span class="math inline">\(B\)</span> is the new sample space, we can treat <span class="math inline">\(P(B)\)</span> as one. In other words, any probability conditional on <span class="math inline">\(B\)</span> is scaled up by <span class="math inline">\(1 / P(B)\)</span> so that <span class="math inline">\(P(B) \times \frac{1}{P(B)} = 1\)</span>. This is why <span class="math inline">\(P(A \cap B)\)</span> is multiplied by <span class="math inline">\(1 / P(B)\)</span> in the conditional probability formula.</p>
+<p>Here is an example of new sample space or search pool. Suppose we would like to calculate the probability of a woman who is greater than 20 years old in a certain area. When we don’t have any background information about the woman, to compute the probability, we need to base on the entire female population of interest. But if we do know that the woman has two children, we shrink our focus on the pool of women who have two children, and compute the proportion of the women pool that is over 20 years of age.</p>
+<!-- - $P(A)$ and $P(B)$ are **unconditional** or **marginal probabilities**. -->
+<!--   + The marginal probability $P(A)$ is the ratio of area of $A$ to the area of the sample space. -->
+<!--   + The conditional probability $P(A\mid B)$ is the ratio of area of $A \cap B$ to the area of $B$.  -->
+<!-- - The difference between marginal probabilities and conditional probabilities is depicted in  -->
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-conditional-prob" class="quarto-figure quarto-figure-center anchored">
@@ -633,10 +641,10 @@ Which interpretation of probability is used in this question?
 </div>
 </div>
 </div>
+<p>The conditional probability formula lead to the <strong>multiplication rule</strong>: <span class="math display">\[P(A \cap B) = P(A \mid  B)P(B) = P(B \mid  A)P(A)\]</span> The rule is a rearranged form of the formula by multiplying both sides by <span class="math inline">\(P(B)\)</span>. Notice that <span class="math inline">\(P(B \mid A) = \frac{P(B \cap A)}{P(A)}\)</span> and hence <span class="math inline">\(P(B \mid A)P(A) = P(B \cap A) = P(A \cap B)\)</span>.</p>
 <p><span style="color:red"> <strong><em>Example: Peanut Butter and Jelly</em></strong></span></p>
 <ul>
-<li>Suppose 80% of people like peanut butter, 89% like jelly and 78% like both.</li>
-<li>Given that a randomly sampled person likes peanut butter, what is the probability that she also likes jelly?</li>
+<li>Suppose 80% of people like peanut butter, 89% like jelly and 78% like both. Given that a randomly sampled person likes peanut butter, what is the probability that she also likes jelly?</li>
 </ul>
 <div class="columns">
 <div class="column" style="width:49%;">
@@ -660,27 +668,17 @@ Which interpretation of probability is used in this question?
 </div>
 <hr>
 <p><span style="color:blue"> <strong>Independence</strong> </span></p>
-<ul>
-<li><p><span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are <strong>independent</strong> if <span class="math inline">\(\begin{align} P(A \mid B) &amp;= P(A) \text{ or }\\ P(B \mid A) &amp;= P(B) \text{ or } \\P(A\cap B) &amp;= P(A)P(B)\end{align}\)</span> <span class="math inline">\(\text{ if } P(A) &gt; 0 \text{ and } P(B) &gt; 0\)</span></p></li>
-<li><p>Intuitively, this means that <em>knowing <span class="math inline">\(B\)</span> occurs does not change the probability that <span class="math inline">\(A\)</span> occurs and vice versa</em>.</p></li>
-</ul>
-<div class="callout-note callout callout-style-default no-icon callout-captioned">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-caption-container flex-fill">
-Can we compute <span class="math inline">\(P(A \cap B)\)</span> if we only know <span class="math inline">\(P(A)\)</span> and <span class="math inline">\(P(B)\)</span>?
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li>No, we cannot compute <span class="math inline">\(P(A \cap B)\)</span> because we don’t know if <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are independent.</li>
-<li>We can only do so if <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are independent.</li>
-<li>In general, we need the multiplication rule <span class="math inline">\(P(A \cap B) = P(A \mid B)P(B)\)</span>.</li>
-</ul>
-</div>
-</div>
+<p>In the previous example, we learn that whether a person loves peanut butter affects the probability that she loves jelly. This piece of information is relevant, and the two events “<em>love peanut butter</em>” and “<em>love jelly</em>” are <strong>dependent</strong> each other because the one event will affect the chance of the other event happening. Uncovering the association or dependence is important for statistical inference because it helps statisticians better pin down the probability of being interest.</p>
+<p>Formally speaking, event <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are <strong>independent</strong> if <span class="math inline">\(\begin{align} P(A \mid B) &amp;= P(A) \text{ or }\\ P(B \mid A) &amp;= P(B) \text{ or } \\P(A\cap B) &amp;= P(A)P(B)\end{align}\)</span> <span class="math inline">\(\text{ for } P(A) &gt; 0 \text{ and } P(B) &gt; 0.\)</span></p>
+<p>Intuitively, this means that <em>knowing <span class="math inline">\(B\)</span> occurs does not change the probability that <span class="math inline">\(A\)</span> occurs and vice versa</em>. The information about <span class="math inline">\(B\)</span> is irrelevant to probability of <span class="math inline">\(A\)</span>.</p>
+<p>Here is a question. Can we compute <span class="math inline">\(P(A \cap B)\)</span> if we only know <span class="math inline">\(P(A)\)</span> and <span class="math inline">\(P(B)\)</span>? The answer is no. We cannot compute <span class="math inline">\(P(A \cap B)\)</span> because we don’t know if <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are independent. We can only do so if <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are independent. In general, we need to consider the dependence of two events and use the multiplication rule <span class="math inline">\(P(A \cap B) = P(A \mid B)P(B)\)</span>.</p>
+<p><a href="#fig-independence">Figure&nbsp;<span>7.5</span></a> explain independence using the Venn diagram. Independence means that the ratio of area of <span class="math inline">\(A\)</span> to area of <span class="math inline">\(\mathcal{S}\)</span> is the same as the ratio of area of <span class="math inline">\(A \cap B\)</span> to area of <span class="math inline">\(B\)</span>. Look at the case of non-independence on the right, the two events (circles) in particular. The area of <span class="math inline">\(A \cap B\)</span> is very close to the area of <span class="math inline">\(B\)</span> because the two events are quite overlapped each other. It means that the ratio of area of <span class="math inline">\(A \cap B\)</span> to area of <span class="math inline">\(B\)</span> is pretty close to one. So if we know <span class="math inline">\(B\)</span> has occurred, there will be a very high chance that <span class="math inline">\(A\)</span> would happen as well. In this case, the information about <span class="math inline">\(B\)</span> does matter, and affect probability of <span class="math inline">\(A\)</span>. The idea is that the two events describe pretty much similar set of outcomes for an experiment. As a result, when one occurs, we are pretty sure the other happens as well.</p>
+<!-- :::{.callout-note icon=false} -->
+<!-- ## Can we compute $P(A \cap B)$ if we only know $P(A)$ and $P(B)$? -->
+<!-- - No, we cannot compute $P(A \cap B)$ because we don't know if $A$ and $B$ are independent.  -->
+<!-- - We can only do so if $A$ and $B$ are independent. -->
+<!-- - In general, we need the multiplication rule $P(A \cap B) = P(A \mid B)P(B)$. -->
+<!-- ::: -->
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-independence" class="quarto-figure quarto-figure-center anchored">
@@ -1087,7 +1085,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </nav>
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">
-    <div class="nav-footer-left">Copyright 2022, Cheng-Han Yu</div>   
+    <div class="nav-footer-left">Copyright 2023, Dr.&nbsp;Cheng-Han Yu</div>   
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
 <li class="nav-item compact">
