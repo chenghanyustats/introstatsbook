@@ -7,31 +7,41 @@ Coming soon.
 
 ## Central Limit Theorem
 
-- We know if $X_i \stackrel{iid}{\sim} N(\mu, \sigma^2)$ , then $\overline{X} \sim N\left(\mu, \frac{\sigma^2}{n} \right)$.
-  - <span style="color:blue"> But what if the population distribution is **NOT** normal? </span> 
+It's time to talk about the most important theorem in probability and statistics, at least in my opinion, the **central limit theorem (CLT)**.
 
-<center>
-The **central limit theorem (CLT)** gives us the answer!
-</center>
+In sampling distribution @sec-prob-samdist, we learned that if $X_i \stackrel{iid}{\sim} N(\mu, \sigma^2)$, then $\overline{X} \sim N\left(\mu, \frac{\sigma^2}{n} \right)$. But the question is <span style="color:blue"> what if the population distribution is **NOT** normal? </span> What does the sampling distribution of the sample mean look like if the population distribution is multimodal? or skewed? or not bell-shaped? Well, the central limit theorem gives us the answer!
 
-<br>
+<!-- <center> -->
+<!-- The **central limit theorem (CLT)** gives us the answer! -->
+<!-- </center> -->
 
-- **Central Limit Theorem (CLT)**: 
-  - Suppose $\overline{X}$ is from a random sample of size $n$ and from a population distribution having mean $\mu$ and standard deviation $\sigma < \infty$. 
-  - As $n$ increases, the sampling distribution of $\overline{X}$ looks **more and more like $N(\mu, \sigma^2/n)$ regardless of the distribution from which we are sampling!**
+<!-- <br> -->
 
-```{r echo=FALSE, out.width="85%", fig.align='center'}
+**Central Limit Theorem (CLT)**: 
+
+*Suppose $\overline{X}$ is the sample mean from a random sample of size $n$ and from a population distribution having mean $\mu$ and standard deviation $\sigma < \infty$. As $n$ increases, the sampling distribution of $\overline{X}$ looks more and more like $N(\mu, \sigma^2/n)$ regardless of the distribution from which we are sampling!*
+
+```{r}
 #| label: fig-clt
-#| fig-cap: Illustration of Central Limit Theorem (https://en.wikipedia.org/wiki/Central_limit_theorem#/media/File:IllustrationCentralTheorem.png)
+#| fig-cap: "Illustration of Central Limit Theorem. Source: Wiki."
+#| echo: false
 knitr::include_graphics("./images/img-prob/clt.png")
 ```
 
-------------------------------------------------------------------
+@fig-clt illustrates the CLT. First, the random sample $(X_1, \dots, X_n)$ can be collected from any population distribution, whether it is normal or not. The magic part is that the sampling distribution of the sample mean $\overline{X}$ always looks like normal distribution $N(\mu, \sigma^2/n)$ as long as the sample size $n$ is sufficiently large. The larger $n$ is, the more normal-like the sampling distribution of $\overline{X}$ is. One question is how large is enough for $n$. Amazingly the normal approximation is quite well when $n \ge 30$. The variance of the sampling distribution which is $\sigma^2/n$ is decreasing with $n$ as well.
 
-<span style="color:blue"> **Illustration of the Central Limit Theorem** </span>
+Please try the [app](https://www.statcrunch.com/applets/type3&samplingdist) and see how the shape of the sampling distribution changes with the sample size $n$ and with the shape of the population distribution. You will find that it requires larger $n$ to get a more normal-like sampling distribution if the population distribution is very skewed. You can also see how the CLT works in @fig-clt-right and @fig-clt-u. The population distribution can be discrete, like binomial or Poisson distribution. Their sampling distribution of $\overline{X}$ will still look like normal although the sampling distribution is not continuous.
 
-```{r, out.width="100%", echo=FALSE, fig.asp=0.3, fig.align='center', fig.cap= "CLT Illustration: A Right-Skewed Distribution"}
+<!-- ------------------------------------------------------------------ -->
+
+<!-- <span style="color:blue"> **Illustration of the Central Limit Theorem** </span> -->
+
+
+```{r}
 #| label: fig-clt-right
+#| fig-asp: 0.3
+#| fig-cap: "CLT Illustration: A Right-Skewed Distribution."
+#| echo: false
 par(mfrow = c(1, 4))
 par(mar = c(4, 1, 1, 0), mgp = c(2, 0.5, 0), las = 1)
 shape <- 1
@@ -79,8 +89,11 @@ lines(x_l, dnorm(x_l, shape/rate, sqrt(shape/rate^2)/sqrt(n_l)), lwd = 1, col = 
 # paste("True variance of the sample mean =", (shape / rate ^ 2) / n_l)
 ```
 
-```{r, out.width="100%", echo=FALSE, fig.asp=0.3, fig.cap= "CLT Illustration: A U-shaped Distribution"}
+```{r}
 #| label: fig-clt-u
+#| fig-cap: "CLT Illustration: A U-shaped Distribution."
+#| echo: false
+#| fig-asp: 0.3
 par(mfrow = c(1, 4))
 par(mar = c(4, 1, 1, 0), mgp = c(2, 0.5, 0), las = 1)
 shape1 <- 1/2
@@ -125,35 +138,50 @@ lines(x_l, dnorm(x_l, shape1/(shape1+shape2), sqrt(0.125)/sqrt(n_l)), lwd = 1, c
 # paste("Theoretical variance of the sample mean =", 0.125 / n_l)
 ```
 
-------------------------------------------------------------------
 
-<span style="color:blue"> **Why is the Central Limit Theorem Important?** </span>
 
-- Many well-developed statistical methods are based on the normal distribution assumption.
-- With the Central Limit Theorem, we can use these methods even if we are sampling from a non-normal distribution or if we have no idea what the population distribution is, provided that the sample size is large enough.
+
+In sum, for a random sample $(X_1, \dots, X_n)$, if the population distribution is normally distributed, then of course with no surprise the sampling distribution of the sample mean is also exactly normally distributed. If the population distribution is not normally distributed, as long as its mean and variance exist, its sampling distribution of the sample mean will still look like a normal distribution when the sample size $n$ is large enough.
+
+
+- $X_i \stackrel{iid}{\sim} N(\mu, \sigma^2)$. $\overline{X} \sim N\left(\mu, \frac{\sigma^2}{n} \right)$
+
+- $X_i \stackrel{iid}{\sim}$ *any* distribution ($\mu, \sigma^2$). $\overline{X}$ looks like $N\left(\mu, \frac{\sigma^2}{n} \right)$ (for $n$ sufficiently large)
+
+
+
+<!-- ------------------------------------------------------------------ -->
+
+<!-- <span style="color:blue"> **** </span> -->
+
+Why is the central limit theorem Important? Many well-developed statistical methods are based on the normal distribution assumption. With the central limit theorem, we can use these methods even if we are sampling from a non-normal distribution or if we have no idea what the population distribution is, provided that the sample size is large enough.
 
 ## Central Limit Theorem Example
 ::::{.columns}
 :::{.column width="75%"}
-- Suppose that the selling prices of houses in Milwaukee are known to have a mean of $382,000 and a standard deviation of $150,000. 
-- In 100 randomly selected sales, what is the probability the *average* selling price is more than $400,000?
-- Since the sample size is fairly large $(n = 100)$, by the Central Limit Theorem, the sampling distribution of the average selling price is approximately normal with a mean of $382,000 and a SD of $150,000 / \sqrt{100}$.
+Suppose that the selling prices of houses in Milwaukee are known to have a mean of $382,000 and a standard deviation of $150,000. 
+
+In 100 randomly selected sales, what is the probability the *average* selling price is more than $400,000?
 :::
 
 :::{.column width="25%"}
-```{r, echo=FALSE, out.width="75%", fig.align='center'}
+```{r}
+#| echo: false
 knitr::include_graphics("./images/img-prob/house.jpeg")
 ```
 :::
 ::::
 
-- $P(\overline{X} > 400000) = P\left(\frac{\overline{X} - 382000}{150000/\sqrt{100}}  > \frac{400000 - 382000}{150000/\sqrt{100}}\right) \approx P(Z > 1.2)$ where $Z \sim N(0, 1)$.
+Since the sample size is fairly large $(n = 100)$, by the central limit theorem, the sampling distribution of the average selling price is approximately normal with a mean of $382,000 and a standard deviation of $150,000 / \sqrt{100}$.
+
+Then $P(\overline{X} > 400000) = P\left(\frac{\overline{X} - 382000}{150000/\sqrt{100}}  > \frac{400000 - 382000}{150000/\sqrt{100}}\right) \approx P(Z > 1.2)$ where $Z \sim N(0, 1)$.
 
 <!-- - We need the sampling distribution of the average selling price in order to obtain the probability.  -->
 
-
+Therefore using R we get the probability
 
 ```{r}
 pnorm(1.2, lower.tail = FALSE)
-pnorm(400000, mean = 382000, sd = 150000/sqrt(100), lower.tail = FALSE)
+pnorm(400000, mean = 382000, 
+      sd = 150000/sqrt(100), lower.tail = FALSE)
 ```
