@@ -671,7 +671,7 @@ Which interpretation of probability is used in this question?
 <p>In the previous example, we learn that whether a person loves peanut butter affects the probability that she loves jelly. This piece of information is relevant, and the two events “<em>love peanut butter</em>” and “<em>love jelly</em>” are <strong>dependent</strong> each other because the one event will affect the chance of the other event happening. Uncovering the association or dependence is important for statistical inference because it helps statisticians better pin down the probability of being interest.</p>
 <p>Formally speaking, event <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are <strong>independent</strong> if <span class="math inline">\(\begin{align} P(A \mid B) &amp;= P(A) \text{ or }\\ P(B \mid A) &amp;= P(B) \text{ or } \\P(A\cap B) &amp;= P(A)P(B)\end{align}\)</span> <span class="math inline">\(\text{ for } P(A) &gt; 0 \text{ and } P(B) &gt; 0.\)</span></p>
 <p>Intuitively, this means that <em>knowing <span class="math inline">\(B\)</span> occurs does not change the probability that <span class="math inline">\(A\)</span> occurs and vice versa</em>. The information about <span class="math inline">\(B\)</span> is irrelevant to probability of <span class="math inline">\(A\)</span>.</p>
-<p>Here is a question. Can we compute <span class="math inline">\(P(A \cap B)\)</span> if we only know <span class="math inline">\(P(A)\)</span> and <span class="math inline">\(P(B)\)</span>? The answer is no. We cannot compute <span class="math inline">\(P(A \cap B)\)</span> because we don’t know if <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are independent. We can only do so if <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are independent. In general, we need to consider the dependence of two events and use the multiplication rule <span class="math inline">\(P(A \cap B) = P(A \mid B)P(B)\)</span>.</p>
+<p>Here is a question. Can we compute <span class="math inline">\(P(A \cap B)\)</span> if we only know <span class="math inline">\(P(A)\)</span> and <span class="math inline">\(P(B)\)</span> with no information other than sample space? The answer is no. We cannot compute <span class="math inline">\(P(A \cap B)\)</span> because we don’t know if <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are independent. We can only do so if <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are independent. In general, we need to consider the dependence of two events and use the multiplication rule <span class="math inline">\(P(A \cap B) = P(A \mid B)P(B)\)</span>.</p>
 <p><a href="#fig-independence">Figure&nbsp;<span>7.5</span></a> explain independence using the Venn diagram. Independence means that the ratio of area of <span class="math inline">\(A\)</span> to area of <span class="math inline">\(\mathcal{S}\)</span> is the same as the ratio of area of <span class="math inline">\(A \cap B\)</span> to area of <span class="math inline">\(B\)</span>. Look at the case of non-independence on the right, the two events (circles) in particular. The area of <span class="math inline">\(A \cap B\)</span> is very close to the area of <span class="math inline">\(B\)</span> because the two events are quite overlapped each other. It means that the ratio of area of <span class="math inline">\(A \cap B\)</span> to area of <span class="math inline">\(B\)</span> is pretty close to one. So if we know <span class="math inline">\(B\)</span> has occurred, there will be a very high chance that <span class="math inline">\(A\)</span> would happen as well. In this case, the information about <span class="math inline">\(B\)</span> does matter, and affect probability of <span class="math inline">\(A\)</span>. The idea is that the two events describe pretty much similar set of outcomes for an experiment. As a result, when one occurs, we are pretty sure the other happens as well.</p>
 <!-- :::{.callout-note icon=false} -->
 <!-- ## Can we compute $P(A \cap B)$ if we only know $P(A)$ and $P(B)$? -->
@@ -716,18 +716,23 @@ Assuming that events <span class="math inline">\(A\)</span> and <span class="mat
 <li><span class="math inline">\(P(A \mid B) = P(A) = 0.3\)</span></li>
 </ul></section><section id="bayes-formula" class="level2" data-number="7.3"><h2 data-number="7.3" class="anchored" data-anchor-id="bayes-formula">
 <span class="header-section-number">7.3</span> Bayes’ Formula</h2>
+<p>Bayes’ formula is one of the most important theorems in the probability and statistical theory. It is the basis of Bayesian inference and Bayesian machine learning discussed in <a href="infer-bayes.html"><span>Chapter&nbsp;21</span></a>, which is getting more and more popular these days due to fast computation technology. In this section, we learn why we need the Bayes’s formula, and how we can use it to obtain the probability we are interested.</p>
 <p><span style="color:blue"> <strong>Why Bayes’ Formula?</strong> </span></p>
-<ul>
-<li>Often, we know <span class="math inline">\(P(B \mid A)\)</span>, but we are much more interested in <span class="math inline">\(P(A \mid B)\)</span>.</li>
-<li>Example: Diagnostic tests provide <span class="math inline">\(P(\text{positive test result} \mid \text{COVID})\)</span>, but we are also interested in <span class="math inline">\(P(\text{COVID} \mid \text{positive test result})\)</span>
-</li>
-</ul>
+<p>Quite often, we know <span class="math inline">\(P(B \mid A)\)</span>, but we are much more interested in <span class="math inline">\(P(A \mid B)\)</span>. Let’s take COVID diagnostic test as an example. Suppose you are having a sore throat and muscle and headache, and you decide to test if you got COVID. Of course, any test may not be 100% accurate. A person who does get COVID may be tested negative, which is called <strong>false negative</strong>, and a person who doesn’t get COVID may get a positive testing result, <strong>false positive</strong> in this case. With lots of trials, we can have false negative rate <span class="math inline">\(P(\text{test negative} \mid \text{COVID})\)</span> and false positive rate <span class="math inline">\(P(\text{test positive} \mid \text{not COVID})\)</span> of some COVID test.</p>
+<p>Let me ask you a question. Suppose that during a doctor’s visit, you tested positive for COVID. If you only get to ask the doctor one question, which would it be?</p>
+<ol type="a">
+<li>What’s the chance that I actually have COVID?</li>
+<li>If in fact I don’t have COVID, what’s the chance that I would’ve gotten this positive test result?</li>
+</ol>
+<p>If I were you, I would choose a. because I care more about whether I got COVID or not, not the efficacy of the test! In fact, diagnostic tests provide <span class="math inline">\(P(\text{test positive} \mid \text{COVID})\)</span> and <span class="math inline">\(P(\text{test positive} \mid \text{not COVID})\)</span>, but what we are really interested is <span class="math inline">\(P(\text{COVID} \mid \text{test positive})\)</span>!</p>
+<p>So, how can we utilize the diagnostic test efficacy to get the chance that one actually gets COVID? Bayes’ formula is the answer. It provides a way to find <span class="math inline">\(P(A \mid B)\)</span> from <span class="math inline">\(P(B \mid A)\)</span>.</p>
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="./images/img-prob/covid.jpeg" class="img-fluid figure-img" style="width:70.0%"></p>
+<p></p><figcaption class="figure-caption">Source: Unsplash Martin Sanchez</figcaption><p></p>
 </figure>
 </div>
 </div>
@@ -743,17 +748,12 @@ Assuming that events <span class="math inline">\(A\)</span> and <span class="mat
 </div>
 </div>
 </div>
-<ul>
-<li>Bayes’ formula provides a way to find <span class="math inline">\(P(A \mid B)\)</span> from <span class="math inline">\(P(B \mid A)\)</span>
-</li>
-</ul>
+<!-- - Bayes' formula provides a way to find $P(A \mid B)$ from $P(B \mid A)$ -->
 <hr>
 <p><span style="color:blue"> <strong>Formula</strong> </span></p>
-<ul>
-<li>If <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are events whose probabilities are not 0 or 1, then <span class="math display">\[\begin{align*} P(A \mid B) &amp;= \frac{P(A \cap B)}{P(B)} \quad ( \text{def. of cond. prob.}) \\ &amp;= \frac{P(A \cap B)}{P((B \cap A) \cup (B \cap A^c))} \quad ( \text{partition } B) \\ &amp;= \frac{P(B \mid A)P(A)}{P(B \mid A)P(A) + P(B \mid A^c)P(A^c)}  \quad ( \text{multiplication rule}) \end{align*}\]</span>
-</li>
-</ul>
-<!-- - Idea: <span style="color:blue"> Partition $B$ as $B = (B \cap A) \cup (B \cap A^c)$ and apply the multiplication rule.</span>  --><div class="cell" data-layout-align="center">
+<p>The Bayes’ formula comes from the conditional probability. If <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are events whose probability is not zero or one, then the Bayes’ formula is derived as below. <span class="math display">\[\begin{align*} P(A \mid B) &amp;= \frac{P(A \cap B)}{P(B)} \quad ( \text{def. of cond. prob.}) \\ &amp;= \frac{P(A \cap B)}{P((B \cap A) \cup (B \cap A^c))} \quad ( \text{partition } B) \\ &amp;= \frac{P(B \mid A)P(A)}{P(B \mid A)P(A) + P(B \mid A^c)P(A^c)}  \quad ( \text{multiplication rule}) \end{align*}\]</span></p>
+<!-- - Idea: <span style="color:blue"> Partition $B$ as $B = (B \cap A) \cup (B \cap A^c)$ and apply the multiplication rule.</span>  -->
+<div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-bayes-venn" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="prob-rule_files/figure-html/fig-bayes-venn-1.png" class="img-fluid figure-img" style="width:30.0%"></p>
@@ -762,29 +762,23 @@ Assuming that events <span class="math inline">\(A\)</span> and <span class="mat
 </div>
 </div>
 </div>
+<p>The first equality is just the definition of conditional probability. For the second equality, we partition <span class="math inline">\(B\)</span> into <span class="math inline">\((B \cap A)\)</span> and <span class="math inline">\((B \cap A^c)\)</span> as <span class="math inline">\((B \cap A) \cup (B \cap A^c) = B\)</span> and <span class="math inline">\((B \cap A)\)</span> and <span class="math inline">\((B \cap A^c)\)</span> are disjoint, as illustrated in <a href="#fig-bayes-venn">Figure&nbsp;<span>7.6</span></a>. <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Since <span class="math inline">\((B \cap A)\)</span> and <span class="math inline">\((B \cap A^c)\)</span> are disjoint, <span class="math inline">\(P((B \cap A) \cup (B \cap A^c)) = P(B \cap A) + P(B \cap A^c)\)</span>. Finally, we can use the multiplication rule to write <span class="math inline">\(P(B \cap A)\)</span> as <span class="math inline">\(P(B \mid A)P(A)\)</span> and <span class="math inline">\(P(B \cap A^c)\)</span> as <span class="math inline">\(P(B \mid A^c)P(A^c)\)</span>. The derivation of the Bayes’ formula is complete.</p>
+<p>Notice that we use the information about <span class="math inline">\(P(B \mid A)\)</span>, <span class="math inline">\(P(B \mid A^c)\)</span>, <span class="math inline">\(P(A)\)</span> and <span class="math inline">\(P(A^c)\)</span> to obtain <span class="math inline">\(P(A \mid B)\)</span>. In general, <span class="math inline">\(P(A \mid B) \ne P(A \mid B)\)</span>, and they are completely different probabilities. Interpret your probability with additional care.</p>
+<p>[Extended formula]</p>
 <p><span style="color:red"> <strong><em>Example: Passing Rate</em></strong> </span></p>
 <div class="columns">
-<div class="column" style="width:50%;">
+<div class="column" style="width:60%;">
 <p>After taking MATH 4720, <span class="math inline">\(80\%\)</span> of students understand the Bayes’ formula.</p>
 <ul>
-<li>Of those who understood the Bayes’ formula,
-<ul>
-<li>
-<span class="math inline">\(95\%\)</span> passed</li>
+<li><p>Of those who understood the Bayes’ formula, <span class="math inline">\(95\%\)</span> passed.</p></li>
+<li><p>Of those who did not understand the Bayes’ formula, only <span class="math inline">\(60\%\)</span> passed.</p></li>
 </ul>
-</li>
-<li>Of those who did not understand the Bayes’ formula,
-<ul>
-<li>
-<span class="math inline">\(60\%\)</span> passed</li>
-</ul>
-</li>
-</ul>
-</div><div class="column" style="width:50%;">
+</div><div class="column" style="width:40%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="./images/img-prob/test_pass.jpeg" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Source: Unsplash JESHOOTS.COM</figcaption><p></p>
 </figure>
 </div>
 </div>
@@ -940,7 +934,10 @@ Calculate the probability that a student understands the Bayes’ formula given 
 </ol>
 
 
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
+<ol>
+<li id="fn1"><p>We say sets <span class="math inline">\(A_1, \dots, A_n\)</span> form a <strong>partition</strong> of set <span class="math inline">\(A\)</span> if <span class="math inline">\(A_1 \cup \cdots \cup A_n = A\)</span> and <span class="math inline">\(A_1, \dots, A_n\)</span> are disjoint.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");

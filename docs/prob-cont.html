@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.2.335">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta name="description" content="This book serves as a main reference book for my MATH 4720 Statistical Methods and MATH 4740 Biostatistical Methods at Marquette University. Some topics can also be discussed in an introductory data science course. You’ll learn basic probability and statistical concepts as well as data analysis techniques such as linear regression using R computing software.">
+<meta name="description" content="An comprehensive introductory statistical data science book.">
 <title>Introduction to Statistics - 10&nbsp; Continuous Probability Distributions</title>
 <style>
 code{white-space: pre-wrap;}
@@ -302,22 +302,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./infer-goodnessfit.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Inference about Categorical Data</span></a>
+  <a href="./infer-cat.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Inference about Categorical Data</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./infer-indep.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">infer-indep.html</span></a>
+  <a href="./infer-bayes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./infer-bayes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./infer-nonpar.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Nonparametric Inference</span></a>
+  <a href="./infer-nonpar.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Nonparametric Inference</span></a>
   </div>
 </li>
       </ul>
@@ -332,27 +327,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./model-anova.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></a>
+  <a href="./model-anova.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./model-reg.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Linear Regression</span></a>
+  <a href="./model-reg.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Linear Regression</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./model-logistic.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Logistic Regression</span></a>
+  <a href="./model-logistic.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Logistic Regression</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./model-bayes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></a>
+  <a href="./model-bayes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./model-survival.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Survival Analysis</span></a>
+  <a href="./model-survival.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Survival Analysis</span></a>
   </div>
 </li>
       </ul>
@@ -395,150 +390,191 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </header><div class="cell">
 
 </div>
+<div class="cell">
+
+</div>
+<p>In this chapter, we discuss continuous probability distributions. We first learn the idea and properties of continuous distributions, then talk about probably the most important and commonly used distribution in probability and statistics, the normal distribution.</p>
 <section id="introduction" class="level2" data-number="10.1"><h2 data-number="10.1" class="anchored" data-anchor-id="introduction">
 <span class="header-section-number">10.1</span> Introduction</h2>
+<p>Unlike a discrete random variable taking finite or countable values, a continuous random variable takes on <em>any</em> values from <em>an interval of the real number line</em>. For example, a continuous random variable <span class="math inline">\(X\)</span> could take any value in the unit interval <span class="math inline">\([0, 1]\)</span>. Its possible values are uncountable.</p>
+<p>Instead of probability functions, a continuous random variable <span class="math inline">\(X\)</span> has the <strong>probability density function (pdf)</strong> denoted <span class="math inline">\(f(x)\)</span> such that for any real value <span class="math inline">\(a &lt; b\)</span>, <span class="math display">\[P(a &lt; X &lt; b) = \int_{a}^b f(x) dx.\]</span></p>
+<p>The probability that <span class="math inline">\(X\)</span> is in some interval is computed from the integral of the density function with respect to <span class="math inline">\(x\)</span>. Keep in mind that the density function <span class="math inline">\(f(x)\)</span> itself is not the probability that <span class="math inline">\(X = x\)</span>. The probability of continuous random variables is defined through the integral of <span class="math inline">\(f(x)\)</span>.</p>
+<p>The <strong>cumulative distribution function (cdf)</strong> of <span class="math inline">\(X\)</span> is defined as <span class="math display">\[F(x) := P(X \le x) = \int_{-\infty}^x f(t)dt.\]</span></p>
+<p>😎 Luckily, we don’t calculate integrals in this course. You just need to remember that for continuous random variables,</p>
+<div class="callout-important callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <ul>
-<li><p>A continuous random variable can take on <strong>any</strong> values from <em>an interval of the real line</em>.</p></li>
-<li><p>Instead of probability functions, a continuous random variable, <span class="math inline">\(X\)</span>, has the <strong>probability density function (pdf)</strong> <span class="math inline">\(f(x)\)</span> such that for any real value <span class="math inline">\(a &lt; b\)</span>, <span class="math display">\[P(a &lt; X &lt; b) = \int_{a}^b f(x) dx\]</span></p></li>
-<li><p>The <strong>cumulative distribution function (cdf)</strong> of <span class="math inline">\(X\)</span> is defined as <span class="math display">\[F(x) := P(X \le x) = \int_{-\infty}^x f(t)dt\]</span></p></li>
-<li><p>Every probability density function must satisfy <span style="color:blue"> (1) <span class="math inline">\(f(x) \ge 0\)</span> for all <span class="math inline">\(x\)</span>; (2) <span class="math inline">\(\int_{-\infty}^{\infty} f(x) dx = 1\)</span> </span></p></li>
-<li><p>😎 Luckily, we don’t deal with integrals in this course.</p></li>
+<li>The pdf does not represent a probability.</li>
+<li>The integral of pdf represents a probability.</li>
+<li>The cdf itself by definition is a probability that is also from the integral of pdf.</li>
 </ul>
+</div>
+</div>
+<p>Every probability density function must satisfy the two properties:</p>
+<ol type="1">
+<li><p><span class="math inline">\(f(x) \ge 0\)</span> for all <span class="math inline">\(x\)</span> on the real line</p></li>
+<li><p><span class="math inline">\(\int_{-\infty}^{\infty} f(x) dx = 1\)</span></p></li>
+</ol>
+<p><span class="math inline">\(f(x)\)</span> is a <em>density</em> value. For property 1, like density used in Physics, it cannot be negative. The density here represents <em>how much likely the random variable <span class="math inline">\(X\)</span> is around the value <span class="math inline">\(x\)</span>.</em> When <span class="math inline">\(f(x) = 0\)</span>, it means that it is not possible to have <span class="math inline">\(X\)</span> having value in the tiny neighborhood around <span class="math inline">\(x\)</span>. On the other hand, when <span class="math inline">\(f(x)\)</span> is large, it is pretty likely to have <span class="math inline">\(X\)</span> having values around <span class="math inline">\(x\)</span>. Because <span class="math inline">\(f(x)\)</span> is the integrand, a larger value of <span class="math inline">\(f(x)\)</span> in the interval <span class="math inline">\([a, b]\)</span> will lead to a larger probability <span class="math inline">\(P(a &lt; X &lt; b)\)</span>.</p>
+<p>The second property tells us that <span class="math inline">\(P(-\infty &lt; X &lt; \infty) = 1\)</span>. Remember that a random variable, whether it is discrete or continuous, must take a real value. Therefore the probability that <span class="math inline">\(X\)</span> lives on the entire real line <span class="math inline">\((-\infty, \infty)\)</span> is one.</p>
+<p>In fact, any function satisfying the two properties can be served as a probability density function for some random variable.</p>
 <hr>
 <p><span style="color:blue"> <strong>Density Curve</strong> </span></p>
-<ul>
-<li>A probability distribution function generates a graph called a <strong>density curve</strong> that shows the <em>likelihood</em> of a random variable at all possible values.</li>
-<li>
-<strong>The area under the density curve between <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>:</strong> <span class="math inline">\(P(a &lt; X &lt; b) = \int_{a}^b f(x) dx\)</span>.</li>
-<li>
-<strong>The total area under any density curve is equal to 1:</strong> <span class="math inline">\(\int_{-\infty}^{\infty} f(x) dx = 1\)</span>
-</li>
-</ul>
-<div class="cell" data-layout-align="center">
+<p>A probability density function generates a graph called a <strong>density curve</strong> that shows the <em>likelihood</em> of a random variable at all possible values. <a href="#fig-density">Figure&nbsp;<span>10.1</span></a> shows an example of density curve colored in blue. From Calculus 101, we have two important findings:</p>
+<ol type="1">
+<li><p>The integral of <span class="math inline">\(f(x)\)</span> between <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> is actually <em>the area under the density curve between <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span></em>. Therefore, the area under the density curve represents the probability <span class="math inline">\(P(a &lt; X &lt; b) = \int_{a}^b f(x) dx\)</span>, the density value <span class="math inline">\(f(x)\)</span>, or the height of the density curve does not.</p></li>
+<li><p><em>The total area under any density curve is equal to 1:</em> <span class="math inline">\(\int_{-\infty}^{\infty} f(x) dx = 1\)</span>.</p></li>
+</ol>
+<!-- - **The area under the density curve between $a$ and $b$:** $P(a < X < b) = \int_{a}^b f(x) dx$. --><!-- - **The total area under any density curve is equal to 1:** $\int_{-\infty}^{\infty} f(x) dx = 1$ --><div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-density" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="prob-cont_files/figure-html/fig-density-1.png" class="img-fluid figure-img" style="width:50.0%"></p>
+<figure class="figure"><p><img src="prob-cont_files/figure-html/fig-density-1.png" class="img-fluid figure-img" width="672"></p>
 <p></p><figcaption class="figure-caption">Figure&nbsp;10.1: Density curve for a random variable</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
+<div class="callout-warning callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Keep in mind that the area under the density curve represents probability, not the density value or the height of the density curve at some value of <span class="math inline">\(x\)</span>.</p>
+<p>One question is for a continuous random variable <span class="math inline">\(X\)</span>, what is the probability that <span class="math inline">\(X\)</span> equals any real number, or <span class="math inline">\(P(X = a)\)</span> for any <span class="math inline">\(a \in \mathbf{R}\)</span>? Since <span class="math inline">\(P(X = a) = P(a \le X \le a) = \int_{a}^a f(x) dx = 0\)</span>, we know that <span class="math inline">\(P(X = a) = 0\)</span> for any real number <span class="math inline">\(a\)</span>. Graphically speaking, it means that there is no area under the density curve between <span class="math inline">\(a\)</span> and <span class="math inline">\(a\)</span>.</p>
+<p>Therefore, for a continuous random variable <span class="math inline">\(X\)</span>, <span class="math inline">\(P(a \le X\le b) = P(a &lt; X &lt; b)\)</span> for any real value <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> because there is no probability mass on <span class="math inline">\(x = a\)</span> and <span class="math inline">\(x = b\)</span>.</p>
+</div>
+</div>
 <hr>
 <p><span style="color:blue"> <strong>Commonly Used Continuous Distributions</strong> </span></p>
-<ul>
-<li>R Shiny app is a <a href="http://sctc.mscs.mu.edu:3838/sample-apps/Calculator/">Continuous Distribution</a> calculator.</li>
-<li>In this course, we will touch on <strong>normal (Gaussian)</strong>, <strong>student’s t</strong>, <strong>chi-square</strong>, <strong>F</strong>
-</li>
-<li>Some other common distributions include <strong>uniform</strong>, <strong>exponential</strong>, <strong>gamma</strong>, <strong>beta</strong>, <strong>inverse gamma</strong>, <strong>Cauchy</strong>, etc. (MATH 4700)</li>
-</ul></section><section id="normal-gaussian-distribution" class="level2" data-number="10.2"><h2 data-number="10.2" class="anchored" data-anchor-id="normal-gaussian-distribution">
+<!-- - R Shiny app is a [Continuous Distribution](http://sctc.mscs.mu.edu:3838/sample-apps/Calculator/) calculator. -->
+<p>There are tons of <a href="https://en.wikipedia.org/wiki/List_of_probability_distributions">continuous distributions</a> out there, and we won’t be able to discuss all of them. In this book, we will touch on <strong>normal (Gaussian)</strong>, <strong>student’s t</strong>, <strong>chi-square</strong>, and <strong>F</strong> distributions. Some other popular distributions include <strong>uniform</strong>, <strong>exponential</strong>, <strong>gamma</strong>, <strong>beta</strong>, <strong>inverse gamma</strong>, <strong>Cauchy</strong>, etc. If you are interested in learning more distributions and their properties, please take a calculus-based probability theory course.</p>
+</section><section id="normal-gaussian-distribution" class="level2" data-number="10.2"><h2 data-number="10.2" class="anchored" data-anchor-id="normal-gaussian-distribution">
 <span class="header-section-number">10.2</span> Normal (Gaussian) Distribution</h2>
-<ul>
-<li>The normal distribution, <span class="math inline">\(N(\mu, \sigma^2\)</span>), has the probability distribution function given by <span class="math display">\[\small f(x) = \frac{1}{\sqrt{2\pi}\sigma}e^{\frac{-(x-\mu)^2}{2\sigma^2}}, \quad -\infty &lt; x &lt; \infty\]</span>
-<ul>
-<li>This distribution has two parameters: mean, <span class="math inline">\(\mu\)</span>, and variance, <span class="math inline">\(\sigma^2\)</span> (standard deviation <span class="math inline">\(\sigma\)</span>).</li>
-<li>It is always bell-shaped and symmetric about the mean, <span class="math inline">\(\mu\)</span>.</li>
-<li>When <span class="math inline">\(\mu = 0\)</span> and <span class="math inline">\(\sigma = 1\)</span>, <span class="math inline">\(N(0, 1)\)</span> is called <strong>standard normal</strong>.</li>
-</ul>
-</li>
-<li>Below are examples of normal distribution curves and how they change with different means and standard deviations.</li>
-</ul>
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div id="fig-normal-density" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="prob-cont_files/figure-html/fig-normal-density-1.png" class="img-fluid figure-img" style="width:35.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;10.2: Normal density curve with mean 100 and standard deviation 15</figcaption><p></p>
-</figure>
-</div>
-</div>
-</div>
+<p>We now discuss the most important distribution in probability and statistics, the <a href="https://en.wikipedia.org/wiki/Normal_distribution">normal distribution</a> or Gaussian distribution.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>The normal distribution, referred to as <span class="math inline">\(N(\mu, \sigma^2\)</span>), has the probability density function given by <span class="math display">\[\small f(x) = \frac{1}{\sqrt{2\pi}\sigma}e^{\frac{-(x-\mu)^2}{2\sigma^2}}, \quad -\infty &lt; x &lt; \infty,\]</span> where the two parameters <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma^2\)</span> (<span class="math inline">\(\sigma\)</span>) are the mean and variance (standard deviation) of the distribution respectively. The normal variable <span class="math inline">\(X\)</span> lives on the entire real line. The normal density value <span class="math inline">\(f(x)\)</span> is not exactly equal to zero although it is tiny for extremely large <span class="math inline">\(x\)</span> in absolute value. When <span class="math inline">\(\mu = 0\)</span> and <span class="math inline">\(\sigma = 1\)</span>, <span class="math inline">\(N(0, 1)\)</span> is called <strong>standard normal</strong>.</p>
+<p><a href="#fig-normal-densities">Figure&nbsp;<span>10.2</span></a> are examples of normal density curves and how they change with different means and standard deviations. The normal distribution is always bell-shaped and symmetric about the mean <span class="math inline">\(\mu\)</span>, regardless of the value of <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span>. The parameter <span class="math inline">\(\mu\)</span> is the location parameter that controls the “location” of the distribution. The navy <span class="math inline">\(N(100, 10^2)\)</span> is 80 units right of the red <span class="math inline">\(N(20, 10^2)\)</span>. The parameter <span class="math inline">\(\sigma\)</span> is the scale parameter that determines the variability or spreadness of the distribution. The navy <span class="math inline">\(N(100, 10^2)\)</span> and the yellow <span class="math inline">\(N(100, 15^2)\)</span> are at the same location, but <span class="math inline">\(N(100, 15^2)\)</span> has more variation than <span class="math inline">\(N(100, 10^2)\)</span>. Since the total area under the density curve is always one, to account for large variation, the density curve of <span class="math inline">\(N(100, 15^2)\)</span> has heavier tails and lower density values around the mean. Heavier tails means it is more probable to have extreme values like 130 or 70 that are away from the mean 100, comparing to <span class="math inline">\(N(100, 10^2)\)</span> with smaller variation.</p>
+<!-- # ```{r normal_density, echo=FALSE, out.width='35%', fig.align='center'} -->
+<!-- # #| label: fig-normal-density -->
+<!-- # #| fig-cap: Normal density curve with mean 100 and standard deviation 15 -->
+<!-- # par(mfrow = c(1, 1)) -->
+<!-- # par(mar = c(1.8, 0, 1.2, 0), mgp = c(0.5, 0.2, 0), las = 1) -->
+<!-- # mean=100; sd=15 -->
+<!-- # # lb=80; ub=120 -->
+<!-- # x <- seq(-4,4,length=100)*sd + mean -->
+<!-- # hx <- dnorm(x,mean,sd) -->
+<!-- # plot(x, hx, type="n", xlab="x", ylab="", -->
+<!-- #   main=expression(N(100, 15^2)), axes=FALSE) -->
+<!-- # # i <- x >= lb & x <= ub -->
+<!-- # lines(x, hx, col = "#003366", lwd = 3) -->
+<!-- # # polygon(c(lb,x[i],ub), c(0,hx[i],0), col="red") -->
+<!-- # # area <- pnorm(ub, mean, sd) - pnorm(lb, mean, sd) -->
+<!-- # # result <- paste("P(",lb,"< IQ <",ub,") =", -->
+<!-- # #    signif(area, digits=3)) -->
+<!-- # # mtext(result,3) -->
+<!-- # axis(1, at=seq(40, 160, 20), pos=0, tick = -0.005) -->
+<!-- # ``` -->
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-normal-densities" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="prob-cont_files/figure-html/fig-normal-densities-1.png" class="img-fluid figure-img" style="width:75.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;10.3: Normal density curves with varying means and standard deviations</figcaption><p></p>
+<figure class="figure"><p><img src="prob-cont_files/figure-html/fig-normal-densities-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;10.2: Normal density curves with varying means and standard deviations</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
+<!-- It is always bell-shaped and symmetric about the mean $\mu$. -->
 </section><section id="standardization-and-z-scores" class="level2" data-number="10.3"><h2 data-number="10.3" class="anchored" data-anchor-id="standardization-and-z-scores">
 <span class="header-section-number">10.3</span> Standardization and Z-Scores</h2>
+<p><strong>Standardization</strong> is a transformation that allows us to convert any normal distribution <span class="math inline">\(N(\mu, \sigma^2)\)</span> to <span class="math inline">\(N(0, 1)\)</span>, the standard normal distribution.</p>
+<p>Why do we want to perform standardization? We want to put data on a <em>standardized scale</em>, because it helps us make comparisons more easily. Later we will see why. Let’s first see how we can do standardization.</p>
+<p>If <span class="math inline">\(x\)</span> is an observation from a distribution, not necessarily normal, with mean <span class="math inline">\(\mu\)</span> and standard deviation <span class="math inline">\(\sigma\)</span>, the standardized value of <span class="math inline">\(x\)</span> is called <strong><span class="math inline">\(z\)</span>-score</strong>: <span class="math display">\[z = \frac{x - \mu}{\sigma}\]</span></p>
+<p>The <span class="math inline">\(z\)</span>-score tells us <em>how many standard deviations <span class="math inline">\(x\)</span> falls away from its mean and in which direction</em>.</p>
 <ul>
-<li>
-<strong>Standardization</strong> allows us to convert <span class="math inline">\(N(\mu, \sigma^2)\)</span> to <span class="math inline">\(N(0, 1)\)</span>.</li>
-<li>
-<strong>Why do we perform standardization?</strong>
-<ul>
-<li>We want to put data on a <em>standardized scale</em>, because it helps us make comparisons more easily!</li>
+<li><p>Observations <strong>larger</strong> than the mean have <strong>positive</strong> <span class="math inline">\(z\)</span>-scores.</p></li>
+<li><p>Observations <strong>smaller</strong> than the mean have <strong>negative</strong> <span class="math inline">\(z\)</span>-scores.</p></li>
+<li><p>A <span class="math inline">\(z\)</span>-score -1.2 means that <span class="math inline">\(x\)</span> is 1.2 standard deviations to the <strong>left</strong> of or <strong>below</strong> the mean.</p></li>
+<li><p>A <span class="math inline">\(z\)</span>-score 1.8 means that <span class="math inline">\(x\)</span> is 1.8 standard deviations to the <strong>right</strong> of or <strong>above</strong> the mean.</p></li>
 </ul>
-</li>
-<li>If <span class="math inline">\(x\)</span> is an observation from a distribution with mean <span class="math inline">\(\mu\)</span> and standard deviation <span class="math inline">\(\sigma\)</span>, the standardized value of <span class="math inline">\(x\)</span> is its so-called <strong><span class="math inline">\(z\)</span>-score</strong>: <span class="math display">\[z = \frac{x - \mu}{\sigma}\]</span>
-</li>
-<li>The <span class="math inline">\(z\)</span>-score tells us how many standard deviations <span class="math inline">\(x\)</span> falls away from the mean and in which direction.
-<ul>
-<li>Observations <strong>larger</strong> than the mean have <strong>positive</strong> <span class="math inline">\(z\)</span>-scores.</li>
-<li>Observations <strong>smaller</strong> than the mean have <strong>negative</strong> <span class="math inline">\(z\)</span>-scores.</li>
-<li>A <span class="math inline">\(z\)</span>-score -1.2 means that <span class="math inline">\(x\)</span> is 1.2 standard deviations to the <strong>left</strong> of or <strong>below</strong> the mean.</li>
-<li>A <span class="math inline">\(z\)</span>-score 1.8 means that <span class="math inline">\(x\)</span> is 1.8 standard deviations to the <strong>right</strong> of or <strong>above</strong> the mean.</li>
-</ul>
-</li>
-<li><span style="color:blue"> If <span class="math inline">\(X \sim N(\mu, \sigma^2)\)</span>, <span class="math inline">\(Z = \frac{X - \mu}{\sigma}\)</span> follows the standard normal distribution <span class="math inline">\(Z \sim N(0, 1)\)</span>. </span></li>
-</ul>
+<p><span style="color:blue"> If <span class="math inline">\(X \sim N(\mu, \sigma^2)\)</span>, then <span class="math inline">\(Z = \frac{X - \mu}{\sigma}\)</span>, the transformed random variable, follows the standard normal distribution <span class="math inline">\(Z \sim N(0, 1)\)</span>. </span></p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Any transformation of a random variable is still a random variable but with a different probability distribution.</p>
+</div>
+</div>
 <hr>
-<p><span style="color:blue"> <strong>Illustration</strong> </span></p>
+<p><span style="color:blue"> <strong>Graphical Illustration</strong> </span></p>
+<p>What does the standardization really do? Well it first subtracts the original variable value <span class="math inline">\(x\)</span> from the mean <span class="math inline">\(\mu\)</span>, then divided by its standard deviation <span class="math inline">\(\sigma\)</span>.</p>
 <ul>
-<li>
-<span class="math inline">\(X - \mu\)</span> shifts the mean from <span class="math inline">\(\mu\)</span> to 0.</li>
-</ul>
-<div class="cell" data-layout-align="center" data-fig.asp="0.3">
-<div class="cell-output-display">
-<div id="fig-standardization-mean" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="prob-cont_files/figure-html/fig-standardization-mean-1.png" class="img-fluid figure-img" style="width:65.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;10.4: Standardization shifts mean from 3 to 0</figcaption><p></p>
-</figure>
-</div>
-</div>
-</div>
-<ul>
-<li>
-<span class="math inline">\(\frac{X - \mu}{\sigma}\)</span> scales the variation from 4 to 1.</li>
-</ul>
-<div class="cell" data-layout-align="center" data-fig.asp="0.3">
-<div class="cell-output-display">
-<div id="fig-standarization-variance" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="prob-cont_files/figure-html/fig-standarization-variance-1.png" class="img-fluid figure-img" style="width:65.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;10.5: Standardization scales variance from 4 to 1</figcaption><p></p>
-</figure>
-</div>
-</div>
-</div>
-<ul>
-<li>A value of <span class="math inline">\(x\)</span> that is 2 standard deviation below the mean, <span class="math inline">\(\mu\)</span>, corresponds to <span class="math inline">\(z = -2\)</span>.
-<ul>
-<li>
-<span class="math inline">\(z = \frac{x -\mu}{\sigma} \iff x = \mu + z\sigma\)</span>. If <span class="math inline">\(z = -2\)</span>, <span class="math inline">\(x = \mu - 2\sigma\)</span>.</li>
-</ul>
-</li>
-<li>
-<a href="#fig-distribution-standardized">Figure&nbsp;<span>10.6</span></a> depicts how the values on the x-axis change when standardization is performed.</li>
+<li>First, <span class="math inline">\(X - \mu\)</span> shifts the mean from <span class="math inline">\(\mu\)</span> to 0. <a href="#fig-standardization-mean">Figure&nbsp;<span>10.3</span></a> illustrates this. The original distribution is <span class="math inline">\(X \sim N(3, 4)\)</span> (navy). Then the new variable <span class="math inline">\(Y = X-\mu\)</span> is <span class="math inline">\(Y = X - 3\)</span> that follows <span class="math inline">\(N(0, 4)\)</span> distribution (blue). <span class="math inline">\(X - \mu\)</span> means the distribution is shifted to the left 3 units, so that the new location or center becomes zero.</li>
 </ul>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
+<div id="fig-standardization-mean" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="prob-cont_files/figure-html/fig-standardization-mean-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;10.3: Standardization shifts mean from 3 to 0</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Second, <span class="math inline">\(\frac{X - \mu}{\sigma}\)</span> scales the variation from 4 to 1. <span class="math inline">\(Y = X-3 \sim N(0, 4).\)</span> Because <span class="math inline">\(\sigma = 2\)</span>, <span class="math inline">\(Z = \frac{X - 3}{2} \sim N(0, 1)\)</span>. The idea is that one unit change in <span class="math inline">\(X\)</span> is one unit change in <span class="math inline">\(Y\)</span>, but just 1/2 unit change in <span class="math inline">\(Z\)</span>. Through dividing by <span class="math inline">\(\sigma\)</span>, the variation measured in the new scale becomes smaller, and the new variance is one. For any normal variable with an arbitrary finite value of <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span>, the variable after standardization will always follow <span class="math inline">\(N(0, 1)\)</span> (red).</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-standarization-variance" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="prob-cont_files/figure-html/fig-standarization-variance-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;10.4: Standardization scales variance from 4 to 1</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If <span class="math inline">\(\sigma &lt; 1\)</span>, then the variation measured in the new scale becomes larger, because the new variance is one.</p>
+</div>
+</div>
+<p>A value of <span class="math inline">\(x\)</span> that is 2 standard deviation below the mean, <span class="math inline">\(\mu\)</span>, corresponds to <span class="math inline">\(z = -2\)</span>. For any <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span>, <span class="math inline">\(x\)</span> and <span class="math inline">\(z\)</span> have a one-to-one correspondence relationship: <span class="math inline">\(z = \frac{x -\mu}{\sigma} \iff x = \mu + z\sigma\)</span>. So if <span class="math inline">\(z = -2\)</span>, <span class="math inline">\(x = \mu - 2\sigma\)</span>. <a href="#fig-distribution-standardized">Figure&nbsp;<span>10.5</span></a> depicts how the values on the x-axis change when standardization is performed.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
 <div id="fig-distribution-standardized" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="./images/img-prob/standardization.png" class="img-fluid figure-img" style="width:90.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;10.6: Standardized Normal Distribution</figcaption><p></p>
+<figure class="figure"><p><img src="prob-cont_files/figure-html/fig-distribution-standardized-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;10.5: Standardized Normal Distribution</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
 <hr>
-<p><span style="color:blue"> <strong>SAT and ACT Example</strong> </span></p>
-<ul>
-<li>Standardization can help us compare the performance of students on the SAT and ACT, which both have nearly normal distributions.
-<ul>
-<li>The table below lists the parameters for each distribution.</li>
-</ul>
-</li>
-</ul>
+<p><span style="color:blue"> <strong>SAT and ACT Example (OS Example 4.2)</strong> </span></p>
+<p>Standardization can help us compare the performance of students on the SAT and ACT, which both have nearly normal distributions. The table below lists the parameters for each distribution.</p>
 <table class="table">
 <thead><tr class="header">
 <th style="text-align: center;">Measure</th>
@@ -561,80 +597,47 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="./images/img-prob/sat_act.jpeg" class="img-fluid figure-img" style="width:50.0%"></p>
+<figure class="figure"><p><img src="./images/img-prob/sat_act.jpeg" class="img-fluid figure-img" style="width:80.0%"></p>
 </figure>
 </div>
 </div>
 </div>
-<ul>
-<li>We want to determine whether Anna or Tommy performed better on their respective tests.
-<ul>
-<li>Anna scored a 1300 on her SAT and Tommy scored a 24 on his ACT.</li>
-</ul>
-</li>
-</ul>
+<p>Suppose Anna scored a 1300 on her SAT and Tommy scored a 24 on his ACT. We want to determine whether Anna or Tommy performed better on their respective tests.</p>
 <p><span style="color:red"> <strong><em>Standardization</em></strong> </span></p>
-<ul>
-<li>
-<span class="math inline">\(z_{A} = \frac{x_{A} - \mu_{SAT}}{\sigma_{SAT}} = \frac{1300-1100}{200} = 1\)</span>; <span class="math inline">\(z_{T} = \frac{x_{T} - \mu_{ACT}}{\sigma_{ACT}} = \frac{24-21}{6} = 0.5\)</span>.</li>
-</ul>
+<p>Since SAT and ACT are measured on a different scale, we are not able to compare the two scores unless we measure them using the same scale. What we do is standardization. Both SAT and ACT are normally distributed but with different mean and variance. We first transform the two distributions into the standard normal distribution, then examining Anna and Tommys’ performance by checking the location of their score on the standard normal distribution.</p>
+<p>The idea is that we first measure the two scores using the same scale and unit. The new transformed score in both cases is <em>how many standard deviations the original score is away from its original mean</em>. That is, both SAT and ACT are measured using the z-score. Then if A’s z-score is larger than B’ z-score, we know that A performs better than B because A has a relatively higher score than B.</p>
+<p>The z-score of Anna and Tommy is <span class="math inline">\(z_{A} = \frac{x_{A} - \mu_{SAT}}{\sigma_{SAT}} = \frac{1300-1100}{200} = 1\)</span>; <span class="math inline">\(z_{T} = \frac{x_{T} - \mu_{ACT}}{\sigma_{ACT}} = \frac{24-21}{6} = 0.5\)</span>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-standardization-sat-act" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="prob-cont_files/figure-html/fig-standardization-sat-act-1.png" class="img-fluid figure-img" style="width:70.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;10.7: Standardization of Anna and Tommy’s scores</figcaption><p></p>
+<figure class="figure"><p><img src="prob-cont_files/figure-html/fig-standardization-sat-act-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;10.6: SAT and ACT distribution</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
-<ul>
-<li>This standardization tells us that Anna scored 1 standard deviation above the mean and Tommy scored 0.5 standard deviations above the mean.</li>
-<li>From this information, we can conclude that Anna performed better on teh SAT than Tommy performed on the ACT.</li>
-</ul></section><section id="tail-areas-and-normal-percentiles" class="level2" data-number="10.4"><h2 data-number="10.4" class="anchored" data-anchor-id="tail-areas-and-normal-percentiles">
+<p>This standardization tells us that Anna scored 1 standard deviation above the mean and Tommy scored 0.5 standard deviations above the mean. From this information, we can conclude that Anna performed better on the SAT than Tommy performed on the ACT.</p>
+<p><a href="#fig-standardization-sat-act">Figure&nbsp;<span>10.6</span></a> shows the SAT and ACT distributions. Note that the two distributions are depicted using the same density curve, as if they are measured on the same scale or standard normal distribution. Clearly we can see that Anna tends to do better with respect to everyone else than Tommy did.</p>
+</section><section id="tail-areas-and-normal-percentiles" class="level2" data-number="10.4"><h2 data-number="10.4" class="anchored" data-anchor-id="tail-areas-and-normal-percentiles">
 <span class="header-section-number">10.4</span> Tail Areas and Normal Percentiles</h2>
 <p><span style="color:blue"> <strong>Finding Tail Areas <span class="math inline">\(P(X &lt; x)\)</span></strong> </span></p>
-<ul>
-<li>Finding tail areas allows us to determine the percentage of cases that are above or below a certain score.</li>
-<li>Going back to the SAT and ACT example, this can help us determine the fraction of students have an SAT score below Anna’s score of 1300.
-<ul>
-<li>This is the same as determining what percentile Anna scored at, which is the percentage of cases that had lower scores than Anna.</li>
-</ul>
-</li>
-<li>Therefore, we are looking for <span class="math inline">\(P(X &lt; 1300 \mid \mu = 1100, \sigma = 200)\)</span> or <span class="math inline">\(P(Z &lt; 1 \mid \mu = 0, \sigma = 1)\)</span>.
-<ul>
-<li>We can calculate this value by using R.</li>
-</ul>
-</li>
-</ul>
+<p>Finding tail areas allows us to determine the percentage of cases that are above or below a certain score. Going back to the SAT and ACT example, this can help us determine the fraction of students have an SAT score below Anna’s score of 1300. This is the same as determining what percentile Anna scored at, which is the percentage of cases that had lower scores than Anna. Therefore, we are looking for <span class="math inline">\(P(X &lt; 1300 \mid \mu = 1100, \sigma = 200)\)</span> or <span class="math inline">\(P(Z &lt; 1 \mid \mu = 0, \sigma = 1)\)</span> that corresponds to the blue area size shown in <a href="#fig-tail-area">Figure&nbsp;<span>10.7</span></a>. How? We can calculate this value using R.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-tail-area" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="prob-cont_files/figure-html/fig-tail-area-1.png" class="img-fluid figure-img" style="width:50.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;10.8: Tail area for scores below 1300</figcaption><p></p>
+<figure class="figure"><p><img src="prob-cont_files/figure-html/fig-tail-area-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;10.7: Tail area for scores below 1300</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
 <p><span style="color:red"> <strong><em>Calculation in R</em></strong> </span></p>
+<p>With <strong><code>mean</code></strong> and <strong><code>sd</code></strong> representing the mean and standard deviation of a normal distribution, we use</p>
 <ul>
-<li>With <strong><code>mean</code></strong> and <strong><code>sd</code></strong> representing the mean and standard deviation of a normal distribution,
-<ul>
-<li>use <strong><code>pnorm(q, mean, sd)</code></strong> to compute <span class="math inline">\(P(X \le q)\)</span>
-</li>
-<li>use <strong><code>pnorm(q, mean, sd, lower.tail = FALSE)</code></strong> to compute <span class="math inline">\(P(X &gt; q)\)</span>
-</li>
+<li><p><strong><code>pnorm(q, mean, sd)</code></strong> to compute <span class="math inline">\(P(X \le q)\)</span></p></li>
+<li><p><strong><code>pnorm(q, mean, sd, lower.tail = FALSE)</code></strong> to compute <span class="math inline">\(P(X &gt; q)\)</span></p></li>
 </ul>
-</li>
-</ul>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="prob-cont_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" style="width:100.0%"></p>
-</div>
-</div>
-</div><div class="column" style="width:50%;">
-<div class="cell">
+<div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="fl">1</span>, mean <span class="op">=</span> <span class="fl">0</span>, sd <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.8413447</code></pre>
@@ -644,28 +647,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>[1] 0.8413447</code></pre>
 </div>
 </div>
-<ul>
-<li>The shaded area represents the 84.1% of SAT test takers who had z-score below 1.</li>
-</ul>
-</div>
-</div>
+<p>Notice that the z-score 1 in standard normal is equivalent to 1300 in <span class="math inline">\(N(1100, 200^2)\)</span>. The shaded area represents the 84.1% of SAT test takers who had z-score below 1.</p>
+<!-- ::::{.columns} -->
+<!-- :::{.column width="50%"} -->
+<!-- ```{r, ref.label="fig-tail-area", echo=FALSE, out.width='100%'} -->
+<!-- ``` -->
+<!-- ::: -->
+<!-- :::{.column width="50%"} -->
+<!-- ```{r} -->
+<!-- pnorm(1, mean = 0, sd = 1) -->
+<!-- pnorm(1300, mean = 1100, sd = 200) -->
+<!-- ``` -->
+<!-- - The shaded area represents the 84.1% of SAT test takers who had z-score below 1. -->
+<!-- ::: -->
+<!-- :::: -->
 <p><span style="color:red"> <strong><em>Second ACT and SAT Example</em></strong> </span></p>
-<div class="callout-note callout callout-style-default no-icon callout-captioned">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-caption-container flex-fill">
-What is the probability Shannon SAT scores at least 1190?
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li>SAT score follows <span class="math inline">\(N(1100, 200^2)\)</span>.</li>
-<li>Shannon is an SAT taker, and nothing else is known about her SAT aptitude.</li>
-</ul>
-</div>
-</div>
+<p>Shannon is an SAT taker, and nothing else is known about her SAT aptitude. With SAT score following <span class="math inline">\(N(1100, 200^2)\)</span>, what is the probability Shannon SAT score is at least 1190?</p>
+<!-- :::{.callout-note icon=false} -->
+<!-- ## What is the probability Shannon SAT scores at least 1190? -->
+<!-- - SAT score follows $N(1100, 200^2)$.  -->
+<!-- - Shannon is an SAT taker, and nothing else is known about her SAT aptitude.  -->
+<!-- ::: -->
+<p>Let’s get the probability step by step. The first step is to figure out the probability we want to compute from the description of the question.</p>
 <ul>
 <li>
 <span style="color:red"> Step 1: State the problem </span>
@@ -673,13 +676,16 @@ What is the probability Shannon SAT scores at least 1190?
 <li><span style="color:blue"> We want to compute <span class="math inline">\(P(X \ge 1190)\)</span>. </span></li>
 </ul>
 </li>
+</ul>
+<p>If you are an expert like me, you may already know how to get the probability using R once you know what you want to compute. But if you are a beginner, I strongly recommend you drawing a normal picture, and figure out which area is your goal.</p>
+<ul>
 <li><span style="color:red"> Step 2: Draw a picture</span></li>
 </ul>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-tail-right" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="prob-cont_files/figure-html/fig-tail-right-1.png" class="img-fluid figure-img" style="width:40.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;10.9: Tail area for scores greater than 1190</figcaption><p></p>
+<figure class="figure"><p><img src="prob-cont_files/figure-html/fig-tail-right-1.png" class="img-fluid figure-img" style="width:60.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;10.8: Tail area for scores greater than 1190</figcaption><p></p>
 </figure>
 </div>
 </div>
@@ -688,55 +694,50 @@ What is the probability Shannon SAT scores at least 1190?
 <div class="cell-output-display">
 <div id="fig-tail-subtraction" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="prob-cont_files/figure-html/fig-tail-subtraction-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;10.10: Method to determine right tail areas</figcaption><p></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;10.9: Method to determine right tail areas</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
+<p>Note that <a href="#fig-tail-subtraction">Figure&nbsp;<span>10.9</span></a> reflects the fact that <span class="math inline">\(P(X \ge 1190) = 1 - P(X &lt; 1190).\)</span> The area on the right is equal to the whole area which is one minus the area on the left.</p>
+<p>The next step, which is not necessary, is to find the z-score. Using z-scores help us write shorter R code to compute the wanted probability.</p>
 <ul>
-<li>
-<span style="color:red"> Step 3: Find <span class="math inline">\(z\)</span>-score </span>
-<ul>
-<li><span style="color:blue"> <span class="math inline">\(z = \frac{1190 - 1100}{200} = 0.45\)</span> and we want to compute <span class="math inline">\(P(X &gt; 1190) = P\left( \frac{X - \mu}{\sigma} &gt; \frac{1190 - 1000}{200} \right) = P(Z &gt; 0.45) = 1 - P(Z \le 0.45)\)</span> </span></li>
+<li><span style="color:red"> Step 3: Find <span class="math inline">\(z\)</span>-score </span></li>
 </ul>
-</li>
+<p><span style="color:blue"> <span class="math inline">\(z = \frac{1190 - 1100}{200} = 0.45\)</span> and we want to compute <span class="math inline">\(\begin{align*} P(X &gt; 1190) &amp;= P\left( \frac{X - \mu}{\sigma} &gt; \frac{1190 - 1000}{200} \right) \\&amp;= P(Z &gt; 0.45) = 1 - P(Z \le 0.45) \end{align*}\)</span> </span></p>
+<p>At this point, we obtain the target probability once we get <span class="math inline">\(P(Z \le 0.45)\)</span>. The last step is to use <code><a href="https://rdrr.io/r/stats/Normal.html">pnorm()</a></code> function to get it done.</p>
+<ul>
 <li><span style="color:red"> Step 4: Find the area using <code><a href="https://rdrr.io/r/stats/Normal.html">pnorm()</a></code> </span></li>
 </ul>
-<div class="cell">
+<div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="fl">0.45</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.3263552</code></pre>
 </div>
 </div>
-<hr>
-<p><span style="color:blue"> <strong>Normal Percentiles in R</strong> </span></p>
-<ul>
-<li>To get the <span class="math inline">\(100p\)</span>-th percentile (or the <span class="math inline">\(p\)</span> quantile <span class="math inline">\(q\)</span> ), given probability <span class="math inline">\(p\)</span>,
-<ul>
-<li>use <strong><code>qnorm(p, mean, sd)</code></strong> to get a value of <span class="math inline">\(X\)</span>, <span class="math inline">\(q\)</span>, such that <span class="math inline">\(P(X \le q) = p\)</span>
-</li>
-<li>use <strong><code>qnorm(p, mean, sd, lower.tail = FALSE)</code></strong> to get <span class="math inline">\(q\)</span> such that <span class="math inline">\(P(X \ge q) = p\)</span>
-</li>
-</ul>
-</li>
-</ul>
-<p><span style="color:red"> <strong><em>SAT and ACT Example</em></strong> </span></p>
-<ul>
-<li>What is the 95th percentile for SAT scores?</li>
-<li>
-<span style="color:red"> Step 1: State the problem </span>
-<ul>
-<li><span style="color:blue"> We want to find <span class="math inline">\(x\)</span> s.t <span class="math inline">\(P(X &lt; x) = 0.95\)</span>. </span></li>
-</ul>
-</li>
-<li><span style="color:red"> Step 2: Draw a picture</span></li>
-</ul>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When we use R <code><a href="https://rdrr.io/r/stats/Normal.html">pnorm()</a></code> to compute normal probabilities, standardization is not a must. However, if we don’t use z-scores, we must specify the mean and SD of the original distribution of <span class="math inline">\(X\)</span>, like <code>pnorm(x, mean = mu, sd = sigma)</code>. Otherwise, R does not know which normal distribution we are considering. For example,</p>
 <div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div id="fig-percentile" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="prob-cont_files/figure-html/fig-percentile-1.png" class="img-fluid figure-img" style="width:40.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;10.11: Picture for the 95th percentile of SAT scores</figcaption><p></p>
-</figure>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="fl">1190</span>, mean <span class="op">=</span> <span class="fl">1100</span>, sd <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3263552</code></pre>
+</div>
+</div>
+<p>By default, <code><a href="https://rdrr.io/r/stats/Normal.html">pnorm()</a></code> uses the standard normal distribution assuming <code>mean = 0</code> and <code>sd = 1</code>. So if we use z-scores to compute probabilities, we don’t need to specify the value of mean and standard deviation, and our code is shorter:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="fl">0.45</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3263552</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -750,50 +751,97 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><strong>We want to find an <span class="math inline">\(x\)</span> value of the normal distribution, which is greater than 95% of all other cases.</strong></p>
+<p>Any probability can be computed using the <em>“less than”</em> form (<em>lower</em> or <em>left</em> tail). In the previous example, we use <span class="math inline">\(P(X \ge 1190) = 1 - P(X &lt; 1190)\)</span> expression, and we find <span class="math inline">\(P(X &lt; 1190)\)</span> that has the <em>“less than”</em> form.</p>
+<p>This step is not necessary too, and we can directly compute <span class="math inline">\(P(X \ge 1190)\)</span> using <code><a href="https://rdrr.io/r/stats/Normal.html">pnorm()</a></code>. However, if the calculation involves the “greater than” form, or we focus on <em>upper</em> or <em>right</em> tail part of the distribution, we need to add <code>lower.tail = FALSE</code> in <code><a href="https://rdrr.io/r/stats/Normal.html">pnorm()</a></code>. For example,</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="fl">1190</span>, mean <span class="op">=</span> <span class="fl">1100</span>, sd <span class="op">=</span> <span class="fl">200</span>, lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3263552</code></pre>
 </div>
 </div>
+<p>By default, <code>lower.tail = TRUE</code>, and <code>pnorm(q, ...)</code> finds a probability <span class="math inline">\(P(X &lt; q)\)</span>, the lower tail part of the distribution.</p>
+</div>
+</div>
+<hr>
+<p><span style="color:blue"> <strong>Normal Percentiles in R</strong> </span></p>
+<p>Quite often we want to know what score we need to get in order to be in the top 10% of the test takers, or the minimal score we should get to be not at the bottom 20%. To answer such questions, we need to find the percentile or quantile of the underlying distribution.</p>
+<!-- learned in @sec-data-numeric. -->
+<!-- quantify how well a test score is. This can be answered by finding the score's percentile or quantile  -->
+<p>To get the <span class="math inline">\(100p\)</span>-th percentile (or the <span class="math inline">\(p\)</span> quantile denoted as <span class="math inline">\(q\)</span> ) of a normal distribution, given probability <span class="math inline">\(p\)</span>, we use</p>
+<ul>
+<li><p><strong><code>qnorm(p, mean, sd)</code></strong> to get a value of <span class="math inline">\(X\)</span>, <span class="math inline">\(q\)</span>, such that <span class="math inline">\(P(X \le q) = p\)</span></p></li>
+<li><p><strong><code>qnorm(p, mean, sd, lower.tail = FALSE)</code></strong> to get <span class="math inline">\(q\)</span> such that <span class="math inline">\(P(X \ge q) = p\)</span></p></li>
+</ul>
+<p><span style="color:red"> <strong><em>SAT and ACT Example</em></strong> </span></p>
+<p>Back to our SAT example. What is the 95th percentile for SAT scores?</p>
+<p>Keep in mind that a percentile or quantile is a value of random variable <span class="math inline">\(x\)</span>, not a probability. When we find the quantile, its associated probability is given because the probability is the required information to obtain the quantile.</p>
+<p>The first step again is to figure out what we want. If we want to find the 95th percentile, it means that we want to find the variable value <span class="math inline">\(q\)</span> so that <span class="math inline">\(P(X &lt; q) = 0.95\)</span>. In other words, we want to find an <span class="math inline">\(x\)</span> value of the normal distribution, which is greater than 95% of all other cases.</p>
 <ul>
 <li>
-<span style="color:red"> Step 3: Find <span class="math inline">\(z\)</span>-score s.t. <span class="math inline">\(P(Z &lt; z) = 0.95\)</span> using <code><a href="https://rdrr.io/r/stats/Normal.html">qnorm()</a></code></span>:</li>
+<span style="color:red"> Step 1: State the problem </span>
+<ul>
+<li><span style="color:blue"> We want to find <span class="math inline">\(q\)</span> s.t <span class="math inline">\(P(X &lt; q) = 0.95\)</span>. </span></li>
 </ul>
-<div class="cell">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">z_95</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">qnorm</a></span><span class="op">(</span><span class="fl">0.95</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</li>
+</ul>
+<p>The whole idea is shown graphically in <a href="#fig-percentile">Figure&nbsp;<span>10.10</span></a>. We already know the percentage 95%. All we need to do is to find the value <span class="math inline">\(q\)</span> so that the area left to it is 95%.</p>
+<ul>
+<li><span style="color:red"> Step 2: Draw a picture</span></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-percentile" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="prob-cont_files/figure-html/fig-percentile-1.png" class="img-fluid figure-img" style="width:60.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;10.10: Picture for the 95th percentile of SAT scores</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<!-- :::{.callout-note} -->
+<!-- **We want to find an $x$ value of the normal distribution, which is greater than 95% of all other cases.** -->
+<!-- ::: -->
+<p>Like we do in finding probabilities, we can first do the standardization for finding quantiles although it is not necessary. So we use <code><a href="https://rdrr.io/r/stats/Normal.html">qnorm()</a></code> to find the z-score <span class="math inline">\(z^*\)</span>, or the value of a standard normal variable that is the 95th percentile, i.e., <span class="math inline">\(P(Z &lt; z^*) = 0.95\)</span>.</p>
+<ul>
+<li>
+<span style="color:red"> Step 3: Find <span class="math inline">\(z\)</span>-score s.t. <span class="math inline">\(P(Z &lt; z^*) = 0.95\)</span> using <code><a href="https://rdrr.io/r/stats/Normal.html">qnorm()</a></code></span>:</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">z_95</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">qnorm</a></span><span class="op">(</span><span class="fl">0.95</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1.644854</code></pre>
 </div>
 </div>
+<p>Now, since we are interested in the 95th percentile of SAT, not the z-score, we need to transform the 95th percentile of <span class="math inline">\(N(0, 1)\)</span> back to the 95th percentile of <span class="math inline">\(N(1100, 200^2)\)</span>, the original SAT distribution.</p>
 <ul>
 <li>
 <span style="color:red"> Step 4: Find the <span class="math inline">\(x\)</span> of the original scale </span>
 <ul>
-<li><span style="color:blue"> <span class="math inline">\(z_{0.95} = \frac{x-\mu}{\sigma}\)</span>. So <span class="math inline">\(x = \mu + z_{0.95}\sigma\)</span>. </span></li>
+<li><span style="color:blue"> <span class="math inline">\(z_{0.95} = \frac{x-\mu}{\sigma}\)</span>. So <span class="math inline">\(x = \mu + z_{0.95}\sigma = 1100+(1.645)\times200 = 1429\)</span>. </span></li>
 </ul>
 </li>
 </ul>
-<div class="cell">
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">x_95</span> <span class="op">&lt;-</span> <span class="fl">1100</span> <span class="op">+</span> <span class="va">z_95</span> <span class="op">*</span> <span class="fl">200</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">x_95</span> <span class="op">&lt;-</span> <span class="fl">1100</span> <span class="op">+</span> <span class="va">z_95</span> <span class="op">*</span> <span class="fl">200</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1428.971</code></pre>
 </div>
 </div>
-<ul>
-<li>The 95th percentile for SAT scores is 1429.</li>
-</ul>
-<div class="cell">
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">qnorm</a></span><span class="op">(</span>p <span class="op">=</span> <span class="fl">0.95</span>, mean <span class="op">=</span> <span class="fl">1100</span>, sd <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Therefore, the 95th percentile for SAT scores is 1429.</p>
+<p>Note that we can directly find the 95th percentile of SAT without standardization. We just need to remember to stay in the original SAT distribution by explicitly specifying <code>mean = 1100</code> and <code>sd = 200</code> in the <code><a href="https://rdrr.io/r/stats/Normal.html">qnorm()</a></code> function, as we do for <code><a href="https://rdrr.io/r/stats/Normal.html">pnorm()</a></code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">qnorm</a></span><span class="op">(</span>p <span class="op">=</span> <span class="fl">0.95</span>, mean <span class="op">=</span> <span class="fl">1100</span>, sd <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1428.971</code></pre>
 </div>
 </div>
 </section><section id="finding-probabilties" class="level2" data-number="10.5"><h2 data-number="10.5" class="anchored" data-anchor-id="finding-probabilties">
 <span class="header-section-number">10.5</span> Finding Probabilties</h2>
-<p>👉 <strong>ALWAYS draw and label the normal curve and shade the area of interest.</strong></p>
+<p>👉 To find a probability, if you are a beginner, it is always good to <strong>draw and label the normal curve and shade the area of interest</strong>. Below is a summary of how we can use <code><a href="https://rdrr.io/r/stats/Normal.html">pnorm()</a></code> to compute various kinds of probabilities.</p>
 <ul>
 <li>👉 <strong>Less than</strong>
 <ul>
 <li><span class="math inline">\(\small P(X &lt; x) = P(Z &lt; z)\)</span></li>
-<li><code>pnorm(z, mean = 0, sd = 1)</code></li>
+<li><code>pnorm(z)</code></li>
 <li><code>pnorm(x, mean = mu, sd = sigma)</code></li>
 </ul>
 </li>
@@ -801,83 +849,52 @@ Note
 <ul>
 <li><span class="math inline">\(\small P(X &gt; x) = P(Z &gt; z) = 1 - P(Z \le z)\)</span></li>
 <li><code>1 - pnorm(z)</code></li>
+<li><code>1 - pnorm(x, mean = mu, sd = sigma)</code></li>
+<li><code>pnorm(x, mean = mu, sd = sigma, lower.tail = FALSE)</code></li>
 </ul>
 </li>
 </ul>
-<div class="callout-note callout callout-style-default no-icon callout-captioned">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-caption-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li>Standardization is not a must.</li>
-<li>If we don’t standardize, we must specify the mean and SD of the original distribution of <span class="math inline">\(X\)</span>, like <code>pnorm(x, mean = mu, sd = sigma)</code>.</li>
-</ul>
-</div>
-</div>
-<ul>
+<!-- :::{.callout-note icon=false} --><!-- - Standardization is not a must. --><!-- - If we don't standardize, we must specify the mean and SD of the original distribution of $X$, like `pnorm(x, mean = mu, sd = sigma)`. --><!-- ::: --><ul>
 <li>
 <p>👉 <strong>Between two numbers</strong></p>
 <ul>
 <li><span class="math inline">\(\small P(a &lt; X &lt; b) = P(z_a &lt; Z &lt; z_b) = P(Z &lt; z_b) - P(Z &lt; z_a)\)</span></li>
 <li><code>pnorm(z_b) - pnorm(z_a)</code></li>
+<li><code>pnorm(b, mean = mu, sd = sigma) - pnorm(a, mean = mu, sd = sigma)</code></li>
 </ul>
 </li>
 <li>
 <p>👉 <strong>Outside of two numbers</strong> <span class="math inline">\((a &lt; b)\)</span> <span class="math display">\[\small \begin{align} P(X &lt; a \text{ or } X &gt; b) &amp;= P(Z &lt; z_a \text{ or } Z &gt; z_b) \\ &amp;= P(Z &lt; z_a) + P(Z &gt; z_b) \\ &amp;= P(Z &lt; z_a) + 1 - P(Z &lt; z_b) \end{align}\]</span></p>
 <ul>
-<li><code>pnorm(z_a) + 1 - pnorm(z_b)</code></li>
 <li><code>pnorm(z_a) + pnorm(z_b, lower.tail = FALSE)</code></li>
+<li><code>pnorm(z_a) + 1 - pnorm(z_b)</code></li>
+<li><code>pnorm(a, mean = mu, sd = sigma) + pnorm(b, lower.tail = FALSE)</code></li>
+<li><code>pnorm(a, mean = mu, sd = sigma) + 1 - pnorm(b, mean = mu, sd = sigma)</code></li>
 </ul>
 </li>
 </ul>
-<div class="callout-note callout callout-style-default no-icon callout-captioned">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-caption-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li>Any probability can be computed using the <em>“less than”</em> form (<em>lower</em> or <em>left</em> tail).</li>
-<li>If the calculation involves the “greater than” form, add <code>lower.tail = FALSE</code> in <code><a href="https://rdrr.io/r/stats/Normal.html">pnorm()</a></code>.</li>
-</ul>
-</div>
-</div>
-</section><section id="checking-normality-normal-quantile-plot" class="level2" data-number="10.6"><h2 data-number="10.6" class="anchored" data-anchor-id="checking-normality-normal-quantile-plot">
+<!-- :::{.callout-note icon=false} --><!-- - Any probability can be computed using the *"less than"* form (*lower* or *left* tail). --><!-- - If the calculation involves the "greater than" form, add `lower.tail = FALSE` in `pnorm()`. --><!-- ::: --></section><section id="checking-normality-normal-quantile-plot" class="level2" data-number="10.6"><h2 data-number="10.6" class="anchored" data-anchor-id="checking-normality-normal-quantile-plot">
 <span class="header-section-number">10.6</span> Checking Normality: Normal Quantile Plot</h2>
-<ul>
-<li>Many statistical methods assume variables are normally distributed.</li>
-<li>Therefore, testing the appropriateness of the normal assumption is a key step.</li>
-<li>We can check this normality assumption using a <strong>normal quantile plot (normal probability plot)</strong> or a <strong>Quantile-Quantile plot (QQ plot)</strong>.
-<ul>
-<li>
-<span class="math inline">\(X\)</span>-axis: Quantiles of the <em>ordered</em> data if the data were normally distributed.</li>
-<li>
-<span class="math inline">\(Y\)</span>-axis: <em>Ordered</em> data values</li>
-</ul>
-</li>
-<li>If the data are normally distributed, the points on the QQ plot will lie close to a <strong>straight line</strong>.</li>
-</ul>
+<p>If we use a statistical method with its assumption being violated, the analysis results and conclusion made by the method will be worthless. Many statistical methods assume variables are normally distributed. Therefore, testing the appropriateness of the normal assumption is a key step.</p>
+<p>We can check this normality assumption using a so-called <strong>normal quantile plot (normal probability plot)</strong> or a <strong><a href="https://en.wikipedia.org/wiki/Q%E2%80%93Q_plot#:~:text=A%20normal%20Q%E2%80%93Q%20plot%20comparing%20randomly%20generated%2C%20independent%20standard,data%20versus%20a%20Weibull%20distribution.">Quantile-Quantile plot (QQ plot)</a></strong>.</p>
+<p>The construction of the QQ plot is technical, and we don’t need to dig into that at this moment. The bottom line is if <em>the data are (nearly) normally distributed, the points on the QQ plot will lie close to a <strong>straight line</strong></em>.</p>
+<p>If the data are <em>right-skewed</em>, the points on the QQ plot will be <em>convex-shaped</em>. If the data are <em>left-skewed</em>, the points on the QQ plot will be <em>concave-shaped</em>.</p>
+<!-- First, the data points are ordered -->
+<!-- Basically, $X$-axis: Quantiles of the *ordered* data if the data were normally distributed. -->
+<!-- - $Y$-axis: *Ordered* data values -->
+<!-- - If the data are normally distributed, the points on the QQ plot will lie close to a **straight line**. -->
 <hr>
 <p><span style="color:blue"> <strong>QQ plot in R</strong> </span></p>
+<p>To generate a QQ-plot for checking normality in R, we can use <code><a href="https://rdrr.io/r/stats/qqnorm.html">qqnorm()</a></code> and <code><a href="https://rdrr.io/r/stats/qqnorm.html">qqline()</a></code>, where the first argument in the functions is the sample data we would like to check. <a href="#fig-qqplot">Figure&nbsp;<span>10.11</span></a> shows QQ plots at the bottom for normal and right-skewed data samples. Since the data <code>normal_sample</code> actually come from a normal distribution, its histogram looks like normal, and its QQ plot look like a perfect straight line. On the other hand, on the right hand side we have a right skewed data set <code>right_skewed_sample</code>. Clearly, its QQ plot is a upward curve, and definitely not linear, indicating that the sample data are not normally distributed.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/qqnorm.html">qqnorm</a></span><span class="op">(</span><span class="va">normal_sample</span>, main <span class="op">=</span> <span class="st">"Normal data"</span>, col <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/qqnorm.html">qqnorm</a></span><span class="op">(</span><span class="va">normal_sample</span>, main <span class="op">=</span> <span class="st">"Normal data"</span>, col <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/qqnorm.html">qqline</a></span><span class="op">(</span><span class="va">normal_sample</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/qqnorm.html">qqnorm</a></span><span class="op">(</span><span class="va">right_skewed_sample</span>, main <span class="op">=</span> <span class="st">"Right-skewed data"</span>, col <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/qqnorm.html">qqline</a></span><span class="op">(</span><span class="va">right_skewed_sample</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div id="fig-qqplot" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="prob-cont_files/figure-html/fig-qqplot-1.png" class="img-fluid figure-img" style="width:60.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;10.12: QQ plots for normal and right-skewed data samples</figcaption><p></p>
+<figure class="figure"><p><img src="prob-cont_files/figure-html/fig-qqplot-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;10.11: QQ plots for normal and right-skewed data samples</figcaption><p></p>
 </figure>
 </div>
 </div>
@@ -907,7 +924,10 @@ Note
 </ol>
 
 
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
+<ol>
+<li id="fn1"><p>Personally I prefer call it Gaussian to normal distribution. Every distribution is unique and has its own properties. Why the Gaussian distribution is normal?<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -1052,7 +1072,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </nav>
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">
-    <div class="nav-footer-left">Copyright 2022, Cheng-Han Yu</div>   
+    <div class="nav-footer-left">Copyright 2023, Dr.&nbsp;Cheng-Han Yu</div>   
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
 <li class="nav-item compact">

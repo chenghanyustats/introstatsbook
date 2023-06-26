@@ -2,7 +2,9 @@
 
 In this chapter, we formally define some terms used in probability, and learn some basic probability operations.
 
-```{r, echo=FALSE, warning=FALSE}
+```{r}
+#| echo: false
+#| warning: false
 library(emoji)
 ```
 
@@ -342,7 +344,7 @@ $\begin{align} P(A \mid  B) &= P(A) \text{ or }\\ P(B \mid  A) &= P(B) \text{ or
 
 Intuitively, this means that *knowing $B$ occurs does not change the probability that $A$ occurs and vice versa*. The information about $B$ is irrelevant to probability of $A$.
 
-Here is a question. Can we compute $P(A \cap B)$ if we only know $P(A)$ and $P(B)$? The answer is no. We cannot compute $P(A \cap B)$ because we don't know if $A$ and $B$ are independent. We can only do so if $A$ and $B$ are independent. In general, we need to consider the dependence of two events and use the multiplication rule $P(A \cap B) = P(A \mid B)P(B)$.
+Here is a question. Can we compute $P(A \cap B)$ if we only know $P(A)$ and $P(B)$ with no information other than sample space? The answer is no. We cannot compute $P(A \cap B)$ because we don't know if $A$ and $B$ are independent. We can only do so if $A$ and $B$ are independent. In general, we need to consider the dependence of two events and use the multiplication rule $P(A \cap B) = P(A \mid B)P(B)$.
 
 @fig-independence explain independence using the Venn diagram. Independence means that the ratio of area of $A$ to area of $\mathcal{S}$ is the same as the ratio of area of $A \cap B$ to area of $B$. Look at the case of non-independence on the right, the two events (circles) in particular. The area of $A \cap B$ is very close to the area of $B$ because the two events are quite overlapped each other. It means that the ratio of area of $A \cap B$ to area of $B$ is pretty close to one. So if we know $B$ has occurred, there will be a very high chance that $A$ would happen as well. In this case, the information about $B$ does matter, and affect probability of $A$. The idea is that the two events describe pretty much similar set of outcomes for an experiment. As a result, when one occurs, we are pretty sure the other happens as well.
 
@@ -381,40 +383,59 @@ knitr::include_graphics("./images/img-prob/independence.jpg")
 
 ## Bayes' Formula
 
+Bayes' formula is one of the most important theorems in the probability and statistical theory. It is the basis of Bayesian inference and Bayesian machine learning discussed in @sec-infer-bayes, which is getting more and more popular these days due to fast computation technology. In this section, we learn why we need the Bayes's formula, and how we can use it to obtain the probability we are interested.
+
 <span style="color:blue"> **Why Bayes' Formula?** </span>
 
-- Often, we know $P(B \mid A)$, but we are much more interested in $P(A \mid B)$.
-- Example: Diagnostic tests provide $P(\text{positive test result}  \mid \text{COVID})$, but we are also interested in $P(\text{COVID} \mid \text{positive test result})$
+Quite often, we know $P(B \mid A)$, but we are much more interested in $P(A \mid B)$. Let's take COVID diagnostic test as an example. Suppose you are having a sore throat and muscle and headache, and you decide to test if you got COVID. Of course, any test may not be 100% accurate. A person who does get COVID may be tested negative, which is called **false negative**, and a person who doesn't get COVID may get a positive testing result, **false positive** in this case. With lots of trials, we can have false negative rate $P(\text{test negative}  \mid \text{COVID})$ and false positive rate $P(\text{test positive}  \mid \text{not COVID})$ of some COVID test.
+
+Let me ask you a question. Suppose that during a doctor's visit, you tested positive for COVID. If you only get to ask the doctor one question, which would it be?
+
+a. What’s the chance that I actually have COVID?
+b. If in fact I don't have COVID, what’s the chance that I would’ve gotten this positive test result?
+
+If I were you, I would choose a. because I care more about whether I got COVID or not, not the efficacy of the test! In fact, diagnostic tests provide $P(\text{test positive}  \mid \text{COVID})$ and $P(\text{test positive}  \mid \text{not COVID})$, but what we are really interested is $P(\text{COVID} \mid \text{test positive})$! 
+
+So, how can we utilize the diagnostic test efficacy to get the chance that one actually gets COVID? Bayes' formula is the answer. It provides a way to find $P(A \mid B)$ from $P(B \mid A)$.
 
 ::::{.columns}
 :::{.column width="50%"}
-```{r, echo=FALSE, out.width="70%", fig.align='center'}
+```{r}
+#| fig-cap: "Source: Unsplash Martin Sanchez"
+#| echo: false
+#| out-width: 70%
+#| fig-align: center
 knitr::include_graphics("./images/img-prob/covid.jpeg")
 ```
 :::
 
 :::{.column width="50%"}
-```{r, echo=FALSE, out.width="70%", fig.align='center'}
+```{r}
+#| echo: false
+#| out-width: 70%
+#| fig-align: center
 knitr::include_graphics("./images/img-prob/test_table.png")
 ```
 :::
 ::::
 
-- Bayes' formula provides a way to find $P(A \mid B)$ from $P(B \mid A)$
+<!-- - Bayes' formula provides a way to find $P(A \mid B)$ from $P(B \mid A)$ -->
 
 ------------------------------------------------------------
 
 <span style="color:blue"> **Formula** </span>
 
-- If $A$ and $B$ are events whose probabilities are not 0 or 1, then
+The Bayes' formula comes from the conditional probability. If $A$ and $B$ are events whose probability is not zero or one, then the Bayes' formula is derived as below.
 $$\begin{align*} P(A \mid B) &= \frac{P(A \cap B)}{P(B)} \quad ( \text{def. of cond. prob.}) \\ &= \frac{P(A \cap B)}{P((B \cap A) \cup (B \cap A^c))} \quad ( \text{partition } B) \\ &= \frac{P(B \mid A)P(A)}{P(B \mid A)P(A) + P(B \mid A^c)P(A^c)}  \quad ( \text{multiplication rule}) \end{align*}$$
 
 <!-- - Idea: <span style="color:blue"> Partition $B$ as $B = (B \cap A) \cup (B \cap A^c)$ and apply the multiplication rule.</span>  -->
 
-```{r, echo=FALSE, out.width="30%", fig.align='center'}
+```{r}
 #| label: fig-bayes-venn
 #| fig-cap: Venn Diagram illustration for Bayes' formula
-# knitr::include_graphics("./images/img-prob/partition_1.png")
+#| out-width: 30%
+#| fig-align: center
+#| echo: false
 par(mar = c(0, 0, 0, 0), mfrow = c(1, 1))
 plot(0, 0, type = "n", axes = FALSE, xlab = "", ylab = "")
 box(lwd = 4)
@@ -422,27 +443,39 @@ plotrix::draw.ellipse(x = -0.2, y = 0, a = 0.8, b = 0.6, lwd = 2)
 plotrix::draw.ellipse(x = 0.56, y = 0, a = 0.4, b = 1, lwd = 2)
 text(x = -0.5, y = 0.62, labels = "A", cex = 2)
 text(x = .92, y = 0.62, labels = "B", cex = 2)
-text(x = 0.36, y = 0, labels = "B ??? A", cex = 2)
+text(x = 0.36, y = 0, labels = expression(paste("B ", intersect(A))), cex = 2)
 text(x = 0.66, y = -0.45, 
      labels = expression(paste("B ", intersect(A^c))), cex = 2)
 text(x = -1, y = 1, labels = "S", cex = 2, font = 4)
 ```
 
+The first equality is just the definition of conditional probability. For the second equality, we partition $B$ into $(B \cap A)$ and $(B \cap A^c)$ as $(B \cap A) \cup (B \cap A^c) = B$ and $(B \cap A)$ and $(B \cap A^c)$ are disjoint, as illustrated in @fig-bayes-venn. [^1]  Since $(B \cap A)$ and $(B \cap A^c)$ are disjoint, $P((B \cap A) \cup (B \cap A^c)) = P(B \cap A) + P(B \cap A^c)$. Finally, we can use the multiplication rule to write $P(B \cap A)$ as $P(B \mid A)P(A)$ and $P(B \cap A^c)$ as $P(B \mid A^c)P(A^c)$. The derivation of the Bayes' formula is complete.
+
+[^1]: We say sets $A_1, \dots, A_n$ form a **partition** of set $A$ if $A_1 \cup \cdots \cup A_n = A$ and $A_1, \dots, A_n$ are disjoint.
+
+Notice that we use the information about $P(B \mid A)$, $P(B \mid A^c)$, $P(A)$ and $P(A^c)$ to obtain $P(A \mid B)$. In general, $P(A \mid B) \ne P(A \mid B)$, and they are completely different probabilities. Interpret your probability with additional care.
+
+[Extended formula]
+
+
 
 <span style="color:red"> ***Example: Passing Rate*** </span>
 
 ::::{.columns}
-:::{.column width="50%"}
-After taking MATH 4720, $80\%$ of students understand the Bayes' formula.
+:::{.column width="60%"}
+After taking MATH 4720, $80\%$ of students understand the Bayes' formula. 
 
-- Of those who understood the Bayes' formula,
-  + $95\%$ passed
-- Of those who did not understand the Bayes' formula,
-  +  $60\%$ passed
+- Of those who understood the Bayes' formula, $95\%$ passed. 
+
+- Of those who did not understand the Bayes' formula, only $60\%$ passed.
 :::
 
-:::{.column width="50%"}
+:::{.column width="40%"}
 ```{r, echo=FALSE, out.width="100%", fig.align='center'}
+#| out-width: 100%
+#| fig-align: center
+#| echo: false
+#| fig-cap: "Source: Unsplash JESHOOTS.COM"
 knitr::include_graphics("./images/img-prob/test_pass.jpeg")
 ```
 :::
