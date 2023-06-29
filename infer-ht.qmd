@@ -1,73 +1,99 @@
 # Hypothesis Testing {#sec-infer-ht}
 
-```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
-library(openintro)
-library(knitr)
+We finished the discussion of estimation, interval estimation in particular in the previous chapter. The other part of statistical inference is **hypothesis testing**. In this chapter, we first discuss the meaning a hypothesis in statistical analysis, followed by the testing procedures for population mean $\mu$ when $\sigma$ is known and when $\sigma$ is unknown. Pay attention to similarity and difference of estimation and testing.
+
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: packages
 library(emoji)
+library(knitr)
+# library(kableExtra)
+library(openintro)
+```
+
+```{r}
+#| echo: false
+knitr::opts_chunk$set(echo = FALSE, fig.align = "center")
 ```
 
 ## Introduction
 
 <span style="color:blue"> **What is Hypothesis Testing?** </span>
 
-- A **hypothesis** is a claim or statement about a *property of a population*, often the value of a population parameter.
-  + <span style="color:blue"> The mean body temperature of humans is less than $98.6^{\circ}$ F, or $\mu < 98.6$. </span>
-  + <span style="color:blue"> Marquette students' IQ scores has standard deviation equal to 15, or $\sigma = 15$. </span>
+In statistics, a **hypothesis** is a claim or statement about a *property of a population*, often the value of a population distribution parameter. For example,
+
+  + <span style="color:blue"> The mean body temperature of humans is less than $98.6^{\circ}$ F. </span> Here the mean body temperature is a property or characteristic of target population human beings. We can turn the verbal claim into a brief mathematical expression $\mu < 98.6$.
   
+  + <span style="color:blue"> Marquette students' IQ scores has standard deviation equal to 15. </span> The IQ score standard deviation is a characteristic of the population Marquette students. Mathematically, we can write the claim as $\sigma = 15$.
+  
+You can see that we usually focus on claims about a population distribution parameter.
 <!-- - A **hypothesis testing** <sup>1</sup> is a procedure for testing a hypothesis. -->
 
-- The **null hypothesis**, $(H_0)$, is a statement that the value of a parameter is
-  + **equal** to some claim value
-  + the **negation** of the alternative hypothesis
-  + often a skeptical perspective to be tested
+The **null hypothesis**, denoted $H_0$, is a statement that the value of a parameter is *equal* to some claim value, or the *negation* of the **alternative hypothesis** that will be discussed in a minute. Often $H_0$ represents a skeptical perspective or a claim to be tested, or the current status of the parameter. For example, the claim *"the percentage of Marquette female students loving Japanese food is equal to 80%"* is a $H_0$ claim because of the key word "equal". Usually we are not very convinced that the $H_0$ claim is true, and in our analysis we want to *test* the claim, and see whether the evidence and information we collect is strong enough to make a conclusion that the percentage is not equal to 80%.
 
-- The **alternative hypothesis**, $(H_1$ or $H_a)$, is a claim that the parameter is **less than**, **greater than** or **not equal** to some value. 
-  + It is usually our **research hypothesis** of some new scientific theory or finding.
+The **alternative hypothesis**, denoted $H_1$ or $H_a$, is a claim that the parameter is **less than**, **greater than** or **not equal** to some value. It is usually our **research hypothesis** of some new scientific theory or finding. If we think the percentage of Marquette female students loving Japanese food is greater than 80%, this hypothesis is the $H_1$ claim. If after a formal testing procedure, we conclude that the percentage is greater than 80%, we sort of make a new research discovery that overturns the previous claim or status quo that the percentage is equal to 80%. 
 
-:::{.callout-note icon=false}
-## Are these $H_0$ or $H_1$ claims?
-- <span style="color:blue"> The percentage of Marquette female students loving Japanese food is **equal** to 80%.</span>
-- <span style="color:blue"> On average, Marquette students consume **less than** 3 drinks per week. </span>
-:::
+Let's do one more exercise. Is the statement *"On average, Marquette students consume less than 3 drinks per week."* a $H_0$ or $H_1$ claim? Because of the key word "less than", it is a $H_1$ claim.
 
-- **Hypothesis testing** <sup>1</sup> is a procedure to **decide whether or not to reject $H_0$** based on how much evidence there is against $H_0$. 
-  + If the evidence is strong enough, we reject $H_0$ in favor of $H_1$. 
+<!-- :::{.callout-note icon=false} -->
+<!-- ## Are these $H_0$ or $H_1$ claims? -->
+<!-- - <span style="color:blue"> The percentage of Marquette female students loving Japanese food is **equal** to 80%.</span> -->
+<!-- - <span style="color:blue"> On average, Marquette students consume **less than** 3 drinks per week. </span> -->
+<!-- ::: -->
+
+So what is **hypothesis testing**? **Hypothesis testing** [^1] is a procedure to **decide whether or not to reject $H_0$** based on how much evidence there is against $H_0$. If the evidence is strong enough, we *reject $H_0$ in favor of $H_1$*. 
 
 
-[1] Null Hypothesis Statistical Testing (NHST), **statistical testing** or **test of significance**.
+[^1]: Hypothesis testing is also called Null Hypothesis Statistical Testing (NHST), **statistical testing** or **test of significance**.
 
 -----------------------------------------------------------------------
 
 <span style="color:blue"> **Example** </span>
 
+Before we jump into the formal hypothesis testing procedure, let's talk about a criminal charge example. How a criminal is convicted is similar to the formal testing procedure.
+
 :::{.columns}
-:::{.column width="70%"}
-- A person is charged with a crime. 
-  - A jury decides whether the person is guilty or not.
-  - The accused is assumed to be innocent until the jury declares otherwise.
-  - If overwhelming evidence of the person's guilt can be shown, then the jury is expected to declare the person guilty; otherwise, the person is considered not guilty.
+:::{.column width="90%"}
+*Suppose a person is charged with a crime, and a jury will decide whether the person is guilty or not. We all know the rule: Even though the person is charged with the crime, at the beginning of the trial, the accuse is assumed to be innocent until the jury declares otherwise. Only if overwhelming evidence of the person's guilt can be shown is the jury expected to declare the person guilty, otherwise the person is considered not guilty.*
 :::
 
-:::{.column width="30%"}
-```{r, echo=FALSE, out.width="50%", fig.align='center'}
+:::{.column width="10%"}
+```{r}
 knitr::include_graphics("./images/img-infer/law.jpeg")
 ```
 :::
 ::::
 
+If we want to make a claim about whether the person is guilty or not, what are our $H_0$ and $H_1$? Remember that the null hypothesis represents a skeptical perspective or a claim to be tested, or the current status of the parameter, so we have 
 
-- What should $H_0$ and $H_1$ be for this example?
   + $H_0:$ The person is <span style="color:blue"> not guilty </span> `r emoji('slightly_smiling_face')`
+  
+This is how we write a hypothesis: start with $H_0:$ followed by the statement. Being not guilty is the default status quo of anyone, although the jury may doubt or be skeptical of the person being not guilty. The prosecutors and police detectives are trying their best the collect enough strong evidence to proof beyond a reasonable doubt to the jury. Therefore the alternative hypothesis is 
+ 
   + $H_1:$ The person is <span style="color:blue"> guilty </span> `r emoji('worried')`
-- The **evidence** is <span style="color:blue"> photos, videos, witnesses, fingerprints, DNA, etc. </span>
-- The **decision rule** is the <span style="color:blue"> jury's voting </span>.
-- The **conclusion** is the verdict <span style="color:blue"> "guilty" </span> or <span style="color:blue"> "NOT enough evidence to convict" </span>.
+  
+In the example, the **evidence** could be <span style="color:blue"> photos, videos, witnesses, fingerprints, DNA, and so on </span>. How do we decide to keep $H_0$ or to accept $H_1$? After all evidence including defense attorney and prosecutor's arguments are presented to the jury, the **decision rule** is the <span style="color:blue"> jury's voting </span>. Finally, to close the case, we need a **conclusion** that is the verdict <span style="color:blue"> "guilty" </span> or <span style="color:blue"> "Not enough evidence to convict" </span>.
+
+Please go through the entire criminal charge process again: 
+
+$H_0$ and $H_a$ => Evidence => Decision rule => Conclusion
+
+The process is quite similar to the formal procedure for a hypothesis testing.
+
 
 ## How to Formally Do a Statistical Hypothesis Testing
 
+The entire hypothesis testing can be wrapped up in the following six steps. No worries if you don't have any idea of it. We will learn this step by step.
+
 - **Step 0: Check Method Assumptions**
+
 - **Step 1: Set the $H_0$ and $H_a$ in Symbolic Form from a Claim**
+
 - **Step 2: Set the Significance Level $\alpha$**
+
 - **Step 3: Calculate the Test Statistic** (Evidence)
 
 ::::{.columns}
@@ -75,6 +101,7 @@ knitr::include_graphics("./images/img-infer/law.jpeg")
 **Decision Rule I: Critical Value Method**
 
 - <span style="color:blue"> **Step 4-c: Find the Critical Value** </span>
+
 - <span style="color:blue"> **Step 5-c: Draw a Conclusion Using Critical Value Method** </span>
 :::
 
@@ -82,22 +109,32 @@ knitr::include_graphics("./images/img-infer/law.jpeg")
 **Decision Rule II: P-Value Method**
 
 - <span style="color:red"> **Step 4-p: Find the P-Value** </span>
+
 - <span style="color:red"> **Step 5-p: Draw a Conclusion Using P-Value Method** </span>
 :::
 ::::
 
 - **Step 6: Restate the Conclusion in Nontechnical Terms, and Address the Original Claim**
-- `r emoji('sunglasses')` We will learn this step by step!
+
+
+
+<!-- - `r emoji('sunglasses')` We will learn this step by step! -->
 
 --------------------------------------------------------------------
 
 <span style="color:blue"> **Step 0: Check Method Assumptions** </span>
 
-- The testing methods are based on normality or approximate normality by CLT.
-  + Random sample
-  + Normally distributed and/or $n > 30$
+Any statistical method is based on some assumptions. To use the method, and analyze our data appropriately, we have to make sure that the assumptions are satisfied. In this book, most of the distribution-based methods require
 
-```{r, echo=FALSE, out.width="50%", fig.align='center'}
+  + Random sample
+  
+  + The population is normally distributed and/or the sample size $n > 30$.
+  
+<!-- - The testing methods are based on normality or approximate normality by CLT. -->
+
+
+```{r}
+#| fig-cap: "Source: https://www.pinterest.ph/pin/633387417082544/"
 knitr::include_graphics("./images/img-infer/normal_dist.jpeg")
 ```
 
@@ -105,27 +142,43 @@ knitr::include_graphics("./images/img-infer/normal_dist.jpeg")
 
 <span style="color:blue"> **Step 1: Set the $H_0$ and $H_1$ from a Claim** </span>
 
+The first step of testing is to understand the $H_0$ and $H_1$ claims, and express them using mathematically using population parameters. The followings provdie three examples.
+
 - `r emoji('teacher')` The *mean* IQ score of statistics professors is **higher than** 120.
   + <span style="color:blue"> $\begin{align}&H_0: \mu \le 120 \\ &H_1: \mu > 120 \end{align}$ </span>
 - `r emoji('dollar')` The *mean* starting salary for Marquette graduates who didn't take MATH 4720 is **less than** $60,000.
   + <span style="color:blue"> $\begin{align} &H_0: \mu \ge 60000 \\ &H_1: \mu < 60000 \end{align}$ </span>
 - `r emoji('tv')` The *mean* time between uses of a TV remote control by males during commercials **equals** 5 sec. 
   + <span style="color:blue"> $\begin{align} &H_0: \mu = 5 \\ &H_1: \mu \ne 5 \end{align}$ </span>
-  
+
+Keep in mind that the equality sign is always put in $H_0$, and $H_0$ and $H_1$ are mutually exclusive. Also, the claims are for population parameters, not sample statistics. We are not sure the value of the parameter being tested, but we want to collect evidence, and see which claim about the parameter is supported by the evidence.
+
+
+
+
 ----------------------------------------------------------------
 
 <span style="color:blue"> **Step 2: Set the Significance Level $\alpha$** </span>
 
-- The significance level, $\alpha$, determines *how rare or unlikely our evidence must be* in order to represent sufficient evidence against $H_0$.
-- An $\alpha$ level of 0.05 implies that evidence occurring with probability lower than 5% will be considered sufficient evidence to reject $H_0$.
-- $\alpha = P(\text{Reject } H_0 \mid H_0 \text{ is true})$
-- $\alpha = 0.05$ means that we **incorrectly reject $H_0$ 5 out of every 100 times** we collect a sample and run the test.
+Next, we set the **significance level** $\alpha$ that determines *how rare or unlikely our evidence must be* in order to represent sufficient evidence against $H_0$. It tells us how strong the collected evidence must be in order to overturn the current claim. An $\alpha$ level of 0.05 implies that evidence occurring with probability lower than 5% will be considered sufficient evidence to reject $H_0$. Mathematically, 
+$$\alpha = P(\text{Reject } H_0 \mid H_0 \text{ is true})$$
+As a result, $\alpha = 0.05$ means that we **incorrectly reject $H_0$ 5 out of every 100 times** we collect a sample and run the test.
 
-::::{.columns}
-:::{.column width="50%"}
-```{r alpha, echo=FALSE, out.width='75%'}
+Here is the idea. When we want to see if what we care about (the population parameter) is not as described as in the null hypothesis $H_0$, we first assume or believe $H_0$ is right, then based on this, we see if there is sufficient and strong evidence to conclude that it is probably not the case, and find the alternative hypothesis more reasonable. 
+
+Let's explain $\alpha$ by an example. Suppose we would like to test the claim that *"The mean IQ of statistics professors is greater than 120."* Or in short $H_0: \mu = 120$ vs. $H_1: \mu > 120$. With large sample size, we can assume $\overline{X}$ follows a normal distribution. Now, to test whether the mean IQ is greater than 120, we need to first treat the mean not being greater than 120 unless later we have sufficient evidence to say it is greater than 120. In particular, we need to do the test and analysis on the basis that the mean is under $H_0$. That is, we first assume the mean is 120, or $\mu = 120$, then see if the assumption really makes sense.
+
+Because $\overline{X}$ is normal, we do the test under the assumption that $\overline{X} \sim N(120, \sigma^2)$ for some $\sigma^2$, say $9$. (Let's focus on $\mu$ and ignore $\sigma$ at this moment). Now $\alpha$ comes into play. If $\overline{X}$ has mean 120, our sample data 
+
+
+
+
+<!-- ::::{.columns} -->
+<!-- :::{.column width="50%"} -->
+```{r}
 #| label: fig-set-alpha
-#| fig-cap: Illustration of significance level, alpha
+#| fig-cap: Illustration of significance level, alpha.
+#| fig-asp: 0.5
 par(mar = c(2, 0, 1, 0), mgp = c(1, .5, 0))
 x <- seq(-10, 10, length=100) + 120
 hx <- dnorm(x, mean = 120, sd = 3)
@@ -144,16 +197,22 @@ abline(v = 120, col = 2, lwd = 0.2)
 #      labels = c("", "", "", expression(t[frac(alpha, 2)]), expression(T[n-1])),
 #      tck = 0.01, line = 1)
 ```
-:::
+<!-- ::: -->
 
-:::{.column width="50%"}
+<!-- :::{.column width="50%"} -->
 :::{.callout-note icon=false}
 ## **Rare Event Rule**
 If, under a given assumption, the probability of a particular observed event is exceptionally small, we conclude that the assumption is probably not correct.
 :::
-:::
-::::
+<!-- ::: -->
+<!-- :::: -->
 
+
+
+The level $\alpha$ is related to the $\alpha$ used in confidence intervals for defining a "critical value".
+ 
+ 
+ 
 ------------------------------------------------------------------
 
 <span style="color:blue"> **Step 3: Calculate the Test Statistic** </span>

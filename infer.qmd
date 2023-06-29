@@ -1,1 +1,81 @@
 # Statistical Inference {#sec-infer}
+
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: packages
+library(emoji)
+library(knitr)
+# library(kableExtra)
+library(openintro)
+```
+
+
+```{r}
+#| echo: false
+knitr::opts_chunk$set(echo = FALSE, fig.align = "center")
+```
+
+Statistics can be divided into two parts: descriptive statistics and inferential statistics. The descriptive statistics part has been discussed in Part Summarizing Data including @sec-data-graphics and @sec-data-numeric, and many of you probably already learned lots of it in your middle or high school. The core and why statistics is that useful in every part of our life is its inferential techniques.
+
+We have been equipped with sufficient probability tools for learning basic statistical inference. We'll start with the very basic concept of statistical inference followed by inferential methods for various kinds of data and research questions.
+
+Inferential statistics uses the information contained in the sample data to learn about some unknown target population characteristic of our interest. For example, we are interested in the mean height of the adults in the United States. The budget and/or time constraint, however, keep us from taking the census and knowing the height of every adult in the United States. Instead, we collected a sample data, and hopefully with a fair statistical method, we are able to use the height data in the sample to **estimate** the mean height of the adults in the United States as precisely as possible.
+
+<!-- We finally are going to study inferential statistics that uses sample data to learn about an unknown population. (Getting harder! Be careful!) -->
+
+To be honest, statistical inference is a huge and difficult task. To simply our work, we usually assume the target population follows some distribution but with *unknown* parameters. Then our goal is to learn or uncover the unknown parameters of the assumed population distribution. For example, we can assume the height of the adults in the United States is normally distributed but with its mean $\mu$ unknown. Then our goal is to **estimate** the mean height $\mu$ from our data set. 
+
+```{r}
+par(mar = 0*c(1,1,1,1))
+plot(c(0, 2),
+     c(0, 1.1),
+     type = 'n',
+     axes = FALSE, xlab = "", ylab = "")
+temp <- seq(0, 2 * pi, 2 * pi / 100)
+x <- 0.5 + 0.5 * cos(temp)
+y <- 0.5 + 0.5 * sin(temp)
+lines(x, y)
+
+s <- matrix(runif(700), ncol = 2)
+S <- matrix(NA, 350, 2)
+j <- 0
+for (i in 1:nrow(s)) {
+  if(sum((s[i, ] - 0.5)^2) < 0.23){
+    j <- j + 1
+    S[j, ] <- s[i, ]
+  }
+}
+points(S, col = COL[1, 3], pch = 20)
+text(0.5, 1, 'Population', pos = 3)
+
+set.seed(50)
+N <- sample(j, 25)
+lines((x - 0.5) / 2 + 1.5, (y - 0.5) / 2 +  0.5, pch = 20)
+
+SS <- (S[N, ] - 0.5) / 2 + 0.5
+these <- c(2, 5, 11, 10, 12)
+points(SS[these, 1] + 1,
+       SS[these, 2],
+       col = COL[4, 2],
+       pch = 20,
+       cex = 1.5)
+text(1.5, 0.75, 'Sample', pos = 3)
+
+for (i in these) {
+  arrows(S[N[i], 1], S[N[i], 2],
+         SS[i, 1] + 1 - 0.03, SS[i, 2],
+         length = 0.08, col = COL[5], lwd = 1.5)
+}
+```
+
+<!-- We are interested in learning unknown parameters of the assumed population distribution, since knowledge of the parameters yield knowledge of the entire population. -->
+
+Since we only collect a small part of the entire population as our sample, we never see the entire picture and only have partial information, and the conclusion we made based on the sample, with pretty high chance, may be different or even far away from the unknown truth. Also, as we learned in @sec-prob-samdist, our sample data vary due to its randomness nature. In statistics, we not only learn what we learn about the unknown parameter, but also learn how uncertain we are about what we learn.
+
+
+In statistical inference, there are two main approaches in parameter learning: **estimation** and **hypothesis testing**. We are going to learn how to estimate and test on the unknown parameters for various types of data and questions. Get ready and let's go!
+
+<!-- In parameter learning, we consider two approaches, estimation and hypothesis testing. -->

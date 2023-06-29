@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.2.335">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta name="description" content="This book serves as a main reference book for my MATH 4720 Statistical Methods and MATH 4740 Biostatistical Methods at Marquette University. Some topics can also be discussed in an introductory data science course. You’ll learn basic probability and statistical concepts as well as data analysis techniques such as linear regression using R computing software.">
+<meta name="description" content="An comprehensive introductory statistical data science book.">
 <title>Introduction to Statistics - 15&nbsp; Hypothesis Testing</title>
 <style>
 code{white-space: pre-wrap;}
@@ -272,7 +272,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./infer-ci.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Confidence Interval</span></a>
+  <a href="./infer-ci.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Point and Interval Estimation</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -302,22 +302,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./infer-goodnessfit.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Inference about Categorical Data</span></a>
+  <a href="./infer-cat.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Inference about Categorical Data</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./infer-indep.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">infer-indep.html</span></a>
+  <a href="./infer-bayes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./infer-bayes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./infer-nonpar.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Nonparametric Inference</span></a>
+  <a href="./infer-nonpar.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Nonparametric Inference</span></a>
   </div>
 </li>
       </ul>
@@ -332,27 +327,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./model-anova.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></a>
+  <a href="./model-anova.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./model-reg.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Linear Regression</span></a>
+  <a href="./model-reg.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Linear Regression</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./model-logistic.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Logistic Regression</span></a>
+  <a href="./model-logistic.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Logistic Regression</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./model-bayes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></a>
+  <a href="./model-bayes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./model-survival.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Survival Analysis</span></a>
+  <a href="./model-survival.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Survival Analysis</span></a>
   </div>
 </li>
       </ul>
@@ -392,146 +387,108 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </div>
   
 
-</header><div class="cell">
+</header><p>We finished the discussion of estimation, interval estimation in particular in the previous chapter. The other part of statistical inference is <strong>hypothesis testing</strong>. In this chapter, we first discuss the meaning a hypothesis in statistical analysis, followed by the testing procedures for population mean <span class="math inline">\(\mu\)</span> when <span class="math inline">\(\sigma\)</span> is known and when <span class="math inline">\(\sigma\)</span> is unknown. Pay attention to similarity and difference of estimation and testing.</p>
+<div class="cell">
+
+</div>
+<div class="cell">
 
 </div>
 <section id="introduction" class="level2" data-number="15.1"><h2 data-number="15.1" class="anchored" data-anchor-id="introduction">
 <span class="header-section-number">15.1</span> Introduction</h2>
 <p><span style="color:blue"> <strong>What is Hypothesis Testing?</strong> </span></p>
+<p>In statistics, a <strong>hypothesis</strong> is a claim or statement about a <em>property of a population</em>, often the value of a population distribution parameter. For example,</p>
 <ul>
-<li>A <strong>hypothesis</strong> is a claim or statement about a <em>property of a population</em>, often the value of a population parameter.
-<ul>
-<li><span style="color:blue"> The mean body temperature of humans is less than <span class="math inline">\(98.6^{\circ}\)</span> F, or <span class="math inline">\(\mu &lt; 98.6\)</span>. </span></li>
-<li><span style="color:blue"> Marquette students’ IQ scores has standard deviation equal to 15, or <span class="math inline">\(\sigma = 15\)</span>. </span></li>
+<li><p><span style="color:blue"> The mean body temperature of humans is less than <span class="math inline">\(98.6^{\circ}\)</span> F. </span> Here the mean body temperature is a property or characteristic of target population human beings. We can turn the verbal claim into a brief mathematical expression <span class="math inline">\(\mu &lt; 98.6\)</span>.</p></li>
+<li><p><span style="color:blue"> Marquette students’ IQ scores has standard deviation equal to 15. </span> The IQ score standard deviation is a characteristic of the population Marquette students. Mathematically, we can write the claim as <span class="math inline">\(\sigma = 15\)</span>.</p></li>
 </ul>
-</li>
-</ul>
-<!-- - A **hypothesis testing** <sup>1</sup> is a procedure for testing a hypothesis. --><ul>
-<li>The <strong>null hypothesis</strong>, <span class="math inline">\((H_0)\)</span>, is a statement that the value of a parameter is
-<ul>
-<li>
-<strong>equal</strong> to some claim value</li>
-<li>the <strong>negation</strong> of the alternative hypothesis</li>
-<li>often a skeptical perspective to be tested</li>
-</ul>
-</li>
-<li>The <strong>alternative hypothesis</strong>, <span class="math inline">\((H_1\)</span> or <span class="math inline">\(H_a)\)</span>, is a claim that the parameter is <strong>less than</strong>, <strong>greater than</strong> or <strong>not equal</strong> to some value.
-<ul>
-<li>It is usually our <strong>research hypothesis</strong> of some new scientific theory or finding.</li>
-</ul>
-</li>
-</ul>
-<div class="callout-note callout callout-style-default no-icon callout-captioned">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-caption-container flex-fill">
-Are these <span class="math inline">\(H_0\)</span> or <span class="math inline">\(H_1\)</span> claims?
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li><span style="color:blue"> The percentage of Marquette female students loving Japanese food is <strong>equal</strong> to 80%.</span></li>
-<li><span style="color:blue"> On average, Marquette students consume <strong>less than</strong> 3 drinks per week. </span></li>
-</ul>
-</div>
-</div>
-<ul>
-<li>
-<strong>Hypothesis testing</strong> <sup>1</sup> is a procedure to <strong>decide whether or not to reject <span class="math inline">\(H_0\)</span></strong> based on how much evidence there is against <span class="math inline">\(H_0\)</span>.
-<ul>
-<li>If the evidence is strong enough, we reject <span class="math inline">\(H_0\)</span> in favor of <span class="math inline">\(H_1\)</span>.</li>
-</ul>
-</li>
-</ul>
-<p>[1] Null Hypothesis Statistical Testing (NHST), <strong>statistical testing</strong> or <strong>test of significance</strong>.</p>
+<p>You can see that we usually focus on claims about a population distribution parameter. <!-- - A **hypothesis testing** <sup>1</sup> is a procedure for testing a hypothesis. --></p>
+<p>The <strong>null hypothesis</strong>, denoted <span class="math inline">\(H_0\)</span>, is a statement that the value of a parameter is <em>equal</em> to some claim value, or the <em>negation</em> of the <strong>alternative hypothesis</strong> that will be discussed in a minute. Often <span class="math inline">\(H_0\)</span> represents a skeptical perspective or a claim to be tested, or the current status of the parameter. For example, the claim <em>“the percentage of Marquette female students loving Japanese food is equal to 80%”</em> is a <span class="math inline">\(H_0\)</span> claim because of the key word “equal”. Usually we are not very convinced that the <span class="math inline">\(H_0\)</span> claim is true, and in our analysis we want to <em>test</em> the claim, and see whether the evidence and information we collect is strong enough to make a conclusion that the percentage is not equal to 80%.</p>
+<p>The <strong>alternative hypothesis</strong>, denoted <span class="math inline">\(H_1\)</span> or <span class="math inline">\(H_a\)</span>, is a claim that the parameter is <strong>less than</strong>, <strong>greater than</strong> or <strong>not equal</strong> to some value. It is usually our <strong>research hypothesis</strong> of some new scientific theory or finding. If we think the percentage of Marquette female students loving Japanese food is greater than 80%, this hypothesis is the <span class="math inline">\(H_1\)</span> claim. If after a formal testing procedure, we conclude that the percentage is greater than 80%, we sort of make a new research discovery that overturns the previous claim or status quo that the percentage is equal to 80%.</p>
+<p>Let’s do one more exercise. Is the statement <em>“On average, Marquette students consume less than 3 drinks per week.”</em> a <span class="math inline">\(H_0\)</span> or <span class="math inline">\(H_1\)</span> claim? Because of the key word “less than”, it is a <span class="math inline">\(H_1\)</span> claim.</p>
+<!-- :::{.callout-note icon=false} -->
+<!-- ## Are these $H_0$ or $H_1$ claims? -->
+<!-- - <span style="color:blue"> The percentage of Marquette female students loving Japanese food is **equal** to 80%.</span> -->
+<!-- - <span style="color:blue"> On average, Marquette students consume **less than** 3 drinks per week. </span> -->
+<!-- ::: -->
+<p>So what is <strong>hypothesis testing</strong>? <strong>Hypothesis testing</strong> <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> is a procedure to <strong>decide whether or not to reject <span class="math inline">\(H_0\)</span></strong> based on how much evidence there is against <span class="math inline">\(H_0\)</span>. If the evidence is strong enough, we <em>reject <span class="math inline">\(H_0\)</span> in favor of <span class="math inline">\(H_1\)</span></em>.</p>
 <hr>
 <p><span style="color:blue"> <strong>Example</strong> </span></p>
+<p>Before we jump into the formal hypothesis testing procedure, let’s talk about a criminal charge example. How a criminal is convicted is similar to the formal testing procedure.</p>
 <div class="columns">
-<div class="column" style="width:70%;">
-<ul>
-<li>A person is charged with a crime.
-<ul>
-<li>A jury decides whether the person is guilty or not.</li>
-<li>The accused is assumed to be innocent until the jury declares otherwise.</li>
-<li>If overwhelming evidence of the person’s guilt can be shown, then the jury is expected to declare the person guilty; otherwise, the person is considered not guilty.</li>
-</ul>
-</li>
-</ul>
-</div><div class="column" style="width:30%;">
+<div class="column" style="width:90%;">
+<p><em>Suppose a person is charged with a crime, and a jury will decide whether the person is guilty or not. We all know the rule: Even though the person is charged with the crime, at the beginning of the trial, the accuse is assumed to be innocent until the jury declares otherwise. Only if overwhelming evidence of the person’s guilt can be shown is the jury expected to declare the person guilty, otherwise the person is considered not guilty.</em></p>
+</div><div class="column" style="width:10%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="./images/img-infer/law.jpeg" class="img-fluid figure-img" style="width:50.0%"></p>
+<figure class="figure"><p><img src="./images/img-infer/law.jpeg" class="img-fluid figure-img" width="1353"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
 </div>
-<ul>
-<li>What should <span class="math inline">\(H_0\)</span> and <span class="math inline">\(H_1\)</span> be for this example?
+<p>If we want to make a claim about whether the person is guilty or not, what are our <span class="math inline">\(H_0\)</span> and <span class="math inline">\(H_1\)</span>? Remember that the null hypothesis represents a skeptical perspective or a claim to be tested, or the current status of the parameter, so we have</p>
 <ul>
 <li>
 <span class="math inline">\(H_0:\)</span> The person is <span style="color:blue"> not guilty </span> 🙂</li>
+</ul>
+<p>This is how we write a hypothesis: start with <span class="math inline">\(H_0:\)</span> followed by the statement. Being not guilty is the default status quo of anyone, although the jury may doubt or be skeptical of the person being not guilty. The prosecutors and police detectives are trying their best the collect enough strong evidence to proof beyond a reasonable doubt to the jury. Therefore the alternative hypothesis is</p>
+<ul>
 <li>
 <span class="math inline">\(H_1:\)</span> The person is <span style="color:blue"> guilty </span> 😟</li>
 </ul>
-</li>
-<li>The <strong>evidence</strong> is <span style="color:blue"> photos, videos, witnesses, fingerprints, DNA, etc. </span>
-</li>
-<li>The <strong>decision rule</strong> is the <span style="color:blue"> jury’s voting </span>.</li>
-<li>The <strong>conclusion</strong> is the verdict <span style="color:blue"> “guilty” </span> or <span style="color:blue"> “NOT enough evidence to convict” </span>.</li>
-</ul></section><section id="how-to-formally-do-a-statistical-hypothesis-testing" class="level2" data-number="15.2"><h2 data-number="15.2" class="anchored" data-anchor-id="how-to-formally-do-a-statistical-hypothesis-testing">
+<p>In the example, the <strong>evidence</strong> could be <span style="color:blue"> photos, videos, witnesses, fingerprints, DNA, and so on </span>. How do we decide to keep <span class="math inline">\(H_0\)</span> or to accept <span class="math inline">\(H_1\)</span>? After all evidence including defense attorney and prosecutor’s arguments are presented to the jury, the <strong>decision rule</strong> is the <span style="color:blue"> jury’s voting </span>. Finally, to close the case, we need a <strong>conclusion</strong> that is the verdict <span style="color:blue"> “guilty” </span> or <span style="color:blue"> “Not enough evidence to convict” </span>.</p>
+<p>Please go through the entire criminal charge process again:</p>
+<p><span class="math inline">\(H_0\)</span> and <span class="math inline">\(H_a\)</span> =&gt; Evidence =&gt; Decision rule =&gt; Conclusion</p>
+<p>The process is quite similar to the formal procedure for a hypothesis testing.</p>
+</section><section id="how-to-formally-do-a-statistical-hypothesis-testing" class="level2" data-number="15.2"><h2 data-number="15.2" class="anchored" data-anchor-id="how-to-formally-do-a-statistical-hypothesis-testing">
 <span class="header-section-number">15.2</span> How to Formally Do a Statistical Hypothesis Testing</h2>
+<p>The entire hypothesis testing can be wrapped up in the following six steps. No worries if you don’t have any idea of it. We will learn this step by step.</p>
 <ul>
-<li><strong>Step 0: Check Method Assumptions</strong></li>
-<li><strong>Step 1: Set the <span class="math inline">\(H_0\)</span> and <span class="math inline">\(H_a\)</span> in Symbolic Form from a Claim</strong></li>
-<li><strong>Step 2: Set the Significance Level <span class="math inline">\(\alpha\)</span></strong></li>
-<li>
-<strong>Step 3: Calculate the Test Statistic</strong> (Evidence)</li>
+<li><p><strong>Step 0: Check Method Assumptions</strong></p></li>
+<li><p><strong>Step 1: Set the <span class="math inline">\(H_0\)</span> and <span class="math inline">\(H_a\)</span> in Symbolic Form from a Claim</strong></p></li>
+<li><p><strong>Step 2: Set the Significance Level <span class="math inline">\(\alpha\)</span></strong></p></li>
+<li><p><strong>Step 3: Calculate the Test Statistic</strong> (Evidence)</p></li>
 </ul>
 <div class="columns">
 <div class="column" style="width:50%;">
 <p><strong>Decision Rule I: Critical Value Method</strong></p>
 <ul>
-<li><span style="color:blue"> <strong>Step 4-c: Find the Critical Value</strong> </span></li>
-<li><span style="color:blue"> <strong>Step 5-c: Draw a Conclusion Using Critical Value Method</strong> </span></li>
+<li><p><span style="color:blue"> <strong>Step 4-c: Find the Critical Value</strong> </span></p></li>
+<li><p><span style="color:blue"> <strong>Step 5-c: Draw a Conclusion Using Critical Value Method</strong> </span></p></li>
 </ul>
 </div><div class="column" data-widht="50%">
 <p><strong>Decision Rule II: P-Value Method</strong></p>
 <ul>
-<li><span style="color:red"> <strong>Step 4-p: Find the P-Value</strong> </span></li>
-<li><span style="color:red"> <strong>Step 5-p: Draw a Conclusion Using P-Value Method</strong> </span></li>
+<li><p><span style="color:red"> <strong>Step 4-p: Find the P-Value</strong> </span></p></li>
+<li><p><span style="color:red"> <strong>Step 5-p: Draw a Conclusion Using P-Value Method</strong> </span></p></li>
 </ul>
 </div>
 </div>
 <ul>
 <li><strong>Step 6: Restate the Conclusion in Nontechnical Terms, and Address the Original Claim</strong></li>
-<li>😎 We will learn this step by step!</li>
 </ul>
-<hr>
+<!-- - 😎 We will learn this step by step! --><hr>
 <p><span style="color:blue"> <strong>Step 0: Check Method Assumptions</strong> </span></p>
+<p>Any statistical method is based on some assumptions. To use the method, and analyze our data appropriately, we have to make sure that the assumptions are satisfied. In this book, most of the distribution-based methods require</p>
 <ul>
-<li>The testing methods are based on normality or approximate normality by CLT.
-<ul>
-<li>Random sample</li>
-<li>Normally distributed and/or <span class="math inline">\(n &gt; 30\)</span>
-</li>
+<li><p>Random sample</p></li>
+<li><p>The population is normally distributed and/or the sample size <span class="math inline">\(n &gt; 30\)</span>.</p></li>
 </ul>
-</li>
-</ul>
-<div class="cell" data-layout-align="center">
+<!-- - The testing methods are based on normality or approximate normality by CLT. --><div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="./images/img-infer/normal_dist.jpeg" class="img-fluid figure-img" style="width:50.0%"></p>
+<figure class="figure"><p><img src="./images/img-infer/normal_dist.jpeg" class="img-fluid figure-img" width="237"></p>
+<p></p><figcaption class="figure-caption">Source: https://www.pinterest.ph/pin/633387417082544/</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
 <hr>
 <p><span style="color:blue"> <strong>Step 1: Set the <span class="math inline">\(H_0\)</span> and <span class="math inline">\(H_1\)</span> from a Claim</strong> </span></p>
+<p>The first step of testing is to understand the <span class="math inline">\(H_0\)</span> and <span class="math inline">\(H_1\)</span> claims, and express them using mathematically using population parameters. The followings provdie three examples.</p>
 <ul>
 <li>🧑‍🏫 The <em>mean</em> IQ score of statistics professors is <strong>higher than</strong> 120.
 <ul>
@@ -549,27 +506,26 @@ Are these <span class="math inline">\(H_0\)</span> or <span class="math inline">
 </ul>
 </li>
 </ul>
+<p>Keep in mind that the equality sign is always put in <span class="math inline">\(H_0\)</span>, and <span class="math inline">\(H_0\)</span> and <span class="math inline">\(H_1\)</span> are mutually exclusive. Also, the claims are for population parameters, not sample statistics. We are not sure the value of the parameter being tested, but we want to collect evidence, and see which claim about the parameter is supported by the evidence.</p>
 <hr>
 <p><span style="color:blue"> <strong>Step 2: Set the Significance Level <span class="math inline">\(\alpha\)</span></strong> </span></p>
-<ul>
-<li>The significance level, <span class="math inline">\(\alpha\)</span>, determines <em>how rare or unlikely our evidence must be</em> in order to represent sufficient evidence against <span class="math inline">\(H_0\)</span>.</li>
-<li>An <span class="math inline">\(\alpha\)</span> level of 0.05 implies that evidence occurring with probability lower than 5% will be considered sufficient evidence to reject <span class="math inline">\(H_0\)</span>.</li>
-<li><span class="math inline">\(\alpha = P(\text{Reject } H_0 \mid H_0 \text{ is true})\)</span></li>
-<li>
-<span class="math inline">\(\alpha = 0.05\)</span> means that we <strong>incorrectly reject <span class="math inline">\(H_0\)</span> 5 out of every 100 times</strong> we collect a sample and run the test.</li>
-</ul>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="cell">
+<p>Next, we set the <strong>significance level</strong> <span class="math inline">\(\alpha\)</span> that determines <em>how rare or unlikely our evidence must be</em> in order to represent sufficient evidence against <span class="math inline">\(H_0\)</span>. It tells us how strong the collected evidence must be in order to overturn the current claim. An <span class="math inline">\(\alpha\)</span> level of 0.05 implies that evidence occurring with probability lower than 5% will be considered sufficient evidence to reject <span class="math inline">\(H_0\)</span>. Mathematically, <span class="math display">\[\alpha = P(\text{Reject } H_0 \mid H_0 \text{ is true})\]</span> As a result, <span class="math inline">\(\alpha = 0.05\)</span> means that we <strong>incorrectly reject <span class="math inline">\(H_0\)</span> 5 out of every 100 times</strong> we collect a sample and run the test.</p>
+<p>Here is the idea. When we want to see if what we care about (the population parameter) is not as described as in the null hypothesis <span class="math inline">\(H_0\)</span>, we first assume or believe <span class="math inline">\(H_0\)</span> is right, then based on this, we see if there is sufficient and strong evidence to conclude that it is probably not the case, and find the alternative hypothesis more reasonable.</p>
+<p>Let’s explain <span class="math inline">\(\alpha\)</span> by an example. Suppose we would like to test the claim that <em>“The mean IQ of statistics professors is greater than 120.”</em> Or in short <span class="math inline">\(H_0: \mu = 120\)</span> vs.&nbsp;<span class="math inline">\(H_1: \mu &gt; 120\)</span>. With large sample size, we can assume <span class="math inline">\(\overline{X}\)</span> follows a normal distribution. Now, to test whether the mean IQ is greater than 120, we need to first treat the mean not being greater than 120 unless later we have sufficient evidence to say it is greater than 120. In particular, we need to do the test and analysis on the basis that the mean is under <span class="math inline">\(H_0\)</span>. That is, we first assume the mean is 120, or <span class="math inline">\(\mu = 120\)</span>, then see if the assumption really makes sense.</p>
+<p>Because <span class="math inline">\(\overline{X}\)</span> is normal, we do the test under the assumption that <span class="math inline">\(\overline{X} \sim N(120, \sigma^2)\)</span> for some <span class="math inline">\(\sigma^2\)</span>, say <span class="math inline">\(9\)</span>. (Let’s focus on <span class="math inline">\(\mu\)</span> and ignore <span class="math inline">\(\sigma\)</span> at this moment). Now <span class="math inline">\(\alpha\)</span> comes into play. If <span class="math inline">\(\overline{X}\)</span> has mean 120, our sample data</p>
+<!-- ::::{.columns} -->
+<!-- :::{.column width="50%"} -->
+<div class="cell" data-layout-align="center" data-fig.asp="0.5">
 <div class="cell-output-display">
 <div id="fig-set-alpha" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="infer-ht_files/figure-html/fig-set-alpha-1.png" class="img-fluid figure-img" style="width:75.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;15.1: Illustration of significance level, alpha</figcaption><p></p>
+<figure class="figure"><p><img src="infer-ht_files/figure-html/fig-set-alpha-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;15.1: Illustration of significance level, alpha.</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
-</div><div class="column" style="width:50%;">
+<!-- ::: -->
+<!-- :::{.column width="50%"} -->
 <div class="callout-note callout callout-style-default no-icon callout-captioned">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -583,8 +539,9 @@ Are these <span class="math inline">\(H_0\)</span> or <span class="math inline">
 <p>If, under a given assumption, the probability of a particular observed event is exceptionally small, we conclude that the assumption is probably not correct.</p>
 </div>
 </div>
-</div>
-</div>
+<!-- ::: -->
+<!-- :::: -->
+<p>The level <span class="math inline">\(\alpha\)</span> is related to the <span class="math inline">\(\alpha\)</span> used in confidence intervals for defining a “critical value”.</p>
 <hr>
 <p><span style="color:blue"> <strong>Step 3: Calculate the Test Statistic</strong> </span></p>
 <ul>
@@ -739,7 +696,7 @@ Are these <span class="math inline">\(H_0\)</span> or <span class="math inline">
 <li>We are more likely to get a <span class="math inline">\(p\)</span>-value near 0 when <span class="math inline">\(H_0\)</span> is false than when <span class="math inline">\(H_0\)</span> is true.</li>
 </ul>
 <p><span style="color:red"> <strong><em>P-Value Illustration</em></strong> </span></p>
-<div class="cell" data-fig.asp="0.6">
+<div class="cell" data-layout-align="center" data-fig.asp="0.6">
 <div class="cell-output-display">
 <div id="fig-pvalue" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="infer-ht_files/figure-html/fig-pvalue-1.png" class="img-fluid figure-img" style="width:95.0%"></p>
@@ -792,7 +749,7 @@ Are these <span class="math inline">\(H_0\)</span> or <span class="math inline">
 </table>
 <!-- - Notation $\text{abs}(a)$ means absolute value of $a$, i.e. $|a|$. --><hr>
 <p><span style="color:blue"> <strong>Both Methods Lead to the Same Conclusion</strong> </span></p>
-<div class="cell" data-fig.asp="0.6">
+<div class="cell" data-layout-align="center" data-fig.asp="0.6">
 <div class="cell-output-display">
 <div id="fig-conclusions" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="infer-ht_files/figure-html/fig-conclusions-1.png" class="img-fluid figure-img" style="width:95.0%"></p>
@@ -902,7 +859,7 @@ Are these <span class="math inline">\(H_0\)</span> or <span class="math inline">
 <ul>
 <li>Below is a demonstration of how to work through this example using R.</li>
 </ul>
-<div class="cell">
+<div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## create objects for any information we have</span></span>
 <span><span class="va">alpha</span> <span class="op">&lt;-</span> <span class="fl">0.05</span>; <span class="va">mu_0</span> <span class="op">&lt;-</span> <span class="fl">150</span>; </span>
 <span><span class="va">x_bar</span> <span class="op">&lt;-</span> <span class="fl">147.2</span>; <span class="va">s</span> <span class="op">&lt;-</span> <span class="fl">5.5</span>; <span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">25</span></span>
@@ -993,7 +950,7 @@ Are these <span class="math inline">\(H_0\)</span> or <span class="math inline">
 <ul>
 <li>Below is an example of how to perform the two-tailed Z-test in R.</li>
 </ul>
-<div class="cell">
+<div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## create objects to be used</span></span>
 <span><span class="va">alpha</span> <span class="op">&lt;-</span> <span class="fl">0.05</span>; <span class="va">mu_0</span> <span class="op">&lt;-</span> <span class="fl">2.78</span>; </span>
 <span><span class="va">x_bar</span> <span class="op">&lt;-</span> <span class="fl">2.8</span>; <span class="va">sigma</span> <span class="op">&lt;-</span> <span class="fl">0.1</span>; <span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">25</span></span>
@@ -1183,7 +1140,10 @@ H_A&amp;: \mu \neq 45
 </ol>
 
 
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
+<ol>
+<li id="fn1"><p>Hypothesis testing is also called Null Hypothesis Statistical Testing (NHST), <strong>statistical testing</strong> or <strong>test of significance</strong>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -1328,7 +1288,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </nav>
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">
-    <div class="nav-footer-left">Copyright 2022, Cheng-Han Yu</div>   
+    <div class="nav-footer-left">Copyright 2023, Dr.&nbsp;Cheng-Han Yu</div>   
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
 <li class="nav-item compact">
