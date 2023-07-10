@@ -1,82 +1,124 @@
 # Inference About Variances {#sec-infer-var}
 
-```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
-library(openintro)
-library(knitr)
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: packages
 library(emoji)
+library(knitr)
+# library(kableExtra)
+library(openintro)
+library(ggplot2)
 ```
 
-## Inference for One Population Variance
+```{r}
+#| echo: false
+knitr::opts_chunk$set(echo = FALSE, fig.align = "center")
+```
+
 
 <span style="color:blue"> **Why Inference for Population Variances?** </span>
 
-- We want to know if $\sigma_1 = \sigma_2$, because the method we use depends on whether or not this is true. 
+We've learned how to do inference about one and two population means in the previous chapters. But we care about not only the center but also the dispersion or variability of some population distribution. In this chapter we are going to learn some inference methods for population variances. If the target population follows normal distribution $N(\mu, \sigma^2)$, our focus now is $\sigma^2$ or $\sigma$, not the mean $\mu$.
 
-:::{.callout-note icon=false}
-## Which test did we learn that needs $\sigma_1 = \sigma_2$?
-- Two-sample pooled test
-:::
+But why do we want to do inference about population variance? As population means, most of the time we do not know the true variance value, and in daily lives in some situations, we care about variation. For example, we would like to learn or control the variation in potency of some drug, say drug for lowering blood pressure. We hope the same amount or dose level of the drug provide the same effect on each individual. We don't want some patients' blood pressure is lowered a lot, but some other patient's blood pressure is lowered just a little bit. In other words, we hope the drug effect is consistent or it has small variability. We want the new treatment can provide consistent potency and efficacy for all patients.
 
-<center>
-**In some situations, we care about *variation*!**
-</center>
+We also pay a lot of attention to the variance of stock prices because the higher the variance, the riskier the investment. We may want to monitor our financial portfolio, and the variability of our investment value so that we have long term financial stability.
 
-<br>
+Moreover, we may want to know if two population variances are equal, so that a correct or better method can be used. For example, in order to get higher statistical testing power, we use the two sample pooled $t$-test if $\sigma_1 = \sigma_2$ or they are very close to each other.
 
-::::{.columns}
-:::{.column width="50%"}
-- <span style="color:blue"> The variation in potency of drugs</span>: *affects patients' health*
+<!-- ::::{.columns} -->
+<!-- :::{.column width="50%"} -->
+<!-- - <span style="color:blue"> The variation in potency of drugs</span>: *affects patients' health* -->
 
-```{r, echo=FALSE, out.width="78%", fig.align='center'}
-knitr::include_graphics("./images/img-infer/drugs.jpeg")
-```
-:::
+<!-- # ```{r, echo=FALSE, out.width="78%", fig.align='center'} -->
+<!-- # knitr::include_graphics("./images/img-infer/drugs.jpeg") -->
+<!-- # ``` -->
+<!-- ::: -->
 
-:::{.column width="50%"}
-- <span style="color:blue"> The variance of stock prices </span>: *the higher the variance, the riskier the investment*
-```{r, echo=FALSE, out.width="78%", fig.align='center'}
-knitr::include_graphics("./images/img-infer/stock.jpeg")
-```
-:::
-::::
+<!-- :::{.column width="50%"} -->
+<!-- - <span style="color:blue"> The variance of stock prices </span>: *the higher the variance, the riskier the investment* -->
+<!-- # ```{r, echo=FALSE, out.width="78%", fig.align='center'} -->
+<!-- # knitr::include_graphics("./images/img-infer/stock.jpeg") -->
+<!-- # ``` -->
+<!-- ::: -->
+<!-- :::: -->
 
-------------------------------------------------------------------
+<!-- We want to know if $\sigma_1 = \sigma_2$, because the method we use depends on whether or not this is true.  -->
+
+<!-- :::{.callout-note icon=false} -->
+<!-- ## Which test did we learn that needs $\sigma_1 = \sigma_2$? -->
+<!-- - Two-sample pooled test -->
+<!-- ::: -->
+
+<!-- <center> -->
+<!-- **In some situations, we care about *variation*!** -->
+<!-- </center> -->
+
+<!-- <br> -->
+
+
+
+
+## Inference for One Population Variance
+
+<!-- ------------------------------------------------------------------ -->
 
 <span style="color:blue"> **Inference for Population Variances** </span>
 
-- The sample variance $S^2 = \frac{\sum_{i=1}^n(X_i - \overline{X})^2}{n-1}$ is our **point estimator** for the population variance, $\sigma^2$.
-- $S^2$ is an **unbiased estimator** for $\sigma^2$.
-  + This means $E(S^2) = \sigma^2$.
-- The inference methods for $\sigma^2$ require the population to be **normal**. 
+Let's start with inference for one population variance. For point estimation, the most intuitive and straightforward point estimator for $\sigma^2$ is the sample variance $S^2$ defined as 
 
-:::{.callout-note}
-- The inference methods can **work poorly if normality is violated, even if the sample is large**.
+$$S^2 = \frac{\sum_{i=1}^n(X_i - \overline{X})^2}{n-1}.$$ 
+
+Note that the the denominator is $n-1$, not the sample size $n$. Note that $S^2$ is a random variable because each data point $X_i$ and $\overline{X}$ are assumed random variables. Dividing by $n-1$ instead of $n$ actually means something. $S^2$ is an **unbiased estimator** for $\sigma^2$, i.e., $E(S^2) = \sigma^2$, which is a good property of a point estimator. If we were able to repeatedly collect data sets of the same size $n$ lots of times, and for each data set we obtain its sample variance, then the average sample variance will be, if not exactly, very close to the true population variance.
+
+The inference methods for $\sigma^2$ introduced in this chapter require the population to be *normally distributed*.  
+
+<!-- - $S^2$ is an **unbiased estimator** for $\sigma^2$. -->
+<!--   + This means $E(S^2) = \sigma^2$. -->
+
+
+:::{.callout-important}
+:::{style="font-size: 1.1em;"}
+The inference methods can *work poorly if normality is violated, even if the sample is large*.
+:::
 :::
 
-```{r, echo=FALSE, out.width="40%", fig.align='center'}
-knitr::include_graphics("./images/img-infer/normal_dist.jpeg")
-```
+<!-- # ```{r, echo=FALSE, out.width="40%", fig.align='center'} -->
+<!-- # knitr::include_graphics("./images/img-infer/normal_dist.jpeg") -->
+<!-- # ``` -->
 
 ---------------------------------------------------------------------
 
 <span style="color:blue"> **Chi-Square $\chi^2$ Distribution** </span>
 
-- The inference for $\sigma^2$ involves the so called $\chi^2$ distribution.
+Remember that when we do the inference for population means, we use either normal distribution or Student's $t$ distribution. For the inference about the population variances, we use another distribution called [**chi-square $\chi^2$ distribution**](http://sctc.mscs.mu.edu:3838/sample-apps/Calculator/) because the distribution is related to the sampling distribution of some variable involving $S^2$ and $\sigma^2$. We'll talk about that later. Let's first learn a little about the chi-square $\chi^2$ distribution.
 
-::::{.columns}
-:::{.column width="50%"}
 
-<br>
 
-- Parameter: degrees of freedom $df$
-- *Right-skewed* distribution
-- Defined over *positive* numbers
-- More symmetric as $df$ gets larger
-- [Chi-Square Distribution](http://sctc.mscs.mu.edu:3838/sample-apps/Calculator/)
-:::
 
-:::{.column width="50%"}
-```{r chi_sq_dist, echo = FALSE, out.width="80%", fig.align='center'}
+
+<!-- - The inference for $\sigma^2$ involves the so called $\chi^2$ distribution. -->
+
+<!-- ::::{.columns} -->
+<!-- :::{.column width="50%"} -->
+
+<!-- <br> -->
+
+As Student's $t$ distribution, the chi-square $\chi^2$ distribution has one parameter, degrees of freedom $df$. To denote a specific chi-square distribution, we write $\chi^2_{df}$ like $\chi^2_{2}$ for a chi-square distribution or variable with degrees of freedom two. @fig-chi-dist shows $\chi^2$ distributions with varying degrees of freedom. It is in general a *right-skewed* distribution, but it gets more and more symmetric as $df$ gets larger. Also, the $\chi^2$ distribution is defined over *positive* numbers, one hint why we use it for inferring variances because variance is non-negative, but normal or $t$ distribution is defined on the whole real line.
+
+
+
+<!-- - Parameter: degrees of freedom $df$ -->
+<!-- - *Right-skewed* distribution -->
+<!-- - Defined over *positive* numbers -->
+<!-- - More symmetric as $df$ gets larger -->
+<!-- - [Chi-Square Distribution](http://sctc.mscs.mu.edu:3838/sample-apps/Calculator/) -->
+<!-- ::: -->
+
+<!-- :::{.column width="50%"} -->
+```{r}
 #| label: fig-chi-dist
 #| fig-cap: Illustration of $\chi^2$ distributions with varying degrees of freedom 
 par(mgp = c(2.2, 0.5, 0))
@@ -96,16 +138,23 @@ for (i in 2:length(df_vec)) {
        paste("df =", df_vec[i]), col = i)
 }
 ```
-:::
-::::
+<!-- ::: -->
+<!-- :::: -->
 
 <span style="color:red"> ***Upper Tail and Lower Tail of Chi-Square*** </span>
 
-- $\chi^2_{\frac{\alpha}{2},\, df}$ has area to the **right** of $\alpha/2$.
-- $\chi^2_{1-\frac{\alpha}{2},\, df}$ has area to the **left** of $\alpha/2$.
-- In $N(0, 1)$, $z_{1-\frac{\alpha}{2}} = -z_{\frac{\alpha}{2}}$, but $\chi^2_{1-\frac{\alpha}{2},\,df} \ne -\chi^2_{\frac{\alpha}{2},\,df}$.
+Like standard normal and $t$ distribution, to do the inference for variances, we get to find or define critical values of a chi-square distribution. With some probability $\alpha$, we define 
 
-```{r chisq, out.width="50%", echo=FALSE, fig.align='center'}
+- $\chi^2_{\frac{\alpha}{2},\, df}$ is a $\chi^2$ value of a $\chi^2$ distribution with degrees of freedom $df$ such that it has area to the **right** of $\alpha/2$.
+
+- $\chi^2_{1-\frac{\alpha}{2},\, df}$ is a $\chi^2$ value of a $\chi^2$ distribution with degrees of freedom $df$ such that it has area to the **left** of $\alpha/2$. In other words, it has area to the **right** of $1 - \alpha/2$, and that's why it has a subscript $1-\frac{\alpha}{2}$.
+
+@fig-chisq-alpha illustrates the $\chi^2$ critical values. Notice that in $N(0, 1)$, $z_{1-\frac{\alpha}{2}} = -z_{\frac{\alpha}{2}}$. Because of the symmetry of the distribution, the $z$-value having area $\alpha/2$ on the right is the $z$-value having area $\alpha/2$ on the left with a negative sign. However, the chi-square distribution is not symmetric, so $\chi^2_{1-\frac{\alpha}{2},\,df} \ne -\chi^2_{\frac{\alpha}{2},\,df}$.
+
+
+<!-- but $\chi^2_{1-\frac{\alpha}{2},\,df} \ne -\chi^2_{\frac{\alpha}{2},\,df}$. -->
+
+```{r}
 #| label: fig-chisq-alpha
 #| fig-cap: Illustration of $\alpha/2$ significance levels for $\chi^2_{df}$ distribution
 par(mar = c(2, 0, 0, 0), mgp = c(2.1, 0.6, 0))
@@ -168,20 +217,32 @@ text(18, 0.02, expression(frac(alpha, 2)), cex = 2)
 
 <span style="color:red"> ***Sampling Distribution*** </span> 
 
-- When a random sample of size $n$ is from $\color{red}{N(\mu, \sigma^2)}$, 
-$$ \frac{(n-1)S^2}{\sigma^2} \sim \chi^2_{n-1} $$
+When a random sample of size $n$ is from $\color{red}{N(\mu, \sigma^2)}$, the following sample statistic has the $\chi^2$ sampling distribution with degrees of freedom $n-1$:
+$$ \frac{(n-1)S^2}{\sigma^2} \sim \chi^2_{n-1}. $$
 
-- Reminder: The inference method for $\sigma^2$ introduced here can work poorly if the normality assumption is violated, even for large samples.
+I would like to stress again that the inference method for $\sigma^2$ introduced here can work poorly if the normality assumption is violated, even for large samples.
+
+The sample statistic involves $S^2$ and $\sigma^2$, so we have manipulate its sampling distribution to obtain the confidence interval for $\sigma^2$, and use it as a test statistic in the hypothesis testing for $\sigma^2$.
 
 
 <span style="color:red"> ***$(1-\alpha)100\%$ Confidence Interval for $\sigma^2$*** </span>
 
-- The $(1-\alpha)100\%$ confidence interval for $\sigma^2$ is 
+The $(1-\alpha)100\%$ confidence interval for $\sigma^2$ is 
 $$\color{blue}{\boxed{\left( \frac{(n-1)S^2}{\chi^2_{\frac{\alpha}{2}, \, n-1}}, \frac{(n-1)S^2}{\chi^2_{1-\frac{\alpha}{2}, \, n-1}} \right)}}$$ 
 
-:::{.callout-note}
-- The CI for $\sigma^2$ **cannot** be expressed as $(S^2-m, S^2+m)$ anymore!
-:::
+How do we get this interval? We start with the sampling distribution of  $ \frac{(n-1)S^2}{\sigma^2}$.
+
+- $P\left(\chi^2_{1-\frac{\alpha}{2}, \,n-1} < \frac{(n-1)S^2}{\sigma^2} < \chi^2_{\frac{\alpha}{2},\, n-1} \right) = 1 - \alpha$ (Goal: isolate $\sigma^2$)
+- $P\left(\frac{\chi^2_{1-\frac{\alpha}{2}, \,n-1}}{(n-1)S^2} < \frac{1}{\sigma^2} < \frac{\chi^2_{\frac{\alpha}{2},\, n-1}}{(n-1)S^2} \right) = 1 - \alpha$ (divided by $(n-1)S^2$) 
+- $P\left(\frac{(n-1)S^2}{\chi^2_{1-\frac{\alpha}{2}, \, n-1}} > \sigma^2 > \frac{(n-1)S^2}{\chi^2_{\frac{\alpha}{2}, \,n-1}} \right) = 1 - \alpha$ (take reciprocal)
+- $P\left(\frac{(n-1)S^2}{\chi^2_{\frac{\alpha}{2}, \, n-1}} < \sigma^2 < \frac{(n-1)S^2}{\chi^2_{1-\frac{\alpha}{2}, \,n-1}} \right) = 1 - \alpha$ (smaller value on the left)
+
+
+Be careful that the interval for $\sigma^2$ *cannot* be expressed as $(S^2 - m, S^2 + m)$ for some margin of error $m$ anymore!
+
+<!-- :::{.callout-note} -->
+<!-- - The CI for $\sigma^2$ **cannot** be expressed as $(S^2-m, S^2+m)$ anymore! -->
+<!-- ::: -->
 
 
 ----------------------------------------------------------------------
@@ -189,39 +250,52 @@ $$\color{blue}{\boxed{\left( \frac{(n-1)S^2}{\chi^2_{\frac{\alpha}{2}, \, n-1}},
 <span style="color:blue"> **Example: Supermodel Heights** </span>
 
 ::::{.columns}
-:::{.column width="70%"}
-- Listed below are heights (cm) for the simple random sample of 16 female supermodels.
+:::{.column width="80%"}
+Listed below are heights (cm) for the simple random sample of 16 female supermodels.
 
-```{r, echo=TRUE}
+```{r}
+#| echo: true
 heights <- c(178, 177, 176, 174, 175, 178, 175, 178, 
              178, 177, 180, 176, 180, 178, 180, 176)
 ```
 
-- The supermodels' heights are normally distributed.
-- Construct a $95\%$ confidence interval for population standard deviation $\sigma$.
+The supermodels' heights are normally distributed. Please construct a $95\%$ confidence interval for population standard deviation $\sigma$.
 :::
 
-:::{.column width="30%"}
-```{r, echo=FALSE, out.width="80%", fig.align='center'}
+:::{.column width="20%"}
+```{r}
 knitr::include_graphics("./images/img-infer/models.jpeg")
 ```
 :::
 ::::
+
+We just need to get what we need for constructing the interval from the sample data, sample size $n$, sample variance $s^2$, $\alpha$, critical values $\chi^2_{\alpha/2, n-1}$ and $\chi^2_{1-\alpha/2, n-1}$.
+
 - $n = 16$, $s^2 = 3.4$, $\alpha = 0.05$.
 - $\chi^2_{\alpha/2, n-1} = \chi^2_{0.025, 15} = 27.49$
 - $\chi^2_{1-\alpha/2, n-1} = \chi^2_{0.975, 15} = 6.26$
-- The $95\%$ CI for $\sigma$ is $\small \left( \sqrt{\frac{(n-1)s^2}{\chi^2_{\frac{\alpha}{2}, \, n-1}}}, \sqrt{\frac{(n-1)s^2}{\chi^2_{1-\frac{\alpha}{2}, \, n-1}}} \right) = \left( \sqrt{\frac{(16-1)(3.4)}{27.49}}, \sqrt{\frac{(16-1)(3.4)}{6.26}}\right) = (1.36, 2.85)$
 
-<span style="color:red"> ***Computation in R*** </span>
+Note that we want the interval for $\sigma$, not $\sigma^2$, we take a square root of the lower and upper bound of the interval for $\sigma^2$. The $95\%$ CI for $\sigma$ is $\small \left( \sqrt{\frac{(n-1)s^2}{\chi^2_{\frac{\alpha}{2}, \, n-1}}}, \sqrt{\frac{(n-1)s^2}{\chi^2_{1-\frac{\alpha}{2}, \, n-1}}} \right) = \left( \sqrt{\frac{(16-1)(3.4)}{27.49}}, \sqrt{\frac{(16-1)(3.4)}{6.26}}\right) = (1.36, 2.85)$
 
-```{r, echo=TRUE}
+We are 95% confident that the height of supermodels has standard deviation between 1.36 and 2.85.
+
+
+<span style="color:red"> ***Confidence Interval Computation in R*** </span>
+
+We use `qchisq()` to get the $\chi^2$ critical values. The probability $p$ and the degrees of freedom `df` need to be specified. You should be able to understand the rest part of the code. Enjoy it.
+
+
+```{r}
+#| echo: true
+
+## set values
 n <- 16
 s2 <- var(heights)
 alpha <- 0.05
 
 ## two chi-square critical values
-chi2_right <- qchisq(alpha/2, n - 1, lower.tail = FALSE)
-chi2_left <- qchisq(alpha/2, n - 1, lower.tail = TRUE)
+chi2_right <- qchisq(p = alpha/2, df = n - 1, lower.tail = FALSE)
+chi2_left <- qchisq(p = alpha/2, df = n - 1, lower.tail = TRUE)
 
 ## two bounds of CI for sigma2
 ci_sig2_lower <- (n - 1) * s2 / chi2_right
@@ -234,11 +308,11 @@ ci_sig2_upper <- (n - 1) * s2 / chi2_left
 
 <span style="color:red"> ***Testing*** </span>
 
-- Use $\alpha = 0.05$ to test the claim that "*supermodels have heights with a standard deviation that is less than the standard deviation, $\sigma = 7.5$ cm, for the population of women*". 
+Back to the example. Use $\alpha = 0.05$ to test the claim that "*supermodels have heights with a standard deviation that is less than the standard deviation, $\sigma = 7.5$ cm, for the population of women*". 
 
 <span style="color:red"> Step 1 </span>
 
-- $H_0: \sigma = \sigma_0$ vs. $H_1: \sigma < \sigma_0$, where $\sigma_0 = 7.5$ cm.
+- We are comparing the $\sigma$ of heights of supermodels with the $\sigma$ of heights of women in general which is 7.5. So the hypothesize value $\sigma_0$ is 7.5. We wonder if supermodel height standard deviation is smaller than 7.5. Therefore, we have test $H_0: \sigma = \sigma_0$ vs. $H_1: \sigma < \sigma_0$, where $\sigma_0 = 7.5$ cm.
 
 <span style="color:red"> Step 2 </span>
 
@@ -246,10 +320,10 @@ ci_sig2_upper <- (n - 1) * s2 / chi2_left
 
 <span style="color:red"> Step 3 </span>
 
-- Under $H_0$, $\chi_{test}^2 = \frac{(n-1)s^2}{\sigma_0^2} = \frac{(16-1)(3.4)}{7.5^2} = 0.91$, drawn from $\chi^2_{n-1}$.
+- The test statistic comes from the variable $\chi_{test}^2 = \frac{(n-1)S^2}{\sigma^2}$ that follows $\chi^2_{n-1}$ distribution. Under $H_0$,  we have $\chi_{test}^2 = \frac{(n-1)s^2}{\sigma_0^2} = \frac{(16-1)(3.4)}{7.5^2} = 0.91$, drawn from $\chi^2_{n-1}$.
 
-::::{.columns}
-:::{.column width="50%"}
+<!-- ::::{.columns} -->
+<!-- :::{.column width="50%"} -->
 <span style="color:red"> Step 4-c </span>
 
 - This is a left-tailed test. 
@@ -259,19 +333,16 @@ ci_sig2_upper <- (n - 1) * s2 / chi2_left
 
 - Reject $H_0$ in favor of $H_1$ if $\chi_{test}^2 < \chi_{1-\alpha, df}^2$.
 - Since $0.91 < 7.26$, we reject $H_0$.
+<!-- ::: -->
 
-<span style="color:red"> Step 6 </span>
+<!-- :::{.column width="50%"} -->
 
-- There is sufficient evidence to support the claim that supermodels have heights with a SD that is less than the SD for the population of all women.
-:::
+<!-- <br>  -->
 
-:::{.column width="50%"}
-
-<br> 
-
-```{r, out.width="80%", echo=FALSE, fig.align='center'}
-#| label: fig-chisq-models
-#| fig-cap: $\chi_{0.95,15}^2$ distribution for supermodel heights 
+```{r}
+#| fig-asp: 0.5
+## | label: fig-chisq-models
+## | fig-cap: $\chi_{0.95,15}^2$ distribution for supermodel heights
 par(mar = c(2, 0, 0, 0), mgp = c(1, 1, 0))
 
 chi_sq_lower_tail <- function(L, df, xlim = c(0, 10), 
@@ -303,42 +374,50 @@ text(22, 0.05, expression(chi[15]^2), cex = 2)
 # text(0, 0, 0, cex = 1)
 # text(18, 0.02, expression(frac(0.05, 2)), cex = 2)
 ```
-:::
-::::
+<!-- ::: -->
+<!-- :::: -->
 
-- We conclude that the *heights of supermodels vary less than heights of women in the general population.*
+
+<span style="color:red"> Step 6 </span>
+
+- There is sufficient evidence to support the claim that supermodels have heights with a standard deviation that is less than the standard deviation for the population of all women.
+
+We conclude that the *heights of supermodels vary less than heights of women in the general women population.*
 
 ---------------------------------------------------------------
 
 <span style="color:blue"> **Back to Pooled t-Test** </span>
 
-- In a pooled t-test, we assume
+In a two sample pooled t-test, we assume
+
   - <span style="color:blue"> $n_1 \ge 30$ and $n_2 \ge 30$ or that both samples are drawn from normal populations. </span>
   - <span style="color:blue"> $\sigma_1 = \sigma_2$ </span>
-- We can use a QQ-plot (and normality tests, Anderson, Shapiro, etc.) to check the assumption of a normal distribution. 
-- We will now learn how to check the assumption $\sigma_1 = \sigma_2$.
+
+We can use a QQ-plot (and normality tests, Anderson, Shapiro, etc.) to check the assumption of a normal distribution. We now learn how to check the assumption $\sigma_1 = \sigma_2$.
 
 ## Inference for Comparing Two Population Variances
 
 <span style="color:blue"> **F Distribution** </span>
 
-- We use the **$F$ distribution** for inference about **two** population variances.
+For comparing *two* population variances, we need another distribution called [**$F$ distribution**](http://sctc.mscs.mu.edu:3838/sample-apps/Calculator/). The $F$ distribution has two parameters $df_1$ and $df_2$, a hint why it is used for comparing *two* variances. We write a specific $F$ distribution $F_{df_1, df_2}$. Second, the $F$ distribution is also right-skewed. Like $\chi^2$ distribution, the $F$ distribution is defined over *positive* numbers. @fig-f-dist illustrates $F$ distribution with different parameters. You can see that when $df_1$ and $df_2$ are both large, the $F$ distribution looks bell-shaped.
 
-::::{.columns}
-:::{.column width="40%"}
+<!-- - We use the **$F$ distribution** for inference about **two** population variances. -->
 
-<br>
+<!-- ::::{.columns} -->
+<!-- :::{.column width="40%"} -->
 
-- Two parameters: $df_1$, $df_2$
-- *Right-skewed* distribution
-- Defined over *positive* numbers
-- R Shiny app: [F Distribution](http://sctc.mscs.mu.edu:3838/sample-apps/Calculator/)
-:::
+<!-- <br> -->
 
-:::{.column width="60%"}
-```{r f_dist, echo = FALSE, out.width="110%", fig.align='center'}
+<!-- - Two parameters: $df_1$, $df_2$ -->
+<!-- - *Right-skewed* distribution -->
+<!-- - Defined over *positive* numbers -->
+<!-- - R Shiny app: [F Distribution](http://sctc.mscs.mu.edu:3838/sample-apps/Calculator/) -->
+<!-- ::: -->
+
+<!-- :::{.column width="60%"} -->
+```{r}
 #| label: fig-f-dist
-#| fig-cap: F distributions with different parameters
+#| fig-cap: F distributions with different parameters.
 par(mgp = c(2.5, 1, 0))
 x <- seq(0, 3, length=1000)
 df1_vec <- c(3, 100)
@@ -379,16 +458,17 @@ for (i in 1:length(df1_vec)) {
 # print(k)
 legend("topright", legend_text, lwd = rep(3, 6), col = col_idx, bty = "n")
 ```
-:::
-::::
+<!-- ::: -->
+<!-- :::: -->
 
 <span style="color:red"> ***Upper and Lower Tail of F Distribution*** </span>
 
-- We denote $F_{\alpha, \, df_1, \, df_2}$ as the $F$ quantile such that $P(F_{df_1, df_2} > F_{\alpha, \, df_1, \, df_2}) = \alpha$.
+We denote $F_{\alpha, \, df_1, \, df_2}$ as the $F$ quantile such that $P(F_{df_1, df_2} > F_{\alpha, \, df_1, \, df_2}) = \alpha$. With it, we can find the critical values $F_{\frac{\alpha}{2}, \, df_1, \, df_2}$ and $F_{1-\frac{\alpha}{2}, \, df_1, \, df_2}$ used in constructing the confidence interval for the ratio $\sigma^2_1/\sigma^2_2$ discussed next.
 
-```{r, out.width="70%", echo=FALSE, fig.align='center'}
+```{r}
 #| label: fig-f-sig-level
 #| fig-cap: Illustration of $\alpha/2$ significance levels for $F_{df_1, df_2}$ distribution
+#| fig-asp: 0.5
 par(mar = c(2, 0, 0, 0), mgp = c(2.1, 0.6, 0))
 f_upper_tail <- function(U, df1, df2, xlim = c(0, 10), col = fadeColor("black", "22"),
                                axes = TRUE, ...) {
@@ -423,7 +503,8 @@ f_two_tail <- function (U, L, df1, df2, xlim = c(0, 10),
                              col = fadeColor("black", "22"), axes = TRUE, ...) {
     x <- c(0, seq(xlim[1], xlim[2] + 3, length.out = 300))
     y <- c(0, stats::df(x[-1], df1, df2))
-    graphics::plot(x, y, type = "l", axes = FALSE, xlim = xlim)
+    graphics::plot(x, y, type = "l", axes = FALSE, xlim = xlim, 
+                   xlab = "", ylab = "")
     graphics::abline(h = 0)
     if (axes) {
         axis(1)
@@ -450,24 +531,48 @@ text(0.15, 0.05, expression(frac(alpha, 2)), cex = 1.5)
 
 <sample style="color:red"> ***Sampling Distribution*** </span>
 
-- When random samples of sizes $n_1$ and $n_2$ have been *independently* drawn from two normally distributed populations, $N(\mu_1, \sigma_1^2)$ and $N(\mu_2, \sigma_2^2)$, the ratio $$\frac{s_1^2/s_2^2}{\sigma_1^2/\sigma_2^2} \sim F_{n_1-1, \, n_2-1}$$
+When random samples of sizes $n_1$ and $n_2$ have been *independently* drawn from two normally distributed populations, $N(\mu_1, \sigma_1^2)$ and $N(\mu_2, \sigma_2^2)$ respectively, the ratio $\frac{S_1^2/S_2^2}{\sigma_1^2/\sigma_2^2}$ has the $F$ sampling distribution $$\frac{S_1^2/S_2^2}{\sigma_1^2/\sigma_2^2} \sim F_{n_1-1, \, n_2-1}.$$
+
+
+
+:::{.callout-important}
+:::{style="font-size: 1.1em;"}
+The order of degrees of freedom matters! $F_{n_1-1, \, n_2-1} \ne F_{n_2-1, \, n_1-1}$. Please don't mess around. 
+:::
+:::
 
 
 <span style="color:red"> ***$(1-\alpha)100\%$ Confidence Interval for $\sigma_1^2 / \sigma_2^2$*** </span>
 
 
-- The $(1-\alpha)100\%$ confidence interval for $\sigma_1^2 / \sigma_2^2$ is 
+From the sampling distribution of the ratio, the $(1-\alpha)100\%$ confidence interval for $\sigma_1^2 / \sigma_2^2$ is 
 $$\color{blue}{\boxed{\left( \frac{s_1^2/s_2^2}{F_{\alpha/2, \, n_1 - 1, \, n_2 - 1}}, \frac{s_1^2/s_2^2}{F_{1-\alpha/2, \, \, n_1 - 1, \, n_2 - 1}} \right)}}$$ 
 
+How do we get the interval? Not surprising. We start with the sampling distribution of $\frac{S_1^2/S_2^2}{\sigma_1^2/\sigma_2^2}$.
+
+- $P\left(F_{1-\alpha/2, \, n_1 - 1, \, n_2 - 1} < \frac{S_1^2/S_2^2}{\sigma_1^2/\sigma_2^2} < F_{\alpha/2, \, n_1 - 1, \, n_2 - 1} \right) = 1 - \alpha$ (Goal: isolate $\sigma_1^2/\sigma_2^2$)
+
+- $P\left(\frac{1}{F_{\alpha/2, \, n_1 - 1, \, n_2 - 1}} < \frac{\sigma_1^2/\sigma_2^2}{S_1^2/S_2^2} < \frac{1}{F_{1-\alpha/2, \, n_1 - 1, \, n_2 - 1}} \right) = 1 - \alpha$  (take reciprocal)
+
+- $P\left(\frac{S_1^2/S_2^2}{F_{\alpha/2, \, n_1 - 1, \, n_2 - 1}} < \frac{\sigma_1^2}{\sigma_2^2} < \frac{S_1^2/S_2^2}{F_{1-\alpha/2, \, n_1 - 1, \, n_2 - 1}} \right) = 1 - \alpha$ (times $S_1^2/S_2^2$)
+
+
 :::{.callout-note}
-- The CI for $\sigma_1^2 / \sigma_2^2$ **cannot** be expressed as $\left(\frac{s_1^2}{s_2^2}-m, \frac{s_1^2}{s_2^2} + m\right)$ anymore!
+The confidence interval for $\sigma_1^2 / \sigma_2^2$ *cannot* be expressed as $\left(\frac{s_1^2}{s_2^2}-m, \frac{s_1^2}{s_2^2} + m\right)$ anymore!
 :::
+
+
+
+
 
 -------------------------------------------------------------------
 
 <span style="color:blue"> **F test for comparing $\sigma_1^2$ and $\sigma_2^2$** </span>
 
 <span style="color:red"> Step 1 </span>
+
+For comparing $\sigma_1^2$ and $\sigma_2^2$, the test can be either right-tailed or two-tailed. Left-tailed testing is not necessary because we can always define the population whose variance is hypothetically larger than the variance of another population as the first population.
+
 
 - Right-tailed: <span style="color:blue"> $\small \begin{align} &H_0: \sigma_1 \le \sigma_2 \\ &H_1: \sigma_1 > \sigma_2 \end{align}$ </span>
 - Two-tailed: <span style="color:green"> $\small \begin{align} &H_0: \sigma_1 = \sigma_2 \\ &H_1: \sigma_1 \ne \sigma_2 \end{align}$ </span>
@@ -479,6 +584,7 @@ $$\color{blue}{\boxed{\left( \frac{s_1^2/s_2^2}{F_{\alpha/2, \, n_1 - 1, \, n_2 
 <span style="color:red"> Step 3 </span>
 
 - Under $H_0$, $\sigma_1 = \sigma_2$, and the test statistic is $$\small F_{test} = \frac{s_1^2/s_2^2}{\sigma_1^2/\sigma_2^2} = \frac{s_1^2}{s_2^2} \sim F_{n_1-1, \, n_2-1}$$
+The denominator is gone because the ratio is one.
 
 <span style="color:red"> Step 4-c </span>
 
@@ -494,26 +600,30 @@ $$\color{blue}{\boxed{\left( \frac{s_1^2/s_2^2}{F_{\alpha/2, \, n_1 - 1, \, n_2 
 
 <span style="color:blue"> **Example: Weight Loss** </span>
 
+This is our previous example.
+
 ::::{.columns}
 :::{.column width="70%"}
-- A study was conducted to see the effectiveness of a weight loss program. 
-  - Two groups (Control and Experimental) of 10 subjects were selected.
-  - The two populations are normally distributed and have the same SD.
+
+*A study was conducted to see the effectiveness of a weight loss program. Two groups (Control and Experimental) of 10 subjects were selected. The two populations are normally distributed and have the same standard deviation.*
 :::
 
 :::{.column width="30%"}
-```{r, out.width="70%", echo=FALSE, fig.align='center'}
+```{r}
+#| out-width: 89%
 knitr::include_graphics("./images/img-infer/weight.jpeg")
 ```
 :::
 ::::
 
-- The data on weight loss was collected at the end of six months.
-  + **Control**: $n_1 = 10$, $\overline{x}_1 = 2.1\, lb$, $s_1 = 0.5\, lb$
-  + **Experimental**: $n_2 = 10$, $\overline{x}_2 = 4.2\, lb$, $s_2 = 0.7\, lb$
-- Assumptions:
-  + <span style="color:blue"> $\sigma_1 = \sigma_2$ </span>
-  + The weight loss for both groups are normally distributed.
+*The data on weight loss was collected at the end of six months.*
+
++ **Control**: $n_1 = 10$, $\overline{x}_1 = 2.1\, lb$, $s_1 = 0.5\, lb$
++ **Experimental**: $n_2 = 10$, $\overline{x}_2 = 4.2\, lb$, $s_2 = 0.7\, lb$
+  
+<!-- - Assumptions: -->
+<!--   + <span style="color:blue"> $\sigma_1 = \sigma_2$ </span> -->
+<!--   + The weight loss for both groups are normally distributed. -->
 
 <span style="color:red"> ***Check if $\sigma_1 = \sigma_2$*** </span>
 
@@ -537,16 +647,18 @@ knitr::include_graphics("./images/img-infer/weight.jpeg")
 - This is a two-tailed test.
 - The critical value is $F_{0.05/2, \, 10-1, \, 10-1} = 4.03$ or $F_{1-0.05/2, \, 10-1, \, 10-1} = 0.25$.
 
-```{r, out.width="80%", echo=FALSE, fig.align='center'}
-#| label: fig-weight-fdist
-#| fig-cap: F Distribution for Weight Loss Example
+```{r}
+#| fig-asp: 0.5
+## | label: fig-weight-fdist
+## | fig-cap: F Distribution for Weight Loss Example
+par(mar = c(2, 0, 0, 0))
 f_two_tail(U=4.03,L=0.22, df1=9, df2=9, xlim = c(0, 6), col = 4, axes = FALSE)
 axis(1, at = c(0.22, 0.51, 4.03), 
      labels = c(expression(F[.975]),
                 expression(F[test]),
                 expression(F[.025])), 
      font = 3, cex.axis = 0.73, tick = TRUE)
-abline(v = 0.51, col = 2, lwd = 0.4)
+abline(v = 0.51, col = 2, lwd = 0.8)
 # text(0.51, 0.01, expression(1-alpha), cex = 2)
 
 
@@ -566,19 +678,22 @@ text(2.5, 0.2, expression(F[paste(9, ",", 9)]), cex = 2)
 
 <span style="color:red"> ***95% CI for $\sigma_1^2 / \sigma_2^2$*** </span>
 
-::::{.columns}
-:::{.column width="50%"}
+<!-- ::::{.columns} -->
+<!-- :::{.column width="50%"} -->
 - $\small F_{\alpha/2, \, df_1, \, df_2} = F_{0.05/2, \, 10-1, \, 10-1} = 4.03$ 
 - $\small F_{1-\alpha/2, \, df_1, \, df_2} = F_{1-0.05/2, \, 10-1, \, 10-1} = 0.25$
 - $\small \frac{s_1^2}{s_2^2} = \frac{0.5^2}{0.7^2} = 0.51$
 - The 95% CI for $\sigma_1^2 / \sigma_2^2$ is 
-$$\small \begin{align} &\left( \frac{s_1^2/s_2^2}{F_{\alpha/2, \, df_1, \, df_2}}, \frac{s_1^2/s_2^2}{F_{1-\alpha/2, \, df_1, \, df_2}} \right) \\ &= \left( \frac{0.51}{4.03}, \frac{0.51}{0.25} \right) = \left(0.127, 2.04\right)\end{align}$$
-:::
+$$\small \begin{align} &\left( \frac{s_1^2/s_2^2}{F_{\alpha/2, \, df_1, \, df_2}}, \frac{s_1^2/s_2^2}{F_{1-\alpha/2, \, df_1, \, df_2}} \right) \\ &= \left( \frac{0.51}{4.03}, \frac{0.51}{0.25} \right) = \left(0.127, 2.05\right)\end{align}$$
+<!-- ::: -->
 
-:::{.column width="50%"}
-```{r, out.width="100%", echo=FALSE, fig.align='center'}
-#| label: fig-weight-sig-level
-#| fig-cap: F Distribution for significance level 0.05
+<!-- :::{.column width="50%"} -->
+```{r}
+#| fig-asp: 0.5
+##| label: fig-weight-sig-level
+##| fig-cap: F Distribution for significance level 0.05
+
+par(mar = c(2, 0, 0, 0))
 f_two_tail(U=4.03,L=0.22, df1=9, df2=9, xlim = c(0, 6), col = 4, axes = FALSE)
 axis(1, at = c(0.22, 4.03), 
      labels = c(expression(F[.975]),
@@ -592,30 +707,30 @@ text(2.5, 0.2, expression(F[paste(9, ",", 9)]), cex = 2)
 # text(2.7, 0.05, expression(frac(alpha, 2)), cex = 1.5)
 # text(0.15, 0.05, expression(frac(alpha, 2)), cex = 1.5)
 ```
-:::
-::::
+<!-- ::: -->
+<!-- :::: -->
 
-- We are 95% confident that the ratio $\sigma_1^2 / \sigma_2^2$ is between 0.127 and 2.04.
-- Because 1 is included in this interval, it leads to the same conclusion as the F test.
+We are 95% confident that the ratio $\sigma_1^2 / \sigma_2^2$ is between 0.127 and 2.04. Because one is included in this interval, meaning that $\sigma^2_1 = \sigma^2_2$, it leads to the same conclusion as the F test.
 
 <span style="color:red"> ***Implementing F-test in R*** </span>
 
+We use `qf()` to find the $F$ critical values. 
 <!-- - **`qf(p = alpha, df1 = n1 - 1, df2 = n2 - 1, lower.tail = FALSE)`** to find $F_{\alpha, \, n_1-1, \, n_2-1}$. -->
 
-::::{.columns}
-:::{.column width="49%"}
-```{r f_test_two_sigma_ci, tidy=FALSE, echo=TRUE}
+<!-- ::::{.columns} -->
+<!-- :::{.column width="49%"} -->
+```{r}
+#| echo: true
+#| label: f-test-two-sigma-ci
+
+## set values
 n1 <- 10; n2 <- 10
 s1 <- 0.5; s2 <- 0.7
 alpha <- 0.05
 
 ## 95% CI for sigma_1^2 / sigma_2^2
-f_small <- qf(p = alpha / 2, 
-              df1 = n1 - 1, df2 = n2 - 1, 
-              lower.tail = TRUE)
-f_big <- qf(p = alpha / 2, 
-            df1 = n1 - 1, df2 = n2 - 1, 
-            lower.tail = FALSE)
+f_small <- qf(p = alpha / 2, df1 = n1 - 1, df2 = n2 - 1,lower.tail = TRUE)
+f_big <- qf(p = alpha / 2, df1 = n1 - 1, df2 = n2 - 1, lower.tail = FALSE)
 
 ## lower bound
 (s1 ^ 2 / s2 ^ 2) / f_big
@@ -623,27 +738,28 @@ f_big <- qf(p = alpha / 2,
 ## upper bound
 (s1 ^ 2 / s2 ^ 2) / f_small
 ```
-:::
+<!-- ::: -->
 
-:::{.column width="2%"}
-:::
+<!-- :::{.column width="2%"} -->
+<!-- ::: -->
 
-:::{.column width="49%"}
-```{r f_test_two_sigma_test, tidy=FALSE, echo=TRUE}
+<!-- :::{.column width="49%"} -->
+```{r}
+#| echo: true
+#| label: f-test-two-sigma-test
 ## Testing sigma_1 = sigma_2
 (test_stats <- s1 ^ 2 / s2 ^ 2)
-(cri_val_big <- qf(p = alpha/2, 
-                   df1 = n1 - 1, 
-                   df2 = n2 - 1, 
-                   lower.tail = FALSE))
-(cri_val_small <- qf(p = alpha/2, 
-                     df1 = n1 - 1, 
-                     df2 = n2 - 1, 
-                     lower.tail = TRUE))
-# var.test(x, y, alternative = "two.sided")
 ```
+<!-- ::: -->
+<!-- :::: -->
+
+
+
+:::{.callout-note}
+:::{style="font-size: 1.1em;"}
+If we have the entire two samples data, we can use the R built-in function `var.test(x, y, alternative = "two.sided")` to perform a $F$ test to compare the variances of two samples from normal populations. The arguments `x` and `y` are numeric vectors of data values.  Argument `alternative` must be one of `"two.sided"` (default), `"greater"` or `"less"`.
 :::
-::::
+:::
 
 ## Exercises
 

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.2.335">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta name="description" content="This book serves as a main reference book for my MATH 4720 Statistical Methods and MATH 4740 Biostatistical Methods at Marquette University. Some topics can also be discussed in an introductory data science course. You’ll learn basic probability and statistical concepts as well as data analysis techniques such as linear regression using R computing software.">
+<meta name="description" content="An comprehensive introductory statistical data science book.">
 <title>Introduction to Statistics - 17&nbsp; Inference About Variances</title>
 <style>
 code{white-space: pre-wrap;}
@@ -272,7 +272,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./infer-ci.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Confidence Interval</span></a>
+  <a href="./infer-ci.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Point and Interval Estimation</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -302,22 +302,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./infer-goodnessfit.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Inference about Categorical Data</span></a>
+  <a href="./infer-cat.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Inference about Categorical Data</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./infer-indep.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">infer-indep.html</span></a>
+  <a href="./infer-bayes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./infer-bayes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./infer-nonpar.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Nonparametric Inference</span></a>
+  <a href="./infer-nonpar.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Nonparametric Inference</span></a>
   </div>
 </li>
       </ul>
@@ -332,27 +327,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./model-anova.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></a>
+  <a href="./model-anova.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./model-reg.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Linear Regression</span></a>
+  <a href="./model-reg.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Linear Regression</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./model-logistic.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Logistic Regression</span></a>
+  <a href="./model-logistic.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Logistic Regression</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./model-bayes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></a>
+  <a href="./model-bayes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./model-survival.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Survival Analysis</span></a>
+  <a href="./model-survival.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Survival Analysis</span></a>
   </div>
 </li>
       </ul>
@@ -391,211 +386,170 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </header><div class="cell">
 
 </div>
+<div class="cell">
+
+</div>
+<p><span style="color:blue"> <strong>Why Inference for Population Variances?</strong> </span></p>
+<p>We’ve learned how to do inference about one and two population means in the previous chapters. But we care about not only the center but also the dispersion or variability of some population distribution. In this chapter we are going to learn some inference methods for population variances. If the target population follows normal distribution <span class="math inline">\(N(\mu, \sigma^2)\)</span>, our focus now is <span class="math inline">\(\sigma^2\)</span> or <span class="math inline">\(\sigma\)</span>, not the mean <span class="math inline">\(\mu\)</span>.</p>
+<p>But why do we want to do inference about population variance? As population means, most of the time we do not know the true variance value, and in daily lives in some situations, we care about variation. For example, we would like to learn or control the variation in potency of some drug, say drug for lowering blood pressure. We hope the same amount or dose level of the drug provide the same effect on each individual. We don’t want some patients’ blood pressure is lowered a lot, but some other patient’s blood pressure is lowered just a little bit. In other words, we hope the drug effect is consistent or it has small variability. We want the new treatment can provide consistent potency and efficacy for all patients.</p>
+<p>We also pay a lot of attention to the variance of stock prices because the higher the variance, the riskier the investment. We may want to monitor our financial portfolio, and the variability of our investment value so that we have long term financial stability.</p>
+<p>Moreover, we may want to know if two population variances are equal, so that a correct or better method can be used. For example, in order to get higher statistical testing power, we use the two sample pooled <span class="math inline">\(t\)</span>-test if <span class="math inline">\(\sigma_1 = \sigma_2\)</span> or they are very close to each other.</p>
+<!-- ::::{.columns} -->
+<!-- :::{.column width="50%"} -->
+<!-- - <span style="color:blue"> The variation in potency of drugs</span>: *affects patients' health* -->
+<!-- # ```{r, echo=FALSE, out.width="78%", fig.align='center'} -->
+<!-- # knitr::include_graphics("./images/img-infer/drugs.jpeg") -->
+<!-- # ``` -->
+<!-- ::: -->
+<!-- :::{.column width="50%"} -->
+<!-- - <span style="color:blue"> The variance of stock prices </span>: *the higher the variance, the riskier the investment* -->
+<!-- # ```{r, echo=FALSE, out.width="78%", fig.align='center'} -->
+<!-- # knitr::include_graphics("./images/img-infer/stock.jpeg") -->
+<!-- # ``` -->
+<!-- ::: -->
+<!-- :::: -->
+<!-- We want to know if $\sigma_1 = \sigma_2$, because the method we use depends on whether or not this is true.  -->
+<!-- :::{.callout-note icon=false} -->
+<!-- ## Which test did we learn that needs $\sigma_1 = \sigma_2$? -->
+<!-- - Two-sample pooled test -->
+<!-- ::: -->
+<!-- <center> -->
+<!-- **In some situations, we care about *variation*!** -->
+<!-- </center> -->
+<!-- <br> -->
 <section id="inference-for-one-population-variance" class="level2" data-number="17.1"><h2 data-number="17.1" class="anchored" data-anchor-id="inference-for-one-population-variance">
 <span class="header-section-number">17.1</span> Inference for One Population Variance</h2>
-<p><span style="color:blue"> <strong>Why Inference for Population Variances?</strong> </span></p>
-<ul>
-<li>We want to know if <span class="math inline">\(\sigma_1 = \sigma_2\)</span>, because the method we use depends on whether or not this is true.</li>
-</ul>
-<div class="callout-note callout callout-style-default no-icon callout-captioned">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-caption-container flex-fill">
-Which test did we learn that needs <span class="math inline">\(\sigma_1 = \sigma_2\)</span>?
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li>Two-sample pooled test</li>
-</ul>
-</div>
-</div>
-<center>
-<strong>In some situations, we care about <em>variation</em>!</strong>
-</center>
-<p><br></p>
-<div class="columns">
-<div class="column" style="width:50%;">
-<ul>
-<li>
-<span style="color:blue"> The variation in potency of drugs</span>: <em>affects patients’ health</em>
-</li>
-</ul>
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="./images/img-infer/drugs.jpeg" class="img-fluid figure-img" style="width:78.0%"></p>
-</figure>
-</div>
-</div>
-</div>
-</div><div class="column" style="width:50%;">
-<ul>
-<li>
-<span style="color:blue"> The variance of stock prices </span>: <em>the higher the variance, the riskier the investment</em>
-</li>
-</ul>
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="./images/img-infer/stock.jpeg" class="img-fluid figure-img" style="width:78.0%"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</div>
-<hr>
+<!-- ------------------------------------------------------------------ -->
 <p><span style="color:blue"> <strong>Inference for Population Variances</strong> </span></p>
-<ul>
-<li>The sample variance <span class="math inline">\(S^2 = \frac{\sum_{i=1}^n(X_i - \overline{X})^2}{n-1}\)</span> is our <strong>point estimator</strong> for the population variance, <span class="math inline">\(\sigma^2\)</span>.</li>
-<li>
-<span class="math inline">\(S^2\)</span> is an <strong>unbiased estimator</strong> for <span class="math inline">\(\sigma^2\)</span>.
-<ul>
-<li>This means <span class="math inline">\(E(S^2) = \sigma^2\)</span>.</li>
-</ul>
-</li>
-<li>The inference methods for <span class="math inline">\(\sigma^2\)</span> require the population to be <strong>normal</strong>.</li>
-</ul>
-<div class="callout-note callout callout-style-default callout-captioned">
+<p>Let’s start with inference for one population variance. For point estimation, the most intuitive and straightforward point estimator for <span class="math inline">\(\sigma^2\)</span> is the sample variance <span class="math inline">\(S^2\)</span> defined as</p>
+<p><span class="math display">\[S^2 = \frac{\sum_{i=1}^n(X_i - \overline{X})^2}{n-1}.\]</span></p>
+<p>Note that the the denominator is <span class="math inline">\(n-1\)</span>, not the sample size <span class="math inline">\(n\)</span>. Note that <span class="math inline">\(S^2\)</span> is a random variable because each data point <span class="math inline">\(X_i\)</span> and <span class="math inline">\(\overline{X}\)</span> are assumed random variables. Dividing by <span class="math inline">\(n-1\)</span> instead of <span class="math inline">\(n\)</span> actually means something. <span class="math inline">\(S^2\)</span> is an <strong>unbiased estimator</strong> for <span class="math inline">\(\sigma^2\)</span>, i.e., <span class="math inline">\(E(S^2) = \sigma^2\)</span>, which is a good property of a point estimator. If we were able to repeatedly collect data sets of the same size <span class="math inline">\(n\)</span> lots of times, and for each data set we obtain its sample variance, then the average sample variance will be, if not exactly, very close to the true population variance.</p>
+<p>The inference methods for <span class="math inline">\(\sigma^2\)</span> introduced in this chapter require the population to be <em>normally distributed</em>.</p>
+<!-- - $S^2$ is an **unbiased estimator** for $\sigma^2$. -->
+<!--   + This means $E(S^2) = \sigma^2$. -->
+<div class="callout-important callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-caption-container flex-fill">
-Note
+Important
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<ul>
-<li>The inference methods can <strong>work poorly if normality is violated, even if the sample is large</strong>.</li>
-</ul>
-</div>
-</div>
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="./images/img-infer/normal_dist.jpeg" class="img-fluid figure-img" style="width:40.0%"></p>
-</figure>
+<div style="font-size: 1.1em;">
+<p>The inference methods can <em>work poorly if normality is violated, even if the sample is large</em>.</p>
 </div>
 </div>
 </div>
+<!-- # ```{r, echo=FALSE, out.width="40%", fig.align='center'} -->
+<!-- # knitr::include_graphics("./images/img-infer/normal_dist.jpeg") -->
+<!-- # ``` -->
 <hr>
 <p><span style="color:blue"> <strong>Chi-Square <span class="math inline">\(\chi^2\)</span> Distribution</strong> </span></p>
-<ul>
-<li>The inference for <span class="math inline">\(\sigma^2\)</span> involves the so called <span class="math inline">\(\chi^2\)</span> distribution.</li>
-</ul>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><br></p>
-<ul>
-<li>Parameter: degrees of freedom <span class="math inline">\(df\)</span>
-</li>
-<li>
-<em>Right-skewed</em> distribution</li>
-<li>Defined over <em>positive</em> numbers</li>
-<li>More symmetric as <span class="math inline">\(df\)</span> gets larger</li>
-<li><a href="http://sctc.mscs.mu.edu:3838/sample-apps/Calculator/">Chi-Square Distribution</a></li>
-</ul>
-</div><div class="column" style="width:50%;">
+<p>Remember that when we do the inference for population means, we use either normal distribution or Student’s <span class="math inline">\(t\)</span> distribution. For the inference about the population variances, we use another distribution called <a href="http://sctc.mscs.mu.edu:3838/sample-apps/Calculator/"><strong>chi-square <span class="math inline">\(\chi^2\)</span> distribution</strong></a> because the distribution is related to the sampling distribution of some variable involving <span class="math inline">\(S^2\)</span> and <span class="math inline">\(\sigma^2\)</span>. We’ll talk about that later. Let’s first learn a little about the chi-square <span class="math inline">\(\chi^2\)</span> distribution.</p>
+<!-- - The inference for $\sigma^2$ involves the so called $\chi^2$ distribution. -->
+<!-- ::::{.columns} -->
+<!-- :::{.column width="50%"} -->
+<!-- <br> -->
+<p>As Student’s <span class="math inline">\(t\)</span> distribution, the chi-square <span class="math inline">\(\chi^2\)</span> distribution has one parameter, degrees of freedom <span class="math inline">\(df\)</span>. To denote a specific chi-square distribution, we write <span class="math inline">\(\chi^2_{df}\)</span> like <span class="math inline">\(\chi^2_{2}\)</span> for a chi-square distribution or variable with degrees of freedom two. <a href="#fig-chi-dist">Figure&nbsp;<span>17.1</span></a> shows <span class="math inline">\(\chi^2\)</span> distributions with varying degrees of freedom. It is in general a <em>right-skewed</em> distribution, but it gets more and more symmetric as <span class="math inline">\(df\)</span> gets larger. Also, the <span class="math inline">\(\chi^2\)</span> distribution is defined over <em>positive</em> numbers, one hint why we use it for inferring variances because variance is non-negative, but normal or <span class="math inline">\(t\)</span> distribution is defined on the whole real line.</p>
+<!-- - Parameter: degrees of freedom $df$ -->
+<!-- - *Right-skewed* distribution -->
+<!-- - Defined over *positive* numbers -->
+<!-- - More symmetric as $df$ gets larger -->
+<!-- - [Chi-Square Distribution](http://sctc.mscs.mu.edu:3838/sample-apps/Calculator/) -->
+<!-- ::: -->
+<!-- :::{.column width="50%"} -->
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-chi-dist" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="infer-var_files/figure-html/fig-chi-dist-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
+<figure class="figure"><p><img src="infer-var_files/figure-html/fig-chi-dist-1.png" class="img-fluid figure-img" width="672"></p>
 <p></p><figcaption class="figure-caption">Figure&nbsp;17.1: Illustration of <span class="math inline">\(\chi^2\)</span> distributions with varying degrees of freedom</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
-</div>
-</div>
+<!-- ::: -->
+<!-- :::: -->
 <p><span style="color:red"> <strong><em>Upper Tail and Lower Tail of Chi-Square</em></strong> </span></p>
+<p>Like standard normal and <span class="math inline">\(t\)</span> distribution, to do the inference for variances, we get to find or define critical values of a chi-square distribution. With some probability <span class="math inline">\(\alpha\)</span>, we define</p>
 <ul>
-<li>
-<span class="math inline">\(\chi^2_{\frac{\alpha}{2},\, df}\)</span> has area to the <strong>right</strong> of <span class="math inline">\(\alpha/2\)</span>.</li>
-<li>
-<span class="math inline">\(\chi^2_{1-\frac{\alpha}{2},\, df}\)</span> has area to the <strong>left</strong> of <span class="math inline">\(\alpha/2\)</span>.</li>
-<li>In <span class="math inline">\(N(0, 1)\)</span>, <span class="math inline">\(z_{1-\frac{\alpha}{2}} = -z_{\frac{\alpha}{2}}\)</span>, but <span class="math inline">\(\chi^2_{1-\frac{\alpha}{2},\,df} \ne -\chi^2_{\frac{\alpha}{2},\,df}\)</span>.</li>
+<li><p><span class="math inline">\(\chi^2_{\frac{\alpha}{2},\, df}\)</span> is a <span class="math inline">\(\chi^2\)</span> value of a <span class="math inline">\(\chi^2\)</span> distribution with degrees of freedom <span class="math inline">\(df\)</span> such that it has area to the <strong>right</strong> of <span class="math inline">\(\alpha/2\)</span>.</p></li>
+<li><p><span class="math inline">\(\chi^2_{1-\frac{\alpha}{2},\, df}\)</span> is a <span class="math inline">\(\chi^2\)</span> value of a <span class="math inline">\(\chi^2\)</span> distribution with degrees of freedom <span class="math inline">\(df\)</span> such that it has area to the <strong>left</strong> of <span class="math inline">\(\alpha/2\)</span>. In other words, it has area to the <strong>right</strong> of <span class="math inline">\(1 - \alpha/2\)</span>, and that’s why it has a subscript <span class="math inline">\(1-\frac{\alpha}{2}\)</span>.</p></li>
 </ul>
+<p><a href="#fig-chisq-alpha">Figure&nbsp;<span>17.2</span></a> illustrates the <span class="math inline">\(\chi^2\)</span> critical values. Notice that in <span class="math inline">\(N(0, 1)\)</span>, <span class="math inline">\(z_{1-\frac{\alpha}{2}} = -z_{\frac{\alpha}{2}}\)</span>. Because of the symmetry of the distribution, the <span class="math inline">\(z\)</span>-value having area <span class="math inline">\(\alpha/2\)</span> on the right is the <span class="math inline">\(z\)</span>-value having area <span class="math inline">\(\alpha/2\)</span> on the left with a negative sign. However, the chi-square distribution is not symmetric, so <span class="math inline">\(\chi^2_{1-\frac{\alpha}{2},\,df} \ne -\chi^2_{\frac{\alpha}{2},\,df}\)</span>.</p>
+<!-- but $\chi^2_{1-\frac{\alpha}{2},\,df} \ne -\chi^2_{\frac{\alpha}{2},\,df}$. -->
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-chisq-alpha" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="infer-var_files/figure-html/fig-chisq-alpha-1.png" class="img-fluid figure-img" style="width:50.0%"></p>
+<figure class="figure"><p><img src="infer-var_files/figure-html/fig-chisq-alpha-1.png" class="img-fluid figure-img" width="672"></p>
 <p></p><figcaption class="figure-caption">Figure&nbsp;17.2: Illustration of <span class="math inline">\(\alpha/2\)</span> significance levels for <span class="math inline">\(\chi^2_{df}\)</span> distribution</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
 <p><span style="color:red"> <strong><em>Sampling Distribution</em></strong> </span></p>
-<ul>
-<li><p>When a random sample of size <span class="math inline">\(n\)</span> is from <span class="math inline">\(\color{red}{N(\mu, \sigma^2)}\)</span>, <span class="math display">\[ \frac{(n-1)S^2}{\sigma^2} \sim \chi^2_{n-1} \]</span></p></li>
-<li><p>Reminder: The inference method for <span class="math inline">\(\sigma^2\)</span> introduced here can work poorly if the normality assumption is violated, even for large samples.</p></li>
-</ul>
+<p>When a random sample of size <span class="math inline">\(n\)</span> is from <span class="math inline">\(\color{red}{N(\mu, \sigma^2)}\)</span>, the following sample statistic has the <span class="math inline">\(\chi^2\)</span> sampling distribution with degrees of freedom <span class="math inline">\(n-1\)</span>: <span class="math display">\[ \frac{(n-1)S^2}{\sigma^2} \sim \chi^2_{n-1}. \]</span></p>
+<p>I would like to stress again that the inference method for <span class="math inline">\(\sigma^2\)</span> introduced here can work poorly if the normality assumption is violated, even for large samples.</p>
+<p>The sample statistic involves <span class="math inline">\(S^2\)</span> and <span class="math inline">\(\sigma^2\)</span>, so we have manipulate its sampling distribution to obtain the confidence interval for <span class="math inline">\(\sigma^2\)</span>, and use it as a test statistic in the hypothesis testing for <span class="math inline">\(\sigma^2\)</span>.</p>
 <p><span style="color:red"> <strong><em><span class="math inline">\((1-\alpha)100\%\)</span> Confidence Interval for <span class="math inline">\(\sigma^2\)</span></em></strong> </span></p>
+<p>The <span class="math inline">\((1-\alpha)100\%\)</span> confidence interval for <span class="math inline">\(\sigma^2\)</span> is <span class="math display">\[\color{blue}{\boxed{\left( \frac{(n-1)S^2}{\chi^2_{\frac{\alpha}{2}, \, n-1}}, \frac{(n-1)S^2}{\chi^2_{1-\frac{\alpha}{2}, \, n-1}} \right)}}\]</span></p>
+<p>How do we get this interval? We start with the sampling distribution of $ $.</p>
 <ul>
-<li>The <span class="math inline">\((1-\alpha)100\%\)</span> confidence interval for <span class="math inline">\(\sigma^2\)</span> is <span class="math display">\[\color{blue}{\boxed{\left( \frac{(n-1)S^2}{\chi^2_{\frac{\alpha}{2}, \, n-1}}, \frac{(n-1)S^2}{\chi^2_{1-\frac{\alpha}{2}, \, n-1}} \right)}}\]</span>
-</li>
+<li>
+<span class="math inline">\(P\left(\chi^2_{1-\frac{\alpha}{2}, \,n-1} &lt; \frac{(n-1)S^2}{\sigma^2} &lt; \chi^2_{\frac{\alpha}{2},\, n-1} \right) = 1 - \alpha\)</span> (Goal: isolate <span class="math inline">\(\sigma^2\)</span>)</li>
+<li>
+<span class="math inline">\(P\left(\frac{\chi^2_{1-\frac{\alpha}{2}, \,n-1}}{(n-1)S^2} &lt; \frac{1}{\sigma^2} &lt; \frac{\chi^2_{\frac{\alpha}{2},\, n-1}}{(n-1)S^2} \right) = 1 - \alpha\)</span> (divided by <span class="math inline">\((n-1)S^2\)</span>)</li>
+<li>
+<span class="math inline">\(P\left(\frac{(n-1)S^2}{\chi^2_{1-\frac{\alpha}{2}, \, n-1}} &gt; \sigma^2 &gt; \frac{(n-1)S^2}{\chi^2_{\frac{\alpha}{2}, \,n-1}} \right) = 1 - \alpha\)</span> (take reciprocal)</li>
+<li>
+<span class="math inline">\(P\left(\frac{(n-1)S^2}{\chi^2_{\frac{\alpha}{2}, \, n-1}} &lt; \sigma^2 &lt; \frac{(n-1)S^2}{\chi^2_{1-\frac{\alpha}{2}, \,n-1}} \right) = 1 - \alpha\)</span> (smaller value on the left)</li>
 </ul>
-<div class="callout-note callout callout-style-default callout-captioned">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-caption-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li>The CI for <span class="math inline">\(\sigma^2\)</span> <strong>cannot</strong> be expressed as <span class="math inline">\((S^2-m, S^2+m)\)</span> anymore!</li>
-</ul>
-</div>
-</div>
+<p>Be careful that the interval for <span class="math inline">\(\sigma^2\)</span> <em>cannot</em> be expressed as <span class="math inline">\((S^2 - m, S^2 + m)\)</span> for some margin of error <span class="math inline">\(m\)</span> anymore!</p>
+<!-- :::{.callout-note} -->
+<!-- - The CI for $\sigma^2$ **cannot** be expressed as $(S^2-m, S^2+m)$ anymore! -->
+<!-- ::: -->
 <hr>
 <p><span style="color:blue"> <strong>Example: Supermodel Heights</strong> </span></p>
 <div class="columns">
-<div class="column" style="width:70%;">
-<ul>
-<li>Listed below are heights (cm) for the simple random sample of 16 female supermodels.</li>
-</ul>
-<div class="cell">
+<div class="column" style="width:80%;">
+<p>Listed below are heights (cm) for the simple random sample of 16 female supermodels.</p>
+<div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">heights</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">178</span>, <span class="fl">177</span>, <span class="fl">176</span>, <span class="fl">174</span>, <span class="fl">175</span>, <span class="fl">178</span>, <span class="fl">175</span>, <span class="fl">178</span>, </span>
 <span>             <span class="fl">178</span>, <span class="fl">177</span>, <span class="fl">180</span>, <span class="fl">176</span>, <span class="fl">180</span>, <span class="fl">178</span>, <span class="fl">180</span>, <span class="fl">176</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<ul>
-<li>The supermodels’ heights are normally distributed.</li>
-<li>Construct a <span class="math inline">\(95\%\)</span> confidence interval for population standard deviation <span class="math inline">\(\sigma\)</span>.</li>
-</ul>
-</div><div class="column" style="width:30%;">
+<p>The supermodels’ heights are normally distributed. Please construct a <span class="math inline">\(95\%\)</span> confidence interval for population standard deviation <span class="math inline">\(\sigma\)</span>.</p>
+</div><div class="column" style="width:20%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="./images/img-infer/models.jpeg" class="img-fluid figure-img" style="width:80.0%"></p>
+<figure class="figure"><p><img src="./images/img-infer/models.jpeg" class="img-fluid figure-img" width="1600"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
 </div>
+<p>We just need to get what we need for constructing the interval from the sample data, sample size <span class="math inline">\(n\)</span>, sample variance <span class="math inline">\(s^2\)</span>, <span class="math inline">\(\alpha\)</span>, critical values <span class="math inline">\(\chi^2_{\alpha/2, n-1}\)</span> and <span class="math inline">\(\chi^2_{1-\alpha/2, n-1}\)</span>.</p>
 <ul>
 <li>
 <span class="math inline">\(n = 16\)</span>, <span class="math inline">\(s^2 = 3.4\)</span>, <span class="math inline">\(\alpha = 0.05\)</span>.</li>
 <li><span class="math inline">\(\chi^2_{\alpha/2, n-1} = \chi^2_{0.025, 15} = 27.49\)</span></li>
 <li><span class="math inline">\(\chi^2_{1-\alpha/2, n-1} = \chi^2_{0.975, 15} = 6.26\)</span></li>
-<li>The <span class="math inline">\(95\%\)</span> CI for <span class="math inline">\(\sigma\)</span> is <span class="math inline">\(\small \left( \sqrt{\frac{(n-1)s^2}{\chi^2_{\frac{\alpha}{2}, \, n-1}}}, \sqrt{\frac{(n-1)s^2}{\chi^2_{1-\frac{\alpha}{2}, \, n-1}}} \right) = \left( \sqrt{\frac{(16-1)(3.4)}{27.49}}, \sqrt{\frac{(16-1)(3.4)}{6.26}}\right) = (1.36, 2.85)\)</span>
-</li>
 </ul>
-<p><span style="color:red"> <strong><em>Computation in R</em></strong> </span></p>
-<div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">16</span></span>
+<p>Note that we want the interval for <span class="math inline">\(\sigma\)</span>, not <span class="math inline">\(\sigma^2\)</span>, we take a square root of the lower and upper bound of the interval for <span class="math inline">\(\sigma^2\)</span>. The <span class="math inline">\(95\%\)</span> CI for <span class="math inline">\(\sigma\)</span> is <span class="math inline">\(\small \left( \sqrt{\frac{(n-1)s^2}{\chi^2_{\frac{\alpha}{2}, \, n-1}}}, \sqrt{\frac{(n-1)s^2}{\chi^2_{1-\frac{\alpha}{2}, \, n-1}}} \right) = \left( \sqrt{\frac{(16-1)(3.4)}{27.49}}, \sqrt{\frac{(16-1)(3.4)}{6.26}}\right) = (1.36, 2.85)\)</span></p>
+<p>We are 95% confident that the height of supermodels has standard deviation between 1.36 and 2.85.</p>
+<p><span style="color:red"> <strong><em>Confidence Interval Computation in R</em></strong> </span></p>
+<p>We use <code><a href="https://rdrr.io/r/stats/Chisquare.html">qchisq()</a></code> to get the <span class="math inline">\(\chi^2\)</span> critical values. The probability <span class="math inline">\(p\)</span> and the degrees of freedom <code>df</code> need to be specified. You should be able to understand the rest part of the code. Enjoy it.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## set values</span></span>
+<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">16</span></span>
 <span><span class="va">s2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html">var</a></span><span class="op">(</span><span class="va">heights</span><span class="op">)</span></span>
 <span><span class="va">alpha</span> <span class="op">&lt;-</span> <span class="fl">0.05</span></span>
 <span></span>
 <span><span class="co">## two chi-square critical values</span></span>
-<span><span class="va">chi2_right</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Chisquare.html">qchisq</a></span><span class="op">(</span><span class="va">alpha</span><span class="op">/</span><span class="fl">2</span>, <span class="va">n</span> <span class="op">-</span> <span class="fl">1</span>, lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="va">chi2_left</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Chisquare.html">qchisq</a></span><span class="op">(</span><span class="va">alpha</span><span class="op">/</span><span class="fl">2</span>, <span class="va">n</span> <span class="op">-</span> <span class="fl">1</span>, lower.tail <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">chi2_right</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Chisquare.html">qchisq</a></span><span class="op">(</span>p <span class="op">=</span> <span class="va">alpha</span><span class="op">/</span><span class="fl">2</span>, df <span class="op">=</span> <span class="va">n</span> <span class="op">-</span> <span class="fl">1</span>, lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">chi2_left</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Chisquare.html">qchisq</a></span><span class="op">(</span>p <span class="op">=</span> <span class="va">alpha</span><span class="op">/</span><span class="fl">2</span>, df <span class="op">=</span> <span class="va">n</span> <span class="op">-</span> <span class="fl">1</span>, lower.tail <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## two bounds of CI for sigma2</span></span>
 <span><span class="va">ci_sig2_lower</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">n</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="va">s2</span> <span class="op">/</span> <span class="va">chi2_right</span></span>
@@ -612,13 +566,10 @@ Note
 </div>
 </div>
 <p><span style="color:red"> <strong><em>Testing</em></strong> </span></p>
-<ul>
-<li>Use <span class="math inline">\(\alpha = 0.05\)</span> to test the claim that “<em>supermodels have heights with a standard deviation that is less than the standard deviation, <span class="math inline">\(\sigma = 7.5\)</span> cm, for the population of women</em>”.</li>
-</ul>
+<p>Back to the example. Use <span class="math inline">\(\alpha = 0.05\)</span> to test the claim that “<em>supermodels have heights with a standard deviation that is less than the standard deviation, <span class="math inline">\(\sigma = 7.5\)</span> cm, for the population of women</em>”.</p>
 <p><span style="color:red"> Step 1 </span></p>
 <ul>
-<li>
-<span class="math inline">\(H_0: \sigma = \sigma_0\)</span> vs.&nbsp;<span class="math inline">\(H_1: \sigma &lt; \sigma_0\)</span>, where <span class="math inline">\(\sigma_0 = 7.5\)</span> cm.</li>
+<li>We are comparing the <span class="math inline">\(\sigma\)</span> of heights of supermodels with the <span class="math inline">\(\sigma\)</span> of heights of women in general which is 7.5. So the hypothesize value <span class="math inline">\(\sigma_0\)</span> is 7.5. We wonder if supermodel height standard deviation is smaller than 7.5. Therefore, we have test <span class="math inline">\(H_0: \sigma = \sigma_0\)</span> vs.&nbsp;<span class="math inline">\(H_1: \sigma &lt; \sigma_0\)</span>, where <span class="math inline">\(\sigma_0 = 7.5\)</span> cm.</li>
 </ul>
 <p><span style="color:red"> Step 2 </span></p>
 <ul>
@@ -626,11 +577,9 @@ Note
 </ul>
 <p><span style="color:red"> Step 3 </span></p>
 <ul>
-<li>Under <span class="math inline">\(H_0\)</span>, <span class="math inline">\(\chi_{test}^2 = \frac{(n-1)s^2}{\sigma_0^2} = \frac{(16-1)(3.4)}{7.5^2} = 0.91\)</span>, drawn from <span class="math inline">\(\chi^2_{n-1}\)</span>.</li>
+<li>The test statistic comes from the variable <span class="math inline">\(\chi_{test}^2 = \frac{(n-1)S^2}{\sigma^2}\)</span> that follows <span class="math inline">\(\chi^2_{n-1}\)</span> distribution. Under <span class="math inline">\(H_0\)</span>, we have <span class="math inline">\(\chi_{test}^2 = \frac{(n-1)s^2}{\sigma_0^2} = \frac{(16-1)(3.4)}{7.5^2} = 0.91\)</span>, drawn from <span class="math inline">\(\chi^2_{n-1}\)</span>.</li>
 </ul>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><span style="color:red"> Step 4-c </span></p>
+<!-- ::::{.columns} --><!-- :::{.column width="50%"} --><p><span style="color:red"> Step 4-c </span></p>
 <ul>
 <li>This is a left-tailed test.</li>
 <li>The critical value is <span class="math inline">\(\chi_{1-\alpha, df}^2 = \chi_{0.95, 15}^2 = 7.26\)</span>
@@ -639,92 +588,92 @@ Note
 <p><span style="color:red"> Step 5-c </span></p>
 <ul>
 <li>Reject <span class="math inline">\(H_0\)</span> in favor of <span class="math inline">\(H_1\)</span> if <span class="math inline">\(\chi_{test}^2 &lt; \chi_{1-\alpha, df}^2\)</span>.</li>
-<li>Since <span class="math inline">\(0.91 &lt; 7.26\)</span>, we reject <span class="math inline">\(H_0\)</span>.</li>
+<li>Since <span class="math inline">\(0.91 &lt; 7.26\)</span>, we reject <span class="math inline">\(H_0\)</span>. <!-- ::: -->
+</li>
 </ul>
-<p><span style="color:red"> Step 6 </span></p>
-<ul>
-<li>There is sufficient evidence to support the claim that supermodels have heights with a SD that is less than the SD for the population of all women.</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<p><br></p>
-<div class="cell" data-layout-align="center">
+<!-- :::{.column width="50%"} --><!-- <br>  --><div class="cell" data-layout-align="center" data-fig.asp="0.5">
 <div class="cell-output-display">
-<div id="fig-chisq-models" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="infer-var_files/figure-html/fig-chisq-models-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;17.3: <span class="math inline">\(\chi_{0.95,15}^2\)</span> distribution for supermodel heights</figcaption><p></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="infer-var_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-</div>
-</div>
+<!-- ::: -->
+<!-- :::: -->
+<p><span style="color:red"> Step 6 </span></p>
 <ul>
-<li>We conclude that the <em>heights of supermodels vary less than heights of women in the general population.</em>
-</li>
+<li>There is sufficient evidence to support the claim that supermodels have heights with a standard deviation that is less than the standard deviation for the population of all women.</li>
 </ul>
+<p>We conclude that the <em>heights of supermodels vary less than heights of women in the general women population.</em></p>
 <hr>
 <p><span style="color:blue"> <strong>Back to Pooled t-Test</strong> </span></p>
-<ul>
-<li>In a pooled t-test, we assume
+<p>In a two sample pooled t-test, we assume</p>
 <ul>
 <li><span style="color:blue"> <span class="math inline">\(n_1 \ge 30\)</span> and <span class="math inline">\(n_2 \ge 30\)</span> or that both samples are drawn from normal populations. </span></li>
 <li><span style="color:blue"> <span class="math inline">\(\sigma_1 = \sigma_2\)</span> </span></li>
 </ul>
-</li>
-<li>We can use a QQ-plot (and normality tests, Anderson, Shapiro, etc.) to check the assumption of a normal distribution.</li>
-<li>We will now learn how to check the assumption <span class="math inline">\(\sigma_1 = \sigma_2\)</span>.</li>
-</ul></section><section id="inference-for-comparing-two-population-variances" class="level2" data-number="17.2"><h2 data-number="17.2" class="anchored" data-anchor-id="inference-for-comparing-two-population-variances">
+<p>We can use a QQ-plot (and normality tests, Anderson, Shapiro, etc.) to check the assumption of a normal distribution. We now learn how to check the assumption <span class="math inline">\(\sigma_1 = \sigma_2\)</span>.</p>
+</section><section id="inference-for-comparing-two-population-variances" class="level2" data-number="17.2"><h2 data-number="17.2" class="anchored" data-anchor-id="inference-for-comparing-two-population-variances">
 <span class="header-section-number">17.2</span> Inference for Comparing Two Population Variances</h2>
 <p><span style="color:blue"> <strong>F Distribution</strong> </span></p>
-<ul>
-<li>We use the <strong><span class="math inline">\(F\)</span> distribution</strong> for inference about <strong>two</strong> population variances.</li>
-</ul>
-<div class="columns">
-<div class="column" style="width:40%;">
-<p><br></p>
-<ul>
-<li>Two parameters: <span class="math inline">\(df_1\)</span>, <span class="math inline">\(df_2\)</span>
-</li>
-<li>
-<em>Right-skewed</em> distribution</li>
-<li>Defined over <em>positive</em> numbers</li>
-<li>R Shiny app: <a href="http://sctc.mscs.mu.edu:3838/sample-apps/Calculator/">F Distribution</a>
-</li>
-</ul>
-</div><div class="column" style="width:60%;">
+<p>For comparing <em>two</em> population variances, we need another distribution called <a href="http://sctc.mscs.mu.edu:3838/sample-apps/Calculator/"><strong><span class="math inline">\(F\)</span> distribution</strong></a>. The <span class="math inline">\(F\)</span> distribution has two parameters <span class="math inline">\(df_1\)</span> and <span class="math inline">\(df_2\)</span>, a hint why it is used for comparing <em>two</em> variances. We write a specific <span class="math inline">\(F\)</span> distribution <span class="math inline">\(F_{df_1, df_2}\)</span>. Second, the <span class="math inline">\(F\)</span> distribution is also right-skewed. Like <span class="math inline">\(\chi^2\)</span> distribution, the <span class="math inline">\(F\)</span> distribution is defined over <em>positive</em> numbers. <a href="#fig-f-dist">Figure&nbsp;<span>17.3</span></a> illustrates <span class="math inline">\(F\)</span> distribution with different parameters. You can see that when <span class="math inline">\(df_1\)</span> and <span class="math inline">\(df_2\)</span> are both large, the <span class="math inline">\(F\)</span> distribution looks bell-shaped.</p>
+<!-- - We use the **$F$ distribution** for inference about **two** population variances. -->
+<!-- ::::{.columns} -->
+<!-- :::{.column width="40%"} -->
+<!-- <br> -->
+<!-- - Two parameters: $df_1$, $df_2$ -->
+<!-- - *Right-skewed* distribution -->
+<!-- - Defined over *positive* numbers -->
+<!-- - R Shiny app: [F Distribution](http://sctc.mscs.mu.edu:3838/sample-apps/Calculator/) -->
+<!-- ::: -->
+<!-- :::{.column width="60%"} -->
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-f-dist" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="infer-var_files/figure-html/fig-f-dist-1.png" class="img-fluid figure-img" style="width:110.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;17.4: F distributions with different parameters</figcaption><p></p>
+<figure class="figure"><p><img src="infer-var_files/figure-html/fig-f-dist-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;17.3: F distributions with different parameters.</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
-</div>
-</div>
+<!-- ::: -->
+<!-- :::: -->
 <p><span style="color:red"> <strong><em>Upper and Lower Tail of F Distribution</em></strong> </span></p>
-<ul>
-<li>We denote <span class="math inline">\(F_{\alpha, \, df_1, \, df_2}\)</span> as the <span class="math inline">\(F\)</span> quantile such that <span class="math inline">\(P(F_{df_1, df_2} &gt; F_{\alpha, \, df_1, \, df_2}) = \alpha\)</span>.</li>
-</ul>
-<div class="cell" data-layout-align="center">
+<p>We denote <span class="math inline">\(F_{\alpha, \, df_1, \, df_2}\)</span> as the <span class="math inline">\(F\)</span> quantile such that <span class="math inline">\(P(F_{df_1, df_2} &gt; F_{\alpha, \, df_1, \, df_2}) = \alpha\)</span>. With it, we can find the critical values <span class="math inline">\(F_{\frac{\alpha}{2}, \, df_1, \, df_2}\)</span> and <span class="math inline">\(F_{1-\frac{\alpha}{2}, \, df_1, \, df_2}\)</span> used in constructing the confidence interval for the ratio <span class="math inline">\(\sigma^2_1/\sigma^2_2\)</span> discussed next.</p>
+<div class="cell" data-layout-align="center" data-fig.asp="0.5">
 <div class="cell-output-display">
 <div id="fig-f-sig-level" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="infer-var_files/figure-html/fig-f-sig-level-1.png" class="img-fluid figure-img" style="width:70.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;17.5: Illustration of <span class="math inline">\(\alpha/2\)</span> significance levels for <span class="math inline">\(F_{df_1, df_2}\)</span> distribution</figcaption><p></p>
+<figure class="figure"><p><img src="infer-var_files/figure-html/fig-f-sig-level-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;17.4: Illustration of <span class="math inline">\(\alpha/2\)</span> significance levels for <span class="math inline">\(F_{df_1, df_2}\)</span> distribution</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
 <p><sample style="color:red"><strong><em>Sampling Distribution</em></strong> </sample></p>
-<ul>
-<li>When random samples of sizes <span class="math inline">\(n_1\)</span> and <span class="math inline">\(n_2\)</span> have been <em>independently</em> drawn from two normally distributed populations, <span class="math inline">\(N(\mu_1, \sigma_1^2)\)</span> and <span class="math inline">\(N(\mu_2, \sigma_2^2)\)</span>, the ratio <span class="math display">\[\frac{s_1^2/s_2^2}{\sigma_1^2/\sigma_2^2} \sim F_{n_1-1, \, n_2-1}\]</span>
-</li>
-</ul>
+<p>When random samples of sizes <span class="math inline">\(n_1\)</span> and <span class="math inline">\(n_2\)</span> have been <em>independently</em> drawn from two normally distributed populations, <span class="math inline">\(N(\mu_1, \sigma_1^2)\)</span> and <span class="math inline">\(N(\mu_2, \sigma_2^2)\)</span> respectively, the ratio <span class="math inline">\(\frac{S_1^2/S_2^2}{\sigma_1^2/\sigma_2^2}\)</span> has the <span class="math inline">\(F\)</span> sampling distribution <span class="math display">\[\frac{S_1^2/S_2^2}{\sigma_1^2/\sigma_2^2} \sim F_{n_1-1, \, n_2-1}.\]</span></p>
+<div class="callout-important callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div style="font-size: 1.1em;">
+<p>The order of degrees of freedom matters! <span class="math inline">\(F_{n_1-1, \, n_2-1} \ne F_{n_2-1, \, n_1-1}\)</span>. Please don’t mess around.</p>
+</div>
+</div>
+</div>
 <p><span style="color:red"> <strong><em><span class="math inline">\((1-\alpha)100\%\)</span> Confidence Interval for <span class="math inline">\(\sigma_1^2 / \sigma_2^2\)</span></em></strong> </span></p>
+<p>From the sampling distribution of the ratio, the <span class="math inline">\((1-\alpha)100\%\)</span> confidence interval for <span class="math inline">\(\sigma_1^2 / \sigma_2^2\)</span> is <span class="math display">\[\color{blue}{\boxed{\left( \frac{s_1^2/s_2^2}{F_{\alpha/2, \, n_1 - 1, \, n_2 - 1}}, \frac{s_1^2/s_2^2}{F_{1-\alpha/2, \, \, n_1 - 1, \, n_2 - 1}} \right)}}\]</span></p>
+<p>How do we get the interval? Not surprising. We start with the sampling distribution of <span class="math inline">\(\frac{S_1^2/S_2^2}{\sigma_1^2/\sigma_2^2}\)</span>.</p>
 <ul>
-<li>The <span class="math inline">\((1-\alpha)100\%\)</span> confidence interval for <span class="math inline">\(\sigma_1^2 / \sigma_2^2\)</span> is <span class="math display">\[\color{blue}{\boxed{\left( \frac{s_1^2/s_2^2}{F_{\alpha/2, \, n_1 - 1, \, n_2 - 1}}, \frac{s_1^2/s_2^2}{F_{1-\alpha/2, \, \, n_1 - 1, \, n_2 - 1}} \right)}}\]</span>
-</li>
+<li><p><span class="math inline">\(P\left(F_{1-\alpha/2, \, n_1 - 1, \, n_2 - 1} &lt; \frac{S_1^2/S_2^2}{\sigma_1^2/\sigma_2^2} &lt; F_{\alpha/2, \, n_1 - 1, \, n_2 - 1} \right) = 1 - \alpha\)</span> (Goal: isolate <span class="math inline">\(\sigma_1^2/\sigma_2^2\)</span>)</p></li>
+<li><p><span class="math inline">\(P\left(\frac{1}{F_{\alpha/2, \, n_1 - 1, \, n_2 - 1}} &lt; \frac{\sigma_1^2/\sigma_2^2}{S_1^2/S_2^2} &lt; \frac{1}{F_{1-\alpha/2, \, n_1 - 1, \, n_2 - 1}} \right) = 1 - \alpha\)</span> (take reciprocal)</p></li>
+<li><p><span class="math inline">\(P\left(\frac{S_1^2/S_2^2}{F_{\alpha/2, \, n_1 - 1, \, n_2 - 1}} &lt; \frac{\sigma_1^2}{\sigma_2^2} &lt; \frac{S_1^2/S_2^2}{F_{1-\alpha/2, \, n_1 - 1, \, n_2 - 1}} \right) = 1 - \alpha\)</span> (times <span class="math inline">\(S_1^2/S_2^2\)</span>)</p></li>
 </ul>
 <div class="callout-note callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
@@ -736,14 +685,13 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<ul>
-<li>The CI for <span class="math inline">\(\sigma_1^2 / \sigma_2^2\)</span> <strong>cannot</strong> be expressed as <span class="math inline">\(\left(\frac{s_1^2}{s_2^2}-m, \frac{s_1^2}{s_2^2} + m\right)\)</span> anymore!</li>
-</ul>
+<p>The confidence interval for <span class="math inline">\(\sigma_1^2 / \sigma_2^2\)</span> <em>cannot</em> be expressed as <span class="math inline">\(\left(\frac{s_1^2}{s_2^2}-m, \frac{s_1^2}{s_2^2} + m\right)\)</span> anymore!</p>
 </div>
 </div>
 <hr>
 <p><span style="color:blue"> <strong>F test for comparing <span class="math inline">\(\sigma_1^2\)</span> and <span class="math inline">\(\sigma_2^2\)</span></strong> </span></p>
 <p><span style="color:red"> Step 1 </span></p>
+<p>For comparing <span class="math inline">\(\sigma_1^2\)</span> and <span class="math inline">\(\sigma_2^2\)</span>, the test can be either right-tailed or two-tailed. Left-tailed testing is not necessary because we can always define the population whose variance is hypothetically larger than the variance of another population as the first population.</p>
 <ul>
 <li>Right-tailed: <span style="color:blue"> <span class="math inline">\(\small \begin{align} &amp;H_0: \sigma_1 \le \sigma_2 \\ &amp;H_1: \sigma_1 &gt; \sigma_2 \end{align}\)</span> </span>
 </li>
@@ -756,8 +704,7 @@ Note
 </ul>
 <p><span style="color:red"> Step 3 </span></p>
 <ul>
-<li>Under <span class="math inline">\(H_0\)</span>, <span class="math inline">\(\sigma_1 = \sigma_2\)</span>, and the test statistic is <span class="math display">\[\small F_{test} = \frac{s_1^2/s_2^2}{\sigma_1^2/\sigma_2^2} = \frac{s_1^2}{s_2^2} \sim F_{n_1-1, \, n_2-1}\]</span>
-</li>
+<li>Under <span class="math inline">\(H_0\)</span>, <span class="math inline">\(\sigma_1 = \sigma_2\)</span>, and the test statistic is <span class="math display">\[\small F_{test} = \frac{s_1^2/s_2^2}{\sigma_1^2/\sigma_2^2} = \frac{s_1^2}{s_2^2} \sim F_{n_1-1, \, n_2-1}\]</span> The denominator is gone because the ratio is one.</li>
 </ul>
 <p><span style="color:red"> Step 4-c </span></p>
 <ul>
@@ -773,29 +720,22 @@ Note
 </ul>
 <hr>
 <p><span style="color:blue"> <strong>Example: Weight Loss</strong> </span></p>
+<p>This is our previous example.</p>
 <div class="columns">
 <div class="column" style="width:70%;">
-<ul>
-<li>A study was conducted to see the effectiveness of a weight loss program.
-<ul>
-<li>Two groups (Control and Experimental) of 10 subjects were selected.</li>
-<li>The two populations are normally distributed and have the same SD.</li>
-</ul>
-</li>
-</ul>
+<p><em>A study was conducted to see the effectiveness of a weight loss program. Two groups (Control and Experimental) of 10 subjects were selected. The two populations are normally distributed and have the same standard deviation.</em></p>
 </div><div class="column" style="width:30%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="./images/img-infer/weight.jpeg" class="img-fluid figure-img" style="width:70.0%"></p>
+<figure class="figure"><p><img src="./images/img-infer/weight.jpeg" class="img-fluid figure-img" style="width:89.0%"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
 </div>
-<ul>
-<li>The data on weight loss was collected at the end of six months.
+<p><em>The data on weight loss was collected at the end of six months.</em></p>
 <ul>
 <li>
 <strong>Control</strong>: <span class="math inline">\(n_1 = 10\)</span>, <span class="math inline">\(\overline{x}_1 = 2.1\, lb\)</span>, <span class="math inline">\(s_1 = 0.5\, lb\)</span>
@@ -804,15 +744,7 @@ Note
 <strong>Experimental</strong>: <span class="math inline">\(n_2 = 10\)</span>, <span class="math inline">\(\overline{x}_2 = 4.2\, lb\)</span>, <span class="math inline">\(s_2 = 0.7\, lb\)</span>
 </li>
 </ul>
-</li>
-<li>Assumptions:
-<ul>
-<li><span style="color:blue"> <span class="math inline">\(\sigma_1 = \sigma_2\)</span> </span></li>
-<li>The weight loss for both groups are normally distributed.</li>
-</ul>
-</li>
-</ul>
-<p><span style="color:red"> <strong><em>Check if <span class="math inline">\(\sigma_1 = \sigma_2\)</span></em></strong> </span></p>
+<!-- - Assumptions: --><!--   + <span style="color:blue"> $\sigma_1 = \sigma_2$ </span> --><!--   + The weight loss for both groups are normally distributed. --><p><span style="color:red"> <strong><em>Check if <span class="math inline">\(\sigma_1 = \sigma_2\)</span></em></strong> </span></p>
 <ul>
 <li>
 <span class="math inline">\(n_1 = 10\)</span>, <span class="math inline">\(s_1 = 0.5 \, lb\)</span>
@@ -838,11 +770,10 @@ Note
 <li>This is a two-tailed test.</li>
 <li>The critical value is <span class="math inline">\(F_{0.05/2, \, 10-1, \, 10-1} = 4.03\)</span> or <span class="math inline">\(F_{1-0.05/2, \, 10-1, \, 10-1} = 0.25\)</span>.</li>
 </ul>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-fig.asp="0.5">
 <div class="cell-output-display">
-<div id="fig-weight-fdist" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="infer-var_files/figure-html/fig-weight-fdist-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;17.6: F Distribution for Weight Loss Example</figcaption><p></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="infer-var_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -860,47 +791,39 @@ Note
 <li>The evidence is not sufficient to reject the claim that <span class="math inline">\(\sigma_1 = \sigma_2\)</span>.</li>
 </ul>
 <p><span style="color:red"> <strong><em>95% CI for <span class="math inline">\(\sigma_1^2 / \sigma_2^2\)</span></em></strong> </span></p>
-<div class="columns">
-<div class="column" style="width:50%;">
+<!-- ::::{.columns} -->
+<!-- :::{.column width="50%"} -->
 <ul>
 <li><span class="math inline">\(\small F_{\alpha/2, \, df_1, \, df_2} = F_{0.05/2, \, 10-1, \, 10-1} = 4.03\)</span></li>
 <li><span class="math inline">\(\small F_{1-\alpha/2, \, df_1, \, df_2} = F_{1-0.05/2, \, 10-1, \, 10-1} = 0.25\)</span></li>
 <li><span class="math inline">\(\small \frac{s_1^2}{s_2^2} = \frac{0.5^2}{0.7^2} = 0.51\)</span></li>
-<li>The 95% CI for <span class="math inline">\(\sigma_1^2 / \sigma_2^2\)</span> is <span class="math display">\[\small \begin{align} &amp;\left( \frac{s_1^2/s_2^2}{F_{\alpha/2, \, df_1, \, df_2}}, \frac{s_1^2/s_2^2}{F_{1-\alpha/2, \, df_1, \, df_2}} \right) \\ &amp;= \left( \frac{0.51}{4.03}, \frac{0.51}{0.25} \right) = \left(0.127, 2.04\right)\end{align}\]</span>
+<li>The 95% CI for <span class="math inline">\(\sigma_1^2 / \sigma_2^2\)</span> is <span class="math display">\[\small \begin{align} &amp;\left( \frac{s_1^2/s_2^2}{F_{\alpha/2, \, df_1, \, df_2}}, \frac{s_1^2/s_2^2}{F_{1-\alpha/2, \, df_1, \, df_2}} \right) \\ &amp;= \left( \frac{0.51}{4.03}, \frac{0.51}{0.25} \right) = \left(0.127, 2.05\right)\end{align}\]</span> <!-- ::: -->
 </li>
 </ul>
-</div><div class="column" style="width:50%;">
-<div class="cell" data-layout-align="center">
+<!-- :::{.column width="50%"} --><div class="cell" data-layout-align="center" data-fig.asp="0.5">
 <div class="cell-output-display">
-<div id="fig-weight-sig-level" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="infer-var_files/figure-html/fig-weight-sig-level-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;17.7: F Distribution for significance level 0.05</figcaption><p></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="infer-var_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-</div>
-</div>
-<ul>
-<li>We are 95% confident that the ratio <span class="math inline">\(\sigma_1^2 / \sigma_2^2\)</span> is between 0.127 and 2.04.</li>
-<li>Because 1 is included in this interval, it leads to the same conclusion as the F test.</li>
-</ul>
+<!-- ::: -->
+<!-- :::: -->
+<p>We are 95% confident that the ratio <span class="math inline">\(\sigma_1^2 / \sigma_2^2\)</span> is between 0.127 and 2.04. Because one is included in this interval, meaning that <span class="math inline">\(\sigma^2_1 = \sigma^2_2\)</span>, it leads to the same conclusion as the F test.</p>
 <p><span style="color:red"> <strong><em>Implementing F-test in R</em></strong> </span></p>
-<!-- - **`qf(p = alpha, df1 = n1 - 1, df2 = n2 - 1, lower.tail = FALSE)`** to find $F_{\alpha, \, n_1-1, \, n_2-1}$. -->
-<div class="columns">
-<div class="column" style="width:49%;">
-<div class="cell">
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">n1</span> <span class="op">&lt;-</span> <span class="fl">10</span>; <span class="va">n2</span> <span class="op">&lt;-</span> <span class="fl">10</span></span>
+<p>We use <code><a href="https://rdrr.io/r/stats/Fdist.html">qf()</a></code> to find the <span class="math inline">\(F\)</span> critical values. <!-- - **`qf(p = alpha, df1 = n1 - 1, df2 = n2 - 1, lower.tail = FALSE)`** to find $F_{\alpha, \, n_1-1, \, n_2-1}$. --></p>
+<!-- ::::{.columns} -->
+<!-- :::{.column width="49%"} -->
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## set values</span></span>
+<span><span class="va">n1</span> <span class="op">&lt;-</span> <span class="fl">10</span>; <span class="va">n2</span> <span class="op">&lt;-</span> <span class="fl">10</span></span>
 <span><span class="va">s1</span> <span class="op">&lt;-</span> <span class="fl">0.5</span>; <span class="va">s2</span> <span class="op">&lt;-</span> <span class="fl">0.7</span></span>
 <span><span class="va">alpha</span> <span class="op">&lt;-</span> <span class="fl">0.05</span></span>
 <span></span>
 <span><span class="co">## 95% CI for sigma_1^2 / sigma_2^2</span></span>
-<span><span class="va">f_small</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Fdist.html">qf</a></span><span class="op">(</span>p <span class="op">=</span> <span class="va">alpha</span> <span class="op">/</span> <span class="fl">2</span>, </span>
-<span>              df1 <span class="op">=</span> <span class="va">n1</span> <span class="op">-</span> <span class="fl">1</span>, df2 <span class="op">=</span> <span class="va">n2</span> <span class="op">-</span> <span class="fl">1</span>, </span>
-<span>              lower.tail <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">f_big</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Fdist.html">qf</a></span><span class="op">(</span>p <span class="op">=</span> <span class="va">alpha</span> <span class="op">/</span> <span class="fl">2</span>, </span>
-<span>            df1 <span class="op">=</span> <span class="va">n1</span> <span class="op">-</span> <span class="fl">1</span>, df2 <span class="op">=</span> <span class="va">n2</span> <span class="op">-</span> <span class="fl">1</span>, </span>
-<span>            lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">f_small</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Fdist.html">qf</a></span><span class="op">(</span>p <span class="op">=</span> <span class="va">alpha</span> <span class="op">/</span> <span class="fl">2</span>, df1 <span class="op">=</span> <span class="va">n1</span> <span class="op">-</span> <span class="fl">1</span>, df2 <span class="op">=</span> <span class="va">n2</span> <span class="op">-</span> <span class="fl">1</span>,lower.tail <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">f_big</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Fdist.html">qf</a></span><span class="op">(</span>p <span class="op">=</span> <span class="va">alpha</span> <span class="op">/</span> <span class="fl">2</span>, df1 <span class="op">=</span> <span class="va">n1</span> <span class="op">-</span> <span class="fl">1</span>, df2 <span class="op">=</span> <span class="va">n2</span> <span class="op">-</span> <span class="fl">1</span>, lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## lower bound</span></span>
 <span><span class="op">(</span><span class="va">s1</span> <span class="op">^</span> <span class="fl">2</span> <span class="op">/</span> <span class="va">s2</span> <span class="op">^</span> <span class="fl">2</span><span class="op">)</span> <span class="op">/</span> <span class="va">f_big</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -913,30 +836,31 @@ Note
 <pre><code>[1] 2.054079</code></pre>
 </div>
 </div>
-</div><div class="column" style="width:2%;">
-
-</div><div class="column" style="width:49%;">
-<div class="cell">
+<!-- ::: -->
+<!-- :::{.column width="2%"} -->
+<!-- ::: -->
+<!-- :::{.column width="49%"} -->
+<div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## Testing sigma_1 = sigma_2</span></span>
 <span><span class="op">(</span><span class="va">test_stats</span> <span class="op">&lt;-</span> <span class="va">s1</span> <span class="op">^</span> <span class="fl">2</span> <span class="op">/</span> <span class="va">s2</span> <span class="op">^</span> <span class="fl">2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.5102041</code></pre>
 </div>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">cri_val_big</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Fdist.html">qf</a></span><span class="op">(</span>p <span class="op">=</span> <span class="va">alpha</span><span class="op">/</span><span class="fl">2</span>, </span>
-<span>                   df1 <span class="op">=</span> <span class="va">n1</span> <span class="op">-</span> <span class="fl">1</span>, </span>
-<span>                   df2 <span class="op">=</span> <span class="va">n2</span> <span class="op">-</span> <span class="fl">1</span>, </span>
-<span>                   lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 4.025994</code></pre>
 </div>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">cri_val_small</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Fdist.html">qf</a></span><span class="op">(</span>p <span class="op">=</span> <span class="va">alpha</span><span class="op">/</span><span class="fl">2</span>, </span>
-<span>                     df1 <span class="op">=</span> <span class="va">n1</span> <span class="op">-</span> <span class="fl">1</span>, </span>
-<span>                     df2 <span class="op">=</span> <span class="va">n2</span> <span class="op">-</span> <span class="fl">1</span>, </span>
-<span>                     lower.tail <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.2483859</code></pre>
+<!-- ::: -->
+<!-- :::: -->
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># var.test(x, y, alternative = "two.sided")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div style="font-size: 1.1em;">
+<p>If we have the entire two samples data, we can use the R built-in function <code>var.test(x, y, alternative = "two.sided")</code> to perform a <span class="math inline">\(F\)</span> test to compare the variances of two samples from normal populations. The arguments <code>x</code> and <code>y</code> are numeric vectors of data values. Argument <code>alternative</code> must be one of <code>"two.sided"</code> (default), <code>"greater"</code> or <code>"less"</code>.</p>
 </div>
 </div>
 </div>
@@ -1124,7 +1048,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </nav>
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">
-    <div class="nav-footer-left">Copyright 2022, Cheng-Han Yu</div>   
+    <div class="nav-footer-left">Copyright 2023, Dr.&nbsp;Cheng-Han Yu</div>   
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
 <li class="nav-item compact">
