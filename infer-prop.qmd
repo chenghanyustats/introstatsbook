@@ -1,27 +1,60 @@
 # Inference About Proportions {#sec-infer-prop}
 
-```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
-library(openintro)
-library(knitr)
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: packages
 library(emoji)
-library(kableExtra)
-set.seed(1234)
+library(knitr)
+# library(kableExtra)
+library(openintro)
+# library(ggplot2)
 ```
 
-## Introduction
+```{r}
+#| echo: false
+knitr::opts_chunk$set(echo = FALSE, fig.align = "center")
+```
+
+
+What we learned so far are the inference methods for population means and variances that are from normal distributions. Our sample data are numerical values. What if our data are categorical, for example, gender, approval or not, etc? In this chapter, we are talk about inference about proportions. When we have categorical data, we are often interested in the proportion of some category of the categorical variable. We may wonder if the proportion of female is greater than 40% for statistics major students. We may also want to estimate the true proportion of the voters who votes for candidate A before all the votes are tallied.
+
+
+## Categorical Data
 
 <span style="color:blue"> **One Categorical Variable with Two Categories** </span>
 
-- Let $X$ be the categorical variable Gender with 2 categories, Male and Female.
+We start with one categorical variable with two categories. Let $X$ be the categorical variable Gender with 2 categories, Male and Female. Our data table may look like the following. The first subject is Male, so we mark it in the Male column. The second subject is Female, so we check it in the Female column, and so on.
 
 ::::{.columns}
-:::{.column width="49%"}
+
+:::{.column width="55%"}
+
 | Subject     | Male | Female |
 |:--------:|:--------:|:--------:|
 | 1 | x |   |  
 | 2 |   | x |
 | $\vdots$  | $\vdots$ | $\vdots$  |
 | $n$ | x |   |
+
+:::
+
+:::{.column width="5%"}
+:::
+
+:::{.column width="30%"}
+
+<br>
+
+```{r}
+knitr::include_graphics("./images/img-infer/class.jpeg")
+```
+:::
+::::
+
+
+When we collect the categorical data, usually we are interested in their count. We wonder which category has more counts than the other. So we can make a one-way frequency/count table as follows. It is one-way because the count table is for one categorical variable only. Here in the data there are $y$ males and $n-y$ females, where $n$ is the sample size. 
 
 <center>
 **One-way frequency/count table**
@@ -31,59 +64,65 @@ set.seed(1234)
 |:--------:|:--------:|
 | Male   | $y$    |  
 | Female | $n-y$ |
-:::
 
-:::{.column width="2%"}
-:::
 
-:::{.column width="49%"}
-```{r, echo=FALSE, out.width="100%", fig.align='center'}
-knitr::include_graphics("./images/img-infer/class.jpeg")
-```
+<!-- :::{.callout-note icon=false} -->
 
-- The number of males can be viewed as a random variable because the *count, $y$, varies from sample to sample*.
+Now the number of males or the proportion of males can be viewed as a random variable because the *count, $Y$, or the proportion $Y/n$ varies from sample to sample*. Suppose you want to learn the proportion of male students at Marquette, what would you do. You would probably randomly sample some Marquette students, and count how many of them are males, right? If you do the sampling again, the count will be different from the count you got previously. Therefore, to learn the male proportion, we could use the sample proportion $Y/n$ as an estimator that follows some (sampling) distribution. 
 
-:::{.callout-note icon=false}
-## What probability distribution might be appropriate for the count, $Y$?
-:::
-:::
-::::
+One question for you. What probability distribution might be appropriate for the count, $Y$?
+<!-- ::: -->
+
 
 ----------------------------------------------------------------
 
 <span style="color:blue"> **Probability Distribution for Count Data: Two Levels** </span>
 
-- $binomial(n, \pi)$ could be a good option for count data with 2 categories.
-  + Fixed number of trials. <span style="color:blue"> (Fixed $n$ subjects) </span>
-  + Each trial results in one of two outcomes. <span style="color:blue"> (Either $M$ or $F$) </span>
-  + Trials are independent. <span style="color:blue"> (If the subjects are randomly sampled) </span>
-- If the proportion of being in category, $M$, is $\pi$, the count, $Y$, has $$P(Y = y \mid n, \pi) = \frac{n!}{y!(n-y)!}\pi^{y}(1-\pi)^{n-y}$$
-- Goal: **Estimate or test the population proportion, $\pi$, of the category**, $M$.
+In our example, each subject is either Male or Female, and with the fixed sample size, we wonder how many subjects are Males. Any probability distribution comes into your mind? Well, $binomial(n, \pi)$ could be a good option for count data with 2 categories.
+
+  + Fixed number of trials: <span style="color:blue"> We can view each sampled subject as one trial in the experiment, and we have fixed $n$ subjects. </span>
+  + Each trial results in one of two outcomes. <span style="color:blue"> Clearly, in our survey, there are only two possible answers. Each subject is either Male or Females. </span>
+  + Trials are independent. <span style="color:blue"> If the subjects are randomly sampled, the students in the sample are independent. </span>
+  + The probability of success $\pi$ is constant: <span style="color:blue"> The proportion of being in category Male is $\pi$, which is constant at the given point of time. </span> 
+  
+The count $Y$ of male students, or the number of success, has the binomial probability 
+$$P(Y = y \mid n, \pi) = \frac{n!}{y!(n-y)!}\pi^{y}(1-\pi)^{n-y}$$ 
+
+
+Do we know $\pi$? Absolutely not! The parameter $\pi$ is the proportion (or relative frequency) of male students, which is what we want to estimate and learn from data. Therefore, our goal is to *estimate or test the population proportion, $\pi$, of the category Male* given the assumption that the count of Male $Y$ is binomially distributed $Y \sim binomial(n, \pi)$. 
+
+
 
 ## Inference for a Single Proportion
 
-<span style="color:blue"> **Hypothesis Testing for $\pi$ (Exact Binom Test)** </span>
+<span style="color:blue"> **Hypothesis Testing for $\pi$** </span>
+
+The point estimator for the population proportion $\pi$ is the sample proportion $Y/n$. The true probability is approximated by the relative frequency in the sample data. Let's first learn how to do testing for $\pi$. This is the **one-sample proportion $z$ test**.
+
+<!-- In the literature, such test is called the **exact binom test**. -->
+
 
 <span style="color:red"> Step 0: Method Assumptions </span>
 
-- <span style="color:blue"> $n\pi_0 \ge 5$ and $n(1-\pi_0) \ge 5$  </span>
-  + The larger, the better
+- The method requires that <span style="color:blue"> $n\pi_0 \ge 5$ and $n(1-\pi_0) \ge 5$  </span> where $\pi_0$ is the hypothesized value or the value to be tested. The larger $n\pi_0$ and $n(1-\pi_0)$ are, the better. In fact, the method relies on the central limit theorem, and uses standard normal distribution to do the test. Large $n\pi_0$ and $n(1-\pi_0)$ leads to better normal approximation.
 
 <span style="color:red"> Step 1: Set the Null and Alternative Hypothesis </span>
 
-- <span style="color:blue"> $\begin{align} &H_0: \pi = \pi_0 \\ &H_1: \pi > \pi_0 \text{ or } \pi < \pi_0 \text{ or } \pi \ne \pi_0 \end{align}$ </span>
+- We are interested in the proportion of some category being equal to, greater than or less than some value. <span style="color:blue"> $\begin{align} &H_0: \pi = \pi_0 \\ &H_1: \pi > \pi_0 \text{ or } \pi < \pi_0 \text{ or } \pi \ne \pi_0 \end{align}$ </span>
 
 <span style="color:red"> Step 2: Set the Significance Level, $\alpha$ </span>
 
 <span style="color:red"> Step 3: Calculate the Test Statistic </span>
 
--  <span style="color:blue"> Under $H_0$, $z_{test} = \dfrac{\hat{\pi} - \pi_0}{\sqrt{\frac{\pi_0(1-\pi_0)}{n}}}$  where $\hat{\pi} = \frac{y}{n} =$ sample proportion </span>
+- With the central limit theorem, it can be shown that the sampling distribution of the statistic $Y/n$ is approximately normal with mean $\pi$ and standard error, $\sqrt{\frac{\pi(1-\pi)}{n}}$. Therefore, $$Z = \frac{Y/n - \pi}{\sqrt{\frac{\pi(1-\pi)}{n}}} \dot\sim N(0, 1).$$ Then under the null $H_0$, the test statistic is <span style="color:blue"> $z_{test} = \dfrac{\hat{\pi} - \pi_0}{\sqrt{\frac{\pi_0(1-\pi_0)}{n}}}$  where $\hat{\pi} = \frac{y}{n}$ is the realized sample proportion. </span>
 
-:::{.callout-note}
-- The sampling distribution of $\hat{\pi}$ is approximately normal with mean, $\pi$, and standard error, $\sqrt{\frac{\pi(1-\pi)}{n}}$, if $y_i$ are independent and the assumptions are satisfied.
-:::
+<!-- :::{.callout-note} -->
+<!-- - The sampling distribution of $\hat{\pi}$ is approximately normal with mean, $\pi$, and standard error, $\sqrt{\frac{\pi(1-\pi)}{n}}$, if $y_i$ are independent and the assumptions are satisfied. -->
+<!-- ::: -->
 
 <span style="color:red"> Step 4-c: Find the Critical Value $z_{\alpha}$ (one-tailed) or $z_{\alpha/2}$ (two-tailed) </span>
+
+- Same as before.
 
 <span style="color:red"> Step 5-c: Draw a Conclusion Using Critical Value Method </span>
 
@@ -97,21 +136,26 @@ knitr::include_graphics("./images/img-infer/class.jpeg")
 
 <span style="color:blue"> **Confidence Interval for $\pi$** </span>
 
-- Assumptions:
-  - $n\hat{\pi} \ge 5$ and $n(1-\hat{\pi}) \ge 5$
-- The $100(1 - \alpha)\%$ confidence interval for $\pi$ is
-$$\hat{\pi} \pm z_{\alpha/2}\sqrt{\frac{\pi(1-\pi)}{n}}$$ where $\hat{\pi} = y/n$.
-- $\pi$ is unknown, so we use the estimate, $\hat{\pi}$, instead: $$\hat{\pi} \pm z_{\alpha/2}\sqrt{\frac{\hat{\pi}(1-\hat{\pi})}{n}}$$
+To construct the confidence interval for $\pi$, we rely on some assumption too. Unlike testing that has a hypothesized value $\pi_0$, there is no hypothesized value in confidence interval, and we only use information from the data to get an interval. To ensure that the normal approximation is fairly good, the interval formula requires <span style="color:blue">$n\hat{\pi} \ge 5$ and $n(1-\hat{\pi}) \ge 5$. </span> Can you see the difference between this requirement and the testing requirement?
 
-:::{.callout-note}
-- No hypothesized value, $\pi_0$, is involved in the confidence interval.
-:::
+
+
+
+<!-- - Assumptions: -->
+<!--   - $n\hat{\pi} \ge 5$ and $n(1-\hat{\pi}) \ge 5$ -->
+The $100(1 - \alpha)\%$ confidence interval for $\pi$ is
+$$\hat{\pi} \pm z_{\alpha/2}\sqrt{\frac{\pi(1-\pi)}{n}}$$ where $\hat{\pi} = y/n$. Since $\pi$ is unknown, we use its estimate $\hat{\pi}$ instead: $$\hat{\pi} \pm z_{\alpha/2}\sqrt{\frac{\hat{\pi}(1-\hat{\pi})}{n}}$$
+
+Such normal approximation interval is called the **Wald interval**.
+<!-- :::{.callout-note} -->
+<!-- - No hypothesized value, $\pi_0$, is involved in the confidence interval. -->
+<!-- ::: -->
 
 ---------------------------------------------------------------------
 
 <span style="color:blue"> **Example: Exit Poll** </span>
 
-- Suppose we collect data on 1,000 voters in an election with only two candidates, **R** and **D**.
+Suppose we collect data on 1,000 voters in an election with only two candidates, **R** and **D**, and every voter must vote for either one of them.
 
 ::::{.columns}
 :::{.column width="49%"}
@@ -123,42 +167,34 @@ $$\hat{\pi} \pm z_{\alpha/2}\sqrt{\frac{\pi(1-\pi)}{n}}$$ where $\hat{\pi} = y/n
 |1000| x |   |
 :::
 
-:::{.column width="2%"}
+:::{.column width="5%"}
 :::
 
-:::{.column width="49%"}
-```{r, echo=FALSE, out.width="80%", fig.align='center'}
+:::{.column width="45%"}
+```{r}
 knitr::include_graphics("./images/img-infer/vote.jpeg")
 ```
 :::
 ::::
 
-- Based on the data, we want to predict who won the election.
-- Let $Y$ be the number of voters that voted for **R**.
-- Assume the count, $Y$, is sampled from $binomial(n = 1000, \pi)$.
-  + $\pi = P(\text{a voter voted for R}) =$ (population) proportion of all voters that for R
-    - This is the **unknown** parameter to be estimated or tested.
-- Predict whether or not **R won the election**.
+Based on the data, we want to predict who won the election. Let $Y$ be the number of voters that voted for **R**. Assume the count, $Y$, is sampled from $binomial(n = 1000, \pi)$, and $\pi = P(\text{a voter voted for R}) =$ (population) proportion of all voters that for **R**. Parameter $\pi$ is the *unknown* parameter to be estimated or tested. In an exit poll of 1,000 voters, 520 voted for **R**. At $\alpha = 0.05$, predict whether or not *__R__ won the election*.
 
-:::{.callout-note icon=false}
-## What are $H_0$ and $H_1$?
-- <span style="color:blue"> $\begin{align} &H_0: \pi \le 1/2 \\ &H_1: \pi > 1/2 \text{ (more than half voted for R)} \end{align}$ </span>
-:::
+<!-- :::{.callout-note icon=false} -->
+<!-- ## What are $H_0$ and $H_1$? -->
 
-
+<!-- **R** won the election means that the proportion of all voters voting for **R** is greater than 50%. <span style="color:blue"> $\begin{align} &H_0: \pi \le 1/2 \\ &H_1: \pi > 1/2 \text{ (more than half voted for R)} \end{align}$ </span> -->
+<!-- ::: -->
 
 
 <span style="color:red"> ***Hypothesis Testing*** </span>
 
-- In an exit poll of 1,000 voters, 520 voted for **R**, one of the two candidates.
-
 <span style="color:red"> Step 0 </span>
 
-- <span style="color:blue"> $n\pi_0 = 1000(1/2) = 500 \ge 5$ and $n(1-\pi_0) \ge 5$ </span>
+- $\pi_0 = 1/2$. <span style="color:blue"> $n\pi_0 = 1000(1/2) = 500 \ge 5$ and $n(1-\pi_0) \ge 5$ </span>
 
 <span style="color:red"> Step 1 </span>
 
-- <span style="color:blue"> $\begin{align} &H_0: \pi \le 1/2 \\ &H_1: \pi > 1/2 \end{align}$ </span>
+- **R** won the election means that the proportion of all voters voting for **R** is greater than 50%. <span style="color:blue"> $\begin{align} &H_0: \pi \le 1/2 \\ &H_1: \pi > 1/2 \text{ (more than half voted for R)} \end{align}$ </span>
 
 <span style="color:red"> Step 2 </span>
 
@@ -187,24 +223,91 @@ $$ p\text{-value} = P(Z > 1.26) = 0.1 > 0.05$$
 
 <span style="color:red"> ***Confidence Interval*** </span>
 
-- Assumptions: 
+First we check the assumption:
   + $n\hat{\pi} = 1000(0.52) = 520 \ge 5$ and $n(1-\hat{\pi}) = 480 \ge 5$.
+  
+  
 - Estimate the proportion of all voters that voted for **R** using a 95% confidence interval.
 
 $$\hat{\pi} \pm z_{\alpha/2}\sqrt{\frac{\hat{\pi}(1-\hat{\pi})}{n}} = 0.52 \pm z_{0.025}\sqrt{\frac{0.52(1-0.52)}{1000}} = (0.49, 0.55).$$
 
-- Below is a demonstration of how to perform a binomial test in R.
+<span style="color:red"> ***Computation in R*** </span>
 
-```{r, echo=TRUE}
+<!-- Below is a demonstration of how to perform a binomial test in R.  -->
+
+To perform the one-sample proportion $z$ test in R, we use the function `prop.test()`. The argument `correct` tells us whether or not we want to do continuity correction. Our method here does not do continuity correction. It does not matter much when our method assumption is satisfied.
+
+To obtain the confidence interval, we should set `alternative = "two.sided"` because the interval is two sided. Be careful. The interval we learn is the Wald interval. However, the interval from the `prop.test()` output is not the Wald interval, but the so-called **Wilson interval**. There are lots of variants of confidence intervals for binomial proportions, and one can use the `BinomCI()` function in the `DescTools` package to obtain them.
+
+
+
+```{r}
+#| echo: true
+
+## one proportion test using normal approximation
+prop.test(x = 520, n = 1000, p = 0.5, alternative = "greater", 
+          correct = FALSE)
+
 # Use alternative = "two.sided" to get CI
-# binom.test()
-prop.test(x = 520, n = 1000, p = 0.5, alternative = "greater", correct = FALSE)
+prop_ci <- prop.test(x = 520, n = 1000, p = 0.5, 
+                     alternative = "two.sided", correct = FALSE)
+prop_ci$conf.int
+
+## The Wilson interval and Wald interval
+DescTools::BinomCI(x = 520, n = 1000, method = "wilson")
+DescTools::BinomCI(x = 520, n = 1000, method = "wald")
 ```
+
+<!-- # binom.test() -->
+
+:::{.callout-warning}
+Doing inference with normal approximation to binomial variables is more complicated than what we discuss here. The main reason is that we use a continuous normal distribution to approximate a discrete binomial distribution. Check the [Wiki page](https://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval) if you don't believe it. No worries at this moment unless you want to be a statistician doing research in this field!
+:::
+
+:::{.callout-note}
+If you look at the proportion test output carefully, you'll find that the test statistic is a chi-squared test statistic, not the $z$ test statistic. In fact, the square of the $z$ statistic is equal to the chi-squared statistic with degrees of freedom one, i.e., $z_{test}^2 = \chi^2_{1, test}$, and the $z$ test here is equivalent to the chi-squared test discussed in the next chapter (@sec-infer-cat) for two-sided tests. 
+
+```{r}
+#| echo: true
+z_test <- (0.52 - 0.5) / sqrt((0.5)*0.5 / 1000)
+z_test ^ 2
+prop_ci$statistic
+```
+
+:::
+
+
+
+:::{.callout-note}
+The method we learn here uses normal approximation to binomial variables. One can also perform the [**exact binomial test**](https://en.wikipedia.org/wiki/Binomial_test) that directly uses binomial probabilities to calculate the $p$-value and do the testing. As its name suggests, it is what we should use for binomial inference because it is *exact*. If the requirement of the normal approximation method we learn is not met, the exact binomial test should be used. When the sample size is large, and the expected proportion is not extreme being close to 0 or 1, the normal approximation method and the exact binomial test have pretty similar inference results.
+
+We can use `binom.test()` function to perform the exact binomial test. The [page](https://yury-zablotski.netlify.app/post/exact-binomial-test/) discusses the relationship between the exact binomial test and other methods.
+:::
+
+```{r}
+#| echo: true
+## exact binom test
+binom.test(x = 520, n = 1000, p = 0.5, alternative = "greater")
+
+## confidence interval
+bi <- binom.test(x = 520, n = 1000, p = 0.5, alternative = "two.sided")
+bi$conf.int
+```
+
+
+<!-- https://bookdown.org/mpfoley1973/statistics/exact-binomial-test.html -->
+
+
 
 ## Inference for Two Proportions
 
+Many times we want to compare two population proportions, say $\pi_1$ and $\pi_2$. We could assume there are two independent binomial experiments with the same possible outcomes. For example, we could have male and female voters, and every voter in each group has an opinion about president's performance whose outcome is either Approve or Not approve. Let the number of male voters approving the performance is $Y_1$ and the number of female voters approving the performance is $Y_2$. We can assume $Y_1$ and $Y_2$ both follow binomial distribution but with their own parameters, $n_1$ and $\pi_1$ for $Y_1$, and $n_2$ and $\pi_2$ for $Y_2$. Political analysts may want to know whether or not the male presidential approval rate $\pi_1$ is higher than the female approval rate $\pi_2$.
+
+
+
+
 ::::{.columns}
-:::{.column width="53%"}
+:::{.column width="55%"}
 
 |Group 1 | Group 2
 |:-----:|:-----:
@@ -216,25 +319,28 @@ prop.test(x = 520, n = 1000, p = 0.5, alternative = "greater", correct = FALSE)
 - $\pi_2$: Population proportion of success of Group 2
 :::
 
-:::{.column width="2%"}
+:::{.column width="5%"}
 :::
 
-:::{.column width="45%"}
-- Is the male presidential approval rate, $\pi_1$, higher than the female approval rate, $\pi_2$?
+:::{.column width="40%"}
 
-```{r, echo=FALSE, out.width="90%", fig.align='center'}
+```{r}
 knitr::include_graphics("./images/img-infer/trump_rate.png")
 ``` 
 :::
 ::::
 
+
+
 ------------------------------------------------------------------------
 
 <span style="color:blue"> **Hypothesis Testing for $\pi_1$ and $\pi_2$** </span>
 
+The method introduced here is based on the central limit theorem and normal approximation to binomial distribution. The idea is similar to the one sample proportion $z$ test, and we perform **two sample proportion $z$ test.**
+
 <span style="color:red"> Step 0: Check Method Assumptions </span>
 
--  <span style="color:blue"> $n_1\hat{\pi}_1 \ge 5$, $n_1(1-\hat{\pi}_1) \ge 5$ and $n_2\hat{\pi}_2 \ge 5$, $n_2(1-\hat{\pi}_2) \ge 5$ </span>
+- In order to perform the $z$ test, the following requirements must be met: <span style="color:blue"> $n_1\hat{\pi}_1 \ge 5$, $n_1(1-\hat{\pi}_1) \ge 5$ *and* $n_2\hat{\pi}_2 \ge 5$, $n_2(1-\hat{\pi}_2) \ge 5$ </span>
 
 <span style="color:red"> Step 1: Set the Null and Alternative Hypothesis </span>
   
@@ -244,9 +350,14 @@ knitr::include_graphics("./images/img-infer/trump_rate.png")
 
 <span style="color:red"> Step 3: Calculate the Test Statistic </span>
  
--  <span style="color:blue"> $z_{test} = \dfrac{\hat{\pi}_1 - \hat{\pi}_2}{\sqrt{\bar{\pi}(1-\bar{\pi})(\frac{1}{n_1} + \frac{1}{n_2}})}$, $\bar{\pi} = \frac{y_1+y_2}{n_1+n_2}$ is the **pooled** sample proportion estimating $\pi$ </span>
+- It can be shown that $$\frac{\frac{Y_1}{n_1} - \frac{Y_2}{n_2} - (\pi_1 - \pi_2)}{\sqrt{\frac{\pi_1(1-\pi_1)}{n_1} + \frac{\pi_2(1-\pi_2)}{n_2}}} \dot\sim N(0, 1)$$ Under the null hypothesis, $\pi_1 = \pi_2 = \pi$, with the sample data, the statistic is reduced to $$\frac{\hat{\pi}_1 - \hat{\pi}_2}{\sqrt{\pi(1-\pi)(\frac{1}{n_1} + \frac{1}{n_2})}},$$ where $\hat{\pi}_1 = y_1/n_1$ and $\hat{\pi}_2 = y_2/n_2$. We still cannot use this quantity as a test statistic because it involves the unknown parameter $\pi$. Like two sample pooled $t$ test, since $\pi_1 = \pi_2 = \pi$ under $H_0$, we combine the two samples using all the trials to get a better **pooled sample proportion** $\bar{\pi} = \frac{y_1+y_2}{n_1+n_2}$ to estimate the common proportion $\pi$. Therefore, the test statistic is 
+
+<span style="color:blue"> $$z_{test} = \dfrac{\hat{\pi}_1 - \hat{\pi}_2}{\sqrt{\bar{\pi}(1-\bar{\pi})(\frac{1}{n_1} + \frac{1}{n_2})}}.$$ </span>
 
 <span style="color:red"> Step 4-c: Find the Critical Value $z_{\alpha}$ (one-tailed) or $z_{\alpha/2}$ (two-tailed) </span>
+
+Same before.
+
 
 <span style="color:red"> Step 5-c: Draw a Conclusion Using Critical Value Method </span>
   
@@ -261,9 +372,13 @@ knitr::include_graphics("./images/img-infer/trump_rate.png")
 
 <span style="color:blue"> **Confidence Interval for $\pi_1 - \pi_2$**
 
-- The $100(1 - \alpha)\%$ confidence interval for $\pi_1 - \pi_2$ is $$\hat{\pi}_1 - \hat{\pi}_2 \pm z_{\alpha/2}\sqrt{\frac{\hat{\pi}_1(1-\hat{\pi}_1)}{n_1}+\frac{\hat{\pi}_2(1-\hat{\pi}_2)}{n_2}}$$
-- Requirements: 
-  - $n_1\hat{\pi}_1 \ge 5$, $n_1(1-\hat{\pi}_1) \ge 5$ and $n_2\hat{\pi}_2 \ge 5$, $n_2(1-\hat{\pi}_2) \ge 5$
+To get the Wald confidence interval for $\pi_1 - \pi_2$, it requires
+
+$n_1\hat{\pi}_1 \ge 5$, $n_1(1-\hat{\pi}_1) \ge 5$ *and* $n_2\hat{\pi}_2 \ge 5$, $n_2(1-\hat{\pi}_2) \ge 5$. Again, no hypothesized values, and sample proportions are used.
+
+The $100(1 - \alpha)\%$ confidence interval for $\pi_1 - \pi_2$ is $$\hat{\pi}_1 - \hat{\pi}_2 \pm z_{\alpha/2}\sqrt{\frac{\hat{\pi}_1(1-\hat{\pi}_1)}{n_1}+\frac{\hat{\pi}_2(1-\hat{\pi}_2)}{n_2}}$$
+
+There is no pooled estimate $\bar{\pi}$ in the interval because the interval is not constructed under the hypothesis that $\pi_1 = \pi_2 = \pi$. The parameters $\pi_1$ and $\pi_2$ are estimated separately by the individual sample proportions $\hat{\pi}_1$ and $\hat{\pi}_2$.
 
 ------------------------------------------------------------------
 
@@ -271,14 +386,12 @@ knitr::include_graphics("./images/img-infer/trump_rate.png")
 
 ::::{.columns}
 :::{.column width="70%"}
-- Suppose we do a study on 300 students to compare the effectiveness of learning statistics in online vs. in-person programs.
-- Randomly assign
-  + 125 students to the online program
-  + the remaining 175 to the in-person program
+Suppose we do a study on 300 students to compare the effectiveness of learning statistics in online vs. in-person programs. We randomly assign 125 students to the online program, and the remaining 175 to the in-person program. The exam results are shown in the table below.
 :::
 
 :::{.column width="30%"}
-```{r, echo=FALSE, out.width="100%", fig.align='center'}
+```{r}
+#| fig-cap: "Source: Unsplash-JESHOOTS.COM"
 knitr::include_graphics("./images/img-infer/online_learning.jpeg")
 ```
 :::
@@ -290,9 +403,9 @@ knitr::include_graphics("./images/img-infer/online_learning.jpeg")
 |Fail  | 31   | 62  |
 |Total | 125  | 175 |
 
-:::{.callout-note icon=false}
-## Is there sufficient evidence to conclude that the online program is more effective than the traditional in-person program at $\alpha=0.05$?
-:::
+<!-- :::{.callout-note icon=false} -->
+Is there sufficient evidence to conclude that the online program is more effective than the traditional in-person program at $\alpha=0.05$?
+<!-- ::: -->
 
 <span style="color:red"> ***Hypothesis Testing*** </span>
 
@@ -301,10 +414,12 @@ knitr::include_graphics("./images/img-infer/online_learning.jpeg")
 - <span style="color:blue"> $\hat{\pi}_1 = 94/125 = 0.75$ and $\hat{\pi}_2 = 113/175 = 0.65$. </span>
 - <span style="color:blue"> $n_1\hat{\pi}_1 = 94 > 5$, $n_1(1-\hat{\pi}_1) = 31 > 5$, and $n_2\hat{\pi}_2 = 113 > 5$, $n_2(1-\hat{\pi}_2) = 62 > 5$ </span>
 
+The assumptions are satisfied.
+
 <span style="color:red"> Step 1 </span>
 
-- <span style="color:blue"> $H_0: \pi_1 = \pi_2$ vs. $H_1: \pi_1 > \pi_2$ </span>  
-- $\pi_1$ $(\pi_2)$ is the population proportion of students passing the exam in the online (in-person) program.
+
+- Let $\pi_1$ $(\pi_2)$ be the population proportion of students passing the exam in the online (in-person) program. <span style="color:blue"> $H_0: \pi_1 = \pi_2$ vs. $H_1: \pi_1 > \pi_2$ </span>
 
 <span style="color:red"> Step 2 </span>
 
@@ -313,7 +428,7 @@ knitr::include_graphics("./images/img-infer/online_learning.jpeg")
 <span style="color:red"> Step 3 </span>
 
 - <span style="color:blue"> $\bar{\pi} = \frac{94+113}{125+175} = 0.69$ </span>
-- <span style="color:blue"> $z_{test} = \dfrac{\hat{\pi}_1 - \hat{\pi}_2}{\sqrt{\bar{\pi}(1-\bar{\pi})(\frac{1}{n_1} + \frac{1}{n_2}})} = \frac{0.75 - 0.65}{\sqrt{0.69(1-0.69)(\frac{1}{125} + \frac{1}{175})}} = 1.96$ </span>
+- <span style="color:blue"> $z_{test} = \dfrac{\hat{\pi}_1 - \hat{\pi}_2}{\sqrt{\bar{\pi}(1-\bar{\pi})(\frac{1}{n_1} + \frac{1}{n_2})}} = \frac{0.75 - 0.65}{\sqrt{0.69(1-0.69)(\frac{1}{125} + \frac{1}{175})}} = 1.96$ </span>
 
 <span style="color:red"> Step 4-c </span>
 
@@ -330,25 +445,47 @@ knitr::include_graphics("./images/img-infer/online_learning.jpeg")
 
 <span style="color:red"> ***Confidence Interval*** </span>
 
-- We want to know how effective the online program is. 
-- Estimate $\pi_1 - \pi_2$ using a $95\%$ confidence interval.
-$$\hat{\pi}_1 - \hat{\pi}_2 \pm z_{\alpha/2}\sqrt{\frac{\hat{\pi}_1(1-\hat{\pi}_1)}{n_1}+\frac{\hat{\pi}_2(1-\hat{\pi}_2)}{n_2}}$$
-- $z_{0.05/2} = 1.96$
-- The 95% confidence interval is 
+We want to know how effective the online program is, so we estimate $\pi_1 - \pi_2$ using a $95\%$ confidence interval
+
+$$\hat{\pi}_1 - \hat{\pi}_2 \pm z_{0.05/2}\sqrt{\frac{\hat{\pi}_1(1-\hat{\pi}_1)}{n_1}+\frac{\hat{\pi}_2(1-\hat{\pi}_2)}{n_2}}$$
+<!-- - $z_{0.05/2} = 1.96$ -->
+The 95% confidence interval is 
 $$0.75 - 0.65 \pm 1.96\sqrt{\frac{(0.75)(1-0.75)}{125} + \frac{(0.65)(1-0.65)}{175}}\\
  = (0.002, 0.210)$$
-- Because 0 is not included in this interval, we reach the same conclusion as the hypothesis testing.
+
+Because 0 is not included in this interval, we reach the same conclusion as the hypothesis testing.
 
 <span style="color:red"> ***Implementation in R*** </span>
 
-- Below is a demonstration of how to make inferences about two proportions in R.
+Below is a demonstration of how to make inferences about two proportions in R. We still use `prop.test()` function, but here we provide the number of successes and the number of trials in the arguments `x` and `n` respectively as a vector whose first element is for the first group and second element for the second group. Please be consistent with the order and don't mess up. 
 
-```{r, echo=TRUE}
-# Use alternative = "two.sided" to get CI
-prop.test(x = c(94, 113), n = c(125, 175), alternative = "greater", correct = FALSE)
-prop_ci <- prop.test(x = c(94, 113), n = c(125, 175), alternative = "two.sided", correct = FALSE)
-prop_ci$conf.int
+```{r}
+#| echo: true
+
+prop.test(x = c(94, 113), n = c(125, 175), 
+          alternative = "greater", correct = FALSE)
+prop_ci2 <- prop.test(x = c(94, 113), n = c(125, 175), 
+                     alternative = "two.sided", correct = FALSE)
+prop_ci2$conf.int
 ```
+
+
+:::{.callout-note}
+The two sample proportion $z$ test is equivalent to the chi-squared test introduced in the next chapter (@sec-infer-cat) that considers more than two possible outcomes.
+
+```{r}
+#| echo: true 
+pi_bar <- (94 + 113)/(125 + 175)
+pi_1_hat <- 94/125
+pi_2_hat <- 113/175
+z_test2 <- (pi_1_hat - pi_2_hat) / (sqrt(pi_bar*(1-pi_bar)*(1/125+1/175)))
+z_test2 ^ 2
+prop_ci2$statistic
+```
+
+:::
+
+
 
 ## Exercises
 
