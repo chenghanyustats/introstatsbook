@@ -365,7 +365,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul>
 <li><a href="#test-of-goodness-of-fit" id="toc-test-of-goodness-of-fit" class="nav-link active" data-scroll-target="#test-of-goodness-of-fit"><span class="toc-section-number">19.1</span>  Test of Goodness of Fit</a></li>
   <li><a href="#test-of-independence" id="toc-test-of-independence" class="nav-link" data-scroll-target="#test-of-independence"><span class="toc-section-number">19.2</span>  Test of Independence</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="toc-section-number">19.3</span>  Exercises</a></li>
+  <li><a href="#test-of-homogeneity" id="toc-test-of-homogeneity" class="nav-link" data-scroll-target="#test-of-homogeneity"><span class="toc-section-number">19.3</span>  Test of Homogeneity</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="toc-section-number">19.4</span>  Exercises</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/infer-cat.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
@@ -383,17 +384,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </div>
   
 
-</header><section id="test-of-goodness-of-fit" class="level2" data-number="19.1"><h2 data-number="19.1" class="anchored" data-anchor-id="test-of-goodness-of-fit">
-<span class="header-section-number">19.1</span> Test of Goodness of Fit</h2>
+</header><div class="cell">
+
+</div>
 <div class="cell">
 
 </div>
+<p>In the previous chapter, we talk about the one-sample and two-sample proportion tests, testing either the proportion of some category is equal to, greater than, or less than some value, or whether or not the two proportions of the same category from the two groups are equal, or which one is larger. The idea starts from the binomial distribution where the categorical variable being studied has only two possible categories.</p>
+<p>In our daily lives, there are lots of categorical variables that have more than two categories, for example, car brands, eye colors, etc. In this chapter, we are going to learn two specific tests: <strong>test of goodness-of-fit</strong> and <strong>test of independence</strong> that generally consider more than two categories and the associated proportions.</p>
 <p><span style="color:blue"> <strong>Categorical Variable with More Than 2 Categories</strong> </span></p>
-<div class="columns">
-<div class="column" style="width:49%;">
-<ul>
-<li>A categorical variable has <span class="math inline">\(k\)</span> categories <span class="math inline">\(A_1, \dots, A_k\)</span>.</li>
-</ul>
+<!-- ::::{.columns} -->
+<!-- :::{.column width="49%"} -->
+<p>Suppose a categorical variable has <span class="math inline">\(k\)</span> categories <span class="math inline">\(A_1, \dots, A_k\)</span>, <span class="math inline">\(k \ge 2\)</span>. For example, we may want to know the eye color distribution of Marquette students. We can have <span class="math inline">\(A_1 = black\)</span>, <span class="math inline">\(A_2 = brown\)</span>, <span class="math inline">\(A_3 = blue\)</span>, <span class="math inline">\(A_4 = green\)</span>, and our data set may be like</p>
 <table class="table">
 <thead><tr class="header">
 <th style="text-align: center;">Subject</th>
@@ -446,13 +448,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-</div><div class="column" style="width:2%;">
-
-</div><div class="column" style="width:49%;">
-<ul>
-<li><p>With the size <span class="math inline">\(n\)</span>, for categories <span class="math inline">\(A_1, \dots , A_k\)</span>, their observed count is <span class="math inline">\(O_1, \dots, O_k\)</span>, and <span class="math inline">\(\sum_{i=1}^kO_i = n\)</span>.</p></li>
-<li><p>One-way count table:</p></li>
-</ul>
+<p>So the first guy has black eyes, and the second one has blown eyes, and so on. <!-- ::: --></p>
+<!-- :::{.column width="2%"} -->
+<!-- ::: -->
+<!-- :::{.column width="49%"} -->
+<p>With the size <span class="math inline">\(n\)</span>, for categories <span class="math inline">\(A_1, \dots , A_k\)</span>, their observed count is <span class="math inline">\(O_1, \dots, O_k\)</span>, and <span class="math inline">\(\sum_{i=1}^kO_i = n\)</span>. The count information can be summarized in the one-way count/frequency table:</p>
 <table class="table">
 <thead><tr class="header">
 <th style="text-align: center;"><span class="math inline">\(A_1\)</span></th>
@@ -469,26 +469,51 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <td style="text-align: center;"><span class="math inline">\(n\)</span></td>
 </tr></tbody>
 </table>
+<p>For example, if we have <span class="math inline">\(n = 100\)</span> students, and 30 have black eyes, 35 have brown eyes, 20 have blue eyes, and 15 have green eyes, then <span class="math inline">\(O_1 = 30\)</span>, <span class="math inline">\(O_2 = 35\)</span>, <span class="math inline">\(O_3 = 20\)</span>, and <span class="math inline">\(O_4 = 15\)</span>. This is the sample data, and we have the sample proportion for each category, <span class="math inline">\(\hat{\pi}_i =O_i/n\)</span>, <span class="math inline">\(i = 1, \dots, k.\)</span> In the example, <span class="math inline">\(\hat{\pi}_1 = 0.3\)</span>, <span class="math inline">\(\hat{\pi}_2 = 0.35\)</span>,<span class="math inline">\(\hat{\pi}_3 = 0.2\)</span>, and <span class="math inline">\(\hat{\pi}_4 = 0.15\)</span>.</p>
+<p>Of course this is not the true proportion or distribution of eye colors, and our goal is to test whether or not the observed distribution follows some hypothesized distribution, for example the eye color distribution of all Americans. Also, we may be interested in whether or not the distributions from the two groups are more or less the same. For example, the eye color distribution of male and female students. <!-- (test of homogeneity) --></p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
 </div>
 </div>
-<p><span style="color:red"> <strong><em>Example</em></strong> </span></p>
+<div class="callout-body-container callout-body">
+<ul>
+<li>The count of categories of a categorical variable having more than two categories is associated with the <a href="https://en.wikipedia.org/wiki/Multinomial_distribution"><strong>multinomial distribution</strong></a>. The binomial distribution is a special case of the multinomial distribution when <span class="math inline">\(k = 2\)</span>.</li>
+<li>Here we use <span class="math inline">\(O_i\)</span> to represent the observed count of category <span class="math inline">\(A_i\)</span>. It works the same as the <span class="math inline">\(y\)</span> in the previous binomial case. We stick with <span class="math inline">\(O_i\)</span> notations in order to be consistent with most of other statistics books.</li>
+</ul>
+</div>
+</div>
+<!-- ::: -->
+<!-- :::: -->
+<section id="test-of-goodness-of-fit" class="level2" data-number="19.1"><h2 data-number="19.1" class="anchored" data-anchor-id="test-of-goodness-of-fit">
+<span class="header-section-number">19.1</span> Test of Goodness of Fit</h2>
+<!-- Let's look at the following example.  -->
+<!-- <span style="color:red"> ***Example*** </span> -->
+<p>A citizen in Wauwatosa, WI is curious about the question:</p>
+<blockquote class="blockquote">
+<p><em>Are the selected jurors racially representative of the population?</em></p>
+</blockquote>
 <div class="columns">
 <div class="column" style="width:50%;">
-<ul>
-<li><em>Are the selected jurors racially representative of the population?</em></li>
-<li>If the jury is representative of the population, the proportions in the sample should reflect the proportions of the population of eligible jurors (i.e.&nbsp;registered voters).</li>
-</ul>
+<!-- - *Are the selected jurors racially representative of the population?* -->
+<p>Well the idea is that if the jury is representative of the population, once we collect our sample of juries, the sample proportions should reflect the proportions of the population of eligible jurors (i.e.&nbsp;registered voters).</p>
 </div><div class="column" style="width:50%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="./images/img-infer/diversity.jpeg" class="img-fluid figure-img" style="width:95.0%"></p>
+<figure class="figure"><p><img src="./images/img-infer/diversity.jpeg" class="img-fluid figure-img" style="width:60.0%"></p>
+<p></p><figcaption class="figure-caption">Source: https://stock.adobe.com/images/diverse-group-of-business-people/116680830</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
 </div>
+<p>Suppose from the government we learn the distribution of registered voters based on races. We then collect 275 jurors racial information, and see if the racial distribution of the sample is kind of consistent with the registered voter racial distribution. The count information is summarized in the table below.</p>
 <table class="table">
 <thead><tr class="header">
 <th style="text-align: center;"></th>
@@ -496,6 +521,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <th style="text-align: center;">Black</th>
 <th style="text-align: center;">Hispanic</th>
 <th style="text-align: center;">Asian</th>
+<th style="text-align: center;">Total</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
@@ -504,6 +530,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <td style="text-align: center;">26</td>
 <td style="text-align: center;">25</td>
 <td style="text-align: center;">19</td>
+<td style="text-align: center;">275</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">Registered voters</td>
@@ -511,9 +538,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <td style="text-align: center;">0.07</td>
 <td style="text-align: center;">0.12</td>
 <td style="text-align: center;">0.09</td>
+<td style="text-align: center;">1.00</td>
 </tr>
 </tbody>
 </table>
+<p>The first thing we can do is convert the count into proportion or relative frequency, so that the sample proportion and the target proportion can be easily paired and compared.</p>
 <table class="table">
 <thead><tr class="header">
 <th style="text-align: center;"></th>
@@ -521,6 +550,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <th style="text-align: center;">Black</th>
 <th style="text-align: center;">Hispanic</th>
 <th style="text-align: center;">Asian</th>
+<th style="text-align: center;">Total</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
@@ -529,6 +559,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <td style="text-align: center;">0.095</td>
 <td style="text-align: center;">0.091</td>
 <td style="text-align: center;">0.069</td>
+<td style="text-align: center;">1.00</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">Registered voters</td>
@@ -536,53 +567,41 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <td style="text-align: center;">0.07</td>
 <td style="text-align: center;">0.12</td>
 <td style="text-align: center;">0.09</td>
+<td style="text-align: center;">1.00</td>
 </tr>
 </tbody>
 </table>
-<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<p>While the proportions in the juries do not precisely represent the population proportions, it is unclear whether these data provide convincing evidence that the sample is not representative. If the jurors really were randomly sampled from the registered voters, we might expect small differences due to chance. However, unusually large differences may provide convincing evidence that the juries were not representative. Specifically, we want a test to answer the question</p>
+<blockquote class="blockquote">
+<p>Are the proportions of juries <em>close enough</em> to the proportions of registered voters, so that we are confident saying that the jurors really were <em>randomly sampled</em> from the registered voters?</p>
+</blockquote>
+<!-- :::{.callout-note icon=false} -->
+<!-- ## Are the proportions of juries *close enough* to the proportions of registered voters, so that we are confident saying that the jurors really were *randomly sampled* from the registered voters? -->
+<!-- ::: -->
+<div class="callout-note callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
+<i class="callout-icon"></i>
 </div>
 <div class="callout-caption-container flex-fill">
-Are the proportions of juries <em>close enough</em> to the proportions of registered voters, so that we are confident saying that the jurors really were <em>randomly sampled</em> from the registered voters?
+Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-
+<p>As the binomial case, the multi-class counts <span class="math inline">\(O_1, O_2 \dots O_k\)</span> and proportions <span class="math inline">\(O_1/n, O_2/n \dots O_k/n\)</span> are random variables before actual data are collected. Their value varies from sample to sample.</p>
 </div>
 </div>
+<p>The test we need is the goodness-of-fit test.</p>
 <hr>
 <p><span style="color:blue"> <strong>Goodness-of-Fit Test</strong> </span></p>
-<ul>
-<li>A <strong>goodness-of-fit test</strong> tests the hypothesis that the observed frequency distribution fits or conforms to some claim distribution.</li>
-</ul>
-<div class="callout-note callout callout-style-default no-icon callout-captioned">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-caption-container flex-fill">
-In the jury example, what is our observed frequency distribution, and what is our claim distribution?
-</div>
-</div>
-<div class="callout-body-container callout-body">
-
-</div>
-</div>
-<div class="callout-note callout callout-style-default no-icon callout-captioned">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-caption-container flex-fill">
-If the individuals are randomly selected to serve on a jury, about how many of the 275 people would we expect to be white? How about black?
-</div>
-</div>
-<div class="callout-body-container callout-body">
-
-</div>
-</div>
+<p>A <strong>goodness-of-fit test</strong> tests the hypothesis that the observed frequency distribution fits or conforms to some claim distribution. In the jury example, our observed (relative) frequency distribution is <span class="math inline">\((0.745, 0.095, 0.091, 0.069)\)</span> and the claim distribution is the racial distribution of registered voters <span class="math inline">\((0.72, 0.07, 0.12, 0.09)\)</span>. The jury representatives work as our sample, and the registered voters is the population. We wonder if the sample is representative of the general population. If yes, the sample should looks like the population, and sample distribution should conform to the population distribution.</p>
+<p>Here is the question: <em>“If the individuals are randomly selected to serve on a jury, about how many of the 275 people would we expect to be white? How about black?”</em> We ask this question because we want to know how the jury distribution looks like if the distribution does follow the distribution of the registered voters. If what we expect to see is far from what we observe, then the jury is probably not randomly sampled from the registered voters. This matches our testing rationale. We do the testing under the null hypothesis, the scenario that the observed frequency distribution fits or conforms to some claim distribution.</p>
+<!-- :::{.callout-note icon=false} -->
+<!-- ## In the jury example, what is our observed frequency distribution, and what is our claim distribution? -->
+<!-- ::: -->
+<!-- :::{.callout-note icon=false} -->
+<!-- ## If the individuals are randomly selected to serve on a jury, about how many of the 275 people would we expect to be white? How about black? -->
+<!-- ::: -->
 <table class="table">
 <thead><tr class="header">
 <th style="text-align: center;"></th>
@@ -599,26 +618,15 @@ If the individuals are randomly selected to serve on a jury, about how many of t
 <td style="text-align: center;">0.09</td>
 </tr></tbody>
 </table>
-<ul>
-<li>About <span class="math inline">\(72\%\)</span> of the population is white, so we would expect about <span class="math inline">\(72\%\)</span> of the jurors to be white.
-<ul>
-<li>
-<span class="math inline">\(0.72 \times 275 = 198\)</span>.</li>
-</ul>
-</li>
-<li>We expect about <span class="math inline">\(7\%\)</span> of the jurors to be black.
-<ul>
-<li>This corresponds to about <span class="math inline">\(0.07 \times 275 = 19.25\)</span> black jurors.</li>
-</ul>
-</li>
-</ul>
+<p>According to the claimed distribution, <span class="math inline">\(72\%\)</span> of the population is white, so we would expect about <span class="math inline">\(72\%\)</span> of the jurors to be white. In other words, we expect to see <span class="math inline">\(0.72 \times 275 = 198\)</span> white jurors in the sample of 275 jury members. We expect about <span class="math inline">\(7\%\)</span> of the jurors to be black. This corresponds to about <span class="math inline">\(0.07 \times 275 = 19.25\)</span> black jurors in the sample. The table below shows the <strong>observed</strong> count and the <strong>expected</strong> count if members are randomly selected for each ethnic group. In general, the expected count of a category is the total count times the proportion or probability of the category.</p>
 <table class="table">
 <colgroup>
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
 </colgroup>
 <thead><tr class="header">
 <th style="text-align: center;"></th>
@@ -626,23 +634,28 @@ If the individuals are randomly selected to serve on a jury, about how many of t
 <th style="text-align: center;">Black</th>
 <th style="text-align: center;">Hispanic</th>
 <th style="text-align: center;">Asian</th>
+<th style="text-align: center;">Total</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: center;">
-<strong>Observed</strong> Count</td>
+<strong>Observed</strong> Count <span class="math inline">\(O_i\)</span>
+</td>
 <td style="text-align: center;">205</td>
 <td style="text-align: center;">26</td>
 <td style="text-align: center;">25</td>
 <td style="text-align: center;">19</td>
+<td style="text-align: center;">275</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">
-<strong>Expected</strong> Count</td>
+<strong>Expected</strong> Count <span class="math inline">\(E_i\)</span>
+</td>
 <td style="text-align: center;"><strong>198</strong></td>
 <td style="text-align: center;"><strong>19.25</strong></td>
 <td style="text-align: center;"><strong>33</strong></td>
 <td style="text-align: center;"><strong>24.75</strong></td>
+<td style="text-align: center;">275</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">Population Proportion <span class="math inline">\((H_0)\)</span>
@@ -651,21 +664,42 @@ If the individuals are randomly selected to serve on a jury, about how many of t
 <td style="text-align: center;"><strong>0.07</strong></td>
 <td style="text-align: center;"><strong>0.12</strong></td>
 <td style="text-align: center;"><strong>0.09</strong></td>
+<td style="text-align: center;">1.00</td>
 </tr>
 </tbody>
 </table>
+<p>While some sampling variation is expected, the observed count and expected count should be similar if there was no bias in selecting the members of the jury. But how similar is similar enough? We want to test whether the differences are strong enough to provide convincing evidence that the jurors were not selected from a random sample of all registered voters.</p>
+<p><span style="color:red"> <strong><em>Goodness-of-Fit Test Example</em></strong> </span></p>
+<p>Before we introduce the test procedure, to have better performance the goodness-of-fit test requires <em>each expected count is as least five.</em> The higher the better.</p>
+<p>In words, our hypotheses are <span style="color:blue"> <span class="math display">\[\begin{align} &amp;H_0: \text{No racial bias in who serves on a jury, and } \\ &amp;H_1: \text{There is racial bias in juror selection} \end{align}\]</span> </span></p>
+<p>If the true racial distribution of juries is <span class="math inline">\((\pi_1, \pi_2, \pi_3, \pi_4)\)</span>, where</p>
 <ul>
-<li>The <strong>observed</strong> count and <strong>expected</strong> count will be similar if there was no bias in selecting the members of the jury.</li>
-<li>We want to test whether the differences are strong enough to provide convincing evidence that the jurors were not selected from a random sample of all registered voters.</li>
+<li>
+<span class="math inline">\(\pi_1\)</span> is the proportion of White in jury</li>
+<li>
+<span class="math inline">\(\pi_2\)</span> is the proportion of Black in jury</li>
+<li>
+<span class="math inline">\(\pi_3\)</span> is the proportion of Hispanic in jury</li>
+<li>
+<span class="math inline">\(\pi_4\)</span> is the proportion of Asian in jury</li>
 </ul>
-<p><span style="color:red"> <strong><em>Example</em></strong> </span></p>
+<p>we want to know if the distribution conforms to the claim racial distribution of register voters <span class="math inline">\((\pi_1^0, \pi_2^0, \pi_3^0, \pi_4^0) = (0.72, 0.07, 0.12, 0.09)\)</span> where</p>
 <ul>
-<li><p><span style="color:blue"> <span class="math inline">\(\begin{align} &amp;H_0: \text{No racial bias in who serves on a jury, and } \\ &amp;H_1: \text{There is racial bias in juror selection} \end{align}\)</span> </span></p></li>
-<li><p><span style="color:blue"> <span class="math inline">\(\begin{align} &amp;H_0: \pi_1 = \pi_1^0, \pi_2 = \pi_2^0, \dots, \pi_k = \pi_k^0\\ &amp;H_1: \pi_i \ne \pi_i^0 \text{ for some } i \end{align}\)</span> </span></p></li>
-<li><p><span style="color:blue"> Under <span class="math inline">\(H_0\)</span>, <span class="math inline">\(\chi^2_{test} = \frac{(O_1 - E_1)^2}{E_1} + \frac{(O_2 - E_2)^2}{E_2} + \cdots + \frac{(O_k - E_k)^2}{E_k}\)</span>, <span class="math inline">\(E_i = n\pi_i^0, i = 1, \dots, k\)</span> </span></p></li>
-<li><p>Reject <span class="math inline">\(H_0\)</span> if <span style="color:blue"> <span class="math inline">\(\chi^2_{test} &gt; \chi^2_{\alpha, df}\)</span>, <span class="math inline">\(df = k-1\)</span> </span></p></li>
-<li><p>Require each <span class="math inline">\(E_i \ge 5\)</span>, <span class="math inline">\(i = 1, \dots, k\)</span>.</p></li>
+<li>
+<span class="math inline">\(\pi_1^0\)</span> is the proportion of White in register voters</li>
+<li>
+<span class="math inline">\(\pi_2^0\)</span> is the proportion of Black in register voters</li>
+<li>
+<span class="math inline">\(\pi_3^0\)</span> is the proportion of Hispanic in register voters</li>
+<li>
+<span class="math inline">\(\pi_4^0\)</span> is the proportion of Asian in register voters</li>
 </ul>
+<p>In general, we can rewrite our hypotheses in mathematical notations: <span style="color:blue"> <span class="math display">\[\begin{align} &amp;H_0: \pi_1 = \pi_1^0,  \pi_2 = \pi_2^0, \dots, \pi_k = \pi_k^0\\ &amp;H_1: \pi_i \ne \pi_i^0 \text{ for some } i \end{align}\]</span> </span></p>
+<p>Note that <span class="math inline">\(H_1\)</span> is <em>not</em> <span class="math inline">\(\pi_i \ne \pi_i^0 \text{ for all } i\)</span>. As long as one <span class="math inline">\(\pi_i \ne \pi_i^0\)</span> holds, the <span class="math inline">\(H_0\)</span> statement is not true.</p>
+<p>The test statistic is a chi-squared statistic from the chi-squared distribution with degrees of freedom <span class="math inline">\(k-1\)</span>. Under <span class="math inline">\(H_0\)</span>, the test statistic is</p>
+<p><span style="color:blue"> <span class="math display">\[\chi^2_{test} = \frac{(O_1 - E_1)^2}{E_1} + \frac{(O_2 - E_2)^2}{E_2} + \cdots + \frac{(O_k - E_k)^2}{E_k},\]</span> where <span class="math inline">\(O_i\)</span> is the observed count of the <span class="math inline">\(i\)</span>-th category, and <span class="math inline">\(E_i = n\pi_i^0\)</span> is the expected count of the <span class="math inline">\(i\)</span>-th category, <span class="math inline">\(i = 1, \dots, k.\)</span> </span></p>
+<p>The goodness-of-fit test is a <strong>chi-squared test</strong> that is always <em>right-tailed</em>. So we reject <span class="math inline">\(H_0\)</span> if <span style="color:blue"> <span class="math inline">\(\chi^2_{test} &gt; \chi^2_{\alpha, k-1}\)</span>. </span> Look at the test statistic formula carefully. When will the test statistic be large or the evidence be strong? The numerator term <span class="math inline">\((O_i-E_i)^2\)</span> is the squared distance between the observed and expected counts. When the two are farther away from each other, the test statistic or evidence will be stronger. As a result, when the observed count distribution is more inconsistent with the distribution we expect to see, it is more likely to conclude that the sample is not randomly drawn from the claim or assumed population distribution.</p>
+<p>Back to our example.</p>
 <table class="table">
 <colgroup>
 <col style="width: 20%">
@@ -706,19 +740,11 @@ If the individuals are randomly selected to serve on a jury, about how many of t
 </tr>
 </tbody>
 </table>
-<ul>
-<li>Under <span class="math inline">\(H_0\)</span>, <span class="math inline">\(\chi^2_{test} = \frac{(205 - 198)^2}{198} + \frac{(26 - 19.25)^2}{19.25} + \frac{(25 - 33)^2}{33} + \frac{(19 - 24.75)^2}{24.75} = 5.89\)</span>
-</li>
-<li>
-<span class="math inline">\(\chi^2_{0.05, 3} = 7.81\)</span>.</li>
-<li>Because <span class="math inline">\(5.89 &lt; 7.81\)</span>, we fail to reject <span class="math inline">\(H_0\)</span> in favor of <span class="math inline">\(H_1\)</span>.</li>
-<li>We do not have convincing evidence of racial bias in the juror selection process.</li>
-</ul>
+<p>Under <span class="math inline">\(H_0\)</span>, <span class="math inline">\(\chi^2_{test} = \frac{(205 - 198)^2}{198} + \frac{(26 - 19.25)^2}{19.25} + \frac{(25 - 33)^2}{33} + \frac{(19 - 24.75)^2}{24.75} = 5.89\)</span>.</p>
+<p>With <span class="math inline">\(\alpha = 0.05\)</span>, <span class="math inline">\(\chi^2_{0.05, 3} = 7.81\)</span>. Because <span class="math inline">\(5.89 &lt; 7.81\)</span>, we fail to reject <span class="math inline">\(H_0\)</span> in favor of <span class="math inline">\(H_1\)</span>. Therefore, we do not have convincing evidence of racial bias in the juror selection process.</p>
 <p><span style="color:red"> <strong><em>Goodness-of-Fit Test in R</em></strong> </span></p>
-<ul>
-<li>Below is an example of how to perform a Goodness-of-Fit test in R.</li>
-</ul>
-<div class="cell">
+<p>Below is an example of how to perform a goodness-of-fit test in R. Because the goodness-of-fit test is a chi-squared test, we use the function <code><a href="https://rdrr.io/r/stats/chisq.test.html">chisq.test()</a></code>. The argument <code>x</code> is the observed count vector of length <span class="math inline">\(k\)</span>, and the argument <code>p</code> is the hypothesized proportion distribution which is a vector of probabilities of the same length as <code>x</code>. The function does not provide the critical value, but it gives us the <span class="math inline">\(p\)</span>-value. Since the <span class="math inline">\(p\)</span>-value is greater than <span class="math inline">\(0.05\)</span>, we do not reject <span class="math inline">\(H_0\)</span>.</p>
+<div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">obs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">205</span>, <span class="fl">26</span>, <span class="fl">25</span>, <span class="fl">19</span><span class="op">)</span></span>
 <span><span class="va">pi_0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.72</span>, <span class="fl">0.07</span>, <span class="fl">0.12</span>, <span class="fl">0.09</span><span class="op">)</span></span>
 <span></span>
@@ -732,28 +758,71 @@ data:  obs
 X-squared = 5.8896, df = 3, p-value = 0.1171</code></pre>
 </div>
 </div>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The chi-squared test can be used in two-sided one-sample proportion test. Suppose we are doing the following test</p>
+<p><span class="math display">\[\begin{align} &amp;H_0: \pi_1 = 0.5,  \pi_2 = 0.5 \\ &amp;H_1: \pi_i \ne 0.5 \text{ for some } i \end{align}\]</span></p>
+<p>Because there are only two categories, we automatically know the value of <span class="math inline">\(\pi_2\)</span> when we know the value of <span class="math inline">\(\pi_1\)</span> as <span class="math inline">\(\pi_2 = 1 - \pi_1\)</span>. So the hypothesis can be reduced to</p>
+<p><span class="math display">\[\begin{align} &amp;H_0: \pi_1 = 0.5 \\ &amp;H_1: \pi_1 \ne 0.5 \end{align}\]</span> or even</p>
+<p><span class="math display">\[\begin{align} &amp;H_0: \pi = 0.5 \\ &amp;H_1: \pi \ne 0.5 \end{align}\]</span> when we use <span class="math inline">\(\pi\)</span> for the proportion of the first category and <span class="math inline">\(1-\pi\)</span> for the second. We just transform a chi-squared test setting into a two-sided one-sample proportion test setting!</p>
+<p>Suppose <span class="math inline">\(n = 1000\)</span>, <span class="math inline">\(O_1 = 520\)</span>, <span class="math inline">\(O_2 = 480\)</span>, <span class="math inline">\(\pi_1^0 = \pi_2^0 = 0.5\)</span>. Our chi-squared test is</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Chi-squared test for given probabilities
+
+data:  c(520, 480)
+X-squared = 1.6, df = 1, p-value = 0.2059</code></pre>
+</div>
+</div>
+<p>In the language of the one-sample proportion test, we have <span class="math inline">\(n = 1000\)</span>, <span class="math inline">\(y = 520\)</span>, <span class="math inline">\(\pi^0 = 0.5\)</span>. <span class="math inline">\((y = O_1 = 520, n-y = O_2 = 480)\)</span></p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    1-sample proportions test without continuity correction
+
+data:  520 out of 1000, null probability 0.5
+X-squared = 1.6, df = 1, p-value = 0.2059
+alternative hypothesis: true p is not equal to 0.5
+95 percent confidence interval:
+ 0.4890177 0.5508292
+sample estimates:
+   p 
+0.52 </code></pre>
+</div>
+</div>
+<p>Do you see the two tests are equivalent? They have the same test statistic, degrees of freedom as well as <span class="math inline">\(p\)</span>-value. Both lead to the same conclusion.</p>
+</div>
+</div>
 </section><section id="test-of-independence" class="level2" data-number="19.2"><h2 data-number="19.2" class="anchored" data-anchor-id="test-of-independence">
 <span class="header-section-number">19.2</span> Test of Independence</h2>
+<p>So far we consider one categorical variable with general <span class="math inline">\(k\)</span> categories. In some situations, we have two categorical variables being considered, and we wonder if one affects the other distribution. Formally, we want to test <em>whether or not the two variables are independent</em> each other. The test doing this is the <strong>independence test</strong>.</p>
 <p><span style="color:blue"> <strong>Contingency Table and Expected Count</strong></span></p>
 <p><span style="color:red"> <strong><em>Contingency Table</em></strong> </span></p>
+<p>Let’s start with an example. A popular question in politics is <em>“Does the opinion of the President’s job performance depend on gender?”</em> This question may involve two categorical variables such as</p>
 <ul>
-<li><p>We have TWO categorical variables, and we want to test <strong>whether or not the two variables are independent</strong>.</p></li>
-<li><p><span style="color:blue"> Does the opinion of the President’s job performance depend on gender? </span></p></li>
+<li><p><strong>Job performance</strong>: approve, disapprove, no opinion</p></li>
+<li><p><strong>Gender</strong>: male, female</p></li>
 </ul>
+<!-- - We have TWO categorical variables, and we want to test **whether or not the two variables are independent**. --><!-- - <span style="color:blue"> Does the opinion of the President's job performance depend on gender?  </span> --><p>To answer such question, as every other test, we collect our data and see if there is any sufficient evidence to say the two variables are dependent. When two categorical variables are involved, we usually summarize the data in a <strong>contingency table</strong> or <strong>two-way frequency/count table</strong> as shown below.</p>
 <div class="columns">
-<div class="column" style="width:49%;">
-<ul>
-<li>
-<strong>Job performance</strong>: approve, disapprove, no opinion</li>
-<li>
-<strong>Gender</strong>: male, female</li>
-</ul>
+<div class="column" style="width:65%;">
 <table class="table">
 <thead><tr class="header">
 <th style="text-align: center;"></th>
 <th style="text-align: center;">Approve</th>
 <th style="text-align: center;">Disapprove</th>
 <th style="text-align: center;">No Opinion</th>
+<th style="text-align: center;">Total</th>
+<th style="text-align: center;"></th>
 </tr></thead>
 <tbody>
 <tr class="odd">
@@ -761,38 +830,52 @@ X-squared = 5.8896, df = 3, p-value = 0.1171</code></pre>
 <td style="text-align: center;">18</td>
 <td style="text-align: center;">22</td>
 <td style="text-align: center;">10</td>
+<td style="text-align: center;">50</td>
+<td style="text-align: center;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: center;"><strong>Female</strong></td>
 <td style="text-align: center;">23</td>
 <td style="text-align: center;">20</td>
 <td style="text-align: center;">12</td>
+<td style="text-align: center;">55</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Total</strong></td>
+<td style="text-align: center;">41</td>
+<td style="text-align: center;">42</td>
+<td style="text-align: center;">22</td>
+<td style="text-align: center;">105</td>
+<td style="text-align: center;"></td>
 </tr>
 </tbody>
 </table>
 </div><div class="column" style="width:2%;">
 
-</div><div class="column" style="width:49%;">
+</div><div class="column" style="width:33%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="./images/img-infer/approval_rate.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="./images/img-infer/approval_rate.png" class="img-fluid figure-img" width="608"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
 </div>
+<p>When we consider a two-way table, we often would like to know, are these variables related in any way? That is, are they dependent (versus independent)? If President’s approval rate has nothing to do with gender, the Job performance distributions in the male and female groups should be similar or consistent. In other words, whether or not the person is male or female does not affect how President’s job performance is viewed.</p>
 <p><span style="color:red"> <strong><em>Expected Count</em></strong> </span></p>
-<ul>
-<li>Compute the <em>expected</em> count of each cell in the two-way table under the condition that the <em>two variables <strong>are independent</strong></em> of each other.</li>
-</ul>
+<p>The idea is similar to goodness-of-fit test. We first calculate the <em>expected</em> count in each cell (<em>Total row and column are excluded</em>) in the contingency table, the count we expect to see under the condition that <em>the two variables are independent</em>. We always do our analysis in the world of null hypothesis that two variables have no relationship.</p>
+
+<!-- - Compute the *expected* count of each cell in the two-way table under the condition that the *two variables __are independent__* of each other. -->
 <table class="table">
 <thead><tr class="header">
 <th style="text-align: center;"></th>
 <th style="text-align: center;">Approve</th>
 <th style="text-align: center;">Disapprove</th>
 <th style="text-align: center;">No Opinion</th>
+<th style="text-align: center;">Total</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
@@ -800,38 +883,33 @@ X-squared = 5.8896, df = 3, p-value = 0.1171</code></pre>
 <td style="text-align: center;">18 (19.52)</td>
 <td style="text-align: center;">22 (20)</td>
 <td style="text-align: center;">10 (10.48)</td>
+<td style="text-align: center;">50</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;"><strong>Female</strong></td>
 <td style="text-align: center;">23 (21.48)</td>
 <td style="text-align: center;">20 (22)</td>
 <td style="text-align: center;">12 (11.52)</td>
+<td style="text-align: center;">55</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><strong>Total</strong></td>
 <td style="text-align: center;">41</td>
 <td style="text-align: center;">42</td>
 <td style="text-align: center;">22</td>
+<td style="text-align: center;">105</td>
 </tr>
 </tbody>
 </table>
-<ul>
-<li>The expected count for the <span class="math inline">\(i\)</span>-th row and <span class="math inline">\(j\)</span>-th column, which is listed in parentheses in the table above, is: <span class="math display">\[\text{Expected Count}_{\text{row i; col j}} = \frac{\text{(row i total}) \times (\text{col j total})}{\text{table total}}\]</span>
-</li>
-</ul>
+<p>The expected count for the <span class="math inline">\(i\)</span>-th row and <span class="math inline">\(j\)</span>-th column, which is listed in parentheses in the table above, is calculated by: <span class="math display">\[\text{Expected Count}_{\text{row i; col j}} = \frac{\text{(row i total}) \times (\text{col j total})}{\text{table total}}\]</span> For example, the expected count of Disapprove in the Female group is <span class="math display">\[\text{Expected Count}_{\text{row 2; col 2}} = \frac{\text{(row 2 total}) \times (\text{col 2 total})}{\text{table total}} = \frac{42 \times 55}{105} = 22.\]</span></p>
+<p>We are ready for doing test of independence once all expected counts are obtained.</p>
 <hr>
 <p><span style="color:blue"> <strong>Test of Independence Procedure</strong> </span></p>
-<ul>
-<li>Requirements:
-<ul>
-<li>Every <span class="math inline">\(E_{ij} \ge 5\)</span> in the contingency table.</li>
-</ul>
-</li>
-<li><span style="color:blue"> <span class="math inline">\(\begin{align} &amp;H_0: \text{Two variables are independent }\\ &amp;H_1: \text{The two are dependent (associated) } \end{align}\)</span></span></li>
-<li>
-<span class="math inline">\(\chi^2_{test} = \sum_{i=1}^r\sum_{j=1}^c\frac{(O_{ij} - E_{ij})^2}{E_{ij}}\)</span>, where <span class="math inline">\(r\)</span> is the number of rows and <span class="math inline">\(c\)</span> is the number of columns in the table.</li>
-<li>Reject <span class="math inline">\(H_0\)</span> if <span class="math inline">\(\chi^2_{test} &gt; \chi^2_{\alpha, \, df}\)</span>, <span class="math inline">\(df = (r-1)(c-1)\)</span>.</li>
-</ul>
+<p>The test of independence requires that every expected count <span class="math inline">\(E_{ij} \ge 5\)</span> in the contingency table. The higher the better.</p>
+<p>As we discussed before, we believe the variables are independent unless strong evidence says they are not. So our hypotheses are <span style="color:blue"> <span class="math display">\[\begin{align} &amp;H_0: \text{Two variables are independent }\\ &amp;H_1: \text{The two are dependent (associated) } \end{align}\]</span></span></p>
+<p>The test statistic formula is pretty similar to the test of goodness-of-fit. The test of independence is also a chi-squared test. The chi-squared test statistic is</p>
+<p><span style="color:blue"><span class="math display">\[\chi^2_{test} = \sum_{i=1}^r\sum_{j=1}^c\frac{(O_{ij} - E_{ij})^2}{E_{ij}},\]</span></span> where <span class="math inline">\(r\)</span> is the number of rows and <span class="math inline">\(c\)</span> is the number of columns in the contingency table. The idea is the same as the test of goodness-of-fit. Under the assumption of independence, if the observed counts are far away from the counts we should expect to see, we get a larger test statistic, and tend to conclude that the independence assumption is not reasonable.</p>
+<p>The chi-squared test is right-tailed, so we reject <span class="math inline">\(H_0\)</span> if <span class="math inline">\(\chi^2_{test} &gt; \chi^2_{\alpha, \, df}\)</span>, where <span class="math inline">\(df = (r-1)(c-1)\)</span>.</p>
 <p><span style="color:red"> <strong><em>Example</em></strong> </span></p>
 <table class="table">
 <thead><tr class="header">
@@ -839,6 +917,7 @@ X-squared = 5.8896, df = 3, p-value = 0.1171</code></pre>
 <th style="text-align: center;">Approve</th>
 <th style="text-align: center;">Disapprove</th>
 <th style="text-align: center;">No Opinion</th>
+<th style="text-align: center;">Total</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
@@ -846,42 +925,38 @@ X-squared = 5.8896, df = 3, p-value = 0.1171</code></pre>
 <td style="text-align: center;">18 (19.52)</td>
 <td style="text-align: center;">22 (20)</td>
 <td style="text-align: center;">10 (10.48)</td>
+<td style="text-align: center;">50</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;"><strong>Female</strong></td>
 <td style="text-align: center;">23 (21.48)</td>
 <td style="text-align: center;">20 (22)</td>
 <td style="text-align: center;">12 (11.52)</td>
+<td style="text-align: center;">55</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><strong>Total</strong></td>
 <td style="text-align: center;">41</td>
 <td style="text-align: center;">42</td>
 <td style="text-align: center;">22</td>
+<td style="text-align: center;">105</td>
 </tr>
 </tbody>
 </table>
-<ul>
-<li><span style="color:blue"> <span class="math inline">\(\begin{align} &amp;H_0: \text{ Opinion does not depend on gender } \\ &amp;H_1: \text{ Opinion and gender are dependent } \end{align}\)</span></span></li>
-<li><span class="math inline">\(\small \chi^2_{test} = \frac{(18 - 19.52)^2}{19.52} + \frac{(22 - 20)^2}{20} + \frac{(10 - 10.48)^2}{10.48} + \frac{(23 - 21.48)^2}{21.48} + \frac{(20 - 22)^2}{22} + \frac{(12 - 11.52)^2}{11.52}= 0.65\)</span></li>
-<li>
-<span class="math inline">\(\chi^2_{\alpha, df} =\chi^2_{0.05, (2-1)(3-1)} = 5.991\)</span>.</li>
-<li>Since <span class="math inline">\(\chi_{test}^2 &lt; \chi^2_{\alpha, df}\)</span>, we do not reject <span class="math inline">\(H_0\)</span>.</li>
-<li>We fail to conclude that the opinion of the President’s job performance depends on gender.</li>
-</ul>
+<p><span style="color:blue"> <span class="math display">\[\begin{align} &amp;H_0: \text{ Opinion does not depend on gender } \\ &amp;H_1: \text{ Opinion and gender are dependent } \end{align}\]</span></span></p>
+<p>The test statistic is <span class="math display">\[\small \chi^2_{test} = \frac{(18 - 19.52)^2}{19.52} + \frac{(22 - 20)^2}{20} + \frac{(10 - 10.48)^2}{10.48} + \frac{(23 - 21.48)^2}{21.48} + \frac{(20 - 22)^2}{22} + \frac{(12 - 11.52)^2}{11.52}= 0.65\]</span></p>
+<p>The critical value is <span class="math inline">\(\chi^2_{\alpha, df} =\chi^2_{0.05, (2-1)(3-1)} = 5.991\)</span>. Since <span class="math inline">\(\chi_{test}^2 &lt; \chi^2_{\alpha, df}\)</span>, we do not reject <span class="math inline">\(H_0\)</span>. Therefore we fail to conclude that the opinion of the President’s job performance depends on gender.</p>
 <p><span style="color:red"> <strong><em>Test of Independence in R</em></strong> </span></p>
-<ul>
-<li>Below is an example of how to perform the test of independence using R.</li>
-</ul>
-<div class="cell">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">contingency_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">18</span>, <span class="fl">23</span>, <span class="fl">22</span>, <span class="fl">20</span>, <span class="fl">10</span>, <span class="fl">12</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">2</span>, ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Calculating all the expected counts is tedious, especially when the variables have many categories. In practice we never calculate them by hand, and use computing software to do so. Below is an example of how to perform the test of independence using R. Since the test of independence is a chi-squared test, we still use the <code><a href="https://rdrr.io/r/stats/chisq.test.html">chisq.test()</a></code> function. This time we need to prepare the contingency table as a matrix, and put the matrix in the <code>x</code> argument in the function. That’s it! R does everything for us. If we save the result as an object like <code>ind_test</code> which is a R list, we can get access to information related to the test, such as the expected counts <code>ind_test$expected</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">contingency_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">18</span>, <span class="fl">23</span>, <span class="fl">22</span>, <span class="fl">20</span>, <span class="fl">10</span>, <span class="fl">12</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">2</span>, ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2] [,3]
 [1,]   18   22   10
 [2,]   23   20   12</code></pre>
 </div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## Using chisq.test() function</span></span>
-<span><span class="op">(</span><span class="va">indept_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/chisq.test.html">chisq.test</a></span><span class="op">(</span><span class="va">contingency_table</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## Using chisq.test() function</span></span>
+<span><span class="op">(</span><span class="va">ind_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/chisq.test.html">chisq.test</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">contingency_table</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Pearson's Chi-squared test
@@ -889,13 +964,25 @@ X-squared = 5.8896, df = 3, p-value = 0.1171</code></pre>
 data:  contingency_table
 X-squared = 0.65019, df = 2, p-value = 0.7225</code></pre>
 </div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/Chisquare.html">qchisq</a></span><span class="op">(</span><span class="fl">0.05</span>, df <span class="op">=</span> <span class="op">(</span><span class="fl">2</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="fl">3</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span>, lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>  <span class="co">## critical value</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## extract expected counts</span></span>
+<span><span class="va">ind_test</span><span class="op">$</span><span class="va">expected</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         [,1] [,2]     [,3]
+[1,] 19.52381   20 10.47619
+[2,] 21.47619   22 11.52381</code></pre>
+</div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## critical value</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/Chisquare.html">qchisq</a></span><span class="op">(</span><span class="fl">0.05</span>, df <span class="op">=</span> <span class="op">(</span><span class="fl">2</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="fl">3</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span>, lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 5.991465</code></pre>
 </div>
 </div>
-</section><section id="exercises" class="level2" data-number="19.3"><h2 data-number="19.3" class="anchored" data-anchor-id="exercises">
-<span class="header-section-number">19.3</span> Exercises</h2>
+</section><section id="test-of-homogeneity" class="level2" data-number="19.3"><h2 data-number="19.3" class="anchored" data-anchor-id="test-of-homogeneity">
+<span class="header-section-number">19.3</span> Test of Homogeneity</h2>
+<p>Test of homogeneity is a generalization of the two-sample proportion test. This test determines if two or more populations (or subgroups of a population) have the same distribution of a single categorical variable having two or more categories.</p>
+<p>More to be added.</p>
+</section><section id="exercises" class="level2" data-number="19.4"><h2 data-number="19.4" class="anchored" data-anchor-id="exercises">
+<span class="header-section-number">19.4</span> Exercises</h2>
 <ol type="1">
 <li>A researcher has developed a model for predicting eye color. After examining a random sample of parents, she predicts the eye color of the first child. The table below lists the eye colors of offspring. On the basis of her theory, she predicted that 87% of the offspring would have brown eyes, 8% would have blue eyes, and 5% would have green eyes. Use 0.05 significance level to test the claim that the actual frequencies correspond to her predicted distribution.</li>
 </ol>

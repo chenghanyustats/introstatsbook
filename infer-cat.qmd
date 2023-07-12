@@ -1,20 +1,32 @@
 # Inference about Categorical Data {#sec-infer-cat}
 
-## Test of Goodness of Fit
-
-```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
-library(openintro)
-library(knitr)
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: packages
 library(emoji)
-library(kableExtra)
-set.seed(1234)
+library(knitr)
+# library(kableExtra)
+library(openintro)
+# library(ggplot2)
 ```
+
+```{r}
+#| echo: false
+knitr::opts_chunk$set(echo = FALSE, fig.align = "center")
+```
+
+In the previous chapter, we talk about the one-sample and two-sample proportion tests, testing either the proportion of some category is equal to, greater than, or less than some value, or whether or not the two proportions of the same category from the two groups are equal, or which one is larger. The idea starts from the binomial distribution where the categorical variable being studied has only two possible categories. 
+
+In our daily lives, there are lots of categorical variables that have more than two categories, for example, car brands, eye colors, etc. In this chapter, we are going to learn two specific tests: **test of goodness-of-fit** and **test of independence** that generally consider more than two categories and the associated proportions.
+
 
 <span style="color:blue"> **Categorical Variable with More Than 2 Categories** </span>
 
-::::{.columns}
-:::{.column width="49%"}
-- A categorical variable has $k$ categories $A_1, \dots, A_k$.
+<!-- ::::{.columns} -->
+<!-- :::{.column width="49%"} -->
+Suppose a categorical variable has $k$ categories $A_1, \dots, A_k$, $k \ge 2$. For example, we may want to know the eye color distribution of Marquette students. We can have $A_1 = black$,  $A_2 = brown$,  $A_3 = blue$,  $A_4 = green$, and our data set may be like
 
 | Subject     | $A_1$ | $A_2$ | $\cdots$ | $\cdots$ | $A_k$|  
 |:--------:|:--------:|:--------:|:--------:|:--------:|:--------:|
@@ -23,93 +35,161 @@ set.seed(1234)
 | 3 |   |  |   |  |  x |
 | $\vdots$  |  |   |  |  |   |
 | $n$ |   |   |  | x |  |
-:::
 
-:::{.column width="2%"}
-:::
+So the first guy has black eyes, and the second one has blown eyes, and so on.
+<!-- ::: -->
 
-:::{.column width="49%"}
-- With the size $n$, for categories $A_1, \dots , A_k$, their observed count is $O_1, \dots, O_k$, and $\sum_{i=1}^kO_i = n$.
+<!-- :::{.column width="2%"} -->
+<!-- ::: -->
 
-- One-way count table:
+<!-- :::{.column width="49%"} -->
+
+With the size $n$, for categories $A_1, \dots , A_k$, their observed count is $O_1, \dots, O_k$, and $\sum_{i=1}^kO_i = n$. The count information can be summarized in the one-way count/frequency table:
 
 | $A_1$  | $A_2$ | $\cdots$ | $A_k$ | Total |
 |:-----:|:-----:|:-----:|:-----:|:-----:|
 | $O_1$ | $O_2$   |  $\cdots$ |  $O_k$  | $n$ | 
-:::
-::::
 
-<span style="color:red"> ***Example*** </span>
+For example, if we have $n = 100$ students, and 30 have black eyes, 35 have brown eyes, 20 have blue eyes, and 15 have green eyes, then $O_1 = 30$, $O_2 = 35$, $O_3 = 20$, and $O_4 = 15$. This is the sample data, and we have the sample proportion for each category, $\hat{\pi}_i =O_i/n$, $i = 1, \dots, k.$ In the example, $\hat{\pi}_1 = 0.3$, $\hat{\pi}_2 = 0.35$,$\hat{\pi}_3 = 0.2$, and $\hat{\pi}_4 = 0.15$. 
+
+Of course this is not the true proportion or distribution of eye colors, and our goal is to test whether or not the observed distribution follows some hypothesized distribution, for example the eye color distribution of all Americans. Also, we may be interested in whether or not the distributions from the two groups are more or less the same. For example, the eye color distribution of male and female students. 
+<!-- (test of homogeneity) -->
+
+
+:::{.callout-note}
+- The count of categories of a categorical variable having more than two categories is associated with the [**multinomial distribution**](https://en.wikipedia.org/wiki/Multinomial_distribution). The binomial distribution is a special case of the multinomial distribution when $k = 2$.
+- Here we use $O_i$ to represent the observed count of category $A_i$. It works the same as the $y$ in the previous binomial case. We stick with $O_i$ notations in order to be consistent with most of other statistics books.
+:::
+
+
+<!-- ::: -->
+<!-- :::: -->
+
+
+
+
+## Test of Goodness of Fit
+
+<!-- Let's look at the following example.  -->
+
+<!-- <span style="color:red"> ***Example*** </span> -->
+
+A citizen in Wauwatosa, WI is curious about the question: 
+
+> *Are the selected jurors racially representative of the population?*
+
+
 
 ::::{.columns}
 :::{.column width="50%"}
-- *Are the selected jurors racially representative of the population?*
-- If the jury is representative of the population, the proportions in the sample should reflect the proportions of the population of eligible jurors (i.e. registered voters).
+<!-- - *Are the selected jurors racially representative of the population?* -->
+Well the idea is that if the jury is representative of the population, once we collect our sample of juries, the sample proportions should reflect the proportions of the population of eligible jurors (i.e. registered voters).
 :::
 
 :::{.column width="50%"}
-```{r, echo=FALSE, out.width="95%", fig.align='center'}
+```{r}
+#| fig-cap: "Source: https://stock.adobe.com/images/diverse-group-of-business-people/116680830"
+#| out-width: 60%
 knitr::include_graphics("./images/img-infer/diversity.jpeg")
 ```
 :::
 ::::
 
+Suppose from the government we learn the distribution of registered voters based on races. We then collect 275 jurors racial information, and see if the racial distribution of the sample is kind of consistent with the registered voter racial distribution. The count information is summarized in the table below.
+
 |  | White  | Black | Hispanic | Asian | Total |
-|:-----:|:-----:|:-----:|:-----:|:-----:|
+|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|
 | Representation in juries | 205 | 26   |  25 |  19  | 275 | 
 | Registered voters | 0.72 | 0.07   |  0.12 |  0.09  | 1.00 | 
 
+The first thing we can do is convert the count into proportion or relative frequency, so that the sample proportion and the target proportion can be easily paired and compared.
+
 |  | White  | Black | Hispanic | Asian | Total |
-|:-----:|:-----:|:-----:|:-----:|:-----:|
+|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|
 | Representation in juries | 0.745 | 0.095   |  0.091 | 0.069  | 1.00 | 
 | Registered voters | 0.72 | 0.07   |  0.12 |  0.09  | 1.00 | 
 
-:::{.callout-note icon=false}
-## Are the proportions of juries *close enough* to the proportions of registered voters, so that we are confident saying that the jurors really were *randomly sampled* from the registered voters?
+
+While the proportions in the juries do not precisely represent the population proportions, it is unclear whether these data provide convincing evidence that the sample is not representative. If the jurors really were randomly sampled from the registered voters, we might expect small differences due to chance. However, unusually large differences may provide convincing evidence that the juries were not representative. Specifically, we want a test to answer the question
+
+> Are the proportions of juries *close enough* to the proportions of registered voters, so that we are confident saying that the jurors really were *randomly sampled* from the registered voters?
+
+
+
+<!-- :::{.callout-note icon=false} -->
+<!-- ## Are the proportions of juries *close enough* to the proportions of registered voters, so that we are confident saying that the jurors really were *randomly sampled* from the registered voters? -->
+<!-- ::: -->
+
+:::{.callout-note}
+As the binomial case, the multi-class counts $O_1, O_2 \dots O_k$ and proportions $O_1/n, O_2/n \dots O_k/n$ are random variables before actual data are collected. Their value varies from sample to sample.
 :::
+
+The test we need is the goodness-of-fit test. 
+
 
 -----------------------------------------------------------------------
 
 <span style="color:blue"> **Goodness-of-Fit Test** </span>
 
-- A **goodness-of-fit test** tests the hypothesis that the observed frequency distribution fits or conforms to some claim distribution.
+A **goodness-of-fit test** tests the hypothesis that the observed frequency distribution fits or conforms to some claim distribution. In the jury example, our observed (relative) frequency distribution is $(0.745, 0.095, 0.091, 0.069)$ and the claim distribution is the racial distribution of registered voters $(0.72, 0.07, 0.12, 0.09)$. The jury representatives work as our sample, and the registered voters is the population. We wonder if the sample is representative of the general population. If yes, the sample should looks like the population, and sample distribution should conform to the population distribution.
 
-:::{.callout-note icon=false}
-## In the jury example, what is our observed frequency distribution, and what is our claim distribution?
-:::
 
-:::{.callout-note icon=false}
-## If the individuals are randomly selected to serve on a jury, about how many of the 275 people would we expect to be white? How about black?
-:::
+Here is the question: *"If the individuals are randomly selected to serve on a jury, about how many of the 275 people would we expect to be white? How about black?"* We ask this question because we want to know how the jury distribution looks like if the distribution does follow the distribution of the registered voters. If what we expect to see is far from what we observe, then the jury is probably not randomly sampled from the registered voters. This matches our testing rationale. We do the testing under the null hypothesis, the scenario that the observed frequency distribution fits or conforms to some claim distribution.
+
+<!-- :::{.callout-note icon=false} -->
+<!-- ## In the jury example, what is our observed frequency distribution, and what is our claim distribution? -->
+<!-- ::: -->
+
+<!-- :::{.callout-note icon=false} -->
+<!-- ## If the individuals are randomly selected to serve on a jury, about how many of the 275 people would we expect to be white? How about black? -->
+<!-- ::: -->
 
 |  | White  | Black | Hispanic | Asian | Total |
 |:-----:|:-----:|:-----:|:-----:|:-----:|
 | Registered voters | 0.72 | 0.07   |  0.12 |  0.09  | 1.00 | 
 
-
-- About $72\%$ of the population is white, so we would expect about $72\%$ of the jurors to be white. 
-  + $0.72 \times 275 = 198$.
-- We expect about $7\%$ of the jurors to be black.
-  + This corresponds to about $0.07 \times 275 = 19.25$ black jurors.
+According to the claimed distribution, $72\%$ of the population is white, so we would expect about $72\%$ of the jurors to be white. In other words, we expect to see $0.72 \times 275 = 198$ white jurors in the sample of 275 jury members. We expect about $7\%$ of the jurors to be black. This corresponds to about $0.07 \times 275 = 19.25$ black jurors in the sample. The table below shows the **observed** count and the **expected** count if members are randomly selected for each ethnic group. In general, the expected count of a category is the total count times the proportion or probability of the category.
 
 |  | White  | Black | Hispanic | Asian | Total |
-|:-----:|:-----:|:-----:|:-----:|:-----:|
-| **Observed** Count | 205 | 26   |  25 |  19  | 275 | 
-| **Expected** Count | **198** | **19.25**   |  **33** | **24.75** | 275 | 
+|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|
+| **Observed** Count $O_i$ | 205 | 26   |  25 |  19  | 275 | 
+| **Expected** Count $E_i$ | **198** | **19.25**   |  **33** | **24.75** | 275 | 
 | Population Proportion $(H_0)$ | **0.72** | **0.07** |  **0.12** |  **0.09**  | 1.00 |  
 
-- The **observed** count and **expected** count will be similar if there was no bias in selecting the members of the jury.
-- We want to test whether the differences are strong enough to provide convincing evidence that the jurors were not selected from a random sample of all registered voters.
+While some sampling variation is expected, the observed count and expected count should be similar if there was no bias in selecting the members of the jury. But how similar is similar enough? We want to test whether the differences are strong enough to provide convincing evidence that the jurors were not selected from a random sample of all registered voters.
 
-<span style="color:red"> ***Example*** </span>
+<span style="color:red"> ***Goodness-of-Fit Test Example*** </span>
 
-- <span style="color:blue"> $\begin{align} &H_0: \text{No racial bias in who serves on a jury, and } \\ &H_1: \text{There is racial bias in juror selection} \end{align}$ </span>
+Before we introduce the test procedure, to have better performance the goodness-of-fit test requires *each expected count is as least five.* The higher the better.
 
-- <span style="color:blue"> $\begin{align} &H_0: \pi_1 = \pi_1^0,  \pi_2 = \pi_2^0, \dots, \pi_k = \pi_k^0\\ &H_1: \pi_i \ne \pi_i^0 \text{ for some } i \end{align}$ </span>
+In words, our hypotheses are <span style="color:blue"> $$\begin{align} &H_0: \text{No racial bias in who serves on a jury, and } \\ &H_1: \text{There is racial bias in juror selection} \end{align}$$ </span>
 
-- <span style="color:blue">  Under $H_0$, $\chi^2_{test} = \frac{(O_1 - E_1)^2}{E_1} + \frac{(O_2 - E_2)^2}{E_2} + \cdots + \frac{(O_k - E_k)^2}{E_k}$, $E_i = n\pi_i^0, i = 1, \dots, k$ </span>
-- Reject $H_0$ if <span style="color:blue"> $\chi^2_{test} > \chi^2_{\alpha, df}$, $df = k-1$ </span>
-- Require each $E_i \ge 5$, $i = 1, \dots, k$.
+If the true racial distribution of juries is $(\pi_1, \pi_2, \pi_3, \pi_4)$, where 
+
+- $\pi_1$ is the proportion of White in jury
+- $\pi_2$ is the proportion of Black in jury
+- $\pi_3$ is the proportion of Hispanic in jury
+- $\pi_4$ is the proportion of Asian in jury
+
+we want to know if the distribution conforms to the claim racial distribution of register voters $(\pi_1^0, \pi_2^0, \pi_3^0, \pi_4^0) = (0.72, 0.07, 0.12, 0.09)$ where 
+
+- $\pi_1^0$ is the proportion of White in register voters
+- $\pi_2^0$ is the proportion of Black in register voters
+- $\pi_3^0$ is the proportion of Hispanic in register voters
+- $\pi_4^0$ is the proportion of Asian in register voters
+
+In general, we can rewrite our hypotheses in mathematical notations:
+<span style="color:blue"> $$\begin{align} &H_0: \pi_1 = \pi_1^0,  \pi_2 = \pi_2^0, \dots, \pi_k = \pi_k^0\\ &H_1: \pi_i \ne \pi_i^0 \text{ for some } i \end{align}$$ </span>
+
+Note that $H_1$ is *not* $\pi_i \ne \pi_i^0 \text{ for all } i$. As long as one $\pi_i \ne \pi_i^0$ holds, the $H_0$ statement is not true.
+
+The test statistic is a chi-squared statistic from the chi-squared distribution with degrees of freedom $k-1$. Under $H_0$, the test statistic is
+
+<span style="color:blue"> $$\chi^2_{test} = \frac{(O_1 - E_1)^2}{E_1} + \frac{(O_2 - E_2)^2}{E_2} + \cdots + \frac{(O_k - E_k)^2}{E_k},$$ where $O_i$ is the observed count of the $i$-th category, and $E_i = n\pi_i^0$ is the expected count of the $i$-th category, $i = 1, \dots, k.$ </span>
+
+The goodness-of-fit test is a **chi-squared test** that is always *right-tailed*. So we reject $H_0$ if <span style="color:blue"> $\chi^2_{test} > \chi^2_{\alpha, k-1}$. </span> Look at the test statistic formula carefully. When will the test statistic be large or the evidence be strong? The numerator term $(O_i-E_i)^2$ is the squared distance between the observed and expected counts. When the two are farther away from each other, the test statistic or evidence will be stronger. As a result, when the observed count distribution is more inconsistent with the distribution we expect to see, it is more likely to conclude that the sample is not randomly drawn from the claim or assumed population distribution.
+
+Back to our example.
 
 |  | White  | Black | Hispanic | Asian | Total |
 |:-----:|:-----:|:-----:|:-----:|:-----:|
@@ -117,15 +197,19 @@ knitr::include_graphics("./images/img-infer/diversity.jpeg")
 | Expected Count | $E_1 = 198$ | $E_2 = 19.25$   |  $E_3 = 33$ |  $E_4 = 24.75$  | $n = 275$ |
 | Proportion under $H_0$ | $\pi_1^0 = 0.72$ | $\pi_2^0 = 0.07$ |  $\pi_3^0 = 0.12$ |  $\pi_4^0 = 0.09$  | $1.00$ | 
 
-- Under $H_0$, $\chi^2_{test} = \frac{(205 - 198)^2}{198} + \frac{(26 - 19.25)^2}{19.25} + \frac{(25 - 33)^2}{33} + \frac{(19 - 24.75)^2}{24.75} = 5.89$
-- $\chi^2_{0.05, 3} = 7.81$.
-- Because $5.89 < 7.81$, we fail to reject $H_0$ in favor of $H_1$. 
-- We do not have convincing evidence of racial bias in the juror selection process.
+Under $H_0$, $\chi^2_{test} = \frac{(205 - 198)^2}{198} + \frac{(26 - 19.25)^2}{19.25} + \frac{(25 - 33)^2}{33} + \frac{(19 - 24.75)^2}{24.75} = 5.89$.
+
+
+With $\alpha = 0.05$, $\chi^2_{0.05, 3} = 7.81$. Because $5.89 < 7.81$, we fail to reject $H_0$ in favor of $H_1$. Therefore, we do not have convincing evidence of racial bias in the juror selection process.
+
+
 
 <span style="color:red"> ***Goodness-of-Fit Test in R*** </span>
 
-- Below is an example of how to perform a Goodness-of-Fit test in R.
-```{r, echo=TRUE}
+Below is an example of how to perform a goodness-of-fit test in R. Because the goodness-of-fit test is a chi-squared test, we use the function `chisq.test()`. The argument `x` is the observed count vector of length $k$, and the argument `p` is the hypothesized proportion distribution which is a vector of probabilities of the same length as `x`. The function does not provide the critical value, but it gives us the $p$-value. Since the $p$-value is greater than $0.05$, we do not reject $H_0$.
+
+```{r}
+#| echo: true
 obs <- c(205, 26, 25, 19)
 pi_0 <- c(0.72, 0.07, 0.12, 0.09)
 
@@ -134,90 +218,163 @@ chisq.test(x = obs, p = pi_0)
 ```
 
 
+
+:::{.callout-note}
+The chi-squared test can be used in two-sided one-sample proportion test. Suppose we are doing the following test
+
+$$\begin{align} &H_0: \pi_1 = 0.5,  \pi_2 = 0.5 \\ &H_1: \pi_i \ne 0.5 \text{ for some } i \end{align}$$
+
+Because there are only two categories, we automatically know the value of $\pi_2$ when we know the value of $\pi_1$ as $\pi_2 = 1 - \pi_1$. So the hypothesis can be reduced to 
+
+$$\begin{align} &H_0: \pi_1 = 0.5 \\ &H_1: \pi_1 \ne 0.5 \end{align}$$ or even
+
+$$\begin{align} &H_0: \pi = 0.5 \\ &H_1: \pi \ne 0.5 \end{align}$$
+when we use $\pi$ for the proportion of the first category and $1-\pi$ for the second. We just transform a chi-squared test setting into a two-sided one-sample proportion test setting!
+
+Suppose $n = 1000$, $O_1 = 520$, $O_2 = 480$, $\pi_1^0 = \pi_2^0 = 0.5$. Our chi-squared test is
+
+```{r}
+chisq.test(x = c(520, 480), p = c(0.5, 0.5))
+```
+
+In the language of the one-sample proportion test, we have $n = 1000$, $y = 520$, $\pi^0 = 0.5$. $(y = O_1 = 520, n-y = O_2 = 480)$
+
+```{r}
+prop.test(x = 520, n = 1000, p = 0.5, alternative = "two.sided", 
+          correct = FALSE)
+```
+
+
+Do you see the two tests are equivalent? They have the same test statistic, degrees of freedom as well as $p$-value. Both lead to the same conclusion. 
+:::
+
+
+
 ## Test of Independence
+
+So far we consider one categorical variable with general $k$ categories. In some situations, we have two categorical variables being considered, and we wonder if one affects the other distribution. Formally, we want to test *whether or not the two variables are independent* each other. The test doing this is the **independence test**.
+
 
 <span style="color:blue"> **Contingency Table and Expected Count**
 
 <span style="color:red"> ***Contingency Table*** </span>
 
-- We have TWO categorical variables, and we want to test **whether or not the two variables are independent**.
+Let's start with an example. A popular question in politics is *"Does the opinion of the President's job performance depend on gender?"*  This question may involve two categorical variables such as
 
-- <span style="color:blue"> Does the opinion of the President's job performance depend on gender?  </span>
-
-::::{.columns}
-:::{.column width="49%"}
 - **Job performance**: approve, disapprove, no opinion
+
 - **Gender**: male, female
 
-|  | Approve  | Disapprove | No Opinion 
-|:-----:|:-----:|:-----:|:-----:|
-| **Male** | 18 | 22  |  10 |
-| **Female** | 23 | 20 | 12 |
+<!-- - We have TWO categorical variables, and we want to test **whether or not the two variables are independent**. -->
+
+<!-- - <span style="color:blue"> Does the opinion of the President's job performance depend on gender?  </span> -->
+
+To answer such question, as every other test, we collect our data and see if there is any sufficient evidence to say the two variables are dependent. When two categorical variables are involved, we usually summarize the data in a **contingency table** or **two-way frequency/count table** as shown below.
+
+::::{.columns}
+:::{.column width="65%"}
+
+
+|  | Approve  | Disapprove | No Opinion |  Total | 
+|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|
+| **Male** | 18 | 22  |  10 | 50 |
+| **Female** | 23 | 20 | 12 | 55 |
+| **Total** | 41 | 42 | 22 | 105 |
 :::
 
 :::{.column width="2%"}
 :::
 
-:::{.column width="49%"}
-```{r, echo=FALSE, out.width="100%", fig.align='center'}
+:::{.column width="33%"}
+```{r}
 knitr::include_graphics("./images/img-infer/approval_rate.png")
 ```
 :::
 ::::
 
+
+
+When we consider a two-way table, we often would like to know, are these variables related in any way? That is, are they dependent (versus independent)? If President's approval rate has nothing to do with gender, the Job performance distributions in the male and female groups should be similar or consistent. In other words, whether or not the person is male or female does not affect how President's job performance is viewed.
+
+
+
 <span style="color:red"> ***Expected Count*** </span>
 
-- Compute the *expected* count of each cell in the two-way table under the condition that the *two variables __are independent__* of each other.
+The idea is similar to goodness-of-fit test. We first calculate the *expected* count in each cell (*Total row and column are excluded*) in the contingency table, the count we expect to see under the condition that *the two variables are independent*. We always do our analysis in the world of null hypothesis that two variables have no relationship.
+
+<!-- - Compute the *expected* count of each cell in the two-way table under the condition that the *two variables __are independent__* of each other. -->
 
 
 |  | Approve  | Disapprove | No Opinion | Total | 
-|:-----:|:-----:|:-----:|:-----:|
+|:-----:|:-----:|:-----:|:-----:|:-----:|
 | **Male** | 18 (19.52) | 22 (20)  |  10 (10.48) | 50 |
 | **Female** | 23 (21.48) | 20 (22) | 12  (11.52)| 55 |
 | **Total** | 41 | 42 | 22 | 105 |
 
-- The expected count for the $i$-th row and $j$-th column, which is listed in parentheses in the table above, is:
+The expected count for the $i$-th row and $j$-th column, which is listed in parentheses in the table above, is calculated by:
 $$\text{Expected Count}_{\text{row i; col j}} = \frac{\text{(row i total}) \times (\text{col j total})}{\text{table total}}$$
+For example, the expected count of Disapprove in the Female group is $$\text{Expected Count}_{\text{row 2; col 2}} = \frac{\text{(row 2 total}) \times (\text{col 2 total})}{\text{table total}} = \frac{42 \times 55}{105} = 22.$$
+
+We are ready for doing test of independence once all expected counts are obtained.
+
 
 --------------------------------------------------------------------
 
 <span style="color:blue"> **Test of Independence Procedure** </span>
 
-- Requirements:
-  + Every $E_{ij} \ge 5$ in the contingency table. 
-- <span style="color:blue"> $\begin{align} &H_0: \text{Two variables are independent }\\ &H_1: \text{The two are dependent (associated) } \end{align}$</span>
-- $\chi^2_{test} = \sum_{i=1}^r\sum_{j=1}^c\frac{(O_{ij} - E_{ij})^2}{E_{ij}}$, where $r$ is the number of rows and $c$ is the number of columns in the table.
-- Reject $H_0$ if $\chi^2_{test} > \chi^2_{\alpha, \, df}$, $df = (r-1)(c-1)$.
+The test of independence requires that every expected count $E_{ij} \ge 5$ in the contingency table. The higher the better.
+
+As we discussed before, we believe the variables are independent unless strong evidence says they are not. So our hypotheses are <span style="color:blue"> $$\begin{align} &H_0: \text{Two variables are independent }\\ &H_1: \text{The two are dependent (associated) } \end{align}$$</span>
+
+The test statistic formula is pretty similar to the test of goodness-of-fit. The test of independence is also a chi-squared test. The chi-squared test statistic is
+
+<span style="color:blue">$$\chi^2_{test} = \sum_{i=1}^r\sum_{j=1}^c\frac{(O_{ij} - E_{ij})^2}{E_{ij}},$$</span> where $r$ is the number of rows and $c$ is the number of columns in the contingency table. The idea is the same as the test of goodness-of-fit. Under the assumption of independence, if the observed counts are far away from the counts we should expect to see, we get a larger test statistic, and tend to conclude that the independence assumption is not reasonable.
+
+The chi-squared test is right-tailed, so we reject $H_0$ if $\chi^2_{test} > \chi^2_{\alpha, \, df}$, where $df = (r-1)(c-1)$.
 
 <span style="color:red"> ***Example*** </span>
 
 |  | Approve  | Disapprove | No Opinion | Total | 
-|:-----:|:-----:|:-----:|:-----:|
+|:-----:|:-----:|:-----:|:-----:|:-----:|
 | **Male** | 18 (19.52) | 22 (20)  |  10 (10.48) | 50 |
 | **Female** | 23 (21.48) | 20 (22) | 12  (11.52)| 55 |
 | **Total** | 41 | 42 | 22 | 105 |
 
-- <span style="color:blue"> $\begin{align} &H_0: \text{ Opinion does not depend on gender } \\ &H_1: \text{ Opinion and gender are dependent } \end{align}$</span>
-- $\small \chi^2_{test} = \frac{(18 - 19.52)^2}{19.52} + \frac{(22 - 20)^2}{20} + \frac{(10 - 10.48)^2}{10.48} + \frac{(23 - 21.48)^2}{21.48} + \frac{(20 - 22)^2}{22} + \frac{(12 - 11.52)^2}{11.52}= 0.65$
-- $\chi^2_{\alpha, df} =\chi^2_{0.05, (2-1)(3-1)} = 5.991$.
-- Since $\chi_{test}^2 < \chi^2_{\alpha, df}$, we do not reject $H_0$. 
-- We fail to conclude that the opinion of the President's job performance depends on gender.
+<span style="color:blue"> $$\begin{align} &H_0: \text{ Opinion does not depend on gender } \\ &H_1: \text{ Opinion and gender are dependent } \end{align}$$</span>
+
+
+The test statistic is $$\small \chi^2_{test} = \frac{(18 - 19.52)^2}{19.52} + \frac{(22 - 20)^2}{20} + \frac{(10 - 10.48)^2}{10.48} + \frac{(23 - 21.48)^2}{21.48} + \frac{(20 - 22)^2}{22} + \frac{(12 - 11.52)^2}{11.52}= 0.65$$
+
+
+The critical value is $\chi^2_{\alpha, df} =\chi^2_{0.05, (2-1)(3-1)} = 5.991$. Since $\chi_{test}^2 < \chi^2_{\alpha, df}$, we do not reject $H_0$. Therefore we fail to conclude that the opinion of the President's job performance depends on gender.
 
 <span style="color:red"> ***Test of Independence in R*** </span>
 
-- Below is an example of how to perform the test of independence using R. 
+Calculating all the expected counts is tedious, especially when the variables have many categories. In practice we never calculate them by hand, and use computing software to do so. Below is an example of how to perform the test of independence using R. Since the test of independence is a chi-squared test, we still use the `chisq.test()` function. This time we need to prepare the contingency table as a matrix, and put the matrix in the `x` argument in the function. That's it! R does everything for us. If we save the result as an object like `ind_test` which is a R list, we can get access to information related to the test, such as the expected counts `ind_test$expected`.
 
-```{r independence_test, tidy=FALSE, echo=2:7}
-## (4) Test of Independence ## Job Performance Example
+```{r}
+#| echo: true
 (contingency_table <- matrix(c(18, 23, 22, 20, 10, 12), nrow = 2, ncol = 3))
 
 ## Using chisq.test() function
-(indept_test <- chisq.test(contingency_table))
+(ind_test <- chisq.test(x = contingency_table))
 
-qchisq(0.05, df = (2 - 1) * (3 - 1), lower.tail = FALSE)  ## critical value
+## extract expected counts
+ind_test$expected
 
-# indept_test$expected; indept_test$statistic; indept_test$p.value
+## critical value
+qchisq(0.05, df = (2 - 1) * (3 - 1), lower.tail = FALSE)  
 ```
+
+
+
+## Test of Homogeneity
+
+Test of homogeneity is a generalization of the two-sample proportion test. This test determines if two or more populations (or subgroups of a population) have the same distribution of a single categorical variable having two or more categories.
+
+More to be added.
+
+
 
 ## Exercises
 
