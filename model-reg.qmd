@@ -1,6 +1,10 @@
 # Linear Regression {#sec-model-reg}
 
-```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: packages
 library(openintro)
 library(knitr)
 library(emoji)
@@ -13,30 +17,71 @@ library(sets)
 library(parsnip)
 ```
 
+```{r}
+#| echo: false
+knitr::opts_chunk$set(echo = FALSE, fig.align = "center")
+```
+
+```{r}
+hook_output <- knitr::knit_hooks$get("output")
+knitr::knit_hooks$set(output = function(x, options) {
+  lines <- options$output.lines
+  if (is.null(lines)) {
+    return(hook_output(x, options))  # pass to default hook
+  }
+  x <- unlist(strsplit(x, "\n"))
+  more <- "..."
+  if (length(lines)==1) {        # first n lines
+    if (length(x) > lines) {
+      # truncate the output, but add ....
+      x <- c(head(x, lines), more)
+    }
+  } else {
+    x <- c(more, x[lines], more)
+  }
+  # paste these lines together
+  x <- paste(c(x, ""), collapse = "\n")
+  hook_output(x, options)
+})
+```
+
+
+**Linear regression** is a **regression model** which is a statistical technique for investigating and modeling the *relationships between variables*. If your data set only have one variable, or you just want to analyze one single variable in your data, you do not need regression at all. But you'd like to see how one variable affects another, how one changes with the another, or use one variable to predict another variable, regression may be your top choice. Linear regression assumes the relationships between variables or transformed variables is linear. Although the linear assumption is quite naive, it is a must starting point for understanding advanced regression models, and believe or not, the linear model is still popular at present because of its interpretability, and has a pretty decent performance for some problems.
+
+<!-- We first define the linear correlation between two numerical variables -->
+
+
 ## Correlation
 
 <span style="color:blue"> **Relationship Between 2 Numerical Variables** </span>
 
-- Depending on the situation, the two variables can be classified as the *explanatory* variable and the *response* variable. (Discussed in **Regression**)
-- However, there is not always an explanatory-response relationship.
-- Examples:
+We first define the linear correlation between two numerical variables. Depending on your research question, one may be classified as the **explanatory variable** and the other the **response variable**. However, in correlation, the two variables do not necessarily have such explanatory-response relationship, and they can be any numerical variables being interested. We will discuss the meaning of explanatory and response variable in the regression section.
+
+
+Can you provide an example that two variables are associated? Here I provide some examples.
+
   + <span style="color:blue"> height and weight </span> 
   + <span style="color:blue"> income and age </span> 
   + <span style="color:blue"> SAT/ACT math score and verbal score </span> 
   + <span style="color:blue"> amount of time spent studying for an exam and exam grade </span>
   
-:::{.callout-note icon=false}
-## Can you provide an example that 2 variables are associated?
-:::
+In each item, the two variables are related each other in some way. Usually the taller a person is, the heavier he is. Note that such relationship is not deterministic, but describe a general trend. We could have a 6'6" guy with 198 lbs, and a 5'9" with 220 lbs, but this an individual case, not an overall pattern. This concept is important because it is represented in the calculation of **correlation coefficient** and linear regression model.
+
+
+
+<!-- :::{.callout-note icon=false} -->
+<!-- ## Can you provide an example that 2 variables are associated? -->
+<!-- ::: -->
 
 ---------------------------------------------------------------
 
 <span style="color:blue"> **Scatterplots** </span>
 
-```{r scatterplot, echo=FALSE, tidy=FALSE, out.width="90%", fig.asp=0.4, fig.align='center'}
+```{r}
 #| label: fig-scatterplot
 #| fig-cap: Examples of scatterplots
-par(mar=c(3,3,1,0))
+#| fig-asp: 0.4
+par(mar=c(3,3,1,1))
 par(mgp=c(2, 0.8, 0))
 par(mfrow = c(1, 2))
 plot(mtcars$wt, mtcars$mpg, main = "Linear pattern", xlab = "Car Weight", ylab = "Miles Per Gallon ", pch = 16, col = 4, las = 1)
@@ -45,31 +90,47 @@ plot(faithful$eruptions, faithful$waiting, main = "Clusters", xlab = "Eruption d
      ylab = "Time waited", pch = 16, col = 4, las = 1)
 ```
 
-- The overall pattern can be described in several ways.
-  + Form: linear or clusters
-  + Direction: positively associated or negatively associated
-  + Strength: how close the points lie to a line/curve
+The most clear way to show the relationship between two numerical variables is to create a scatterplot. The overall pattern or relationship can be detected several ways in a scatterplot.
+
+  + *Form*: As shown in @fig-scatterplot, the relationship between the two variables may be linear. Heavier cars tend to be less fuel efficient. The subjects in the data may be separated into two groups or clusters based on the value of the two variables. The volcano's eruption duration and time waited are either small or large. Scatterplts can show other patterns such as quadratic, cubic or any other nonlinear relationships. In this chapter, we stay with the linear relationship.
+  
+  + *Direction*: The variables can be positively associated or negatively associated, or not associated. In the scatterplot, the linear pattern is described by a line summarized by the data points in the plot. If the slope of the line is positive (negative), the two variables are positively (negatively) associated, meaning that one gets large as the other gets small. If the slope of the line is zero, the two variables have no association, and whether one variable's value is large or small does not affect the other variable's value.
+  
+  + *Strength*: Strength is how close the data points lie to the line or nonlinear curve trend in the scatter plot. The variables' relationship is strong (weak) if the data points are pretty close (far away) to the line.
+
+
+Although scatterplots can show form, direction, and strength of the relationship, we often want to have a numerical measure that can quantify these properties. If the relationship is linear, we use **linear correlation coefficient** to quantify the direction and strength of the linear relationship.
+
 
 ---------------------------------------------------------------------
 
 <span style="color:blue"> **Linear Correlation Coefficient** </span>
 
-- The *sample* **correlation coefficient**, denoted by $r$, measures the *direction* and *strength* of the **linear** relationship between two numerical variables:
-$$\small r :=\frac{1}{n-1}\sum_{i=1}^n\left(\frac{x_i-\overline{x}}{s_x}\right)\left(\frac{y_i-\overline{y}}{s_y}\right) = \frac{\sum_{i=1}^n(x_i-\overline{x})(y_i-\overline{y})}{\sqrt{\sum_{i=1}^n(x_i-\overline{x})^2\sum_{i=1}^n(y_i-\overline{y})^2}}$$
+The *sample* **correlation coefficient**, denoted by $r$, measures the *direction* and *strength* of the *linear* relationship between two numerical variables $X$ and $Y$:
+$$r :=\frac{1}{n-1}\sum_{i=1}^n\left(\frac{x_i-\overline{x}}{s_x}\right)\left(\frac{y_i-\overline{y}}{s_y}\right) = \frac{\sum_{i=1}^n(x_i-\overline{x})(y_i-\overline{y})}{\sqrt{\sum_{i=1}^n(x_i-\overline{x})^2\sum_{i=1}^n(y_i-\overline{y})^2}}$$
 
-::::{.columns}
-:::{.column width="50%"}
-<br>
+This is the sample coefficient because the statistic is calculated by the sample data. [^1] 
 
-- $-1 \le r\le 1$
-- $r > 0$: The **larger** value of $X$ is, the **larger** value of $Y$ tends to be.
-- $r = 1$: Perfect positive linear relationship.
-:::
 
-:::{.column width="50%"}
-```{r, echo=FALSE, out.width="100%", fig.align='center'}
+[^1]: The random variables $X$ and $Y$ have the population correlation coefficient defined by $$\rho = \frac{E\left[\left(X - \mu_X \right)\left(Y - \mu_Y\right)\right]}{\sigma_X\sigma_Y},$$ where $\mu_X$ is the mean of $X$, $\mu_Y$ is the mean of $Y$, $\sigma_X$ is the standard deviation of $X$, and $\sigma_Y$ is the standard deviation of $Y$. For more details, take a probability course or read a probability book.
+
+
+You don't need to memorize the formula, but it would be great if you can understand how the formula is related to the scatter plot, and why the formula can quantify the direction and strength of the linear relationship.
+
+<!-- ::::{.columns} -->
+<!-- :::{.column width="50%"} -->
+<!-- <br> -->
+
+First, the coefficient is between negative one and positive one, $-1 \le r\le 1$. $r > 0$ means positive relationship, so the *larger* value of $X$ is, the *larger* value of $Y$ tends to be. If $r = 1$, we have the strongest or perfect positive linear relationship. If we connect all the data points by a line segment, all line segments form a positively sloped straight line as shown in @fig-correlation.
+<!-- ::: -->
+
+<!-- :::{.column width="50%"} -->
+
+Let's look at @fig-positive and see how the formula and the scatter plot are related. Since $s_x$, $s_y$, and $n$ are positive, the sign of coefficient $r$ is determined by the sum $\sum_{i=1}^n (x_i - \overline{x})(y_i - \overline{y})$. When the two variables are positively correlated, there are more data points in the first and third quadrants, and less data points in the second and fourth quadrants, where the quadrants are separated by $(\overline{x}, \overline{y})$. Therefore, $(x_i - \overline{x})(y_i - \overline{y}) >0$ in the first and third quadrants, and $(x_i - \overline{x})(y_i - \overline{y}) < 0$ in the second and fourth quadrants. Since we have more positive terms of $(x_i - \overline{x})(y_i - \overline{y})$ the sum $\sum_{i=1}^n (x_i - \overline{x})(y_i - \overline{y})$, and the coefficient $r$ is positive.
+
+```{r}
 #| label: fig-positive
-#| fig-cap: Positive correlation between two variables
+#| fig-cap: Positive correlation between two variables.
 cor_n08 <- mvtnorm::rmvnorm(n = 200, mean = c(0, 0), 
                           sigma = matrix(c(1, -0.8, -0.8, 1), 2, 2))
 cor_p08 <- mvtnorm::rmvnorm(n = 200, mean = c(0, 0), 
@@ -87,19 +148,19 @@ text(-1.5, -2.5, expression((x[i] - bar(x))(y[i] - bar(y)) > 0), cex = 1.5, col 
 text(-1.5, 2.5, expression((x[i] - bar(x))(y[i] - bar(y)) < 0), cex = 1.5, col = "red")
 text(0, 0, expression(paste( "(", bar(x), ",", bar(y), ")")), cex = 1.5, col = "black")
 ```
-:::
-::::
+<!-- ::: -->
+<!-- :::: -->
 
-::::{.columns}
-:::{.column width="50%"}
-<br>
+<!-- ::::{.columns} -->
+<!-- :::{.column width="50%"} -->
+<!-- <br> -->
 
-- $r < 0$: The **larger** value of $X$ is, the **smaller** value of $Y$ tends to be.
-- $r = -1$: Perfect negative linear relationship
-:::
+When $r < 0$, the variables have a negative relationship. The *larger* value of $X$ is, the *smaller* value of $Y$ tends to be. When $r = -1$, we have the perfect or strongest negative linear relationship. @fig-negative illustrates the negative correlation between variables.
 
-:::{.column width="50%"}
-```{r, echo=FALSE, out.width="100%"}
+<!-- ::: -->
+
+<!-- :::{.column width="50%"} -->
+```{r}
 #| label: fig-negative
 #| fig-cap: Negative correlation between two variables
 par(mfrow = c(1, 1))
@@ -112,20 +173,26 @@ text(1.2, -2.5, expression((x[i] - bar(x))(y[i] - bar(y)) < 0), cex = 1.5, col =
 text(-1.5, -2.5, expression((x[i] - bar(x))(y[i] - bar(y)) > 0), cex = 1.5, col = "blue")
 text(-1.5, 2.5, expression((x[i] - bar(x))(y[i] - bar(y)) < 0), cex = 1.5, col = "red")
 ```
-:::
-::::
+<!-- ::: -->
+<!-- :::: -->
 
-::::{.columns}
-:::{.column width="50%"}
-<br>
+<!-- ::::{.columns} -->
+<!-- :::{.column width="50%"} -->
+<!-- <br> -->
 
-- $r = 0$: No **linear** relationship.
-- If the explanatory and response variables are switched, $r$ remains the same.
-- $r$ has no units of measurement, so scale changes do not affect $r$.
-:::
+When $r = 0$, it means the two variables have no *linear* relationship. The scatter plot @fig-no-correlation shows an example of no *linear* relationship of $X$ and $Y$. When $r = 0$, $\sum_{i=1}^n (x_i - \overline{x})(y_i - \overline{y}) = 0$, and the number of data points in each quadrant would be similar. Be careful, it is possible that $r = 0$ even the number is not the same.
 
-:::{.column width="50%"}
-```{r, echo=FALSE, out.width="100%"}
+One property of $r$ is that it has no units of measurement, so scale changes do not affect $r$. No matter what units of $X$ and $Y$ are, $r$ is always between negative one and positive one. The reason is that $x$ and $y$ are normalized in the coefficient formula.
+
+
+Last but not least. It is possible that there is a strong relationship between two variables, but they still have $r = 0$! Remember that the correlation coefficient $r$ measures the direction and and strength of the linear relationship. Yes, the linear relationship *ONLY*. If two variables don't have any relationship, they are not linearly correlated, and their correlation coefficient is 0. However, if $r = 0$, we can just say the two variables have no linear relationship, but they may be nonlinearly related, or associated in any other way.
+
+
+<!-- If the explanatory and response variables are switched, $r$ remains the same. -->
+<!-- ::: -->
+
+<!-- :::{.column width="50%"} -->
+```{r}
 #| label: fig-no-correlation
 #| fig-cap: No correlation between two variables
 par(mfrow = c(1, 1))
@@ -134,32 +201,30 @@ plot(cor_0, xlab= "X", ylab = "Y", main = "No correlation: r = 0", col = 4,
 abline(v = 0, col = 2, lty = 2)
 abline(h = 0, col = 2, lty = 2)
 ```
-:::
-::::
+<!-- ::: -->
+<!-- :::: -->
 
-<span style="color:red"> ***Example*** </span>
+<!-- <span style="color:red"> ***Example*** </span> -->
 
-- It is possible that there is a strong relationship between two variables, but they still have $r = 0$.
 
-```{r, out.width="100%", echo=FALSE, fig.align='center'}
+The bottom row in @fig-correlation shows several nonlinear $X$-$Y$ relationships that do not have linear association at all. Next time you see $r = 0$, don't over interpret the $X$-$Y$ relationship.
+
+
+```{r}
 #| label: fig-correlation
-#| fig-cap: Examples of relationships between two variables and their correlation coefficients (https://upload.wikimedia.org/wikipedia/commons/d/d4/Correlation_examples2.svg)
+#| fig-cap: Examples of relationships between two variables and their correlation coefficients. (https://upload.wikimedia.org/wikipedia/commons/d/d4/Correlation_examples2.svg)
 knitr::include_graphics("./images/img-model/corr_ex.svg")
 ```
 
 <span style="color:red"> ***Example in R*** </span>
 
+In R, we use the function `cor()` to calculate the correlation coefficient $r$. We put the two variables' data in the first two arguments `x` and `y`. Here we use the built-in `mtcars` dataset, and calculate the correlation between the high miles per gallon (`mpg`) and car weight (`wt`). The coefficient is $r =$ ```r round(cor(x = mtcars$wt, y = mtcars$mpg), 2)```. Usually, when $|r| > 0.7$, the linear relationship is considered strong, and $|r| < 0.3$ for weak linear relationship.
+
+
 ::::{.columns}
 :::{.column width="49%"}
-```{r, echo=TRUE, tidy=FALSE, out.width="100%", eval=FALSE, fig.align='center'}
-plot(x = mtcars$wt, y = mtcars$mpg, 
-     main = "MPG vs. Weight", 
-     xlab = "Car Weight", 
-     ylab = "Miles Per Gallon", 
-     pch = 16, col = 4, las = 1)
-```
-
-```{r, echo=FALSE, tidy=FALSE, out.width="100%", fig.align='center'}
+```{r}
+#| echo: true
 plot(x = mtcars$wt, y = mtcars$mpg, 
      main = "MPG vs. Weight", 
      xlab = "Car Weight", 
@@ -172,95 +237,140 @@ plot(x = mtcars$wt, y = mtcars$mpg,
 :::
 
 :::{.column width="49%"}
-```{r, echo=TRUE}
+```{r}
+#| echo: true
 cor(x = mtcars$wt,
     y = mtcars$mpg)
 ```
 
-```{r, out.width="100%", echo=FALSE, fig.align='center'}
+```{r}
+#| fig-cap: "Source: unsplash-sippakorn yamkasikorn"
 knitr::include_graphics("./images/img-model/car.jpeg")
 ```
 :::
 ::::
 
-## Introduction to Regression
+## Meaning of Regression
 
 <span style="color:blue"> **What is Regression?** </span>
 
-- **Regression** models the relationship between one or more numerical/categorical **response variables $(Y)$** and one or more numerical/categorical **explanatory variables $(X)$**.
-- A **regression function**, $f(X)$, describes how a response variable, $Y$, on average, changes as an explanatory variable, $X$, changes.
+**Regression** models the relationship between one or more numerical/categorical **response variables $(Y)$** and one or more numerical/categorical **explanatory variables $(X)$**. We use explanatory variables to *explain* the behavior of the response variables, or how the response variables *response* to the changes of the explanatory variables.
 
-::::{.columns}
-:::{.column width="50%"}
-- Examples:
-  + <span style="color:blue"> College GPA $(Y)$ vs. ACT/SAT score $(X)$</span>
-  + <span style="color:blue"> Sales $(Y)$ vs. Advertising Expenditure $(X)$</span>
-  + <span style="color:blue"> Crime Rate $(Y)$ vs. Median Income Level $(X)$ </span>
-:::
+Explanatory variables are also called **independent variables**, **predictors**, **regressors**, **covariates**, **exogenous variables**, and **inputs**. Response variables are also called **dependent variables**, **targets**, **endogenous variables**, **outcome variables**, **outputs**, and **labels**.
 
-:::{.column width="50%"}
-```{r, echo=FALSE, out.width="100%", fig.align='center'}
+The followings are some examples.
+
+- Predict <span style="color:blue"> College GPA $(Y)$ using students' ACT/SAT score $(X)$ </span>
+
+- Estimate how much <span style="color:blue"> Sales $(Y)$ increase as Advertising Expenditure $(X)$ increases $1000 dollars </span>
+
+- How the <span style="color:blue"> Crime Rate $(Y)$ in some county changes with the Median Household Income Level $(X)$ </span>
+
+  
+In regression, we use a **regression function**, $f(X)$, to describe how a response variable $Y$, *on average*, changes as an explanatory variable $X$ changes. In other words, the regression function captures the *general pattern* or relationship between $X$ and $Y$.
+
+Let's first *pretend* we know what the true regression function $f(X)$ is.
+
+For a general regression model, the function needs not be linear, and could be of any type. @fig-regression-function is an example of a regression function $f(X)$ which is log-shaped. The idea is that for each value of the predictor $x$, the response value $y$ is generated based on the value of $x$ and the regression function $f(x)$. However, while the $X$-$f(X)$ relationship is deterministic, the $X$-$Y$ relationship is not, even though the $y$ value is pretty close to $f(x)$ given some value of $x$. That's why if we collect sample data, we will have the two variable data $(x_i, y_i)$ as the blue points scattered around the function $f(x)$. For any value of $x$, the data generating mechanism for $y$ takes the level of $x$ into account through $f(x)$, but also includes some other factors that affect the value of $y$. As a result, $y \ne f(x)$ in general, and we have $$y = f(x) + \text{some value caused by factors other than } x.$$
+
+
+
+<!-- ::::{.columns} -->
+<!-- :::{.column width="50%"} -->
+<!-- - Examples: -->
+<!--   + <span style="color:blue"> College GPA $(Y)$ vs. ACT/SAT score $(X)$</span> -->
+<!--   + <span style="color:blue"> Sales $(Y)$ vs. Advertising Expenditure $(X)$</span> -->
+<!--   + <span style="color:blue"> Crime Rate $(Y)$ vs. Median Income Level $(X)$ </span> -->
+<!-- ::: -->
+
+<!-- :::{.column width="50%"} -->
+```{r}
 #| label: fig-regression-function
-#| fig-cap: Example of a Regression Function
+#| fig-cap: Example of a Regression Function.
 par(mar = c(2, 2, 0, 0), mgp = c(1, 0.2, 0))
-x <- runif(100, 0, 10)
+x <- runif(200, 0, 10)
 y_linear <- 5 + 2 * x + rnorm(100, sd = 1)
 y_quad <- log(x) + rnorm(100, sd = 0.3)
 plot(x, y_quad, pch = 16, col = 4, xlab = "X", ylab = "Y", xaxt='n', yaxt = "n")
 lines(sort(x), log(sort(x)), col = 2, lwd = 3)
 legend("bottomright", c("data points", "f(X)"), col = c(4, 2), lwd = c(NA, 3), pch = c(16, NA), bty = "n")
 ```
-:::
-::::
+<!-- ::: -->
+<!-- :::: -->
+For example, if you want to use a student's SAT/ACT Score ($X$) to predict his College GPA ($Y$), you can assume $Y$ is affected by $X$ through the regression function $f(X)$. However, do you think  SAT/ACT Score is the *only* factor that affects one's college academic performance? Absolutely not. The regression function $f(X)$ does not explain all the possible variation of $Y$. Therefore, even the SAT/ACT Score is fixed at some level, an individual college GPA may be lower than the function value $f(x)$ due to other factors such as less time spent on studying. How do we treat factors other than $X$? In regression, when $X$ has been taken into account, we think these factors affect the value of $Y$ in a random way with no significant pattern.
+ 
+
+Although $Y \ne f(X)$ in general, in regression we believe or make a assumption that *the mean or expected value of $Y$ at $X = x$ is $f(x)$, the regression function value at $X = x$!* That is, mathematically $E(Y \mid X=x) = \mu_{Y \mid X = x} = f(x)$. Therefore, $$Y_{\mid X = x} = \mu_{Y\mid X = x} + \text{some value caused by factors other than } x.$$
+
+Now we have learned an important concept in regression: the regression function $f(x)$ describes the *general* or *average* relationship between $X$ and $Y$, or the relationship between $X$ and the mean of $Y$, $\mu_Y$, *not the relationship between $X$ and individual $Y$.* In regression, we care about $f(x)$ because it tells us how the response $Y$ changes *on average* in response to the changes of $X$. For the GPA example, $f(x)$ enables us to know how SAT/ACT Score affects College GPA in general, regardless of other factors. We don't care about individual variation or up and downs because those have nothing to do with $X$, and do not help us capture the pattern or relationship. If for each value of SAT/ACT Score, we were able to repeatedly collect a College GPA, the effect of other factors on College GPA will be washed out when those College GPA values are averaged.
+
 
 --------------------------------------------------------------
 
 <span style="color:blue"> **Unknown Regression Function** </span>
 
-- The true relationship between $X$ and the mean of $Y$, the regression function $f(X)$, is **unknown**.
-- The collected data $(x_1, y_1), (x_2, y_2), \dots, (x_n, y_n)$ are all we know and have.
+Unfortunately the true underlying relationship between $X$ and the mean of $Y$, the regression function $f(X)$, is usually *unknown* to us although we are interested in it. In reality, what we have is the scatter plot like @fig-unknown-reg-function, or the sample data $(x_1, y_1), (x_2, y_2), \dots, (x_n, y_n)$, the blue points. What statistics comes into play is that we try to uncover or estimate the function from our data, get to know how $Y$ is generated at a given value of $X$, and use the function to *predict* the value of $Y$ given a value of $X$.
 
-```{r, echo=FALSE, out.width="60%", fig.align='center'}
+```{r}
 #| label: fig-unknown-reg-function
 #| fig-cap: Data with an unknown regression function
+par(mar = c(4, 4, 0, 0))
 plot(x, y_quad, pch = 16, col = 4, xlab = "X", ylab = "Y", xaxt='n', yaxt = "n")
 ```
-- Goal: **Estimate** $f(X)$ from our data, and use it to **predict** the value of $Y$ given a value of $X$.
+
+<!-- Note that the data points $(x_i, y_i)$ in @fig-regression-function are not right on the regression function, but scattered around the function. -->
+
+
+<!-- Goal: **Estimate** $f(X)$ from our data, and use it to **predict** the value of $Y$ given a value of $X$. -->
+
 
 ---------------------------------------------------------------
 
 <span style="color:blue"> **Simple Linear Regression** </span>
 
-- Start with **simple linear regression**. 
-  + There is **only one** predictor, $X$ (**known** and **constant**), and **one** response variable, $Y$.
-  + The regression function used for predicting $Y$ is a **linear** function. 
-  + Use a *regression line* in an X-Y plane to predict the value of $Y$ for a given value of $X = x$.
-  
-::::{.columns}
-:::{.column width="50%"}
-- **Math review**: A linear function $y = f(x) = \beta_0 + \beta_1 x$ represents a straight line.
-  + $\beta_1$: **slope**, the amount by which $y$ changes when $x$ increases by one unit
-  + $\beta_0$: **intercept**, the value of $y$ when $x = 0$
-  + The linearity assumption: $\beta_1$ does not change as $x$ changes.
-:::
+A regression model can be very general, considering lots of variables simultaneously and modeling a complex nonlinear regression function. We learn how to walk before how to run. So let's start with the very basic **simple linear regression**. The model is called "simple" because there is *only one* predictor $X$ and *one* response variable $Y$. The model is linear because the regression function used for predicting $Y$ is a linear function, i.e., $f(x) = \beta_0 + \beta_1x$. Therefore, we use a **regression line** in an X-Y plane to predict the value of $Y$ for a given value of $X = x$. Keep in mind that here the predictor $X$ is assumed *known* and *constant*. It is a variable but not a random variable. However, the response $Y$ is a random variable whose value depends on not only the value of $x$ through $f(x)$ but also a probability distribution. We will discuss it in more detail when we talk about the model.
 
-:::{.column width="50%"}
-```{r, echo=FALSE, out.width="100%", fig.align='center'}
+
+<!-- - Start with **simple linear regression**.  -->
+  <!-- + There is **only one** predictor, $X$ (**known** and **constant**), and **one** response variable, $Y$. -->
+  
+  <!-- + The regression function used for predicting $Y$ is a **linear** function.  -->
+  <!-- + Use a *regression line* in an X-Y plane to predict the value of $Y$ for a given value of $X = x$. -->
+  
+<!-- ::::{.columns} -->
+<!-- :::{.column width="50%"} -->
+Let's have a short math review. A linear function $y = f(x) = \beta_0 + \beta_1 x$ represents a straight line.
+
+  + $\beta_1$ is the **slope** of the line. It is the amount by which $y$ changes when $x$ increases by one unit.
+  
+  + $\beta_0$ is the **intercept** term which is the value of $y$ when $x = 0$.
+  
+The linearity assumption requires that $\beta_1$ does not change as $x$ changes.
+
+<!-- ::: -->
+
+<!-- :::{.column width="50%"} -->
+```{r}
 #| label: fig-regression-line
 #| fig-cap: Example of a regression line
 knitr::include_graphics("./images/img-model/reg_line.png")
 ```
-:::
-::::
+<!-- ::: -->
+<!-- :::: -->
 
 <span style="color:red"> ***Sample Data: Relationship Between X and Y*** </span>
 
-- Real data $(x_i, y_i), i = 1, 2, \dots, n$ do not form a perfect straight line!
-- $y_i = \beta_0+\beta_1x_i + \color{red}{\epsilon_i}$
+Back to statistics. Remember that we want to use our sample data to estimate the unknown regression function or regression line. Suppose our data set is the $x$-$y$ pairs $(x_i, y_i), i = 1, 2, \dots, n$. You can see in @fig-relationship-xy that simply connecting all data points does not form a straight line because again the value $y$ depends on both the regression function and some other factors that are not related to $x$. So $y_i \ne \beta_0+\beta_1x_i$ in general even if $f(x) = \beta_0+\beta_1x$ is the true regression function faithfully representing the linear relationship. 
 
-```{r,  echo=FALSE, out.width="70%", fig.align='center'}
+Now we need an additional variable to explain the deviations from the line and complete the modeling of data generating process. The deviation can be explained by a new variable $\epsilon$ that is the **error term** in regression. So the value $y$ is the function value $\beta_0 + \beta_1x$ plus the value of $\epsilon$:
+
+$$y_i = \beta_0+\beta_1x_i + \color{red}{\epsilon_i}$$
+
+
+
+```{r}
 #| label: fig-relationship-xy
-#| fig-cap: Actual relationship between X and Y isn't perfectly linear
+#| fig-cap: Actual relationship between X and Y isn't perfectly linear.
 load("./data/table11-1.rdata")
 data <- `table11-1`
 data <- data[order(data$x), ]
@@ -270,110 +380,197 @@ plot(data$x, data$y, xlab = "x", ylab = "y", pch = 19, col = "#003366", las = 1,
 abline(lm(data$y~data$x), col = "red")
 ```
 
-- When we collect our data, at any given level of $X = x$, $y$ is assumed to be drawn from a normal distribution (for inference purpose).
-- Its value varies and will not be exactly equal to its mean, $\mu_y$.
-```{r, echo=FALSE, out.width="90%", fig.align='center'}
+We learned that $Y$ is a random variable whose value varies with some probability distribution. We have $y = \beta_0+\beta_1x + \epsilon$, but $f(x) = \beta_0+\beta_1x$ is deterministic and constant given the value of $x$ because $\beta_0$ and $\beta_1$ are fixed constants although their value may not be known to us. The randomness of $y$ should come from the error term $\epsilon$. 
+
+:::{.callout-note}
+As we learned in random variable and sampling distribution, *before* we collect the sample, $Y$ (and $\epsilon$) is a random variable. Once data are collected, we have realized value $y$ (and realized $\epsilon$). The notation of $\epsilon$ is a little abused because $\epsilon$ could stand for a random variable or a realized value. Be careful about that and make sure you know which one it represents in the content.
+:::
+
+
+When we collect our data, at any given level of $X = x$, $y$ is assumed to be drawn from a normal distribution (for inference purpose). Its value varies and will not be exactly equal to its mean, $\mu_y$. @fig-normal-dist-red illustrates this idea. At any value of $x$, there is an associated normal distribution centered at the function value $\beta_0+\beta_1x$ or $\mu_{Y\mid X = x}$. Then we treat the value $y$ as a draw from the distribution. Of course due to the randomness of the distribution, $y$ will not be exactly equal to $\mu_{Y\mid X = x}$, but its value will be somewhat around the mean. If $\beta_1 > 0$, $\mu_{Y\mid X = x}$ gets large as $x$ goes up. As a result, the realized values of $y$ with all levels of $x$ will also have a upward linear trend centered around $\mu_{Y\mid X = x}$.
+
+<!-- The data points in the scatter plot are assumed to be generated in regression as follows.  -->
+
+```{r}
+#| label: fig-normal-dist-red
+#| fig-cap: "The responses, y, follows a normal distribution. Source: Introduction to the Practice of Statistics."
+#| out-width: 100%
+knitr::include_graphics("./images/img-model/regression_line_data.png")
+```
+
+
+If at every level of $x$, we collect $y$ value again, due to randomness, we are gonna get a different set of $y$s, as shown in @fig-normal-dist as blue points. Although the two sets of $y$s (red and blue) are different, both are centered around the mean $\mu_{Y\mid X = x}$, and embrace the same positive linear trend.
+
+
+```{r}
 #| label: fig-normal-dist
-#| fig-cap: Illustration that the responses, y, follow a normal distribution
+#| fig-cap: "Second sample. Source: Introduction to the Practice of Statistics."
+#| out-width: 100%
 knitr::include_graphics("./images/img-model/regression_line_data_blue.png")
 ```
 
-- The **mean of $Y$** and $X$ form a straight line.
+Finally let's relate the figure to the equation $y = \mu_{Y\mid X = x} + \epsilon$. Either red or blue points, the value $y$ is decomposed into two parts, $\mu_{Y\mid X = x}$ and $\epsilon$. They share the same baseline mean level but add a different size of random error $\epsilon$. It is the error that causes such up and downs or "noises" around the mean. If we ignore or wash out these noises, and let $\mu_{Y\mid X = x}$ speak up, the true underlying function describing the linear relationship will come up. The *mean of $Y$* and $X$ form a straight line. This regression line is what we care about. In reality we don't see it, but we assume it is there, and it determines the base level of $y$. We use the sample data to estimate this unseen line. Hopefully our estimated one is close to the true unseen one.
 
-```{r, echo=FALSE, out.width="100%", fig.align='center'}
+
+<!-- The **mean of $Y$** and $X$ form a straight line. -->
+
+```{r}
 #| label: fig-regression-mean
-#| fig-cap: Illustration that the regression line is formed from the mean of Y and X
+#| fig-cap: "The regression line is formed from the mean of Y and X. Source: Introduction to the Practice of Statistics."
+#| out-width: 100%
 knitr::include_graphics("./images/img-model/regression_line.png")
 ```
+
+
+
+
+:::{.callout-warning}
+We never know the true regression function. In linear regression, we assume the function is linear. This assumption may be inappropriate or completely wrong. We need **model adequacy checking** to examine whether linearity assumption makes sense. At this moment, let's put this issue aside, and assume the true function is linear.
+:::
+
 
 ----------------------------------------------------------------
 
 <span style="color:blue"> **Simple Linear Regression Model (Population)** </span>
 
-- For the $i$-th measurement in the target population, 
+We now formally write down the simple linear regression model.
+
+
+For the $i$-th measurement in the target population, 
 $$Y_i = \beta_0 + \beta_1X_i + \epsilon_i$$
-  + $Y_i$: the $i$-th value of the response (random) variable.
-  + $X_i$: the $i$-th **fixed known** value of the predictor.
-  + $\epsilon_i$: the $i$-th random error with the assumption $\epsilon_i \stackrel{iid}{\sim} N(0, \sigma^2)$.
-  + $\beta_0$ and $\beta_1$ are model **coefficients**.
-  + $\beta_0$, $\beta_1$ and $\sigma^2$ are **fixed unknown parameters** to be estimated from the sample data once we collect them.
+
+  + $Y_i$ is the $i$-th value of the response (random) variable.
+  + $X_i$ is the $i$-th *fixed known* value of the predictor.
+  + $\epsilon_i$ is the $i$-th random error with the assumption $\epsilon_i \stackrel{iid}{\sim} N(0, \sigma^2)$.
+  + $\beta_0$ and $\beta_1$ are model or regression *coefficients*.
+  
+$f(X) = \beta_0 + \beta_1X$ is the population regression line that describes the true relationship between $X$ and the mean of $Y$ in the population.
+
+$\beta_0$, $\beta_1$ and $\sigma^2$ are *fixed unknown parameters* to be estimated from the sample data once we collect them. Once we learn $\beta_0$ and $\beta_1$, we know the regression line $\beta_0 + \beta_1X_i$, and know how $X$ affects $Y$. Once we learn $\sigma^2$, we know how much $Y$ is scattered and deviated from its mean.
 
 <span style="color:red"> ***Important Features of Model $Y_i = \beta_0 + \beta_1X_i + \epsilon_i$***
 
-::::{.columns}
-:::{.column width="50%"}
-$\epsilon_i \stackrel{iid}{\sim} N(0, \sigma^2)$
+<!-- ::::{.columns} -->
+<!-- :::{.column width="50%"} -->
+The setting $\epsilon_i \stackrel{iid}{\sim} N(0, \sigma^2)$ implies several important features of the regression model.
+
+First, the mean of $\epsilon_i$ is zero. In other words, the mean of $Y$ at any given level of $X$ is described by the population regression line,
+
 \begin{align*}
 \mu_{Y_i \mid X_i} &= E(\beta_0 + \beta_1X_i + \epsilon_i) \\
 &= \beta_0 + \beta_1X_i
 \end{align*}
 
-- The **mean response**, $\mu_{Y\mid X}$, has a **straight-line** relationship with $X$ given by a population regression line
-  $$\mu_{Y\mid X} = \beta_0 + \beta_1X$$
+:::{.callout-note}
+- $E(c) = c$ if $c$ is a constant. For example the mean of 5 is 5. $E(5) = 5$.
+- For variable or constant $A$ and $B$, $E(A+B) = E(A) + E(B)$.
+
+Since $\beta_0 + \beta_1X_i$ is a constant, $E(\beta_0 + \beta_1X_i + \epsilon_i) = E(\beta_0 + \beta_1X_i) + E(\epsilon_i) = \beta_0 + \beta_1X_i + 0 = \beta_0 + \beta_1X_i.$
 :::
 
-:::{.column width="50%"}
-```{r, echo=FALSE, out.width="100%", fig.align='center'}
+
+
+The mean response, $\mu_{Y\mid X}$, has a *straight-line* relationship with $X$ given by a population regression line $$\mu_{Y\mid X} = \beta_0 + \beta_1X$$
+<!-- ::: -->
+
+<!-- :::{.column width="50%"} -->
+```{r}
 #| label: fig-straight-line
-#| fig-cap: Illustration of the straight line relationship between $\mu_{Y\mid X}$ and $X$
+#| fig-cap: The straight line relationship between $\mu_{Y\mid X}$ and $X$.
+#| out-width: 100%
 knitr::include_graphics("./images/img-model/regression_line_red.png")
 ```
-:::
-::::
+<!-- ::: -->
+<!-- :::: -->
 
-<br>
+<!-- <br> -->
 
-::::{.columns}
-:::{.column width="50%"}
+<!-- ::::{.columns} -->
+<!-- :::{.column width="50%"} -->
+
+Second, for any $i$, $Var(\epsilon_i) = \sigma^2$. With a fixed $X$, since all the variation of $Y$ comes from $\epsilon$, the variance of $Y_i \mid X_i$ is also $\sigma^2$, i.e., 
+
 \begin{align*}
 Var(Y_i \mid X_i) &= Var(\epsilon_i) = \sigma^2
 \end{align*}
 
-- The variance of $Y$ does not depend on $X$.
+:::{.callout-note}
+For a constant $c$ and random variable $A$, $Var(c+A) = Var(A)$. Since $\beta_0 + \beta_1X_i$ is a constant with no variation, 
+$Var(Y_i \mid X_i) = Var(\beta_0 + \beta_1X_i + \epsilon_i) = Var(\epsilon_i) = \sigma^2$.
 :::
 
-:::{.column width="50%"}
-```{r, echo=FALSE, out.width="100%", fig.align='center'}
+
+Note that the variance of $Y$ does not depend on $X$. No matter $X$ is large or small, the variation of $Y$ stays constant. If there are $n$ distinct $x$s, there will be $n$ associated distinct normal distributions, all having the same variance.
+<!-- ::: -->
+
+<!-- :::{.column width="50%"} -->
+```{r}
 #| label: fig-response-sd
 #| fig-cap: $Y$ has a constant variance regardless of $X$.
+#| out-width: 100%
 knitr::include_graphics("./images/img-model/regression_line_sig.png")
 ```
-:::
-::::
+<!-- ::: -->
+<!-- :::: -->
 
-<br>
+<!-- <br> -->
 
-::::{.columns}
-:::{.column width="50%"}
+<!-- ::::{.columns} -->
+<!-- :::{.column width="50%"} -->
+
+Finally, if $\epsilon_i \stackrel{iid}{\sim} N(0, \sigma^2)$, it implies $Y_i \mid X_i$ is also normally distributed. In particular,
+
 \begin{align*}
 Y_i \mid X_i \stackrel{indep}{\sim} N(\beta_0 + \beta_1X_i, \sigma^2)
 \end{align*}
 
-- For any fixed value of $X_i = x_i$, the response, $Y_i$, varies with $N(\mu_{Y_i\mid x_i}, \sigma^2)$.
-:::
+For any fixed value of $X_i = x_i$, the response, $Y_i$, varies with $N(\mu_{Y_i\mid x_i}, \sigma^2)$. For all levels of $X$, their corresponding $Y$s will be random around their mean, the regression function value at $X$, to the same degree.
 
-:::{.column width="50%"}
-```{r, echo=FALSE, out.width="100%", fig.align='center'}
+<!-- ::: -->
+
+<!-- :::{.column width="50%"} -->
+```{r}
 #| label: fig-response-normal
 #| fig-cap: The response $Y_i$ follows a normal distribution.
+#| out-width: 100%
 knitr::include_graphics("./images/img-model/regression_line_sig_red.png")
 ```
-:::
-::::
+<!-- ::: -->
+<!-- :::: -->
 
-- **Job**: Collect data and estimate the unknown parameters $\beta_0$, $\beta_1$ and $\sigma^2$!
+Again, $Y_i \mid X_i \stackrel{indep}{\sim} N(\beta_0 + \beta_1X_i, \sigma^2)$ is our model assumption, and it is not necessarily true. When we perform simple liner regression analysis, we by default accept the assumption, and do the analysis based on the assumption. Our goal is to collect data and estimate the unknown parameters $\beta_0$, $\beta_1$ and $\sigma^2$. Once $\beta_0$ and $\beta_1$ are estimated, the entire regression line and function $f(X) = \beta_0+\beta_1X$ is also estimated.
+
+Next section, we are going to learn how to estimate $\beta_0$ and $\beta_1$, or find the best estimated regression line.
 
 ## Fitting a Regression Line $\hat{Y} = b_0 + b_1X$
 
 <span style="color:blue"> **Idea of Fitting** </span>
 
-- Given the sample data $\{ (x_1, y_1), (x_2, y_2), \dots, (x_n, y_n)\},$
+Given the sample data $\{ (x_1, y_1), (x_2, y_2), \dots, (x_n, y_n)\},$ we like to ask these questions
+
   + Which *sample* regression line is the **best**? 
   + What are the **best** estimators, $b_0$ and $b_1$, for $\beta_0$ and $\beta_1$?
 
-```{r, out.width="60%", cache=TRUE, echo=FALSE, fig.align='center'}
+The sample regression line is is $b_0+b_1X$ that is used to estimate the unknown population regression line $\beta_0 + \beta_1X$. The estimator $b_0$ and $b_1$ are sample statistics. The process of finding the best $b_0$ and $b_1$ or the sample regression line is called **model fitting**. We *fit the simple linear regression model to the sample data*. Through model fitting, we find $b_0$ and $b_1$ or the sample regression line that fit the data the best. The sample regression line is best representative of the sample data, and we believe the sample line will be close to the population regression line the most.
+
+We are interested in $\beta_0$ and $\beta_1$ in the following *sample* regression model:
+\begin{align*}
+y_i = \beta_0 + \beta_1~x_{i} + \epsilon_i,
+\end{align*}
+or
+$$E({y}_{i} \mid x_i) = \mu_{y|x_i} = \beta_0 + \beta_1~x_{i}$$
+We use the sample statistics $b_0$ and $b_1$, which are computed from our sample data, to estimate $\beta_0$ and $\beta_1$. $\hat{y}_{i} = b_0 + b_1~x_{i}$ is called the **fitted value** of $y_i$. It is a point on the sample regression line, and is a point estimate of the mean, $\mu_{y|x_i}$, and $y_i$ itself.
+
+-------------------------------------------------------------------
+
+<span style="color:blue"> **Ordinary Least Squares (OLS)** </span>
+
+
+Given a data set, we could have many possible sample regression lines. In fact, there are infinitely many lines out there. Which one is the best? 
+
+```{r}
 #| label: fig-best-line
-#| fig-cap: One data set can have multiple fitted regression lines
+#| fig-cap: One data set can have multiple fitted regression lines.
 load("./data/table11-1.rdata")
 data <- `table11-1`
 data <- data[order(data$x), ]
@@ -388,29 +585,33 @@ abline(a = 8-6, b = 2.1, col = 4, lwd = 1.2, lty = 2)
 abline(a = 1-6, b = 2.2, col = 5, lwd = 1.2, lty = 2)
 ```
 
-- We are interested in $\beta_0$ and $\beta_1$ in the following *sample* regression model:
-\begin{align*}
-y_i = \beta_0 + \beta_1~x_{i} + \epsilon_i,
-\end{align*}
-or
-$$E({y}_{i}) = \mu_{y|x_i} = \beta_0 + \beta_1~x_{i}$$
 
-- We use the sample statistics $b_0$ and $b_1$, which are computed from our sample data, to estimate $\beta_0$ and $\beta_1$.
-- $\hat{y}_{i} = b_0 + b_1~x_{i}$ is called the **fitted value** of $y_i$ and is a point estimate of the mean, $\mu_{y|x_i}$, and $y_i$ itself.
+To answer such question, we need to first define what "the best" mean. Here we want to choose $b_0$ and $b_1$ or the sample regression line $b_0 + b_1x$ that minimizes the **sum of squared residuals** denoted by **$SS_{res}$**. [^2]
 
--------------------------------------------------------------------
+[^2]: We could use another definition of "the best", for example the sum of absolute value of residuals. But the sum of squared residuals is the most commonly used one.
 
-<span style="color:blue"> **Ordinary Least Squares (OLS)** </span>
+The **residual**, $e_i = y_i - \hat{y}_i = y_i - (b_0 + b_1x_i)$, is the difference between the data value $y_i$ and its fitted value $\hat{y}_i$, the estimated value of $y_i$ on the sample regression line. Ideally, we hope the two quantities to be as close as possible because that means the estimation is quite good. The residual $e_i$ usually works as a point estimate of the error term $\epsilon_i$ in the model.
 
-- What does best mean?
-  + We want to choose $b_0$ and $b_1$ or the sample regression line $b_0 + b_1x$ that minimizes the **sum of squared residuals $SS_{res}$**.
-- The **residual**, $e_i = y_i - \hat{y}_i = y_i - (b_0 + b_1x_i)$, is a point estimate of $\epsilon_i$.
-- The sample regression line minimizes $SS_{res} = e_1^2 + e_2^2 + \dots + e_n^2 = \sum_{i = 1}^n e_i^2$.
-$$\small{\begin{align} SS_{res} &= (y_1 - b_0 - b_1x_1)^2 + (y_2 - b_0 - b_1x_2)^2 + \dots + (y_n - b_0 - b_1x_n)^2\\ &= \sum_{i=1}^n(y_i - b_0 - b_1x_i)^2 \end{align}}$$
+The *best* sample regression line minimizes the sum of squared residuals $$SS_{res} = e_1^2 + e_2^2 + \dots + e_n^2 = \sum_{i = 1}^n e_i^2.$$
 
-<span style="color:red"> ***Visualizing Residuals*** </span>
+If $b_0$ and $b_1$ are the best estimators, plug $e_i = y_i - (b_0 + b_1x_i)$ into $SS_{res}$, we have 
 
-```{r vis-res-1, echo=FALSE, out.width="80%", cache=TRUE, fig.align='center'}
+$$\begin{align} SS_{res} &= (y_1 - b_0 - b_1x_1)^2 + (y_2 - b_0 - b_1x_2)^2 + \dots + (y_n - b_0 - b_1x_n)^2\\ &= \sum_{i=1}^n(y_i - b_0 - b_1x_i)^2 \end{align}$$ that is the smallest comparing to any other $SS_{res} = \sum_{i=1}^n(y_i - a_0 - a_1x_i)^2$ that uses another pair of estimators $(a_0, a_1) \ne (b_0, b_1)$.
+
+
+Before we actually find $b_0$ and $b_1$, let's visualize fitted values and residuals in the scatter plot.
+
+<!-- $SS_{res}$ is now a function of $b_0$ and $b_1$. So we can choose the pair $(b_0, b_1)$ that produces the smallest $SS_{res}$.  -->
+
+
+<span style="color:red"> ***Visualizing Fitted Values and Residuals*** </span>
+
+The two variables are the Car Displacement in litres and Highway Miles per Gallon. The scatter plot shows a negatively correlated relationship.
+
+
+```{r}
+#| message: false
+#| warning: false
 mpg_data <- mpg
 # mpg_data$displ <- mpg_data$displ + rnorm(length(mpg$displ), 0, 1)
 # mpg_data$hwy <- mpg_data$hwy
@@ -436,62 +637,253 @@ p + theme(plot.subtitle = element_text(colour = "red",
     labs(subtitle = "Just the data")
 ```
 
-```{r vis-res-2, echo=FALSE, out.width="80%", message=FALSE, fig.align='center'}
+
+The best sample regression line $\hat{y} = b_0 + b_1 x$ that minimizes $SS_{res}$ is the navy blue straight line. The red points on the line are the fitted value of $y_i$s, or $\hat{y_i} = b_0 + b_1 x_i$.
+
+```{r}
+#| message: false
+#| warning: false
 p + geom_smooth(method = "lm", color = "#003366", se = FALSE) +
     geom_point(mapping = aes(y = .fitted), color = "red", size = 1) +
     theme(plot.subtitle = element_text(colour = "red",
                                        face = "bold",
                                        size = rel(1.5))) +
-    labs(subtitle = "Data + least squares line + fitted value")
+    labs(subtitle = "Data + best sample regression line + fitted value")
 ```
 
-```{r vis-res-3, echo = FALSE, out.width="80%", message=FALSE, fig.align='center'}
+The residual $e_i$ is $y_i - \hat{y}_i$. In the plot, it's the difference between the black and red points. Each vertical bar shows the magnitude of a residual. If we square the size of all vertical bars and add them up, the sum will be our $SS_{res}$ value.
+
+```{r}
+#| message: false
+#| warning: false
 p + geom_segment(mapping = aes(xend = displ, yend = .fitted),
                  color = "red", alpha = 0.4) +
   geom_smooth(method = "lm", color = "#003366", se = FALSE) +
+  geom_point(mapping = aes(y = .fitted), color = "red", size = 1)+
   theme(plot.subtitle = element_text(colour = "red",
                                        face = "bold",
                                        size = rel(1.5))) +
-  labs(subtitle = "Data + least squares line + residuals")
+  labs(subtitle = "Data + best sample regression line + residuals")
 ```
 
 <span style="color:red"> ***Least Squares Estimates (LSE)*** </span>
 
-- In the least squares approach, we choose the $b_0$ and $b_1$ that minimize the $SS_{res}$.
-$$(b_0, b_1) = \arg \min_{\beta_0, \beta_1} \sum_{i=1}^n(y_i - \beta_0 - \beta_1x_i)^2$$
+It's time to find the best $b_0$ and $b_1$ that minimize $SS_{res}$. We call $b_0$ and $b_1$ **least squares estimators (LSE)** and the process of finding such estimators **ordinary least squares (OLS)** method.
 
-- MATH 1450 ... 
+<!-- In the least squares approach, we choose the $b_0$ and $b_1$ that minimize the $SS_{res}$. -->
+
+Mathematically, $(b_0, b_1)$ is the minimizer of the sum of squares
+
+$$(b_0, b_1) = \arg \min_{\alpha_0, \alpha_1} \sum_{i=1}^n(y_i - \alpha_0 - \alpha_1x_i)^2$$
+
+<!-- - MATH 1450 ...  -->
+
+It is an optimization problem. I leave it to you as an exercise. The formula of LSE is
 
 $$\color{red}{b_0 = \overline{y} - b_1\overline{x}}$$
 
 $$\color{red}{b_1 = \frac{\sum_{i=1}^n(x_i - \overline{x})(y_i - \overline{y})}{\sum_{i=1}^n(x_i - \overline{x})^2} = \frac{S_{xy}}{S_{xx}} = r \frac{\sqrt{S_{yy}}}{\sqrt{S_{xx}}}},$$ where $S_{xx} = \sum_{i=1}^n(x_i - \overline{x})^2$, $S_{yy} = \sum_{i=1}^n(y_i - \overline{y})^2$, $S_{xy} = \sum_{i=1}^n(x_i - \overline{x})(y_i - \overline{y})$
 
-:::{.callout-note icon=false}
-## What can we learn from the formula of $b_0$ and $b_1$?
-:::
+Let's see if we can get some intuition from the formula. First, the least squares regression line passes through the centroid $(\overline{x}, \overline{y})$ because $\overline{y} = b_0 + b_1\overline{x}$. In addition, $b_1$ is kind of like a scaled version of correlation coefficient of $X$ and $Y$. The correlation $r$ and the slope $b_1$ always have the same sign. A positive (negative) correlation implies a positive (negative) sloped regression line. The correlation $r$ is unit-free. When we fit a regression model, the slope $b_1$ size depends on the unit of $X$ and $Y$.
+
+Nowadays we use computing software to get the estimates, but it's good to to know the idea of OLS, and the properties of $b_0$ and $b_1$.
+
+
+<!-- :::{.callout-note icon=false} -->
+<!-- ## What can we learn from the formula of $b_0$ and $b_1$? -->
+<!-- ::: -->
+
+
+
+-------------------------------------------------------------------
+
+<span style="color:blue"> **Fit a Simple Linear Regression in R** </span>
+
+We use the `mpg` data set in the `ggplot2` package to demonstrate doing regression analysis in R. In particular, we grab the variable `hwy` as our response and `disp` as our predictor.
+
+<!-- <span style="color:blue"> **`mpg` Data** </span> -->
+
+```{r}
+library(ggplot2)
+mpg
+```
+
+
+
+<span style="color:red"> **Highway MPG `hwy` vs. Displacement `displ`** </span>
+
+First we create the scatter plot.
+
+
+```{r}
+#| echo: !expr c(-1)
+par(mar = c(3, 3, 2, 0), mgp = c(2, 0.5, 0))
+plot(x = mpg$displ, y = mpg$hwy,
+     las = 1, pch = 19, col = "navy", cex = 0.5,
+     xlab = "Displacement (litres)", ylab = "Highway MPG",
+     main = "Highway MPG vs. Engine Displacement (litres)")
+```
+
+
+
+
+<span style="color:red"> **Fit Simple Linear Regression** </span>
+
+To fit a linear regression, we use the `lm()` function because linear regression is a linear model. As we learned in ANOVA @sec-model-anova, we write the formula `hwy ~ displ`, and specify the data set `mpg`. We save the fitted result in the object `reg_fit` which is a R list. The output prints $b_0 = 35.70$ and $b_1 = -3.53$, the least squares estimate of $\beta_0$ and $\beta_1$. So the sample regression function or regression line is $$\widehat{hwy} = 35.7 - 3.53 \times disp.$$
+
+For one unit (litre) increase of the displacement, we expect the highway MPG to be decreased, *on average*, by 3.53 miles.
+
+
+<!-- ::::{.columns} -->
+<!-- :::{.column width="49%"} -->
+```{r}
+#| echo: true
+reg_fit <- lm(formula = hwy ~ displ, data = mpg)
+reg_fit
+```
+
+
+<!-- ::: -->
+
+<!-- :::{.column width="2%"} -->
+<!-- ::: -->
+
+<!-- :::{.column width="49%"} -->
+
+
+```{r}
+#| echo: true
+typeof(reg_fit)
+## all elements in reg_fit
+names(reg_fit)
+## use $ to extract an element of a list
+reg_fit$coefficients
+```
+<!-- ::: -->
+<!-- :::: -->
+
+
+<span style="color:red"> **Fitted Values of $y$** </span>
+
+```{r}
+#| echo: true
+## the first 5 observed response value y
+mpg$hwy[1:5]
+## the first 5 fitted value y_hat
+head(reg_fit$fitted.values, 5)
+## the first 5 predictor value x
+mpg$displ[1:5]
+length(reg_fit$fitted.values)
+```
+
+<!-- --------------------------------------------------------------- -->
+
+<span style="color:red"> **Add a Regression Line** </span>
+
+To add the fitted regression line, we just put the fitted result `reg_fit` into the function `abline()`.
+
+```{r}
+#| echo: !expr -c(1)
+par(mar = c(3, 3, 2, 0), mgp = c(2, 0.5, 0))
+plot(x = mpg$displ, y = mpg$hwy, las = 1, pch = 19, col = "navy", cex = 0.5,
+     xlab = "Displacement (litres)", ylab = "Highway MPG",
+     main = "Highway MPG vs. Engine Displacement (litres)")
+abline(reg_fit, col = "#FFCC00", lwd = 3)
+```
+
+
+
 
 -------------------------------------------------------------------
 
 <span style="color:blue"> **Estimation for $\sigma^2$** </span>
 
-- We can think of $\sigma^2$ as **variance around the line** or the **mean square (prediction) error**.
-- The estimate of $\sigma^2$ is the **mean square residual**, $MS_{res}$:
-$$\hat{\sigma}^2 = MS_{res} = \frac{SS_{res}}{n-2} = \frac{\sum_{i=1}^n(y_i - \hat{y}_i)^2}{n-2}$$
-- $MS_{res}$ is often shown in computer output as $\texttt{MS(Error)}$ or $\texttt{MS(Residual)}$.
-- $E(MS_{res}) = \sigma^2$
-  + Therefore, $\hat{\sigma}^2$ is an unbiased estimator for $\sigma^2$ `r emoji('thumbsup')`.
+We can think of $\sigma^2$ as **variance around the line** or the **mean square (prediction) error**. It is the variance of the error term. Since the residual $e_i$ is the estimate of $\epsilon_i$, we can use the variance of residuals to estimate $\sigma^2$, which is the **mean square residual**, $MS_{res}$:
+$$\hat{\sigma}^2 = MS_{res} = \frac{SS_{res}}{n-2} = \frac{\sum_{i=1}^n(y_i - \hat{y}_i)^2}{n-2} = \frac{\sum_{i=1}^ne_i^2}{n-2}.$$
+
+
+:::{.callout-note}
+- The variance of residuals is $\frac{\sum_{i=1}^n(e_i - \overline{e})^2}{n-2}$. Because with OLS we have $\sum_{i=1}^n e_i = 0$, $\overline{e} = 0$, and hence $\hat{\sigma}^2 = \frac{\sum_{i=1}^ne_i^2}{n-2}.$
+
+- The degrees of freedom is the number of values in the final calculation of a statistic that are free to vary. It is equal to the sample size minus the number of parameters estimated. In simple linear regression, we estimate $\beta_0$ and $\beta_1$ in the calculation of $SS_{res}$, so its degrees of freedom is $n-2$.
+:::
+
+Remember that a sum of squares has a corresponding degrees of freedom. $SS_{res}$ has $n-2$ degrees of freedom. 
+
+$MS_{res}$ is often shown in computer output as $\texttt{MS(Error)}$ or $\texttt{MS(Residual)}$.
+
+By the way, $E(MS_{res}) = \sigma^2$. Therefore, $\hat{\sigma}^2$ is an unbiased estimator for $\sigma^2$.
+
+
+
+<!-- -------------------------------------------------------------------- -->
+
+<span style="color:red"> **Standard Error of Regression in R** </span>
+
+The standard error $\hat{\sigma}^2$ information is saved in the summary of the fitted result. In the summary output, $\hat{\sigma}^2$ is shown as `Residual standard error`. The degrees of freedom is $n - 2 = 234 - 2 = 232.$
+
+```{r}
+#| echo: true
+#| output.lines: !expr c(15:16)
+(summ_reg_fit <- summary(reg_fit))
+```
+
+
+We can grab the $\hat{\sigma}^2$ value in the summary object `summ_reg_fit` by `summ_reg_fit$sigma`. 
+
+```{r}
+#| echo: true
+
+# lots of fitted information saved in summary(reg_fit)!
+names(summ_reg_fit)
+# residual standard error (sigma_hat)
+summ_reg_fit$sigma
+```
+
+It is not hard to compute the $MS_{res}$ directly from its definition, the sum of squared residuals divided by residual degrees of freedom.
+
+```{r}
+#| echo: true
+# from reg_fit
+sqrt(sum(reg_fit$residuals^2) / reg_fit$df.residual)
+```
+
 
 ## Confidence Intervals and Hypothesis Testing for $\beta_0$ and $\beta_1$
 
+We've obtained the point estimators of $\beta_0$, $\beta_1$, and $\sigma^2$. Often we'd like to do inference about the parameters, especially $\beta_1$ because it tells us how the predictor affects the response. In this section, we talk about interval estimation and testing procedure for $\beta_0$ and $\beta_1$.
+
 <span style="color:blue"> **Confidence Intervals for $\beta_0$ and $\beta_1$** </span>
 
-- $\frac{b_1 - \beta_1}{\sqrt{\hat{\sigma}^2/S_{xx}}} \sim t_{n-2}$; $\quad \frac{b_0 - \beta_0}{\sqrt{\hat{\sigma}^2\left(\frac{1}{n} + \frac{\overline{x}^2}{S_{xx}}\right)}} \sim t_{n-2}$
-- The $(1-\alpha)100\%$ CI for $\beta_1$ is $b_1 \pm t_{\alpha/2, n-2}\sqrt{\hat{\sigma}^2/S_{xx}}$
-- The $(1-\alpha)100\%$ CI for $\beta_0$ is $b_0 \pm t_{\alpha/2, n-2}\sqrt{\hat{\sigma}^2\left(\frac{1}{n} + \frac{\overline{x}^2}{S_{xx}}\right)}$
+Note that $b_0$ and $b_1$ are functions of data. Because $y_i$s are random variables (before being sampled), so are $b_0$ and $b_1$. As a result, they have their sampling distribution that is used for constructing the confidence interval for $\beta_0$ and $\beta_1$ respectively. It can be show that
+
+$$\frac{b_1 - \beta_1}{\sqrt{\hat{\sigma}^2/S_{xx}}} \sim t_{n-2}; \quad \frac{b_0 - \beta_0}{\sqrt{\hat{\sigma}^2\left(\frac{1}{n} + \frac{\overline{x}^2}{S_{xx}}\right)}} \sim t_{n-2}.$$
+
+
+Therefore, the $(1-\alpha)100\%$ CI for $\beta_1$ is $$b_1 \pm t_{\alpha/2, n-2}\sqrt{\hat{\sigma}^2/S_{xx}}.$$
+
+The $(1-\alpha)100\%$ CI for $\beta_0$ is $$b_0 \pm t_{\alpha/2, n-2}\sqrt{\hat{\sigma}^2\left(\frac{1}{n} + \frac{\overline{x}^2}{S_{xx}}\right)}.$$
+
+
+<!-- ----------------------------------------------------------------- -->
+
+<span style="color:red"> **Confidence Intervals in R** </span>
+
+To grab the confidence interval for $\beta_0$ and $\beta_1$, we simply put the fitted result into the `confint()` function. By default, the confidence level is 95%, but any other level can be specified. We say we are 95% confident that one unit increase of displacement will result in a decrease in highway miles per gallon on average by 3.91 to 3.15 miles.
+
+
+```{r}
+#| echo: true
+confint(reg_fit, level = 0.95)
+```
+
+
 
 -------------------------------------------------------------------
 
 <span style="color:blue"> **Hypothesis Testing** </span>
+
+The hypothesis testing for $\beta_0$ and $\beta_1$ is straightforward. Here I just show the case of two-tailed tests. The one-tailed tests can be done similarly.
 
 <span style="color:red"> **$\beta_1$** </span>
 
@@ -511,13 +903,36 @@ $$\hat{\sigma}^2 = MS_{res} = \frac{SS_{res}}{n-2} = \frac{\sum_{i=1}^n(y_i - \h
   + $|t_{test}| > t_{\alpha/2, \, n-2}$
   + $\text{$p$-value} = 2P(t_{n-2} > |t_{test}|) < \alpha$
 
+
+
+
+<span style="color:red"> **Testing in R** </span>
+
+The two-sided test result for $\beta_0$ and $\beta_1$ can be found in the summary output. There is a Coeffifcients table in the middle of the output. We can extract the table by check `summ_reg_fit$coefficients`. The first row is for intercept and the second for the slope. The columns from left to right are LSEs, the standard errors of LSEs, the $t$ test statistics, and $p$-values.
+
+```{r}
+#| echo: true
+#| output.lines: !expr c(9, 10, 11, 12)
+summ_reg_fit
+```
+```{r}
+#| echo: true
+summ_reg_fit$coefficients
+```
+
+Notice that the testing output is for the two-sided test with hypothesized value being equal to zero. The first row tests whether or not $\beta_0 = 0$ and the second tests whether or not $\beta_1 = 0$.
+
+
+
 <span style="color:red"> ***Interpretation of Testing Results*** </span>
 
-- <span style="color:blue"> $H_0: \beta_1 = 0 \quad H_1: \beta_1 \ne 0$ </span>
-- *Failing to reject $H_0: \beta_1 = 0$* implies there is **no linear relationship** between $Y$ and $X$.
-```{r, echo=FALSE, cache=TRUE, out.width="70%", fig.asp=0.5, fig.align='center'}
+Suppose we do the test <span style="color:blue"> $H_0: \beta_1 = 0 \quad H_1: \beta_1 \ne 0$ </span>. *Failing to reject $H_0: \beta_1 = 0$* implies there is *no (statistically significant) linear relationship* between (the mean of) $Y$ and $X$. But be careful. They could have some other type of relationship.
+
+
+```{r}
 #| label: fig-beta-meaning
 #| fig-cap: Failing to reject $H_0$ means there is no linear relationship between X and Y, but they could have some other type of relationship.
+#| fig-asp: 0.5
 set.seed(9274)
 x1 <- seq(0, 6, by = 0.05)
 y_u <- (x1-3)^2 - 4 + rnorm(length(x1), mean = 0, sd = 1)
@@ -543,13 +958,19 @@ abline(h = 0, col = "blue", lwd = 2)
 
 <span style="color:red"> ***Test of Significance of Regression*** </span>
 
-- *Rejecting $H_0: \beta_1 = 0$* could mean 
+*Rejecting $H_0: \beta_1 = 0$* could mean 
+
   + the straight-line model is adequate.
+  
   + better results could be obtained with a more complicated model.
   
-```{r, echo=FALSE, cache=TRUE, out.width="70%", fig.asp=0.5, fig.align='center'}
+Rejecting $H_0$ doesn't necessarily mean that a linear model is the best model. There may be some other nonlinear relationship that cannot be captured by the linear regression model. To capture that, a more sophisticated model is needed.
+
+
+```{r}
 #| label: fig-accept
-#| fig-cap: Rejecting $H_0$ doesn't necessarily mean that a linear model is the best model, just that it is adequate.
+#| fig-cap: Rejecting $H_0$ doesn't necessarily mean that a linear model is the best model.
+#| fig-asp: 0.5
 set.seed(9274)
 x <- seq(-3, 4, 0.05)
 y_s <-  -0.5 * x^3 + x^2 + x + rnorm(length(x), mean = 0, sd = 2)
@@ -566,264 +987,271 @@ abline(lm(y_s ~ x), col = "blue", lwd = 2)
 
 ## Analysis of Variance (ANOVA) Approach
 
+The testing for $\beta_1$ can be done using ANOVA approach. The key idea is to separate the total deviation of $y$ from its mean into the deviation of $y$ explained by regression or the factor $x$ and the deviation of $y$ that cannot be explained by $x$. Let's learn about it.
+
 <span style="color:blue"> **$X$ - $Y$ Relationship Explains Some Deviation** </span>
 
+First let me ask you a question.
+
 :::{.callout-note icon=false}
-## Suppose we only have data for $Y$ and have no information about $X$ or the relationship between $X$ and $Y$. How do we predict a value of $Y$?
+## Suppose we only have data for $Y$ and have no information about $X$ or no information about the relationship between $X$ and $Y$. How do we predict a value of $Y$?
 :::
 
-- If the data have no pattern, our best guess for $Y$ would be $\overline{y}$ (i.e., $\hat{y}_i = \overline{y}$).
-  + We would treat $X$ and $Y$ as uncorrelated.
-- The (total) deviation from the mean is $(y_i - \overline{y})$
-- If $X$ and $Y$ are linearly related, fitting a linear regression model helps us predict the value of $Y$ when the value of $X$ is provided.
-- $\hat{y}_i = b_0 + b_1x_i$ is closer to $y_i$ than $\overline{y}$.
-- The regression model explains some of the deviation of $y$.
+If we have sample data for $y$ only, then we just have one variable. If the data have no significant pattern, we may treat every data point equally, and our best guess for $Y$ could be $\overline{y}$. In this case, we use the same value to predict every value of $y$, i.e., $\hat{y}_i = \overline{y}$. This prediction is generally bad, but there is nothing we can do because we have on other information that can help us better guess the value of $y_i$. 
+
+If there is another variable $X$, and $X$ and $Y$ are correlated, knowing the level of $x$ does help us predict the value of $y$. If they are positively correlated, when $x$ is large, $y$ tends to be large. Thus normally we will guess its value higher than its average, leading to a smaller residual, and better prediction.
+
+Losing such information hurts. With no information about the relationship between $X$ and $Y$. The best we can do is treat $X$ and $Y$ as uncorrelated, as if $X$ does not exist in the data. Same as one variable data of $y$, in this case, $\hat{y}_i = \overline{y}$.
+
+
+The deviation of $y$ from the sample mean is $(y_i - \overline{y})$, which is viewed as the total deviation. If $X$ and $Y$ are linearly related, fitting a linear regression model helps us predict the value of $Y$ when the value of $X$ is provided. This means $\hat{y}_i = b_0 + b_1x_i$ is closer to $y_i$ than $\overline{y}$ is. In other words, the regression model *explains some of the deviation of $y$.* The relationship between $X$ and $Y$ is valuable and helpful in predicting $y$ with the value of $x$ informed.
 
 -----------------------------------------------------------------
 
 <span style="color:blue"> **Partition of Deviation** </span>
 
-- **Total deviation = Deviation explained by regression + unexplained deviation**
-- $(y_i - \overline{y}) = (\hat{y}_i - \overline{y}) + (y_i - \hat{y}_i)$
-- $(19 - 9) = (13 - 9) + (19 - 13)$
+The total deviation of $y$ from its mean can be written as the sum of the deviation of $y$ explained by regression or the factor $x$ and the deviation of $y$ that cannot be explained by $x$.
 
-```{r, echo=FALSE, out.width="100%", fig.align='center'}
+*Total deviation = Deviation explained by regression + unexplained deviation*
+
+or 
+
+$$(y_i - \overline{y}) = (\hat{y}_i - \overline{y}) + (y_i - \hat{y}_i)$$
+
+
+@fig-deviation-explained illustrates the deviation partition. Look at the point $y_1$. Suppose $y_1 = 19$ and $\overline{y} = 9$. Then the total deviation is $(y_i - \overline{y}) = 19-9 = 10$ which is represented as the red bar on the left in the figure. 
+
+Now if the positive correlation between $X$ and $Y$ information come in, we can better guess the value of $y_1$ using the least squares regression line $\hat{y}_1 = b_0 + b_1x_1$. Note that $y_1$ is the observation whose $x$ is quite large, so through the regression line, we get the fitted value $\hat{y}_1$ larger than $\overline{y}$. $\hat{y}_1$ is closer to $y_1$, and the deviation $(\hat{y}_1 - \overline{y})$ is the deviation of $y$ explained or captured by the regression model or the predictor $X$. This corresponds to the green bar on the right of the figure. This deviation quantifies the contribution of the regression model or the predictor $X$ to explaining the variation of $y$. 
+
+Finally, the remaining part of deviation that cannot be explained by $x$ is $(y_i - \hat{y}_i)$ which is the blue bar in the middle of the figure. Look at it carefully. It is our residual! The residual is the deviation of $y$ that cannot be explained by the regression model. All the deviations that can be explained by predictor $x$ has been absorbed in $(\hat{y}_i - \overline{y})$. The deviation or residual $(y_i - \hat{y}_i)$ is anything that has nothing to do with $x$. This is what the regression model and the predictor $x$ can't do for explaining the variation of $y$ unless other factors other than $x$ that are correlated with $y$ are considered in the model.
+
+
+<!-- the variation of $y$ is made of two parts, the regression function and the error term.  -->
+
+
+
+```{r}
 #| label: fig-deviation-explained
-#| fig-cap: Explained vs. unexplained deviation
+#| fig-cap: "Explained vs. unexplained deviation. Source: Applied Linear Statistical Models 5th edition."
+#| out-width: 100%
 knitr::include_graphics("./images/img-model/partition.png")
 ```
 
 <span style="color:red"> ***Sum of Squares (SS)*** </span>
 
-- $\sum_{i=1}^n(y_i - \overline{y})^2 = \sum_{i=1}^n(\hat{y}_i - \overline{y})^2 + \sum_{i=1}^n(y_i - \hat{y}_i)^2$
-- **Total SS $(SS_T)$ = Regression SS $(SS_R)$ + Residual SS $(SS_{res})$**
-- $df_T = df_R + df_{res}$
-- $\color{blue}{(n-1) = 1 +(n-2)}$
+The deviation partition leads to the sum of squares identity 
+
+$$\sum_{i=1}^n(y_i - \overline{y})^2 = \sum_{i=1}^n(\hat{y}_i - \overline{y})^2 + \sum_{i=1}^n(y_i - \hat{y}_i)^2$$
+or
+
+*Total Sum of Squares $(SS_T)$ = Regression Sum of Squares $(SS_R)$ + Residual Sum of Squares $(SS_{res})$*
+
+Their corresponding degrees of freedom is 
+
+$$df_T = df_R + df_{res}$$
+
+or $$\color{blue}{(n-1) = 1 +(n-2)}$$
+
+
+The total sum of squares quantifies the sum of squared deviation from the mean, and $SS_T/df_T = \frac{\sum_{i=1}^n(y_i - \overline{y})^2}{n-1}$ is the marginal sample variance of $y$ without being conditional on $x$. The regression sum of squares $SS_R$ is the sum of squared deviation of the fitted value from the mean, and $SS_{res}$ again is the sum of squared deviation of $y$ from its fitted value. The mean square residual $SS_{res}/df_{res} = \frac{\sum_{i=1}^n(y_i - \hat{y}_i)^2}{n-2}$ estimates the variance about the population regression line $\sigma^2$.
+
+
+
+
+
 
 ----------------------------------------------------------------
 
 <span style="color:blue"> **ANOVA for Testing Significance of Regression** </span>
 
-```{r, echo=FALSE, out.width="90%", fig.align='center'}
-#| label: fig-anova
-#| fig-cap: Example of an ANOVA table
-knitr::include_graphics("./images/img-model/anova_table.png")
-```
+<!-- # ```{r} -->
+<!-- # #| label: fig-anova -->
+<!-- # #| fig-cap: Example of an ANOVA table -->
+<!-- # #| out-width: 100% -->
+<!-- # knitr::include_graphics("./images/img-model/anova_table_reg.png") -->
+<!-- # ``` -->
 
-- A larger value of $F_{test}$ indicates that the regression is significant.
-- Reject $H_0$ if 
+
+The sum of squares and degrees of freedom identities allow us the make an ANOVA table as below. But what is this ANOVA table is for? It is used for testing **overall significance of regression**, that is, whether or not the regression model has explanatory power for explaining the variation of the response. When the regression model has explanatory power, all or some of its predictors are correlated with the response, and their corresponding regression coefficient is nonzero.
+
+::: small
+| Source of Variation | SS | df | MS | F | $p$-value |
+|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|
+| Regression | $SS_R = \sum_{i=1}^n(\hat{y}_i - \overline{y})^2$| 1 | $MS_R = \frac{SS_R}{1}$  |  $\frac{MS_R}{MS_{res}} = F_{test}$ |  $Pr(F_{1, n-2} > F_{test})$ |
+| Residual | $SS_{res} = \sum_{i=1}^n(y_i - \hat{y}_i)^2$ | $n-2$   |  $MS_{res} = \frac{SS_{res}}{n-2}$ |   |  | 
+| Total | $SS_{T} = \sum_{i=1}^n(y_i - \overline{y})^2$ | $n-1$   |   |   |  | 
+:::
+
+In other words, ANONA is for the test
+$$
+\begin{align*}
+H_0&: \text{all regression coefficients except the incercept is zero}\\
+H_1&: \text{At least one regression coefficient except the incercept is not zero}
+\end{align*}
+$$
+
+A larger value of $F_{test}$ indicates that the regression is significant. $H_0$ is rejected if
+
   + $F_{test} > F_{\alpha, 1, n-2}$
   + $\text{$p$-value} = P(F_{1, n-2} > F_{test}) < \alpha$.
-- ANOVA is designed to test the $H_0$ that **all** predictors have no value in predicting $y$. 
-- In SLR, the $F$-test of ANOVA gives the same result as a two-sided $t$-test of $H_0: \beta_1=0$. 
+
+
+Note that ANOVA is designed to test the $H_0$ that **all** predictors have no value in predicting $y$. In simple linear regression, there is only one predictor, so one means all. The $F$-test of ANOVA gives the exactly same result as a two-sided $t$-test of $H_0: \beta_1 = 0$. 
+
+
+
+<span style="color:red"> **ANOVA Table in R** </span>
+
+To get the ANOVA table, we put the fitted result into the function `anova()`. For simple linear regression, the ANOVA $F$ test is equivalent to the marginal $t$ test for $\beta_1$ where $H_0: \beta_1 = 0; \quad H_1: \beta_1 \ne 0$.  In particular $t_{test}^2 = F_{test}$.
+
+```{r}
+#| echo: true
+anova(reg_fit)
+```
+```{r}
+#| echo: true
+summ_reg_fit$coefficients
+summ_reg_fit$coefficients[2, 3] ^ 2
+```
+
+
+
 
 --------------------------------------------------------------------------
 
 <span style="color:blue"> **Coefficient of Determination** </span>
 
-- The **coefficient of determination** $(R^2)$ is the proportion of the variation in $y$ that is explained by the regression model. 
-- It is computed as $$R^2 = \frac{SS_R}{SS_T} =\frac{SS_T - SS_{res}}{SS_T} = 1 - \frac{SS_{res}}{SS_T}$$
-- $R^2$ is the proportionate reduction of total variation associated with the use of $X$. 
-- **(a)** $\hat{y}_i = y_i$ and $\small SS_{res} =  \sum_{i=1}^n(y_i - \hat{y}_i)^2 = 0$. **(b)** $\hat{y}_i = \overline{y}$ and $\small SS_R = \sum_{i=1}^n(\hat{y}_i - \overline{y})^2  = 0$.
+The **coefficient of determination** or $R^2$ is the proportion of the variation in $y$ that is explained by the regression model. It is computed as $$R^2 = \frac{SS_R}{SS_T} =\frac{SS_T - SS_{res}}{SS_T} = 1 - \frac{SS_{res}}{SS_T}$$
 
-```{r, echo=FALSE, out.width="60%", fig.align='center'}
+$R^2$ is the proportionate reduction of total variation associated with the use of $X$ , and it can be used to measure the quality of our regression or the explanatory power of regressors.
+
+@fig-r-squared shows two extreme cases.
+
+- **(a)** $\hat{y}_i = y_i$ and $\small SS_{res} =  \sum_{i=1}^n(y_i - \hat{y}_i)^2 = 0$. 
+
+- **(b)** $\hat{y}_i = \overline{y}$ and $\small SS_R = \sum_{i=1}^n(\hat{y}_i - \overline{y})^2  = 0$.
+
+In (a), fitted values are equal to true observations. The regression model explains all the variation in $y$, and hence $R^2 = 1$. In (b), the fitted values are all equal to the sample mean of $y$ as if we don't have information about $x$ or 
+$x$ is totally useless in predicting $y$. In this case, the regression model explains no variation in $y$, and all variation remain unexplained. So $R^2 = 0$. In the usual case, $R^2$ is between zero and one.
+
+```{r}
 #| label: fig-r-squared
-#| fig-cap: Examples of $R^2$ being equal to 1 and 0
+#| fig-cap: "Examples of $R^2$ being equal to 1 and 0. Source: Applied Linear Statistical Model 5th edition."
 knitr::include_graphics("./images/img-model/r_square.png")
 ```
 
+
+
+<!-- ------------------------------------------------------------------- -->
+
+<span style="color:red"> **$R^2$ in R** </span>
+
+The $R^2$ value is shown in the summary output at the near bottom. We can also use `summ_reg_fit$r.squared` to get the value. The variable `disp` explains about 59% of the variation of `hwy`.
+
+
+```{r}
+#| echo: true
+#| output.lines: !expr c(16, 17)
+summ_reg_fit
+```
+```{r}
+#| echo: true
+summ_reg_fit$r.squared
+```
+
+
+
 ## Prediction
+
+Prediction is one of our goals when we perform regression analysis. We want to use $X$ to predict $Y$ by taking advantages of their relationship. This is useful when our response variable includes some personal or confidential information, and it is hard to collect such information. When the predictor data is relatively easy to be collected, we can use the predictor value to predict the response value. For example, people tend to be reluctant to let others know their annual income level, but quite happy to talk about their education or occupation. If we can discover the relationship between salary level and years of education one receives, we can use the years of education to predict the mean salary level of people with that many years of education, or predict an individual salary level given his education years.
+
+When we talk about prediction, we refer to the predictor and response whose values haven't seen in the data. For example, if our data have three $x$ values $(3, 5, 6)$, and its corresponding $y$ values $(10, 12, 15)$, we want to predict the mean response value for the $x$ not in the data, like $x = 4$.
+
 
 <span style="color:blue"> **Predicting the Mean Response** </span>
 
-- With the predictor value $x = x_0$, we want to estimate the mean response $E(y\mid x_0) = \mu_{y|x_0} = \beta_0 + \beta_1 x_0$. 
-  + <span style="color:blue"> Example: The **mean** highway MPG $E(y \mid x_0)$ when displacement is $x = x_0 = 5.5$. </span>
-- If $x_0$ is *within the range of $x$*, an *unbiased* point estimator for $E(y\mid x_0)$ is
-$$\widehat{E(y\mid x_0)} = \hat{\mu}_{y | x_0} = b_0 + b_1 x_0$$
-- The $(1-\alpha)100\%$ CI for $E(y\mid x_0)$ is $\boxed{\hat{\mu}_{y | x_0} \pm t_{\alpha/2, n-2} \hat{\sigma}\sqrt{\frac{1}{n} + \frac{(x_0 - \overline{x})^2}{S_{xx}}}}$.
+With the predictor value $x = x_0$, we want to estimate the mean response $E(y\mid x_0) = \mu_{y|x_0} = \beta_0 + \beta_1 x_0$. For example, <span style="color:blue"> the *mean* highway MPG $E(y \mid x_0)$ when displacement is $x = x_0 = 5.5$. </span>
 
+The mean $\beta_0 + \beta_1 x_0$ is assumed from the regression model. The problem is $\beta_0$ and $\beta_1$ are unknown. Once we fit the model, and get the LSEs, if $x_0$ is *within the range of $x$*, an *unbiased* point estimate of $E(y\mid x_0)$ is
+$$\widehat{E(y\mid x_0)} = \hat{\mu}_{y | x_0} = b_0 + b_1 x_0.$$
+
+The $(1-\alpha)100\%$ CI for $E(y\mid x_0)$ is $$\boxed{\hat{\mu}_{y | x_0} \pm t_{\alpha/2, n-2} \hat{\sigma}\sqrt{\frac{1}{n} + \frac{(x_0 - \overline{x})^2}{S_{xx}}}}.$$
+
+Well, no need to memorize the formula. But could you answer the following question?
 
 :::{.callout-note icon=false}
 ## Does the length of the CI for $E(y\mid x_0)$ stay the same at any location of $x_0$?
 :::
 
+We will have the shortest confidence interval for $E(y\mid x_0)$ when $x_0 = \overline{x}$. In general, we have better precision when the response we are interested is evaluated at the level $x_0$ that is close to $\overline{x}$. The intuition is that the variation in the estimator $b_0 + b_1 x$ is greater when $x_0$ is far from $\overline{x}$ than when $x_0$ is near $\overline{x}$.
+
+
+
 ---------------------------------------------------------------------
 
 <span style="color:blue"> **Predicting New Observations** </span>
 
-- Predict the value of a *new observation, $y_0$,* with $x = x_0$.
-  + <span style="color:blue"> Example: The **highway MPG of a car** $y_0(x_0)$ when its displacement is $x = x_0 = 5.5$. </span>
-- An *unbiased* point estimator for $y_0(x_0)$ is
-$$\hat{y}_0(x_0) = b_0 + b_1 x_0$$
-- The $(1-\alpha)100\%$ **prediction interval** (PI) for $y_0(x_0)$ is $\small \boxed{\hat{y_0} \pm t_{\alpha/2, n-2} \hat{\sigma}\sqrt{1+ \frac{1}{n} + \frac{(x_0 - \overline{x})^2}{S_{xx}}}}$
+We want to predict not only the mean level of response at some predictor value, but also the value of a *new observation, $y_0$,* at $x = x_0$. For example, <span style="color:blue"> the *highway MPG of a car* $y_0(x_0)$ when its displacement is $x = x_0 = 5.5$. </span>
+
+Do you see the difference? Previously we care about the mean response level, but here we predict an individual response value. There are thousand of millions of cars having displacement 5.5 liters. If we'd like to know the average miles per gallon or general fuel efficiency performance for the cars with displacement 5.5, we are predicting the mean response. When we want to predict the miles per gallon of a specific car whose displacement is 5.5, we predicting a new observation. The car is an individual outcome drawn from those thousand of millions of cars.
+
+A point estimator for $y_0(x_0)$ is $$\hat{y}_0(x_0) = b_0 + b_1 x_0$$
+that is the same as the point estimate of the mean response. If we can only use one single value to predict an new observation, we have to ignore its variation, and use a representative point to predict where it may be located. With no further information, we would choose its center, the mean response level, as its location. That's why the two point estimates are the same.
+
+<!-- If we can only use one single value to predict an new observation, the point estimate is the same the -->
+
+The $(1-\alpha)100\%$ **prediction interval** (PI) for $y_0(x_0)$ is $$ \boxed{\hat{y_0} \pm t_{\alpha/2, n-2} \hat{\sigma}\sqrt{1+ \frac{1}{n} + \frac{(x_0 - \overline{x})^2}{S_{xx}}}}.$$
+
+A confidence interval is for a unknown parameter. We call the interval prediction interval because $y_0(x_0)$ is not a parameter, but a random variable.
+
 
 :::{.callout-note icon=false}
 ## What is the difference between CI for $E(y\mid x_0)$ and PI for $y_0(x_0)$? 
 :::
 
-- *The PI is wider as it includes the uncertainty about $b_0$, $b_1$ as well as $y_0$ due to error, $\epsilon$*.
+The PI is wider as it includes the uncertainty about $b_0$, $b_1$ as well as $y_0$ due to error, $\epsilon$. The uncertainty about $b_0$ and $b_1$ is always there because their value varies from sample to sample, and this causes the uncertainty about the mean response, or the location of the distribution of $y$ at any given level of $x$. The PI also considers the uncertainty about the draw of the distribution of $y$, measured by $\sigma^2$. Intuitively it is harder to predict a specific response value due to the additional randomness or variation within the probability distribution of $y$. Given the same significance level $\alpha$, we are more uncertain about what its value is, and the uncertainty band is wider, resulting in a less precise estimation.
 
-## R Lab 
 
-<span style="color:blue"> **`mpg` Data** </span>
 
-```{r, echo =TRUE, out.width="60%"}
-library(ggplot2)  ## use data mpg in ggplot2 package
-mpg
-```
+<!-- -------------------------------------------------------------------- -->
 
------------------------------------------------------------------------
+<span style="color:blue"> **Prediction in R** </span>
 
-<span style="color:blue"> **Highway MPG `hwy` vs. Displacement `displ`** </span>
-```{r, echo=-c(1), out.width="60%", fig.align='center'}
-par(mar = c(3, 3, 2, 0), mgp = c(2, 0.5, 0))
-plot(x = mpg$displ, y = mpg$hwy,
-     las = 1, pch = 19, col = "navy", cex = 0.5,
-     xlab = "Displacement (litres)", ylab = "Highway MPG",
-     main = "Highway MPG vs. Engine Displacement (litres)")
-```
+To predict either the mean response or a new observation, we use the function `predict()`. The first argument is out fitted object `reg_fit`. Then we need to provide the predictor value for prediction in the argument `newdata`. Be careful that it has to be a data frame type, and variable's name should be exactly the same as the predictor's name in the original data set `mpg` when we fit the regression. If we want to get the confidence interval for the mean response, we specify "confidence" in the argument `interval`. If instead we want the prediction interval for a new response, we specify "predict".
 
----------------------------------------------------------------
-
-<span style="color:blue"> **Fit Simple Linear Regression** </span>
-
-::::{.columns}
-:::{.column width="49%"}
-```{r}
-reg_fit <- lm(formula = hwy ~ displ, 
-              data = mpg)
-reg_fit
-typeof(reg_fit)
-```
-:::
-
-:::{.column width="2%"}
-:::
-
-:::{.column width="49%"}
-```{r}
-## all elements in reg_fit
-names(reg_fit)
-## use $ to extract an element of a list
-reg_fit$coefficients
-```
-:::
-::::
-
-- $\widehat{hwy}_{i} = b_0 + b_1 \times displ_{i} =  35.7 - 3.5 \times displ_{i}$
-- $b_1$: For a one unit (liter) increase of the displacement, we expect the highway MPG to be decreased, on average, by 3.5.
-
----------------------------------------------------------------
-
-<span style="color:blue"> **Fitted Values of $y$** </span>
 
 ```{r}
-## the first 5 observed response value y
-mpg$hwy[1:5]
-## the first 5 fitted value y_hat
-head(reg_fit$fitted.values, 5)
-## the first 5 predictor value x
-mpg$displ[1:5]
-length(reg_fit$fitted.values)
-```
-
----------------------------------------------------------------
-
-<span style="color:blue"> **Add a Regression Line** </span>
-
-```{r, echo=-1, out.width="60%", fig.align='center'}
-par(mar = c(3, 3, 2, 0), mgp = c(2, 0.5, 0))
-plot(x = mpg$displ, y = mpg$hwy, las = 1, pch = 19, col = "navy", cex = 0.5,
-     xlab = "Displacement (litres)", ylab = "Highway MPG",
-     main = "Highway MPG vs. Engine Displacement (litres)")
-abline(reg_fit, col = "#FFCC00", lwd = 3)
-```
-
-
-
---------------------------------------------------------------------
-
-<span style="color:blue"> **Standard Error of Regression** </span>
-
-```{r, highlight.output = 16}
-(summ_reg_fit <- summary(reg_fit))
-```
-
-```{r}
-# lots of fitted information saved in summary(reg_fit)!
-names(summ_reg_fit)
-# residual standard error (sigma_hat)
-summ_reg_fit$sigma
-# from reg_fit
-sqrt(sum(reg_fit$residuals^2) / reg_fit$df.residual)
-```
-
------------------------------------------------------------------
-
-<span style="color:blue"> **Confidence Intervals and Testing for $\beta_0$ and $\beta_1$** </span>
-
-```{r}
-confint(reg_fit, level = 0.95)
-```
-
-```{r, highlight.output=c(9, 10, 11, 12), output.lines = 15}
-summ_reg_fit
-```
-```{r}
-summ_reg_fit$coefficients
-```
-
--------------------------------------------------------------------
-
-<span style="color:blue"> **ANOVA Table** </span>
-
-- For $H_0: \beta_1 = 0$ in SLR, $t_{test}^2 = F_{test}$.
-
-```{r, highlight.output=4:6}
-anova(reg_fit)
-```
-```{r}
-summ_reg_fit$coefficients
-summ_reg_fit$coefficients[2, 3] ^ 2
-```
-
--------------------------------------------------------------------
-
-<span style="color:blue"> **$R^2$** </span>
-
-```{r, cache=TRUE, highlight.output=17}
-summ_reg_fit
-```
-```{r}
-summ_reg_fit$r.squared
-```
-
---------------------------------------------------------------------
-
-<span style="color:blue"> **Prediction** </span>
-
-```{r, cache=TRUE}
+#| echo: true
 ## CI for the mean response
 predict(reg_fit, newdata = data.frame(displ = 5.5), interval = "confidence", level = 0.95)
 ## PI for the new observation
 predict(reg_fit, newdata = data.frame(displ = 5.5), interval = "predict", level = 0.95)
 ```
 
-:::{layout-ncol=2}
-```{r, echo=FALSE, out.width="90%", fig.align='center'}
+The 95% CI for the mean `hwy` when `disp = 5.5` is between 15.36 and 17.2, while The 95% PI for `hwy` of a car with `disp = 5.5` is between 8.67 and 23.89. The PI is much wider than the CI because the variance of $y$ for any given $x$ is quite large in this example. We are quite certain about the mean miles per gallon, but we are asked to predict a car's miles per gallon, it's hard to provide a precise estimation because of large individual variability. 
+
+<!-- :::{layout-ncol=2} -->
+```{r}
+#| echo: true 
 par(mar = c(3, 3, 0, 0), mgp = c(2, 0.5, 0), mfrow = c(1, 1))
 ## Data and regression line
-plot(x = mpg$displ, y = mpg$hwy, las = 1, pch = 19, cex = 0.5, ylim = c(7.5, 45),
-     xlab = "Displacement (litres)", ylab = "Highway MPG")
+plot(x = mpg$displ, y = mpg$hwy, las = 1, pch = 19, cex = 0.5, 
+     ylim = c(7.5, 45), xlab = "Displacement (litres)", 
+     ylab = "Highway MPG")
 legend("topright", c("CI for the mean response", "PI for a new observation"), 
        col = c("red", "blue"), lwd = c(3, 3), bty = "n")
-abline(reg_fit, col = "#003366", lwd = 3) # abline(a = 47.475, b = -7.859, col = "#003366", lwd = 3)
+abline(reg_fit, col = "#003366", lwd = 3)
 segments(x0 = 5.52, y0 = 15.35839, y1 = 17.20043, col = "red", lwd = 4)
 segments(x0 = 5.48, y0 = 8.665682, y1 = 23.89314, col = "blue", lwd = 4)
 abline(h = 16.27941, lty = 2)
 ```
 
-```{r, echo=FALSE, out.width="88%", cache=TRUE, fig.align='center'}
+
+For every possible value of $x$, we can obtain its corresponding CI and PI. Connecting their upper bounds and lower bounds together ends up with a red confidence band and a blue prediction band. Both are narrowest at the average value of $x$, the location of the black vertical bar, although it is not clearly seen in the prediction band. As $x$ is farther way from the mean, the two bands are getting wider.
+
+
+
+```{r}
 par(mar = c(3, 3, 0, 0), mgp = c(2, 0.5, 0), mfrow = c(1, 1))
 plot(x = mpg$displ, y = mpg$hwy, las = 1, pch = 19, cex = 0.5, ylim = c(4, 45),
      xlab = "Displacement (litres)", ylab = "Highway MPG")
@@ -840,7 +1268,17 @@ legend("topright", c("Regression line", "CI", "PI"),
        lty = c(1, 1, 1), lwd = c(3, 3, 3), col = c("#003366", "red", "blue"), bty = "n")
 ```
 
-:::
+## Simulation-based Inference
+
+To be added.
+
+
+## ANOVA as a Regression Model
+To be added.
+
+
+## Multiple Linear Regression
+To be added.
 
 ## Exercises
 

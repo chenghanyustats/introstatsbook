@@ -312,7 +312,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./infer-nonpar.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Nonparametric Inference</span></a>
+  <a href="./infer-nonpar.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Nonparametric Methods</span></a>
   </div>
 </li>
       </ul>
@@ -364,13 +364,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
    
   <ul>
 <li><a href="#correlation" id="toc-correlation" class="nav-link active" data-scroll-target="#correlation"><span class="toc-section-number">23.1</span>  Correlation</a></li>
-  <li><a href="#introduction-to-regression" id="toc-introduction-to-regression" class="nav-link" data-scroll-target="#introduction-to-regression"><span class="toc-section-number">23.2</span>  Introduction to Regression</a></li>
+  <li><a href="#meaning-of-regression" id="toc-meaning-of-regression" class="nav-link" data-scroll-target="#meaning-of-regression"><span class="toc-section-number">23.2</span>  Meaning of Regression</a></li>
   <li><a href="#fitting-a-regression-line-haty-b_0-b_1x" id="toc-fitting-a-regression-line-haty-b_0-b_1x" class="nav-link" data-scroll-target="#fitting-a-regression-line-haty-b_0-b_1x"><span class="toc-section-number">23.3</span>  Fitting a Regression Line <span class="math inline">\(\hat{Y} = b_0 + b_1X\)</span></a></li>
   <li><a href="#confidence-intervals-and-hypothesis-testing-for-beta_0-and-beta_1" id="toc-confidence-intervals-and-hypothesis-testing-for-beta_0-and-beta_1" class="nav-link" data-scroll-target="#confidence-intervals-and-hypothesis-testing-for-beta_0-and-beta_1"><span class="toc-section-number">23.4</span>  Confidence Intervals and Hypothesis Testing for <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span></a></li>
   <li><a href="#analysis-of-variance-anova-approach" id="toc-analysis-of-variance-anova-approach" class="nav-link" data-scroll-target="#analysis-of-variance-anova-approach"><span class="toc-section-number">23.5</span>  Analysis of Variance (ANOVA) Approach</a></li>
   <li><a href="#prediction" id="toc-prediction" class="nav-link" data-scroll-target="#prediction"><span class="toc-section-number">23.6</span>  Prediction</a></li>
-  <li><a href="#r-lab" id="toc-r-lab" class="nav-link" data-scroll-target="#r-lab"><span class="toc-section-number">23.7</span>  R Lab</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="toc-section-number">23.8</span>  Exercises</a></li>
+  <li><a href="#simulation-based-inference" id="toc-simulation-based-inference" class="nav-link" data-scroll-target="#simulation-based-inference"><span class="toc-section-number">23.7</span>  Simulation-based Inference</a></li>
+  <li><a href="#anova-as-a-regression-model" id="toc-anova-as-a-regression-model" class="nav-link" data-scroll-target="#anova-as-a-regression-model"><span class="toc-section-number">23.8</span>  ANOVA as a Regression Model</a></li>
+  <li><a href="#multiple-linear-regression" id="toc-multiple-linear-regression" class="nav-link" data-scroll-target="#multiple-linear-regression"><span class="toc-section-number">23.9</span>  Multiple Linear Regression</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="toc-section-number">23.10</span>  Exercises</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/model-reg.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
@@ -391,139 +393,119 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </header><div class="cell">
 
 </div>
+<div class="cell">
+
+</div>
+<div class="cell" data-layout-align="center">
+
+</div>
+<p><strong>Linear regression</strong> is a <strong>regression model</strong> which is a statistical technique for investigating and modeling the <em>relationships between variables</em>. If your data set only have one variable, or you just want to analyze one single variable in your data, you do not need regression at all. But you’d like to see how one variable affects another, how one changes with the another, or use one variable to predict another variable, regression may be your top choice. Linear regression assumes the relationships between variables or transformed variables is linear. Although the linear assumption is quite naive, it is a must starting point for understanding advanced regression models, and believe or not, the linear model is still popular at present because of its interpretability, and has a pretty decent performance for some problems.</p>
+<!-- We first define the linear correlation between two numerical variables -->
 <section id="correlation" class="level2" data-number="23.1"><h2 data-number="23.1" class="anchored" data-anchor-id="correlation">
 <span class="header-section-number">23.1</span> Correlation</h2>
 <p><span style="color:blue"> <strong>Relationship Between 2 Numerical Variables</strong> </span></p>
-<ul>
-<li>Depending on the situation, the two variables can be classified as the <em>explanatory</em> variable and the <em>response</em> variable. (Discussed in <strong>Regression</strong>)</li>
-<li>However, there is not always an explanatory-response relationship.</li>
-<li>Examples:
+<p>We first define the linear correlation between two numerical variables. Depending on your research question, one may be classified as the <strong>explanatory variable</strong> and the other the <strong>response variable</strong>. However, in correlation, the two variables do not necessarily have such explanatory-response relationship, and they can be any numerical variables being interested. We will discuss the meaning of explanatory and response variable in the regression section.</p>
+<p>Can you provide an example that two variables are associated? Here I provide some examples.</p>
 <ul>
 <li><span style="color:blue"> height and weight </span></li>
 <li><span style="color:blue"> income and age </span></li>
 <li><span style="color:blue"> SAT/ACT math score and verbal score </span></li>
 <li><span style="color:blue"> amount of time spent studying for an exam and exam grade </span></li>
 </ul>
-</li>
-</ul>
-<div class="callout-note callout callout-style-default no-icon callout-captioned">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-caption-container flex-fill">
-Can you provide an example that 2 variables are associated?
-</div>
-</div>
-<div class="callout-body-container callout-body">
-
-</div>
-</div>
+<p>In each item, the two variables are related each other in some way. Usually the taller a person is, the heavier he is. Note that such relationship is not deterministic, but describe a general trend. We could have a 6’6” guy with 198 lbs, and a 5’9” with 220 lbs, but this an individual case, not an overall pattern. This concept is important because it is represented in the calculation of <strong>correlation coefficient</strong> and linear regression model.</p>
+<!-- :::{.callout-note icon=false} -->
+<!-- ## Can you provide an example that 2 variables are associated? -->
+<!-- ::: -->
 <hr>
 <p><span style="color:blue"> <strong>Scatterplots</strong> </span></p>
 <div class="cell" data-layout-align="center" data-fig.asp="0.4">
 <div class="cell-output-display">
 <div id="fig-scatterplot" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="model-reg_files/figure-html/fig-scatterplot-1.png" class="img-fluid figure-img" style="width:90.0%"></p>
+<figure class="figure"><p><img src="model-reg_files/figure-html/fig-scatterplot-1.png" class="img-fluid figure-img" width="672"></p>
 <p></p><figcaption class="figure-caption">Figure&nbsp;23.1: Examples of scatterplots</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
+<p>The most clear way to show the relationship between two numerical variables is to create a scatterplot. The overall pattern or relationship can be detected several ways in a scatterplot.</p>
 <ul>
-<li>The overall pattern can be described in several ways.
-<ul>
-<li>Form: linear or clusters</li>
-<li>Direction: positively associated or negatively associated</li>
-<li>Strength: how close the points lie to a line/curve</li>
+<li><p><em>Form</em>: As shown in <a href="#fig-scatterplot">Figure&nbsp;<span>23.1</span></a>, the relationship between the two variables may be linear. Heavier cars tend to be less fuel efficient. The subjects in the data may be separated into two groups or clusters based on the value of the two variables. The volcano’s eruption duration and time waited are either small or large. Scatterplts can show other patterns such as quadratic, cubic or any other nonlinear relationships. In this chapter, we stay with the linear relationship.</p></li>
+<li><p><em>Direction</em>: The variables can be positively associated or negatively associated, or not associated. In the scatterplot, the linear pattern is described by a line summarized by the data points in the plot. If the slope of the line is positive (negative), the two variables are positively (negatively) associated, meaning that one gets large as the other gets small. If the slope of the line is zero, the two variables have no association, and whether one variable’s value is large or small does not affect the other variable’s value.</p></li>
+<li><p><em>Strength</em>: Strength is how close the data points lie to the line or nonlinear curve trend in the scatter plot. The variables’ relationship is strong (weak) if the data points are pretty close (far away) to the line.</p></li>
 </ul>
-</li>
-</ul>
+<p>Although scatterplots can show form, direction, and strength of the relationship, we often want to have a numerical measure that can quantify these properties. If the relationship is linear, we use <strong>linear correlation coefficient</strong> to quantify the direction and strength of the linear relationship.</p>
 <hr>
 <p><span style="color:blue"> <strong>Linear Correlation Coefficient</strong> </span></p>
-<ul>
-<li>The <em>sample</em> <strong>correlation coefficient</strong>, denoted by <span class="math inline">\(r\)</span>, measures the <em>direction</em> and <em>strength</em> of the <strong>linear</strong> relationship between two numerical variables: <span class="math display">\[\small r :=\frac{1}{n-1}\sum_{i=1}^n\left(\frac{x_i-\overline{x}}{s_x}\right)\left(\frac{y_i-\overline{y}}{s_y}\right) = \frac{\sum_{i=1}^n(x_i-\overline{x})(y_i-\overline{y})}{\sqrt{\sum_{i=1}^n(x_i-\overline{x})^2\sum_{i=1}^n(y_i-\overline{y})^2}}\]</span>
-</li>
-</ul>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><br></p>
-<ul>
-<li><span class="math inline">\(-1 \le r\le 1\)</span></li>
-<li>
-<span class="math inline">\(r &gt; 0\)</span>: The <strong>larger</strong> value of <span class="math inline">\(X\)</span> is, the <strong>larger</strong> value of <span class="math inline">\(Y\)</span> tends to be.</li>
-<li>
-<span class="math inline">\(r = 1\)</span>: Perfect positive linear relationship.</li>
-</ul>
-</div><div class="column" style="width:50%;">
+<p>The <em>sample</em> <strong>correlation coefficient</strong>, denoted by <span class="math inline">\(r\)</span>, measures the <em>direction</em> and <em>strength</em> of the <em>linear</em> relationship between two numerical variables <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>: <span class="math display">\[r :=\frac{1}{n-1}\sum_{i=1}^n\left(\frac{x_i-\overline{x}}{s_x}\right)\left(\frac{y_i-\overline{y}}{s_y}\right) = \frac{\sum_{i=1}^n(x_i-\overline{x})(y_i-\overline{y})}{\sqrt{\sum_{i=1}^n(x_i-\overline{x})^2\sum_{i=1}^n(y_i-\overline{y})^2}}\]</span></p>
+<p>This is the sample coefficient because the statistic is calculated by the sample data. <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>You don’t need to memorize the formula, but it would be great if you can understand how the formula is related to the scatter plot, and why the formula can quantify the direction and strength of the linear relationship.</p>
+<!-- ::::{.columns} -->
+<!-- :::{.column width="50%"} -->
+<!-- <br> -->
+<p>First, the coefficient is between negative one and positive one, <span class="math inline">\(-1 \le r\le 1\)</span>. <span class="math inline">\(r &gt; 0\)</span> means positive relationship, so the <em>larger</em> value of <span class="math inline">\(X\)</span> is, the <em>larger</em> value of <span class="math inline">\(Y\)</span> tends to be. If <span class="math inline">\(r = 1\)</span>, we have the strongest or perfect positive linear relationship. If we connect all the data points by a line segment, all line segments form a positively sloped straight line as shown in <a href="#fig-correlation">Figure&nbsp;<span>23.5</span></a>. <!-- ::: --></p>
+<!-- :::{.column width="50%"} -->
+<p>Let’s look at <a href="#fig-positive">Figure&nbsp;<span>23.2</span></a> and see how the formula and the scatter plot are related. Since <span class="math inline">\(s_x\)</span>, <span class="math inline">\(s_y\)</span>, and <span class="math inline">\(n\)</span> are positive, the sign of coefficient <span class="math inline">\(r\)</span> is determined by the sum <span class="math inline">\(\sum_{i=1}^n (x_i - \overline{x})(y_i - \overline{y})\)</span>. When the two variables are positively correlated, there are more data points in the first and third quadrants, and less data points in the second and fourth quadrants, where the quadrants are separated by <span class="math inline">\((\overline{x}, \overline{y})\)</span>. Therefore, <span class="math inline">\((x_i - \overline{x})(y_i - \overline{y}) &gt;0\)</span> in the first and third quadrants, and <span class="math inline">\((x_i - \overline{x})(y_i - \overline{y}) &lt; 0\)</span> in the second and fourth quadrants. Since we have more positive terms of <span class="math inline">\((x_i - \overline{x})(y_i - \overline{y})\)</span> the sum <span class="math inline">\(\sum_{i=1}^n (x_i - \overline{x})(y_i - \overline{y})\)</span>, and the coefficient <span class="math inline">\(r\)</span> is positive.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-positive" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="model-reg_files/figure-html/fig-positive-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;23.2: Positive correlation between two variables</figcaption><p></p>
+<figure class="figure"><p><img src="model-reg_files/figure-html/fig-positive-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;23.2: Positive correlation between two variables.</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><br></p>
-<ul>
-<li>
-<span class="math inline">\(r &lt; 0\)</span>: The <strong>larger</strong> value of <span class="math inline">\(X\)</span> is, the <strong>smaller</strong> value of <span class="math inline">\(Y\)</span> tends to be.</li>
-<li>
-<span class="math inline">\(r = -1\)</span>: Perfect negative linear relationship</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<div class="cell">
+<!-- ::: -->
+<!-- :::: -->
+<!-- ::::{.columns} -->
+<!-- :::{.column width="50%"} -->
+<!-- <br> -->
+<p>When <span class="math inline">\(r &lt; 0\)</span>, the variables have a negative relationship. The <em>larger</em> value of <span class="math inline">\(X\)</span> is, the <em>smaller</em> value of <span class="math inline">\(Y\)</span> tends to be. When <span class="math inline">\(r = -1\)</span>, we have the perfect or strongest negative linear relationship. <a href="#fig-negative">Figure&nbsp;<span>23.3</span></a> illustrates the negative correlation between variables.</p>
+<!-- ::: -->
+<!-- :::{.column width="50%"} -->
+<div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-negative" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="model-reg_files/figure-html/fig-negative-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="model-reg_files/figure-html/fig-negative-1.png" class="img-fluid figure-img" width="672"></p>
 <p></p><figcaption class="figure-caption">Figure&nbsp;23.3: Negative correlation between two variables</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><br></p>
-<ul>
-<li>
-<span class="math inline">\(r = 0\)</span>: No <strong>linear</strong> relationship.</li>
-<li>If the explanatory and response variables are switched, <span class="math inline">\(r\)</span> remains the same.</li>
-<li>
-<span class="math inline">\(r\)</span> has no units of measurement, so scale changes do not affect <span class="math inline">\(r\)</span>.</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<div class="cell">
+<!-- ::: -->
+<!-- :::: -->
+<!-- ::::{.columns} -->
+<!-- :::{.column width="50%"} -->
+<!-- <br> -->
+<p>When <span class="math inline">\(r = 0\)</span>, it means the two variables have no <em>linear</em> relationship. The scatter plot <a href="#fig-no-correlation">Figure&nbsp;<span>23.4</span></a> shows an example of no <em>linear</em> relationship of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>. When <span class="math inline">\(r = 0\)</span>, <span class="math inline">\(\sum_{i=1}^n (x_i - \overline{x})(y_i - \overline{y}) = 0\)</span>, and the number of data points in each quadrant would be similar. Be careful, it is possible that <span class="math inline">\(r = 0\)</span> even the number is not the same.</p>
+<p>One property of <span class="math inline">\(r\)</span> is that it has no units of measurement, so scale changes do not affect <span class="math inline">\(r\)</span>. No matter what units of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are, <span class="math inline">\(r\)</span> is always between negative one and positive one. The reason is that <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> are normalized in the coefficient formula.</p>
+<p>Last but not least. It is possible that there is a strong relationship between two variables, but they still have <span class="math inline">\(r = 0\)</span>! Remember that the correlation coefficient <span class="math inline">\(r\)</span> measures the direction and and strength of the linear relationship. Yes, the linear relationship <em>ONLY</em>. If two variables don’t have any relationship, they are not linearly correlated, and their correlation coefficient is 0. However, if <span class="math inline">\(r = 0\)</span>, we can just say the two variables have no linear relationship, but they may be nonlinearly related, or associated in any other way.</p>
+<!-- If the explanatory and response variables are switched, $r$ remains the same. -->
+<!-- ::: -->
+<!-- :::{.column width="50%"} -->
+<div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-no-correlation" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="model-reg_files/figure-html/fig-no-correlation-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="model-reg_files/figure-html/fig-no-correlation-1.png" class="img-fluid figure-img" width="672"></p>
 <p></p><figcaption class="figure-caption">Figure&nbsp;23.4: No correlation between two variables</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
-</div>
-</div>
-<p><span style="color:red"> <strong><em>Example</em></strong> </span></p>
-<ul>
-<li>It is possible that there is a strong relationship between two variables, but they still have <span class="math inline">\(r = 0\)</span>.</li>
-</ul>
+<!-- ::: -->
+<!-- :::: -->
+<!-- <span style="color:red"> ***Example*** </span> -->
+<p>The bottom row in <a href="#fig-correlation">Figure&nbsp;<span>23.5</span></a> shows several nonlinear <span class="math inline">\(X\)</span>-<span class="math inline">\(Y\)</span> relationships that do not have linear association at all. Next time you see <span class="math inline">\(r = 0\)</span>, don’t over interpret the <span class="math inline">\(X\)</span>-<span class="math inline">\(Y\)</span> relationship.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-correlation" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="./images/img-model/corr_ex.svg" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;23.5: Examples of relationships between two variables and their correlation coefficients (https://upload.wikimedia.org/wikipedia/commons/d/d4/Correlation_examples2.svg)</figcaption><p></p>
+<figure class="figure"><p><img src="./images/img-model/corr_ex.svg" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;23.5: Examples of relationships between two variables and their correlation coefficients. (https://upload.wikimedia.org/wikipedia/commons/d/d4/Correlation_examples2.svg)</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
 <p><span style="color:red"> <strong><em>Example in R</em></strong> </span></p>
+<p>In R, we use the function <code><a href="https://rdrr.io/r/stats/cor.html">cor()</a></code> to calculate the correlation coefficient <span class="math inline">\(r\)</span>. We put the two variables’ data in the first two arguments <code>x</code> and <code>y</code>. Here we use the built-in <code>mtcars</code> dataset, and calculate the correlation between the high miles per gallon (<code>mpg</code>) and car weight (<code>wt</code>). The coefficient is <span class="math inline">\(r =\)</span> <code>-0.87</code>. Usually, when <span class="math inline">\(|r| &gt; 0.7\)</span>, the linear relationship is considered strong, and <span class="math inline">\(|r| &lt; 0.3\)</span> for weak linear relationship.</p>
 <div class="columns">
 <div class="column" style="width:49%;">
 <div class="cell" data-layout-align="center">
@@ -532,11 +514,9 @@ Can you provide an example that 2 variables are associated?
 <span>     xlab <span class="op">=</span> <span class="st">"Car Weight"</span>, </span>
 <span>     ylab <span class="op">=</span> <span class="st">"Miles Per Gallon"</span>, </span>
 <span>     pch <span class="op">=</span> <span class="fl">16</span>, col <span class="op">=</span> <span class="fl">4</span>, las <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -544,7 +524,7 @@ Can you provide an example that 2 variables are associated?
 </div><div class="column" style="width:2%;">
 
 </div><div class="column" style="width:49%;">
-<div class="cell">
+<div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">mtcars</span><span class="op">$</span><span class="va">wt</span>,</span>
 <span>    y <span class="op">=</span> <span class="va">mtcars</span><span class="op">$</span><span class="va">mpg</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -554,339 +534,546 @@ Can you provide an example that 2 variables are associated?
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="./images/img-model/car.jpeg" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="./images/img-model/car.jpeg" class="img-fluid figure-img" width="3360"></p>
+<p></p><figcaption class="figure-caption">Source: unsplash-sippakorn yamkasikorn</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
 </div>
-</section><section id="introduction-to-regression" class="level2" data-number="23.2"><h2 data-number="23.2" class="anchored" data-anchor-id="introduction-to-regression">
-<span class="header-section-number">23.2</span> Introduction to Regression</h2>
+</section><section id="meaning-of-regression" class="level2" data-number="23.2"><h2 data-number="23.2" class="anchored" data-anchor-id="meaning-of-regression">
+<span class="header-section-number">23.2</span> Meaning of Regression</h2>
 <p><span style="color:blue"> <strong>What is Regression?</strong> </span></p>
+<p><strong>Regression</strong> models the relationship between one or more numerical/categorical <strong>response variables <span class="math inline">\((Y)\)</span></strong> and one or more numerical/categorical <strong>explanatory variables <span class="math inline">\((X)\)</span></strong>. We use explanatory variables to <em>explain</em> the behavior of the response variables, or how the response variables <em>response</em> to the changes of the explanatory variables.</p>
+<p>Explanatory variables are also called <strong>independent variables</strong>, <strong>predictors</strong>, <strong>regressors</strong>, <strong>covariates</strong>, <strong>exogenous variables</strong>, and <strong>inputs</strong>. Response variables are also called <strong>dependent variables</strong>, <strong>targets</strong>, <strong>endogenous variables</strong>, <strong>outcome variables</strong>, <strong>outputs</strong>, and <strong>labels</strong>.</p>
+<p>The followings are some examples.</p>
 <ul>
-<li>
-<strong>Regression</strong> models the relationship between one or more numerical/categorical <strong>response variables <span class="math inline">\((Y)\)</span></strong> and one or more numerical/categorical <strong>explanatory variables <span class="math inline">\((X)\)</span></strong>.</li>
-<li>A <strong>regression function</strong>, <span class="math inline">\(f(X)\)</span>, describes how a response variable, <span class="math inline">\(Y\)</span>, on average, changes as an explanatory variable, <span class="math inline">\(X\)</span>, changes.</li>
+<li><p>Predict <span style="color:blue"> College GPA <span class="math inline">\((Y)\)</span> using students’ ACT/SAT score <span class="math inline">\((X)\)</span> </span></p></li>
+<li><p>Estimate how much <span style="color:blue"> Sales <span class="math inline">\((Y)\)</span> increase as Advertising Expenditure <span class="math inline">\((X)\)</span> increases $1000 dollars </span></p></li>
+<li><p>How the <span style="color:blue"> Crime Rate <span class="math inline">\((Y)\)</span> in some county changes with the Median Household Income Level <span class="math inline">\((X)\)</span> </span></p></li>
 </ul>
-<div class="columns">
-<div class="column" style="width:50%;">
-<ul>
-<li>Examples:
-<ul>
-<li><span style="color:blue"> College GPA <span class="math inline">\((Y)\)</span> vs.&nbsp;ACT/SAT score <span class="math inline">\((X)\)</span></span></li>
-<li><span style="color:blue"> Sales <span class="math inline">\((Y)\)</span> vs.&nbsp;Advertising Expenditure <span class="math inline">\((X)\)</span></span></li>
-<li><span style="color:blue"> Crime Rate <span class="math inline">\((Y)\)</span> vs.&nbsp;Median Income Level <span class="math inline">\((X)\)</span> </span></li>
-</ul>
-</li>
-</ul>
-</div><div class="column" style="width:50%;">
+<p>In regression, we use a <strong>regression function</strong>, <span class="math inline">\(f(X)\)</span>, to describe how a response variable <span class="math inline">\(Y\)</span>, <em>on average</em>, changes as an explanatory variable <span class="math inline">\(X\)</span> changes. In other words, the regression function captures the <em>general pattern</em> or relationship between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>.</p>
+<p>Let’s first <em>pretend</em> we know what the true regression function <span class="math inline">\(f(X)\)</span> is.</p>
+<p>For a general regression model, the function needs not be linear, and could be of any type. <a href="#fig-regression-function">Figure&nbsp;<span>23.6</span></a> is an example of a regression function <span class="math inline">\(f(X)\)</span> which is log-shaped. The idea is that for each value of the predictor <span class="math inline">\(x\)</span>, the response value <span class="math inline">\(y\)</span> is generated based on the value of <span class="math inline">\(x\)</span> and the regression function <span class="math inline">\(f(x)\)</span>. However, while the <span class="math inline">\(X\)</span>-<span class="math inline">\(f(X)\)</span> relationship is deterministic, the <span class="math inline">\(X\)</span>-<span class="math inline">\(Y\)</span> relationship is not, even though the <span class="math inline">\(y\)</span> value is pretty close to <span class="math inline">\(f(x)\)</span> given some value of <span class="math inline">\(x\)</span>. That’s why if we collect sample data, we will have the two variable data <span class="math inline">\((x_i, y_i)\)</span> as the blue points scattered around the function <span class="math inline">\(f(x)\)</span>. For any value of <span class="math inline">\(x\)</span>, the data generating mechanism for <span class="math inline">\(y\)</span> takes the level of <span class="math inline">\(x\)</span> into account through <span class="math inline">\(f(x)\)</span>, but also includes some other factors that affect the value of <span class="math inline">\(y\)</span>. As a result, <span class="math inline">\(y \ne f(x)\)</span> in general, and we have <span class="math display">\[y = f(x) + \text{some value caused by factors other than } x.\]</span></p>
+<!-- ::::{.columns} -->
+<!-- :::{.column width="50%"} -->
+<!-- - Examples: -->
+<!--   + <span style="color:blue"> College GPA $(Y)$ vs. ACT/SAT score $(X)$</span> -->
+<!--   + <span style="color:blue"> Sales $(Y)$ vs. Advertising Expenditure $(X)$</span> -->
+<!--   + <span style="color:blue"> Crime Rate $(Y)$ vs. Median Income Level $(X)$ </span> -->
+<!-- ::: -->
+<!-- :::{.column width="50%"} -->
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-regression-function" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="model-reg_files/figure-html/fig-regression-function-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;23.6: Example of a Regression Function</figcaption><p></p>
+<figure class="figure"><p><img src="model-reg_files/figure-html/fig-regression-function-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;23.6: Example of a Regression Function.</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
-</div>
-</div>
+<!-- ::: -->
+<!-- :::: -->
+<p>For example, if you want to use a student’s SAT/ACT Score (<span class="math inline">\(X\)</span>) to predict his College GPA (<span class="math inline">\(Y\)</span>), you can assume <span class="math inline">\(Y\)</span> is affected by <span class="math inline">\(X\)</span> through the regression function <span class="math inline">\(f(X)\)</span>. However, do you think SAT/ACT Score is the <em>only</em> factor that affects one’s college academic performance? Absolutely not. The regression function <span class="math inline">\(f(X)\)</span> does not explain all the possible variation of <span class="math inline">\(Y\)</span>. Therefore, even the SAT/ACT Score is fixed at some level, an individual college GPA may be lower than the function value <span class="math inline">\(f(x)\)</span> due to other factors such as less time spent on studying. How do we treat factors other than <span class="math inline">\(X\)</span>? In regression, when <span class="math inline">\(X\)</span> has been taken into account, we think these factors affect the value of <span class="math inline">\(Y\)</span> in a random way with no significant pattern.</p>
+<p>Although <span class="math inline">\(Y \ne f(X)\)</span> in general, in regression we believe or make a assumption that <em>the mean or expected value of <span class="math inline">\(Y\)</span> at <span class="math inline">\(X = x\)</span> is <span class="math inline">\(f(x)\)</span>, the regression function value at <span class="math inline">\(X = x\)</span>!</em> That is, mathematically <span class="math inline">\(E(Y \mid X=x) = \mu_{Y \mid X = x} = f(x)\)</span>. Therefore, <span class="math display">\[Y_{\mid X = x} = \mu_{Y\mid X = x} + \text{some value caused by factors other than } x.\]</span></p>
+<p>Now we have learned an important concept in regression: the regression function <span class="math inline">\(f(x)\)</span> describes the <em>general</em> or <em>average</em> relationship between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>, or the relationship between <span class="math inline">\(X\)</span> and the mean of <span class="math inline">\(Y\)</span>, <span class="math inline">\(\mu_Y\)</span>, <em>not the relationship between <span class="math inline">\(X\)</span> and individual <span class="math inline">\(Y\)</span>.</em> In regression, we care about <span class="math inline">\(f(x)\)</span> because it tells us how the response <span class="math inline">\(Y\)</span> changes <em>on average</em> in response to the changes of <span class="math inline">\(X\)</span>. For the GPA example, <span class="math inline">\(f(x)\)</span> enables us to know how SAT/ACT Score affects College GPA in general, regardless of other factors. We don’t care about individual variation or up and downs because those have nothing to do with <span class="math inline">\(X\)</span>, and do not help us capture the pattern or relationship. If for each value of SAT/ACT Score, we were able to repeatedly collect a College GPA, the effect of other factors on College GPA will be washed out when those College GPA values are averaged.</p>
 <hr>
 <p><span style="color:blue"> <strong>Unknown Regression Function</strong> </span></p>
-<ul>
-<li>The true relationship between <span class="math inline">\(X\)</span> and the mean of <span class="math inline">\(Y\)</span>, the regression function <span class="math inline">\(f(X)\)</span>, is <strong>unknown</strong>.</li>
-<li>The collected data <span class="math inline">\((x_1, y_1), (x_2, y_2), \dots, (x_n, y_n)\)</span> are all we know and have.</li>
-</ul>
+<p>Unfortunately the true underlying relationship between <span class="math inline">\(X\)</span> and the mean of <span class="math inline">\(Y\)</span>, the regression function <span class="math inline">\(f(X)\)</span>, is usually <em>unknown</em> to us although we are interested in it. In reality, what we have is the scatter plot like <a href="#fig-unknown-reg-function">Figure&nbsp;<span>23.7</span></a>, or the sample data <span class="math inline">\((x_1, y_1), (x_2, y_2), \dots, (x_n, y_n)\)</span>, the blue points. What statistics comes into play is that we try to uncover or estimate the function from our data, get to know how <span class="math inline">\(Y\)</span> is generated at a given value of <span class="math inline">\(X\)</span>, and use the function to <em>predict</em> the value of <span class="math inline">\(Y\)</span> given a value of <span class="math inline">\(X\)</span>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-unknown-reg-function" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="model-reg_files/figure-html/fig-unknown-reg-function-1.png" class="img-fluid figure-img" style="width:60.0%"></p>
+<figure class="figure"><p><img src="model-reg_files/figure-html/fig-unknown-reg-function-1.png" class="img-fluid figure-img" width="672"></p>
 <p></p><figcaption class="figure-caption">Figure&nbsp;23.7: Data with an unknown regression function</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
-<ul>
-<li>Goal: <strong>Estimate</strong> <span class="math inline">\(f(X)\)</span> from our data, and use it to <strong>predict</strong> the value of <span class="math inline">\(Y\)</span> given a value of <span class="math inline">\(X\)</span>.</li>
-</ul>
+<!-- Note that the data points $(x_i, y_i)$ in @fig-regression-function are not right on the regression function, but scattered around the function. -->
+<!-- Goal: **Estimate** $f(X)$ from our data, and use it to **predict** the value of $Y$ given a value of $X$. -->
 <hr>
 <p><span style="color:blue"> <strong>Simple Linear Regression</strong> </span></p>
+<p>A regression model can be very general, considering lots of variables simultaneously and modeling a complex nonlinear regression function. We learn how to walk before how to run. So let’s start with the very basic <strong>simple linear regression</strong>. The model is called “simple” because there is <em>only one</em> predictor <span class="math inline">\(X\)</span> and <em>one</em> response variable <span class="math inline">\(Y\)</span>. The model is linear because the regression function used for predicting <span class="math inline">\(Y\)</span> is a linear function, i.e., <span class="math inline">\(f(x) = \beta_0 + \beta_1x\)</span>. Therefore, we use a <strong>regression line</strong> in an X-Y plane to predict the value of <span class="math inline">\(Y\)</span> for a given value of <span class="math inline">\(X = x\)</span>. Keep in mind that here the predictor <span class="math inline">\(X\)</span> is assumed <em>known</em> and <em>constant</em>. It is a variable but not a random variable. However, the response <span class="math inline">\(Y\)</span> is a random variable whose value depends on not only the value of <span class="math inline">\(x\)</span> through <span class="math inline">\(f(x)\)</span> but also a probability distribution. We will discuss it in more detail when we talk about the model.</p>
+<!-- - Start with **simple linear regression**.  -->
+<p><!-- + There is **only one** predictor, $X$ (**known** and **constant**), and **one** response variable, $Y$. --></p>
+<p><!-- + The regression function used for predicting $Y$ is a **linear** function.  --> <!-- + Use a *regression line* in an X-Y plane to predict the value of $Y$ for a given value of $X = x$. --></p>
+<!-- ::::{.columns} -->
+<!-- :::{.column width="50%"} -->
+<p>Let’s have a short math review. A linear function <span class="math inline">\(y = f(x) = \beta_0 + \beta_1 x\)</span> represents a straight line.</p>
 <ul>
-<li>Start with <strong>simple linear regression</strong>.
-<ul>
-<li>There is <strong>only one</strong> predictor, <span class="math inline">\(X\)</span> (<strong>known</strong> and <strong>constant</strong>), and <strong>one</strong> response variable, <span class="math inline">\(Y\)</span>.</li>
-<li>The regression function used for predicting <span class="math inline">\(Y\)</span> is a <strong>linear</strong> function.</li>
-<li>Use a <em>regression line</em> in an X-Y plane to predict the value of <span class="math inline">\(Y\)</span> for a given value of <span class="math inline">\(X = x\)</span>.</li>
+<li><p><span class="math inline">\(\beta_1\)</span> is the <strong>slope</strong> of the line. It is the amount by which <span class="math inline">\(y\)</span> changes when <span class="math inline">\(x\)</span> increases by one unit.</p></li>
+<li><p><span class="math inline">\(\beta_0\)</span> is the <strong>intercept</strong> term which is the value of <span class="math inline">\(y\)</span> when <span class="math inline">\(x = 0\)</span>.</p></li>
 </ul>
-</li>
-</ul>
-<div class="columns">
-<div class="column" style="width:50%;">
-<ul>
-<li>
-<strong>Math review</strong>: A linear function <span class="math inline">\(y = f(x) = \beta_0 + \beta_1 x\)</span> represents a straight line.
-<ul>
-<li>
-<span class="math inline">\(\beta_1\)</span>: <strong>slope</strong>, the amount by which <span class="math inline">\(y\)</span> changes when <span class="math inline">\(x\)</span> increases by one unit</li>
-<li>
-<span class="math inline">\(\beta_0\)</span>: <strong>intercept</strong>, the value of <span class="math inline">\(y\)</span> when <span class="math inline">\(x = 0\)</span>
-</li>
-<li>The linearity assumption: <span class="math inline">\(\beta_1\)</span> does not change as <span class="math inline">\(x\)</span> changes.</li>
-</ul>
-</li>
-</ul>
-</div><div class="column" style="width:50%;">
+<p>The linearity assumption requires that <span class="math inline">\(\beta_1\)</span> does not change as <span class="math inline">\(x\)</span> changes.</p>
+<!-- ::: -->
+<!-- :::{.column width="50%"} -->
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-regression-line" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="./images/img-model/reg_line.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="./images/img-model/reg_line.png" class="img-fluid figure-img" width="357"></p>
 <p></p><figcaption class="figure-caption">Figure&nbsp;23.8: Example of a regression line</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
-</div>
-</div>
+<!-- ::: -->
+<!-- :::: -->
 <p><span style="color:red"> <strong><em>Sample Data: Relationship Between X and Y</em></strong> </span></p>
-<ul>
-<li>Real data <span class="math inline">\((x_i, y_i), i = 1, 2, \dots, n\)</span> do not form a perfect straight line!</li>
-<li><span class="math inline">\(y_i = \beta_0+\beta_1x_i + \color{red}{\epsilon_i}\)</span></li>
-</ul>
+<p>Back to statistics. Remember that we want to use our sample data to estimate the unknown regression function or regression line. Suppose our data set is the <span class="math inline">\(x\)</span>-<span class="math inline">\(y\)</span> pairs <span class="math inline">\((x_i, y_i), i = 1, 2, \dots, n\)</span>. You can see in <a href="#fig-relationship-xy">Figure&nbsp;<span>23.9</span></a> that simply connecting all data points does not form a straight line because again the value <span class="math inline">\(y\)</span> depends on both the regression function and some other factors that are not related to <span class="math inline">\(x\)</span>. So <span class="math inline">\(y_i \ne \beta_0+\beta_1x_i\)</span> in general even if <span class="math inline">\(f(x) = \beta_0+\beta_1x\)</span> is the true regression function faithfully representing the linear relationship.</p>
+<p>Now we need an additional variable to explain the deviations from the line and complete the modeling of data generating process. The deviation can be explained by a new variable <span class="math inline">\(\epsilon\)</span> that is the <strong>error term</strong> in regression. So the value <span class="math inline">\(y\)</span> is the function value <span class="math inline">\(\beta_0 + \beta_1x\)</span> plus the value of <span class="math inline">\(\epsilon\)</span>:</p>
+<p><span class="math display">\[y_i = \beta_0+\beta_1x_i + \color{red}{\epsilon_i}\]</span></p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-relationship-xy" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="model-reg_files/figure-html/fig-relationship-xy-1.png" class="img-fluid figure-img" style="width:70.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;23.9: Actual relationship between X and Y isn’t perfectly linear</figcaption><p></p>
+<figure class="figure"><p><img src="model-reg_files/figure-html/fig-relationship-xy-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;23.9: Actual relationship between X and Y isn’t perfectly linear.</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
-<ul>
-<li>When we collect our data, at any given level of <span class="math inline">\(X = x\)</span>, <span class="math inline">\(y\)</span> is assumed to be drawn from a normal distribution (for inference purpose).</li>
-<li>Its value varies and will not be exactly equal to its mean, <span class="math inline">\(\mu_y\)</span>.</li>
-</ul>
+<p>We learned that <span class="math inline">\(Y\)</span> is a random variable whose value varies with some probability distribution. We have <span class="math inline">\(y = \beta_0+\beta_1x + \epsilon\)</span>, but <span class="math inline">\(f(x) = \beta_0+\beta_1x\)</span> is deterministic and constant given the value of <span class="math inline">\(x\)</span> because <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> are fixed constants although their value may not be known to us. The randomness of <span class="math inline">\(y\)</span> should come from the error term <span class="math inline">\(\epsilon\)</span>.</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>As we learned in random variable and sampling distribution, <em>before</em> we collect the sample, <span class="math inline">\(Y\)</span> (and <span class="math inline">\(\epsilon\)</span>) is a random variable. Once data are collected, we have realized value <span class="math inline">\(y\)</span> (and realized <span class="math inline">\(\epsilon\)</span>). The notation of <span class="math inline">\(\epsilon\)</span> is a little abused because <span class="math inline">\(\epsilon\)</span> could stand for a random variable or a realized value. Be careful about that and make sure you know which one it represents in the content.</p>
+</div>
+</div>
+<p>When we collect our data, at any given level of <span class="math inline">\(X = x\)</span>, <span class="math inline">\(y\)</span> is assumed to be drawn from a normal distribution (for inference purpose). Its value varies and will not be exactly equal to its mean, <span class="math inline">\(\mu_y\)</span>. <a href="#fig-normal-dist-red">Figure&nbsp;<span>23.10</span></a> illustrates this idea. At any value of <span class="math inline">\(x\)</span>, there is an associated normal distribution centered at the function value <span class="math inline">\(\beta_0+\beta_1x\)</span> or <span class="math inline">\(\mu_{Y\mid X = x}\)</span>. Then we treat the value <span class="math inline">\(y\)</span> as a draw from the distribution. Of course due to the randomness of the distribution, <span class="math inline">\(y\)</span> will not be exactly equal to <span class="math inline">\(\mu_{Y\mid X = x}\)</span>, but its value will be somewhat around the mean. If <span class="math inline">\(\beta_1 &gt; 0\)</span>, <span class="math inline">\(\mu_{Y\mid X = x}\)</span> gets large as <span class="math inline">\(x\)</span> goes up. As a result, the realized values of <span class="math inline">\(y\)</span> with all levels of <span class="math inline">\(x\)</span> will also have a upward linear trend centered around <span class="math inline">\(\mu_{Y\mid X = x}\)</span>.</p>
+<!-- The data points in the scatter plot are assumed to be generated in regression as follows.  -->
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-normal-dist-red" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="./images/img-model/regression_line_data.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;23.10: The responses, y, follows a normal distribution. Source: Introduction to the Practice of Statistics.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>If at every level of <span class="math inline">\(x\)</span>, we collect <span class="math inline">\(y\)</span> value again, due to randomness, we are gonna get a different set of <span class="math inline">\(y\)</span>s, as shown in <a href="#fig-normal-dist">Figure&nbsp;<span>23.11</span></a> as blue points. Although the two sets of <span class="math inline">\(y\)</span>s (red and blue) are different, both are centered around the mean <span class="math inline">\(\mu_{Y\mid X = x}\)</span>, and embrace the same positive linear trend.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-normal-dist" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="./images/img-model/regression_line_data_blue.png" class="img-fluid figure-img" style="width:90.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;23.10: Illustration that the responses, y, follow a normal distribution</figcaption><p></p>
+<figure class="figure"><p><img src="./images/img-model/regression_line_data_blue.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;23.11: Second sample. Source: Introduction to the Practice of Statistics.</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
-<ul>
-<li>The <strong>mean of <span class="math inline">\(Y\)</span></strong> and <span class="math inline">\(X\)</span> form a straight line.</li>
-</ul>
+<p>Finally let’s relate the figure to the equation <span class="math inline">\(y = \mu_{Y\mid X = x} + \epsilon\)</span>. Either red or blue points, the value <span class="math inline">\(y\)</span> is decomposed into two parts, <span class="math inline">\(\mu_{Y\mid X = x}\)</span> and <span class="math inline">\(\epsilon\)</span>. They share the same baseline mean level but add a different size of random error <span class="math inline">\(\epsilon\)</span>. It is the error that causes such up and downs or “noises” around the mean. If we ignore or wash out these noises, and let <span class="math inline">\(\mu_{Y\mid X = x}\)</span> speak up, the true underlying function describing the linear relationship will come up. The <em>mean of <span class="math inline">\(Y\)</span></em> and <span class="math inline">\(X\)</span> form a straight line. This regression line is what we care about. In reality we don’t see it, but we assume it is there, and it determines the base level of <span class="math inline">\(y\)</span>. We use the sample data to estimate this unseen line. Hopefully our estimated one is close to the true unseen one.</p>
+<!-- The **mean of $Y$** and $X$ form a straight line. -->
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-regression-mean" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="./images/img-model/regression_line.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;23.11: Illustration that the regression line is formed from the mean of Y and X</figcaption><p></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;23.12: The regression line is formed from the mean of Y and X. Source: Introduction to the Practice of Statistics.</figcaption><p></p>
 </figure>
 </div>
+</div>
+</div>
+<div class="callout-warning callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We never know the true regression function. In linear regression, we assume the function is linear. This assumption may be inappropriate or completely wrong. We need <strong>model adequacy checking</strong> to examine whether linearity assumption makes sense. At this moment, let’s put this issue aside, and assume the true function is linear.</p>
 </div>
 </div>
 <hr>
 <p><span style="color:blue"> <strong>Simple Linear Regression Model (Population)</strong> </span></p>
+<p>We now formally write down the simple linear regression model.</p>
+<p>For the <span class="math inline">\(i\)</span>-th measurement in the target population, <span class="math display">\[Y_i = \beta_0 + \beta_1X_i + \epsilon_i\]</span></p>
 <ul>
-<li>For the <span class="math inline">\(i\)</span>-th measurement in the target population, <span class="math display">\[Y_i = \beta_0 + \beta_1X_i + \epsilon_i\]</span>
-<ul>
 <li>
-<span class="math inline">\(Y_i\)</span>: the <span class="math inline">\(i\)</span>-th value of the response (random) variable.</li>
+<span class="math inline">\(Y_i\)</span> is the <span class="math inline">\(i\)</span>-th value of the response (random) variable.</li>
 <li>
-<span class="math inline">\(X_i\)</span>: the <span class="math inline">\(i\)</span>-th <strong>fixed known</strong> value of the predictor.</li>
+<span class="math inline">\(X_i\)</span> is the <span class="math inline">\(i\)</span>-th <em>fixed known</em> value of the predictor.</li>
 <li>
-<span class="math inline">\(\epsilon_i\)</span>: the <span class="math inline">\(i\)</span>-th random error with the assumption <span class="math inline">\(\epsilon_i \stackrel{iid}{\sim} N(0, \sigma^2)\)</span>.</li>
+<span class="math inline">\(\epsilon_i\)</span> is the <span class="math inline">\(i\)</span>-th random error with the assumption <span class="math inline">\(\epsilon_i \stackrel{iid}{\sim} N(0, \sigma^2)\)</span>.</li>
 <li>
-<span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> are model <strong>coefficients</strong>.</li>
-<li>
-<span class="math inline">\(\beta_0\)</span>, <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\sigma^2\)</span> are <strong>fixed unknown parameters</strong> to be estimated from the sample data once we collect them.</li>
+<span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> are model or regression <em>coefficients</em>.</li>
 </ul>
-</li>
-</ul>
+<p><span class="math inline">\(f(X) = \beta_0 + \beta_1X\)</span> is the population regression line that describes the true relationship between <span class="math inline">\(X\)</span> and the mean of <span class="math inline">\(Y\)</span> in the population.</p>
+<p><span class="math inline">\(\beta_0\)</span>, <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\sigma^2\)</span> are <em>fixed unknown parameters</em> to be estimated from the sample data once we collect them. Once we learn <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>, we know the regression line <span class="math inline">\(\beta_0 + \beta_1X_i\)</span>, and know how <span class="math inline">\(X\)</span> affects <span class="math inline">\(Y\)</span>. Once we learn <span class="math inline">\(\sigma^2\)</span>, we know how much <span class="math inline">\(Y\)</span> is scattered and deviated from its mean.</p>
 <p><span style="color:red"> <strong><em>Important Features of Model <span class="math inline">\(Y_i = \beta_0 + \beta_1X_i + \epsilon_i\)</span></em></strong></span></p>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><span class="math inline">\(\epsilon_i \stackrel{iid}{\sim} N(0, \sigma^2)\)</span> <span class="math display">\[\begin{align*}
+<!-- ::::{.columns} -->
+<!-- :::{.column width="50%"} -->
+<p>The setting <span class="math inline">\(\epsilon_i \stackrel{iid}{\sim} N(0, \sigma^2)\)</span> implies several important features of the regression model.</p>
+<p>First, the mean of <span class="math inline">\(\epsilon_i\)</span> is zero. In other words, the mean of <span class="math inline">\(Y\)</span> at any given level of <span class="math inline">\(X\)</span> is described by the population regression line,</p>
+<p><span class="math display">\[\begin{align*}
 \mu_{Y_i \mid X_i} &amp;= E(\beta_0 + \beta_1X_i + \epsilon_i) \\
 &amp;= \beta_0 + \beta_1X_i
 \end{align*}\]</span></p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <ul>
-<li>The <strong>mean response</strong>, <span class="math inline">\(\mu_{Y\mid X}\)</span>, has a <strong>straight-line</strong> relationship with <span class="math inline">\(X\)</span> given by a population regression line <span class="math display">\[\mu_{Y\mid X} = \beta_0 + \beta_1X\]</span>
-</li>
+<li>
+<span class="math inline">\(E(c) = c\)</span> if <span class="math inline">\(c\)</span> is a constant. For example the mean of 5 is 5. <span class="math inline">\(E(5) = 5\)</span>.</li>
+<li>For variable or constant <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>, <span class="math inline">\(E(A+B) = E(A) + E(B)\)</span>.</li>
 </ul>
-</div><div class="column" style="width:50%;">
+<p>Since <span class="math inline">\(\beta_0 + \beta_1X_i\)</span> is a constant, <span class="math inline">\(E(\beta_0 + \beta_1X_i + \epsilon_i) = E(\beta_0 + \beta_1X_i) + E(\epsilon_i) = \beta_0 + \beta_1X_i + 0 = \beta_0 + \beta_1X_i.\)</span></p>
+</div>
+</div>
+<p>The mean response, <span class="math inline">\(\mu_{Y\mid X}\)</span>, has a <em>straight-line</em> relationship with <span class="math inline">\(X\)</span> given by a population regression line <span class="math display">\[\mu_{Y\mid X} = \beta_0 + \beta_1X\]</span> <!-- ::: --></p>
+<!-- :::{.column width="50%"} -->
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-straight-line" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="./images/img-model/regression_line_red.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;23.12: Illustration of the straight line relationship between <span class="math inline">\(\mu_{Y\mid X}\)</span> and <span class="math inline">\(X\)</span></figcaption><p></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;23.13: The straight line relationship between <span class="math inline">\(\mu_{Y\mid X}\)</span> and <span class="math inline">\(X\)</span>.</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
-</div>
-</div>
-<p><br></p>
-<div class="columns">
-<div class="column" style="width:50%;">
+<!-- ::: -->
+<!-- :::: -->
+<!-- <br> -->
+<!-- ::::{.columns} -->
+<!-- :::{.column width="50%"} -->
+<p>Second, for any <span class="math inline">\(i\)</span>, <span class="math inline">\(Var(\epsilon_i) = \sigma^2\)</span>. With a fixed <span class="math inline">\(X\)</span>, since all the variation of <span class="math inline">\(Y\)</span> comes from <span class="math inline">\(\epsilon\)</span>, the variance of <span class="math inline">\(Y_i \mid X_i\)</span> is also <span class="math inline">\(\sigma^2\)</span>, i.e.,</p>
 <p><span class="math display">\[\begin{align*}
 Var(Y_i \mid X_i) &amp;= Var(\epsilon_i) = \sigma^2
 \end{align*}\]</span></p>
-<ul>
-<li>The variance of <span class="math inline">\(Y\)</span> does not depend on <span class="math inline">\(X\)</span>.</li>
-</ul>
-</div><div class="column" style="width:50%;">
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For a constant <span class="math inline">\(c\)</span> and random variable <span class="math inline">\(A\)</span>, <span class="math inline">\(Var(c+A) = Var(A)\)</span>. Since <span class="math inline">\(\beta_0 + \beta_1X_i\)</span> is a constant with no variation, <span class="math inline">\(Var(Y_i \mid X_i) = Var(\beta_0 + \beta_1X_i + \epsilon_i) = Var(\epsilon_i) = \sigma^2\)</span>.</p>
+</div>
+</div>
+<p>Note that the variance of <span class="math inline">\(Y\)</span> does not depend on <span class="math inline">\(X\)</span>. No matter <span class="math inline">\(X\)</span> is large or small, the variation of <span class="math inline">\(Y\)</span> stays constant. If there are <span class="math inline">\(n\)</span> distinct <span class="math inline">\(x\)</span>s, there will be <span class="math inline">\(n\)</span> associated distinct normal distributions, all having the same variance. <!-- ::: --></p>
+<!-- :::{.column width="50%"} -->
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-response-sd" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="./images/img-model/regression_line_sig.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;23.13: <span class="math inline">\(Y\)</span> has a constant variance regardless of <span class="math inline">\(X\)</span>.</figcaption><p></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;23.14: <span class="math inline">\(Y\)</span> has a constant variance regardless of <span class="math inline">\(X\)</span>.</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
-</div>
-</div>
-<p><br></p>
-<div class="columns">
-<div class="column" style="width:50%;">
+<!-- ::: -->
+<!-- :::: -->
+<!-- <br> -->
+<!-- ::::{.columns} -->
+<!-- :::{.column width="50%"} -->
+<p>Finally, if <span class="math inline">\(\epsilon_i \stackrel{iid}{\sim} N(0, \sigma^2)\)</span>, it implies <span class="math inline">\(Y_i \mid X_i\)</span> is also normally distributed. In particular,</p>
 <p><span class="math display">\[\begin{align*}
 Y_i \mid X_i \stackrel{indep}{\sim} N(\beta_0 + \beta_1X_i, \sigma^2)
 \end{align*}\]</span></p>
-<ul>
-<li>For any fixed value of <span class="math inline">\(X_i = x_i\)</span>, the response, <span class="math inline">\(Y_i\)</span>, varies with <span class="math inline">\(N(\mu_{Y_i\mid x_i}, \sigma^2)\)</span>.</li>
-</ul>
-</div><div class="column" style="width:50%;">
+<p>For any fixed value of <span class="math inline">\(X_i = x_i\)</span>, the response, <span class="math inline">\(Y_i\)</span>, varies with <span class="math inline">\(N(\mu_{Y_i\mid x_i}, \sigma^2)\)</span>. For all levels of <span class="math inline">\(X\)</span>, their corresponding <span class="math inline">\(Y\)</span>s will be random around their mean, the regression function value at <span class="math inline">\(X\)</span>, to the same degree.</p>
+<!-- ::: -->
+<!-- :::{.column width="50%"} -->
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-response-normal" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="./images/img-model/regression_line_sig_red.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;23.14: The response <span class="math inline">\(Y_i\)</span> follows a normal distribution.</figcaption><p></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;23.15: The response <span class="math inline">\(Y_i\)</span> follows a normal distribution.</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
-</div>
-</div>
-<ul>
-<li>
-<strong>Job</strong>: Collect data and estimate the unknown parameters <span class="math inline">\(\beta_0\)</span>, <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\sigma^2\)</span>!</li>
-</ul></section><section id="fitting-a-regression-line-haty-b_0-b_1x" class="level2" data-number="23.3"><h2 data-number="23.3" class="anchored" data-anchor-id="fitting-a-regression-line-haty-b_0-b_1x">
+<!-- ::: -->
+<!-- :::: -->
+<p>Again, <span class="math inline">\(Y_i \mid X_i \stackrel{indep}{\sim} N(\beta_0 + \beta_1X_i, \sigma^2)\)</span> is our model assumption, and it is not necessarily true. When we perform simple liner regression analysis, we by default accept the assumption, and do the analysis based on the assumption. Our goal is to collect data and estimate the unknown parameters <span class="math inline">\(\beta_0\)</span>, <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\sigma^2\)</span>. Once <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> are estimated, the entire regression line and function <span class="math inline">\(f(X) = \beta_0+\beta_1X\)</span> is also estimated.</p>
+<p>Next section, we are going to learn how to estimate <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>, or find the best estimated regression line.</p>
+</section><section id="fitting-a-regression-line-haty-b_0-b_1x" class="level2" data-number="23.3"><h2 data-number="23.3" class="anchored" data-anchor-id="fitting-a-regression-line-haty-b_0-b_1x">
 <span class="header-section-number">23.3</span> Fitting a Regression Line <span class="math inline">\(\hat{Y} = b_0 + b_1X\)</span>
 </h2>
 <p><span style="color:blue"> <strong>Idea of Fitting</strong> </span></p>
-<ul>
-<li>Given the sample data <span class="math inline">\(\{ (x_1, y_1), (x_2, y_2), \dots, (x_n, y_n)\},\)</span>
+<p>Given the sample data <span class="math inline">\(\{ (x_1, y_1), (x_2, y_2), \dots, (x_n, y_n)\},\)</span> we like to ask these questions</p>
 <ul>
 <li>Which <em>sample</em> regression line is the <strong>best</strong>?</li>
 <li>What are the <strong>best</strong> estimators, <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span>, for <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>?</li>
 </ul>
-</li>
-</ul>
-<div class="cell" data-layout-align="center" data-hash="model-reg_cache/html/fig-best-line_8061626e667ac7c27afee8cbf7fb1350">
-<div class="cell-output-display">
-<div id="fig-best-line" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="model-reg_files/figure-html/fig-best-line-1.png" class="img-fluid figure-img" style="width:60.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;23.15: One data set can have multiple fitted regression lines</figcaption><p></p>
-</figure>
-</div>
-</div>
-</div>
-<ul>
-<li><p>We are interested in <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> in the following <em>sample</em> regression model: <span class="math display">\[\begin{align*}
+<p>The sample regression line is is <span class="math inline">\(b_0+b_1X\)</span> that is used to estimate the unknown population regression line <span class="math inline">\(\beta_0 + \beta_1X\)</span>. The estimator <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span> are sample statistics. The process of finding the best <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span> or the sample regression line is called <strong>model fitting</strong>. We <em>fit the simple linear regression model to the sample data</em>. Through model fitting, we find <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span> or the sample regression line that fit the data the best. The sample regression line is best representative of the sample data, and we believe the sample line will be close to the population regression line the most.</p>
+<p>We are interested in <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> in the following <em>sample</em> regression model: <span class="math display">\[\begin{align*}
 y_i = \beta_0 + \beta_1~x_{i} + \epsilon_i,
-\end{align*}\]</span> or <span class="math display">\[E({y}_{i}) = \mu_{y|x_i} = \beta_0 + \beta_1~x_{i}\]</span></p></li>
-<li><p>We use the sample statistics <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span>, which are computed from our sample data, to estimate <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>.</p></li>
-<li><p><span class="math inline">\(\hat{y}_{i} = b_0 + b_1~x_{i}\)</span> is called the <strong>fitted value</strong> of <span class="math inline">\(y_i\)</span> and is a point estimate of the mean, <span class="math inline">\(\mu_{y|x_i}\)</span>, and <span class="math inline">\(y_i\)</span> itself.</p></li>
-</ul>
+\end{align*}\]</span> or <span class="math display">\[E({y}_{i} \mid x_i) = \mu_{y|x_i} = \beta_0 + \beta_1~x_{i}\]</span> We use the sample statistics <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span>, which are computed from our sample data, to estimate <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>. <span class="math inline">\(\hat{y}_{i} = b_0 + b_1~x_{i}\)</span> is called the <strong>fitted value</strong> of <span class="math inline">\(y_i\)</span>. It is a point on the sample regression line, and is a point estimate of the mean, <span class="math inline">\(\mu_{y|x_i}\)</span>, and <span class="math inline">\(y_i\)</span> itself.</p>
 <hr>
 <p><span style="color:blue"> <strong>Ordinary Least Squares (OLS)</strong> </span></p>
-<ul>
-<li>What does best mean?
-<ul>
-<li>We want to choose <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span> or the sample regression line <span class="math inline">\(b_0 + b_1x\)</span> that minimizes the <strong>sum of squared residuals <span class="math inline">\(SS_{res}\)</span></strong>.</li>
-</ul>
-</li>
-<li>The <strong>residual</strong>, <span class="math inline">\(e_i = y_i - \hat{y}_i = y_i - (b_0 + b_1x_i)\)</span>, is a point estimate of <span class="math inline">\(\epsilon_i\)</span>.</li>
-<li>The sample regression line minimizes <span class="math inline">\(SS_{res} = e_1^2 + e_2^2 + \dots + e_n^2 = \sum_{i = 1}^n e_i^2\)</span>. <span class="math display">\[\small{\begin{align} SS_{res} &amp;= (y_1 - b_0 - b_1x_1)^2 + (y_2 - b_0 - b_1x_2)^2 + \dots + (y_n - b_0 - b_1x_n)^2\\ &amp;= \sum_{i=1}^n(y_i - b_0 - b_1x_i)^2 \end{align}}\]</span>
-</li>
-</ul>
-<p><span style="color:red"> <strong><em>Visualizing Residuals</em></strong> </span></p>
-<div class="cell" data-layout-align="center" data-hash="model-reg_cache/html/vis-res-1_34c849a79c27b5ad40cbba2bfddf167b">
+<p>Given a data set, we could have many possible sample regression lines. In fact, there are infinitely many lines out there. Which one is the best?</p>
+<div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="model-reg_files/figure-html/vis-res-1-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
+<div id="fig-best-line" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="model-reg_files/figure-html/fig-best-line-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;23.16: One data set can have multiple fitted regression lines.</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
+<p>To answer such question, we need to first define what “the best” mean. Here we want to choose <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span> or the sample regression line <span class="math inline">\(b_0 + b_1x\)</span> that minimizes the <strong>sum of squared residuals</strong> denoted by <strong><span class="math inline">\(SS_{res}\)</span></strong>. <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>The <strong>residual</strong>, <span class="math inline">\(e_i = y_i - \hat{y}_i = y_i - (b_0 + b_1x_i)\)</span>, is the difference between the data value <span class="math inline">\(y_i\)</span> and its fitted value <span class="math inline">\(\hat{y}_i\)</span>, the estimated value of <span class="math inline">\(y_i\)</span> on the sample regression line. Ideally, we hope the two quantities to be as close as possible because that means the estimation is quite good. The residual <span class="math inline">\(e_i\)</span> usually works as a point estimate of the error term <span class="math inline">\(\epsilon_i\)</span> in the model.</p>
+<p>The <em>best</em> sample regression line minimizes the sum of squared residuals <span class="math display">\[SS_{res} = e_1^2 + e_2^2 + \dots + e_n^2 = \sum_{i = 1}^n e_i^2.\]</span></p>
+<p>If <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span> are the best estimators, plug <span class="math inline">\(e_i = y_i - (b_0 + b_1x_i)\)</span> into <span class="math inline">\(SS_{res}\)</span>, we have</p>
+<p><span class="math display">\[\begin{align} SS_{res} &amp;= (y_1 - b_0 - b_1x_1)^2 + (y_2 - b_0 - b_1x_2)^2 + \dots + (y_n - b_0 - b_1x_n)^2\\ &amp;= \sum_{i=1}^n(y_i - b_0 - b_1x_i)^2 \end{align}\]</span> that is the smallest comparing to any other <span class="math inline">\(SS_{res} = \sum_{i=1}^n(y_i - a_0 - a_1x_i)^2\)</span> that uses another pair of estimators <span class="math inline">\((a_0, a_1) \ne (b_0, b_1)\)</span>.</p>
+<p>Before we actually find <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span>, let’s visualize fitted values and residuals in the scatter plot.</p>
+<!-- $SS_{res}$ is now a function of $b_0$ and $b_1$. So we can choose the pair $(b_0, b_1)$ that produces the smallest $SS_{res}$.  -->
+<p><span style="color:red"> <strong><em>Visualizing Fitted Values and Residuals</em></strong> </span></p>
+<p>The two variables are the Car Displacement in litres and Highway Miles per Gallon. The scatter plot shows a negatively correlated relationship.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="model-reg_files/figure-html/vis-res-2-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
+<p>The best sample regression line <span class="math inline">\(\hat{y} = b_0 + b_1 x\)</span> that minimizes <span class="math inline">\(SS_{res}\)</span> is the navy blue straight line. The red points on the line are the fitted value of <span class="math inline">\(y_i\)</span>s, or <span class="math inline">\(\hat{y_i} = b_0 + b_1 x_i\)</span>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="model-reg_files/figure-html/vis-res-3-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The residual <span class="math inline">\(e_i\)</span> is <span class="math inline">\(y_i - \hat{y}_i\)</span>. In the plot, it’s the difference between the black and red points. Each vertical bar shows the magnitude of a residual. If we square the size of all vertical bars and add them up, the sum will be our <span class="math inline">\(SS_{res}\)</span> value.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p><span style="color:red"> <strong><em>Least Squares Estimates (LSE)</em></strong> </span></p>
-<ul>
-<li><p>In the least squares approach, we choose the <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span> that minimize the <span class="math inline">\(SS_{res}\)</span>. <span class="math display">\[(b_0, b_1) = \arg \min_{\beta_0, \beta_1} \sum_{i=1}^n(y_i - \beta_0 - \beta_1x_i)^2\]</span></p></li>
-<li><p>MATH 1450 …</p></li>
-</ul>
+<p>It’s time to find the best <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span> that minimize <span class="math inline">\(SS_{res}\)</span>. We call <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span> <strong>least squares estimators (LSE)</strong> and the process of finding such estimators <strong>ordinary least squares (OLS)</strong> method.</p>
+<!-- In the least squares approach, we choose the $b_0$ and $b_1$ that minimize the $SS_{res}$. -->
+<p>Mathematically, <span class="math inline">\((b_0, b_1)\)</span> is the minimizer of the sum of squares</p>
+<p><span class="math display">\[(b_0, b_1) = \arg \min_{\alpha_0, \alpha_1} \sum_{i=1}^n(y_i - \alpha_0 - \alpha_1x_i)^2\]</span></p>
+<!-- - MATH 1450 ...  -->
+<p>It is an optimization problem. I leave it to you as an exercise. The formula of LSE is</p>
 <p><span class="math display">\[\color{red}{b_0 = \overline{y} - b_1\overline{x}}\]</span></p>
 <p><span class="math display">\[\color{red}{b_1 = \frac{\sum_{i=1}^n(x_i - \overline{x})(y_i - \overline{y})}{\sum_{i=1}^n(x_i - \overline{x})^2} = \frac{S_{xy}}{S_{xx}} = r \frac{\sqrt{S_{yy}}}{\sqrt{S_{xx}}}},\]</span> where <span class="math inline">\(S_{xx} = \sum_{i=1}^n(x_i - \overline{x})^2\)</span>, <span class="math inline">\(S_{yy} = \sum_{i=1}^n(y_i - \overline{y})^2\)</span>, <span class="math inline">\(S_{xy} = \sum_{i=1}^n(x_i - \overline{x})(y_i - \overline{y})\)</span></p>
-<div class="callout-note callout callout-style-default no-icon callout-captioned">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
+<p>Let’s see if we can get some intuition from the formula. First, the least squares regression line passes through the centroid <span class="math inline">\((\overline{x}, \overline{y})\)</span> because <span class="math inline">\(\overline{y} = b_0 + b_1\overline{x}\)</span>. In addition, <span class="math inline">\(b_1\)</span> is kind of like a scaled version of correlation coefficient of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>. The correlation <span class="math inline">\(r\)</span> and the slope <span class="math inline">\(b_1\)</span> always have the same sign. A positive (negative) correlation implies a positive (negative) sloped regression line. The correlation <span class="math inline">\(r\)</span> is unit-free. When we fit a regression model, the slope <span class="math inline">\(b_1\)</span> size depends on the unit of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>.</p>
+<p>Nowadays we use computing software to get the estimates, but it’s good to to know the idea of OLS, and the properties of <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span>.</p>
+<!-- :::{.callout-note icon=false} -->
+<!-- ## What can we learn from the formula of $b_0$ and $b_1$? -->
+<!-- ::: -->
+<hr>
+<p><span style="color:blue"> <strong>Fit a Simple Linear Regression in R</strong> </span></p>
+<p>We use the <code>mpg</code> data set in the <code>ggplot2</code> package to demonstrate doing regression analysis in R. In particular, we grab the variable <code>hwy</code> as our response and <code>disp</code> as our predictor.</p>
+<!-- <span style="color:blue"> **`mpg` Data** </span> -->
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 234 × 11
+   manufacturer model      displ  year   cyl trans drv     cty   hwy fl    class
+   &lt;chr&gt;        &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;
+ 1 audi         a4           1.8  1999     4 auto… f        18    29 p     comp…
+ 2 audi         a4           1.8  1999     4 manu… f        21    29 p     comp…
+ 3 audi         a4           2    2008     4 manu… f        20    31 p     comp…
+ 4 audi         a4           2    2008     4 auto… f        21    30 p     comp…
+ 5 audi         a4           2.8  1999     6 auto… f        16    26 p     comp…
+ 6 audi         a4           2.8  1999     6 manu… f        18    26 p     comp…
+ 7 audi         a4           3.1  2008     6 auto… f        18    27 p     comp…
+ 8 audi         a4 quattro   1.8  1999     4 manu… 4        18    26 p     comp…
+ 9 audi         a4 quattro   1.8  1999     4 auto… 4        16    25 p     comp…
+10 audi         a4 quattro   2    2008     4 manu… 4        20    28 p     comp…
+# ℹ 224 more rows</code></pre>
 </div>
-<div class="callout-caption-container flex-fill">
-What can we learn from the formula of <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span>?
+</div>
+<p><span style="color:red"> <strong>Highway MPG <code>hwy</code> vs.&nbsp;Displacement <code>displ</code></strong> </span></p>
+<p>First we create the scatter plot.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">mpg</span><span class="op">$</span><span class="va">displ</span>, y <span class="op">=</span> <span class="va">mpg</span><span class="op">$</span><span class="va">hwy</span>,</span>
+<span>     las <span class="op">=</span> <span class="fl">1</span>, pch <span class="op">=</span> <span class="fl">19</span>, col <span class="op">=</span> <span class="st">"navy"</span>, cex <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>     xlab <span class="op">=</span> <span class="st">"Displacement (litres)"</span>, ylab <span class="op">=</span> <span class="st">"Highway MPG"</span>,</span>
+<span>     main <span class="op">=</span> <span class="st">"Highway MPG vs. Engine Displacement (litres)"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
 </div>
-<div class="callout-body-container callout-body">
+</div>
+<p><span style="color:red"> <strong>Fit Simple Linear Regression</strong> </span></p>
+<p>To fit a linear regression, we use the <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> function because linear regression is a linear model. As we learned in ANOVA <a href="model-anova.html"><span>Chapter&nbsp;22</span></a>, we write the formula <code>hwy ~ displ</code>, and specify the data set <code>mpg</code>. We save the fitted result in the object <code>reg_fit</code> which is a R list. The output prints <span class="math inline">\(b_0 = 35.70\)</span> and <span class="math inline">\(b_1 = -3.53\)</span>, the least squares estimate of <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>. So the sample regression function or regression line is <span class="math display">\[\widehat{hwy} = 35.7 - 3.53 \times disp.\]</span></p>
+<p>For one unit (litre) increase of the displacement, we expect the highway MPG to be decreased, <em>on average</em>, by 3.53 miles.</p>
+<!-- ::::{.columns} -->
+<!-- :::{.column width="49%"} -->
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">reg_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">hwy</span> <span class="op">~</span> <span class="va">displ</span>, data <span class="op">=</span> <span class="va">mpg</span><span class="op">)</span></span>
+<span><span class="va">reg_fit</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = hwy ~ displ, data = mpg)
 
+Coefficients:
+(Intercept)        displ  
+     35.698       -3.531  </code></pre>
+</div>
+</div>
+<!-- ::: -->
+<!-- :::{.column width="2%"} -->
+<!-- ::: -->
+<!-- :::{.column width="49%"} -->
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/typeof.html">typeof</a></span><span class="op">(</span><span class="va">reg_fit</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "list"</code></pre>
+</div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## all elements in reg_fit</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">reg_fit</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "coefficients"  "residuals"     "effects"       "rank"         
+ [5] "fitted.values" "assign"        "qr"            "df.residual"  
+ [9] "xlevels"       "call"          "terms"         "model"        </code></pre>
+</div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## use $ to extract an element of a list</span></span>
+<span><span class="va">reg_fit</span><span class="op">$</span><span class="va">coefficients</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Intercept)       displ 
+  35.697651   -3.530589 </code></pre>
+</div>
+</div>
+<!-- ::: -->
+<!-- :::: -->
+<p><span style="color:red"> <strong>Fitted Values of <span class="math inline">\(y\)</span></strong> </span></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## the first 5 observed response value y</span></span>
+<span><span class="va">mpg</span><span class="op">$</span><span class="va">hwy</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 29 29 31 30 26</code></pre>
+</div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## the first 5 fitted value y_hat</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">reg_fit</span><span class="op">$</span><span class="va">fitted.values</span>, <span class="fl">5</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       1        2        3        4        5 
+29.34259 29.34259 28.63647 28.63647 25.81200 </code></pre>
+</div>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## the first 5 predictor value x</span></span>
+<span><span class="va">mpg</span><span class="op">$</span><span class="va">displ</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.8 1.8 2.0 2.0 2.8</code></pre>
+</div>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">reg_fit</span><span class="op">$</span><span class="va">fitted.values</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 234</code></pre>
+</div>
+</div>
+<!-- --------------------------------------------------------------- -->
+<p><span style="color:red"> <strong>Add a Regression Line</strong> </span></p>
+<p>To add the fitted regression line, we just put the fitted result <code>reg_fit</code> into the function <code><a href="https://rdrr.io/r/graphics/abline.html">abline()</a></code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">mpg</span><span class="op">$</span><span class="va">displ</span>, y <span class="op">=</span> <span class="va">mpg</span><span class="op">$</span><span class="va">hwy</span>, las <span class="op">=</span> <span class="fl">1</span>, pch <span class="op">=</span> <span class="fl">19</span>, col <span class="op">=</span> <span class="st">"navy"</span>, cex <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>     xlab <span class="op">=</span> <span class="st">"Displacement (litres)"</span>, ylab <span class="op">=</span> <span class="st">"Highway MPG"</span>,</span>
+<span>     main <span class="op">=</span> <span class="st">"Highway MPG vs. Engine Displacement (litres)"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span><span class="va">reg_fit</span>, col <span class="op">=</span> <span class="st">"#FFCC00"</span>, lwd <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <hr>
 <p><span style="color:blue"> <strong>Estimation for <span class="math inline">\(\sigma^2\)</span></strong> </span></p>
+<p>We can think of <span class="math inline">\(\sigma^2\)</span> as <strong>variance around the line</strong> or the <strong>mean square (prediction) error</strong>. It is the variance of the error term. Since the residual <span class="math inline">\(e_i\)</span> is the estimate of <span class="math inline">\(\epsilon_i\)</span>, we can use the variance of residuals to estimate <span class="math inline">\(\sigma^2\)</span>, which is the <strong>mean square residual</strong>, <span class="math inline">\(MS_{res}\)</span>: <span class="math display">\[\hat{\sigma}^2 = MS_{res} = \frac{SS_{res}}{n-2} = \frac{\sum_{i=1}^n(y_i - \hat{y}_i)^2}{n-2} = \frac{\sum_{i=1}^ne_i^2}{n-2}.\]</span></p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <ul>
-<li>We can think of <span class="math inline">\(\sigma^2\)</span> as <strong>variance around the line</strong> or the <strong>mean square (prediction) error</strong>.</li>
-<li>The estimate of <span class="math inline">\(\sigma^2\)</span> is the <strong>mean square residual</strong>, <span class="math inline">\(MS_{res}\)</span>: <span class="math display">\[\hat{\sigma}^2 = MS_{res} = \frac{SS_{res}}{n-2} = \frac{\sum_{i=1}^n(y_i - \hat{y}_i)^2}{n-2}\]</span>
-</li>
-<li>
-<span class="math inline">\(MS_{res}\)</span> is often shown in computer output as <span class="math inline">\(\texttt{MS(Error)}\)</span> or <span class="math inline">\(\texttt{MS(Residual)}\)</span>.</li>
-<li>
-<span class="math inline">\(E(MS_{res}) = \sigma^2\)</span>
-<ul>
-<li>Therefore, <span class="math inline">\(\hat{\sigma}^2\)</span> is an unbiased estimator for <span class="math inline">\(\sigma^2\)</span> 👍.</li>
+<li><p>The variance of residuals is <span class="math inline">\(\frac{\sum_{i=1}^n(e_i - \overline{e})^2}{n-2}\)</span>. Because with OLS we have <span class="math inline">\(\sum_{i=1}^n e_i = 0\)</span>, <span class="math inline">\(\overline{e} = 0\)</span>, and hence <span class="math inline">\(\hat{\sigma}^2 = \frac{\sum_{i=1}^ne_i^2}{n-2}.\)</span></p></li>
+<li><p>The degrees of freedom is the number of values in the final calculation of a statistic that are free to vary. It is equal to the sample size minus the number of parameters estimated. In simple linear regression, we estimate <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> in the calculation of <span class="math inline">\(SS_{res}\)</span>, so its degrees of freedom is <span class="math inline">\(n-2\)</span>.</p></li>
 </ul>
-</li>
-</ul></section><section id="confidence-intervals-and-hypothesis-testing-for-beta_0-and-beta_1" class="level2" data-number="23.4"><h2 data-number="23.4" class="anchored" data-anchor-id="confidence-intervals-and-hypothesis-testing-for-beta_0-and-beta_1">
+</div>
+</div>
+<p>Remember that a sum of squares has a corresponding degrees of freedom. <span class="math inline">\(SS_{res}\)</span> has <span class="math inline">\(n-2\)</span> degrees of freedom.</p>
+<p><span class="math inline">\(MS_{res}\)</span> is often shown in computer output as <span class="math inline">\(\texttt{MS(Error)}\)</span> or <span class="math inline">\(\texttt{MS(Residual)}\)</span>.</p>
+<p>By the way, <span class="math inline">\(E(MS_{res}) = \sigma^2\)</span>. Therefore, <span class="math inline">\(\hat{\sigma}^2\)</span> is an unbiased estimator for <span class="math inline">\(\sigma^2\)</span>.</p>
+<!-- -------------------------------------------------------------------- -->
+<p><span style="color:red"> <strong>Standard Error of Regression in R</strong> </span></p>
+<p>The standard error <span class="math inline">\(\hat{\sigma}^2\)</span> information is saved in the summary of the fitted result. In the summary output, <span class="math inline">\(\hat{\sigma}^2\)</span> is shown as <code>Residual standard error</code>. The degrees of freedom is <span class="math inline">\(n - 2 = 234 - 2 = 232.\)</span></p>
+<div class="cell" data-layout-align="center" data-output.lines="[15,16]">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">summ_reg_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">reg_fit</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>...
+
+Residual standard error: 3.836 on 232 degrees of freedom
+...</code></pre>
+</div>
+</div>
+<p>We can grab the <span class="math inline">\(\hat{\sigma}^2\)</span> value in the summary object <code>summ_reg_fit</code> by <code>summ_reg_fit$sigma</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># lots of fitted information saved in summary(reg_fit)!</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">summ_reg_fit</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "call"          "terms"         "residuals"     "coefficients" 
+ [5] "aliased"       "sigma"         "df"            "r.squared"    
+ [9] "adj.r.squared" "fstatistic"    "cov.unscaled" </code></pre>
+</div>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># residual standard error (sigma_hat)</span></span>
+<span><span class="va">summ_reg_fit</span><span class="op">$</span><span class="va">sigma</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3.835985</code></pre>
+</div>
+</div>
+<p>It is not hard to compute the <span class="math inline">\(MS_{res}\)</span> directly from its definition, the sum of squared residuals divided by residual degrees of freedom.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># from reg_fit</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">reg_fit</span><span class="op">$</span><span class="va">residuals</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span> <span class="op">/</span> <span class="va">reg_fit</span><span class="op">$</span><span class="va">df.residual</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3.835985</code></pre>
+</div>
+</div>
+</section><section id="confidence-intervals-and-hypothesis-testing-for-beta_0-and-beta_1" class="level2" data-number="23.4"><h2 data-number="23.4" class="anchored" data-anchor-id="confidence-intervals-and-hypothesis-testing-for-beta_0-and-beta_1">
 <span class="header-section-number">23.4</span> Confidence Intervals and Hypothesis Testing for <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>
 </h2>
+<p>We’ve obtained the point estimators of <span class="math inline">\(\beta_0\)</span>, <span class="math inline">\(\beta_1\)</span>, and <span class="math inline">\(\sigma^2\)</span>. Often we’d like to do inference about the parameters, especially <span class="math inline">\(\beta_1\)</span> because it tells us how the predictor affects the response. In this section, we talk about interval estimation and testing procedure for <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>.</p>
 <p><span style="color:blue"> <strong>Confidence Intervals for <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span></strong> </span></p>
-<ul>
-<li>
-<span class="math inline">\(\frac{b_1 - \beta_1}{\sqrt{\hat{\sigma}^2/S_{xx}}} \sim t_{n-2}\)</span>; <span class="math inline">\(\quad \frac{b_0 - \beta_0}{\sqrt{\hat{\sigma}^2\left(\frac{1}{n} + \frac{\overline{x}^2}{S_{xx}}\right)}} \sim t_{n-2}\)</span>
-</li>
-<li>The <span class="math inline">\((1-\alpha)100\%\)</span> CI for <span class="math inline">\(\beta_1\)</span> is <span class="math inline">\(b_1 \pm t_{\alpha/2, n-2}\sqrt{\hat{\sigma}^2/S_{xx}}\)</span>
-</li>
-<li>The <span class="math inline">\((1-\alpha)100\%\)</span> CI for <span class="math inline">\(\beta_0\)</span> is <span class="math inline">\(b_0 \pm t_{\alpha/2, n-2}\sqrt{\hat{\sigma}^2\left(\frac{1}{n} + \frac{\overline{x}^2}{S_{xx}}\right)}\)</span>
-</li>
-</ul>
+<p>Note that <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span> are functions of data. Because <span class="math inline">\(y_i\)</span>s are random variables (before being sampled), so are <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span>. As a result, they have their sampling distribution that is used for constructing the confidence interval for <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> respectively. It can be show that</p>
+<p><span class="math display">\[\frac{b_1 - \beta_1}{\sqrt{\hat{\sigma}^2/S_{xx}}} \sim t_{n-2}; \quad \frac{b_0 - \beta_0}{\sqrt{\hat{\sigma}^2\left(\frac{1}{n} + \frac{\overline{x}^2}{S_{xx}}\right)}} \sim t_{n-2}.\]</span></p>
+<p>Therefore, the <span class="math inline">\((1-\alpha)100\%\)</span> CI for <span class="math inline">\(\beta_1\)</span> is <span class="math display">\[b_1 \pm t_{\alpha/2, n-2}\sqrt{\hat{\sigma}^2/S_{xx}}.\]</span></p>
+<p>The <span class="math inline">\((1-\alpha)100\%\)</span> CI for <span class="math inline">\(\beta_0\)</span> is <span class="math display">\[b_0 \pm t_{\alpha/2, n-2}\sqrt{\hat{\sigma}^2\left(\frac{1}{n} + \frac{\overline{x}^2}{S_{xx}}\right)}.\]</span></p>
+<!-- ----------------------------------------------------------------- -->
+<p><span style="color:red"> <strong>Confidence Intervals in R</strong> </span></p>
+<p>To grab the confidence interval for <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>, we simply put the fitted result into the <code><a href="https://rdrr.io/r/stats/confint.html">confint()</a></code> function. By default, the confidence level is 95%, but any other level can be specified. We say we are 95% confident that one unit increase of displacement will result in a decrease in highway miles per gallon on average by 3.91 to 3.15 miles.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html">confint</a></span><span class="op">(</span><span class="va">reg_fit</span>, level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                2.5 %   97.5 %
+(Intercept) 34.278353 37.11695
+displ       -3.913828 -3.14735</code></pre>
+</div>
+</div>
 <hr>
 <p><span style="color:blue"> <strong>Hypothesis Testing</strong> </span></p>
+<p>The hypothesis testing for <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> is straightforward. Here I just show the case of two-tailed tests. The one-tailed tests can be done similarly.</p>
 <p><span style="color:red"> <strong><span class="math inline">\(\beta_1\)</span></strong> </span></p>
 <ul>
 <li>
@@ -915,17 +1102,35 @@ What can we learn from the formula of <span class="math inline">\(b_0\)</span> a
 </ul>
 </li>
 </ul>
+<p><span style="color:red"> <strong>Testing in R</strong> </span></p>
+<p>The two-sided test result for <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> can be found in the summary output. There is a Coeffifcients table in the middle of the output. We can extract the table by check <code>summ_reg_fit$coefficients</code>. The first row is for intercept and the second for the slope. The columns from left to right are LSEs, the standard errors of LSEs, the <span class="math inline">\(t\)</span> test statistics, and <span class="math inline">\(p\)</span>-values.</p>
+<div class="cell" data-layout-align="center" data-output.lines="[9,10,11,12]">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">summ_reg_fit</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>...
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  35.6977     0.7204   49.55   &lt;2e-16 ***
+displ        -3.5306     0.1945  -18.15   &lt;2e-16 ***
+...</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">summ_reg_fit</span><span class="op">$</span><span class="va">coefficients</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             Estimate Std. Error   t value      Pr(&gt;|t|)
+(Intercept) 35.697651  0.7203676  49.55477 2.123519e-125
+displ       -3.530589  0.1945137 -18.15085  2.038974e-46</code></pre>
+</div>
+</div>
+<p>Notice that the testing output is for the two-sided test with hypothesized value being equal to zero. The first row tests whether or not <span class="math inline">\(\beta_0 = 0\)</span> and the second tests whether or not <span class="math inline">\(\beta_1 = 0\)</span>.</p>
 <p><span style="color:red"> <strong><em>Interpretation of Testing Results</em></strong> </span></p>
-<ul>
-<li><span style="color:blue"> <span class="math inline">\(H_0: \beta_1 = 0 \quad H_1: \beta_1 \ne 0\)</span> </span></li>
-<li>
-<em>Failing to reject <span class="math inline">\(H_0: \beta_1 = 0\)</span></em> implies there is <strong>no linear relationship</strong> between <span class="math inline">\(Y\)</span> and <span class="math inline">\(X\)</span>.</li>
-</ul>
-<div class="cell" data-layout-align="center" data-fig.asp="0.5" data-hash="model-reg_cache/html/fig-beta-meaning_f2912f205ffbb90582a118d2e4eba098">
+<p>Suppose we do the test <span style="color:blue"> <span class="math inline">\(H_0: \beta_1 = 0 \quad H_1: \beta_1 \ne 0\)</span> </span>. <em>Failing to reject <span class="math inline">\(H_0: \beta_1 = 0\)</span></em> implies there is <em>no (statistically significant) linear relationship</em> between (the mean of) <span class="math inline">\(Y\)</span> and <span class="math inline">\(X\)</span>. But be careful. They could have some other type of relationship.</p>
+<div class="cell" data-layout-align="center" data-fig.asp="0.5">
 <div class="cell-output-display">
 <div id="fig-beta-meaning" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="model-reg_files/figure-html/fig-beta-meaning-1.png" class="img-fluid figure-img" style="width:70.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;23.16: Failing to reject <span class="math inline">\(H_0\)</span> means there is no linear relationship between X and Y, but they could have some other type of relationship.</figcaption><p></p>
+<figure class="figure"><p><img src="model-reg_files/figure-html/fig-beta-meaning-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;23.17: Failing to reject <span class="math inline">\(H_0\)</span> means there is no linear relationship between X and Y, but they could have some other type of relationship.</figcaption><p></p>
 </figure>
 </div>
 </div>
@@ -944,132 +1149,214 @@ If we reject <span class="math inline">\(H_0: \beta_1 = 0\)</span>, does it mean
 </div>
 </div>
 <p><span style="color:red"> <strong><em>Test of Significance of Regression</em></strong> </span></p>
+<p><em>Rejecting <span class="math inline">\(H_0: \beta_1 = 0\)</span></em> could mean</p>
 <ul>
-<li>
-<em>Rejecting <span class="math inline">\(H_0: \beta_1 = 0\)</span></em> could mean
-<ul>
-<li>the straight-line model is adequate.</li>
-<li>better results could be obtained with a more complicated model.</li>
+<li><p>the straight-line model is adequate.</p></li>
+<li><p>better results could be obtained with a more complicated model.</p></li>
 </ul>
-</li>
-</ul>
-<div class="cell" data-layout-align="center" data-fig.asp="0.5" data-hash="model-reg_cache/html/fig-accept_fbb0a3fbecd509b023f2043f6919bfaa">
+<p>Rejecting <span class="math inline">\(H_0\)</span> doesn’t necessarily mean that a linear model is the best model. There may be some other nonlinear relationship that cannot be captured by the linear regression model. To capture that, a more sophisticated model is needed.</p>
+<div class="cell" data-layout-align="center" data-fig.asp="0.5">
 <div class="cell-output-display">
 <div id="fig-accept" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="model-reg_files/figure-html/fig-accept-1.png" class="img-fluid figure-img" style="width:70.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;23.17: Rejecting <span class="math inline">\(H_0\)</span> doesn’t necessarily mean that a linear model is the best model, just that it is adequate.</figcaption><p></p>
+<figure class="figure"><p><img src="model-reg_files/figure-html/fig-accept-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;23.18: Rejecting <span class="math inline">\(H_0\)</span> doesn’t necessarily mean that a linear model is the best model.</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
 </section><section id="analysis-of-variance-anova-approach" class="level2" data-number="23.5"><h2 data-number="23.5" class="anchored" data-anchor-id="analysis-of-variance-anova-approach">
 <span class="header-section-number">23.5</span> Analysis of Variance (ANOVA) Approach</h2>
+<p>The testing for <span class="math inline">\(\beta_1\)</span> can be done using ANOVA approach. The key idea is to separate the total deviation of <span class="math inline">\(y\)</span> from its mean into the deviation of <span class="math inline">\(y\)</span> explained by regression or the factor <span class="math inline">\(x\)</span> and the deviation of <span class="math inline">\(y\)</span> that cannot be explained by <span class="math inline">\(x\)</span>. Let’s learn about it.</p>
 <p><span style="color:blue"> <strong><span class="math inline">\(X\)</span> - <span class="math inline">\(Y\)</span> Relationship Explains Some Deviation</strong> </span></p>
+<p>First let me ask you a question.</p>
 <div class="callout-note callout callout-style-default no-icon callout-captioned">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-caption-container flex-fill">
-Suppose we only have data for <span class="math inline">\(Y\)</span> and have no information about <span class="math inline">\(X\)</span> or the relationship between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>. How do we predict a value of <span class="math inline">\(Y\)</span>?
+Suppose we only have data for <span class="math inline">\(Y\)</span> and have no information about <span class="math inline">\(X\)</span> or no information about the relationship between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>. How do we predict a value of <span class="math inline">\(Y\)</span>?
 </div>
 </div>
 <div class="callout-body-container callout-body">
 
 </div>
 </div>
-<ul>
-<li>If the data have no pattern, our best guess for <span class="math inline">\(Y\)</span> would be <span class="math inline">\(\overline{y}\)</span> (i.e., <span class="math inline">\(\hat{y}_i = \overline{y}\)</span>).
-<ul>
-<li>We would treat <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> as uncorrelated.</li>
-</ul>
-</li>
-<li>The (total) deviation from the mean is <span class="math inline">\((y_i - \overline{y})\)</span>
-</li>
-<li>If <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are linearly related, fitting a linear regression model helps us predict the value of <span class="math inline">\(Y\)</span> when the value of <span class="math inline">\(X\)</span> is provided.</li>
-<li>
-<span class="math inline">\(\hat{y}_i = b_0 + b_1x_i\)</span> is closer to <span class="math inline">\(y_i\)</span> than <span class="math inline">\(\overline{y}\)</span>.</li>
-<li>The regression model explains some of the deviation of <span class="math inline">\(y\)</span>.</li>
-</ul>
+<p>If we have sample data for <span class="math inline">\(y\)</span> only, then we just have one variable. If the data have no significant pattern, we may treat every data point equally, and our best guess for <span class="math inline">\(Y\)</span> could be <span class="math inline">\(\overline{y}\)</span>. In this case, we use the same value to predict every value of <span class="math inline">\(y\)</span>, i.e., <span class="math inline">\(\hat{y}_i = \overline{y}\)</span>. This prediction is generally bad, but there is nothing we can do because we have on other information that can help us better guess the value of <span class="math inline">\(y_i\)</span>.</p>
+<p>If there is another variable <span class="math inline">\(X\)</span>, and <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are correlated, knowing the level of <span class="math inline">\(x\)</span> does help us predict the value of <span class="math inline">\(y\)</span>. If they are positively correlated, when <span class="math inline">\(x\)</span> is large, <span class="math inline">\(y\)</span> tends to be large. Thus normally we will guess its value higher than its average, leading to a smaller residual, and better prediction.</p>
+<p>Losing such information hurts. With no information about the relationship between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>. The best we can do is treat <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> as uncorrelated, as if <span class="math inline">\(X\)</span> does not exist in the data. Same as one variable data of <span class="math inline">\(y\)</span>, in this case, <span class="math inline">\(\hat{y}_i = \overline{y}\)</span>.</p>
+<p>The deviation of <span class="math inline">\(y\)</span> from the sample mean is <span class="math inline">\((y_i - \overline{y})\)</span>, which is viewed as the total deviation. If <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are linearly related, fitting a linear regression model helps us predict the value of <span class="math inline">\(Y\)</span> when the value of <span class="math inline">\(X\)</span> is provided. This means <span class="math inline">\(\hat{y}_i = b_0 + b_1x_i\)</span> is closer to <span class="math inline">\(y_i\)</span> than <span class="math inline">\(\overline{y}\)</span> is. In other words, the regression model <em>explains some of the deviation of <span class="math inline">\(y\)</span>.</em> The relationship between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> is valuable and helpful in predicting <span class="math inline">\(y\)</span> with the value of <span class="math inline">\(x\)</span> informed.</p>
 <hr>
 <p><span style="color:blue"> <strong>Partition of Deviation</strong> </span></p>
-<ul>
-<li><strong>Total deviation = Deviation explained by regression + unexplained deviation</strong></li>
-<li><span class="math inline">\((y_i - \overline{y}) = (\hat{y}_i - \overline{y}) + (y_i - \hat{y}_i)\)</span></li>
-<li><span class="math inline">\((19 - 9) = (13 - 9) + (19 - 13)\)</span></li>
-</ul>
+<p>The total deviation of <span class="math inline">\(y\)</span> from its mean can be written as the sum of the deviation of <span class="math inline">\(y\)</span> explained by regression or the factor <span class="math inline">\(x\)</span> and the deviation of <span class="math inline">\(y\)</span> that cannot be explained by <span class="math inline">\(x\)</span>.</p>
+<p><em>Total deviation = Deviation explained by regression + unexplained deviation</em></p>
+<p>or</p>
+<p><span class="math display">\[(y_i - \overline{y}) = (\hat{y}_i - \overline{y}) + (y_i - \hat{y}_i)\]</span></p>
+<p><a href="#fig-deviation-explained">Figure&nbsp;<span>23.19</span></a> illustrates the deviation partition. Look at the point <span class="math inline">\(y_1\)</span>. Suppose <span class="math inline">\(y_1 = 19\)</span> and <span class="math inline">\(\overline{y} = 9\)</span>. Then the total deviation is <span class="math inline">\((y_i - \overline{y}) = 19-9 = 10\)</span> which is represented as the red bar on the left in the figure.</p>
+<p>Now if the positive correlation between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> information come in, we can better guess the value of <span class="math inline">\(y_1\)</span> using the least squares regression line <span class="math inline">\(\hat{y}_1 = b_0 + b_1x_1\)</span>. Note that <span class="math inline">\(y_1\)</span> is the observation whose <span class="math inline">\(x\)</span> is quite large, so through the regression line, we get the fitted value <span class="math inline">\(\hat{y}_1\)</span> larger than <span class="math inline">\(\overline{y}\)</span>. <span class="math inline">\(\hat{y}_1\)</span> is closer to <span class="math inline">\(y_1\)</span>, and the deviation <span class="math inline">\((\hat{y}_1 - \overline{y})\)</span> is the deviation of <span class="math inline">\(y\)</span> explained or captured by the regression model or the predictor <span class="math inline">\(X\)</span>. This corresponds to the green bar on the right of the figure. This deviation quantifies the contribution of the regression model or the predictor <span class="math inline">\(X\)</span> to explaining the variation of <span class="math inline">\(y\)</span>.</p>
+<p>Finally, the remaining part of deviation that cannot be explained by <span class="math inline">\(x\)</span> is <span class="math inline">\((y_i - \hat{y}_i)\)</span> which is the blue bar in the middle of the figure. Look at it carefully. It is our residual! The residual is the deviation of <span class="math inline">\(y\)</span> that cannot be explained by the regression model. All the deviations that can be explained by predictor <span class="math inline">\(x\)</span> has been absorbed in <span class="math inline">\((\hat{y}_i - \overline{y})\)</span>. The deviation or residual <span class="math inline">\((y_i - \hat{y}_i)\)</span> is anything that has nothing to do with <span class="math inline">\(x\)</span>. This is what the regression model and the predictor <span class="math inline">\(x\)</span> can’t do for explaining the variation of <span class="math inline">\(y\)</span> unless other factors other than <span class="math inline">\(x\)</span> that are correlated with <span class="math inline">\(y\)</span> are considered in the model.</p>
+<!-- the variation of $y$ is made of two parts, the regression function and the error term.  -->
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-deviation-explained" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="./images/img-model/partition.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;23.18: Explained vs.&nbsp;unexplained deviation</figcaption><p></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;23.19: Explained vs.&nbsp;unexplained deviation. Source: Applied Linear Statistical Models 5th edition.</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
 <p><span style="color:red"> <strong><em>Sum of Squares (SS)</em></strong> </span></p>
-<ul>
-<li><span class="math inline">\(\sum_{i=1}^n(y_i - \overline{y})^2 = \sum_{i=1}^n(\hat{y}_i - \overline{y})^2 + \sum_{i=1}^n(y_i - \hat{y}_i)^2\)</span></li>
-<li><strong>Total SS <span class="math inline">\((SS_T)\)</span> = Regression SS <span class="math inline">\((SS_R)\)</span> + Residual SS <span class="math inline">\((SS_{res})\)</span></strong></li>
-<li><span class="math inline">\(df_T = df_R + df_{res}\)</span></li>
-<li><span class="math inline">\(\color{blue}{(n-1) = 1 +(n-2)}\)</span></li>
-</ul>
+<p>The deviation partition leads to the sum of squares identity</p>
+<p><span class="math display">\[\sum_{i=1}^n(y_i - \overline{y})^2 = \sum_{i=1}^n(\hat{y}_i - \overline{y})^2 + \sum_{i=1}^n(y_i - \hat{y}_i)^2\]</span> or</p>
+<p><em>Total Sum of Squares <span class="math inline">\((SS_T)\)</span> = Regression Sum of Squares <span class="math inline">\((SS_R)\)</span> + Residual Sum of Squares <span class="math inline">\((SS_{res})\)</span></em></p>
+<p>Their corresponding degrees of freedom is</p>
+<p><span class="math display">\[df_T = df_R + df_{res}\]</span></p>
+<p>or <span class="math display">\[\color{blue}{(n-1) = 1 +(n-2)}\]</span></p>
+<p>The total sum of squares quantifies the sum of squared deviation from the mean, and <span class="math inline">\(SS_T/df_T = \frac{\sum_{i=1}^n(y_i - \overline{y})^2}{n-1}\)</span> is the marginal sample variance of <span class="math inline">\(y\)</span> without being conditional on <span class="math inline">\(x\)</span>. The regression sum of squares <span class="math inline">\(SS_R\)</span> is the sum of squared deviation of the fitted value from the mean, and <span class="math inline">\(SS_{res}\)</span> again is the sum of squared deviation of <span class="math inline">\(y\)</span> from its fitted value. The mean square residual <span class="math inline">\(SS_{res}/df_{res} = \frac{\sum_{i=1}^n(y_i - \hat{y}_i)^2}{n-2}\)</span> estimates the variance about the population regression line <span class="math inline">\(\sigma^2\)</span>.</p>
 <hr>
 <p><span style="color:blue"> <strong>ANOVA for Testing Significance of Regression</strong> </span></p>
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div id="fig-anova" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="./images/img-model/anova_table.png" class="img-fluid figure-img" style="width:90.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;23.19: Example of an ANOVA table</figcaption><p></p>
-</figure>
+<!-- # ```{r} -->
+<!-- # #| label: fig-anova -->
+
+<!-- # #| fig-cap: Example of an ANOVA table -->
+<!-- # #| out-width: 100% -->
+
+<!-- # knitr::include_graphics("./images/img-model/anova_table_reg.png") -->
+<!-- # ``` -->
+<p>The sum of squares and degrees of freedom identities allow us the make an ANOVA table as below. But what is this ANOVA table is for? It is used for testing <strong>overall significance of regression</strong>, that is, whether or not the regression model has explanatory power for explaining the variation of the response. When the regression model has explanatory power, all or some of its predictors are correlated with the response, and their corresponding regression coefficient is nonzero.</p>
+<div class="small">
+<table class="table">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+</colgroup>
+<thead><tr class="header">
+<th style="text-align: center;">Source of Variation</th>
+<th style="text-align: center;">SS</th>
+<th style="text-align: center;">df</th>
+<th style="text-align: center;">MS</th>
+<th style="text-align: center;">F</th>
+<th style="text-align: center;">
+<span class="math inline">\(p\)</span>-value</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Regression</td>
+<td style="text-align: center;"><span class="math inline">\(SS_R = \sum_{i=1}^n(\hat{y}_i - \overline{y})^2\)</span></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;"><span class="math inline">\(MS_R = \frac{SS_R}{1}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\frac{MS_R}{MS_{res}} = F_{test}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(Pr(F_{1, n-2} &gt; F_{test})\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Residual</td>
+<td style="text-align: center;"><span class="math inline">\(SS_{res} = \sum_{i=1}^n(y_i - \hat{y}_i)^2\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(n-2\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(MS_{res} = \frac{SS_{res}}{n-2}\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Total</td>
+<td style="text-align: center;"><span class="math inline">\(SS_{T} = \sum_{i=1}^n(y_i - \overline{y})^2\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(n-1\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+</tbody>
+</table>
 </div>
-</div>
-</div>
-<ul>
-<li>A larger value of <span class="math inline">\(F_{test}\)</span> indicates that the regression is significant.</li>
-<li>Reject <span class="math inline">\(H_0\)</span> if
+<p>In other words, ANONA is for the test <span class="math display">\[
+\begin{align*}
+H_0&amp;: \text{all regression coefficients except the incercept is zero}\\
+H_1&amp;: \text{At least one regression coefficient except the incercept is not zero}
+\end{align*}
+\]</span></p>
+<p>A larger value of <span class="math inline">\(F_{test}\)</span> indicates that the regression is significant. <span class="math inline">\(H_0\)</span> is rejected if</p>
 <ul>
 <li><span class="math inline">\(F_{test} &gt; F_{\alpha, 1, n-2}\)</span></li>
 <li>
 <span class="math inline">\(\text{$p$-value} = P(F_{1, n-2} &gt; F_{test}) &lt; \alpha\)</span>.</li>
 </ul>
-</li>
-<li>ANOVA is designed to test the <span class="math inline">\(H_0\)</span> that <strong>all</strong> predictors have no value in predicting <span class="math inline">\(y\)</span>.</li>
-<li>In SLR, the <span class="math inline">\(F\)</span>-test of ANOVA gives the same result as a two-sided <span class="math inline">\(t\)</span>-test of <span class="math inline">\(H_0: \beta_1=0\)</span>.</li>
-</ul>
+<p>Note that ANOVA is designed to test the <span class="math inline">\(H_0\)</span> that <strong>all</strong> predictors have no value in predicting <span class="math inline">\(y\)</span>. In simple linear regression, there is only one predictor, so one means all. The <span class="math inline">\(F\)</span>-test of ANOVA gives the exactly same result as a two-sided <span class="math inline">\(t\)</span>-test of <span class="math inline">\(H_0: \beta_1 = 0\)</span>.</p>
+<p><span style="color:red"> <strong>ANOVA Table in R</strong> </span></p>
+<p>To get the ANOVA table, we put the fitted result into the function <code><a href="https://rdrr.io/r/stats/anova.html">anova()</a></code>. For simple linear regression, the ANOVA <span class="math inline">\(F\)</span> test is equivalent to the marginal <span class="math inline">\(t\)</span> test for <span class="math inline">\(\beta_1\)</span> where <span class="math inline">\(H_0: \beta_1 = 0; \quad H_1: \beta_1 \ne 0\)</span>. In particular <span class="math inline">\(t_{test}^2 = F_{test}\)</span>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="va">reg_fit</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Variance Table
+
+Response: hwy
+           Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+displ       1 4847.8  4847.8  329.45 &lt; 2.2e-16 ***
+Residuals 232 3413.8    14.7                      
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">summ_reg_fit</span><span class="op">$</span><span class="va">coefficients</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             Estimate Std. Error   t value      Pr(&gt;|t|)
+(Intercept) 35.697651  0.7203676  49.55477 2.123519e-125
+displ       -3.530589  0.1945137 -18.15085  2.038974e-46</code></pre>
+</div>
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">summ_reg_fit</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span><span class="fl">2</span>, <span class="fl">3</span><span class="op">]</span> <span class="op">^</span> <span class="fl">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 329.4533</code></pre>
+</div>
+</div>
 <hr>
 <p><span style="color:blue"> <strong>Coefficient of Determination</strong> </span></p>
+<p>The <strong>coefficient of determination</strong> or <span class="math inline">\(R^2\)</span> is the proportion of the variation in <span class="math inline">\(y\)</span> that is explained by the regression model. It is computed as <span class="math display">\[R^2 = \frac{SS_R}{SS_T} =\frac{SS_T - SS_{res}}{SS_T} = 1 - \frac{SS_{res}}{SS_T}\]</span></p>
+<p><span class="math inline">\(R^2\)</span> is the proportionate reduction of total variation associated with the use of <span class="math inline">\(X\)</span> , and it can be used to measure the quality of our regression or the explanatory power of regressors.</p>
+<p><a href="#fig-r-squared">Figure&nbsp;<span>23.20</span></a> shows two extreme cases.</p>
 <ul>
-<li>The <strong>coefficient of determination</strong> <span class="math inline">\((R^2)\)</span> is the proportion of the variation in <span class="math inline">\(y\)</span> that is explained by the regression model.</li>
-<li>It is computed as <span class="math display">\[R^2 = \frac{SS_R}{SS_T} =\frac{SS_T - SS_{res}}{SS_T} = 1 - \frac{SS_{res}}{SS_T}\]</span>
-</li>
-<li>
-<span class="math inline">\(R^2\)</span> is the proportionate reduction of total variation associated with the use of <span class="math inline">\(X\)</span>.</li>
-<li>
-<strong>(a)</strong> <span class="math inline">\(\hat{y}_i = y_i\)</span> and <span class="math inline">\(\small SS_{res} = \sum_{i=1}^n(y_i - \hat{y}_i)^2 = 0\)</span>. <strong>(b)</strong> <span class="math inline">\(\hat{y}_i = \overline{y}\)</span> and <span class="math inline">\(\small SS_R = \sum_{i=1}^n(\hat{y}_i - \overline{y})^2 = 0\)</span>.</li>
+<li><p><strong>(a)</strong> <span class="math inline">\(\hat{y}_i = y_i\)</span> and <span class="math inline">\(\small SS_{res} = \sum_{i=1}^n(y_i - \hat{y}_i)^2 = 0\)</span>.</p></li>
+<li><p><strong>(b)</strong> <span class="math inline">\(\hat{y}_i = \overline{y}\)</span> and <span class="math inline">\(\small SS_R = \sum_{i=1}^n(\hat{y}_i - \overline{y})^2 = 0\)</span>.</p></li>
 </ul>
+<p>In (a), fitted values are equal to true observations. The regression model explains all the variation in <span class="math inline">\(y\)</span>, and hence <span class="math inline">\(R^2 = 1\)</span>. In (b), the fitted values are all equal to the sample mean of <span class="math inline">\(y\)</span> as if we don’t have information about <span class="math inline">\(x\)</span> or <span class="math inline">\(x\)</span> is totally useless in predicting <span class="math inline">\(y\)</span>. In this case, the regression model explains no variation in <span class="math inline">\(y\)</span>, and all variation remain unexplained. So <span class="math inline">\(R^2 = 0\)</span>. In the usual case, <span class="math inline">\(R^2\)</span> is between zero and one.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-r-squared" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="./images/img-model/r_square.png" class="img-fluid figure-img" style="width:60.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;23.20: Examples of <span class="math inline">\(R^2\)</span> being equal to 1 and 0</figcaption><p></p>
+<figure class="figure"><p><img src="./images/img-model/r_square.png" class="img-fluid figure-img" width="486"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;23.20: Examples of <span class="math inline">\(R^2\)</span> being equal to 1 and 0. Source: Applied Linear Statistical Model 5th edition.</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
+<!-- ------------------------------------------------------------------- -->
+<p><span style="color:red"> <strong><span class="math inline">\(R^2\)</span> in R</strong> </span></p>
+<p>The <span class="math inline">\(R^2\)</span> value is shown in the summary output at the near bottom. We can also use <code>summ_reg_fit$r.squared</code> to get the value. The variable <code>disp</code> explains about 59% of the variation of <code>hwy</code>.</p>
+<div class="cell" data-layout-align="center" data-output.lines="[16,17]">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">summ_reg_fit</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>...
+Residual standard error: 3.836 on 232 degrees of freedom
+Multiple R-squared:  0.5868,    Adjusted R-squared:  0.585 
+...</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">summ_reg_fit</span><span class="op">$</span><span class="va">r.squared</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.5867867</code></pre>
+</div>
+</div>
 </section><section id="prediction" class="level2" data-number="23.6"><h2 data-number="23.6" class="anchored" data-anchor-id="prediction">
 <span class="header-section-number">23.6</span> Prediction</h2>
+<p>Prediction is one of our goals when we perform regression analysis. We want to use <span class="math inline">\(X\)</span> to predict <span class="math inline">\(Y\)</span> by taking advantages of their relationship. This is useful when our response variable includes some personal or confidential information, and it is hard to collect such information. When the predictor data is relatively easy to be collected, we can use the predictor value to predict the response value. For example, people tend to be reluctant to let others know their annual income level, but quite happy to talk about their education or occupation. If we can discover the relationship between salary level and years of education one receives, we can use the years of education to predict the mean salary level of people with that many years of education, or predict an individual salary level given his education years.</p>
+<p>When we talk about prediction, we refer to the predictor and response whose values haven’t seen in the data. For example, if our data have three <span class="math inline">\(x\)</span> values <span class="math inline">\((3, 5, 6)\)</span>, and its corresponding <span class="math inline">\(y\)</span> values <span class="math inline">\((10, 12, 15)\)</span>, we want to predict the mean response value for the <span class="math inline">\(x\)</span> not in the data, like <span class="math inline">\(x = 4\)</span>.</p>
 <p><span style="color:blue"> <strong>Predicting the Mean Response</strong> </span></p>
-<ul>
-<li>With the predictor value <span class="math inline">\(x = x_0\)</span>, we want to estimate the mean response <span class="math inline">\(E(y\mid x_0) = \mu_{y|x_0} = \beta_0 + \beta_1 x_0\)</span>.
-<ul>
-<li><span style="color:blue"> Example: The <strong>mean</strong> highway MPG <span class="math inline">\(E(y \mid x_0)\)</span> when displacement is <span class="math inline">\(x = x_0 = 5.5\)</span>. </span></li>
-</ul>
-</li>
-<li>If <span class="math inline">\(x_0\)</span> is <em>within the range of <span class="math inline">\(x\)</span></em>, an <em>unbiased</em> point estimator for <span class="math inline">\(E(y\mid x_0)\)</span> is <span class="math display">\[\widehat{E(y\mid x_0)} = \hat{\mu}_{y | x_0} = b_0 + b_1 x_0\]</span>
-</li>
-<li>The <span class="math inline">\((1-\alpha)100\%\)</span> CI for <span class="math inline">\(E(y\mid x_0)\)</span> is <span class="math inline">\(\boxed{\hat{\mu}_{y | x_0} \pm t_{\alpha/2, n-2} \hat{\sigma}\sqrt{\frac{1}{n} + \frac{(x_0 - \overline{x})^2}{S_{xx}}}}\)</span>.</li>
-</ul>
+<p>With the predictor value <span class="math inline">\(x = x_0\)</span>, we want to estimate the mean response <span class="math inline">\(E(y\mid x_0) = \mu_{y|x_0} = \beta_0 + \beta_1 x_0\)</span>. For example, <span style="color:blue"> the <em>mean</em> highway MPG <span class="math inline">\(E(y \mid x_0)\)</span> when displacement is <span class="math inline">\(x = x_0 = 5.5\)</span>. </span></p>
+<p>The mean <span class="math inline">\(\beta_0 + \beta_1 x_0\)</span> is assumed from the regression model. The problem is <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> are unknown. Once we fit the model, and get the LSEs, if <span class="math inline">\(x_0\)</span> is <em>within the range of <span class="math inline">\(x\)</span></em>, an <em>unbiased</em> point estimate of <span class="math inline">\(E(y\mid x_0)\)</span> is <span class="math display">\[\widehat{E(y\mid x_0)} = \hat{\mu}_{y | x_0} = b_0 + b_1 x_0.\]</span></p>
+<p>The <span class="math inline">\((1-\alpha)100\%\)</span> CI for <span class="math inline">\(E(y\mid x_0)\)</span> is <span class="math display">\[\boxed{\hat{\mu}_{y | x_0} \pm t_{\alpha/2, n-2} \hat{\sigma}\sqrt{\frac{1}{n} + \frac{(x_0 - \overline{x})^2}{S_{xx}}}}.\]</span></p>
+<p>Well, no need to memorize the formula. But could you answer the following question?</p>
 <div class="callout-note callout callout-style-default no-icon callout-captioned">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1083,19 +1370,15 @@ Does the length of the CI for <span class="math inline">\(E(y\mid x_0)\)</span> 
 
 </div>
 </div>
+<p>We will have the shortest confidence interval for <span class="math inline">\(E(y\mid x_0)\)</span> when <span class="math inline">\(x_0 = \overline{x}\)</span>. In general, we have better precision when the response we are interested is evaluated at the level <span class="math inline">\(x_0\)</span> that is close to <span class="math inline">\(\overline{x}\)</span>. The intuition is that the variation in the estimator <span class="math inline">\(b_0 + b_1 x\)</span> is greater when <span class="math inline">\(x_0\)</span> is far from <span class="math inline">\(\overline{x}\)</span> than when <span class="math inline">\(x_0\)</span> is near <span class="math inline">\(\overline{x}\)</span>.</p>
 <hr>
 <p><span style="color:blue"> <strong>Predicting New Observations</strong> </span></p>
-<ul>
-<li>Predict the value of a <em>new observation, <span class="math inline">\(y_0\)</span>,</em> with <span class="math inline">\(x = x_0\)</span>.
-<ul>
-<li><span style="color:blue"> Example: The <strong>highway MPG of a car</strong> <span class="math inline">\(y_0(x_0)\)</span> when its displacement is <span class="math inline">\(x = x_0 = 5.5\)</span>. </span></li>
-</ul>
-</li>
-<li>An <em>unbiased</em> point estimator for <span class="math inline">\(y_0(x_0)\)</span> is <span class="math display">\[\hat{y}_0(x_0) = b_0 + b_1 x_0\]</span>
-</li>
-<li>The <span class="math inline">\((1-\alpha)100\%\)</span> <strong>prediction interval</strong> (PI) for <span class="math inline">\(y_0(x_0)\)</span> is <span class="math inline">\(\small \boxed{\hat{y_0} \pm t_{\alpha/2, n-2} \hat{\sigma}\sqrt{1+ \frac{1}{n} + \frac{(x_0 - \overline{x})^2}{S_{xx}}}}\)</span>
-</li>
-</ul>
+<p>We want to predict not only the mean level of response at some predictor value, but also the value of a <em>new observation, <span class="math inline">\(y_0\)</span>,</em> at <span class="math inline">\(x = x_0\)</span>. For example, <span style="color:blue"> the <em>highway MPG of a car</em> <span class="math inline">\(y_0(x_0)\)</span> when its displacement is <span class="math inline">\(x = x_0 = 5.5\)</span>. </span></p>
+<p>Do you see the difference? Previously we care about the mean response level, but here we predict an individual response value. There are thousand of millions of cars having displacement 5.5 liters. If we’d like to know the average miles per gallon or general fuel efficiency performance for the cars with displacement 5.5, we are predicting the mean response. When we want to predict the miles per gallon of a specific car whose displacement is 5.5, we predicting a new observation. The car is an individual outcome drawn from those thousand of millions of cars.</p>
+<p>A point estimator for <span class="math inline">\(y_0(x_0)\)</span> is <span class="math display">\[\hat{y}_0(x_0) = b_0 + b_1 x_0\]</span> that is the same as the point estimate of the mean response. If we can only use one single value to predict an new observation, we have to ignore its variation, and use a representative point to predict where it may be located. With no further information, we would choose its center, the mean response level, as its location. That’s why the two point estimates are the same.</p>
+<!-- If we can only use one single value to predict an new observation, the point estimate is the same the -->
+<p>The <span class="math inline">\((1-\alpha)100\%\)</span> <strong>prediction interval</strong> (PI) for <span class="math inline">\(y_0(x_0)\)</span> is <span class="math display">\[ \boxed{\hat{y_0} \pm t_{\alpha/2, n-2} \hat{\sigma}\sqrt{1+ \frac{1}{n} + \frac{(x_0 - \overline{x})^2}{S_{xx}}}}.\]</span></p>
+<p>A confidence interval is for a unknown parameter. We call the interval prediction interval because <span class="math inline">\(y_0(x_0)\)</span> is not a parameter, but a random variable.</p>
 <div class="callout-note callout callout-style-default no-icon callout-captioned">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1109,315 +1392,65 @@ What is the difference between CI for <span class="math inline">\(E(y\mid x_0)\)
 
 </div>
 </div>
-<ul>
-<li>
-<em>The PI is wider as it includes the uncertainty about <span class="math inline">\(b_0\)</span>, <span class="math inline">\(b_1\)</span> as well as <span class="math inline">\(y_0\)</span> due to error, <span class="math inline">\(\epsilon\)</span></em>.</li>
-</ul></section><section id="r-lab" class="level2" data-number="23.7"><h2 data-number="23.7" class="anchored" data-anchor-id="r-lab">
-<span class="header-section-number">23.7</span> R Lab</h2>
-<p><span style="color:blue"> <strong><code>mpg</code> Data</strong> </span></p>
-<div class="cell">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>  <span class="co">## use data mpg in ggplot2 package</span></span>
-<span><span class="va">mpg</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 234 × 11
-   manufacturer model      displ  year   cyl trans drv     cty   hwy fl    class
-   &lt;chr&gt;        &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;
- 1 audi         a4           1.8  1999     4 auto… f        18    29 p     comp…
- 2 audi         a4           1.8  1999     4 manu… f        21    29 p     comp…
- 3 audi         a4           2    2008     4 manu… f        20    31 p     comp…
- 4 audi         a4           2    2008     4 auto… f        21    30 p     comp…
- 5 audi         a4           2.8  1999     6 auto… f        16    26 p     comp…
- 6 audi         a4           2.8  1999     6 manu… f        18    26 p     comp…
- 7 audi         a4           3.1  2008     6 auto… f        18    27 p     comp…
- 8 audi         a4 quattro   1.8  1999     4 manu… 4        18    26 p     comp…
- 9 audi         a4 quattro   1.8  1999     4 auto… 4        16    25 p     comp…
-10 audi         a4 quattro   2    2008     4 manu… 4        20    28 p     comp…
-# ℹ 224 more rows</code></pre>
-</div>
-</div>
-<hr>
-<p><span style="color:blue"> <strong>Highway MPG <code>hwy</code> vs.&nbsp;Displacement <code>displ</code></strong> </span></p>
+<p>The PI is wider as it includes the uncertainty about <span class="math inline">\(b_0\)</span>, <span class="math inline">\(b_1\)</span> as well as <span class="math inline">\(y_0\)</span> due to error, <span class="math inline">\(\epsilon\)</span>. The uncertainty about <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span> is always there because their value varies from sample to sample, and this causes the uncertainty about the mean response, or the location of the distribution of <span class="math inline">\(y\)</span> at any given level of <span class="math inline">\(x\)</span>. The PI also considers the uncertainty about the draw of the distribution of <span class="math inline">\(y\)</span>, measured by <span class="math inline">\(\sigma^2\)</span>. Intuitively it is harder to predict a specific response value due to the additional randomness or variation within the probability distribution of <span class="math inline">\(y\)</span>. Given the same significance level <span class="math inline">\(\alpha\)</span>, we are more uncertain about what its value is, and the uncertainty band is wider, resulting in a less precise estimation.</p>
+<!-- -------------------------------------------------------------------- -->
+<p><span style="color:blue"> <strong>Prediction in R</strong> </span></p>
+<p>To predict either the mean response or a new observation, we use the function <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code>. The first argument is out fitted object <code>reg_fit</code>. Then we need to provide the predictor value for prediction in the argument <code>newdata</code>. Be careful that it has to be a data frame type, and variable’s name should be exactly the same as the predictor’s name in the original data set <code>mpg</code> when we fit the regression. If we want to get the confidence interval for the mean response, we specify “confidence” in the argument <code>interval</code>. If instead we want the prediction interval for a new response, we specify “predict”.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">mpg</span><span class="op">$</span><span class="va">displ</span>, y <span class="op">=</span> <span class="va">mpg</span><span class="op">$</span><span class="va">hwy</span>,</span>
-<span>     las <span class="op">=</span> <span class="fl">1</span>, pch <span class="op">=</span> <span class="fl">19</span>, col <span class="op">=</span> <span class="st">"navy"</span>, cex <span class="op">=</span> <span class="fl">0.5</span>,</span>
-<span>     xlab <span class="op">=</span> <span class="st">"Displacement (litres)"</span>, ylab <span class="op">=</span> <span class="st">"Highway MPG"</span>,</span>
-<span>     main <span class="op">=</span> <span class="st">"Highway MPG vs. Engine Displacement (litres)"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" style="width:60.0%"></p>
-</figure>
-</div>
-</div>
-</div>
-<hr>
-<p><span style="color:blue"> <strong>Fit Simple Linear Regression</strong> </span></p>
-<div class="columns">
-<div class="column" style="width:49%;">
-<div class="cell">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">reg_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">hwy</span> <span class="op">~</span> <span class="va">displ</span>, </span>
-<span>              data <span class="op">=</span> <span class="va">mpg</span><span class="op">)</span></span>
-<span><span class="va">reg_fit</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = hwy ~ displ, data = mpg)
-
-Coefficients:
-(Intercept)        displ  
-     35.698       -3.531  </code></pre>
-</div>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/typeof.html">typeof</a></span><span class="op">(</span><span class="va">reg_fit</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "list"</code></pre>
-</div>
-</div>
-</div><div class="column" style="width:2%;">
-
-</div><div class="column" style="width:49%;">
-<div class="cell">
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## all elements in reg_fit</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">reg_fit</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> [1] "coefficients"  "residuals"     "effects"       "rank"         
- [5] "fitted.values" "assign"        "qr"            "df.residual"  
- [9] "xlevels"       "call"          "terms"         "model"        </code></pre>
-</div>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## use $ to extract an element of a list</span></span>
-<span><span class="va">reg_fit</span><span class="op">$</span><span class="va">coefficients</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>(Intercept)       displ 
-  35.697651   -3.530589 </code></pre>
-</div>
-</div>
-</div>
-</div>
-<ul>
-<li><span class="math inline">\(\widehat{hwy}_{i} = b_0 + b_1 \times displ_{i} = 35.7 - 3.5 \times displ_{i}\)</span></li>
-<li>
-<span class="math inline">\(b_1\)</span>: For a one unit (liter) increase of the displacement, we expect the highway MPG to be decreased, on average, by 3.5.</li>
-</ul>
-<hr>
-<p><span style="color:blue"> <strong>Fitted Values of <span class="math inline">\(y\)</span></strong> </span></p>
-<div class="cell">
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## the first 5 observed response value y</span></span>
-<span><span class="va">mpg</span><span class="op">$</span><span class="va">hwy</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 29 29 31 30 26</code></pre>
-</div>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## the first 5 fitted value y_hat</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">reg_fit</span><span class="op">$</span><span class="va">fitted.values</span>, <span class="fl">5</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>       1        2        3        4        5 
-29.34259 29.34259 28.63647 28.63647 25.81200 </code></pre>
-</div>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## the first 5 predictor value x</span></span>
-<span><span class="va">mpg</span><span class="op">$</span><span class="va">displ</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 1.8 1.8 2.0 2.0 2.8</code></pre>
-</div>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">reg_fit</span><span class="op">$</span><span class="va">fitted.values</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 234</code></pre>
-</div>
-</div>
-<hr>
-<p><span style="color:blue"> <strong>Add a Regression Line</strong> </span></p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">mpg</span><span class="op">$</span><span class="va">displ</span>, y <span class="op">=</span> <span class="va">mpg</span><span class="op">$</span><span class="va">hwy</span>, las <span class="op">=</span> <span class="fl">1</span>, pch <span class="op">=</span> <span class="fl">19</span>, col <span class="op">=</span> <span class="st">"navy"</span>, cex <span class="op">=</span> <span class="fl">0.5</span>,</span>
-<span>     xlab <span class="op">=</span> <span class="st">"Displacement (litres)"</span>, ylab <span class="op">=</span> <span class="st">"Highway MPG"</span>,</span>
-<span>     main <span class="op">=</span> <span class="st">"Highway MPG vs. Engine Displacement (litres)"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span><span class="va">reg_fit</span>, col <span class="op">=</span> <span class="st">"#FFCC00"</span>, lwd <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid figure-img" style="width:60.0%"></p>
-</figure>
-</div>
-</div>
-</div>
-<hr>
-<p><span style="color:blue"> <strong>Standard Error of Regression</strong> </span></p>
-<div class="cell" data-highlight.output="16">
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">summ_reg_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">reg_fit</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = hwy ~ displ, data = mpg)
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--7.1039 -2.1646 -0.2242  2.0589 15.0105 
-
-Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)  35.6977     0.7204   49.55   &lt;2e-16 ***
-displ        -3.5306     0.1945  -18.15   &lt;2e-16 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 3.836 on 232 degrees of freedom
-Multiple R-squared:  0.5868,    Adjusted R-squared:  0.585 
-F-statistic: 329.5 on 1 and 232 DF,  p-value: &lt; 2.2e-16</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># lots of fitted information saved in summary(reg_fit)!</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">summ_reg_fit</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> [1] "call"          "terms"         "residuals"     "coefficients" 
- [5] "aliased"       "sigma"         "df"            "r.squared"    
- [9] "adj.r.squared" "fstatistic"    "cov.unscaled" </code></pre>
-</div>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># residual standard error (sigma_hat)</span></span>
-<span><span class="va">summ_reg_fit</span><span class="op">$</span><span class="va">sigma</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 3.835985</code></pre>
-</div>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># from reg_fit</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">reg_fit</span><span class="op">$</span><span class="va">residuals</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span> <span class="op">/</span> <span class="va">reg_fit</span><span class="op">$</span><span class="va">df.residual</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 3.835985</code></pre>
-</div>
-</div>
-<hr>
-<p><span style="color:blue"> <strong>Confidence Intervals and Testing for <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span></strong> </span></p>
-<div class="cell">
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html">confint</a></span><span class="op">(</span><span class="va">reg_fit</span>, level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>                2.5 %   97.5 %
-(Intercept) 34.278353 37.11695
-displ       -3.913828 -3.14735</code></pre>
-</div>
-</div>
-<div class="cell" data-highlight.output="[9,10,11,12]" data-output.lines="15">
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">summ_reg_fit</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = hwy ~ displ, data = mpg)
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--7.1039 -2.1646 -0.2242  2.0589 15.0105 
-
-Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)  35.6977     0.7204   49.55   &lt;2e-16 ***
-displ        -3.5306     0.1945  -18.15   &lt;2e-16 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 3.836 on 232 degrees of freedom
-Multiple R-squared:  0.5868,    Adjusted R-squared:  0.585 
-F-statistic: 329.5 on 1 and 232 DF,  p-value: &lt; 2.2e-16</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">summ_reg_fit</span><span class="op">$</span><span class="va">coefficients</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>             Estimate Std. Error   t value      Pr(&gt;|t|)
-(Intercept) 35.697651  0.7203676  49.55477 2.123519e-125
-displ       -3.530589  0.1945137 -18.15085  2.038974e-46</code></pre>
-</div>
-</div>
-<hr>
-<p><span style="color:blue"> <strong>ANOVA Table</strong> </span></p>
-<ul>
-<li>For <span class="math inline">\(H_0: \beta_1 = 0\)</span> in SLR, <span class="math inline">\(t_{test}^2 = F_{test}\)</span>.</li>
-</ul>
-<div class="cell" data-highlight.output="[4,5,6]">
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="va">reg_fit</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Analysis of Variance Table
-
-Response: hwy
-           Df Sum Sq Mean Sq F value    Pr(&gt;F)    
-displ       1 4847.8  4847.8  329.45 &lt; 2.2e-16 ***
-Residuals 232 3413.8    14.7                      
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">summ_reg_fit</span><span class="op">$</span><span class="va">coefficients</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>             Estimate Std. Error   t value      Pr(&gt;|t|)
-(Intercept) 35.697651  0.7203676  49.55477 2.123519e-125
-displ       -3.530589  0.1945137 -18.15085  2.038974e-46</code></pre>
-</div>
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">summ_reg_fit</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span><span class="fl">2</span>, <span class="fl">3</span><span class="op">]</span> <span class="op">^</span> <span class="fl">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 329.4533</code></pre>
-</div>
-</div>
-<hr>
-<p><span style="color:blue"> <strong><span class="math inline">\(R^2\)</span></strong> </span></p>
-<div class="cell" data-highlight.output="17" data-hash="model-reg_cache/html/unnamed-chunk-37_f16970b7b668645486a12e6dce44967c">
-<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">summ_reg_fit</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = hwy ~ displ, data = mpg)
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--7.1039 -2.1646 -0.2242  2.0589 15.0105 
-
-Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)  35.6977     0.7204   49.55   &lt;2e-16 ***
-displ        -3.5306     0.1945  -18.15   &lt;2e-16 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 3.836 on 232 degrees of freedom
-Multiple R-squared:  0.5868,    Adjusted R-squared:  0.585 
-F-statistic: 329.5 on 1 and 232 DF,  p-value: &lt; 2.2e-16</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">summ_reg_fit</span><span class="op">$</span><span class="va">r.squared</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.5867867</code></pre>
-</div>
-</div>
-<hr>
-<p><span style="color:blue"> <strong>Prediction</strong> </span></p>
-<div class="cell" data-hash="model-reg_cache/html/unnamed-chunk-39_941f3a7dd754a0b43df91c11e5df5113">
-<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## CI for the mean response</span></span>
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## CI for the mean response</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">reg_fit</span>, newdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>displ <span class="op">=</span> <span class="fl">5.5</span><span class="op">)</span>, interval <span class="op">=</span> <span class="st">"confidence"</span>, level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       fit      lwr      upr
 1 16.27941 15.35839 17.20043</code></pre>
 </div>
-<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## PI for the new observation</span></span>
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## PI for the new observation</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">reg_fit</span>, newdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>displ <span class="op">=</span> <span class="fl">5.5</span><span class="op">)</span>, interval <span class="op">=</span> <span class="st">"predict"</span>, level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       fit      lwr      upr
 1 16.27941 8.665682 23.89314</code></pre>
 </div>
 </div>
-<div class="quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p>The 95% CI for the mean <code>hwy</code> when <code>disp = 5.5</code> is between 15.36 and 17.2, while The 95% PI for <code>hwy</code> of a car with <code>disp = 5.5</code> is between 8.67 and 23.89. The PI is much wider than the CI because the variance of <span class="math inline">\(y\)</span> for any given <span class="math inline">\(x\)</span> is quite large in this example. We are quite certain about the mean miles per gallon, but we are asked to predict a car’s miles per gallon, it’s hard to provide a precise estimation because of large individual variability.</p>
+<!-- :::{layout-ncol=2} -->
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, mgp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">0.5</span>, <span class="fl">0</span><span class="op">)</span>, mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">## Data and regression line</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">mpg</span><span class="op">$</span><span class="va">displ</span>, y <span class="op">=</span> <span class="va">mpg</span><span class="op">$</span><span class="va">hwy</span>, las <span class="op">=</span> <span class="fl">1</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">0.5</span>, </span>
+<span>     ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">7.5</span>, <span class="fl">45</span><span class="op">)</span>, xlab <span class="op">=</span> <span class="st">"Displacement (litres)"</span>, </span>
+<span>     ylab <span class="op">=</span> <span class="st">"Highway MPG"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"CI for the mean response"</span>, <span class="st">"PI for a new observation"</span><span class="op">)</span>, </span>
+<span>       col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"blue"</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span>, bty <span class="op">=</span> <span class="st">"n"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span><span class="va">reg_fit</span>, col <span class="op">=</span> <span class="st">"#003366"</span>, lwd <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/segments.html">segments</a></span><span class="op">(</span>x0 <span class="op">=</span> <span class="fl">5.52</span>, y0 <span class="op">=</span> <span class="fl">15.35839</span>, y1 <span class="op">=</span> <span class="fl">17.20043</span>, col <span class="op">=</span> <span class="st">"red"</span>, lwd <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/segments.html">segments</a></span><span class="op">(</span>x0 <span class="op">=</span> <span class="fl">5.48</span>, y0 <span class="op">=</span> <span class="fl">8.665682</span>, y1 <span class="op">=</span> <span class="fl">23.89314</span>, col <span class="op">=</span> <span class="st">"blue"</span>, lwd <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>h <span class="op">=</span> <span class="fl">16.27941</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid figure-img" style="width:90.0%"></p>
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-47-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<div class="cell quarto-layout-cell" data-hash="model-reg_cache/html/unnamed-chunk-41_0b988e9d2959f0286150acdff4cf512f" style="flex-basis: 50.0%;justify-content: center;">
+<p>For every possible value of <span class="math inline">\(x\)</span>, we can obtain its corresponding CI and PI. Connecting their upper bounds and lower bounds together ends up with a red confidence band and a blue prediction band. Both are narrowest at the average value of <span class="math inline">\(x\)</span>, the location of the black vertical bar, although it is not clearly seen in the prediction band. As <span class="math inline">\(x\)</span> is farther way from the mean, the two bands are getting wider.</p>
+<div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-41-1.png" class="img-fluid figure-img" style="width:88.0%"></p>
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-48-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-</div>
-</div>
-</section><section id="exercises" class="level2" data-number="23.8"><h2 data-number="23.8" class="anchored" data-anchor-id="exercises">
-<span class="header-section-number">23.8</span> Exercises</h2>
+</section><section id="simulation-based-inference" class="level2" data-number="23.7"><h2 data-number="23.7" class="anchored" data-anchor-id="simulation-based-inference">
+<span class="header-section-number">23.7</span> Simulation-based Inference</h2>
+<p>To be added.</p>
+</section><section id="anova-as-a-regression-model" class="level2" data-number="23.8"><h2 data-number="23.8" class="anchored" data-anchor-id="anova-as-a-regression-model">
+<span class="header-section-number">23.8</span> ANOVA as a Regression Model</h2>
+<p>To be added.</p>
+</section><section id="multiple-linear-regression" class="level2" data-number="23.9"><h2 data-number="23.9" class="anchored" data-anchor-id="multiple-linear-regression">
+<span class="header-section-number">23.9</span> Multiple Linear Regression</h2>
+<p>To be added.</p>
+</section><section id="exercises" class="level2" data-number="23.10"><h2 data-number="23.10" class="anchored" data-anchor-id="exercises">
+<span class="header-section-number">23.10</span> Exercises</h2>
 <p>Use the data in the table below to answer questions 1-7.</p>
 <table class="table"><tbody>
 <tr class="odd">
@@ -1498,7 +1531,11 @@ F-statistic: 329.5 on 1 and 232 DF,  p-value: &lt; 2.2e-16</code></pre>
 </tbody></table>
 
 
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
+<ol>
+<li id="fn1"><p>The random variables <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> have the population correlation coefficient defined by <span class="math display">\[\rho = \frac{E\left[\left(X - \mu_X \right)\left(Y - \mu_Y\right)\right]}{\sigma_X\sigma_Y},\]</span> where <span class="math inline">\(\mu_X\)</span> is the mean of <span class="math inline">\(X\)</span>, <span class="math inline">\(\mu_Y\)</span> is the mean of <span class="math inline">\(Y\)</span>, <span class="math inline">\(\sigma_X\)</span> is the standard deviation of <span class="math inline">\(X\)</span>, and <span class="math inline">\(\sigma_Y\)</span> is the standard deviation of <span class="math inline">\(Y\)</span>. For more details, take a probability course or read a probability book.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>We could use another definition of “the best”, for example the sum of absolute value of residuals. But the sum of squared residuals is the most commonly used one.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");

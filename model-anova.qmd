@@ -1,24 +1,34 @@
 # Analysis of Variance {#sec-model-anova}
 
-```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
-library(openintro)
-library(knitr)
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: packages
 library(emoji)
+library(knitr)
+library(openintro)
 library(car)
 library(nortest)
 ```
 
-## ANOVA Rationale
+```{r}
+#| echo: false
+knitr::opts_chunk$set(echo = FALSE, fig.align = "center")
+```
+
 
 <span style="color:blue"> **Comparing More Than Two Population Means** </span>
 
-- In many research settings, we want to compare 3 or more population means.
+We have learned how to compare two population means in @sec-infer-twomean. However, in many research settings and questions, we want to compare three or more population means. For example,
 
 ::::{.columns}
 :::{.column width="50%"}
 - <span style="color:blue"> Are there differences in the mean readings of 4 types of devices used to determine the pH of soil samples? </span>
 
-```{r, echo=FALSE, out.width="78%", fig.align='center'}
+```{r}
+#| out-width: 80%
+#| fig-cap: "Source: Unsplash-Markus Spiske."
 knitr::include_graphics("./images/img-model/soil.jpeg")
 ```
 :::
@@ -26,46 +36,102 @@ knitr::include_graphics("./images/img-model/soil.jpeg")
 :::{.column width="50%"}
 - <span style="color:blue"> Do different treatments (None, Fertilizer, Irrigation, Fertilizer and Irrigation) affect the mean weights of poplar trees?  </span>
 
-```{r, echo=FALSE, out.width="78%", fig.align='center'}
+```{r}
+#| out-width: 80%
+#| fig-cap: "Source: Unsplash-Nareeta Martin."
 knitr::include_graphics("./images/img-model/poplar.jpeg")
 ```
 :::
 ::::
 
-------------------------------------------------------------------------
+<!-- ------------------------------------------------------------------------ -->
+
+In both cases, four means are compared. The two-sample $z$ or $t$ test cannot be used anymore. Our solution is the **analysis of variance**, or **ANOVA**.
+ 
+ 
+ 
+
+## ANOVA Rationale
 
 <span style="color:blue"> **One-Way Analysis of Variance** </span>
 
-- A **factor** is a property or characteristic (categorical variable) that allows us to *distinguish the different populations from one another*.  
-  + **Type of device** and **treatment of trees** are factors from the examples previously provided.
-- One-way ANOVA examines the effect of a *categorical variable* on the *mean of a numerical variable* (response).
-  + We use analysis of <span style="color:red"> variance </span> to test the equality of 3 or more population  <span style="color:red"> means</span>. `r emoji('thinking')`
-  + The method is **one-way** because we use one single property (categorical variable) for categorizing the populations.
+A **factor** (treatment) is a property or characteristic (categorical variable) that allows us to *distinguish the different populations from one another*. In fact, when we compare two population means, the two samples are from the populations separated by the categories of a factor. For example, we have gender as a factor that separates the human population into male and female populations, then we compare their mean salary. In our previous examples, *type of device* and *treatment of trees* are factors.
+
+One-way ANOVA examines the effect of single *categorical variable* on the *mean of a numerical variable*. The ANOVA model is one-way because there is only one factor being considered. If two factors are examined to see how they affect the mean of a numerical variable, the model is called two-way ANOVA. The numerical variable in ANOVA or regression model (@sec-model-reg) is called the **response variable** because we want to see how the variable responses to the changes of factors or other variables.
+
+Interestingly, we analyze <span style="color:red"> variances </span> to test the equality of three or more population  <span style="color:red"> means</span> `r emoji('thinking')`. It sounds counterintuitive, but later you will see why this makes sense.
+
+
+  <!-- + The method is **one-way** because we use one single property (categorical variable) for categorizing the populations. -->
 
 <span style="color:red"> ***Requirements*** </span>
 
-- The populations of each category are **normally** distributed.
-- The populations have the **same variance** $\sigma^2$ (two sample pooled $t$-test). 
-- The samples are **random samples**.
-- The samples are **independent** of each other (not matched or paired in any way).
+The one-way ANONA model has the following requirements or assumptions.
+
+- *Each sub-population formed by the category of the factor is normally distributed.* In the two-sample $z$ or $t$ test, we also have such assumption that the two samples are drawn independently from two normally distributed populations or at least both sample sizes are sufficiently large.
+
+- *The populations have the same variance $\sigma^2$.* ANOVA does not ridiculously assume all the population variances are known. Instead, the model admits the variances are unknown, but assumes they are all equal. Also sounds ridiculous? Anyway, it is what it is, and this is one of the limitations of ANOVA, although equality of variances is a pretty loose requirement. It is also possible to transform our data, so that the transformed samples have similar magnitude of variance. Does this assumption remind you of something?  The two-sample pooled $t$-test has the equality of variance assumption too. In this point of view, one-way ANOVA is a generalization of the two-sample pooled $t$-test. The next two requirements will be not surprising at all because they are also requirements of the two-sample pooled $t$-test.
+
+- *The samples are random samples.* Without mentioned explicitly, the inference methods and statistical models introduced in the book are based on random samples.
+
+
+- *The samples are independent of each other.* They are not matched or paired in any way.
+
+
+:::{.callout-note}
+## Data and Math Notation for ANOVA
+```{r}
+#| out-width: 100%
+#| fig-cap: "Source: Table 8.5 of SMD."
+knitr::include_graphics("./images/img-model/anova_data.png")
+```
+
+- $y_{ij}$: $j$-th observation from population $i$. $\color{blue}{(y_{24}:\text{ 4-th observation from population 2})}$
+
+- $n_i$: number of values in the $i$-th group/sample. ($i = 1, \dots, k = 5$) $\color{blue}{\small (n_1 = n_2 = \dots = n_5 = 4)}$
+
+- $\bar{y}_{i\cdot}$: the average of values in the $i$-th sample,  $\bar{y}_{i\cdot} = \frac{\sum_{j=1}^{n_i}y_{ij}}{n_i}.$
+
+- $N$: total number of values in all samples combined, $\small N = n_1 + \dots + n_k = \sum_{i=1}^kn_i$. $\color{blue}{\small (N = 4 + \dots + 4 = 20)}$
+
+- $\bar{y}_{\cdot\cdot}$: the *grand* sample mean that is the average of all sample values combined, $\bar{y}_{\cdot\cdot} = \frac{\sum_{i=1}^{k}\sum_{j=1}^{n_i}y_{ij}}{N} = \frac{\sum_{i=1}^{k}n_i\bar{y}_{i\cdot}}{n_1 + \dots + n_t}$
+
+
+Mathematically, suppose there are $k$ populations/samples, and for group $i =1, \dots, k$, $n$ observations are drawn. Then
+
+$$y_{ij} \stackrel{iid}{\sim} N(\mu_i, \sigma^2), ~~ j = 1, 2, \dots, n.$$
+
+Our goal is to test whether or not $\mu_1 = \mu_2 = \cdots = \mu_k.$ If we do not reject $H_0: \mu_1 = \mu_2 = \cdots = \mu_k,$ then all samples are viewed as samples from a common normal distribution, i.e., $N(\mu_i, \sigma^2)$ and $\mu = \mu_1 = \mu_2 = \cdots = \mu_k$.
+
+$$y_{ij} \stackrel{iid}{\sim} N(\mu, \sigma^2), ~~ j = 1, 2, \dots, n.$$
+
+:::
 
 <span style="color:red"> ***Rationale*** </span>
 
-- Data 1 and Data 2 have the same group sample means $\bar{y}_1$, $\bar{y}_2$ and $\bar{y}_3$ denoted as red dots.
-- However, they differ with regards to the variance within each group.
+The section is quite important because we discuss in detail why we use variance size to test whether or not population means are equal.
 
-```{r, out.width="70%", fig.asp=0.6, echo=FALSE, fig.align='center'}
+Suppose we have two data sets Data 1 and Data 2, and both have three groups to be compared. Interestingly, Data 1 and Data 2 have the same group sample means $\bar{y}_1$, $\bar{y}_2$ and $\bar{y}_3$ denoted as red dots in @fig-boxplots-var. However, they differ with regards to the variance within each group. Data 1 has small variance within samples, while Data 2 has large variance within samples. Within groups, the data points in Data 1 are quite tight and close each other, and therefore they are all close to their sample mean. On the contrary, the data points in Data 2 are quite distant each other, even they are in the same group. Such distribution pattern tells us that the populations from which the samples of Data 1 are drawn have small variance $\sigma^2$.
+
+Before we go into more details, let's see if you have a great intuition. 
+
+:::{.callout-note icon=false}
+## For which data do you feel more confident in saying the population means $\mu_1$, $\mu_2$ and $\mu_3$ are not all the same?
+:::
+
+
+```{r}
 #| label: fig-boxplots-var
-#| fig-cap: Boxplots illustrating the variance within samples
+#| fig-cap: Boxplots illustrating the variance within samples.
 par(mfrow = c(2, 1), mar = c(2.5, 2.5, 1.5, 0), mgp = c(1.1, 0.5, 0), las = 1)
-y1 <- rnorm(50, 6, 0.08)
-y2 <- rnorm(50, 5.6, 0.08)
-y3 <- rnorm(50, 5.2, 0.08)
+y1 <- rnorm(50, 6, 0.05)
+y2 <- rnorm(50, 5.6, 0.05)
+y3 <- rnorm(50, 5.2, 0.05)
 small_var_data <- data.frame(y = c(y1, y2, y3), sample = rep(c(1,2,3), each = 50))
 boxplot(y ~ sample, small_var_data, ylim = c(2, 9),
         main = "Data 1: Small Variance Within Samples", cex.main = 0.89, 
         col = "lightblue", horizontal = TRUE)
-points(x=c(6, 5.6, 5.2), y = c(1, 2,3), col = "red", pch = 16)
+points(x=c(mean(y1), mean(y2), mean(y3)), y = c(1, 2,3), col = "red", pch = 16)
 
 y1_l <- rnorm(50, sd = 1.0) + 6
 y2_l <- rnorm(50, sd = 1.0) + 5.6
@@ -74,112 +140,303 @@ large_var_data <- data.frame(y = c(y1_l, y2_l, y3_l), sample = rep(c(1,2,3), eac
 boxplot(y ~ sample, large_var_data, ylim = c(2, 9),
         main = "Data 2: Large Variance Within Samples", cex.main = 0.89, 
         col = "lightblue", horizontal = TRUE)
-points(x=c(6, 5.6, 5.2), y = c(1, 2,3), col = "red", pch = 16)
+points(x=c(mean(y1_l), mean(y2_l), mean(y3_l)), y = c(1, 2,3), col = "red", pch = 16)
 # points(c(5.9, 5.5, 5))
 ```
 
-:::{.callout-note icon=false}
-## For which data do you feel more confident in saying the population means $\mu_1$, $\mu_2$ and $\mu_3$ are not all the same?
+<!-- :::{.callout-note icon=false} -->
+<!-- ## For which data do you feel more confident in saying the population means $\mu_1$, $\mu_2$ and $\mu_3$ are not all the same? -->
+<!-- ::: -->
+
+If your answer is Data 1, congratulations you are correct!
+
+The difference in sample means in Data 1 is more likely due to the true difference in population means ($\mu_1, \mu_2, \mu_3$ not all the same). Because of the small variation within groups, in Data 1 a value drawn from group 1 is very unlikely to be drawn from another group because with the normality assumption, the chance to be drawn from another group is very tiny. @fig-normal-var clearly illustrates this idea. The samples of Data 1 are so well-separated that we are more confident to say they are drawn from three well-separated populations that are not overlapped each other, and have distinct population means $\mu_1, \mu_2$, and $\mu_3$.
+
+If the variance within groups is large, as shown at the bottom of @fig-normal-var, all three samples are mixed up together, as if they are all from the common population, even though they are in fact are from three distinct populations $N(\mu_1, \sigma^2), N(\mu_2, \sigma^2), N(\mu_3, \sigma^2)$ and $\mu_1 \ne \mu_2 \ne \mu_3$. Note that the three populations still have their own distinct population mean which is actually identical to the mean with small variance, but it is hard for us to learn this fact from their mixed random samples. Because the three samples are indistinguishable, we don't have strong evidence to conclude that their corresponding population has its own population mean, and tend to conclude that the three samples are from a common population $N(\mu, \sigma^2)$.
+
+
+<!-- Therefore, the blue points can only be the draws from blue normal distribution,  -->
+
+
+```{r}
+#| label: fig-normal-var
+#| fig-cap: Populations with small and large variance within samples.
+par(mfrow = c(2, 1), mar = c(1.5, 0, 1.5, 0), mgp = c(1.1, 0.5, 0), las = 1)
+x <- seq(2, 9, length=1000)
+
+#create a vector of values that shows the height of the probability distribution
+#for each value in x
+dy1 <- dnorm(x, 6, 0.05)
+dy2 <- dnorm(x, 5.6, 0.05)
+dy3 <- dnorm(x, 5.2, 0.05)
+
+#plot x and y as a scatterplot with connected lines (type = "l") and add
+#an x-axis with custom labels
+plot(x, dy1, type = "l", lwd = 2,
+     axes = FALSE, xlab = "", ylab = "", 
+     col = 1, main = "Normal population w/ small variance (within samples)")
+lines(x, dy2, col = 2, lwd = 2)
+lines(x, dy3, col = 4, lwd = 2)
+abline(h = 0, col = "grey", lwd = 2)
+points(c(y1, y2, y3), y = jitter(rep(0, 150), factor = 5), 
+       pch = 1, col = c(rep(1, 50), rep(2, 50), rep(4, 50)), cex = 0.5)
+legend(7, 6, paste("sample/population", 1:3), bty = "n", 
+       col = c(1, 2, 4), lwd = 2, pch = 1)
+
+dy1_l <- dnorm(x, 6, 1)
+dy2_l <- dnorm(x, 5.6, 1)
+dy3_l <- dnorm(x, 5.2, 1)
+
+plot(x, dy1_l, type = "l", lwd = 2,
+     axes = FALSE, xlab = "", ylab = "", 
+     col = 1, main = "Normal population w/ large variance (within samples)")
+lines(x, dy2_l, col = 2, lwd = 2)
+lines(x, dy3_l, col = 4, lwd = 2)
+abline(h = 0, col = "grey", lwd = 2)
+points(c(y1_l, y2_l, y3_l), y = jitter(rep(0, 150), factor = 0.5), 
+       pch = 1, col = c(rep(1, 50), rep(2, 50), rep(4, 50)), cex = 1)
+legend(7, 0.4, paste("sample/population", 1:3), bty = "n", 
+       col = c(1, 2, 4), lwd = 2, pch = 1)
+```
+
+
+The three samples in @fig-normal-one are from a common population $N(\mu, \sigma^2)$. The samples look pretty similar to the samples with large variance in @fig-normal-var. In other words, either one common population or three populations with large variance can produce quite similar samples. With the samples only, we cannot tell which data generating mechanism is the true one generating such data.
+
+
+
+```{r}
+#| fig-asp: 0.36
+#| label: fig-normal-one
+#| fig-cap: Three samples drawn from a common normal population.
+par(mar = c(1.5, 0, 1.5, 0), mgp = c(1.1, 0.5, 0), las = 1)
+dy1_a <- dnorm(x, 5.6, 1)
+dy2_a <- dnorm(x, 5.6, 1)
+dy3_a <- dnorm(x, 5.6, 1)
+y1_a <- rnorm(50, sd = 1.0) + 5.6
+y2_a <- rnorm(50, sd = 1.0) + 5.6
+y3_a <- rnorm(50, sd = 1.0) + 5.6
+plot(x, dy1_a, type = "l", lwd = 2,
+     axes = FALSE, xlab = "", ylab = "", 
+     col = 1, main = "Three samples from the same normal population")
+# lines(x, dy2_a, col = 2, lwd = 2)
+# lines(x, dy3_a, col = 4, lwd = 2)
+abline(h = 0, col = "grey", lwd = 2)
+points(c(y1_a, y2_a, y3_a), y = jitter(rep(0, 150), factor = 0.5), 
+       pch = 1, col = c(rep(1, 50), rep(2, 50), rep(4, 50)), cex = 1)
+legend(7, 0.4, c(paste("sample", 1:3), "common population"), bty = "n", 
+       col = c(1, 2, 4, 1), pch = c(1, 1, 1, NA), lwd = c(NA, NA, NA, 2))
+```
+
+
+:::{.callout-note}
+Always keep in mind that all we have are samples, and we never know the true means $\mu_1$, $\mu_2$, and $\mu_3$. In the figures, we assume we know the true populations, and see what the samples look like. Statistical inference is trickier. We want to have a decision rule, so that we know how much the samples are well separated is enough to say they are from three different populations. 
 :::
+
+
+<!-- variation between samples is measured by the pairwise distance among the sample means. -->
+<!-- variation within samples is measured by the how far away the data points away from each other in each sample group. -->
+
 
 ---------------------------------------------------------------
 
 <span style="color:blue"> **Variation Between Samples & Variation Within Samples** </span>
 
-- Data 1: Variability between samples is **large** *in comparison to* the variation within samples.
-- Data 2: Variation between samples is **small** relatively to the variation within samples.
+There are two types of variation we need to consider in order to determine whether population means are identical. They are **variation between samples** and **variation within samples**.
+
+We have discussed the variation within samples or variance within groups, which measures the variability of data points in each group. This is actually the sample point estimate of the population variance $\sigma^2$ because the data points in the $i$-th group are assumed from the $i$-th population $N(\mu_i, \sigma^2).$ There are $k$ sample variance, one for each group. Later, we will learn how to combine them to get one single variance within samples as an estimate of $\sigma^2$.
+
+Variation between samples, on the other hand, measures variability of sample means. *The farther away from each other the sample means are, the larger variation between samples*. In our Data 1 and Data 2 example, their variation between samples are very close because the relative location of their sample means are basically the same. @fig-boxplot-bw illustrating the variance between samples. Data 3 and 4 have the same variance within samples, but Data 3 have small variation between samples and Data 4 have large variation between samples. Clearly, the sample means in Data 4 are farther away from each other, comparing to Data 3.
+
+
+```{r}
+#| label: fig-boxplot-bw
+#| fig-cap: Boxplots illustrating the variance between samples.
+par(mfrow = c(2, 1), mar = c(2.5, 2.5, 1.5, 0), mgp = c(1.1, 0.5, 0), las = 1)
+y1_l <- rnorm(50, sd = 1.0) + 6
+y2_l <- rnorm(50, sd = 1.0) + 5.6
+y3_l <- rnorm(50, sd = 1.0) + 5.2
+large_var_data <- data.frame(y = c(y1_l, y2_l, y3_l), sample = rep(c(1,2,3), each = 50))
+boxplot(y ~ sample, large_var_data, ylim = c(0, 11),
+        main = "Data 3: Small Variance Between Samples", cex.main = 0.89, 
+        col = "lightblue", horizontal = TRUE)
+points(x=c(mean(y1_l), mean(y2_l), mean(y3_l)), y = c(1, 2,3), col = "red", pch = 16)
+
+y1_l <- rnorm(50, sd = 1.0) + 8
+y2_l <- rnorm(50, sd = 1.0) + 5.5
+y3_l <- rnorm(50, sd = 1.0) + 3
+large_var_data <- data.frame(y = c(y1_l, y2_l, y3_l), sample = rep(c(1,2,3), each = 50))
+boxplot(y ~ sample, large_var_data, ylim = c(0, 11),
+        main = "Data 4: Large Variance Between Samples", cex.main = 0.89, 
+        col = "lightblue", horizontal = TRUE)
+points(x=c(mean(y1_l), mean(y2_l), mean(y3_l)), y = c(1, 2, 3), col = "red", pch = 16)
+
+
+```
+
+Let me ask you the same question for Data 3 and 4.
 
 :::{.callout-note icon=false}
-## We are more confident concluding there is a difference in population means when variation **between** samples is *larger* than variation **within** samples.
+## For which data do you feel more confident in saying the population means $\mu_1$, $\mu_2$ and $\mu_3$ are not all the same?
 :::
 
-```{r, out.width="55%", echo=FALSE, fig.align='center'}
-#| label: fig-var-within
-#| fig-cap: Illustration of small and large variance within samples
-knitr::include_graphics("./images/img-model/figure8-1.png")
-```
+Your answer should be Data 4. When the sample means $\bar{y}_1$, $\bar{y}_2$ and $\bar{y}_3$ are far away from each other, and they serve as the unbiased point estimate of $\mu_1$, $\mu_2$ and $\mu_3$, respectively, we tend to claim that $\mu_1$, $\mu_2$ and $\mu_3$ are not identical. 
+
+We have an important finding. *Whether or not there is a difference in population means depends on the relative size of variation between samples and variation within samples*. When variability between samples is *large* *in comparison to* the variation within samples, like Data 1 and Data 4, we tend to conclude that the population means are not all the same. When variation between samples is *small* relatively to the variation within samples, like Data 2 and Data 3, it's hard to exclude the possibility that all samples comes from the same population.
+
+<!-- - Data 1: Variability between samples is *large* *in comparison to* the variation within samples. -->
+<!-- - Data 2: Variation between samples is *small* relatively to the variation within samples. -->
+<!-- - Data 3: Variability between samples is *small* *in comparison to* the variation within samples. -->
+<!-- - Data 4: Variation between samples is *large* relatively to the variation within samples. -->
+
+
+
+
+
+<!-- :::{.callout-note icon=false} -->
+<!-- ## We are more confident concluding there is a difference in population means when variation **between** samples is *larger* than variation **within** samples. -->
+<!-- ::: -->
+
+<!-- # ```{r, out.width="55%", echo=FALSE, fig.align='center'} -->
+<!-- # #| label: fig-var-within -->
+<!-- # #| fig-cap: Illustration of small and large variance within samples -->
+<!-- # knitr::include_graphics("./images/img-model/figure8-1.png") -->
+<!-- # ``` -->
+
 
 ## ANOVA Procedures
 
-- <span style="color:blue"> $\begin{align} &H_0: \mu_1 = \mu_2 = \cdots = \mu_k\\  &H_1: \text{Population means are not all equal} \end{align}$ </span>
+ANOVA is usually done by providing the ANOVA table below. 
+
+```{r}
+knitr::include_graphics("./images/img-model/anova_table_k.png")
+```
+
+In this section, we are going to learn the meaning of every cell in the table, and how to use the table to do the testing of equality of population means.
+
+<!-- We now introduce the ANOVA procedures for testing the equality of population means. -->
+
+The hypotheses is <span style="color:blue"> $$\begin{align} &H_0: \mu_1 = \mu_2 = \cdots = \mu_k\\  &H_1: \text{Population means are not all equal} \end{align}$$ </span>
+
+Note that the alternative hypothesis is not $H_1: \mu_1 \ne \mu_2 \ne \cdots \ne \mu_k$. This is just one scenario where $H_0$ is not satisfied. Any $\mu_i \ne \mu_j , i \ne j$ violates $H_0$, and should be a possibility of $H_1$.
+
+
 
 <!-- - We use $F$-test.  -->
-
-- Statistician Ronald Fisher found a way to define a variable that follows the $F$ distribution:
+We learned that whether or not there is a difference in population means depends on the relative size of variation between samples and variation within samples. Statistician Ronald Fisher found a way to define a variable which is the ratio of variance between samples to variance within samples, and the variable follows the $F$ distribution:
 $$\frac{\text{variance between samples}}{\text{variance within samples}} \sim F_{df_B,\, df_W}$$
-- If the variance *between* samples is larger than the variance *within* samples ($F_{test}$ is much greater than 1), as in Data 1, we reject $H_0$.
+The degrees of freedom $df_B$ is paired with variance between samples and $df_W$ is for variance within samples. Be careful the order matters.
 
-:::{.callout-note icon=false}
-## Key
-- Define variance between samples and variance within samples so that the ratio is $F$ distributed.
-:::
+ANONA uses F test. If the variance *between* samples is much larger than the variance *within* samples, then the $F$ test statistic $F_{test}$ will be much greater than 1, which may be over the $F$ critical value, and $H_0$ is rejected.
 
-------------------------------------------------------------------
+The key question is how variance between samples and variance within samples are defined so that the ratio is $F$ distributed.
+
+<!-- :::{.callout-note icon=false} -->
+<!-- ## Key -->
+<!-- - Define variance between samples and variance within samples so that the ratio is $F$ distributed. -->
+<!-- ::: -->
+
+<!-- ------------------------------------------------------------------ -->
 
 <span style="color:blue"> **Variance Within Samples** </span>
 
-- Back to the two-sample pooled $t$-test with equal variance, $\sigma^2$. We have 
+One-way ANOVA is a generalization of the two-sample pooled $t$-test. In the two-sample pooled $t$-test with equal variance $\sigma^2$, we have the pooled sample variance
 $$s_p^2 = \frac{(n_1-1)s_1^2 + (n_2-1)s_2^2}{n_1 + n_2 - 2}$$
 
-:::{.callout-note icon=false}
-## How about the pooled sample variance for $k$ samples?
-:::
-
-- ANOVA assumes the populations have the **same variance** such that $\sigma_1^2 = \sigma_2^2 = \cdots = \sigma_k^2 = \sigma^2$. 
+<!-- :::{.callout-note icon=false} -->
+<!-- ## How about the pooled sample variance for $k$ samples? -->
+<!-- ::: -->
+How about the pooled sample variance for $k$ samples? ANOVA assumes the populations have the **same variance** such that $\sigma_1^2 = \sigma_2^2 = \cdots = \sigma_k^2 = \sigma^2$. With the same logic, we can have the pooled sample variance from $k$ samples
 $$\boxed{s_W^2 = \frac{(n_1-1)s_1^2 + (n_2-1)s_2^2 + \cdots + (n_k-1)s_k^2}{n_1 + n_2 + \cdots + n_k - k}}$$
-where $s_i^2$, $i = 1, \dots ,k$, is the sample variance of group $i$.
-- $s_W^2$ represents a *combined* estimate of the common variance, $\sigma^2$. 
-  + It measures variability of the observations within the $k$ populations.
+where $s_i^2$, $i = 1, \dots ,k$, is the sample variance of $i$-th group. $s_W^2$ represents a *combined* estimate of the common variance $\sigma^2$. It measures variability of the observations within the $k$ populations. Note that each $s_i^2$ measures the variability within the $i$-th sample. So this pooled estimate is the variance within samples.
 
------------------------------------------------------------------
+```{r}
+knitr::include_graphics("./images/img-model/var_within_group.jpg")
+```
+
+<!-- ----------------------------------------------------------------- -->
 
 <span style="color:blue"> **Variance Between Samples** </span>
 
-$$\boxed{s^2_{B} = \frac{\sum_{i=1}^k n_i (\bar{y}_{i\cdot} - \bar{y}_{\cdot\cdot})^2}{k-1}}$$ 
+The variance between samples measures variability *among* sample means for the $k$ groups, which is defined as 
+$$\boxed{s^2_{B} = \frac{\sum_{i=1}^k n_i (\bar{y}_{i\cdot} - \bar{y}_{\cdot\cdot})^2}{k-1}}$$ where 
 
 - $\bar{y}_{i\cdot}$ is the $i$-th sample mean.
 - $\bar{y}_{\cdot\cdot}$ is the *grand* sample mean with all data points in all groups combined.
-- $s^2_{B}$ is also an estimate of $\sigma^2$ and measures variability *among* sample means for the $k$ groups.
-- If $H_0$ is true $(\mu_1 = \cdots = \mu_k = \mu)$, any variation in the sample means is due to chance and randomness, so it shouldn't be too large.
-  + $\bar{y}_{1\cdot}, \cdots, \bar{y}_{k\cdot}$ should be close each other and should be close to $\bar{y}_{\cdot \cdot}$.
+- $n_i$ is the sample size of the $i$-th sample.
 
------------------------------------------------------------------
+The variance between samples measures the magnitude of how large is the deviation from group means to the overall grand mean. When $\bar{y}_{i\cdot}$s are away from each other, $(\bar{y}_{i\cdot} - \bar{y}_{\cdot\cdot})^2$ will be large, so is $s^2_{B}$. 
+
+
+```{r}
+knitr::include_graphics("./images/img-model/var_between_group.jpg")
+```
+
+
+In fact, not only $s^2_{W}$ estimates $\sigma^2$, $s^2_{B}$ is also an estimate of $\sigma^2$. If $H_0$ is true $(\mu_1 = \cdots = \mu_k = \mu)$, any variation in the sample means is due to chance and randomness, so it shouldn't be too large. $\bar{y}_{1\cdot}, \cdots, \bar{y}_{k\cdot}$ should be close each other and should be close to $\bar{y}_{\cdot \cdot}$. This leads to a small $s^2_{B}$ and small ratio $s^2_{B}/s^2_{W}$ that is our $F$ test statistic. That's why when $\mu_1 = \cdots = \mu_k = \mu$, we have small $F$ test statistic and tend to not reject $H_0$.
+
+
+
+<!-- ----------------------------------------------------------------- -->
 
 <span style="color:blue"> **ANOVA Table: Sum of Squares** </span>
 
-- **Total Sum of Squares (SST)** measures the total variation around $\bar{y}_{\cdot\cdot}$ in all of the sample data combined (ignoring the groups):
-$$\scriptsize{\color{blue}{SST = \sum_{j=1}^{n_i}\sum_{i=1}^{k} \left(y_{ij} - \bar{y}_{\cdot\cdot}\right)^2}}$$ where $y_{ij}$ is the $j$-th data point in the $i$-th group.
+In the ANOVA table, there is a column Sum of Squares. There are three types of sum of squares. Let's learn what they are.
 
-- **Sum of Squares Between Samples (SSB)** measures the variation **between** sample means:
-$$\scriptsize{ \color{blue}{SSB = \sum_{i=1}^{k}n_i \left(\bar{y}_{i\cdot} - \bar{y}_{\cdot\cdot}\right)^2}}$$
+**Total Sum of Squares (SST)** measures the total variation around $\bar{y}_{\cdot\cdot}$ in all of the sample data combined (ignoring the groups), which is defined as:
+$$\color{blue}{SST = \sum_{j=1}^{n_i}\sum_{i=1}^{k} \left(y_{ij} - \bar{y}_{\cdot\cdot}\right)^2}$$ where $y_{ij}$ is the $j$-th data point in the $i$-th group.
 
-- **Sum of Squares Within Samples (SSW)** measures the variation of any value, $y_{ij}$, about its sample mean, $\bar{y}_{i\cdot}$:
-$$\scriptsize{ \color{blue}{SSW = \sum_{i=1}^{k} \sum_{j=1}^{n_i} \left(y_{ij} - \bar{y}_{i\cdot}\right)^2 = \sum_{i=1}^{k} (n_i - 1)s_i^2}}$$
+
+
+**Sum of Squares Between Samples (SSB)** measures the variation *between* sample means:
+$$\color{blue}{SSB = \sum_{i=1}^{k}n_i \left(\bar{y}_{i\cdot} - \bar{y}_{\cdot\cdot}\right)^2}$$
+
+**Sum of Squares Within Samples (SSW)** measures the variation of any value, $y_{ij}$, about its sample mean, $\bar{y}_{i\cdot}$:
+$$\color{blue}{SSW = \sum_{i=1}^{k} \sum_{j=1}^{n_i} \left(y_{ij} - \bar{y}_{i\cdot}\right)^2 = \sum_{i=1}^{k} (n_i - 1)s_i^2}$$
 
 <span style="color:red"> ***Sum of Squares Identity*** </span>
 
-- $SST = SSB + SSW$ 
-- $df_{T} = df_{B} + df_{W} \implies N - 1 = (k-1) + (N - k)$
-<!-- $\begin{align} &df_{T} = df_{B} + df_{W} \\&n - 1 = (k-1) + (n - k) \end{align}$ -->
+The three sum of squares are related by the identity
+$$SST = SSB + SSW.$$
 
-- $\text{Mean Square (MS)} = \frac{\text{sum of squares}}{\text{degrees of freedom}}$
+Intuitively, for data points $y_{ij}$, their squared distance from the grand sample mean $\bar{y}_{\cdot\cdot}$ can be decomposed into two parts: (1) the squared distance between their own group sample mean and the grand sample mean, and (2) the their squared distance from their own group sample mean.
+
+Note that the sum of squares statistics have associated degrees of freedom. More interestingly, the three degrees of freedom also form an identity. So
+
+$$df_{T} = df_{B} + df_{W}$$
+where 
+
+- $df_{T} = N-1$ is the degrees of freedom of $SST$
+- $df_{B} = k - 1$ is the degrees of freedom of $SSB$
+- $df_{W} = N - k$ is the degrees of freedom of $SSW$.
+
+When a sum of squares divided by its degrees of freedom, we get its **mean square (MS)**, i.e., $$\text{mean square} = \dfrac{\text{sum of squares}}{\text{degrees of freedom}}.$$ We are particularly interested in the **mean square between** (**MSB**) and  **mean square within** (**MSW**):
+
 - $MSB = \frac{SSB}{k-1} = s^2_{B}$
 - $MSW = \frac{SSW}{N-k} = s^2_{W}$
-- $F_{test} = \frac{MSB}{MSW}$
-- Under $H_0$, $\frac{S^2_{B}}{S_W^2} \sim F_{k-1, \, N-k}$
-- Reject $H_0$ if 
-  + $F_{test} > F_{\alpha, \, k - 1,\, N-k}$
-  + $p$-value $P(F_{k - 1,\, N-k} > F_{test}) < \alpha$
+
+<!-- $\begin{align} &df_{T} = df_{B} + df_{W} \\&n - 1 = (k-1) + (n - k) \end{align}$ -->
+
+<!-- - $\text{Mean Square (MS)} = \frac{\text{sum of squares}}{\text{degrees of freedom}}$ -->
+<!-- - $MSB = \frac{SSB}{k-1} = s^2_{B}$ -->
+<!-- - $MSW = \frac{SSW}{N-k} = s^2_{W}$ -->
+
+Please check the formula of $SSB$ and $SSW$. You will find that $MSB$ is our variance between samples and $MSW$ is our variance within samples! So our $F$ test statistic is $$F_{test} = \frac{MSB}{MSW}.$$
+
+Under $H_0$, $s^2_{B}/s_W^2$ is a statistic from $F_{k-1, \, N-k}$ distribution. The first degrees of freedom is $df_{B} = k - 1$, and the second is $df_{W} = N - k$. They cannot be switched.
+
+We reject $H_0$ in favor of $H_1$ if $F_{test} > F_{\alpha, \, k - 1,\, N-k}$, or $p$-value $P(F_{k - 1,\, N-k} > F_{test}) < \alpha$ for some significance level $\alpha$.
 
 <span style="color:red"> ***ANOVA Table*** </span>
 
-```{r, out.width="100%", echo=FALSE, fig.align='center'}
+We are done! We've talked about every cell in the ANOVA table, and we can use the table to do the test and make a conclusion about the equality of population means.
+
+```{r}
 knitr::include_graphics("./images/img-model/anova_table_k.png")
 ```
 
 ## ANOVA Example
 
-- We hypothesize that a nutrient called "isoflavones" varies among three types of food: (1) cereals and snacks, (2) energy bars and (3) veggie burgers. 
+We hypothesize that a nutrient called "isoflavones" varies among three types of food: (1) cereals and snacks, (2) energy bars and (3) veggie burgers. 
 
 ::::{.columns}
 :::{.column width="32%"}
@@ -207,14 +464,17 @@ knitr::include_graphics("./images/img-model/veggie_burger.jpeg")
 :::
 ::::
 
-- A sample of 5 is taken from each type of food and the amount of isoflavones is measured.
-- Is there a sufficient evidence to conclude that the mean isoflavone levels vary among these food items at $\alpha = 0.05$?
+A sample of 5 is taken from each type of food and the amount of isoflavones is measured. Is there a sufficient evidence to conclude that the mean isoflavone levels vary among these food items at $\alpha = 0.05$?
 
 ---------------------------------------------------------------
 
+We are going to learn to generate a ANOVA table using R.
+
 <span style="color:blue"> **Data** </span>
 
-```{r, echo=FALSE}
+In order to use the R built-in function for ANOVA, we get to make sure the data matrix is in the right format. The original data set we get may be something like object `data` below, where each column represents the five isoflavones measurements of a food type. It is not a *"wrong"* data format, but just not what we need for doing ANOVA. The data frame `data_anova` is the data format needed for ANOVA. There are two columns, our response variable isoflavones  measurement labelled `y`, and the factor or categorical variable that may affect the response value, which is food type labelled `food`. With this format, there will be totally $N=15$ observations and rows. Please transform any data into this kind of data format before you do ANOVA.
+
+```{r}
 load("./data/table08-7.rdata")
 data <- `table08-7`
 data_anova <- data.frame("y"=c(data[, 1], data[, 2], data[, 3]),
@@ -223,38 +483,40 @@ data_anova[1, 1] <- 3
 data[1, 1] <- 3
 ```
 
-- We prefer a data format like the one shown on the right.
+<!-- - We prefer a data format like the one shown on the right. -->
 
 ::::{.columns}
 :::{.column width="49%"}
-```{r ex8-1, echo=TRUE}
+```{r}
+#| echo: true
 data
 ```
 
-:::{.callout-note icon=false}
-## So tell me what is the value of $y_{23}$!
-:::
+<!-- :::{.callout-note icon=false} -->
+<!-- ## So tell me what is the value of $y_{23}$! -->
+<!-- ::: -->
 :::
 
 :::{.column width="2%"}
 :::
 
 :::{.column width="49%"}
-```{r, echo=TRUE}
+```{r}
+#| echo: true
 data_anova
 ```
 :::
 ::::
 
-<br>
+The boxplot kind of gives us the isoflavones distribution by food type. It is hard to say whether the food type affects isoflavone level or not, and we need ANOVA to help us make the conclusion.
 
-```{r boxplot-ex81, out.width="80%", echo=FALSE, fig.align='center'}
+```{r}
 #| label: fig-boxplot-isoflavone
 #| fig-cap: Boxplot of the Isoflavone Content in 3 Types of Food
 par(mfrow = c(1, 1))
 boxplot(data, axes = FALSE, ylab = "",
         main = "Boxplot of Isoflavones", horizontal = FALSE)
-axis(2)
+axis(2, las = 1)
 axis(1, las = 1, at = 1:3, 
      labels = c("Cereals", "Energy Bars", "Veggie Burger"))
 ```
@@ -263,17 +525,40 @@ axis(1, las = 1, at = 1:3,
 
 <span style="color:blue"> **Test Assumptions** </span>
 
-- Assumptions:
-  + $\sigma_1 = \sigma_2 = \sigma_3$ (I tested it).
-  + Data are generated from a normal distribution for each type of food (QQ plots confirm this).
+Before implementing any statistical method, always check its method assumptions.
+
+ANOVA requires 
+
++ $\sigma_1 = \sigma_2 = \sigma_3$
++ Data are generated from a normal distribution for each type of food.
+
+Well we did not learn to test the equality of more than two population variances, but believe me I did the test, and the three variances are not significantly different from each other. [^1] Even the the variances are not all equal, the ANOVA performance will not be worse much. Equality of variances is not a strict requirement. George Box of UW-Madison showed that as long as the sample sizes are (nearly) equal, the largest variance can be up to 9 times the smallest one and the result of ANOVA will continue to be reliable. A general rule of thumb for equal variances is to compare the smallest and largest sample standard deviations. This is much like the rule of thumb for equal variances for the test for independent means. If the ratio of these two sample standard deviations falls within 0.5 to 2, then it may be that the assumption is not violated.
+
+[^1]: The test I use is Brown-Forsythe test. It can be performed using the function `onewaytests::bf.test()`.
 
 
-```{r normality-ex81, message = FALSE, out.width = "100%", fig.asp=0.35,echo=FALSE}
+To check the normality, we can check their QQ plots. [^2] @fig-qqplots shows that there is no obvious non-normal pattern although two data points are outside the blue 95% confidence region. The normality is not very restrictive as well. As long as the distribution is not very skewed, ANOVA works pretty well.
+
+
+
+[^2]: There are several tests for normality, such as Shapiro–Wilk test (`stats::shapiro.test()`), Anderson–Darling test (`nortest::ad.test()`), and Kolmogorov–Smirnov test (`stats::ks.test()`).
+
+We say the ANOVA $F$ test is **robust** to the violation of the two assumptions.
+
+
+<!-- https://cran.r-project.org/web/packages/onewaytests/index.html -->
+<!-- Shapiro-Wilk’s method is widely recommended for normality test and it provides better power than K-S. It is based on the correlation between the data and the corresponding normal scores. -->
+<!-- Empirical testing has found[5] that the Anderson–Darling test is not quite as good as the Shapiro–Wilk test, but is better than other tests -->
+
+
+
+```{r}
 #| label: fig-qqplots
 #| fig-cap: QQ plots for each type of food
+#| fig-asp: 0.35
 par(mgp = c(2, 1, 0))
 par(mar = c(3.5, 3.5, 1.5, 0))
-qqPlot(y ~ food, data = data_anova, layout=c(1, 3))
+qqPlot(y ~ food, data = data_anova, layout = c(1, 3), las = 1)
 # ad.test(data_ex78[data_ex78$additive == 1, 1])
 # ad.test(data_ex78[data_ex78$additive == 2, 1])
 # ad.test(data_ex78[data_ex78$additive == 3, 1])
@@ -281,21 +566,66 @@ qqPlot(y ~ food, data = data_anova, layout=c(1, 3))
 
 <span style="color:blue"> **ANOVA Testing** </span>
 
-- <span style="color:blue"> $\begin{align}&H_0: \mu_1 = \mu_2 = \mu_3\\&H_1: \mu_is \text{ not all equal} \end{align}$ </span>
+We are interested in the following test:
 
-```{r, out.width="100%", echo=FALSE, fig.align='center'}
+<span style="color:blue"> $\begin{align}&H_0: \mu_1 = \mu_2 = \mu_3\\&H_1: \mu_is \text{ not all equal} \end{align}$ </span>
+
+where $\mu_1$, $\mu_2$, $\mu_3$ stand for the population mean level of isoflavones of food cereals and snacks, energy bars, and veggie burgers respectively.
+
+We could follow the regular six-step testing procedure, but generating the ANOVA table is more straightforward. 
+
+
+```{r}
 knitr::include_graphics("./images/img-model/anova_table_k.png")
 ```
 
+In R, we can do all the calculations and generate an ANOVA table using just one line of code. We first use the popular function `lm()` to implement ANOVA. The first argument is `formula` that has the form `response ~ factor` where `response` is the numeric response vector, and `factor` is the categorical factor vector. In our data `data_anova`, `y` is our response, and `food` is our factor. Note that if we just write `y` and `food` in the formula, R will render an error because R does not recognize `y` and `food` because they are not an R object but a column name of data `data_anova`. Therefore, we need to tell R where `y` and `food` are from by specifying the data set they are referred. If you want to specify the data name, you can get access to the response and factor vector by extracting them using `data_anova$y` and `data_anova$food`.
 
-- We can do all the calculations and generate an ANOVA table using just one line of code, as shown below. 
+
+The word `lm` stands for **linear model**, and ANOVA is a linear model. If you just run `lm(formula = data_anova$y ~ data_anova$food)`, it will show the linear model output related to ANOVA. We don't need it at this moment, and we will discuss more about linear model in Regression @sec-model-reg. 
+
+To obtain the ANOVA table, we apply the function `anova()` to the `lm` object. In the output, `food` is the source of variation between samples. `Residuals` is for the source of variation within samples. `F value` is the $F$ test statistic value, not the critical value. `Pr(>F)` is the $p$-value. Since $p$-value > 0.05, we do not reject $H_0$. The evidence is not sufficient to reject the equality of population means.
 
 
-```{r anova-ex81, echo=3}
-options(digits = 6)
-# summary(aov(y ~ source, data = df_ex81)) ## method 1
-anova(lm(y ~ food, data = data_anova))
+
+```{r}
+#| echo: true
+anova(lm(formula = y ~ food, data = data_anova))
+anova(lm(formula = data_anova$y ~ data_anova$food))
 ```
 
 
 
+
+
+
+:::{.callout-note}
+
+There is another way to generate the ANOVA table in R. We use `summary()` and `aov()` functions.
+
+```{r}
+#| echo: true
+summary(aov(y ~ food, data = data_anova))
+
+# oneway.test(y ~ food, data = data_anova, var.equal = TRUE)
+```
+:::
+
+
+## Unequal Variances
+
+To be added.
+
+## ANOVA Mathematical Model
+
+To be added.
+
+
+## Pairwise Comparison
+
+To be added.
+
+
+## Two-Way ANOVA
+
+To be added.
