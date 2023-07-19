@@ -1,4 +1,3 @@
-
 set.seed(1014)
 
 knitr::opts_chunk$set(
@@ -8,17 +7,40 @@ knitr::opts_chunk$set(
   fig.retina = 2,
   fig.width = 6,
   fig.asp = 2/3,
-  fig.show = "hold"
+  fig.show = "hold",
+  echo = FALSE,
+  fig.align = "center",
+  warning = FALSE,
+  message = FALSE
 )
 
-options(dplyr.print_min = 6, dplyr.print_max = 6)
 
 # Activate crayon output
 options(
   #crayon.enabled = TRUE,
   pillar.bold = TRUE,
-  stringr.html = FALSE
+  stringr.html = FALSE,
+  dplyr.print_min = 6,
+  dplyr.print_max = 6
+  # warn = -1
 )
+
+# defaultW <- getOption("warn") 
+# options(warn = defaultW)
+
+suppressWarnings(suppressPackageStartupMessages({
+    library(openintro)
+    library(knitr)
+    library(emoji)
+    library(ggplot2)
+    library(tidyverse)
+    library(broom)
+    library(rminer)
+    library(sets)
+    library(parsnip)
+}))
+
+
 
 ggplot2::theme_set(ggplot2::theme_gray(12))
 
@@ -39,3 +61,26 @@ ggplot2::theme_set(ggplot2::theme_gray(12))
 #     ":::\n"
 #   ))
 # }
+
+
+
+hook_output <- knitr::knit_hooks$get("output")
+knitr::knit_hooks$set(output = function(x, options) {
+  lines <- options$output.lines
+  if (is.null(lines)) {
+    return(hook_output(x, options))  # pass to default hook
+  }
+  x <- unlist(strsplit(x, "\n"))
+  more <- "..."
+  if (length(lines)==1) {        # first n lines
+    if (length(x) > lines) {
+      # truncate the output, but add ....
+      x <- c(head(x, lines), more)
+    }
+  } else {
+    x <- c(more, x[lines], more)
+  }
+  # paste these lines together
+  x <- paste(c(x, ""), collapse = "\n")
+  hook_output(x, options)
+})
