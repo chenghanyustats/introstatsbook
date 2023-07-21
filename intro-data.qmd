@@ -1,100 +1,93 @@
 # Data Collection and Data Type {#sec-intro-data}
 
+```{r}
+#| echo: false
+source("./_common.R")
+```
 
-```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
-library(tidyverse)
-library(emoji)
-library(openintro)
-library(ggVennDiagram)
-library(ggplot2)
-library(ggVennDiagram)
-library(plotrix)
-library(diagram)
-library(knitr)
-library(kableExtra)
-library(graphics)
-library(base)
+```{r}
 data(COL)
 source("./sample_method_fcns.R")
 ```
 
+Statistics is a science of data. If statistics should be viewed as a subset of the boarder data science, I would call it "statistical data science". As the name suggests, data is the core of modern statistics. In this chapter, we define data, and talk about data collection and data type.
 
 ## Data
 
 <span style="color:blue"> **What is Data?** </span>
 
-- Because statistics is a science of data, we first need to understand what data is.
-- **Data** can be described as a set of **objects** on which we observe or measure one or more **characteristics**.
-  - **Objects** are individuals, observations, subjects or cases in statistical studies.
-  - A **characteristic or attribute** is also called a **variable** because it *varies* from one object to another.
-- We usually store a data set in a matrix form that has rows and columns.
-  - Each row corresponds to a unique case or observational unit.
-  - Each column represents a characteristic or variable.
-- This structure allows new cases to be added as rows or new variables to be added as columns.
+Because statistics is a science of data, we first understand what data is. **Data** can be described as a set of **objects** on which we observe or measure one or more **characteristics**. **Objects** are individuals, observations, subjects or cases in statistical studies. For example, if you are studying the Marquette students' heights and weights, your objects will be human beings, specifically the Marquette students. If you are interested in SUV car price, your subjects will be cars. A **characteristic or attribute** is also called a **variable** because it *varies* from one object to another. Your car data set may contain 10 car objects and 5 different characteristics or variables associated with each object, such as color, brand, weight, price, etc. Each car has its own value of those variables.
+
+
+We usually store a data set in a matrix form that has rows and columns. Sometimes we call such data set data matrix or data frame. Each row corresponds to a unique case or observational unit. Each column represents a characteristic or variable. This data matrix structure allows new cases to be added as rows or new variables to be added as columns.
 
 ----------------------------------------------------------------------
 
 <span style="color:blue"> **Example** </span>
 
-- @fig-marquette-data below is a data set of Marquette basketball players stored in matrix form.
-- The objects are individuals or players in the data and each have their own associated row.
-- Each player has several characteristics or attributes shown in the columns associated with them.
-  - These include jersey number, class, position, height, weight, hometown and high school.
-  - These characteristics can also be referred to as variables because they vary from one player to another.
+@fig-marquette-data below is a data set of Marquette basketball players stored in matrix form. The objects are individuals or players in the data and each have their own associated row. Each player has several characteristics or attributes shown in the columns associated with them. These include jersey number, class, position, height, weight, hometown and high school. These characteristics can also be referred to as variables because they vary from one player to another.
 
-```{r, echo=FALSE, out.width="70%",fig.align='center', fig.cap="Data set of 2019 Marquette men's basketball players"}
+```{r}
 #| label: fig-marquette-data
+#| fig-cap: "Data set of 2019 Marquette men's basketball players."
+
 knitr::include_graphics("./images/img-intro/mu_data.png")
 ```
 
 ## Population and Sample
 
+
+
+
 <span style="color:blue"> **Target Population** </span>
 
-- The first step in conducting a study is to *identify questions* to be investigated.
-- A clear research question is helpful in identifying
+The data set we collect for analysis is usually a **sample** of some target population in the study. The first step in conducting a study is to *identify questions* to be investigated. A clear research question is helpful in identifying
+
   + what *cases* should be studied (row)
   + what *variables* are important (column)
-- Once the research question is determined, it is important to identify the target population to be investigated.
-- The **target population** is the **complete** collection of data we'd like to make inference about.
+  
+Once the research question is determined, it is important to identify the target population to be investigated. The **target population** is the *complete* collection of data we'd like to make inference about. Look at the following examples.
 
 <span style="color:red"> ***GPA Example*** </span>
 
 :::: {.columns}
-::: {.column width="49%"}
--  **Research Question**: *What is the average GPA of currently enrolled Marquette undergraduate students?*
-```{r, echo=FALSE, out.width="70%",fig.align='center'}
+::: {.column width="79%"}
+Suppose a Marquette professor has a research question: *What is the average GPA of currently enrolled Marquette undergraduate students?*
+
+The *target population* in this study is  <span style="color:blue"> *All Marquette undergraduate students that are currently enrolled.*</span> because all Marquette undergrads that are currently enrolled are the *complete* collection of data we'd like to make inference about or we are interested in some property or characteristic of these group of people. Each currently enrolled Marquette undergraduate student is an object in the population. Average GPA is the variable or population property we would like to make an inference about.
+:::
+
+:::{.column width="19%"}
+
+
+```{r}
+#| fig-cap: "Source: Upslash-Sarah Noltner"
 knitr::include_graphics("./images/img-intro/study.jpeg")
 ```
-:::
-
-:::{.column width="2%"}
-:::
-
-:::{.column width="49%"}
-- <span style="color:blue"> **Target Population**: All Marquette undergraduate students that are currently enrolled.</span>
-- Because all Marquette undergrads that are currently enrolled are the **complete** collection of data we'd like to make inference about, each currently enrolled Marquette undergrad is an object.
-- Average GPA is the variable or population property we would like to make an inference about.
 :::
 ::::
 
 :::{.callout-note}
-- Students who are not currently enrolled or students that have already graduated are not our interest, so they shouldn't be a part of target population.
+Students who are *not* currently enrolled or students that *have already graduated* are not our interest, so they shouldn't be a part of target population.
 :::
+
+
 
 <span style="color:red"> ***Heart Disease Example*** </span>
 
 ::::{.columns}
-::: {.column width="50%"}
-- *Does a new drug reduce mortality in patients with severe heart disease?*
-```{r, echo=FALSE, out.width="70%",fig.align='center'}
-knitr::include_graphics("./images/img-intro/heart_disease.jpeg")
-```
+::: {.column width="79%"}
+*Does a new drug reduce mortality in patients with severe heart disease?* If this is our research question, the target population is <span style="color:blue"> All people with severe heart disease. </span> Mortality is the variable or population property we would like to make an inference about.
+
+Do you think it is possible the apply the new drug to all the patients with severe heart disease, and obtain the mortality we are interested?
 :::
 
-::: {.column width="50%"}
-- <span style="color:blue"> **Target Population**: All people with severe heart disease. </span> 
-- Mortality is the variable or population property we would like to make an inference about.
+::: {.column width="19%"}
+
+```{r}
+#| fig-cap: "Source: Upslash-National Cancer Institute"
+knitr::include_graphics("./images/img-intro/heart_disease.jpeg")
+```
 :::
 ::::
 
@@ -102,22 +95,19 @@ knitr::include_graphics("./images/img-intro/heart_disease.jpeg")
 
 <span style="color:blue"> **Sample Data** </span>
 
-- In some cases it's possible to collect data of all the cases we are interested in.
-- However, most of the time it is either expensive or too time consuming to collect data for every case in a population.
-- What if we tried to collect data on the average GPA of **all** students in Illinois? The U.S.? The world? `r emoji('scream')` `r emoji('scream')` `r emoji('scream')`
+In some cases it's possible to collect data of all the cases we are interested in. However, most of the time it is either too expensive or too time consuming to collect data for every case in a population. What if we tried to collect data on the average GPA of *all students in Illinois? The U.S.? The world?* `r emoji('scream')` `r emoji('scream')` `r emoji('scream')`
 
-:::: {.columns}
-::: {.column width="49%"}
-- The solution to this problem is sampling.
-- A **sample** is a **subset** of cases selected from a population.
-- We are not able to collect the average GPA of every member of the population, but we can collect a sample from that population which has fewer objects (@fig-sampling).
-- We can then compute the average GPA of the sample data.
-:::
+<!-- :::: {.columns} -->
+<!-- ::: {.column width="49%"} -->
+When we are not able to collect all the cases in the target population due to some budget or time constraint, but we still want to learn about the population property, our solution is **sampling** cases from the target population. A **sample** is a **subset** of cases selected from a population.
 
-:::{.column width="2%"}
-:::
+We are not able to collect the average GPA of every member of the population, but we can collect a sample from that population which has fewer objects (@fig-sampling). We can then compute the average GPA of the sample data.
+<!-- ::: -->
 
-::: {.column width="49%"}
+<!-- :::{.column width="2%"} -->
+<!-- ::: -->
+
+<!-- ::: {.column width="49%"} -->
 ```{r sample, echo=FALSE, out.width="100%"}
 #| label: fig-sampling
 #| fig-cap: Sampling from the population reduces the number of objects from which to collect data.
@@ -162,11 +152,10 @@ for (i in these) {
          length = 0.08, col = COL[5], lwd = 1.5)
 }
 ```
-:::
-::::
+<!-- ::: -->
+<!-- :::: -->
 
-- Our hope is that the average GPA of the sample is close to the average GPA of the population, which is our main interest.
-- For the sample's average GPA to be close to population's average GPA, we want the sample to look like the population such that they share similar attributes including GPA.
+We hope that the average GPA of the sample is close to the average GPA of the population, which is our main interest. For the sample's average GPA to be close to population's average GPA, we want the sample to look like the population such that they share similar attributes including GPA. In other words, we hope the sample is a small size of everything in the population, and the sample is representative of the population. Ideally, a sample is the small size of some dish and the population is the large size of that dish.
 
 ------------------------------------------------------------------------
 
@@ -176,25 +165,27 @@ for (i in these) {
 ## Is **this 4720/5720 class** a sample of the target population Marquette students?
 :::
 
-```{r, echo=FALSE, out.width="65%", fig.align='center'}
+Of course, every member in the class is a Marquette student, so the class is a subset of the population Marquette students. Let me ask you another question.
+
+:::{.callout-note icon=false}
+## Is this 4720/5720 class a *"good"* sample of the target population?
+:::
+
+Remember a good sample should well represent the target population. Do you think the class is generally a small version of the entire Marquette student body? The sample is convenient to be collected, but as @fig-chart shows, it is *NOT representative* of the population. Because this class is primarily composed of STEM majors, it may not share the attributes necessary with the target population for the two to share a similar average GPA. We call this kind of sample a **biased sample**. The average GPA of the class may differ greatly from the average GPA of all Marquette undergrads. 
+
+
+```{r}
 #| label: fig-chart
-#| fig-cap: Majors of students in this 4740/5740 class
+#| fig-cap: Majors of students in this 4720/5720 class
+#| echo: false
 par(mar = c(0,0,2,0))
 major <- c("CS" = 14, "Engineering" = 29, "Math" = 9, "DS" = 4,
            "Chem/Bio" = 5, "Business" = 5, "Other" = 4)
 pie(major, col = 1:7, main = "Majors of 4720/5720 class")
 ```
 
-:::{.callout-note icon=false}
-## Is **this 4720/5720 class** a *"good"* sample of the target population?
-:::
 
-- The sample is convenient to be collected, but as @fig-chart shows, it is NOT **representative** of the population.
-- Because this class is primarily composed of STEM majors, it may not share the attributes necessary with the target population for the two to share a similar average GPA.
-- Therefore, we call this a **biased sample**.
-  - The average GPA of the class may differ greatly from the average GPA of all MU undergrads.
-
-```{r, echo=FALSE, out.width="80%", fig.align='center'}
+```{r}
 #| label: fig-biased-sample
 #| fig-cap: Sampling from a class of mostly STEM students is not representative of the entire population.
 par(mar = c(0,0,0,0))
@@ -258,47 +249,53 @@ text(0.55, 0.5 + 0.18 - sqrt(0.07),
      pos = 1)
 ```
 
-::::{.columns}
+<!-- ::::{.columns} -->
 
-:::{.column width="39%"}
-- As shown in @fig-major-gpa, the average GPA differs based on students' majors.
-- Because this class consists of mostly STEM majors, it is likely that the average GPA of its students is not the same as the average GPA of all MU undergraduates.
-- @fig-biased-sample depicts that sampling needs to be done appropriately to ensure the sample is representative of the population.
-:::
+<!-- :::{.column width="39%"} -->
+If the biased sample has no or tiny impact on the population attribute we'd like to discover, we are lucky, and the issue is not serious. However, if the sample is biased in a way that the attribute we get from the sample is quite different from that of the population, then we miss the mark. In the GPA example, if the average GPA depends on students major, the sample that is biased in students' major causes a trouble.
 
-:::{.column width="2%"}
-:::
+As shown in @fig-major-gpa, the average GPA differs based on students' majors. Because this class consists of mostly STEM majors, it is likely that the average GPA of its students is not the same as the average GPA of all Marquette undergraduates. @fig-biased-sample depicts that sampling needs to be done appropriately to ensure the sample is representative of the population. 
+<!-- ::: -->
 
-:::{.column width="59%"}
-```{r, echo=FALSE, out.width="90%", fig.align='center'}
+<!-- :::{.column width="2%"} -->
+<!-- ::: -->
+
+<!-- :::{.column width="59%"} -->
+```{r}
 #| label: fig-major-gpa
 #| fig-cap: UC Berkeley average GPAs by major
+#| out-width: 100%
 knitr::include_graphics("./images/img-intro/gpa.png")
 ```
-:::
-::::
+<!-- ::: -->
+<!-- :::: -->
 
-------------------------------------------------------------------------
+<!-- ------------------------------------------------------------------------ -->
 
-<span style="color:blue"> **How do we collect and why do we need a representative sample?** </span>
+<!-- <span style="color:blue"> **How do we collect and why do we need a representative sample?** </span> -->
 
-- We always seek to **randomly** select a sample from a population.
-- Random sampling usually give us a representative sample, as long as the sample size, or the number of objects in the sample, is not too small.
-- It is important to collect samples this way, because many statistical methods are based on the *randomness assumption*.
+How do we collect a representative sample? We always seek to **randomly** select a sample from a population. Every member in the target population should be treated equally, and preferably has equal chance to be chosen in the sample. If you just collect data from STEM fields, we miss the information provided by students from arts, humanities, and other non-STEM majors. Random sampling usually give us a representative sample, as long as the sample size, the number of objects in the sample, is not too small. It is important to collect samples this way because many statistical methods are based on the *random sampling assumption*.
 
-```{r, ref.label="sample", echo=FALSE, fig.align='center', out.width="75%"}
-
-```
+<!-- # ```{r, ref.label="sample", echo=FALSE, fig.align='center', out.width="75%"} -->
+<!-- #  -->
+<!-- # ``` -->
 
 ## Data Collection 
 
+In this section, we briefly discuss how data can be collected.
+
 <span style="color:blue"> **Two Types of Studies to Collect Sample Data** </span>
 
-- There are two types of studies that are used to collect data: observational studies and experimental studies.
-- An **observational study** is a study in which those collecting the data observe and measure characteristics/variables, but do **NOT** attempt to modify or intervene with the subjects being studied.
-  + <span style="color:blue"> Example: Sample from `r emoji('one')` the heart disease and `r emoji('two')` heart disease-free populations and record the fat content of the diets for the two groups. </span> 
-- In an **experimental study**, some **treatment(s)** is applied and then those collecting data proceed to observe its responses or effects on the individuals (experimental units).
-  + <span style="color:blue"> Example: Assign volunteers to one of several diets with different levels of dietary fat (treatments) and compare the treatments with respect to the incidence of heart disease after a period of time. </span> 
+There are two types of studies that are used to collect data: observational studies and experimental studies.
+
+An **observational study** is a study in which those collecting the data observe and measure characteristics/variables, but do *NOT* attempt to modify or intervene with the subjects being studied.
+
+  + <span style="color:blue"> Example: Sample from `r emoji('one')` the *heart disease* and `r emoji('two')` *heart disease-free* populations and record the fat content of the diets for the two groups. </span> In this type of study, the researchers do not modify or intervene with the the subjects either with or without heart disease. They just record the fat content in their diets.
+  
+
+The other type of study is called the **experimental study**. In an experimental study, some **treatment(s)** is applied and then those collecting data proceed to observe its responses or effects on the individuals, the experimental units in such study.
+
+  + <span style="color:blue"> Example: Assign volunteers to one of several diets with different levels of dietary fat and compare the fat levels with respect to the incidence of heart disease after a period of time. </span> In this experimental study, the treatment is the fat level in diets. The researchers do not just observe the subjects behavior. Instead, they ask the subjects to take a specific diet they design for a period of time.
 
 
 :::{.callout-note icon=false}
@@ -309,13 +306,12 @@ knitr::include_graphics("./images/img-intro/gpa.png")
 
 <span style="color:red"> ***Limitation of Observational Studies: Confounding Variables*** </span>
 
-- A **confounder** is a variable NOT included in a study that affects the variables in the study.
-- For example, a person observes past data that shows that increases in ice cream sales are associated with increases in drownings and concludes that **eating ice cream causes drownings**. 
-`r emoji('scream')``r emoji('confused')``r emoji('interrobang')`
+One limitation of observational studies is **confounding**. A **confounder** is a variable that is *not* included in a study, but affects the variables in the study. For example, a person observes past data showing that increases in ice cream sales are associated with increases in drownings and concludes that **eating ice cream causes drownings**. `r emoji('scream')``r emoji('confused')``r emoji('interrobang')`
 
 ::::{.columns}
 :::{.column width="49%"}
-```{r, echo=FALSE, out.width="80%", fig.align='center'}
+```{r}
+#| fig-cap: "Source: Unsplash-Brooke Lark"
 knitr::include_graphics("./images/img-intro/icecream.jpeg")
 ```
 :::
@@ -324,7 +320,8 @@ knitr::include_graphics("./images/img-intro/icecream.jpeg")
 :::
 
 :::{.column width="49%"}
-```{r, echo=FALSE, out.width="80%", fig.align='center'}
+```{r}
+#| fig-cap: "Source: Unsplash-Nate Neelson"
 knitr::include_graphics("./images/img-intro/drowning.jpeg")
 ```
 :::
@@ -337,13 +334,9 @@ knitr::include_graphics("./images/img-intro/drowning.jpeg")
 
 - As temperature increases, ice cream sales increase and the number of drownings also rises because more people go swimming (@fig-temperature).
 
-<span style="color:red"> ***Causal Relationships*** </span>
-
-- Making causal conclusions based on *experimental* data is often more reasonable than making the same causal conclusions based on *observational* data.
-- Observational studies are generally only sufficient to show **associations, not causality**.
 
 
-```{r, echo=FALSE, out.width="50%", fig.align='center'}
+```{r}
 #| label: fig-temperature
 #| fig-cap: Temperature acting as a confounder
 par(mar = c(0,0,0,0))
@@ -365,22 +358,28 @@ text(0.595, 0.565, "?", font = 2,
      cex = 1.5, col = COL[4])
 ```
 
+
+<!-- <span style="color:red"> ***Causal Relationships*** </span> -->
+
+Making causal conclusions based on *experimental* data is often more reasonable than making the same causal conclusions based on *observational* data. Observational studies are generally only sufficient to show **associations**, not **causality**.
+
+
+
 ------------------------------------------------------------------------
 
 <span style="color:blue"> **Types of Random Samples** </span>
 
-- As previously mentioned, many statistical methods are based on the *randomness assumption*.
-- Therefore, it's important to understand what a random sample is and how to collect it.
-- In a **random sample**, each member of a population is **equally likely** to be selected.
+As previously mentioned, many statistical methods are based on the *randomness assumption*. It's important to understand what a random sample is and how to collect it. In a **random sample**, each member of a population is *equally likely* to be selected.
 
 <span style="color:red"> ***Simple Random Sample*** </span>
 
-- For a **simple random sample (SRS)**, every possible sample of sample size $n$ has the same chance to be chosen.
+For a **simple random sample (SRS)**, every possible sample of sample size $n$ has the same chance to be chosen.
+
 - **Example**: If I were to sample 100 students from all 10,000 Marquette students, I would *randomly* assign each student a number (from 1 to 10,000) and then *randomly* select 100 numbers. 
 
 ::::{.columns}
-:::{.column width="49%"}
-```{r, echo=FALSE, out.width="100%", fig.align='center'}
+:::{.column width="50%"}
+```{r}
 #| label: fig-random-sample
 #| fig-cap: Simple Random Sample
 set.seed(3)
@@ -405,12 +404,10 @@ points(x[these], y[these], cex=1.4, col=colSamp)
 ```
 :::
 
-:::{.column width="2%"}
-:::
-
-:::{.column width="49%"}
-```{r, echo=FALSE, out.width="80%",fig.align='center', fig.cap="Simple random sample from a population of 15 (https://research-methodology.net/sampling-in-primary-data-collection/random-sampling/)"}
+:::{.column width="50%"}
+```{r}
 #| label: fig-random-sampling
+#| fig-cap: "Simple random sample from a population of 15 (https://research-methodology.net/sampling-in-primary-data-collection/random-sampling/)"
 knitr::include_graphics("./images/img-intro/srs.png")
 ```
 :::
@@ -418,18 +415,18 @@ knitr::include_graphics("./images/img-intro/srs.png")
 
 <span style="color:red"> ***Stratified Random Sample*** </span>
 
-- For **stratified sampling**, subdivide the population into different subgroups (**strata**) that share the **same** characteristics, then draw a simple random sample from each subgroup.
-- **Homogeneous within strata; Non-homogeneous between strata** (@fig-stratified)
+For **stratified sampling**, we subdivide the population into different subgroups (**strata**) that share the *same* characteristics, then draw a simple random sample from each subgroup. Stratified sampling has a property: *Homogeneous within strata; Non-homogeneous between strata*. (@fig-stratified)
 
-```{r, echo=FALSE, out.width="75%", fig.align='center'}
+```{r}
 #| label: fig-stratified
-#| fig-cap: Stratified Sampling
+#| fig-cap: "Stratified Sampling. Source: https://www.datasciencemadesimple.com/stratified-random-sampling-in-r-dataframe-2/"
+#| out-width: 100%
 knitr::include_graphics("./images/img-intro/stratified_sampling.png")
 ```
 
-- **Example**: Divide Marquette students into groups by colleges, then perform a SRS for each group (@fig-stratified-marquette).
+- **Example**: Divide Marquette students into groups by colleges, then perform a SRS for each group (@fig-stratified-marquette). In this case, subjects within strata are homogeneous because people in the same stratum belong to the same college. Subjects are non-homogeneous between strata because students in one college is not a student in another college.
 
-```{r, echo=FALSE, out.width="62%", fig.align='center'}
+```{r}
 #| label: fig-stratified-marquette
 #| fig-cap: Stratified sampling of Marquette Students
 par(mar = c(0,0,0,0))
@@ -487,18 +484,17 @@ text(X, Y+above*(R+0.01), college, pos=2+above, cex=1.1, font = 2)
 
 <span style="color:red"> ***Cluster Sampling*** </span>
 
-- For **cluster sampling**, divide the population into clusters, then randomly select some of those clusters, and then choose **all** the members from those selected clusters.
-- **Homogeneous between clusters; Non-homogeneous within clusters** (@fig-cluster)
+For **cluster sampling**, divide the population into clusters, then randomly select some of those clusters, and then keep *all* the members from those selected clusters. Cluster sampling has a property: *Homogeneous between clusters; Non-homogeneous within clusters* (@fig-cluster). Clusters look similar each other, but members in a cluster are not very alike. They have different characteristics.
 
-```{r, echo=FALSE, out.width="55%", fig.align='center'}
+```{r}
 #| label: fig-cluster
-#| fig-cap: Cluster Sampling
+#| fig-cap: "Cluster Sampling Source: https://research-methodology.net/sampling-in-primary-data-collection/cluster-sampling/"
 knitr::include_graphics("./images/img-intro/cluster_sampling.png")
 ```
 
-- **Example**: Study 4720 students' drinking habits by dividing the students into 9 groups, and then randomly selecting 3 and interviewing all of the students in each of those clusters (@fig-cluster-marquette).
+- **Example**: Study 4720 students' drinking habits by dividing the students into 9 groups, and then randomly selecting 3 and interviewing all of the students in each of those clusters (@fig-cluster-marquette). Subjects are homogeneous between clusters because clusters are like random partitions, and each one is a representative subset of the entire population. Subjects are non-homogeneous within clusters because everyone has their own characteristics, and subjects are not divided based on any characteristic such as major or college.
 
-```{r, echo=FALSE, out.width="62%", fig.align='center'}
+```{r}
 #| label: fig-cluster-marquette
 #| fig-cap: Cluster sampling of Marquette students
 par(mar = c(0,0,0,0))
@@ -570,7 +566,10 @@ text(X, Y+above*(R+0.01), class_name,
 
 ## Data Type 
 
-```{r data_type, echo=FALSE, out.width="90%", fig.align='center'}
+OK. We learn data collection and sampling methods. Now's let's learn some data types. Usually a statistical method is only for some type of data or variables. Knowing data types is important because it helps us choose the correct or appropriate statistical methods for analysis. It also helps us interprets the analysis result correctly.  @fig-data-type tells us everything about data type. We are going to learn each data type in the figure.
+
+
+```{r}
 #| label: fig-data-type
 #| fig-cap: Types of Data
 par(mar = c(0,0,0,0))
@@ -627,36 +626,55 @@ arrows(1.07, 0.5, 1.15, 0.64, length = 0.08)
 
 <span style="color:blue"> **Categorical vs. Numerical Variables** </span>
 
-- A **categorical** variable provides *non-numerical* information which can be placed in **one (and only one)** category from two or more categories.
+A **categorical** variable provides *non-numerical* information which can be placed in *one (and only one)* category from two or more categories. Here are some examples.
+
   + <span style="color:blue">Gender (Male  `r emoji('man')`, Female  `r emoji('woman')`,  Trans  `r emoji('rainbow_flag')`) </span> 
   + <span style="color:blue">Class (Freshman, Sophomore, Junior, Senior, Graduate) </span>
   + <span style="color:blue">Country (USA `r emoji('us')`, Canada `r emoji('canada')`, UK `r emoji('uk')`, Germany `r emoji('de')`, Japan `r emoji('jp')`, Korea `r emoji('kr')`) </span> 
-- A **numerical** variable is recorded in a *numerical* value representing counts or measurements.
+  
+Gender, Class, and Country are all categorical variables because they provide *non-numerical* information. Their possible "values" are "categories". Keep in mind that a data object can only belong to one category of that variable. You cannot be a freshman and sophomore.
+  
+  
+A **numerical** variable is recorded in a *numerical* value representing counts or measurements. Some examples are
+
   + <span style="color:blue"> GPA </span> 
   + <span style="color:blue"> The number of relationships you've had </span>
   + <span style="color:blue"> Height </span> 
   
+The possible values of the three variables are all numerical or numbers. You are a 6'2" tall student who had eight girlfriends and your GPA is 3.98.
+
+
+  
 <span style="color:red"> ***Numerical Variables*** </span>
 
-- Numerical variables can be discrete or continuous.
-- A **discrete** variable takes on values of a **finite** or **countable** number.
-- A **continuous** variable takes on values **anywhere** over a particular range *without gaps or jumps*.
-  + <span style="color:blue"> GPA is **continuous** because it can be any value between 0 and 4. </span> 
-  + <span style="color:blue"> The number of relationships you've had is **discrete** because you can count the number and it is finite.</span>
+Numerical variables can be discrete or continuous. A **discrete** variable takes on values of a *finite* or *countable* number, while a **continuous** variable takes on values *anywhere* over a particular range *without gaps or jumps*.
+
+
+  + <span style="color:blue"> GPA is **continuous** because theoretically it can be any value between 0 and 4. </span> 
+  
+  + <span style="color:blue"> The number of relationships you've had is **discrete** because you can count the number and it is finite.</span> The possible values are 0, 1, 2, 3, and so on. Can you have a 0.5 relationship?
+  
   + <span style="color:blue"> Height is **continuous** because it can be any number within a range. </span> 
 
 
 <span style="color:red"> ***Categorical Variables*** </span> 
 
-- Categorical variables are usually recorded as numbers.
+For convenience, categorical variables are usually recorded as numbers in a data set. For example, we can have
+
 - <span style="color:blue">Gender (Male = 0, Female = 1, Trans = 2) </span>
+
 - <span style="color:blue">Class (Freshman = 1, Sophomore = 2, Junior = 3, Senior = 4, Graduate = 5) </span> 
+
 - <span style="color:blue">Country (USA = 100, Canada = 101, UK = 200, Germany = 201, Japan = 300, Korea = 301) </span> 
-- <span style="color:blue">United Airlines boarding groups</span> 
-- **The numbers represent categories only; differences between them are meaningless.**
-    * Canada - USA = 101 - 100 = 1?
-    * Graduate - Sophomore = 5 - 2 = 3 = Junior?
-- We need to learn the **level of measurements** to know which arithmetic operations are meaningful.
+
+Even <span style="color:blue">United Airlines boarding group</span> is categorical. The group number does provide *non-numerical* information, which is the order of boarding. You cannot be in both boarding zone one and zone two for the same ticket. You can only be in one group.
+
+Please note that *the numbers represent categories only; taking differences of these numbers is meaningless.* If we use the coding scheme in the examples, 
+
+  - Canada - USA = 101 - 100 = 1???
+  - Graduate - Sophomore = 5 - 2 = 3 = Junior???
+  
+The arithmetic operations do not make sense. For any data or variables, we need to learn the **level of measurements** to know which arithmetic operations are meaningful for what type of data.
 
 ------------------------------------------------------------------------
 
@@ -664,28 +682,39 @@ arrows(1.07, 0.5, 1.15, 0.64, length = 0.08)
 
 <span style="color:red"> ***Nominal and Ordinal for Categorical Variables*** </span>
 
-- **Nominal**: The data can *NOT be ordered* in a meaningful or natural way.
-  + <span style="color:blue">Gender (Male = 0, Female = 1, Trans = 2) </span> is **nominal** because Male, Female and Trans cannot be ordered.
-  + <span style="color:blue">Country (USA = 100, Canada = 101, UK = 200, Germany = 201, Japan = 300, Korea = 301) </span> is **nominal**.
+A categorical variable can be of nominal or ordinal level of measurement.
 
-- **Ordinal**: The data can be arranged in some meaningful order, but differences between data values can NOT be determined or are meaningless.
-  + <span style="color:blue">Class (Freshman = 1, Sophomore = 2, Junior = 3, Senior = 4, Graduate = 5) </span> is **ordinal** because Sophomore is one class higher than Freshman.
+The data is **nominal** if can *not be ordered* in a meaningful or natural way. For example,
 
+  + <span style="color:blue">Gender (Male = 0, Female = 1, Trans = 2) </span> is **nominal** because Male, Female and Trans cannot be ordered, even the numbering coding has an ordering.
+  
+  + <span style="color:blue">Country (USA = 100, Canada = 101, UK = 200, Germany = 201, Japan = 300, Korea = 301) </span> is **nominal**. There is no reason to put any country before any other country unless there is another variable giving those countries another attribute that can be ordered.
+
+
+**Ordinal** data can be arranged in some meaningful order, but differences between data values can NOT be determined or are meaningless.
+
+  + <span style="color:blue">Class (Freshman = 1, Sophomore = 2, Junior = 3, Senior = 4, Graduate = 5) </span> is **ordinal** because Sophomore is one class higher than Freshman, and so on. Here the difference is still meaningless. It seems that Junior is one year higher than Sophomore, and Junior - Sophomore = 1 kind of makes sense. However, "1" does not mean one year higher; instead "1" means Freshman. Moreover, we could even use the numbering (Freshman = 1, Sophomore = 10, Junior = 33, Senior = 44, Graduate = 50) for the Class variable.
 
 <span style="color:red"> ***Interval and Ratio for Numerical Variables*** </span>
 
-- **Interval**: The data have meaningful differences between any two values but the data do NOT have a **natural zero or starting point**. The data can do $\color{red} +$ and $\color{red} -$, but can't reasonably do $\color{red} \times$ and $\color{red} \div$. 
-  + <span style="color:blue">Temperature</span> is **interval** because $80^{\circ}$F is 40 degrees higher than $40^{\circ}$F $(80-40=40)$, but $0^{\circ}$ does not mean NO heat and $80^{\circ}$F is NOT twice as hot as $40^{\circ}$F.
-- **Ratio**: The data have both meaningful differences and ratios, and there is a natural zero starting point that indicates none of the quantity. The data can do $\color{red} +$, $\color{red} -$,  $\color{red} \times$ and $\color{red} \div$.
-  + <span style="color:blue">Distance</span> is **ratio** because $80$ miles is twice as far as $40$ miles $(80/40 = 2)$, and $0$ mile means no distance.
+Numerical data can be interval or ratio level of measurement.
+
+**Interval** data have meaningful differences between any two values but the data do NOT have a *natural zero or starting point*. The data can do $\color{red} +$ and $\color{red} -$, but can't reasonably do $\color{red} \times$ and $\color{red} \div$.
+
+  + <span style="color:blue">Temperature</span> is **interval** because $80^{\circ}$F is 40 degrees higher than $40^{\circ}$F $(80-40=40)$, but $0^{\circ}$ does not mean NO heat or NO temperature, but a specific temperature. Also, $80^{\circ}$F is NOT twice as hot as $40^{\circ}$F.
+  
+  
+**Ratio** data have both meaningful differences and ratios, and there is a natural zero starting point that indicates none of the quantity. The data can do $\color{red} +$, $\color{red} -$,  $\color{red} \times$ and $\color{red} \div$.
+
+  + <span style="color:blue">Distance</span> is **ratio** level of measurement because $80$ miles is twice as far as $40$ miles $(80/40 = 2)$, and $0$ mile means NO distance.
 
 ------------------------------------------------------------------------
 
 <span style="color:blue"> **Converting Numerical to Categorical** </span>
 
-- You've already seen an example of this with the class grading scale (@fig-grading).
+Sometimes research purpose we may want to convert a numerical variable into a categorical variable. @fig-grading is an example of turning a 100% percentage grade into a letter grade which is categorical. Another is example is turning annual salary (numerical) into income level (categorical). We can say salary between \$0 and \$50,000 is "low" income level, salary between \$50,000 and \$120,000 is "middle" income level, and above \$120,000 is "high" income level.
 
-```{r, echo=FALSE, fig.align='center'}
+```{r}
 #| label: fig-grading
 #| fig-cap: Grading scale for this class
 letter <- c("A", "A-", "B+", "B", "B-", "C+", "C", "C-",
@@ -706,9 +735,9 @@ knitr::kable(grade_dist, longtable = TRUE, format = "html", align = 'l') %>% kab
 Identify the data type of each variable in the Marquette men's basketball player data
 :::
 
-```{r, echo=FALSE, out.width="70%",fig.align='center'}
+```{r}
 #| label: fig-marquette-basketball
-#| fig-cap: 2019 Marquette men's basketball player data set
+#| fig-cap: 2019 Marquette men's basketball player data set.
 knitr::include_graphics("./images/img-intro/mu_data.png")
 ```
 

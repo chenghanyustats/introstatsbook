@@ -32,12 +32,15 @@ suppressWarnings(suppressPackageStartupMessages({
     library(openintro)
     library(knitr)
     library(emoji)
-    library(ggplot2)
     library(tidyverse)
     library(broom)
     library(rminer)
     library(sets)
-    library(parsnip)
+    library(tidyverse)
+    library(ggVennDiagram)
+    library(plotrix)
+    library(diagram)
+    library(kableExtra)
 }))
 
 
