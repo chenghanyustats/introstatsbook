@@ -1,75 +1,25 @@
 # Data Visualization {#sec-data-graphics}
 
-```{r packages, echo=FALSE, message=FALSE, warning=FALSE, purl=FALSE}
-library(tidyverse)
-library(fontawesome)
-library(fields)
-library(microbenchmark)
-library(openintro)
-library(emoji)
-library(kableExtra)
-``` 
-
-
-<span style="color:blue"> **Descriptive Statistics** </span>
-
-- Before doing inferential statistics, let's first learn to understand our data by describing or summarizing it.
-- This can be done using **frequency tables**, **graphics** or **numerical measures** so that appropriate methods can be performed for better inference results.
-
-
-```{r data_type, echo=FALSE, out.width="70%", purl=FALSE, fig.align='center'}
-#| label: fig-statistics-types
-#| fig-cap: Branches of statistics
-par(mar = c(0,0,0,0))
-plot(c(-0.15, 1.15), c(0, 0.9), type = 'n', axes = FALSE)
-
-text(0.6, 0.85, 'Statistics', font = 2, cex = 1.2)
-rect(xleft = 0.4, ybottom = 0.8, xright = 0.8, ytop = 0.9)
-
-text(0.25, 0.55, 'Descriptive Statistics', font = 2, cex = 1.2, col = "red")
-rect(-0.05, 0.5, 0.55, 0.6)
-arrows(x0 = 0.45, y0 = 0.78, x1 = 0.34, y1 = 0.62, length = 0.08)
-
-text(0.9, 0.55, 'Inferential Statistics', font = 2, cex = 1.2, col = "red")
-rect(0.6, 0.5, 1.2, 0.6)
-arrows(0.76, 0.78, 0.85, 0.62, length = 0.08)
-
-
-text(-0.1, 0.23, 'Frequency', font = 2, col = "blue")
-text(-0.1, 0.17, 'Table', font = 2, col = "blue")
-# rect(-0.15, 0.15, -0.05, 0.25)
-arrows(0.1, 0.5, -0.05, 0.25, length = 0.08)
-# 
-text(0.2, 0.2, 'Graphics', font = 2, col = "blue")
-# rect(0.11, 0.15, 0.29, 0.25)
-arrows(0.2, 0.5, .2, 0.25, length = 0.08)
-
-text(0.45, 0.23, 'Numerical', font = 2, col = "blue")
-text(0.45, 0.17, 'Measures', font = 2, col = "blue")
-# rect(0.31, 0.15, 0.49, 0.25)
-arrows(0.35, 0.5, .45, 0.25, length = 0.08)
-
-# 
-text(0.7, 0.2, 'Estimation', font = 2, col = "blue")
-# rect(0.6, 0.15, 0.8, 0.25)
-arrows(0.75, 0.5, 0.7, 0.25, length = 0.08)
-
-text(1, 0.23, 'Hypothesis', font = 2, col = "blue")
-text(1, 0.17, 'Testing', font = 2, col = "blue")
-# rect(0.88, 0.15, 1.12, 0.25)
-arrows(0.9, 0.5, 1, 0.26, length = 0.08)
-
-
-
-text(1.1, 0.75, 'Probability', font = 2, col = "green4")
-# rect(0.9, 0.7, 1.3, 0.8)
-arrows(1.05, 0.73, 0.9, 0.61, length = 0.08)
+```{r}
+#| echo: false
+source("./_common.R")
 ```
+
+In this chapter, we talk about how to visualize our data using R. We use basic statistical graphics for displaying categorical and numerical data, and showing their frequency distribution graphically. There are various visualization and chart types out there, and data visualization itself could be an one-semester course. [^1] Please google for more online resources.
+
+[^1]: Some references includes <https://r-graph-gallery.com/ggplot2-package.html/> and <https://rkabacoff.github.io/datavis//>. 
+
+
+The most popular R package for graphics is [`ggplot2`](https://ggplot2.tidyverse.org/) that is one of the packages in the [`tidyverse`](https://www.tidyverse.org/) ecosystem. This book does not use `tidyverse` syntax, and use the default `base` R syntax to do all the statistical computations including graphics. While `tidyverse` is getting popular, and has become the default way of doing data science, the Base R methods still have some advantages, and worth learning for R beginners.  [^2]
+
+[^2]: <https://github.com/matloff/TidyverseSkeptic/>
+
+
+
 
 ## Frequency Table for Categorical Variable
 
-- A **frequency table (frequency distribution)** lists variable values individually for categorical data along with their corresponding number of times occurred in the data (**frequencies** or **counts**).
-- Below is an example of a frequency table for categorical data with $n$ being the total number of data values.
+For a categorical variable data, we usually summarize its information in terms of a **frequency table (frequency distribution)**[^3] that lists its variable "values" (categories) individually along with their corresponding number of times occurred in the data (**frequencies** or **counts**). Below is a general format of a frequency table for categorical data with $n$ being the total number of data values. It is also called **one-way count table** where one-way refers to one categorical variable being considered in the table. In the table, the variable has $k$ categories, $C_1, \dots, C_k$, and $C_i$ occurs $f_i$ times in the data, $i = 1, \dots, k$. Relative frequency on the right is the proportion of the number of times a category occurs to the total number of data values. Relative frequency is closely related to the idea of probability that is discussed in @sec-prob-define.
 
 | Category name | Frequency     | Relative Frequency |
 |:-------------:|:-------------:|:------------------:|
@@ -79,7 +29,11 @@ arrows(1.05, 0.73, 0.9, 0.61, length = 0.08)
 | $C_k$         | $f_k$         | $f_k/n$ |
 
 
-- Here is another example of a categorical variable **color** that has three categories.
+[^3]: Although they are exchangeable, for categorical data, I tend to call it frequency table, and I prefer using frequency distribution for numerical data.
+
+We can also make a frequency table with Category and Frequency shown in rows as long as every category and its corresponding counts are correctly shown in the table.
+
+Below is an concrete example of a categorical variable **color** that has three categories.
 
 | Category name | Frequency     | Relative Frequency |
 |:-------------:|:-------------:|:------------------:|
@@ -87,39 +41,46 @@ arrows(1.05, 0.73, 0.9, 0.61, length = 0.08)
 |  Blue  `r emoji('blue_circle')`       | 26            | 26/50 = 0.52   |
 |  Black  `r emoji('black_circle')`      | 16            | 16/50 = 0.32   |
 
+The relative frequency of "red" tells us that color red appears 16% of the time in the data that has totally $8+26+16 = 50$ objects.
+
 
 <span style="color:blue"> **Categorical Frequency Table in R** </span>
-
-`loan50`
  
-- Below is the `loan50` data set from the openintro package in R.
+Below is the `loan50` data set from the `openintro` package in R. The data set has 50 subjects with 18 variables. We construct a categorical frequency table using the variable `homeownership`.
 
-```{r loan50, highlight.output = c(1, 5)}
+```{r}
+#| echo: true
+
 # install.packages("openintro")
 library(openintro)
 str(loan50)
 ```
 
-<br>
 
-`homeownership`
-
-- The values as well as the frequency table for the variable `homeownership` from the `loan50` data set are shown below.
+Note that a categorical variable in R is of either type factor or character. `homeownership` is of type factor that has three categories "rent", "mortgage" and "own". In the code I create another object `x` that stores `homeownership` data.
 
 ```{r}
-# 50 values (rent, mortgage, own) of categorical homeownership in loan50 data
+#| echo: true
 (x <- loan50$homeownership)
+```
+
+We can simply use the function `table()` to create the frequency table for the variable `homeownership`.
+
+```{r}
+#| echo: true
 ## frequency table
 table(x)
 ```
-
-<br>
 
 :::{.callout-note icon=false}
 ## If we want to create a frequency table shown in definition, which R data structure we can use?
 :::
 
+The frequency table can be constructed as R matrix. The relative frequency is computed using the count vector `freq` divided by the total number of observations, which is sum of counts of each category. Finally we can combine the frequency and relative frequency together by columns using `cbind()`.
+
+
 ```{r}
+#| echo: true
 freq <- table(x)
 rel_freq <- freq / sum(freq)
 cbind(freq, rel_freq)
@@ -131,18 +92,20 @@ cbind(freq, rel_freq)
 
 <span style="color:red"> ***Bar Chart*** </span>
 
-- Below is a bar chart that visualizes the `homeownership` frequency table.
+To visualizing the categorical data, we usually turn its frequency table into a plot. Such plot is called the **bar chart**. Each bar stands for one category of the variable, and the height of the bar indicates the frequency. Below is a bar chart that visualizes the `homeownership` frequency table. In R, we use the function `barplot()` to make a bar chart. In the first argument `height`, remember to put the frequency table of our data vector, not the data vector itself. As the basic plotting, we can add the title using `main` argument, and $x$ label using `xlab`.
 
-```{r, echo=-1}
+```{r}
+#| echo: !expr -c(1)
 par(mar = c(4, 4, 2, 1))
 barplot(height = table(x), main = "Bar Chart", xlab = "Homeownership")
 ```
 
 <span style="color:red"> ***Pie Chart*** </span>
 
-- The `homeownership` frequency table can also be visualized using a pie chart.
+The `homeownership` frequency table can also be visualized using a **pie chart**, especially when we want to see the proportion or distribution of the count of category. In R, simply use `pie()` function with the frequency table as the argument.
 
 ```{r, echo=2}
+#| echo: !expr -c(1)
 par(mar = c(0, 0, 1, 0))
 pie(x = table(x), main = "Pie Chart")
 ```
@@ -150,10 +113,25 @@ pie(x = table(x), main = "Pie Chart")
 
 ## Frequency Distribution for Numerical Variables
 
-- To create a frequency distribution for numerical variables, one must
-  - Divide the data into $k$ **non-overlapping groups of intervals** (**classes**).
-  - Convert the data into $k$ categories with an associated **class interval**.
-  - Count the number of measurements falling in a given class interval (**class frequency**).
+It is not that straightforward as categorical data when we create a frequency distribution for a numerical variable. Categorical variables have natural separated or non-overlapping categories that we can count the number for, but numerical variables don't have such natural divisions. We may have the numerical data so that every data value is shown just once, like $(2.3, 4.5, 4.6, 4.8, 2.8, 5.9)$, and summarizing the data like
+
+```{r}
+table(c(2.3, 4.5, 4.6, 4.8, 2.8, 5.9))
+```
+
+does not make sense because it does not give us how the data are generally distributed.
+
+In order to create a more meaningful frequency table of numerical data, we first need to divide the data into several groups. Therefore, we are able to see which groups contain more data values than others, and understand the general pattern of the distribution of data.
+
+We sort of convert numerical data into categorical one. The procedure is as follows.
+
+  - Decide the number of *non-overlapping groups of intervals* $k$, or **classes** for dividing the data. The non-overlapping property makes sure that one value belongs one and only one class, like categorical data.
+  
+  - Convert the data into $k$ categories with an associated **class interval**. We need to know the upper and lower limit of each interval, so that we know which interval or class a data value belongs to.
+  
+  - Count the number of measurements falling in a given class interval (**class frequency**). After this we know the number of data points falling in each class interval, and this gives us the frequency distribution for a numerical variable.
+  
+The general format of the frequency distribution of numerical data is shown below.
 
 | Class       | Class Interval  | Frequency     | Relative Frequency |
 |:-----------:|:---------------:|:-------------:|:------------------:|
@@ -162,18 +140,20 @@ pie(x = table(x), main = "Pie Chart")
 | ...         |    ...          | ...            | ...     |
 | $k$         | $(a_k, a_{k+1}]$| $f_k$          | $f_k/n$ |
 
-- $(a_2 - a_1) = (a_3 - a_2) = \cdots = (a_{k+1} - a_k)$. **All class widths are the same**!
+Note that the interval $[a_1, a_2]$ includes $a_2$, but $(a_2, a_3]$ does not. So if there is a data point having value $a_2$, it is in Class 2, not Class 1. Same logic for other intervals. Such open and closed intervals guarantees the non-overlapping property. 
+
+Notice that *all class widths are the same*! That is, $(a_2 - a_1) = (a_3 - a_2) = \cdots = (a_{k+1} - a_k)$. It is not allowed to have some classes have a larger range of numbers, and some have a smaller range.
 
 :::{.callout-note icon=false}
 ## Can our grade conversion be used for creating a frequency distribution?
-
-- No, because the class widths are not all the same as seen in @fig-grading-scale.
+No, because the class widths are not all the same as seen in @fig-grading-scale.
 :::
 
 
-```{r, echo=FALSE, fig.align='center', out.height="100%", purl=FALSE}
+```{r}
 #| label: fig-grading-scale
 #| fig-cap: Grading scale for this class
+#| out-width: 40%
 letter <- c("A", "A-", "B+", "B", "B-", "C+", "C", "C-",
                        "D+", "D", "F")
 percentage <- c("[94, 100]", "[90, 94)", "[87, 90)", "[83, 87)", "[80, 83)",
@@ -181,30 +161,51 @@ percentage <- c("[94, 100]", "[90, 94)", "[87, 90)", "[83, 87)", "[80, 83)",
                 "[65, 70)", "[60, 65)", "[0, 60)")
 grade_dist <- data.frame(Grade = letter, Percentage = percentage)
 library(kableExtra)
-knitr::kable(grade_dist, longtable = TRUE, format = "html", align = 'l') %>% kable_styling(position = "center", font_size = 28)
+knitr::kable(grade_dist, longtable = TRUE, format = "html", align = 'l') %>% kable_styling(position = "center", font_size = 18)
 ```
 
 -------------------------------------------------------------------
 
-<span style="color:blue"> **Interest Rate Data** `loan50` **[OI]** </span>
+<span style="color:blue"> **Interest Rate Data** </span>
 
-- Below is data for the `interest rate` variable in the `loan 50` data set.
+We use `interest rate` variable in the `loan 50` data set for demonstrating frequency distribution and graphics for numerical data.
+
+::::{.columns}
+:::{.column width="78%"}
+```{r}
+#| echo: true
+int_rate <- round(loan50$interest_rate, 1)
+int_rate
+```
+:::
+
+:::{.column width="2%"}
+
+:::
+
+:::{.column width="20%"}
+
+<br>
 
 ```{r}
-(int_rate <- round(loan50$interest_rate, 1))
-```
-
-
-```{r, echo=FALSE, out.width="50%", purl=FALSE, fig.align='center'}
+#| fig-cap: "Source: Unsplash-Markus Spiske"
 knitr::include_graphics("./images/img-data/int_rate.jpeg")
 ```
-
+:::
+::::
 
 <span style="color:red"> ***Frequency Distribution of Interest Rate*** </span>
 
-::::{.columns}
-:::{.column width="50%"}
-```{r, echo=FALSE, purl=FALSE}
+
+<!-- ::::{.columns} -->
+<!-- :::{.column width="50%"} -->
+
+A frequency distribution of the interest rate data is created using R and shown below.
+
+::: {.panel-tabset}
+
+## Frequency Distribution
+```{r}
 k <- 9
 class_width <- 2.5
 lower_limit <- 5
@@ -223,21 +224,51 @@ freq_dist <- data.frame("Class" = as.character(1:k),
                         "Rel_Freq" = round(freq_info$counts / length(int_rate), 2))
 print(freq_dist, row.names = FALSE)
 ```
-
+## Code
 ```{r}
-range(int_rate)
+#| echo: true
+#| eval: false
+k <- 9
+class_width <- 2.5
+lower_limit <- 5
+
+class_boundary <- lower_limit + 0:k * class_width
+class_int <- paste(paste0(class_boundary[1:k], "%"),
+                   paste0(class_boundary[2:(k+1)], "%"), 
+                   sep = "-")
+
+freq_info <- hist(int_rate, 
+                  breaks = class_boundary, 
+                  plot = FALSE)
+freq_dist <- data.frame(
+  "Class" = as.character(1:k), 
+  "Class_Intvl" = class_int, 
+  "Freq" = freq_info$counts, 
+  "Rel_Freq" = round(freq_info$counts / length(int_rate), 2))
+print(freq_dist, row.names = FALSE)
 ```
 :::
 
-:::{.column width="50%"}
-- All class widths are the same (2.5%)!
-- The number of classes should not be too big or too small.
-- The *lower* limit of the 1st class **should not be greater** than the *minimum* value of the data.
-  - The lower limit of the 1st class is 5%, which is less than the minimum value of 5.3%.
-- The *upper* limit of the last class **should not be smaller** than the *maximum* value of the data.
-  - The upper limit of the last class is 27.5%, which is greater than the maximum value of 26.3%.
-:::
-::::
+<!-- ::: -->
+
+<!-- :::{.column width="50%"} -->
+
+First, all class widths are the same with the length 2.5\%. Here, the number of classes $k = 9$. $k$ should not be too big or too small, and choosing $k$ is subjective and depends on the research need. Too big $k$ put too many different values together in the same class, and some important features may be masked. On the other hand, when $k$ is too small, there may be many classes having one or few data points only, and general pattern of data becomes unclear. A simple rule is to choose $k$ between 5 and 30, then tune the value a little bit to get the best presentation result. Or the number of classes $k$ can be calculated from a suggested class width $\approx \frac{\text{max} - \text{min}}{k}$.
+
+
+```{r}
+#| echo: true
+# min and max value
+range(int_rate)
+```
+
+The *lower* limit of the 1st class *should not be greater* than the *minimum* value of the data. Otherwise we are gonna miss some data values because the values are out of the any intervals, and the counts are incorrect. The lower limit of the 1st class is 5%, which is less than the minimum value of 5.3%. The *upper* limit of the last class *should not be smaller* than the *maximum* value of the data. The upper limit of the last class is 27.5%, which is greater than the maximum value of 26.3%. The idea is the class intervals should cover all the data values, so that when we classify or count them, we don't miss any value in the table.
+  
+  
+
+
+<!-- ::: -->
+<!-- :::: -->
 
 
 :::{.callout-note icon=false}
@@ -249,49 +280,64 @@ R decides the number of classes for us when we visualize the frequency distribut
 
 <span style="color:blue"> **Visualizing Frequency Distribution by a Histogram** </span>
 
-::::{.columns}
-:::{.column width="49%"}
+<!-- ::::{.columns} -->
+<!-- :::{.column width="49%"} -->
 
-<center>
-**Use default breaks (no need to specify)**
-</center>
 
-```{r freq_hist, tidy=FALSE, echo=-1, out.width="90%"}
-par(mar = c(4, 4, 2, 1))
+To visualize a frequency distribution of numerical data, we use a **histogram**. Each bar or column in the plot stands for one class or **bin** in the frequency distribution, and the height shows the frequency of a column. Unlike bar charts, all the bins in the histogram are connected each other with no gaps.
+
+In R, we use the command `hist()` to make a histogram. The only required argument is `x` at which we put our data. If we don't specify how the data are divided into classes, R does it for us. The histogram below is the histogram of the interest rate data using the default **class breaks**, the boundary values separating class intervals.
+
+<!-- The breaks or number of classes R chooses for us may or may not satisfy us. nclass.Sturges(x) nclass.scott(x) nclass.FD(x) -->
+
+<!-- <center> -->
+<!-- **Use default breaks (no need to specify)** -->
+<!-- </center> -->
+
+```{r}
 hist(x = int_rate, 
      xlab = "Interest Rate (%)",
      main = "Hist. of Int. Rate (Defualt)")
 ```
-:::
+<!-- ::: -->
 
-:::{.column width="2%"}
-:::
+<!-- :::{.column width="2%"} -->
+<!-- ::: -->
 
-:::{.column width="49%"}
+<!-- :::{.column width="49%"} -->
 
-<center>
-**Use customized breaks**
-</center>
+<!-- <center> -->
+<!-- **Use customized breaks** -->
+<!-- </center> -->
 
-```{r out.width="90%"}
+
+If we don't like the default one, we can specify customized breaks in the argument `breaks`. The `class_boundary` object saves the class boundaries used in the previous frequency distribution. The histogram corresponding the frequency distribution is shown below. Note that when our customized breaks are used, we can see the count in the 7.5%-10% interval is more than the count in the 5%-7.5% interval. This information cannot be obtained when the default breaks are used.
+
+
+```{r}
+#| echo: true
 class_boundary
 hist(x = int_rate, 
      breaks = class_boundary, #<<
      xlab = "Interest Rate (%)",
      main = "Hist. of Int. Rate (Ours)")
 ```
-:::
-::::
+<!-- ::: -->
+<!-- :::: -->
 
+
+Sometimes specifying all the lower and upper limits might be tedious. The argument `breaks` allows a single number too, giving the number of classes $k$ for the histogram, `breaks = 10` for example. Sometimes the histogram won't have the number of classes exactly the same as the number specified in `breaks`. It's just an approximated one.
 
 <span style="color:red"> ***Skewness*** </span>
 
-- Key characteristics of distributions include the **shape**, **center** and **spread**.
-- Skewness provides a way to summarize the shape of a distribution.
+We've learned to plot a frequency distribution. Let's learn to describe it, and see if there is any interesting pattern contained in the data. Some key characteristics of distributions include **shape**, **center** and **dispersion**. **Skewness** provides a way to summarize the shape of a distribution.
 
-```{r skewness, echo=FALSE, out.width="68%", purl=FALSE, fig.align='center'}
+@fig-swewness illustrates skewness of distribution. When the distribution has a long right (left) tail, we say the distribution is skewed to the right (left), or it is right (left)-skewed. A right (left)-skewed distribution is also called positively (negatively) skewed. The distribution is said to be symmetric when the left side of the distribution mirrors the right side without being skewed. If you fold the distribution along the y axis, the right and left parts of the distribution will coincide.
+
+```{r}
 #| label: fig-swewness
 #| fig-cap: Distribution characteristics
+#| out-width: 100%
 normal_data <- rnorm(2000)
 beta_data_right <- rbeta(2000, 2, 5)
 beta_data_left <- rbeta(2000, 5, 2)
@@ -308,7 +354,11 @@ hist(c(normal_data, normal_data_2), main = "Symmetric, bimodal", xlab = "x",
      col = "blue", border = "white", breaks = 20)
 ```
 
-<br>
+<!-- <br> -->
+
+
+Find it hard to memorize the right skewed or left skewed? @fig-skewness-trick provides a good trick to learn the skewness that you will never forget. Just think of your feet. The right (left) skewed distribution resembles toes on right (left) foot. I hope the shape of your feet looks like the feet in the picture!
+
 
 ::::{.columns}
 :::{.column width="50%"}
@@ -317,7 +367,7 @@ hist(c(normal_data, normal_data_2), main = "Symmetric, bimodal", xlab = "x",
 ## Is the interest rate histogram left skewed or right skewed?
 :::
 
-```{r, echo=FALSE, out.width="100%", purl=FALSE}
+```{r}
 #| label: fig-histogram
 #| fig-cap: Interest Rate Histogram
 par(mar = c(4, 4, 2, 1))
@@ -328,9 +378,10 @@ hist(x = int_rate, breaks = class_boundary, xlab = "Interest Rate (%)", las = 1,
 :::
 
 :::{.column width="50%"}
-```{r, echo=FALSE, out.width="70%",fig.align='center', purl=FALSE}
+```{r}
 #| label: fig-skewness-trick
 #| fig-cap: Trick for remembering skewness (Biostatistics for the Biological and Health Sciences p.53)
+#| out-width: 100%
 knitr::include_graphics("./images/img-data/skew.png")
 ```
 :::
@@ -341,14 +392,20 @@ knitr::include_graphics("./images/img-data/skew.png")
 <span style="color:blue"> **Scatterplot for Two Numerical Variables** </span>
 
 <!-- - We'll learn statistical methods for 2 numerical variables in Week 11. -->
-- A **scatterplot** provides a case-by-case view of data for two numerical variables.
-- Below is a scatterplot of Loan Amount vs. Total Income from the `loan 50` data.
 
-```{r, out.width="55%", fig.align='center'}
+A **scatterplot** provides a case-by-case view of data for two numerical variables. $X$ axis represents one variable and $Y$ axis stands for the other. The data value $(x, y)$ pair is plotted as a point in the $X$-$Y$ a Cartesian coordinate plane, where $x$ is the value of one variable, and $y$ is the value of the other for a case. Below is a scatterplot of Loan Amount vs. Total Income from the `loan 50` data.
+
+To create a scatter plot in R, we use the command `plot()` and put the two variables' data in the `x` and `y` arguments. Their length should be identical.
+
+```{r}
 plot(x = loan50$total_income, y = loan50$loan_amount,
      xlab = "Total Income", ylab = "Loan Amount",
      pch = 16, col = 4)
 ```
+
+
+More details about scatterplot and statistical methods for 2 numerical variables are discussed in @sec-model-reg.
+
 
 ## Exercises
 

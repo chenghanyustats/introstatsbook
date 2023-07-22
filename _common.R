@@ -1,7 +1,7 @@
 set.seed(1014)
 
 knitr::opts_chunk$set(
-  comment = "#>",
+  comment = "#",
   collapse = TRUE,
   # cache = TRUE,
   fig.retina = 2,
@@ -24,6 +24,8 @@ options(
   dplyr.print_max = 6
   # warn = -1
 )
+
+par(mar = c(4, 4, 2, 1))
 
 # defaultW <- getOption("warn") 
 # options(warn = defaultW)
