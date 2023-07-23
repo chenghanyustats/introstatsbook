@@ -1,74 +1,84 @@
 # Numerical Measures of Data {#sec-data-numeric}
 
-```{r packages, echo=FALSE, message=FALSE, warning=FALSE, purl=FALSE}
-library(tidyverse)
-library(fontawesome)
-library(fields)
-library(microbenchmark)
-library(openintro)
-library(emoji)
-library(kableExtra)
-``` 
+```{r}
+#| echo: false
+source("./_common.R")
+```
 
+In this chapter, we are going to learn some important numerical measures that summarize or describe the two important properties of our data, the center and variation.
 
 <span style="color:blue"> **Numerical Summaries of Data** </span>
 
-::::{.columns}
-:::{.column width="50%"}
-```{r, echo=FALSE, out.width="100%", purl=FALSE, fig.align='center'}
+
+:::{.callout-note icon=false}
+## If you need to choose one value to describe the entire data or represent the location of the data, what value would you choose?
+:::
+
+```{r}
+#| fig-cap: "Source: Unsplash-Markus Krisetya"
 knitr::include_graphics("./images/img-data/number.jpeg")
 ```
 
-:::{.callout-note icon=false}
-## If you need to choose one value that represents the entire data, what value would you choose?
-:::
-:::
+This is a good and maybe hard question. After all, there are $n$ data values. How can we just use one value to describe the entire data? In reality, people usually use the "middle" point of the data or some **measure of center** to describe it or represent the location of the data. The question is, what does "middle" mean? Here we introduce three commonly used measures of center, arithmetic mean, median, and mode.
 
-:::{.column width="50%"}
-- **Measure of Center**
-  - We typically use the **middle** point. 
-  - What does "middle" mean?
-- **Measure of Variation** 
-  - What values tell us how much variation a variable has?
-:::
-::::
+
+
+
+<!-- ::::{.columns} -->
+<!-- :::{.column width="50%"} -->
+
+<!-- ::: -->
+
+<!-- :::{.column width="50%"} -->
+<!-- - **Measure of Center** -->
+<!--   - We typically use the **middle** point. -->
+<!--   - What does "middle" mean? -->
+<!-- - **Measure of Variation** -->
+<!--   - What values tell us how much variation a variable has? -->
+<!-- ::: -->
+<!-- :::: -->
 
 ## Measures of Center
 
 <span style="color:blue"> **Mean** </span>
 
-- The **(arithmetic) mean or average** is calculated by adding up all of the values and then dividing by the total number of them.
-- The **population mean** is denoted as $\mu$.
-- Let $x_1, x_2, \dots, x_n$ denote the measurements observed in a sample of size $n$. 
-  - The **sample mean** is defined as
+The **(arithmetic) mean or average** is calculated by adding up all of the values and then dividing by the total number of them. Let $x_1, x_2, \dots, x_n$ denote the measurements observed in a sample data of size $n$. The **sample mean** is defined as
 
-<center>  
+<!-- - The **population mean** is denoted as $\mu$. -->
+<!-- - Let $x_1, x_2, \dots, x_n$ denote the measurements observed in a sample of size $n$. -->
+  <!-- - The **sample mean** is defined as -->
+
+<!-- <center> -->
 $$\overline{x} = \frac{\sum_{i=1}^{n} x_i}{n} = \frac{x_1 + x_2 + \dots + x_n}{n}$$
-</center>
+<!-- </center> -->
 
-- For the interest rate example,
+For the interest rate example, the sample mean interest rate is
 
-<center>
+<!-- <center> -->
 $$\overline{x} = \frac{10.9\% + 9.9\% + \cdots + 6.1\%}{50} = 11.56\%$$
-</center>
+<!-- </center> -->
 
 <span style="color:red"> ***Calculate Mean in R*** </span>
 
-```{r, message=FALSE, warning=FALSE, purl=FALSE, echo=FALSE}
+In R, we simply put the interest rate vector `int_rate` in the function `mean()` to calculate the arithmetic mean. If the data contain missing values, but we still want to compute the arithmetic mean with the missing values removed, we can set the argument `na.rm = TRUE` in the `mean()` function.
+
+
+```{r}
 int_rate <- round(loan50$interest_rate, 1)
 ```
 
 ```{r}
+#| echo: true
 mean(int_rate)
 ```
 
 <span style="color:red"> ***Balancing Point*** </span>
 
-- Think of the mean as the **balancing point** of the distribution.
+Why arithmetic mean can be a measure of center? Intuitively we can think of the mean as the *balancing point* of the distribution. @fig-balance is the distribution of the interest rate. If you imagine that we put all those data points on a see-saw or lever, the sample mean is the balancing point or fulcrum (pivot) that keeps the see-saw (lever) balanced horizontally. 
 
 ::::{.columns}
-:::{.column width="49%"}
-```{r, echo=FALSE, cache=TRUE, out.width="100%", purl=FALSE}
+:::{.column width="69%"}
+```{r}
 #| label: fig-balance
 #| fig-cap: Mean as a balancing point for interest rate example
 par(mar = c(4, 0, 0, 0))
@@ -105,10 +115,13 @@ polygon(M + c(-1, 1, 0) * 1,
 :::{.column width="2%"}
 :::
 
-:::{.column width="49%"}
-```{r, echo=FALSE, out.width="100%", purl=FALSE, fig.align='center'}
+:::{.column width="29%"}
+
+```{r}
+#| fig-cap: "Source: Unsplash-Markus Winkler"
 knitr::include_graphics("./images/img-data/seesaw.jpeg")
 ```
+
 :::
 ::::
 
@@ -116,28 +129,27 @@ knitr::include_graphics("./images/img-data/seesaw.jpeg")
 
 <span style="color:blue"> **Median** </span>
 
-- The **median** is the *middle value* when data values are *sorted*.
-- Half of the values are less than or equal to the median, and the other half are greater than the median. 
-- To find the median, we first sort the values.
-- If $n$ is **odd**, the median is located in the *exact middle* of the ordered values.
+The **median** is the *middle value* when data values are *sorted* (from smallest to largest). In the sorted data, half of the values are less than or equal to the median, and the other half are greater than the median. To find the median, we first sort the values.
+
+- If $n$ is **odd**, the median is located in the *exact middle* of the ordered values. Check the example below.
    + <span style="color:blue"> Data: (0, 2, 10, 14, 8) </span>
    + <span style="color:blue"> Sorted Data: (0, 2, <span style="color:red">8</span>, 10, 14) </span>
-   + <span style="color:blue"> The median is $8$ </span>.
-- If $n$ is **even**, the median is the *average of the two middle numbers*.
+   + <span style="color:blue"> The median is $8$ </span>. There are two numbers on its right and two on its left. It is right on the middle.
+   
+
+- If $n$ is **even**, the median is the *average of the two middle numbers*. Look at the example below.
    + <span style="color:blue"> Data: (0, 2, 10, 14, 8, 12) </span>
    + <span style="color:blue"> Sorted Data: (0, 2, <span style="color:red">8, 10</span>, 12, 14) </span>
-   + <span style="color:blue"> The median is $\frac{8 + 10}{2} = 9$ </span>.
-   
+   + <span style="color:blue"> The median is $\frac{8 + 10}{2} = 9$ </span>. The number 8 or 10 cannot be the median because neither is in the exact middle of the sorted data. Their average value 9 is the middle value because three values are smaller (0, 2, 8) and three larger (10, 12, 14) than the value 9.
+
 
 <span style="color:red"> ***Calculate Median in R*** </span>
 
-- There are two ways to calculate the median in R.
+In R we can obtain the median using the definition as follows. We first sort the data using `sort()`. By default, the `sort()` function sorts a data vector in an increasing order. Set `decreasing = TRUE` in the function if we want the sort to be increasing. When median is calculated, increasing or decreasing order does not matter. The sorted interest rate data is the `sort_rate`. There are 50 data values, and the median is the average of the 25th value and 26th value, which is 9.9%.
 
-```{r median, dependson='mean', tiny=FALSE}
-median(int_rate)  ## Compute the median using command median()
-``` 
 
 ```{r}
+#| echo: true
 ## Compute the median using definition
 (sort_rate <- sort(int_rate))  ## sort data
 length(int_rate)  ## Check sample size is odd or even
@@ -146,85 +158,104 @@ length(int_rate)  ## Check sample size is odd or even
 
 :::{.callout-warning}
 ## Warning
-- Be sure to sort the data first if computing the median using its definition.
-:::
+Be sure to sort the data first if computing the median using the definition. Using un-sorted data leads to a wrong answer! The value below is not the median because 
 
 ```{r}
-(int_rate[25] + int_rate[26]) / 2  ## Using un-sorted data leads to a wrong answer!!
+#| echo: true
+(int_rate[25] + int_rate[26]) / 2
 ```
+:::
+
+A more convenient way of computing the median is using the command `median()` just as we use `mean()` for arithmetic mean. We don't need to sort the data because R does everything for us.
+
+```{r}
+#| echo: true
+
+## Compute the median using command median()
+median(int_rate)
+```
+
 
 ------------------------------------------------------------
 
 <span style="color:blue"> **Mode** </span>
 
-- The **mode** is the value that occurs *most frequently*.
-- For continuous numerical data, it is common for there not to be **any** observations that share the same value.
-- A more practical definition is that a mode is represented by a **prominent peak** in the distribution.
+The **mode** is the value that occurs *most frequently*. For continuous numerical data, it is common for there not to be any observations that share the same value, i.e., every data value happened just once. With the definition, mode works better for categorical data. A more practical definition is a bit less specific that a mode is represented by a **prominent peak** in the distribution.
 
 <span style="color:red"> ***Calculate Mode in R*** </span>
 
-```{r mode, echo = 1:2}
-## Create a frequency table 
+There is a `mode()` function in R, but unfortunately it is not used to compute the mode of data. We can still get the mode using its definition. We can first create a count table of the data, then the data value having the most counts will be our mode. After sorting the frequency table, the number that happens most frequently will be the first element, which is 9.9%. It occurs six times in the data.
+
+
+```{r}
+#| echo: !expr c(1, 2)
+## Create a frequency table
 (table_data <- table(int_rate))
 # sort_table_data <- sort(table_data, decreasing = TRUE)
 # sort_table_data
 # print(paste("The mode is",names(sort_table_data)[1]))
-``` 
+```
 
 
 ```{r}
-## Sort the table to find the mode that occurs most frequently
-## the number that happens most frequently will be the first one
+#| echo: true
+
 sort(table_data, decreasing = TRUE)
 ```
 
 
 ## Comparison of Mean, Median and Mode
-- The mode is applicable for both categorical and numerical data, while the median and mean work for numerical data only.
-- It is also possible to have more than one mode, but there is only one median and one mean.
-- The mean is sensitive to extreme values (outliers). 
-- The median and mode are more **robust** than the mean.
-  - Being more robust means these measures of center are more resistant to the addition of extreme values to the data.
-  - An example in R is shown below:
+The mode is applicable for both categorical and numerical data, while the median and mean work for numerical data only. What is the average of male and female? It is also possible to have more than one mode because two data values, either categorical or numerical, can occurs the same number of times in the data. However, by definition, there can only be one median and one mean.
 
-```{r, tidy = FALSE, echo = -(1:2), highlight.output=1}
-data_extreme <- int_rate; data_extreme[1] <- 90 ## replace the first 3 values with 3 large values 
+The mean is more sensitive to extreme values or outliers. In other words, if the data contain one or few values that are very far away from the rest of the data values, the mean will move towards those extreme values, and therefore be away from the rest of the data too. Thank about the seesaw or lever example. If a data point is at very end of the bar, the pivot must be closer to that point to make lever balanced.
+
+The median and mode are more **robust** than the mean, meaning that these measures of center are more resistant to the addition of extreme values to the data. An example in R is shown below. The `data_extreme` is the interest rate data with the first value replaced with 90.0 which is extremely higher than all other values. The original interest data has the mean 11.56, but the `data_extreme` has the higher mean 13.14. The median and the mode, however, stay the same even though a large value 90.0 is in the data.
+
+```{r}
+#| echo: !expr c(3)
+data_extreme <- int_rate; data_extreme[1] <- 90 ## replace the first 3 values with 3 large values
 ## In the original data, the maximum value is 42.
 data_extreme
 ```
+
 ```{r}
+#| echo: true
 mean(data_extreme)  ## Large mean! Original mean is 11.56
 median(data_extreme)  ## Median does not change!
 names(sort(table(data_extreme), decreasing = TRUE))[1] ## Mode does not change either!
 ```
 
-- Below is a figure that shows the differences in where the mean, median, and mode lie for skewed distributions vs. symmetric distributions.
+Below is a figure that shows the differences in where the mean, median, and mode lie for skewed distributions vs. symmetric distributions. 
 
-```{r, echo=FALSE, results='hide', out.width="100%",fig.align='center', fig.asp=0.4, purl=FALSE}
+- When the frequency distribution is right-skewed, *mean > median > mode*.
+- When the frequency distribution is left-skewed, *mean < median < mode*.
+- When the frequency distribution is symmetric, *mean = median = mode*.
+
+```{r}
 #| label: fig-extreme-data
 #| fig-cap: Comparison of mean, median, and mode for symmetrical vs. skewed distributions
-knitr::include_graphics("./images/img-data/skew_mean_median_mode.png")
-
+#| fig-asp: 0.5
+#| message: false
+#| out-width: 100%
 par(mfrow = c(1, 3), mar = c(0.3, 0, 2, 0))
 p <- seq(0, 1, length = 100)
 a <- 2; b <- 5
 max_d <- max(dbeta(p, a, b))
-plot(p, dbeta(p, a, b), type = 'l', axes = FALSE, xlab = "", ylab = "", lwd = 3, ylim = c(0, max_d + 0.2)) + 
-    title(main = "Right-Skewed") + 
-    abline(v = (a - 1) / (a + b - 2), lty = 1, col = 1) + 
-    abline(v = (a - 1/3) / (a + b - 2/3), lty = 2, col = 2) + 
-    abline(v = a /(a + b), lty = 3, col = 4) + 
-    text(x = (a - 1) / (a + b - 2)*0.7, y = max_d + 0.2, 
-         labels = "Mode", col = 1) + 
-    text(x = (a - 1/3) / (a + b - 2/3), y = max_d+0.08, 
-         labels = "Median", col = 2) + 
-    text(x = a /(a + b)*1.3, y = max_d-0.2, 
-         labels = "Mean", col = 4)
+plot(p, dbeta(p, a, b), type = 'l', axes = FALSE, xlab = "", ylab = "", lwd = 3, ylim = c(0, max_d + 0.2), main = "Right-Skewed")
+abline(v = (a - 1) / (a + b - 2), lty = 1, col = 1)
+abline(v = (a - 1/3) / (a + b - 2/3), lty = 2, col = 2)
+abline(v = a /(a + b), lty = 3, col = 4)
+text(x = (a - 1) / (a + b - 2)*0.7, y = max_d + 0.2,
+     labels = "Mode", col = 1)
+text(x = (a - 1/3) / (a + b - 2/3), y = max_d+0.08,
+     labels = "Median", col = 2)
+text(x = a /(a + b)*1.3, y = max_d-0.2,
+     labels = "Mean", col = 4)
 axis(1, labels = FALSE, tick = TRUE)
 
 x <- seq(-4, 4, length = 1000)
-plot(x, dnorm(x), type = "l", ylim = c(0, 0.45), 
-     main = "Symmetric", axes = FALSE, xlab = "", 
+plot(x, dnorm(x), type = "l", ylim = c(0, 0.45),
+     main = "Symmetric", axes = FALSE, xlab = "",
      ylab = "", lwd = 3)
 abline(v = 0, lty = 2)
 text(1.2, dnorm(0) + 0.02, "Mean = Median = Mode")
@@ -236,25 +267,24 @@ a <- 5; b <- 2
 max_d <- max(dbeta(p, a, b))
 
 plot(p, dbeta(p, a, b), type = 'l', ylim = c(0, max_d + 0.2),
-     axes = FALSE, xlab = "", ylab = "", lwd = 3) + 
-    title(main = "Left-Skewed") + 
-    abline(v = (a - 1) / (a + b - 2), lty = 1, col = 1) + 
-    abline(v = (a - 1/3) / (a + b - 2/3), lty = 2, col = 2) + 
-    abline(v = a /(a + b), lty = 3, col = 4) + 
-    text(x = (a - 1) / (a + b - 2)*1.15, y = max_d + 0.2,
-         labels = "Mode", col = 1) + 
-    text(x = (a - 1/3) / (a + b - 2/3), y = max_d + 0.08, 
-         labels = "Median", col = 2) + 
-    text(x = a /(a + b)*0.85, y = max_d - 0.2, 
-         labels = "Mean", col = 4)
+     axes = FALSE, xlab = "", ylab = "", lwd = 3, main = "Left-Skewed")
+abline(v = (a - 1) / (a + b - 2), lty = 1, col = 1)
+abline(v = (a - 1/3) / (a + b - 2/3), lty = 2, col = 2)
+abline(v = a /(a + b), lty = 3, col = 4)
+text(x = (a - 1) / (a + b - 2)*1.15, y = max_d + 0.2,
+     labels = "Mode", col = 1)
+text(x = (a - 1/3) / (a + b - 2/3), y = max_d + 0.08,
+     labels = "Median", col = 2)
+text(x = a /(a + b)*0.85, y = max_d - 0.2,
+     labels = "Mean", col = 4)
 axis(1, labels = FALSE, tick = TRUE)
 ```
 
 ## Measures of Variation
 
-- Measures of variation, just like measures of center, affect the shape of the distribution (@fig-variation).
+Dispersion, spread or variation is another important property of a distribution. If the measure of center tells us the "location" of the distribution, the measures of variation tells us how much the data values spread out. Measures of variation affect the shape of the distribution (@fig-variation). Here we have three frequency distributions with the same mean, median and mode because their distribution is symmetric. But from top to bottom, the data have small, median and large variation. Basically larger variation means the data values spread out more. When a distribution has large variation, the data values are quite far away from each other and from its mean. Their deviation from the sample mean is large. In this case, using sample mean to represent the entire data set may not be a good idea because data values look very different from it.
 
-```{r variation, echo=FALSE, cache=TRUE, out.width="75%", purl=FALSE, fig.align='center'}
+```{r}
 #| label: fig-variation
 #| fig-cap: Effects of variation on the shape of distributions
 normal_small <- rnorm(5000, 0, 0.1)
@@ -262,37 +292,51 @@ normal_median <- rnorm(5000, 0, 0.5)
 normal_large <- rnorm(5000, 0, 0.9)
 par(mfrow = c(3, 1))
 par(mar = c(1,1,1,1))
-hist(normal_small, xlim = c(-3.6, 3.6), breaks = 20, main = "Small Variation", 
+hist(normal_small, xlim = c(-3.6, 3.6), breaks = 20, main = "Small Variation",
      col = "#003366", border = "white", axes = FALSE, ylab = "", ylim = c(0, 1000))
 abline(v = 0, col = "#FFCC00", lwd = 3)
-hist(normal_median, xlim = c(-3.6, 3.6), breaks = 30, main = "Median Variation", 
+hist(normal_median, xlim = c(-3.6, 3.6), breaks = 30, main = "Median Variation",
      col = "#003366", border = "white", axes = FALSE, ylab = "", ylim = c(0, 1000))
 abline(v = 0, col = "#FFCC00", lwd = 3)
-hist(normal_large, xlim = c(-3.6, 3.6), breaks = 60, main = "Large Variation", 
+hist(normal_large, xlim = c(-3.6, 3.6), breaks = 60, main = "Large Variation",
      col = "#003366", border = "white",axes = FALSE, ylab = "", ylim = c(0, 1000))
 abline(v = 0, col = "#FFCC00", lwd = 3)
 ```
+
+
 
 ------------------------------------------------------------------
 
 <span style="color:blue"> ***p*-th percentile** </span>
 
-::::{.columns}
-:::{.column width="50%"}
-- The **p-th percentile (quantile)** is a data value such that 
+The **p-th percentile (quantile)** is a data value such that
+
   - at most $p\%$ of the values are below it
   - at most $(1-p)\%$ of the values are above it
+  
+::::{.columns}
+
+:::{.column width="70%"}
 
 :::{.callout-note icon=false}
-## There are two data sets with the same mean 20. 
-  + One data set has 99-th percentile = 30, and 1-st percentile = 10. 
-  + The other has 99-th percentile = 40, and 1-st percentile = 0. 
+## There are two data sets with the same mean 20. That is, their frequency distribution is centered at the same value.
+  + Data 1 has 99-th percentile = 30, and 1-st percentile = 10.
+  + Data 2 has 99-th percentile = 40, and 1-st percentile = 0.
   + Which data set has larger variation?
-:::
+  
 :::
 
-:::{.column width="50%"}
-```{r, echo=FALSE, out.width="36%",fig.align='center', purl=FALSE}
+
+@fig-act shows percentiles for ACT math scores. If you want to be in top 10%, i.e., 90th percentile or higher, you must have score at least 28. Back to the question. About 98% of the Data 1 values are in the range from 10 to 30, and Data 2 values are ranging from 0 to 40 98% of the time. Since Data 2 has larger range, its values are more dispersed, and has larger variation than Data 1.
+
+In R we use `quantile(x, prob)` to find any percentile or quantile of the data vector `x` through specifying the probability in the `prob` argument.
+
+
+
+:::
+
+:::{.column width="30%"}
+```{r}
 #| label: fig-act
 #| fig-cap: Percentiles for ACT scores (https://en.wikipedia.org/wiki/ACT_(test))
 knitr::include_graphics("./images/img-data/act_math_percentile.png")
@@ -300,40 +344,51 @@ knitr::include_graphics("./images/img-data/act_math_percentile.png")
 :::
 ::::
 
+
 --------------------------------------------------------------
 
 <span style="color:blue"> **Interquartile Range (IQR)** </span>
 
-- **First Quartile (Q1)**: the <span style="color:red">25-th</span> percentile
-- **Second Quartile (Q2)**: the <span style="color:red">50-th</span> percentile (Median)
-- **Third Quartile (Q3)**: the <span style="color:red">75-th</span> percentile
-- **Interquartile Range (IQR)**: Q3 - Q1
+Previously we use the range of two percentiles to determine the degree of variation of data. With the idea, conventionally we use the interquartile range (IQR) to measure the variation.
 
-::::{.columns}
-:::{.column width="49%"}
-```{r, iqr-1, tidy=FALSE}
-## Use quantile() to find any percentile 
-## through specifying the probability
-quantile(x = int_rate, 
+The **first quartile (Q1)** is the <span style="color:red">25-th</span> percentile of the data. **Second quartile (Q2)** is the <span style="color:red">50-th</span> percentile which in fact is the median of the data. **Third Quartile (Q3)** is the <span style="color:red">75-th</span> percentile of the data. The **interquartile Range (IQR)** is Q3 - Q1.
+
+To find the IQR, in R we can follow its definition, or get it directly using the `IQR()` function.
+
+<!-- ::::{.columns} -->
+<!-- :::{.column width="49%"} -->
+```{r}
+#| echo: true
+
+quantile(x = int_rate,
          probs = c(0.25, 0.5, 0.75))
+
 ## IQR by definition
-quantile(x = int_rate, probs = 0.75) - 
-  quantile(x = int_rate, probs = 0.25) 
+quantile(x = int_rate, probs = 0.75) -
+  quantile(x = int_rate, probs = 0.25)
 ```
-:::
+<!-- ::: -->
 
-:::{.column width="2%"}
-:::
+<!-- :::{.column width="2%"} -->
+<!-- ::: -->
 
-:::{.column width="49%"}
-```{r, iqr-2, tidy=FALSE}
-## IQR()
-IQR(int_rate)  
-## summary() to get the numeric summary
+<!-- :::{.column width="49%"} -->
+```{r}
+#| echo: true
+
+IQR(int_rate)
+```
+<!-- ::: -->
+<!-- :::: -->
+
+A useful way of quickly getting some important numerical measures is to use the `summary()` function.
+
+```{r}
+#| echo: true
 summary(int_rate)
 ```
-:::
-::::
+
+
 
 :::{.callout-note icon=false}
 ## Does a larger IQR means more or less variation?
@@ -343,18 +398,53 @@ summary(int_rate)
 
 <span style="color:blue"> **Variance and Standard Deviation** </span>
 
--  The distance of an observation from its mean, $x_i - \overline{x}$, is its **deviation**.
-- **Sample Variance** is defined as $$ s^2 = \frac{\sum_{i=1}^n(x_i - \overline{x})^2}{n-1} $$
-- **Sample Standard Deviation (SD)** is defined as the square root of the variance.
-$$ s = \sqrt{\frac{\sum_{i=1}^n(x_i - \overline{x})^2}{n-1}} $$
-- The corresponding population variance and SD are denoted as $\sigma^2$ and $\sigma$ respectively.
-- The variance is the average of squared deviation from the sample mean $\overline{x}$ or the **mean squared deviation** from the mean.
-- The standard deviation is the **root mean squared deviation** from the mean. 
-  - It measures, on average, **how far the data spread out around the average**.
+The distance of an observation from its (sample) mean, $x_i - \overline{x}$, is its **deviation**. The **sample Variance** is defined as $$ s^2 = \frac{\sum_{i=1}^n(x_i - \overline{x})^2}{n-1}.$$
+
+The **sample standard deviation (SD)** is the square root of the variance
+$$ s = \sqrt{\frac{\sum_{i=1}^n(x_i - \overline{x})^2}{n-1}}.$$
+<!-- - The corresponding population variance and SD are denoted as $\sigma^2$ and $\sigma$ respectively. -->
+
+(Sample) variance and standard deviation are the most commonly used measures of variation of data. The variance is the average of squared deviation from the sample mean $\overline{x}$ or the **mean squared deviation** from the mean. Look at its formula. $(x_i - \overline{x})$ is the deviation from the mean, and $(x_i - \overline{x})^2$ is the squared deviation. If we take the sum of the squared deviations of all data, and divided by the total number of data points, we get the *mean squared deviation*, just like we get the arithmetic mean $\frac{\sum_{i=1}^nx_i}{n}$. The only difference is that the denominator is $n-1$, not $n.$ The standard deviation is the **root mean squared deviation** from the mean. It measures, on average, *how far the data spread out around the average*.
+
+
+:::{.callout-note}
+The measures of center and variation discussed here including mean and variance are for the *sample data*. So be more precise they are sample mean and sample variance. If the sample is representative of its population, its sample mean and sample variance should be close to its population mean and population variance. In statistics, we usually use the Greek letter $\mu$ to stand for the population mean and $\sigma^2$ for population variance where $$\mu = \frac{\sum_{j=1}^Nx_j}{N}$$ and $$\sigma^2 = \frac{\sum_{j=1}^N(x_j-\mu)^2}{N},$$ where $N$ is the total number of subjects in the population.
+
+Later when we discuss probability, you will learn how we define $\mu$ and $\sigma^2$ using the expected value from a probability distribution (@sec-prob-disc and @sec-prob-cont), which is related to the frequency distribution of data.
+:::
+
+But why divide by $n-1$ instead of $n$? Intuitively the smaller our sample, the less likely we are to *realistically* capture the true magnitude of the variation of the population. Although $\overline{x}$ and $s^2$ measure the location and variation of the data, we hope them to faithfully reflect the center and variation of its population because we are interested in the property of population, not the data. We collect sample to learn the population, not the sample itself. 
+
+Unless our sample size is big, we underestimate the variance that's really there in the population. @fig-pop-sample illustrates this concept. The sample drawn from the population usually has smaller range (maximum - minimum), and leads to smaller variation. To let the sample variance be more consistent with the population variance, we make the estimates of variance and SD a little bigger by dividing by $n-1$ instead of $n$. With this correction, the sample variance is more reliable and useful. 
+
+The numerator of $s^2$ is a sum of squares. In fact a sum of squares has its corresponding degrees of freedom that is actually $n-1$ in the $s^2$ case. The the sum of squares divided by its degrees of freedom is called the mean square. We don't go into the details of sum of squares, degrees of freedom, and their properties, and those topics are usually discussed in advanced probability and statistical inference courses.
+
+<!-- Remember that we also need the sample mean, and it may not be close to the population mean if the sample size is small. -->
+
+```{r}
+#| fig-asp: 0.3
+#| fig-cap: "Population and sample points."
+#| label: fig-pop-sample
+par(mar = c(2, 5, 0, 0))
+library(scales)
+nor_pop <- rnorm(1000)
+nor_sample <- rnorm(30)
+plot(nor_pop, y = jitter(rep(0.5, length(nor_pop))), ylim = c(0.15, 0.55),
+     xlab = "", ylab = "", axes=FALSE, cex = 1, pch = 19,
+     col = alpha("black", 0.2))
+axis(1, at=seq(-4, 4, 2), pos=0.15)
+points(x = nor_sample, y = jitter(rep(0.2, length(nor_sample)), factor = 0.5), 
+       col = alpha("red", 0.3), pch = 19, cex = 1)
+axis(2, at=c(0.5, 0.2), labels = c("population", "sample"), las = 1)
+```
+
 
 <span style="color:red"> ***Compute Variance and SD in R*** </span>
 
+In R, we use `var()` for computing variance and `sd()` for standard deviation.
+
 ```{r}
+#| echo: true
 var(int_rate)
 sqrt(var(int_rate))
 sd(int_rate)
@@ -365,22 +455,29 @@ sd(int_rate)
 
 <span style="color:blue"> **Boxplot** </span>
 
-- When plotting the whiskers for a boxplot,
-  - the minimum is the minimal value that is not a potential outlier.
-  - the maximum is the maximal value that is not a potential outlier.
+**Boxplot** is a good tool for visualizing data variation and general distribution pattern. It is called a box-and-whisker plot because it is made of a box with lines which are called whiskers extending from the box. 
 
-```{r, out.width="80%", echo=FALSE, purl=FALSE}
+Let's look at the box first. We have 3 vertical lines here. The lines from left to right indicate Q1, Q2 or the median, and Q3. So the length of the box shows the IQR. Now let's look at the whiskers. The upper limit of the whisker is the *smaller one of the maximal data value and Q3 + 1.5 IQR*. The lower limit of the whisker on the left is the *larger one of the minimal data value and Q1 - 1.5 IQR*. For any data values that are greater than Q3 + 1.5 IQR or smaller than Q1 - 1.5 IQR, we show them as a point. Basically those points are far from the center of the data, and we could potentially treat them as extreme values or outliers.
+
+
+
+<!-- - When plotting the whiskers for a boxplot, -->
+<!--   - the minimum is the minimal value that is not a potential outlier. -->
+<!--   - the maximum is the maximal value that is not a potential outlier. -->
+
+```{r}
 #| label: fig-boxplot
-#| fig-cap: Example of a boxplot (https://www.leansigmacorporation.com/box-plot-with-minitab/)
+#| out-width: 100%
+#| fig-cap: a boxplot. (https://www.leansigmacorporation.com/box-plot-with-minitab/)
 knitr::include_graphics("./images/img-data/boxplot.png")
 ```
 
 
 <span style="color:red"> ***Interest Rate Boxplot*** </span>
 
-- Below is the boxplot for the interest rate data (@fig-boxplot-interest).
+Below is the boxplot for the interest rate data (@fig-boxplot-interest). You can see that there are two very high interest rates in the data. They are 25% or more. And the median interest rate is just about 10%. And so these two data points are suspected outliers. They are way far from the the median or the most data points.
 
-```{r, echo=FALSE, out.width="75%", cache=TRUE, purl=FALSE, fig.align='center'}
+```{r}
 #| label: fig-boxplot-interest
 #| fig-cap: Boxplot for interest rate example
 par(mar = c(0, 4, 0, 0))
@@ -449,32 +546,47 @@ for (i in 2:nco) {
 
 <span style="color:red"> ***Boxplot in R*** </span>
 
-::::{.columns}
-:::{.column width="49%"}
-```{r boxplot, echo=-c(1, 2), out.width="100%"}
+In R we use `boxplot()` to generate a boxplot. 
+
+<!-- ::::{.columns} -->
+<!-- :::{.column width="49%"} -->
+```{r}
+#| echo: !expr c(3)
 par(mar = c(0,4,0,0))
 par(mfrow = c(1, 1))
-boxplot(int_rate,ylab ="Interest Rate (%)")
+boxplot(int_rate, ylab = "Interest Rate (%)")
 ```
-:::
+<!-- ::: -->
 
-:::{.column width="2%"}
-:::
+<!-- :::{.column width="2%"} -->
+<!-- ::: -->
 
-:::{.column width="49%"}
+<!-- :::{.column width="49%"} -->
 ```{r}
+#| echo: true
 sort(int_rate, decreasing = TRUE)[1:5]
 sort(int_rate)[1:5]
-Q3 <- quantile(int_rate, probs = 0.75, 
+Q3 <- quantile(int_rate, probs = 0.75,
                names = FALSE)
-Q1 <- quantile(int_rate, probs = 0.25, 
+Q1 <- quantile(int_rate, probs = 0.25,
                names = FALSE)
 IQR <- Q3 - Q1
 Q1 - 1.5 * IQR
 Q3 + 1.5 * IQR
 ```
+<!-- ::: -->
+<!-- :::: -->
+
+
+:::{.callout-note}
+The R boxplot is a little different from the one in @fig-boxplot.
+
+- The end of upper whisker is the *largest data value* that is below Q3 + 1.5 IQR if there are some outliers greater than Q3 + 1.5 IQR. The end of lower whisker is the *smallest data value* that is below Q1 - 1.5 IQR if there are some outliers smaller than Q1 - 1.5 IQR.
+
+- Q1 and Q3 used in the boxplot generated from R may be different from the Q1 and Q3 computed by the `quantile()` function. We don't quite need to worry about their difference because they are pretty close although different. 
+<!-- In fact, there are several different algorithms for computing quantiles.  -->
 :::
-::::
+
 
 ## Exercises
 
@@ -490,10 +602,10 @@ Please see `?mtcars` for the description of the data set.
 
 2. **Mean and standard deviation (SD)**: For each part, compare data (1) and (2) based on their mean and SDs. You don't need to calculate these statistics, but compare (1) and (2) by stating which one has a larger mean/SD or they have the same mean/SD. Explain your reasoning.
     (a) (1) -30, 0, 0, 0, 15, 25, 25
-        (2) -50, 0, 0, 0, 15, 20, 25  
+        (2) -50, 0, 0, 0, 15, 20, 25
     (b) (1) 0, 1, 3, 5, 7
-        (2) 21, 23, 25, 27, 29  
+        (2) 21, 23, 25, 27, 29
     (c) (1) 100, 200, 300, 400, 500
         (2) 0, 50, 350, 500, 600
-        
+
 3. **Skewness**: Facebook data indicate that $50\%$ of Facebook users have 130 or more friends, and that the average friend count of users is 115. What do these findings suggest about the shape (right-skewed, left-skewed, symmetric) of the distribution of number of friends of Facebook users? Please explain.
