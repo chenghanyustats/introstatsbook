@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.335">
+<meta name="generator" content="quarto-1.4.555">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="description" content="An comprehensive introductory statistical data science book.">
 <title>Introduction to Statistics - 7&nbsp; Probability Rules</title>
@@ -15,7 +15,7 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
 </style>
@@ -43,7 +43,13 @@ ul.task-list li input[type="checkbox"] {
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -52,263 +58,332 @@ ul.task-list li input[type="checkbox"] {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
-}</script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+}</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 </head>
 <body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }"><div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability Rules</span></h1>
-      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
-        <i class="bi bi-chevron-right"></i>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./prob.html">Probability</a></li><li class="breadcrumb-item"><a href="./prob-rule.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability Rules</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
       </button>
     </div>
   </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Introduction to Statistics</a> 
         <div class="sidebar-tools-main">
-    <a href="https://github.com/chenghanyustats/introstatsbook" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
-    <a href="" title="Share" id="sidebar-tool-dropdown-0" class="sidebar-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-share"></i></a>
-    <ul class="dropdown-menu" aria-labelledby="sidebar-tool-dropdown-0">
+    <a href="https://github.com/chenghanyustats/introstatsbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Share"><i class="bi bi-share"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
 <li>
-          <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=%7Curl%7C">
-            <i class="bi bi-bi-twitter pe-1"></i>
-          Twitter
-          </a>
-        </li>
-        <li>
-          <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=%7Curl%7C">
-            <i class="bi bi-bi-facebook pe-1"></i>
-          Facebook
-          </a>
-        </li>
-        <li>
-          <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=%7Curl%7C">
-            <i class="bi bi-bi-linkedin pe-1"></i>
-          LinkedIn
-          </a>
-        </li>
-    </ul>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=%7Curl%7C">
+              <i class="bi bi-bi-twitter pe-1"></i>
+            Twitter
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=%7Curl%7C">
+              <i class="bi bi-bi-facebook pe-1"></i>
+            Facebook
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=%7Curl%7C">
+              <i class="bi bi-bi-linkedin pe-1"></i>
+            LinkedIn
+            </a>
+          </li>
+      </ul>
+</div>
 </div>
     </div>
       </div>
-      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
         <div id="quarto-search" class="" title="Search"></div>
         </div>
-      </div>
+        </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">Welcome</a>
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./intro.html" class="sidebar-item-text sidebar-link">Statistics and Data</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Statistics and Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./intro-stats.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Science of Data and Data Science</span></a>
+  <a href="./intro-stats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Science of Data and Data Science</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./intro-data.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data</span></a>
+  <a href="./intro-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data Collection and Data Type</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./intro-r.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Tool foR Data</span></a>
+  <a href="./intro-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Tool foR Data</span></span></a>
   </div>
 </li>
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./datasummary.html" class="sidebar-item-text sidebar-link">Summarizing Data</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <a href="./datasummary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Summarizing Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./data-graphics.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Visualization</span></a>
+  <a href="./data-graphics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Visualization</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./data-numerics.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Data Sample Statistics</span></a>
+  <a href="./data-numerics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Numerical Measures of Data</span></span></a>
   </div>
 </li>
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./prob.html" class="sidebar-item-text sidebar-link">Probability</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <a href="./prob.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Probability</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./prob-define.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Definition of Probability</span></a>
+  <a href="./prob-define.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Definition of Probability</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./prob-rule.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability Rules</span></a>
+  <a href="./prob-rule.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability Rules</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./prob-rv.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Random Variables</span></a>
+  <a href="./prob-rv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Random Variables</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./prob-disc.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Discrete Probability Distributions</span></a>
+  <a href="./prob-disc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Discrete Probability Distributions</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./prob-cont.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Continuous Probability Distributions</span></a>
+  <a href="./prob-cont.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Continuous Probability Distributions</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./prob-samdist.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Sampling Distribution</span></a>
+  <a href="./prob-samdist.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Sampling Distribution</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./prob-llnclt.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Law of Large Numbers and Central Limit Theorem</span></a>
+  <a href="./prob-llnclt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Law of Large Numbers and Central Limit Theorem</span></span></a>
   </div>
 </li>
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./infer.html" class="sidebar-item-text sidebar-link">Statistical Inference</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <a href="./infer.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Statistical Inference</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./infer-ci.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Confidence Interval</span></a>
+  <a href="./infer-ci.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Point and Interval Estimation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./infer-bt.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Bootstrapping</span></a>
+  <a href="./infer-bt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Bootstrapping</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./infer-ht.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Hypothesis Testing</span></a>
+  <a href="./infer-ht.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Hypothesis Testing</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./infer-twomean.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Comparing Two Population Means</span></a>
+  <a href="./infer-twomean.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Comparing Two Population Means</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./infer-var.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Inference About Variances</span></a>
+  <a href="./infer-var.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Inference About Variances</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./infer-prop.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Inference About Proportions</span></a>
+  <a href="./infer-prop.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Inference About Proportions</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./infer-cat.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Inference about Categorical Data</span></a>
+  <a href="./infer-cat.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Inference about Categorical Data</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./infer-bayes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></a>
+  <a href="./infer-bayes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./infer-nonpar.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Nonparametric Inference</span></a>
+  <a href="./infer-nonpar.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Nonparametric Methods</span></span></a>
   </div>
 </li>
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./model.html" class="sidebar-item-text sidebar-link">Statistical Models</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+            <a href="./model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Statistical Models</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./model-anova.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></a>
+  <a href="./model-anova.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./model-reg.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Linear Regression</span></a>
+  <a href="./model-reg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Linear Regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./model-logistic.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Logistic Regression</span></a>
+  <a href="./model-logistic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Logistic Regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./model-bayes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></a>
+  <a href="./model-bayes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./model-survival.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Survival Analysis</span></a>
+  <a href="./model-survival.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Survival Analysis</span></span></a>
   </div>
 </li>
       </ul>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./references.html" class="sidebar-item-text sidebar-link">References</a>
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
   </div>
 </li>
     </ul>
 </div>
-</nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#probability-operations-and-rules" id="toc-probability-operations-and-rules" class="nav-link active" data-scroll-target="#probability-operations-and-rules"><span class="toc-section-number">7.1</span>  Probability Operations and Rules</a></li>
-  <li><a href="#conditional-probability-and-independence" id="toc-conditional-probability-and-independence" class="nav-link" data-scroll-target="#conditional-probability-and-independence"><span class="toc-section-number">7.2</span>  Conditional Probability and Independence</a></li>
-  <li><a href="#bayes-formula" id="toc-bayes-formula" class="nav-link" data-scroll-target="#bayes-formula"><span class="toc-section-number">7.3</span>  Bayes’ Formula</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="toc-section-number">7.4</span>  Exercises</a></li>
-  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/prob-rule.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+<li><a href="#probability-operations-and-rules" id="toc-probability-operations-and-rules" class="nav-link active" data-scroll-target="#probability-operations-and-rules"><span class="header-section-number">7.1</span> Probability Operations and Rules</a></li>
+  <li><a href="#conditional-probability-and-independence" id="toc-conditional-probability-and-independence" class="nav-link" data-scroll-target="#conditional-probability-and-independence"><span class="header-section-number">7.2</span> Conditional Probability and Independence</a></li>
+  <li><a href="#bayes-formula" id="toc-bayes-formula" class="nav-link" data-scroll-target="#bayes-formula"><span class="header-section-number">7.3</span> Bayes’ Formula</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">7.4</span> Exercises</a></li>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/prob-rule.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-prob-rule" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability Rules</span></span></h1>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./prob.html">Probability</a></li><li class="breadcrumb-item"><a href="./prob-rule.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability Rules</span></a></li></ol></nav><div class="quarto-title">
+<h1 class="title"><span id="sec-prob-rule" class="quarto-section-identifier"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability Rules</span></span></h1>
 </div>
 
 
@@ -321,10 +396,8 @@ ul.task-list li input[type="checkbox"] {
   </div>
   
 
-</header><p>In this chapter, we formally define some terms used in probability, and learn some basic probability operations.</p>
-<div class="cell">
 
-</div>
+</header><p>In this chapter, we formally define some terms used in probability, and learn some basic probability operations.</p>
 <section id="probability-operations-and-rules" class="level2" data-number="7.1"><h2 data-number="7.1" class="anchored" data-anchor-id="probability-operations-and-rules">
 <span class="header-section-number">7.1</span> Probability Operations and Rules</h2>
 <p><span style="color:blue"> <strong>Experiments, Events and Sample Space</strong> </span></p>
@@ -342,12 +415,12 @@ ul.task-list li input[type="checkbox"] {
 <li>The <strong>sample space</strong> <span class="math inline">\((\mathcal{S})\)</span> of an experiment is the collection of <strong>ALL</strong> possible outcomes of the experiment.</li>
 </ul>
 <p>Based on the definition, the sample space the largest set associated with an experiment because it collects all possible outcomes. In other words, when an experiment is conducted, no matter what outcome shows up, it is always in the sample space.</p>
-<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-caption-container flex-fill">
+<div class="callout-title-container flex-fill">
 Is the sample space also an event?
 </div>
 </div>
@@ -358,7 +431,7 @@ Is the sample space also an event?
 </div>
 </div>
 <p>The table below provides a summary of experiments flipping a coin and rolling a die.</p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 15%">
 <col style="width: 19%">
@@ -388,12 +461,12 @@ Is the sample space also an event?
 </table>
 <hr>
 <p><span style="color:blue"> <strong>Set Concept: Example of Rolling a six-side balanced die</strong></span></p>
-<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<div class="callout-caption-container flex-fill">
+<div class="callout-title-container flex-fill">
 Tip
 </div>
 </div>
@@ -409,7 +482,7 @@ Tip
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="http://www.stat.ucla.edu/~vlew/stat11/lectures/venn/set10.gif" class="img-fluid figure-img"></p>
+<figure class="figure"><p><img src="http://www.stat.ucla.edu/~vlew/stat11/lectures/venn/set10.gif" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
 </figure>
 </div>
 </div>
@@ -420,7 +493,7 @@ Tip
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="http://www.stat.ucla.edu/~vlew/stat11/lectures/venn/set12.gif" class="img-fluid figure-img"></p>
+<figure class="figure"><p><img src="http://www.stat.ucla.edu/~vlew/stat11/lectures/venn/set12.gif" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
 </figure>
 </div>
 </div>
@@ -431,7 +504,7 @@ Tip
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="http://www.stat.ucla.edu/~vlew/stat11/lectures/venn/set2.gif" class="img-fluid figure-img"></p>
+<figure class="figure"><p><img src="http://www.stat.ucla.edu/~vlew/stat11/lectures/venn/set2.gif" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
 </figure>
 </div>
 </div>
@@ -443,7 +516,7 @@ Tip
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="prob-rule_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" style="width:20.0%"></p>
+<figure class="figure"><p><img src="prob-rule_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:20.0%"></p>
 </figure>
 </div>
 </div>
@@ -454,17 +527,17 @@ Tip
 <!-- :::{.callout-note icon=false} --><!-- ## Is $B \subset D$ or $D \subset B$? --><!-- ::: --><div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="prob-rule_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" style="width:20.0%"></p>
+<figure class="figure"><p><img src="prob-rule_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:20.0%"></p>
 </figure>
 </div>
 </div>
 </div>
-<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<div class="callout-caption-container flex-fill">
+<div class="callout-title-container flex-fill">
 Note
 </div>
 </div>
@@ -476,12 +549,12 @@ Note
 <p><span style="color:blue"> <strong>Probability Rules</strong> </span></p>
 <p>We have learned how to represent an event in terms of sets and set operations. Here we are going to learn several probability rules for events.</p>
 <p>First, we denote the probability of an event <span class="math inline">\(A\)</span> on a sample space <span class="math inline">\(\mathcal{S}\)</span> as <span class="math inline">\(P(A)\)</span>.</p>
-<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<div class="callout-caption-container flex-fill">
+<div class="callout-title-container flex-fill">
 Tip
 </div>
 </div>
@@ -516,24 +589,30 @@ Tip
 <p>Since every event being considered must be a subset of the sample space, the area of any event is smaller than the area of the sample space which is one. Therefore, for any event <span class="math inline">\(A\)</span>, <span class="math inline">\(P(A) \le 1\)</span>. <span class="math inline">\(P(A) = 1\)</span> if and only if <span class="math inline">\(A = \mathcal{S}\)</span>.</p>
 <!-- <span style="color:red"> ***Venn Diagram Illustration*** </span> -->
 <!-- - **Addition Rule**: $P(A \cup B) = P(A) + P(B) - P(A \cap B)$ -->
-<p>The addition rule can be clearly understood using the Venn diagram. <a href="#fig-addition-rule">Figure&nbsp;<span>7.1</span></a> shows how <span class="math inline">\(P(A \cup B)\)</span> is expressed by <span class="math inline">\(P(A)\)</span>, <span class="math inline">\(P(B)\)</span> and <span class="math inline">\(P(A \cap B)\)</span>. To get the area of <span class="math inline">\(A \cup B\)</span>, we can first consider the sum of the area of <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>, the left and right circles. However, the middle part which is <span class="math inline">\(A \cap B\)</span> is counted twice when we take the sum, so the one piece of area of <span class="math inline">\(A \cap B\)</span> should be removed from the sum of the area.</p>
+<p>The addition rule can be clearly understood using the Venn diagram. <a href="#fig-addition-rule" class="quarto-xref">Figure&nbsp;<span>7.1</span></a> shows how <span class="math inline">\(P(A \cup B)\)</span> is expressed by <span class="math inline">\(P(A)\)</span>, <span class="math inline">\(P(B)\)</span> and <span class="math inline">\(P(A \cap B)\)</span>. To get the area of <span class="math inline">\(A \cup B\)</span>, we can first consider the sum of the area of <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>, the left and right circles. However, the middle part which is <span class="math inline">\(A \cap B\)</span> is counted twice when we take the sum, so the one piece of area of <span class="math inline">\(A \cap B\)</span> should be removed from the sum of the area.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-addition-rule" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="./images/img-prob/addition_rule.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;7.1: Venn Diagram depiction of the addition rule</figcaption><p></p>
-</figure>
+<div id="fig-addition-rule" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-addition-rule-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/img-prob/addition_rule.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-addition-rule-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.1: Venn Diagram depiction of the addition rule
+</figcaption></figure>
 </div>
 </div>
 </div>
-<p>In fact, the third axiom is a special case of the addition rule. <a href="#fig-disjoint-addition">Figure&nbsp;<span>7.2</span></a> illustrates the case. Since the two events are disjoint, <span class="math inline">\(A \cap B = \emptyset\)</span>, and the area of <span class="math inline">\(A \cap B\)</span>, or <span class="math inline">\(P(A \cap B)\)</span> is zero.</p>
+<p>In fact, the third axiom is a special case of the addition rule. <a href="#fig-disjoint-addition" class="quarto-xref">Figure&nbsp;<span>7.2</span></a> illustrates the case. Since the two events are disjoint, <span class="math inline">\(A \cap B = \emptyset\)</span>, and the area of <span class="math inline">\(A \cap B\)</span>, or <span class="math inline">\(P(A \cap B)\)</span> is zero.</p>
 <!-- - **Disjoint Case**: $P(A \cup B) = P(A) + P(B)$ because $P(A \cap B) = 0$! -->
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-disjoint-addition" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="./images/img-prob/disjoint_sex.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;7.2: Venn Diagram depiction of the addition rule for the disjoint case</figcaption><p></p>
-</figure>
+<div id="fig-disjoint-addition" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-disjoint-addition-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/img-prob/disjoint_sex.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-disjoint-addition-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.2: Venn Diagram depiction of the addition rule for the disjoint case
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -553,18 +632,17 @@ Tip
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="./images/img-prob/mm.jpeg" class="img-fluid figure-img" style="width:80.0%"></p>
-<p></p><figcaption class="figure-caption">Source: Unsplash: Robert Anasch</figcaption><p></p>
-</figure>
+<figcaption>Source: Unsplash: Robert Anasch</figcaption></figure>
 </div>
 </div>
 </div>
 </div><div class="column" style="width:50%;">
-<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-caption-container flex-fill">
+<div class="callout-title-container flex-fill">
 If you randomly select an M&amp;M, what is the probability of the following?
 </div>
 </div>
@@ -590,12 +668,12 @@ If you randomly select an M&amp;M, what is the probability of the following?
 </ol>
 </li>
 </ul>
-<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-caption-container flex-fill">
+<div class="callout-title-container flex-fill">
 Which interpretation of probability is used in this question?
 </div>
 </div>
@@ -608,8 +686,8 @@ Which interpretation of probability is used in this question?
 <p><span style="color:blue"> <strong>Conditional Probability</strong> </span></p>
 <p>Quite often people are interested in the probability of something happening given the fact that some other event has been occurred or some information about the experiment or its outcomes have been known. In this case, we can calculate the <strong>conditional probability</strong> that takes the occurred event or known information into account. The conditional probability would be more appropriate for quantifying uncertainty about what we are interested because knowing some event being occurred is a piece of valuable information that helps us properly adjust the chance of something happening.</p>
 <p>By definition, the <strong>conditional probability of <span class="math inline">\(A\)</span> given <span class="math inline">\(B\)</span></strong> is <span class="math display">\[ P(A \mid  B) = \frac{P(A \cap B)}{P(B)}.\]</span></p>
-<p>The vertical bar “<span class="math inline">\(\mid\)</span>” is read as given or conditional on. Therefore, we consider the event <span class="math inline">\(A\)</span> not in the entire sample space, but the event <span class="math inline">\(A\)</span> that is conditional on the event <span class="math inline">\(B\)</span>, or <span class="math inline">\(A \mid B\)</span>. In other words, we don’t consider all possible parts of <span class="math inline">\(A\)</span>. Instead, we only care about the part of <span class="math inline">\(A\)</span> for which <span class="math inline">\(B\)</span> <em>has already occurred</em>.</p>
-<p>The formula is well defined when <span class="math inline">\(P(B) &gt; 0\)</span> and undefined if <span class="math inline">\(P(B) = 0\)</span>. Intuitively, one cannot calculate the probability of <span class="math inline">\(A\)</span> given <span class="math inline">\(B\)</span> when <span class="math inline">\(B\)</span> is not occurred by any chance. <a href="#fig-conditional">Figure&nbsp;<span>7.3</span></a> illustrates the conditional probability of <span class="math inline">\(A\)</span> given <span class="math inline">\(B\)</span> using the Venn diagram. When we compute the probability of <span class="math inline">\(A\)</span>, the information about <span class="math inline">\(B\)</span> have been given, and the probability of <span class="math inline">\(A\)</span> is adjusted, according to this information. The conditional probability is the ratio of <span class="math inline">\(P(A \cap B)\)</span> to <span class="math inline">\(P(B)\)</span>.</p>
+<p>The vertical bar “<span class="math inline">\(\mid\)</span>” is read as given or conditional on. Therefore, we consider the event <span class="math inline">\(A\)</span> not in the entire sample space, but the event <span class="math inline">\(A\)</span> that is conditional on the event <span class="math inline">\(B\)</span>, or <span class="math inline">\(A \mid  B\)</span>. In other words, we don’t consider all possible parts of <span class="math inline">\(A\)</span>. Instead, we only care about the part of <span class="math inline">\(A\)</span> for which <span class="math inline">\(B\)</span> <em>has already occurred</em>.</p>
+<p>The formula is well defined when <span class="math inline">\(P(B) &gt; 0\)</span> and undefined if <span class="math inline">\(P(B) = 0\)</span>. Intuitively, one cannot calculate the probability of <span class="math inline">\(A\)</span> given <span class="math inline">\(B\)</span> when <span class="math inline">\(B\)</span> is not occurred by any chance. <a href="#fig-conditional" class="quarto-xref">Figure&nbsp;<span>7.3</span></a> illustrates the conditional probability of <span class="math inline">\(A\)</span> given <span class="math inline">\(B\)</span> using the Venn diagram. When we compute the probability of <span class="math inline">\(A\)</span>, the information about <span class="math inline">\(B\)</span> have been given, and the probability of <span class="math inline">\(A\)</span> is adjusted, according to this information. The conditional probability is the ratio of <span class="math inline">\(P(A \cap B)\)</span> to <span class="math inline">\(P(B)\)</span>.</p>
 <!-- - As shown in @fig-conditional below, the **conditional probability of $A$ given $B$** is -->
 <!-- <center> -->
 <!-- $$ P(A \mid  B) = \frac{P(A \cap B)}{P(B)}$$  -->
@@ -618,15 +696,18 @@ Which interpretation of probability is used in this question?
 <!-- - **"Given $B$"** means that event $B$ *has already occurred*.  -->
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-conditional" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="./images/img-prob/conditional.jpg" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;7.3: Venn Diagram illustration of the conditional probability of A given B</figcaption><p></p>
-</figure>
+<div id="fig-conditional" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-conditional-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/img-prob/conditional.jpg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-conditional-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.3: Venn Diagram illustration of the conditional probability of A given B
+</figcaption></figure>
 </div>
 </div>
 </div>
-<p>So what is the difference between <span class="math inline">\(P(A)\)</span> and <span class="math inline">\(P(A \mid B)\)</span>? How knowing event <span class="math inline">\(B\)</span> occurred affects the probability of <span class="math inline">\(A\)</span>? Well, <a href="#fig-conditional-prob">Figure&nbsp;<span>7.4</span></a> describes the difference. When we calculate <span class="math inline">\(P(A)\)</span>, we assume we don’t have any specific information at hand. What we can base on is the entire sample space because we need to take all possible outcomes into account, and see if any outcome is related to the event <span class="math inline">\(A\)</span>. Therefore, although we just write <span class="math inline">\(P(A)\)</span>, the probability is actually calculated conditional on the entire sample space, i.e., <span class="math inline">\(P(A \mid \mathcal{S})\)</span>, which is the ratio of area of <span class="math inline">\(A\)</span> to the area of <span class="math inline">\(\mathcal{S}\)</span> that is one. Such probability is usually called <strong>unconditional</strong> or <strong>marginal probability</strong> because being conditional on <span class="math inline">\(\mathcal{S}\)</span> is like being not conditional on some specific event, and “marginal” means all other possible events or outcomes have been “marginalized” out, and only event <span class="math inline">\(A\)</span> is of our interest.</p>
-<p>Now if we know <span class="math inline">\(B\)</span> has occurred, we don’t need to consider the entire sample space any more. Instead, we can focus only on <span class="math inline">\(B\)</span> since we know <span class="math inline">\(B\)</span> has occurred, and anything not related to <span class="math inline">\(B\)</span>, or <span class="math inline">\(B^c\)</span> becomes irrelevant. We shrink the search pool from <span class="math inline">\(\mathcal{S}\)</span> to the smaller space <span class="math inline">\(B\)</span>. To find <span class="math inline">\(P(A \mid B)\)</span>, we just need to find how large part of <span class="math inline">\(B\)</span> that also belongs to <span class="math inline">\(A\)</span>. Intuitively speaking, the event <span class="math inline">\(B\)</span> has become our <em>new sample space</em> that are smaller than the original <span class="math inline">\(\mathcal{S}\)</span>. We calculate the probability of <span class="math inline">\(A\)</span> based on <span class="math inline">\(B\)</span>, not <span class="math inline">\(\mathcal{S}\)</span>. Since <span class="math inline">\(B\)</span> is the new sample space, we can treat <span class="math inline">\(P(B)\)</span> as one. In other words, any probability conditional on <span class="math inline">\(B\)</span> is scaled up by <span class="math inline">\(1 / P(B)\)</span> so that <span class="math inline">\(P(B) \times \frac{1}{P(B)} = 1\)</span>. This is why <span class="math inline">\(P(A \cap B)\)</span> is multiplied by <span class="math inline">\(1 / P(B)\)</span> in the conditional probability formula.</p>
+<p>So what is the difference between <span class="math inline">\(P(A)\)</span> and <span class="math inline">\(P(A \mid B)\)</span>? How knowing event <span class="math inline">\(B\)</span> occurred affects the probability of <span class="math inline">\(A\)</span>? Well, <a href="#fig-conditional-prob" class="quarto-xref">Figure&nbsp;<span>7.4</span></a> describes the difference. When we calculate <span class="math inline">\(P(A)\)</span>, we assume we don’t have any specific information at hand. What we can base on is the entire sample space because we need to take all possible outcomes into account, and see if any outcome is related to the event <span class="math inline">\(A\)</span>. Therefore, although we just write <span class="math inline">\(P(A)\)</span>, the probability is actually calculated conditional on the entire sample space, i.e., <span class="math inline">\(P(A \mid \mathcal{S})\)</span>, which is the ratio of area of <span class="math inline">\(A\)</span> to the area of <span class="math inline">\(\mathcal{S}\)</span> that is one. Such probability is usually called <strong>unconditional</strong> or <strong>marginal probability</strong> because being conditional on <span class="math inline">\(\mathcal{S}\)</span> is like being not conditional on some specific event, and “marginal” means all other possible events or outcomes have been “marginalized” out, and only event <span class="math inline">\(A\)</span> is of our interest.</p>
+<p>Now if we know <span class="math inline">\(B\)</span> has occurred, we don’t need to consider the entire sample space any more. Instead, we can focus only on <span class="math inline">\(B\)</span> since we know <span class="math inline">\(B\)</span> has occurred, and anything not related to <span class="math inline">\(B\)</span>, or <span class="math inline">\(B^c\)</span> becomes irrelevant. We shrink the search pool from <span class="math inline">\(\mathcal{S}\)</span> to the smaller space <span class="math inline">\(B\)</span>. To find <span class="math inline">\(P(A \mid  B)\)</span>, we just need to find how large part of <span class="math inline">\(B\)</span> that also belongs to <span class="math inline">\(A\)</span>. Intuitively speaking, the event <span class="math inline">\(B\)</span> has become our <em>new sample space</em> that are smaller than the original <span class="math inline">\(\mathcal{S}\)</span>. We calculate the probability of <span class="math inline">\(A\)</span> based on <span class="math inline">\(B\)</span>, not <span class="math inline">\(\mathcal{S}\)</span>. Since <span class="math inline">\(B\)</span> is the new sample space, we can treat <span class="math inline">\(P(B)\)</span> as one. In other words, any probability conditional on <span class="math inline">\(B\)</span> is scaled up by <span class="math inline">\(1 / P(B)\)</span> so that <span class="math inline">\(P(B) \times \frac{1}{P(B)} = 1\)</span>. This is why <span class="math inline">\(P(A \cap B)\)</span> is multiplied by <span class="math inline">\(1 / P(B)\)</span> in the conditional probability formula.</p>
 <p>Here is an example of new sample space or search pool. Suppose we would like to calculate the probability of a woman who is greater than 20 years old in a certain area. When we don’t have any background information about the woman, to compute the probability, we need to base on the entire female population of interest. But if we do know that the woman has two children, we shrink our focus on the pool of women who have two children, and compute the proportion of the women pool that is over 20 years of age.</p>
 <!-- - $P(A)$ and $P(B)$ are **unconditional** or **marginal probabilities**. -->
 <!--   + The marginal probability $P(A)$ is the ratio of area of $A$ to the area of the sample space. -->
@@ -634,14 +715,17 @@ Which interpretation of probability is used in this question?
 <!-- - The difference between marginal probabilities and conditional probabilities is depicted in  -->
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-conditional-prob" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="./images/img-prob/conditional_prob.jpg" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;7.4: Difference Between <span class="math inline">\(P(A)\)</span> and <span class="math inline">\(P(A \mid B)\)</span></figcaption><p></p>
-</figure>
+<div id="fig-conditional-prob" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-conditional-prob-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/img-prob/conditional_prob.jpg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-conditional-prob-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.4: Difference Between <span class="math inline">\(P(A)\)</span> and <span class="math inline">\(P(A \mid B)\)</span>
+</figcaption></figure>
 </div>
 </div>
 </div>
-<p>The conditional probability formula lead to the <strong>multiplication rule</strong>: <span class="math display">\[P(A \cap B) = P(A \mid  B)P(B) = P(B \mid  A)P(A)\]</span> The rule is a rearranged form of the formula by multiplying both sides by <span class="math inline">\(P(B)\)</span>. Notice that <span class="math inline">\(P(B \mid A) = \frac{P(B \cap A)}{P(A)}\)</span> and hence <span class="math inline">\(P(B \mid A)P(A) = P(B \cap A) = P(A \cap B)\)</span>.</p>
+<p>The conditional probability formula lead to the <strong>multiplication rule</strong>: <span class="math display">\[P(A \cap B) = P(A \mid  B)P(B) = P(B \mid  A)P(A)\]</span> The rule is a rearranged form of the formula by multiplying both sides by <span class="math inline">\(P(B)\)</span>. Notice that <span class="math inline">\(P(B \mid  A) = \frac{P(B \cap A)}{P(A)}\)</span> and hence <span class="math inline">\(P(B \mid  A)P(A) = P(B \cap A) = P(A \cap B)\)</span>.</p>
 <p><span style="color:red"> <strong><em>Example: Peanut Butter and Jelly</em></strong></span></p>
 <ul>
 <li>Suppose 80% of people like peanut butter, 89% like jelly and 78% like both. Given that a randomly sampled person likes peanut butter, what is the probability that she also likes jelly?</li>
@@ -650,7 +734,10 @@ Which interpretation of probability is used in this question?
 <div class="column" style="width:49%;">
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="./slides/w3-02-probability/img/peanut_jelly.jpeg" class="img-fluid" style="width:100.0%"></p>
+<div>
+<figure class="figure"><p><img src="./slides/w3-02-probability/img/peanut_jelly.jpeg" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
 </div>
 </div>
 </div><div class="column" style="width:2%;">
@@ -669,10 +756,10 @@ Which interpretation of probability is used in this question?
 <hr>
 <p><span style="color:blue"> <strong>Independence</strong> </span></p>
 <p>In the previous example, we learn that whether a person loves peanut butter affects the probability that she loves jelly. This piece of information is relevant, and the two events “<em>love peanut butter</em>” and “<em>love jelly</em>” are <strong>dependent</strong> each other because the one event will affect the chance of the other event happening. Uncovering the association or dependence is important for statistical inference because it helps statisticians better pin down the probability of being interest.</p>
-<p>Formally speaking, event <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are <strong>independent</strong> if <span class="math inline">\(\begin{align} P(A \mid B) &amp;= P(A) \text{ or }\\ P(B \mid A) &amp;= P(B) \text{ or } \\P(A\cap B) &amp;= P(A)P(B)\end{align}\)</span> <span class="math inline">\(\text{ for } P(A) &gt; 0 \text{ and } P(B) &gt; 0.\)</span></p>
+<p>Formally speaking, event <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are <strong>independent</strong> if <span class="math inline">\(\begin{align} P(A \mid  B) &amp;= P(A) \text{ or }\\ P(B \mid  A) &amp;= P(B) \text{ or } \\P(A\cap B) &amp;= P(A)P(B)\end{align}\)</span> <span class="math inline">\(\text{ for } P(A) &gt; 0 \text{ and } P(B) &gt; 0.\)</span></p>
 <p>Intuitively, this means that <em>knowing <span class="math inline">\(B\)</span> occurs does not change the probability that <span class="math inline">\(A\)</span> occurs and vice versa</em>. The information about <span class="math inline">\(B\)</span> is irrelevant to probability of <span class="math inline">\(A\)</span>.</p>
 <p>Here is a question. Can we compute <span class="math inline">\(P(A \cap B)\)</span> if we only know <span class="math inline">\(P(A)\)</span> and <span class="math inline">\(P(B)\)</span> with no information other than sample space? The answer is no. We cannot compute <span class="math inline">\(P(A \cap B)\)</span> because we don’t know if <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are independent. We can only do so if <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are independent. In general, we need to consider the dependence of two events and use the multiplication rule <span class="math inline">\(P(A \cap B) = P(A \mid B)P(B)\)</span>.</p>
-<p><a href="#fig-independence">Figure&nbsp;<span>7.5</span></a> explain independence using the Venn diagram. Independence means that the ratio of area of <span class="math inline">\(A\)</span> to area of <span class="math inline">\(\mathcal{S}\)</span> is the same as the ratio of area of <span class="math inline">\(A \cap B\)</span> to area of <span class="math inline">\(B\)</span>. Look at the case of non-independence on the right, the two events (circles) in particular. The area of <span class="math inline">\(A \cap B\)</span> is very close to the area of <span class="math inline">\(B\)</span> because the two events are quite overlapped each other. It means that the ratio of area of <span class="math inline">\(A \cap B\)</span> to area of <span class="math inline">\(B\)</span> is pretty close to one. So if we know <span class="math inline">\(B\)</span> has occurred, there will be a very high chance that <span class="math inline">\(A\)</span> would happen as well. In this case, the information about <span class="math inline">\(B\)</span> does matter, and affect probability of <span class="math inline">\(A\)</span>. The idea is that the two events describe pretty much similar set of outcomes for an experiment. As a result, when one occurs, we are pretty sure the other happens as well.</p>
+<p><a href="#fig-independence" class="quarto-xref">Figure&nbsp;<span>7.5</span></a> explain independence using the Venn diagram. Independence means that the ratio of area of <span class="math inline">\(A\)</span> to area of <span class="math inline">\(\mathcal{S}\)</span> is the same as the ratio of area of <span class="math inline">\(A \cap B\)</span> to area of <span class="math inline">\(B\)</span>. Look at the case of non-independence on the right, the two events (circles) in particular. The area of <span class="math inline">\(A \cap B\)</span> is very close to the area of <span class="math inline">\(B\)</span> because the two events are quite overlapped each other. It means that the ratio of area of <span class="math inline">\(A \cap B\)</span> to area of <span class="math inline">\(B\)</span> is pretty close to one. So if we know <span class="math inline">\(B\)</span> has occurred, there will be a very high chance that <span class="math inline">\(A\)</span> would happen as well. In this case, the information about <span class="math inline">\(B\)</span> does matter, and affect probability of <span class="math inline">\(A\)</span>. The idea is that the two events describe pretty much similar set of outcomes for an experiment. As a result, when one occurs, we are pretty sure the other happens as well.</p>
 <!-- :::{.callout-note icon=false} -->
 <!-- ## Can we compute $P(A \cap B)$ if we only know $P(A)$ and $P(B)$? -->
 <!-- - No, we cannot compute $P(A \cap B)$ because we don't know if $A$ and $B$ are independent.  -->
@@ -681,20 +768,23 @@ Which interpretation of probability is used in this question?
 <!-- ::: -->
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-independence" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="./images/img-prob/independence.jpg" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;7.5: Venn Diagram Explanation of Independence</figcaption><p></p>
-</figure>
+<div id="fig-independence" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-independence-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/img-prob/independence.jpg" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-independence-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.5: Venn Diagram Explanation of Independence
+</figcaption></figure>
 </div>
 </div>
 </div>
 <p><span style="color:red"> <strong><em>Independence Example</em></strong> </span></p>
-<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-caption-container flex-fill">
+<div class="callout-title-container flex-fill">
 Assuming that events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are <strong>independent</strong> and that <span class="math inline">\(P(A) = 0.3\)</span> and <span class="math inline">\(P(B) = 0.7\)</span>.
 </div>
 </div>
@@ -716,15 +806,15 @@ Assuming that events <span class="math inline">\(A\)</span> and <span class="mat
 <li><span class="math inline">\(P(A \mid B) = P(A) = 0.3\)</span></li>
 </ul></section><section id="bayes-formula" class="level2" data-number="7.3"><h2 data-number="7.3" class="anchored" data-anchor-id="bayes-formula">
 <span class="header-section-number">7.3</span> Bayes’ Formula</h2>
-<p>Bayes’ formula is one of the most important theorems in the probability and statistical theory. It is the basis of Bayesian inference and Bayesian machine learning discussed in <a href="infer-bayes.html"><span>Chapter&nbsp;21</span></a>, which is getting more and more popular these days due to fast computation technology. In this section, we learn why we need the Bayes’s formula, and how we can use it to obtain the probability we are interested.</p>
+<p>Bayes’ formula is one of the most important theorems in the probability and statistical theory. It is the basis of Bayesian inference and Bayesian machine learning discussed in <a href="infer-bayes.html" class="quarto-xref"><span>Chapter 20</span></a>, which is getting more and more popular these days due to fast computation technology. In this section, we learn why we need the Bayes’s formula, and how we can use it to obtain the probability we are interested.</p>
 <p><span style="color:blue"> <strong>Why Bayes’ Formula?</strong> </span></p>
-<p>Quite often, we know <span class="math inline">\(P(B \mid A)\)</span>, but we are much more interested in <span class="math inline">\(P(A \mid B)\)</span>. Let’s take COVID diagnostic test as an example. Suppose you are having a sore throat and muscle and headache, and you decide to test if you got COVID. Of course, any test may not be 100% accurate. A person who does get COVID may be tested negative, which is called <strong>false negative</strong>, and a person who doesn’t get COVID may get a positive testing result, <strong>false positive</strong> in this case. With lots of trials, we can have false negative rate <span class="math inline">\(P(\text{test negative} \mid \text{COVID})\)</span> and false positive rate <span class="math inline">\(P(\text{test positive} \mid \text{not COVID})\)</span> of some COVID test.</p>
+<p>Quite often, we know <span class="math inline">\(P(B \mid A)\)</span>, but we are much more interested in <span class="math inline">\(P(A \mid B)\)</span>. Let’s take COVID diagnostic test as an example. Suppose you are having a sore throat and muscle and headache, and you decide to test if you got COVID. Of course, any test may not be 100% accurate. A person who does get COVID may be tested negative, which is called <strong>false negative</strong>, and a person who doesn’t get COVID may get a positive testing result, <strong>false positive</strong> in this case. With lots of trials, we can have false negative rate <span class="math inline">\(P(\text{test negative}  \mid \text{COVID})\)</span> and false positive rate <span class="math inline">\(P(\text{test positive}  \mid \text{not COVID})\)</span> of some COVID test.</p>
 <p>Let me ask you a question. Suppose that during a doctor’s visit, you tested positive for COVID. If you only get to ask the doctor one question, which would it be?</p>
 <ol type="a">
 <li>What’s the chance that I actually have COVID?</li>
 <li>If in fact I don’t have COVID, what’s the chance that I would’ve gotten this positive test result?</li>
 </ol>
-<p>If I were you, I would choose a. because I care more about whether I got COVID or not, not the efficacy of the test! In fact, diagnostic tests provide <span class="math inline">\(P(\text{test positive} \mid \text{COVID})\)</span> and <span class="math inline">\(P(\text{test positive} \mid \text{not COVID})\)</span>, but what we are really interested is <span class="math inline">\(P(\text{COVID} \mid \text{test positive})\)</span>!</p>
+<p>If I were you, I would choose a. because I care more about whether I got COVID or not, not the efficacy of the test! In fact, diagnostic tests provide <span class="math inline">\(P(\text{test positive}  \mid \text{COVID})\)</span> and <span class="math inline">\(P(\text{test positive}  \mid \text{not COVID})\)</span>, but what we are really interested is <span class="math inline">\(P(\text{COVID} \mid \text{test positive})\)</span>!</p>
 <p>So, how can we utilize the diagnostic test efficacy to get the chance that one actually gets COVID? Bayes’ formula is the answer. It provides a way to find <span class="math inline">\(P(A \mid B)\)</span> from <span class="math inline">\(P(B \mid A)\)</span>.</p>
 <div class="columns">
 <div class="column" style="width:50%;">
@@ -732,8 +822,7 @@ Assuming that events <span class="math inline">\(A\)</span> and <span class="mat
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="./images/img-prob/covid.jpeg" class="img-fluid figure-img" style="width:70.0%"></p>
-<p></p><figcaption class="figure-caption">Source: Unsplash Martin Sanchez</figcaption><p></p>
-</figure>
+<figcaption>Source: Unsplash Martin Sanchez</figcaption></figure>
 </div>
 </div>
 </div>
@@ -741,7 +830,7 @@ Assuming that events <span class="math inline">\(A\)</span> and <span class="mat
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="./images/img-prob/test_table.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<figure class="figure"><p><img src="./images/img-prob/test_table.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
 </figure>
 </div>
 </div>
@@ -755,14 +844,17 @@ Assuming that events <span class="math inline">\(A\)</span> and <span class="mat
 <!-- - Idea: <span style="color:blue"> Partition $B$ as $B = (B \cap A) \cup (B \cap A^c)$ and apply the multiplication rule.</span>  -->
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-bayes-venn" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="prob-rule_files/figure-html/fig-bayes-venn-1.png" class="img-fluid figure-img" style="width:30.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;7.6: Venn Diagram illustration for Bayes’ formula</figcaption><p></p>
-</figure>
+<div id="fig-bayes-venn" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-bayes-venn-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="prob-rule_files/figure-html/fig-bayes-venn-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:30.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bayes-venn-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.6: Venn Diagram illustration for Bayes’ formula
+</figcaption></figure>
 </div>
 </div>
 </div>
-<p>The first equality is just the definition of conditional probability. For the second equality, we partition <span class="math inline">\(B\)</span> into <span class="math inline">\((B \cap A)\)</span> and <span class="math inline">\((B \cap A^c)\)</span> as <span class="math inline">\((B \cap A) \cup (B \cap A^c) = B\)</span> and <span class="math inline">\((B \cap A)\)</span> and <span class="math inline">\((B \cap A^c)\)</span> are disjoint, as illustrated in <a href="#fig-bayes-venn">Figure&nbsp;<span>7.6</span></a>. <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Since <span class="math inline">\((B \cap A)\)</span> and <span class="math inline">\((B \cap A^c)\)</span> are disjoint, <span class="math inline">\(P((B \cap A) \cup (B \cap A^c)) = P(B \cap A) + P(B \cap A^c)\)</span>. Finally, we can use the multiplication rule to write <span class="math inline">\(P(B \cap A)\)</span> as <span class="math inline">\(P(B \mid A)P(A)\)</span> and <span class="math inline">\(P(B \cap A^c)\)</span> as <span class="math inline">\(P(B \mid A^c)P(A^c)\)</span>. The derivation of the Bayes’ formula is complete.</p>
+<p>The first equality is just the definition of conditional probability. For the second equality, we partition <span class="math inline">\(B\)</span> into <span class="math inline">\((B \cap A)\)</span> and <span class="math inline">\((B \cap A^c)\)</span> as <span class="math inline">\((B \cap A) \cup (B \cap A^c) = B\)</span> and <span class="math inline">\((B \cap A)\)</span> and <span class="math inline">\((B \cap A^c)\)</span> are disjoint, as illustrated in <a href="#fig-bayes-venn" class="quarto-xref">Figure&nbsp;<span>7.6</span></a>. <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Since <span class="math inline">\((B \cap A)\)</span> and <span class="math inline">\((B \cap A^c)\)</span> are disjoint, <span class="math inline">\(P((B \cap A) \cup (B \cap A^c)) = P(B \cap A) + P(B \cap A^c)\)</span>. Finally, we can use the multiplication rule to write <span class="math inline">\(P(B \cap A)\)</span> as <span class="math inline">\(P(B \mid A)P(A)\)</span> and <span class="math inline">\(P(B \cap A^c)\)</span> as <span class="math inline">\(P(B \mid A^c)P(A^c)\)</span>. The derivation of the Bayes’ formula is complete.</p>
 <p>Notice that we use the information about <span class="math inline">\(P(B \mid A)\)</span>, <span class="math inline">\(P(B \mid A^c)\)</span>, <span class="math inline">\(P(A)\)</span> and <span class="math inline">\(P(A^c)\)</span> to obtain <span class="math inline">\(P(A \mid B)\)</span>. In general, <span class="math inline">\(P(A \mid B) \ne P(A \mid B)\)</span>, and they are completely different probabilities. Interpret your probability with additional care.</p>
 <p>[Extended formula]</p>
 <p><span style="color:red"> <strong><em>Example: Passing Rate</em></strong> </span></p>
@@ -778,19 +870,18 @@ Assuming that events <span class="math inline">\(A\)</span> and <span class="mat
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="./images/img-prob/test_pass.jpeg" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Source: Unsplash JESHOOTS.COM</figcaption><p></p>
-</figure>
+<figcaption>Source: Unsplash JESHOOTS.COM</figcaption></figure>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-caption-container flex-fill">
+<div class="callout-title-container flex-fill">
 Calculate the probability that a student understands the Bayes’ formula given the fact that she passed.
 </div>
 </div>
@@ -840,10 +931,13 @@ Calculate the probability that a student understands the Bayes’ formula given 
 <div class="column" style="width:49%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-bayes-tree" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="./images/img-prob/bayestree.png" class="img-fluid figure-img" style="width:120.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;7.7: Tree Diagram illustration of Passing Rate example</figcaption><p></p>
-</figure>
+<div id="fig-bayes-tree" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-bayes-tree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/img-prob/bayestree.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:120.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bayes-tree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.7: Tree Diagram illustration of Passing Rate example
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -867,7 +961,7 @@ Calculate the probability that a student understands the Bayes’ formula given 
 </li>
 </ol>
 <p><br></p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 28%">
 <col style="width: 20%">
@@ -964,9 +1058,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -1002,10 +1110,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/chenghanyu-introstatsbook\.netlify\.app\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1015,8 +1140,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1028,9 +1162,245 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {
@@ -1070,19 +1440,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./prob-define.html" class="pagination-link">
+      <a href="./prob-define.html" class="pagination-link" aria-label="Definition of Probability">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Definition of Probability</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./prob-rv.html" class="pagination-link">
+      <a href="./prob-rv.html" class="pagination-link" aria-label="Random Variables">
         <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Random Variables</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">
-    <div class="nav-footer-left">Copyright 2023, Dr.&nbsp;Cheng-Han Yu</div>   
+    <div class="nav-footer-left">
+<p>Copyright 2024, Dr.&nbsp;Cheng-Han Yu</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/prob-rule.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
 <li class="nav-item compact">

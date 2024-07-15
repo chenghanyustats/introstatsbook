@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.335">
+<meta name="generator" content="quarto-1.4.555">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="description" content="An comprehensive introductory statistical data science book.">
 <title>Introduction to Statistics - 3&nbsp; Tool foR Data</title>
@@ -15,11 +15,12 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -44,43 +45,13 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
-    color: #aaaaaa;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -106,7 +77,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -115,266 +92,310 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 </head>
 <body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }"><div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Tool foR Data</span></h1>
-      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
-        <i class="bi bi-chevron-right"></i>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./intro.html">Statistics and Data</a></li><li class="breadcrumb-item"><a href="./intro-r.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Tool foR Data</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
       </button>
     </div>
   </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Introduction to Statistics</a> 
         <div class="sidebar-tools-main">
-    <a href="https://github.com/chenghanyustats/introstatsbook" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
-    <a href="" title="Share" id="sidebar-tool-dropdown-0" class="sidebar-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-share"></i></a>
-    <ul class="dropdown-menu" aria-labelledby="sidebar-tool-dropdown-0">
+    <a href="https://github.com/chenghanyustats/introstatsbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Share"><i class="bi bi-share"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
 <li>
-          <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=%7Curl%7C">
-            <i class="bi bi-bi-twitter pe-1"></i>
-          Twitter
-          </a>
-        </li>
-        <li>
-          <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=%7Curl%7C">
-            <i class="bi bi-bi-facebook pe-1"></i>
-          Facebook
-          </a>
-        </li>
-        <li>
-          <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=%7Curl%7C">
-            <i class="bi bi-bi-linkedin pe-1"></i>
-          LinkedIn
-          </a>
-        </li>
-    </ul>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=%7Curl%7C">
+              <i class="bi bi-bi-twitter pe-1"></i>
+            Twitter
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=%7Curl%7C">
+              <i class="bi bi-bi-facebook pe-1"></i>
+            Facebook
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=%7Curl%7C">
+              <i class="bi bi-bi-linkedin pe-1"></i>
+            LinkedIn
+            </a>
+          </li>
+      </ul>
+</div>
 </div>
     </div>
       </div>
-      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
         <div id="quarto-search" class="" title="Search"></div>
         </div>
-      </div>
+        </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">Welcome</a>
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./intro.html" class="sidebar-item-text sidebar-link">Statistics and Data</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Statistics and Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./intro-stats.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Science of Data and Data Science</span></a>
+  <a href="./intro-stats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Science of Data and Data Science</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./intro-data.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data Collection and Data Type</span></a>
+  <a href="./intro-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data Collection and Data Type</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./intro-r.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Tool foR Data</span></a>
+  <a href="./intro-r.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Tool foR Data</span></span></a>
   </div>
 </li>
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./datasummary.html" class="sidebar-item-text sidebar-link">Summarizing Data</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <a href="./datasummary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Summarizing Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./data-graphics.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Visualization</span></a>
+  <a href="./data-graphics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Visualization</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./data-numerics.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Numerical Measures of Data</span></a>
+  <a href="./data-numerics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Numerical Measures of Data</span></span></a>
   </div>
 </li>
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./prob.html" class="sidebar-item-text sidebar-link">Probability</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <a href="./prob.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Probability</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./prob-define.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Definition of Probability</span></a>
+  <a href="./prob-define.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Definition of Probability</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./prob-rule.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability Rules</span></a>
+  <a href="./prob-rule.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability Rules</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./prob-rv.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Random Variables</span></a>
+  <a href="./prob-rv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Random Variables</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./prob-disc.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Discrete Probability Distributions</span></a>
+  <a href="./prob-disc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Discrete Probability Distributions</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./prob-cont.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Continuous Probability Distributions</span></a>
+  <a href="./prob-cont.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Continuous Probability Distributions</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./prob-samdist.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Sampling Distribution</span></a>
+  <a href="./prob-samdist.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Sampling Distribution</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./prob-llnclt.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Law of Large Numbers and Central Limit Theorem</span></a>
+  <a href="./prob-llnclt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Law of Large Numbers and Central Limit Theorem</span></span></a>
   </div>
 </li>
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./infer.html" class="sidebar-item-text sidebar-link">Statistical Inference</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <a href="./infer.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Statistical Inference</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./infer-ci.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Point and Interval Estimation</span></a>
+  <a href="./infer-ci.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Point and Interval Estimation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./infer-bt.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Bootstrapping</span></a>
+  <a href="./infer-bt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Bootstrapping</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./infer-ht.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Hypothesis Testing</span></a>
+  <a href="./infer-ht.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Hypothesis Testing</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./infer-twomean.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Comparing Two Population Means</span></a>
+  <a href="./infer-twomean.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Comparing Two Population Means</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./infer-var.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Inference About Variances</span></a>
+  <a href="./infer-var.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Inference About Variances</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./infer-prop.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Inference About Proportions</span></a>
+  <a href="./infer-prop.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Inference About Proportions</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./infer-cat.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Inference about Categorical Data</span></a>
+  <a href="./infer-cat.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Inference about Categorical Data</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./infer-bayes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></a>
+  <a href="./infer-bayes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./infer-nonpar.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Nonparametric Methods</span></a>
+  <a href="./infer-nonpar.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Nonparametric Methods</span></span></a>
   </div>
 </li>
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./model.html" class="sidebar-item-text sidebar-link">Statistical Models</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+            <a href="./model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Statistical Models</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./model-anova.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></a>
+  <a href="./model-anova.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./model-reg.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Linear Regression</span></a>
+  <a href="./model-reg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Linear Regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./model-logistic.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Logistic Regression</span></a>
+  <a href="./model-logistic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Logistic Regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./model-bayes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></a>
+  <a href="./model-bayes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./model-survival.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Survival Analysis</span></a>
+  <a href="./model-survival.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Survival Analysis</span></span></a>
   </div>
 </li>
       </ul>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./references.html" class="sidebar-item-text sidebar-link">References</a>
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
   </div>
 </li>
     </ul>
 </div>
-</nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#lets-get-equipped-with-our-tools" id="toc-lets-get-equipped-with-our-tools" class="nav-link active" data-scroll-target="#lets-get-equipped-with-our-tools"><span class="toc-section-number">3.1</span>  Let’s get equipped with our tools!</a></li>
-  <li><a href="#working-in-posit-cloud" id="toc-working-in-posit-cloud" class="nav-link" data-scroll-target="#working-in-posit-cloud"><span class="toc-section-number">3.2</span>  Working in Posit Cloud</a></li>
-  <li><a href="#install-r-and-rstudio-to-your-computer" id="toc-install-r-and-rstudio-to-your-computer" class="nav-link" data-scroll-target="#install-r-and-rstudio-to-your-computer"><span class="toc-section-number">3.3</span>  Install R and RStudio to Your Computer</a></li>
-  <li><a href="#operators" id="toc-operators" class="nav-link" data-scroll-target="#operators"><span class="toc-section-number">3.4</span>  Operators</a></li>
-  <li><a href="#object-types" id="toc-object-types" class="nav-link" data-scroll-target="#object-types"><span class="toc-section-number">3.5</span>  Object Types</a></li>
-  <li><a href="#r-data-structures" id="toc-r-data-structures" class="nav-link" data-scroll-target="#r-data-structures"><span class="toc-section-number">3.6</span>  R Data Structures</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="toc-section-number">3.7</span>  Exercises</a></li>
-  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/intro-r.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+<li><a href="#lets-get-equipped-with-our-tools" id="toc-lets-get-equipped-with-our-tools" class="nav-link active" data-scroll-target="#lets-get-equipped-with-our-tools"><span class="header-section-number">3.1</span> Let’s get equipped with our tools!</a></li>
+  <li><a href="#working-in-posit-cloud" id="toc-working-in-posit-cloud" class="nav-link" data-scroll-target="#working-in-posit-cloud"><span class="header-section-number">3.2</span> Working in Posit Cloud</a></li>
+  <li><a href="#install-r-and-rstudio-to-your-computer" id="toc-install-r-and-rstudio-to-your-computer" class="nav-link" data-scroll-target="#install-r-and-rstudio-to-your-computer"><span class="header-section-number">3.3</span> Install R and RStudio to Your Computer</a></li>
+  <li><a href="#operators" id="toc-operators" class="nav-link" data-scroll-target="#operators"><span class="header-section-number">3.4</span> Operators</a></li>
+  <li><a href="#object-types" id="toc-object-types" class="nav-link" data-scroll-target="#object-types"><span class="header-section-number">3.5</span> Object Types</a></li>
+  <li><a href="#r-data-structures" id="toc-r-data-structures" class="nav-link" data-scroll-target="#r-data-structures"><span class="header-section-number">3.6</span> R Data Structures</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">3.7</span> Exercises</a></li>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/intro-r.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-intro-r" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Tool foR Data</span></span></h1>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./intro.html">Statistics and Data</a></li><li class="breadcrumb-item"><a href="./intro-r.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Tool foR Data</span></a></li></ol></nav><div class="quarto-title">
+<h1 class="title"><span id="sec-intro-r" class="quarto-section-identifier"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Tool foR Data</span></span></h1>
 </div>
 
 
@@ -387,10 +408,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </div>
   
 
-</header><div class="cell">
 
-</div>
-<p>This chapter provides a broad overview of the R language that will get you programming right away. The tool I recommend is <a href="https://posit.cloud/">Posit Cloud</a> which is a free cloud coding environment for R and Python users. A step-by-step guide will be provided. Once the setup is complete, some basic R programming and data types are introduced.</p>
+</header><p>This chapter provides a broad overview of the R language that will get you programming right away. The tool I recommend is <a href="https://posit.cloud/">Posit Cloud</a> which is a free cloud coding environment for R and Python users. A step-by-step guide will be provided. Once the setup is complete, some basic R programming and data types are introduced.</p>
 <section id="lets-get-equipped-with-our-tools" class="level2" data-number="3.1"><h2 data-number="3.1" class="anchored" data-anchor-id="lets-get-equipped-with-our-tools">
 <span class="header-section-number">3.1</span> Let’s get equipped with our tools!</h2>
 <p><span style="color:blue"> <strong>Posit Cloud</strong> </span></p>
@@ -399,7 +418,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="./images/img-intro/posit.png" class="img-fluid figure-img" style="width:80.0%"></p>
+<figure class="figure"><p><img src="./images/img-intro/posit.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
 </figure>
 </div>
 </div>
@@ -409,7 +428,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="images/img-intro/rstudio-logo.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="images/img-intro/rstudio-logo.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -418,7 +437,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="https://upload.wikimedia.org/wikipedia/commons/3/38/Jupyter_logo.svg" class="img-fluid figure-img" style="width:50.0%"></p>
+<figure class="figure"><p><img src="https://upload.wikimedia.org/wikipedia/commons/3/38/Jupyter_logo.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%"></p>
 </figure>
 </div>
 </div>
@@ -497,7 +516,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="./images/img-intro/cloud.png" class="img-fluid figure-img" width="413"></p>
+<figure class="figure"><p><img src="./images/img-intro/cloud.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="413"></p>
 </figure>
 </div>
 </div>
@@ -506,20 +525,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Go to https://posit.cloud/</li>
 <li>Log in</li>
 </ul>
-<div class="cell" data-layout-align="center">
-
-</div>
 </div>
 </div>
 <hr>
 <p>Please follow the steps below to sign up Posit Cloud.</p>
 <p><span style="color:blue"> <strong>Sign up Posit Cloud</strong> </span></p>
-<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-caption-container flex-fill">
+<div class="callout-title-container flex-fill">
 Lab Time!
 </div>
 </div>
@@ -532,19 +548,22 @@ Lab Time!
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-posit-web" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="./images/img-intro/posit-cloud.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;3.1: Posit website</figcaption><p></p>
-</figure>
+<div id="fig-posit-web" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-posit-web-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/img-intro/posit-cloud.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-posit-web-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.1: Posit website
+</figcaption></figure>
 </div>
 </div>
 </div>
-<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-caption-container flex-fill">
+<div class="callout-title-container flex-fill">
 Lab Time!
 </div>
 </div>
@@ -563,7 +582,7 @@ Lab Time!
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="./images/img-intro/landing-1-posit.png" class="img-fluid figure-img" style="width:80.0%"></p>
+<figure class="figure"><p><img src="./images/img-intro/landing-1-posit.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
 </figure>
 </div>
 </div>
@@ -572,7 +591,7 @@ Lab Time!
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="./images/img-intro/posit-free-plan.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="./images/img-intro/posit-free-plan.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -587,7 +606,7 @@ Lab Time!
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="./images/img-intro/new-project-cloud-posit.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="./images/img-intro/new-project-cloud-posit.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -596,7 +615,7 @@ Lab Time!
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="./images/img-intro/new-project-option.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="./images/img-intro/new-project-option.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -609,7 +628,7 @@ Lab Time!
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="./images/img-intro/posit-cloud-hide-sidebar.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="./images/img-intro/posit-cloud-hide-sidebar.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -617,12 +636,12 @@ Lab Time!
 <hr>
 <p><span style="color:blue"> <strong>First R Code in Posit Cloud!</strong> </span></p>
 <p>We will be using RStudio as our main IDE for coding in R.</p>
-<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-caption-container flex-fill">
+<div class="callout-title-container flex-fill">
 Lab Time!
 </div>
 </div>
@@ -639,10 +658,13 @@ Lab Time!
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-theme" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="./images/img-intro/rcloud_project.png" class="img-fluid figure-img" width="1432"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;3.2: How to change the editor theme</figcaption><p></p>
-</figure>
+<div id="fig-theme" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-theme-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/img-intro/rcloud_project.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="1432">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-theme-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.2: How to change the editor theme
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -651,10 +673,13 @@ Lab Time!
 <p>For more help, read the <a href="https://posit.cloud/learn/guide">Posit Cloud guide</a>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-guide" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="./images/img-intro/posit-cloud-guide.png" class="img-fluid figure-img" style="width:70.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;3.3: Posit Cloud Guide</figcaption><p></p>
-</figure>
+<div id="fig-guide" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-guide-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/img-intro/posit-cloud-guide.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-guide-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.3: Posit Cloud Guide
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -664,10 +689,13 @@ Lab Time!
 <p>In RStudio, there are 4 main panes, source pane, console pane, pane for environment/history and version control, and the pane for files, plots, packages and help page. Source pane is where you write your code. Your code will not be evaluated or interpreted until you “run” them or source them to the console. When your code is long, write your code in R scripts in the Source, so that the code can be saved and reused later. You type code into the Console if the code is short or you want to do some quick calculations or analysis. The code you type in the Console will not be saved in a script. In the environment/history, you can check any objects you create in the R environment and you can also view your command history in the history tab. You will see how the pane for file/plot/package/help can be used as we learn more about RStudio.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-panes" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="./images/img-intro/rstudio_panes.png" class="img-fluid figure-img" width="777"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;3.4: RStudio Panes. Source: https://bookdown.org/ndphillips/YaRrr/the-four-rstudio-windows.html</figcaption><p></p>
-</figure>
+<div id="fig-panes" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-panes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/img-intro/rstudio_panes.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="777">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-panes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.4: RStudio Panes. Source: https://bookdown.org/ndphillips/YaRrr/the-four-rstudio-windows.html
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -678,10 +706,13 @@ Lab Time!
 <p>Here you see in this r script, I create two objects <code>x</code> and <code>y</code>, and I also load the data <code>mtcars</code> into R environment. Don’t worry if you don’t know these syntax. You will learn basic R syntax and programming later.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-R-script" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="./images/img-intro/script.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;3.5: Creating an R script</figcaption><p></p>
-</figure>
+<div id="fig-R-script" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-R-script-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/img-intro/script.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-R-script-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.5: Creating an R script
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -689,10 +720,13 @@ Lab Time!
 <p>A Python script is a <strong>.py</strong> file that contains Python code. To create a Python script, go to <strong>File &gt; New &gt; Python Script</strong>, or click the green-plus icon on the topleft corner and select Python Script. Here I print the string <code>Hello, World!"</code>, create an string object <code>b</code> storing <code>Hello, World!"</code>, and then print the 3rd to 4th letter of the string.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-script-py" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="./images/img-intro/script-py.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;3.6: Creating a Python script</figcaption><p></p>
-</figure>
+<div id="fig-script-py" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-script-py-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/img-intro/script-py.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-script-py-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.6: Creating a Python script
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -729,10 +763,13 @@ Lab Time!
 </ul>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-running-code" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="./images/img-intro/script.png" class="img-fluid figure-img" width="471"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;3.7: Running R Code</figcaption><p></p>
-</figure>
+<div id="fig-running-code" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-running-code-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/img-intro/script.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="471">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-running-code-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.7: Running R Code
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -746,14 +783,14 @@ Lab Time!
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="./images/img-intro/run-py-pkg.png" class="img-fluid figure-img" style="width:50.0%"></p>
+<figure class="figure"><p><img src="./images/img-intro/run-py-pkg.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%"></p>
 </figure>
 </div>
 </div>
 </div>
 <hr>
 <p><span style="color:blue"> <strong>Environment Tab</strong> </span></p>
-<p>The (global) environment is where we are currently working. Anything created or imported into the current R/Python session is stored in our environment and shown in the <strong>Environment</strong> tab. After we run the R script from <a href="#fig-R-script">Figure&nbsp;<span>3.5</span></a>, the following objects are stored in the environment:</p>
+<p>The (global) environment is where we are currently working. Anything created or imported into the current R/Python session is stored in our environment and shown in the <strong>Environment</strong> tab. After we run the R script from <a href="#fig-R-script" class="quarto-xref">Figure&nbsp;<span>3.5</span></a>, the following objects are stored in the environment:</p>
 <ul>
 <li>Data set <code>mtcars</code>
 </li>
@@ -762,14 +799,17 @@ Lab Time!
 </ul>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-environment" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="./images/img-intro/environment.png" class="img-fluid figure-img" width="995"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;3.8: Environment Pane</figcaption><p></p>
-</figure>
+<div id="fig-environment" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-environment-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/img-intro/environment.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="995">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-environment-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.8: Environment Pane
+</figcaption></figure>
 </div>
 </div>
 </div>
-<p>After we run the Python script from <a href="#fig-script-py">Figure&nbsp;<span>3.6</span></a>, the following object is stored in the environment:</p>
+<p>After we run the Python script from <a href="#fig-script-py" class="quarto-xref">Figure&nbsp;<span>3.6</span></a>, the following object is stored in the environment:</p>
 <ul>
 <li>Object <code>b</code> storing a string <code>Hello World!</code>
 </li>
@@ -777,7 +817,7 @@ Lab Time!
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="./images/img-intro/environment-py.png" class="img-fluid figure-img" style="width:80.0%"></p>
+<figure class="figure"><p><img src="./images/img-intro/environment-py.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
 </figure>
 </div>
 </div>
@@ -796,17 +836,17 @@ Lab Time!
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="./images/img-intro/history.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="./images/img-intro/history.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 </div>
-<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<div class="callout-caption-container flex-fill">
+<div class="callout-title-container flex-fill">
 Tip
 </div>
 </div>
@@ -832,7 +872,7 @@ Tip
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="./images/img-intro/pkg_install.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="./images/img-intro/pkg_install.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -853,12 +893,12 @@ Tip
 <span>                             colour <span class="op">=</span> <span class="va">class</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>    <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-caption-container flex-fill">
+<div class="callout-title-container flex-fill">
 What happens when you run the code shown below?
 </div>
 </div>
@@ -896,12 +936,12 @@ could not find function "ggplot"</code></pre>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">?</span><span class="va">mean</span></span>
 <span><span class="op">?</span><span class="va">mtcars</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-caption-container flex-fill">
+<div class="callout-title-container flex-fill">
 What does the function <code><a href="https://rdrr.io/r/base/mean.html">mean()</a></code> do? What is the size of mpg?
 </div>
 </div>
@@ -909,23 +949,26 @@ What does the function <code><a href="https://rdrr.io/r/base/mean.html">mean()</
 
 </div>
 </div>
-<p>A document will show up in the <strong>Help</strong> tab in the bottom-right pane, teaching you how to use the function or explaining the data set. An example is shown for the <code>mpg</code> data set in <a href="#fig-help-tab">Figure&nbsp;<span>3.9</span></a> below.</p>
+<p>A document will show up in the <strong>Help</strong> tab in the bottom-right pane, teaching you how to use the function or explaining the data set. An example is shown for the <code>mpg</code> data set in <a href="#fig-help-tab" class="quarto-xref">Figure&nbsp;<span>3.9</span></a> below.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-help-tab" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="./images/img-intro/mpg_help.png" class="img-fluid figure-img" style="width:90.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;3.9: Document explaining the mpg data set in the Help tab</figcaption><p></p>
-</figure>
+<div id="fig-help-tab" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-help-tab-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/img-intro/mpg_help.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-help-tab-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.9: Document explaining the mpg data set in the Help tab
+</figcaption></figure>
 </div>
 </div>
 </div>
 <hr>
-<div class="callout-warning callout callout-style-default no-icon callout-captioned">
+<div class="callout callout-style-default callout-warning no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-caption-container flex-fill">
+<div class="callout-title-container flex-fill">
 You can do it!
 </div>
 </div>
@@ -947,21 +990,27 @@ You can do it!
 <li>Go to <a href="https://cloud.r-project.org" class="uri">https://cloud.r-project.org</a>.</li>
 <li>Click Download R for [<em>your operating system</em>].</li>
 </ul>
-<div id="fig-download" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="./images/img-intro/r_download.png" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;3.10: Downloading R</figcaption><p></p>
-</figure>
+<div id="fig-download" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-download-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/img-intro/r_download.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-download-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.10: Downloading R
+</figcaption></figure>
 </div>
 <p><span style="color:red"> <strong><em>Step 2</em></strong> </span></p>
 <ul>
-<li>If you are a Mac user, you should see the page shown below in <a href="#fig-windows-mac">Figure&nbsp;<span>3.11</span></a>.</li>
+<li>If you are a Mac user, you should see the page shown below in <a href="#fig-windows-mac" class="quarto-xref">Figure&nbsp;<span>3.11</span></a>.</li>
 <li>You are recommended to download and install the <em>latest</em> version of R (now <strong>R-4.3.1</strong>) if your OS version allows to do so.</li>
 <li>Otherwise, choose a previous version, such as R-3.6.3.</li>
 </ul>
-<div id="fig-windows-mac" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="./images/img-intro/r_version.png" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;3.11: Downloading R for Mac</figcaption><p></p>
-</figure>
+<div id="fig-windows-mac" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-windows-mac-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/img-intro/r_version.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-windows-mac-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.11: Downloading R for Mac
+</figcaption></figure>
 </div>
 <ul>
 <li>If you are a Windows user, after clicking Download R for Windows, please choose <strong>base</strong> version and then click <strong>Download R-4.3.1 for Windows</strong>.</li>
@@ -975,10 +1024,13 @@ You can do it!
 <center>
 <strong>Windows</strong>
 </center>
-<div id="fig-windows" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="./images/img-intro/r_windows.jpg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;3.12: Windows R Console</figcaption><p></p>
-</figure>
+<div id="fig-windows" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-windows-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/img-intro/r_windows.jpg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-windows-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.12: Windows R Console
+</figcaption></figure>
 </div>
 </div><div class="column" style="width:2%;">
 
@@ -986,10 +1038,13 @@ You can do it!
 <center>
 <strong>Mac</strong>
 </center>
-<div id="fig-mac" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="./images/img-intro/r_mac.png" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;3.13: Mac R Console</figcaption><p></p>
-</figure>
+<div id="fig-mac" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-mac-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/img-intro/r_mac.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-mac-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.13: Mac R Console
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -1007,7 +1062,7 @@ You can do it!
 <p><span style="color:blue"> <strong>Install RStudio</strong> </span></p>
 <p><span style="color:red"> <strong><em>Step 1</em></strong> </span></p>
 <ul>
-<li>In the <a href="https://posit.co/">Posit website</a>, please choose <strong>Products &gt; RStudio IDE</strong> as shown in <a href="#fig-posit-web">Figure&nbsp;<span>3.1</span></a>.</li>
+<li>In the <a href="https://posit.co/">Posit website</a>, please choose <strong>Products &gt; RStudio IDE</strong> as shown in <a href="#fig-posit-web" class="quarto-xref">Figure&nbsp;<span>3.1</span></a>.</li>
 </ul>
 <!-- ![R Studio Website](./images/img-intro/rstudio.png){#fig-website} --><p><span style="color:red"> <strong><em>Step 2</em></strong> </span></p>
 <ul>
@@ -1015,38 +1070,47 @@ You can do it!
 </ul>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-download-desktop" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="./images/img-intro/rstudio_desktop_posit.png" class="img-fluid figure-img" width="1297"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;3.14: Downloading RStudio Desktop</figcaption><p></p>
-</figure>
+<div id="fig-download-desktop" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-download-desktop-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/img-intro/rstudio_desktop_posit.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="1297">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-download-desktop-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.14: Downloading RStudio Desktop
+</figcaption></figure>
 </div>
 </div>
 </div>
 <p><span style="color:red"> <strong><em>Step 3</em></strong> </span></p>
 <p>The page will automatically detect your operating system and recommend a version of RStudio that works the best for you that is usually the latest version.</p>
 <ul>
-<li>Click <strong>DOWNLOAD RSTUDIO DESKTOP FOR [Your OS version]</strong> (<a href="#fig-R-latest">Figure&nbsp;<span>3.15</span></a>).</li>
+<li>Click <strong>DOWNLOAD RSTUDIO DESKTOP FOR [Your OS version]</strong> (<a href="#fig-R-latest" class="quarto-xref">Figure&nbsp;<span>3.15</span></a>).</li>
 <li>Follow the standard installation steps and you should get the software.</li>
 <li>Make sure that R is installed successfully on your computer before you download and install RStudio.</li>
 </ul>
 <!-- :::{.callout-note icon=false} --><!-- The latest version of RStudio is **2022.07.1+554**. --><!-- ::: --><div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-R-latest" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="./images/img-intro/rstudio_download_posit.png" class="img-fluid figure-img" width="1235"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;3.15: Latest version of RStudio</figcaption><p></p>
-</figure>
+<div id="fig-R-latest" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-R-latest-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/img-intro/rstudio_download_posit.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="1235">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-R-latest-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.15: Latest version of RStudio
+</figcaption></figure>
 </div>
 </div>
 </div>
 <!-- ![](./images/img-intro/rstudio_download.png) -->
 <p><span style="color:red"> <strong><em>RStudio Screen</em></strong> </span></p>
-<p>When you open RStudio, you should see something similar to <a href="#fig-RStudio-screen">Figure&nbsp;<span>3.16</span></a> below. If you do, congratulations! You can now do any statistical computation in R using RStudio locally on your computer.</p>
+<p>When you open RStudio, you should see something similar to <a href="#fig-RStudio-screen" class="quarto-xref">Figure&nbsp;<span>3.16</span></a> below. If you do, congratulations! You can now do any statistical computation in R using RStudio locally on your computer.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-RStudio-screen" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="./images/img-intro/rstudio_ubuntu.png" class="img-fluid figure-img" width="683"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;3.16: R Studio Screen</figcaption><p></p>
-</figure>
+<div id="fig-RStudio-screen" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-RStudio-screen-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/img-intro/rstudio_ubuntu.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="683">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-RStudio-screen-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.16: R Studio Screen
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -1059,10 +1123,13 @@ You can do it!
 <p>Basic arithmetic operators are shown in the table below. Most symbols are intuitive. To get the remainder of division, we use two percentage symbols. To get the quotient of division, we use percent, slash and percent symbol.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-arithmetic-operators" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="./images/img-intro/arithmetic_operator.png" class="img-fluid figure-img" width="354"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;3.17: Table of arithmetic operators. Source: https://www.statmethods.net/management/operators.html</figcaption><p></p>
-</figure>
+<div id="fig-arithmetic-operators" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-arithmetic-operators-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/img-intro/arithmetic_operator.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="354">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-arithmetic-operators-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.17: Table of arithmetic operators. Source: https://www.statmethods.net/management/operators.html
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -1077,10 +1144,13 @@ You can do it!
 <!-- - We have to do the operation in the parentheses first, as the PEMDAS rule describes in @fig-pemdas below. -->
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-pemdas" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="./images/img-intro/pemdas.jpeg" class="img-fluid figure-img" width="384"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;3.18: Order of operations. Source: https://www.fabworldtoday.com/pemdas-rule/</figcaption><p></p>
-</figure>
+<div id="fig-pemdas" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-pemdas-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/img-intro/pemdas.jpeg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="384">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pemdas-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.18: Order of operations. Source: https://www.fabworldtoday.com/pemdas-rule/
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -1090,10 +1160,13 @@ You can do it!
 <p>Here are some commonly used comparison and logical operators. R uses <code>!</code> to negate the result, vertical bar <code>|</code> for “or” and <code>&amp;</code> for “and”. There is a R buil-in function <code><a href="https://rdrr.io/r/base/Logic.html">isTRUE()</a></code> to test if an object <code>x</code> is TRUE.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-logical-operators" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="./images/img-intro/logical_operator.png" class="img-fluid figure-img" width="311"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;3.19: Table of logical operators. Source: https://www.statmethods.net/management/operators.html</figcaption><p></p>
-</figure>
+<div id="fig-logical-operators" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-logical-operators-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/img-intro/logical_operator.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="311">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-logical-operators-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.19: Table of logical operators. Source: https://www.statmethods.net/management/operators.html
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -1125,12 +1198,12 @@ You can do it!
 </div>
 </div>
 </div>
-<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-caption-container flex-fill">
+<div class="callout-title-container flex-fill">
 What does <code>TRUE &amp; FALSE</code> return?
 </div>
 </div>
@@ -1143,10 +1216,13 @@ What does <code>TRUE &amp; FALSE</code> return?
 <p>R has lots of built-in functions, especially for mathematics, probability and statistics. No importing other modules or libraries is required. These functions are pretty similar to the MATLAB or Python functions. We’ll learn more about them together when we are actually doing probability and statistics.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-built-functions" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="./images/img-intro/numeric_fcns.png" class="img-fluid figure-img" style="width:60.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;3.20: R Built-in functions. Source: https://www.statmethods.net/management/functions.html</figcaption><p></p>
-</figure>
+<div id="fig-built-functions" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-built-functions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/img-intro/numeric_fcns.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-built-functions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.20: R Built-in functions. Source: https://www.statmethods.net/management/functions.html
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -1181,12 +1257,12 @@ What does <code>TRUE &amp; FALSE</code> return?
 </div>
 <hr>
 <p><span style="color:blue"> <strong>Commenting</strong> </span></p>
-<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-caption-container flex-fill">
+<div class="callout-title-container flex-fill">
 You’ve seen comments a lot! How do we write a comment in R?
 </div>
 </div>
@@ -1201,8 +1277,7 @@ You’ve seen comments a lot! How do we write a comment in R?
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="./images/img-intro/cat_comment.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">https://www.reddit.com/r/ProgrammerHumor /comments/8w54mx/code_comments_be_like/</figcaption><p></p>
-</figure>
+<figcaption>https://www.reddit.com/r/ProgrammerHumor /comments/8w54mx/code_comments_be_like/</figcaption></figure>
 </div>
 </div>
 </div>
@@ -1211,8 +1286,7 @@ You’ve seen comments a lot! How do we write a comment in R?
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="./images/img-intro/stopsign.webp" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">https://juliabirkett.medium.com/in-defense-of-some-code-comments-8e60f2ae0a4</figcaption><p></p>
-</figure>
+<figcaption>https://juliabirkett.medium.com/in-defense-of-some-code-comments-8e60f2ae0a4</figcaption></figure>
 </div>
 </div>
 </div>
@@ -1255,8 +1329,7 @@ You’ve seen comments a lot! How do we write a comment in R?
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="./images/img-intro/r_assign_syntax.jpg" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Source: https://irudnyts.github.io/r-coding-style-guide/</figcaption><p></p>
-</figure>
+<figcaption>Source: https://irudnyts.github.io/r-coding-style-guide/</figcaption></figure>
 </div>
 </div>
 </div>
@@ -1514,10 +1587,13 @@ You’ve seen comments a lot! How do we write a comment in R?
 <p>We know images speak louder than words. Here you go.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-subsetting-list" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="./images/img-intro/list_condiment.png" class="img-fluid figure-img" width="851"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;3.21: Condiment analogy for subsetting lists</figcaption><p></p>
-</figure>
+<div id="fig-subsetting-list" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-subsetting-list-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/img-intro/list_condiment.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="851">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-subsetting-list-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.21: Condiment analogy for subsetting lists
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -1529,17 +1605,20 @@ You’ve seen comments a lot! How do we write a comment in R?
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="https://raw.githubusercontent.com/hadley/adv-r/master/diagrams/subsetting/train.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="https://raw.githubusercontent.com/hadley/adv-r/master/diagrams/subsetting/train.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-subsetting-train" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="https://raw.githubusercontent.com/hadley/adv-r/master/diagrams/subsetting/train-single.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;3.22: Train analogy for subsetting a list</figcaption><p></p>
-</figure>
+<div id="fig-subsetting-train" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-subsetting-train-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://raw.githubusercontent.com/hadley/adv-r/master/diagrams/subsetting/train-single.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-subsetting-train-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.22: Train analogy for subsetting a list
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -1763,12 +1842,12 @@ You’ve seen comments a lot! How do we write a comment in R?
 <!-- ::: -->
 <!-- :::: -->
 <hr>
-<div class="callout-warning callout callout-style-default no-icon callout-captioned">
+<div class="callout callout-style-default callout-warning no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-caption-container flex-fill">
+<div class="callout-title-container flex-fill">
 You can do it!
 </div>
 </div>
@@ -1816,9 +1895,6 @@ You can do it!
 <li>
 <code>speed_vec</code> above should be converted to an <strong>ordinal</strong> factor since its categories have a natural ordering. Create an ordered factor vector <code>speed_fac</code> by completing the code below. Set <code>ordered</code> to <code>TRUE</code>, and set <code>levels</code> to <code>c("low", "medium", "high")</code>. Print <code>speed_fac</code>.</li>
 </ol>
-<div class="cell" data-layout-align="center">
-
-</div>
 <p><br></p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb45"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># ==============================================================================</span></span>
@@ -1841,9 +1917,6 @@ You can do it!
 <ol type="a">
 <li>Use the function <code><a href="https://rdrr.io/r/base/data.frame.html">data.frame()</a></code> to construct a data frame. Pass the vectors <code>name</code>, <code>type</code>, <code>diameter</code>, <code>rotation</code> and <code>rings</code> as arguments to <code><a href="https://rdrr.io/r/base/data.frame.html">data.frame()</a></code>, in this order. Call the resulting data frame <code>planets_df</code>.</li>
 </ol>
-<div class="cell" data-layout-align="center">
-
-</div>
 <ol start="2" type="a">
 <li>Use <code><a href="https://rdrr.io/r/utils/str.html">str()</a></code> to investigate the structure of the new <code>planets_df</code> variable. Which are categorical (qualitative) variables and which are numerical (quantitative) variables? For those that are categorical, are they nominal or ordinal? For those numerical variables, are they interval or ratio level? discrete or continuous?</li>
 <li>From <code>planets_df</code>, select the diameter of Mercury: this is the value at the first row and the third column. Simply print out the result.</li>
@@ -1884,9 +1957,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -1922,10 +2009,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/chenghanyu-introstatsbook\.netlify\.app\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1935,8 +2039,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1948,9 +2061,245 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {
@@ -1990,19 +2339,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./intro-data.html" class="pagination-link">
+      <a href="./intro-data.html" class="pagination-link" aria-label="Data Collection and Data Type">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data Collection and Data Type</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./datasummary.html" class="pagination-link">
+      <a href="./datasummary.html" class="pagination-link" aria-label="Summarizing Data">
         <span class="nav-page-text">Summarizing Data</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">
-    <div class="nav-footer-left">Copyright 2023, Dr.&nbsp;Cheng-Han Yu</div>   
+    <div class="nav-footer-left">
+<p>Copyright 2024, Dr.&nbsp;Cheng-Han Yu</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/intro-r.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
 <li class="nav-item compact">

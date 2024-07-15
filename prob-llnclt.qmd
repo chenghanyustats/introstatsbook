@@ -1,9 +1,51 @@
 # Law of Large Numbers and Central Limit Theorem {#sec-prob-llnclt}
 
+{{< include macros.qmd >}}
+
+In sampling distribution @sec-prob-samdist, we learn that as the sample size $n$ grows, the sampling distribution of sample mean 
+
+1. has the mean identical to the expected value of the random variable being sampled, or the population mean
+2. is less variable with a smaller variance
+3. looks more like a normal distribution 
+
+You may be wondering if it is always true. The answer is *yes* if the sample mean is the average of independent and identically distributed random variables. These properties are proved by the two theorems: the **Law of Large Numbers** and the **Central Limit Theorem**.
+
 
 ## Law of Large Numbers
 
-Coming soon.
+The Law of Large Numbers (LLN) says that 
+
+*If we keep on taking larger and larger random or iid samples (larger $n$), the statistic sample mean $\overline{X}$ is guaranteed to get closer and closer to the population mean $\mu = E(X)$ if the mean exists.*
+
+Therefore, with LLN, if $E(X) = \mu$, $\overline{X} \approx \mu$ when $n$ is sufficiently large. It is always true, and it does not matter whether we know the value of $\mu$ or not, as long as $\mu$ exists or it is finite.
+
+```{r}
+#| label: fig-lln
+#| fig-cap: "Illustration of Law of Large Numbers. The population mean is assumed having value three. The simulation is run twice."
+#| code-fold: true
+
+set.seed(2024)
+x <- rnorm(1000, 3, 5); s <- cumsum(x)
+set.seed(2025)
+x1 <- rnorm(1000, 3, 5); s1 <- cumsum(x1)
+
+par(mar = c(4, 4, 2, 1))
+plot(s / (1:1000), type = "l", 
+     main = "Law of Large Numbers with population mean 3", 
+     xlab = "sample size (n)", ylab = "sample mean", las = 1)
+lines(1:1000, s1 / (1:1000), col = 3)
+abline(h = 3, col = "red", lwd = 2, lty = 2)
+```
+
+@fig-lln illustrates LLN using a simulation. We consider the sample size $n = 1, 2, \dots, 1000$. For each $n$, we draw a random sample $x_1, \dots, x_n$ from a normal distribution $N(3, 5^2)$, and the corresponding sample mean is $\bar{x} = (x_1+ \cdots + x_n)/n$. When $n$ is small, $\bar{x}$ is quite from away from the population mean value $\mu = 3$ due to the randomness of the samples. For example, in this simulation, $x_1$, $x_2$, and $x_3$ are `r round(x[1], 2)`, `r round(x[2], 2)`, and `r round(x[3], 2)` respectively, and hence the sample mean $\bar{x}_3 =$ `r round(mean(x[1:3]), 2)`. Each $x_i$ comes from $N(3, 5^2)$. Although their expected value is 3, keep in mind that theoretically its realized value can be any real value. With larger variance, it is more likely to have a value away from its expected value. When the sample size is small, such randomness generally will not be washed out simply by averaging. Therefore, the sample mean is not that close to the population.
+
+The marvelous part is that when the sample size is large, such randomness or the deviation from the mean can be washed out via averaging, and the sample mean will get closer to the population mean. In the figure, two simulations are run, and both show that when the sample size is over 200, the sample mean is quite close to the population mean, and it does not fluctuate much as when the sample size is small. This is probably one of the reasons why we love large sample size. Heard **Big Data** before? When we don't know but want to sort of guess or learn the value of $\mu$, we can draw a larger sample from the target population, calculate the sample mean, then use it as a *proxy* or *representative* of the population mean. The entire process of using sample statistics to learn unknown population properties or quantities is called **statistical inference** which will be discussed in detail starting next part.
+
+:::{.callout-note}
+- Remember that sine $\overline{X}$ is a transformation of random variables $X_1, \dots, X_n$, $\overline{X}$ itself is also a random variable with some randomness and variation. Therefore, when the simulation (random sampling) is run twice (independently), for each size of $n$, we will get two different sets of values of $x_1, \dots, x_n$, and two different $\bar{x}$s, resulting in two lines in @fig-lln. 
+
+- Additionally, as shown in the figure, the black and green values of $\overline{X}$ are quite different when $n$ is small, showing a larger variation. Why? It comes from the fact that $\Var(\overline{X}) = \sigma^2/n$. It also tells us why $\overline{X}$ converges to $\mu$. When $n$ gets large, its variation gets small, and eventually this random variable behaves like a constant with no variation. That constant is $\mu$.
+:::
 
 ## Central Limit Theorem
 
