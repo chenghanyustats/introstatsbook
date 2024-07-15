@@ -1,11 +1,5 @@
 # Monte Carlo Sampling and Sampling Distribution {#sec-prob-sampling}
 
-When we do statistical inference, we assume each data point in the sample is drawn from the target population whose characteristic we focus is assumed to follow some probability distribution that is unknown to us. For example, suppose we would like to do inference about Marquette students' mean height. We assume the student height follows a normal distribution $N(\mu, \sigma^2)$ with $\mu$ being unknown to us ($\mu$ is what we would like to infer for). We collect our sample data, and assume each data point comes from the assumed distribution $N(\mu, \sigma^2)$.
-
-The sampling distribution is an important concept that connects probability and statistics together. We use the sampling distribution quite often, at least at the introductory level, to do statistical inference, and that's why we need to learn what it is before doing statistical inference.
-
-
-
 ```{r}
 #| echo: false
 #| warning: false
@@ -18,12 +12,169 @@ library(openintro)
 ```
 
 
+
 ```{r}
 #| echo: false
 knitr::opts_chunk$set(echo = FALSE, fig.align = "center")
 ```
 
-## Introduction
+
+This chapter talks about **sampling**. When we *sample*, *simulate*, or *draw* a value of a random variable following some distribution, we get a *realized value* of that random variable that varies from sample to sample due to its random or stochastic property. Sampling techniques are used frequently in statistical inference and various fields of science, engineering, and mathematics. Here in particular, we talk about **Monte Carlo simulation** and **sampling distribution**.
+
+
+## Monte Carlo Simulation
+
+From [Wikipedia](https://en.wikipedia.org/wiki/Monte_Carlo_method#Definitions), there is no consensus on how Monte Carlo should be defined. In short, Monte Carlo simulation is a **repeated random sampling** method. Therefore, when using Monte Carlo method, we do not just simulate one single value, but generate numerous realized values of random variables. Also these values are generated with randomness.
+
+Monte Carlo methods can be used to approximate the probability of some event happening. Take categorical data for example, once we collect the Monte Carlo samples, we can calculate the relative frequency of each category in the data, and use their relative frequency as the probability that a specific category happens when a sample is drawn from some target distribution.
+
+Suppose there are 2 red balls and 3 blue ones in a bag. Apparently, if each ball is equally likely to be chosen (picking at random), and if we Do know in advance that 2 reds and 3 blues are in the bag, then the probability that a red ball is drawn is 2/5. The question is 
+
+:::{.callout-note icon=false}
+## Without peeking at the bag, how do we approximate the probability of getting a red/blue ball?
+:::
+
+The idea of Monte Carlo simulation is that we repeat the experiment (drawing a ball) a large number of times, then obtain the relative frequency of red ball to approximate the probability of getting a red ball.
+
+
+```{r}
+#| echo: false
+#| label: bag-balls
+bag_balls <- rep(c("red", "blue"), 
+                 times = c(2, 3))
+```
+
+Let me first create a R vector `bag_balls` that saves the information about the color of ball in the bag. It's there, but let's just don't see it at this moment. In R, to randomly sample an element of a vector, we can use the function `sample()`. For example, the following code shows how to randomly draw a ball from that bag:
+
+```{r}
+#| echo: !expr c(2)
+set.seed(2024)
+sample(x = bag_balls, size = 1)
+```
+
+It produces one random outcome. This time we get a red ball. We can (put the red ball back in to the bag) draw a ball again by running the code:
+
+```{r}
+#| echo: !expr c(2)
+set.seed(2025)
+sample(x = bag_balls, size = 1)
+```
+
+This time we get a blue ball. To do a Monte Carlo simulation, we can use the `replicate()` function, which allows us to repeat the same job a number of times
+
+```{r}
+#| label:  mc-sim-balls
+#| echo: !expr c(2)
+set.seed(1000)
+mc_sim <- replicate(n = 100, expr = sample(bag_balls, 1))
+```
+
+The argument `n` is an integer indicating the number of replications. The argument `expr` is the *expr*ession (usually a function call) to evaluate repeatedly. Here I repeatedly draw a ball 100 times. The object `mc_sim` contains 100 colors collected from the bag of colored balls.
+
+```{r}
+#| echo: true
+str(mc_sim)
+```
+
+How do we get the relative frequency of category? We can first check the frequency table or frequency distribution using `table()` function:
+
+```{r}
+(freq_table <- table(mc_sim))
+```
+
+To get the relative frequency, just divided by the total number of repetitions.
+
+```{r}
+freq_table / 100
+```
+
+So if there are 5 balls in the bag, how many red balls in the bag? Well I would guess there are 2 red balls and 3 blue balls in the bag because the chance of getting a red ball is about 40\%. We just demo a Monte Carlo simulation for categorical data.
+
+It is important to know that Monte Carlo works better when the number of repetitions is large. When we repeatedly sample the value only few times, we may unluckily not be able see the entire picture of the target distribution, and get stuck in some part of the distribution. As a result, the Monte Carlo method cannot faithfully show the whole picture, leading to a biased approximation. In our example, notice that the first 6 random draws are all blue. If we just stop there, we may make a conclusion that the balls in the bag only have one color blue because we "never" see any other colors in our experiment. In this case, 6 samples are too small, and the "true color" has not shown. Again, generally it needs sufficiently large Monte Carlo samples to uncover the target distribution. When we repeatedly draw a ball 10,000 times, we have 
+
+```{r}
+#| echo: !expr c(-1)
+set.seed(1000)
+mc_sim <- replicate(n = 10000, expr = sample(bag_balls, 1))
+table(mc_sim)/10000
+```
+
+Note that the relative frequency of red ball is now so close to the true probability 0.4. Now we are more sure that exactly two red balls in the bag!
+
+
+
+## Random Number Generation
+
+When we do sampling using a computer, we use a so-called **random number generator** to generate a random outcome, and sampling results vary from sample to sample. This is why this time you get red, next time you get blue, and you don't know you will get a blue or red next time you do the random sampling.
+
+Interestingly, a computer cannot generate a *pure* random outcome, and a **pseudorandom number generator** is usually used to generate a sequence of numbers whose properties approximate the properties of sequences of truly random numbers. Because of this, we can actually control random generation results using a **random seed**. To ensure the results are exactly the same every time you do sampling, In R we set the random seed to a specific number using the function `set.seed()`.
+
+For example, if you set the seed at 2024, then every time you do random sampling, you always get the same sampling result.
+
+```{r}
+#| echo: true
+set.seed(2024)
+sample(x = bag_balls, size = 3)
+```
+
+```{r}
+#| echo: true
+## same result!
+set.seed(2024)
+sample(x = bag_balls, size = 3)
+```
+
+Here we draw three balls at random. Because the two random seeds are identical, the two "random" sampling results are identical too.
+
+
+The `sample()` function can actually draw lots of balls. But be careful about the with and without replacement issue. The default setting is draw without replacement. So when we try to draw 6 balls at once, it renders an error, saying cannot take a sample larger than the population when `replace = FALSE`.
+
+```{r}
+#| eval: false
+#| echo: true
+sample(bag_balls, 6)
+# Error in sample.int(length(x), size, replace, prob): 
+# cannot take a sample larger than the population when 'replace = FALSE'
+```
+
+
+Basically we only 5 balls, without replacement, once a ball is drawn, the ball is out of bag, and only 4 balls remain in the bag. So without replacement, we can at most draw 5 balls, which is the "entire population". If we wanna draw more than 5 times from the same bag, we got to specify `replace = TRUE` in the `sample()` function. 
+
+```{r}
+#| echo: true
+sample(bag_balls, 6, replace = TRUE)
+```
+
+
+W can actually do the Monte Carlo simulation using just the `sample()` function like `sample(balls, size = B, replace = TRUE)`. This means that we return the ball back to the bag after drawing it, and we repeatedly draw a ball continually B times basically under the same conditions.
+
+```{r}
+#| echo: !expr c(-1)
+# set.seed(1000)
+mc_sim_rep <- sample(x = bag_balls, size = 100, replace = TRUE)
+table(mc_sim_rep) / 100
+```
+
+Not surprisingly, we get results very similar to those previously obtained using the `replicate()` function. Moreover, if we use the same random seed on `sample()` and `replicate()`, their sampling results will be the same:
+
+```{r}
+#| echo: true
+
+set.seed(2025)
+mc1 <- replicate(n = 100, expr = sample(bag_balls, 1))
+table(mc1)/100
+set.seed(2025)
+mc2 <- sample(x = bag_balls, size = 100, replace = TRUE)
+table(mc2) / 100
+```
+
+
+
+## Why Use Sampling Distribution
+
+When we do statistical inference, we assume each data point in the sample is drawn from the target population whose characteristic we focus is assumed to follow some probability distribution that is unknown to us. For example, suppose we would like to do inference about Marquette students' mean height. We assume the student height follows a normal distribution $N(\mu, \sigma^2)$ with $\mu$ being unknown to us ($\mu$ is what we would like to infer for). We collect our sample data, and assume each data point comes from the assumed distribution $N(\mu, \sigma^2)$.
+
+The sampling distribution is an important concept that connects probability and statistics together. We use the sampling distribution quite often, at least at the introductory level, to do statistical inference, and that's why we need to learn what it is before doing statistical inference.
 
 <span style="color:blue"> **Parameter** </span>
 

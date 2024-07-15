@@ -409,10 +409,12 @@ window.Quarto = {
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">11.1</span> Introduction</a></li>
-  <li><a href="#sampling-distribution" id="toc-sampling-distribution" class="nav-link" data-scroll-target="#sampling-distribution"><span class="header-section-number">11.2</span> Sampling Distribution</a></li>
-  <li><a href="#standardization-of-sample-mean" id="toc-standardization-of-sample-mean" class="nav-link" data-scroll-target="#standardization-of-sample-mean"><span class="header-section-number">11.3</span> Standardization of Sample Mean</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">11.4</span> Exercises</a></li>
+<li><a href="#monte-carlo-simulation" id="toc-monte-carlo-simulation" class="nav-link active" data-scroll-target="#monte-carlo-simulation"><span class="header-section-number">11.1</span> Monte Carlo Simulation</a></li>
+  <li><a href="#random-number-generation" id="toc-random-number-generation" class="nav-link" data-scroll-target="#random-number-generation"><span class="header-section-number">11.2</span> Random Number Generation</a></li>
+  <li><a href="#why-use-sampling-distribution" id="toc-why-use-sampling-distribution" class="nav-link" data-scroll-target="#why-use-sampling-distribution"><span class="header-section-number">11.3</span> Why Use Sampling Distribution</a></li>
+  <li><a href="#sampling-distribution" id="toc-sampling-distribution" class="nav-link" data-scroll-target="#sampling-distribution"><span class="header-section-number">11.4</span> Sampling Distribution</a></li>
+  <li><a href="#standardization-of-sample-mean" id="toc-standardization-of-sample-mean" class="nav-link" data-scroll-target="#standardization-of-sample-mean"><span class="header-section-number">11.5</span> Standardization of Sample Mean</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">11.6</span> Exercises</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/prob-sampling.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -431,10 +433,146 @@ window.Quarto = {
   
 
 
-</header><p>When we do statistical inference, we assume each data point in the sample is drawn from the target population whose characteristic we focus is assumed to follow some probability distribution that is unknown to us. For example, suppose we would like to do inference about Marquette students’ mean height. We assume the student height follows a normal distribution <span class="math inline">\(N(\mu, \sigma^2)\)</span> with <span class="math inline">\(\mu\)</span> being unknown to us (<span class="math inline">\(\mu\)</span> is what we would like to infer for). We collect our sample data, and assume each data point comes from the assumed distribution <span class="math inline">\(N(\mu, \sigma^2)\)</span>.</p>
+</header><p>This chapter talks about <strong>sampling</strong>. When we <em>sample</em>, <em>simulate</em>, or <em>draw</em> a value of a random variable following some distribution, we get a <em>realized value</em> of that random variable that varies from sample to sample due to its random or stochastic property. Sampling techniques are used frequently in statistical inference and various fields of science, engineering, and mathematics. Here in particular, we talk about <strong>Monte Carlo simulation</strong> and <strong>sampling distribution</strong>.</p>
+<section id="monte-carlo-simulation" class="level2" data-number="11.1"><h2 data-number="11.1" class="anchored" data-anchor-id="monte-carlo-simulation">
+<span class="header-section-number">11.1</span> Monte Carlo Simulation</h2>
+<p>From <a href="https://en.wikipedia.org/wiki/Monte_Carlo_method#Definitions">Wikipedia</a>, there is no consensus on how Monte Carlo should be defined. In short, Monte Carlo simulation is a <strong>repeated random sampling</strong> method. Therefore, when using Monte Carlo method, we do not just simulate one single value, but generate numerous realized values of random variables. Also these values are generated with randomness.</p>
+<p>Monte Carlo methods can be used to approximate the probability of some event happening. Take categorical data for example, once we collect the Monte Carlo samples, we can calculate the relative frequency of each category in the data, and use their relative frequency as the probability that a specific category happens when a sample is drawn from some target distribution.</p>
+<p>Suppose there are 2 red balls and 3 blue ones in a bag. Apparently, if each ball is equally likely to be chosen (picking at random), and if we Do know in advance that 2 reds and 3 blues are in the bag, then the probability that a red ball is drawn is 2/5. The question is</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Without peeking at the bag, how do we approximate the probability of getting a red/blue ball?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
+</div>
+</div>
+<p>The idea of Monte Carlo simulation is that we repeat the experiment (drawing a ball) a large number of times, then obtain the relative frequency of red ball to approximate the probability of getting a red ball.</p>
+<p>Let me first create a R vector <code>bag_balls</code> that saves the information about the color of ball in the bag. It’s there, but let’s just don’t see it at this moment. In R, to randomly sample an element of a vector, we can use the function <code><a href="https://rdrr.io/r/base/sample.html">sample()</a></code>. For example, the following code shows how to randomly draw a ball from that bag:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bag_balls</span>, size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "red"</code></pre>
+</div>
+</div>
+<p>It produces one random outcome. This time we get a red ball. We can (put the red ball back in to the bag) draw a ball again by running the code:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bag_balls</span>, size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "blue"</code></pre>
+</div>
+</div>
+<p>This time we get a blue ball. To do a Monte Carlo simulation, we can use the <code><a href="https://rdrr.io/r/base/lapply.html">replicate()</a></code> function, which allows us to repeat the same job a number of times</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mc_sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">replicate</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">100</span>, expr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="va">bag_balls</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The argument <code>n</code> is an integer indicating the number of replications. The argument <code>expr</code> is the <em>expr</em>ession (usually a function call) to evaluate repeatedly. Here I repeatedly draw a ball 100 times. The object <code>mc_sim</code> contains 100 colors collected from the bag of colored balls.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">mc_sim</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> chr [1:100] "blue" "blue" "blue" "blue" "blue" "blue" "red" "blue" "red" ...</code></pre>
+</div>
+</div>
+<p>How do we get the relative frequency of category? We can first check the frequency table or frequency distribution using <code><a href="https://rdrr.io/r/base/table.html">table()</a></code> function:</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>mc_sim
+blue  red 
+  58   42 </code></pre>
+</div>
+</div>
+<p>To get the relative frequency, just divided by the total number of repetitions.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>mc_sim
+blue  red 
+0.58 0.42 </code></pre>
+</div>
+</div>
+<p>So if there are 5 balls in the bag, how many red balls in the bag? Well I would guess there are 2 red balls and 3 blue balls in the bag because the chance of getting a red ball is about 40%. We just demo a Monte Carlo simulation for categorical data.</p>
+<p>It is important to know that Monte Carlo works better when the number of repetitions is large. When we repeatedly sample the value only few times, we may unluckily not be able see the entire picture of the target distribution, and get stuck in some part of the distribution. As a result, the Monte Carlo method cannot faithfully show the whole picture, leading to a biased approximation. In our example, notice that the first 6 random draws are all blue. If we just stop there, we may make a conclusion that the balls in the bag only have one color blue because we “never” see any other colors in our experiment. In this case, 6 samples are too small, and the “true color” has not shown. Again, generally it needs sufficiently large Monte Carlo samples to uncover the target distribution. When we repeatedly draw a ball 10,000 times, we have</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mc_sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">replicate</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10000</span>, expr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="va">bag_balls</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">mc_sim</span><span class="op">)</span><span class="op">/</span><span class="fl">10000</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>mc_sim
+  blue    red 
+0.6032 0.3968 </code></pre>
+</div>
+</div>
+<p>Note that the relative frequency of red ball is now so close to the true probability 0.4. Now we are more sure that exactly two red balls in the bag!</p>
+</section><section id="random-number-generation" class="level2" data-number="11.2"><h2 data-number="11.2" class="anchored" data-anchor-id="random-number-generation">
+<span class="header-section-number">11.2</span> Random Number Generation</h2>
+<p>When we do sampling using a computer, we use a so-called <strong>random number generator</strong> to generate a random outcome, and sampling results vary from sample to sample. This is why this time you get red, next time you get blue, and you don’t know you will get a blue or red next time you do the random sampling.</p>
+<p>Interestingly, a computer cannot generate a <em>pure</em> random outcome, and a <strong>pseudorandom number generator</strong> is usually used to generate a sequence of numbers whose properties approximate the properties of sequences of truly random numbers. Because of this, we can actually control random generation results using a <strong>random seed</strong>. To ensure the results are exactly the same every time you do sampling, In R we set the random seed to a specific number using the function <code><a href="https://rdrr.io/r/base/Random.html">set.seed()</a></code>.</p>
+<p>For example, if you set the seed at 2024, then every time you do random sampling, you always get the same sampling result.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2024</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bag_balls</span>, size <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "red"  "red"  "blue"</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## same result!</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2024</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bag_balls</span>, size <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "red"  "red"  "blue"</code></pre>
+</div>
+</div>
+<p>Here we draw three balls at random. Because the two random seeds are identical, the two “random” sampling results are identical too.</p>
+<p>The <code><a href="https://rdrr.io/r/base/sample.html">sample()</a></code> function can actually draw lots of balls. But be careful about the with and without replacement issue. The default setting is draw without replacement. So when we try to draw 6 balls at once, it renders an error, saying cannot take a sample larger than the population when <code>replace = FALSE</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="va">bag_balls</span>, <span class="fl">6</span><span class="op">)</span></span>
+<span><span class="co"># Error in sample.int(length(x), size, replace, prob): </span></span>
+<span><span class="co"># cannot take a sample larger than the population when 'replace = FALSE'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Basically we only 5 balls, without replacement, once a ball is drawn, the ball is out of bag, and only 4 balls remain in the bag. So without replacement, we can at most draw 5 balls, which is the “entire population”. If we wanna draw more than 5 times from the same bag, we got to specify <code>replace = TRUE</code> in the <code><a href="https://rdrr.io/r/base/sample.html">sample()</a></code> function.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="va">bag_balls</span>, <span class="fl">6</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "blue" "red"  "blue" "red"  "red"  "red" </code></pre>
+</div>
+</div>
+<p>W can actually do the Monte Carlo simulation using just the <code><a href="https://rdrr.io/r/base/sample.html">sample()</a></code> function like <code>sample(balls, size = B, replace = TRUE)</code>. This means that we return the ball back to the bag after drawing it, and we repeatedly draw a ball continually B times basically under the same conditions.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mc_sim_rep</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bag_balls</span>, size <span class="op">=</span> <span class="fl">100</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">mc_sim_rep</span><span class="op">)</span> <span class="op">/</span> <span class="fl">100</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>mc_sim_rep
+blue  red 
+0.59 0.41 </code></pre>
+</div>
+</div>
+<p>Not surprisingly, we get results very similar to those previously obtained using the <code><a href="https://rdrr.io/r/base/lapply.html">replicate()</a></code> function. Moreover, if we use the same random seed on <code><a href="https://rdrr.io/r/base/sample.html">sample()</a></code> and <code><a href="https://rdrr.io/r/base/lapply.html">replicate()</a></code>, their sampling results will be the same:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2025</span><span class="op">)</span></span>
+<span><span class="va">mc1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">replicate</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">100</span>, expr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="va">bag_balls</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">mc1</span><span class="op">)</span><span class="op">/</span><span class="fl">100</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>mc1
+blue  red 
+0.62 0.38 </code></pre>
+</div>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2025</span><span class="op">)</span></span>
+<span><span class="va">mc2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bag_balls</span>, size <span class="op">=</span> <span class="fl">100</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">mc2</span><span class="op">)</span> <span class="op">/</span> <span class="fl">100</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>mc2
+blue  red 
+0.62 0.38 </code></pre>
+</div>
+</div>
+</section><section id="why-use-sampling-distribution" class="level2" data-number="11.3"><h2 data-number="11.3" class="anchored" data-anchor-id="why-use-sampling-distribution">
+<span class="header-section-number">11.3</span> Why Use Sampling Distribution</h2>
+<p>When we do statistical inference, we assume each data point in the sample is drawn from the target population whose characteristic we focus is assumed to follow some probability distribution that is unknown to us. For example, suppose we would like to do inference about Marquette students’ mean height. We assume the student height follows a normal distribution <span class="math inline">\(N(\mu, \sigma^2)\)</span> with <span class="math inline">\(\mu\)</span> being unknown to us (<span class="math inline">\(\mu\)</span> is what we would like to infer for). We collect our sample data, and assume each data point comes from the assumed distribution <span class="math inline">\(N(\mu, \sigma^2)\)</span>.</p>
 <p>The sampling distribution is an important concept that connects probability and statistics together. We use the sampling distribution quite often, at least at the introductory level, to do statistical inference, and that’s why we need to learn what it is before doing statistical inference.</p>
-<section id="introduction" class="level2" data-number="11.1"><h2 data-number="11.1" class="anchored" data-anchor-id="introduction">
-<span class="header-section-number">11.1</span> Introduction</h2>
 <p><span style="color:blue"> <strong>Parameter</strong> </span></p>
 <p><strong>Parameters</strong> in a probability distribution are the values describing the entire distribution. For example,</p>
 <ul>
@@ -522,8 +660,8 @@ Note
 </ul>
 </div>
 </div>
-</section><section id="sampling-distribution" class="level2" data-number="11.2"><h2 data-number="11.2" class="anchored" data-anchor-id="sampling-distribution">
-<span class="header-section-number">11.2</span> Sampling Distribution</h2>
+</section><section id="sampling-distribution" class="level2" data-number="11.4"><h2 data-number="11.4" class="anchored" data-anchor-id="sampling-distribution">
+<span class="header-section-number">11.4</span> Sampling Distribution</h2>
 <p>Any value computed from a sample <span class="math inline">\((X_1, X_2, \dots, X_n)\)</span> is called a <strong>(sample) statistic</strong>.</p>
 <ul>
 <li><span style="color:blue"> The sample mean <span class="math inline">\(\frac{1}{n}\sum_{i=1}^n X_i\)</span> is a statistic. </span></li>
@@ -574,7 +712,7 @@ Figure&nbsp;11.2: Sampling distribution of sample means (Biostatistics for the B
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="prob-sampling_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<figure class="figure"><p><img src="prob-sampling_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -683,8 +821,8 @@ Figure&nbsp;11.5: Sampling distribution is more normal-like.
 </div>
 </div>
 </div>
-</section><section id="standardization-of-sample-mean" class="level2" data-number="11.3"><h2 data-number="11.3" class="anchored" data-anchor-id="standardization-of-sample-mean">
-<span class="header-section-number">11.3</span> Standardization of Sample Mean</h2>
+</section><section id="standardization-of-sample-mean" class="level2" data-number="11.5"><h2 data-number="11.5" class="anchored" data-anchor-id="standardization-of-sample-mean">
+<span class="header-section-number">11.5</span> Standardization of Sample Mean</h2>
 <p>Any random variable can be standardized. For a single random variable <span class="math inline">\(X \sim N(\mu, \sigma^2)\)</span>, we have <span class="math inline">\(Z = \frac{X - \mu}{\sigma} \sim N(0, 1)\)</span>. For the sample mean of <span class="math inline">\(n\)</span> variables, we know <span class="math inline">\(\overline{X} \sim N(\mu_{\overline{X}}, \sigma^2_{\overline{X}}) = N(\mu, \frac{\sigma^2}{n})\)</span>. To standardize <span class="math inline">\(\overline{X}\)</span>, and make a new standard normal variable from it, we just subtract it from its own mean and divided by it own standard deviation:</p>
 <p><span style="color:blue"> <span class="math display">\[Z = \frac{\overline{X} - \mu_{\overline{X}}}{\sigma_{\overline{X}}} = \frac{\overline{X} - \mu}{\sigma/\sqrt{n}} \sim N(0, 1)\]</span></span></p>
 <p>Again, since <span class="math inline">\(\overline{X}\)</span> is a random variable, its transformation is also a random variable. <span class="math inline">\(\frac{\overline{X} - \mu}{\sigma/\sqrt{n}}\)</span> is a standard normal variable.</p>
@@ -713,22 +851,22 @@ P(900 &lt; \overline{X} &lt; 960) &amp;= P\left( \frac{900-930}{130/\sqrt{20}} &
   \end{align}\]</span></p>
 <p>Finally we just need to find <span class="math inline">\(P(Z &lt; 1.03)\)</span> and <span class="math inline">\(P(Z &lt; -1.03)\)</span> using R:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="fl">960</span><span class="op">-</span><span class="fl">930</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fl">130</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="fl">960</span><span class="op">-</span><span class="fl">930</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fl">130</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1.032031</code></pre>
 </div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="fl">900</span><span class="op">-</span><span class="fl">930</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fl">130</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="fl">900</span><span class="op">-</span><span class="fl">930</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fl">130</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] -1.032031</code></pre>
 </div>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="fl">1.032031</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1.032031</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="fl">1.032031</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1.032031</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.6979424</code></pre>
 </div>
 </div>
 <p>If we don’t do standardization, remember to use values in the original scale, and specify the mean and standard deviation. Keep in mind the standard deviation is <span class="math inline">\(\sigma_{\overline{X}} = 130/\sqrt{20}\)</span>, not <span class="math inline">\(130\)</span>.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## P(Xbar &lt; 960) - P(Xbar &lt; 900)</span></span>
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## P(Xbar &lt; 960) - P(Xbar &lt; 900)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="fl">960</span>, mean <span class="op">=</span> <span class="fl">930</span>, sd <span class="op">=</span> <span class="fl">130</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span><span class="op">)</span> <span class="op">-</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="fl">900</span>, mean <span class="op">=</span> <span class="fl">930</span>, sd <span class="op">=</span> <span class="fl">130</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -736,8 +874,8 @@ P(900 &lt; \overline{X} &lt; 960) &amp;= P\left( \frac{900-930}{130/\sqrt{20}} &
 </div>
 </div>
 <p>The probability that the mean psychomotor retardation score of a random sample of 20 patients is between 900 and 960 is about 70%.</p>
-</section><section id="exercises" class="level2" data-number="11.4"><h2 data-number="11.4" class="anchored" data-anchor-id="exercises">
-<span class="header-section-number">11.4</span> Exercises</h2>
+</section><section id="exercises" class="level2" data-number="11.6"><h2 data-number="11.6" class="anchored" data-anchor-id="exercises">
+<span class="header-section-number">11.6</span> Exercises</h2>
 <ol type="1">
 <li>Head lengths of Virginia possums follow a normal distribution with mean 104 mm and standard deviation 6 mm.
 <ol type="a">
