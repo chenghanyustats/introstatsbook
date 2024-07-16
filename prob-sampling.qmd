@@ -1,4 +1,4 @@
-# Monte Carlo Sampling and Sampling Distribution {#sec-prob-sampling}
+# Random Sampling and Sampling Distribution {#sec-prob-sampling}
 
 ```{r}
 #| echo: false
@@ -167,6 +167,105 @@ set.seed(2025)
 mc2 <- sample(x = bag_balls, size = 100, replace = TRUE)
 table(mc2) / 100
 ```
+
+## Random Number Generation from Probability Distributions
+
+Remember from the previous two chapters that we learn the **`dpqr`** family of functions for calculating probabilities, densities, and generating values from a probability distribution. To generate random values, we use **`r`**`dist(n, ...)`. $n$ is the number of observations we would like to generate. The `...` denotes the required parameter values for the distribution being drawn from. For example, 
+
+- `rbinom(n, size, prob)` generates $n$ observations from the binomial distribution with the number of trials specified in `size` and the probability of success specified in `prob`.
+
+- `rpois(n, lambda)` generates $n$ observations from the Poisson distribution with the parameter `lambda`.
+
+- `rnorm(n, mean = 0, sd = 1)` generates $n$ observations from the normal distribution with mean and standard deviation specified in `mean` and `sd`. By default, the mean is zero, and the variance is one. So `rnorm(5)` draws five numbers from the standard normal distribution.
+
+```{r}
+#| echo: true
+## the default mean = 0 and sd = 1 (standard normal)
+rnorm(5)
+```
+
+All the 100 red points below are random draws from the standard normal distribution. You can see that most of the points are around the mean because the density around the mean is higher. Also, we can see when we draw normal samples, it is very difficult to get a sample with a very extreme value because its corresponding density value is quite small. Therefore, we tend to underestimate the population variance if we use the sample data to estimate it. And that's one of the reason why we divided by $n - 1$ in the sample variance formula to sort of correct this underestimation.
+
+```{r}
+#| label: nor-den-draw
+#| echo: false
+#| cache: true
+par(mar = c(4, 4, 2, 1))
+mean=0; sd=1
+# lb=80; ub=120
+
+x <- seq(-4,4,length=100)*sd + mean
+hx <- dnorm(x,mean,sd)
+
+plot(x, hx, type="n", xlab="normal variables", ylab="density",
+  main=expression(N(0, 1)), axes=FALSE, mgp = c(2, 0, 0))
+
+# i <- x >= lb & x <= ub
+lines(x, hx, col = "#003366", lwd = 3)
+# polygon(c(lb,x[i],ub), c(0,hx[i],0), col="red")
+
+# area <- pnorm(ub, mean, sd) - pnorm(lb, mean, sd)
+# result <- paste("P(",lb,"< IQ <",ub,") =",
+#    signif(area, digits=3))
+# mtext(result,3)
+axis(1, at=seq(-4, 4, 2), pos=0)
+axis(2, las = 1)
+
+nor_sample <- rnorm(100)
+points(x = nor_sample, y = jitter(rep(0, length(nor_sample)), factor = 0.5), 
+       col = scales::alpha("red", 0.2), pch = 19)
+```
+
+
+In statistics, we hope the sampled data to be as representative of population as possible. Suppose the population is normal. If the sample is a random sample, we hope the sample size to be large. The larger the sample size, the more representative of population the sample is. 
+
+
+When the sample size is just 20, you can see the sample data does not look very normal. When $n = 200$, the sample start looking like a normal distribution. When $n = 5000$, the sample is very representative of its population which follows standard normal distribution.
+
+
+::::: {.panel-tabset}
+
+## n = 20
+
+```{r}
+par(mar = c(4, 4, 2, 1))
+nor_sample <- rnorm(20)
+hist(nor_sample, breaks = 30, freq = FALSE, xlim = c(-4, 4),
+     las = 1, xlab = "Normal Data",
+     main = "Histogram of Normal Sample (n = 20)")
+x <- seq(-4, 4, length = 100)
+hx <- dnorm(x)
+lines(x, hx, col = 2, lwd = 3)
+```
+
+
+## n = 200
+```{r}
+par(mar = c(4, 4, 2, 1))
+nor_sample <- rnorm(200)
+hist(nor_sample, breaks = 30, freq = FALSE, las = 1, xlim = c(-4, 4),
+     xlab = "Normal Data",
+     main = "Histogram of Normal Sample (n = 200)")
+x <- seq(-4, 4, length = 100)
+hx <- dnorm(x)
+lines(x, hx, col = 2, lwd = 3)
+```
+
+
+## n = 5000
+```{r}
+par(mar = c(4, 4, 2, 1))
+nor_sample <- rnorm(5000)
+hist(nor_sample, breaks = 50, freq = FALSE, las = 1, xlim = c(-4, 4),
+     xlab = "Normal Data",
+     main = "Histogram of Normal Sample (n = 5000)")
+x <- seq(-4, 4, length = 100)
+hx <- dnorm(x)
+lines(x, hx, col = 2, lwd = 3)
+```
+
+:::::
+
 
 
 

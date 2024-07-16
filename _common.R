@@ -1,4 +1,4 @@
-set.seed(1014)
+set.seed(1234)
 
 knitr::opts_chunk$set(
   comment = "#",
@@ -6,7 +6,7 @@ knitr::opts_chunk$set(
   # cache = TRUE,
   fig.retina = 2,
   fig.width = 6,
-  fig.asp = 2/3,
+  fig.asp = 0.618,
   fig.show = "hold",
   echo = FALSE,
   fig.align = "center",
@@ -21,8 +21,10 @@ options(
   pillar.bold = TRUE,
   stringr.html = FALSE,
   dplyr.print_min = 6,
-  dplyr.print_max = 6
+  dplyr.print_max = 6,
   # warn = -1
+  digits = 3,
+  global.par = TRUE
 )
 
 par(mar = c(4, 4, 2, 1))

@@ -145,29 +145,6 @@ window.Quarto = {
       <a href="./">Introduction to Statistics</a> 
         <div class="sidebar-tools-main">
     <a href="https://github.com/chenghanyustats/introstatsbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-    <div class="dropdown">
-      <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Share"><i class="bi bi-share"></i></a>
-      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
-<li>
-            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=%7Curl%7C">
-              <i class="bi bi-bi-twitter pe-1"></i>
-            Twitter
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=%7Curl%7C">
-              <i class="bi bi-bi-facebook pe-1"></i>
-            Facebook
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=%7Curl%7C">
-              <i class="bi bi-bi-linkedin pe-1"></i>
-            LinkedIn
-            </a>
-          </li>
-      </ul>
-</div>
 </div>
     </div>
       </div>
@@ -278,7 +255,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prob-sampling.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Monte Carlo Sampling and Sampling Distribution</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Random Sampling and Sampling Distribution</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -486,6 +463,64 @@ Note
 </ul>
 </div>
 </div>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">Algorithm</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Simulation Result</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Code</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="instructions">
+<p><strong>Simulation of LLN (Normal distribution example)</strong></p>
+<ol type="1">
+<li><p>Consider different sample size <span class="math inline">\(n\)</span>.</p></li>
+<li>
+<p>For each size of <span class="math inline">\(n\)</span>, do:</p>
+<ul>
+<li>
+<strong>[1]</strong> Draw values <span class="math inline">\(x_1, x_2, \dots, x_{n}\)</span> from <span class="math inline">\(N(\mu, \sigma^2)\)</span> for some values of <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma^2\)</span>.</li>
+<li>
+<strong>[2]</strong> Compute <span class="math inline">\(\overline{x}_n = \frac{1}{n}\sum_{i=1}^n x_i\)</span>.</li>
+</ul>
+</li>
+<li><p>Plot <span class="math inline">\(\overline{x}_n\)</span> (y-axis) vs.&nbsp;<span class="math inline">\(n\)</span> (x-axis).</p></li>
+</ol>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="prob-llnclt_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mu</span> <span class="op">&lt;-</span> <span class="fl">3</span></span>
+<span><span class="va">sd</span> <span class="op">&lt;-</span> <span class="fl">5</span></span>
+<span><span class="va">nn</span> <span class="op">&lt;-</span> <span class="fl">1000</span></span>
+<span></span>
+<span><span class="co">## Algorithm</span></span>
+<span><span class="co">## [1]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="va">nn</span>, mean <span class="op">=</span> <span class="va">mu</span>, sd <span class="op">=</span> <span class="va">sd</span><span class="op">)</span></span>
+<span><span class="co">## [2]</span></span>
+<span><span class="va">x_bar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cumsum.html">cumsum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span><span class="op">(</span><span class="va">nn</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Plotting</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">x_bar</span>, type <span class="op">=</span> <span class="st">"l"</span>, </span>
+<span>     main <span class="op">=</span> <span class="st">"Law of Large Numbers w/ mu = 3"</span>, </span>
+<span>     xlab <span class="op">=</span> <span class="st">"sample size (n)"</span>, </span>
+<span>     ylab <span class="op">=</span> <span class="st">"sample mean"</span>, las <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>h <span class="op">=</span> <span class="fl">3</span>, col <span class="op">=</span> <span class="st">"red"</span>, lwd <span class="op">=</span> <span class="fl">2</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
 </section><section id="central-limit-theorem" class="level2" data-number="12.2"><h2 data-number="12.2" class="anchored" data-anchor-id="central-limit-theorem">
 <span class="header-section-number">12.2</span> Central Limit Theorem</h2>
 <p>It’s time to talk about the most important theorem in probability and statistics, at least in my opinion, the <strong>central limit theorem (CLT)</strong>.</p>
@@ -542,6 +577,75 @@ Figure&nbsp;12.4: CLT Illustration: A U-shaped Distribution.
 <li><p><span class="math inline">\(X_i \stackrel{iid}{\sim}\)</span> <em>any</em> distribution (<span class="math inline">\(\mu, \sigma^2\)</span>). <span class="math inline">\(\overline{X}\)</span> looks like <span class="math inline">\(N\left(\mu, \frac{\sigma^2}{n} \right)\)</span> (for <span class="math inline">\(n\)</span> sufficiently large)</p></li>
 </ul>
 <!-- ------------------------------------------------------------------ --><!-- <span style="color:blue"> **** </span> --><p>Why is the central limit theorem Important? Many well-developed statistical methods are based on the normal distribution assumption. With the central limit theorem, we can use these methods even if we are sampling from a non-normal distribution or if we have no idea what the population distribution is, provided that the sample size is large enough.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">Algorithm</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Simulation Result</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false">Code</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<p>To show the distribution of <span class="math inline">\(\overline{X}\)</span> looks like Gaussian when <span class="math inline">\(n\)</span> is large, we need lots of values of <span class="math inline">\(\overline{X}\)</span> and draw a histogram.</p>
+<div class="instructions">
+<p><strong>Simulation of CLT (Poisson distribution example)</strong></p>
+<ol type="1">
+<li><p>Consider different sample size <span class="math inline">\(n\)</span>. Set the sample size of <span class="math inline">\(\overline{X}\)</span> be <span class="math inline">\(M\)</span>.</p></li>
+<li>
+<p>For each size of <span class="math inline">\(n\)</span>, do:</p>
+<ul>
+<li>
+<strong>[1]</strong> For each <span class="math inline">\(m = 1, 2, \dots, M\)</span>, draw sample <span class="math inline">\((x_1^m, x_2^m, \dots, x_n^m)\)</span> from some distribution with mean <span class="math inline">\(\mu\)</span> and standard deviation <span class="math inline">\(\sigma\)</span>.</li>
+<li>
+<strong>[2]</strong> For each <span class="math inline">\(m = 1, 2, \dots, M\)</span>, compute <span class="math inline">\(\overline{x}^m_n = \frac{1}{n}\sum_{i=1}^n x_i^m\)</span>.</li>
+<li>
+<strong>[3]</strong> Draw a histogram of the sample <span class="math inline">\((\overline{x}^1_n, \overline{x}^2_n, \dots, \overline{x}^M_n)\)</span>
+</li>
+</ul>
+</li>
+</ol>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="prob-llnclt_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="prob-llnclt_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="prob-llnclt_files/figure-html/unnamed-chunk-7-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">M</span> <span class="op">&lt;-</span> <span class="fl">10000</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">k</span> <span class="kw">in</span> <span class="va">n_vec</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="co">## [1]</span></span>
+<span>    <span class="va">x_sam</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">0</span>, nrow <span class="op">=</span> <span class="va">k</span>, ncol <span class="op">=</span> <span class="va">M</span><span class="op">)</span></span>
+<span>    <span class="kw">for</span> <span class="op">(</span><span class="va">m</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span><span class="op">(</span><span class="va">M</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>        <span class="va">x_sam</span><span class="op">[</span>, <span class="va">m</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Poisson.html">rpois</a></span><span class="op">(</span><span class="va">k</span>, lambda <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span>    <span class="co">## [2]</span></span>
+<span>    <span class="va">x_bar_sam</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">x_sam</span>, <span class="fl">2</span>, <span class="va">mean</span><span class="op">)</span></span>
+<span>    </span>
+<span>    <span class="co">## [3]</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">x_bar_sam</span>, main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"size ="</span>, <span class="va">k</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
 </section><section id="central-limit-theorem-example" class="level2" data-number="12.3"><h2 data-number="12.3" class="anchored" data-anchor-id="central-limit-theorem-example">
 <span class="header-section-number">12.3</span> Central Limit Theorem Example</h2>
 <div class="columns">
@@ -564,11 +668,11 @@ Figure&nbsp;12.4: CLT Illustration: A U-shaped Distribution.
 <!-- - We need the sampling distribution of the average selling price in order to obtain the probability.  -->
 <p>Therefore using R we get the probability</p>
 <div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="fl">1.2</span>, lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="fl">1.2</span>, lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.1150697</code></pre>
 </div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="fl">400000</span>, mean <span class="op">=</span> <span class="fl">382000</span>, </span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="fl">400000</span>, mean <span class="op">=</span> <span class="fl">382000</span>, </span>
 <span>      sd <span class="op">=</span> <span class="fl">150000</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>, lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.1150697</code></pre>
@@ -985,8 +1089,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./prob-sampling.html" class="pagination-link" aria-label="Monte Carlo Sampling and Sampling Distribution">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Monte Carlo Sampling and Sampling Distribution</span></span>
+      <a href="./prob-sampling.html" class="pagination-link" aria-label="Random Sampling and Sampling Distribution">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Random Sampling and Sampling Distribution</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
@@ -1006,7 +1110,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
 <li class="nav-item compact">
-    <a class="nav-link active" href="https://github.com/chenghanyustats/introstatsbook" aria-current="page">
+    <a class="nav-link" href="https://github.com/chenghanyustats/introstatsbook">
       <i class="bi bi-github" role="img">
 </i> 
     </a>

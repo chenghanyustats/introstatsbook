@@ -47,6 +47,60 @@ The marvelous part is that when the sample size is large, such randomness or the
 - Additionally, as shown in the figure, the black and green values of $\overline{X}$ are quite different when $n$ is small, showing a larger variation. Why? It comes from the fact that $\Var(\overline{X}) = \sigma^2/n$. It also tells us why $\overline{X}$ converges to $\mu$. When $n$ gets large, its variation gets small, and eventually this random variable behaves like a constant with no variation. That constant is $\mu$.
 :::
 
+
+::::: {.panel-tabset}
+
+## Algorithm
+::: {.instructions}
+
+**Simulation of LLN (Normal distribution example)**  
+
+1. Consider different sample size $n$. 
+
+2. For each size of $n$, do:
+    + **[1]** Draw values $x_1, x_2, \dots, x_{n}$ from $N(\mu, \sigma^2)$ for some values of $\mu$ and $\sigma^2$.
+    + **[2]** Compute $\overline{x}_n = \frac{1}{n}\sum_{i=1}^n x_i$.
+
+3. Plot $\overline{x}_n$ (y-axis) vs. $n$ (x-axis).
+:::
+
+## Simulation Result
+
+```{r ref.label = "lln"}
+#| purl: false
+#| echo: false
+#| warning: false
+#| cache: true
+```
+
+
+## Code
+```{r}
+#| eval: false
+#| label: lln
+#| echo: !expr c(-1)
+par(mar = c(4, 4, 2, 1))
+mu <- 3
+sd <- 5
+nn <- 1000
+
+## Algorithm
+## [1]
+set.seed(1000)
+x <- rnorm(nn, mean = mu, sd = sd)
+## [2]
+x_bar <- cumsum(x) / seq_len(nn)
+
+## Plotting
+plot(x_bar, type = "l", 
+     main = "Law of Large Numbers w/ mu = 3", 
+     xlab = "sample size (n)", 
+     ylab = "sample mean", las = 1)
+abline(h = 3, col = "red", lwd = 2, lty = 2)
+```
+
+:::::
+
 ## Central Limit Theorem
 
 It's time to talk about the most important theorem in probability and statistics, at least in my opinion, the **central limit theorem (CLT)**.
@@ -197,6 +251,59 @@ In sum, for a random sample $(X_1, \dots, X_n)$, if the population distribution 
 <!-- <span style="color:blue"> **** </span> -->
 
 Why is the central limit theorem Important? Many well-developed statistical methods are based on the normal distribution assumption. With the central limit theorem, we can use these methods even if we are sampling from a non-normal distribution or if we have no idea what the population distribution is, provided that the sample size is large enough.
+
+
+::::: {.panel-tabset}
+
+## Algorithm
+To show the distribution of $\overline{X}$ looks like Gaussian when $n$ is large, we need lots of values of $\overline{X}$ and draw a histogram.
+
+::: {.instructions}
+
+**Simulation of CLT (Poisson distribution example)**  
+
+1. Consider different sample size $n$. Set the sample size of $\overline{X}$ be $M$.
+
+2. For each size of $n$, do:
+    - **[1]** For each $m = 1, 2, \dots, M$, draw sample $(x_1^m, x_2^m, \dots, x_n^m)$ from some distribution with mean $\mu$ and standard deviation $\sigma$.
+    - **[2]** For each $m = 1, 2, \dots, M$, compute $\overline{x}^m_n = \frac{1}{n}\sum_{i=1}^n x_i^m$.
+    - **[3]** Draw a histogram of the sample $(\overline{x}^1_n, \overline{x}^2_n, \dots, \overline{x}^M_n)$
+
+:::
+
+## Simulation Result
+```{r ref.label = "clt"}
+#| purl: false
+#| echo: false
+#| warning: false
+#| cache: true
+```
+
+## Code
+
+```{r}
+#| eval: false
+#| label: clt
+#| echo: !expr c(-1)
+
+n_vec <- c(2, 8, 100)
+M <- 10000
+for (k in n_vec) {
+    ## [1]
+    x_sam <- matrix(0, nrow = k, ncol = M)
+    for (m in seq_len(M)) {
+        x_sam[, m] <- rpois(k, lambda = 1)
+    }
+    ## [2]
+    x_bar_sam <- apply(x_sam, 2, mean)
+    
+    ## [3]
+    hist(x_bar_sam, main = paste("size =", k))
+}
+```
+:::::
+
+
 
 ## Central Limit Theorem Example
 ::::{.columns}
