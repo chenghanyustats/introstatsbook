@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "Introduction to Statistics",
     "section": "",
-    "text": "Welcome\nThis is the website for my introductory statistics book. This book serves as a main reference book for my MATH 4720 Statistical Methods and MATH 4740 Biostatistical Methods at Marquette University.1 Some topics can also be discussed in an introductory data science, regression, or other applied statistics courses. You’ll learn basic probability and statistical concepts as well as data analysis techniques such as linear regression using R computing software.2 The book balances the following aspects of statistics:\nThe materials in this book are adapted and modified from several existing statistics books, course websites, notes, and tutorials, especially from the following books:",
+    "text": "Welcome\nThis is the website for my introductory statistics book. This book serves as a main reference book for my MATH 4720 Statistical Methods and MATH 4740 Biostatistical Methods at Marquette University.1 Some topics can also be discussed in an introductory data science, regression, or other applied statistics courses. You’ll learn basic probability and statistical concepts as well as data analysis techniques such as linear regression using R computing software.2 The book balances the following aspects of statistics:\nThe materials in this book are adapted and modified from several existing statistics books, course websites, notes, and tutorials for best teaching and learning experience at Marquette. Main reference books are:",
     "crumbs": [
       "Welcome"
     ]
@@ -811,7 +811,7 @@
     "href": "prob-llnclt.html#central-limit-theorem",
     "title": "12  Law of Large Numbers and Central Limit Theorem",
     "section": "\n12.2 Central Limit Theorem",
-    "text": "12.2 Central Limit Theorem\nIt’s time to talk about the most important theorem in probability and statistics, at least in my opinion, the central limit theorem (CLT).\nIn sampling distribution ?sec-prob-samdist, we learned that if \\(X_i \\stackrel{iid}{\\sim} N(\\mu, \\sigma^2)\\), then \\(\\overline{X} \\sim N\\left(\\mu, \\frac{\\sigma^2}{n} \\right)\\). But the question is  what if the population distribution is NOT normal?  What does the sampling distribution of the sample mean look like if the population distribution is multimodal? or skewed? or not bell-shaped? Well, the central limit theorem gives us the answer!\n\n\n\n\nCentral Limit Theorem (CLT):\nSuppose \\(\\overline{X}\\) is the sample mean from a random sample of size \\(n\\) and from a population distribution having mean \\(\\mu\\) and standard deviation \\(\\sigma &lt; \\infty\\). As \\(n\\) increases, the sampling distribution of \\(\\overline{X}\\) looks more and more like \\(N(\\mu, \\sigma^2/n)\\) regardless of the distribution from which we are sampling!\n\n\n\n\n\n\n\nFigure 12.2: Illustration of Central Limit Theorem. Source: Wiki.\n\n\n\n\nFigure 12.2 illustrates the CLT. First, the random sample \\((X_1, \\dots, X_n)\\) can be collected from any population distribution, whether it is normal or not. The magic part is that the sampling distribution of the sample mean \\(\\overline{X}\\) always looks like normal distribution \\(N(\\mu, \\sigma^2/n)\\) as long as the sample size \\(n\\) is sufficiently large. The larger \\(n\\) is, the more normal-like the sampling distribution of \\(\\overline{X}\\) is. One question is how large is enough for \\(n\\). Amazingly the normal approximation is quite well when \\(n \\ge 30\\). The variance of the sampling distribution which is \\(\\sigma^2/n\\) is decreasing with \\(n\\) as well.\nPlease try the app and see how the shape of the sampling distribution changes with the sample size \\(n\\) and with the shape of the population distribution. You will find that it requires larger \\(n\\) to get a more normal-like sampling distribution if the population distribution is very skewed. You can also see how the CLT works in Figure 12.3 and Figure 12.4. The population distribution can be discrete, like binomial or Poisson distribution. Their sampling distribution of \\(\\overline{X}\\) will still look like normal although the sampling distribution is not continuous.\n\n\n\n\n\n\n\n\n\nFigure 12.3: CLT Illustration: A Right-Skewed Distribution.\n\n\n\n\n\n\n\n\n\n\n\nFigure 12.4: CLT Illustration: A U-shaped Distribution.\n\n\n\n\nIn sum, for a random sample \\((X_1, \\dots, X_n)\\), if the population distribution is normally distributed, then of course with no surprise the sampling distribution of the sample mean is also exactly normally distributed. If the population distribution is not normally distributed, as long as its mean and variance exist, its sampling distribution of the sample mean will still look like a normal distribution when the sample size \\(n\\) is large enough.\n\n\\(X_i \\stackrel{iid}{\\sim} N(\\mu, \\sigma^2)\\). \\(\\overline{X} \\sim N\\left(\\mu, \\frac{\\sigma^2}{n} \\right)\\)\n\\(X_i \\stackrel{iid}{\\sim}\\) any distribution (\\(\\mu, \\sigma^2\\)). \\(\\overline{X}\\) looks like \\(N\\left(\\mu, \\frac{\\sigma^2}{n} \\right)\\) (for \\(n\\) sufficiently large)\n\nWhy is the central limit theorem Important? Many well-developed statistical methods are based on the normal distribution assumption. With the central limit theorem, we can use these methods even if we are sampling from a non-normal distribution or if we have no idea what the population distribution is, provided that the sample size is large enough.\n\n\nAlgorithm\nSimulation Result\nCode\n\n\n\nTo show the distribution of \\(\\overline{X}\\) looks like Gaussian when \\(n\\) is large, we need lots of values of \\(\\overline{X}\\) and draw a histogram.\n\nSimulation of CLT (Poisson distribution example)\n\nConsider different sample size \\(n\\). Set the sample size of \\(\\overline{X}\\) be \\(M\\).\n\nFor each size of \\(n\\), do:\n\n\n[1] For each \\(m = 1, 2, \\dots, M\\), draw sample \\((x_1^m, x_2^m, \\dots, x_n^m)\\) from some distribution with mean \\(\\mu\\) and standard deviation \\(\\sigma\\).\n\n[2] For each \\(m = 1, 2, \\dots, M\\), compute \\(\\overline{x}^m_n = \\frac{1}{n}\\sum_{i=1}^n x_i^m\\).\n\n[3] Draw a histogram of the sample \\((\\overline{x}^1_n, \\overline{x}^2_n, \\dots, \\overline{x}^M_n)\\)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nM &lt;- 10000\nfor (k in n_vec) {\n    ## [1]\n    x_sam &lt;- matrix(0, nrow = k, ncol = M)\n    for (m in seq_len(M)) {\n        x_sam[, m] &lt;- rpois(k, lambda = 1)\n    }\n    ## [2]\n    x_bar_sam &lt;- apply(x_sam, 2, mean)\n    \n    ## [3]\n    hist(x_bar_sam, main = paste(\"size =\", k))\n}",
+    "text": "12.2 Central Limit Theorem\nIt’s time to talk about the most important theorem in probability and statistics, at least in my opinion, the central limit theorem (CLT).\nIn sampling distribution Chapter 11, we learned that if \\(X_i \\stackrel{iid}{\\sim} N(\\mu, \\sigma^2)\\), then \\(\\overline{X} \\sim N\\left(\\mu, \\frac{\\sigma^2}{n} \\right)\\). But the question is  what if the population distribution is NOT normal?  What does the sampling distribution of the sample mean look like if the population distribution is multimodal? or skewed? or not bell-shaped? Well, the central limit theorem gives us the answer!\n\n\n\n\nCentral Limit Theorem (CLT):\nSuppose \\(\\overline{X}\\) is the sample mean from a random sample of size \\(n\\) and from a population distribution having mean \\(\\mu\\) and standard deviation \\(\\sigma &lt; \\infty\\). As \\(n\\) increases, the sampling distribution of \\(\\overline{X}\\) looks more and more like \\(N(\\mu, \\sigma^2/n)\\) regardless of the distribution from which we are sampling!\n\n\n\n\n\n\n\nFigure 12.2: Illustration of Central Limit Theorem. Source: Wiki.\n\n\n\n\nFigure 12.2 illustrates the CLT. First, the random sample \\((X_1, \\dots, X_n)\\) can be collected from any population distribution, whether it is normal or not. The magic part is that the sampling distribution of the sample mean \\(\\overline{X}\\) always looks like normal distribution \\(N(\\mu, \\sigma^2/n)\\) as long as the sample size \\(n\\) is sufficiently large. The larger \\(n\\) is, the more normal-like the sampling distribution of \\(\\overline{X}\\) is. One question is how large is enough for \\(n\\). Amazingly the normal approximation is quite well when \\(n \\ge 30\\). The variance of the sampling distribution which is \\(\\sigma^2/n\\) is decreasing with \\(n\\) as well.\nPlease try the app and see how the shape of the sampling distribution changes with the sample size \\(n\\) and with the shape of the population distribution. You will find that it requires larger \\(n\\) to get a more normal-like sampling distribution if the population distribution is very skewed. You can also see how the CLT works in Figure 12.3 and Figure 12.4. The population distribution can be discrete, like binomial or Poisson distribution. Their sampling distribution of \\(\\overline{X}\\) will still look like normal although the sampling distribution is not continuous.\n\n\n\n\n\n\n\n\n\nFigure 12.3: CLT Illustration: A Right-Skewed Distribution.\n\n\n\n\n\n\n\n\n\n\n\nFigure 12.4: CLT Illustration: A U-shaped Distribution.\n\n\n\n\nIn sum, for a random sample \\((X_1, \\dots, X_n)\\), if the population distribution is normally distributed, then of course with no surprise the sampling distribution of the sample mean is also exactly normally distributed. If the population distribution is not normally distributed, as long as its mean and variance exist, its sampling distribution of the sample mean will still look like a normal distribution when the sample size \\(n\\) is large enough.\n\n\\(X_i \\stackrel{iid}{\\sim} N(\\mu, \\sigma^2)\\). \\(\\overline{X} \\sim N\\left(\\mu, \\frac{\\sigma^2}{n} \\right)\\)\n\\(X_i \\stackrel{iid}{\\sim}\\) any distribution (\\(\\mu, \\sigma^2\\)). \\(\\overline{X}\\) looks like \\(N\\left(\\mu, \\frac{\\sigma^2}{n} \\right)\\) (for \\(n\\) sufficiently large)\n\nWhy is the central limit theorem Important? Many well-developed statistical methods are based on the normal distribution assumption. With the central limit theorem, we can use these methods even if we are sampling from a non-normal distribution or if we have no idea what the population distribution is, provided that the sample size is large enough.\n\n\nAlgorithm\nSimulation Result\nCode\n\n\n\nTo show the distribution of \\(\\overline{X}\\) looks like Gaussian when \\(n\\) is large, we need lots of values of \\(\\overline{X}\\) and draw a histogram.\n\nSimulation of CLT (Poisson distribution example)\n\nConsider different sample size \\(n\\). Set the sample size of \\(\\overline{X}\\) be \\(M\\).\n\nFor each size of \\(n\\), do:\n\n\n[1] For each \\(m = 1, 2, \\dots, M\\), draw sample \\((x_1^m, x_2^m, \\dots, x_n^m)\\) from some distribution with mean \\(\\mu\\) and standard deviation \\(\\sigma\\).\n\n[2] For each \\(m = 1, 2, \\dots, M\\), compute \\(\\overline{x}^m_n = \\frac{1}{n}\\sum_{i=1}^n x_i^m\\).\n\n[3] Draw a histogram of the sample \\((\\overline{x}^1_n, \\overline{x}^2_n, \\dots, \\overline{x}^M_n)\\)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nM &lt;- 10000\nfor (k in n_vec) {\n    ## [1]\n    x_sam &lt;- matrix(0, nrow = k, ncol = M)\n    for (m in seq_len(M)) {\n        x_sam[, m] &lt;- rpois(k, lambda = 1)\n    }\n    ## [2]\n    x_bar_sam &lt;- apply(x_sam, 2, mean)\n    \n    ## [3]\n    hist(x_bar_sam, main = paste(\"size =\", k))\n}",
     "crumbs": [
       "Probability",
       "<span class='chapter-number'>12</span>  <span class='chapter-title'>Law of Large Numbers and Central Limit Theorem</span>"
@@ -931,7 +931,7 @@
     "href": "infer-bt.html",
     "title": "14  Bootstrapping",
     "section": "",
-    "text": "14.1 Idea of Bootstrapping",
+    "text": "14.1 Idea of Bootstrapping\nBootstrapping is a resampling method that repeatedly generates the bootstrap samples from the data at hand with replacement. Each bootstrap sample data are of the same size of the original observed data. For each bootstrap sample, we calculate our interested statistic, for example the (bootstrap) sample mean. Then the collection of the sample means calculated from the bootstrap samples forms the sampling distribution of the sample mean. Therefore, bootstrapping models how a statistic varies from one sample to another taken from the population. This approach provides insights into how much the statistic deviates from the parameter of interest.\nThe main idea of bootstrapping is that\nLet’s figure out the idea behind it step by step. Suppose there is a target population, and we want to estimate its mean \\(\\mu\\) possibly with uncertainty quantification. Usually our first step is to collect our sample data from the population, and use the sample mean \\(\\bar{x}\\) to estimate \\(\\mu\\). Due to resources constraint, we may only be able to collect one single data set, and the sample size can’t be large. We hope the data set is quite representative of the population, so that \\(\\bar{x}\\) is quite close to \\(\\mu\\). In other words, if we were expanding the sample data proportionally, having the sample size same as the population size, the population and the expanded sample data should look very alike. Figure 14.1 illustrate this idea.\nFigure 14.1: Source: Figure 12.1 of Introduction to Modern Statistics\nHowever, due to the sampling variability, we never know whether or not the one we collect is representative enough. Even we know the data at hand looks pretty similar to the population, we are not sure how much we are confident about the estimation, unless we have lots of sample data replicates.\nFigure 14.2: Repeatedly generating sample data from the target population. This is often not feasible in many scientific experiments and studies.\nBy taking repeated samples from the population, the variability from sample to sample can be observed. In Figure 14.2 the repeated samples are obviously different both from each other and from the original population. The samples were taken from the same population, and the differences are due entirely to natural variability in the sampling procedure. By summarizing each of the samples (sample mean), we see, directly, the variability of the sample mean from sample to sample. This is exactly the idea of sampling distribution we learn in Chapter 11 illustrated in Figure 11.2. The problem again is that quite often it is difficult to obtain sample replicates, and quantify the variability. How do we solve this problem? Smart statisticians came up with a solution: apply exactly the same idea just mentioned to the one single sample data set we have at hand!\nWe can think that our sample data is a small version of the target population. The illustration of bootstrapping is shown in Figure 14.3. Suppose the collected sample data from some population has 10 data points. To have sample data replicates, the data work as if our population, and the new sample replicates are generated from the original data set. These new data replicates are called bootstrap samples. The bootstrap samples must have the same sample size as the original sample data. So they all have 10 data points too. Additionally, these samples are drawn from the original data with replacement. Think about it, if they are drawn without replacement, all the bootstrap samples will be exactly the same as the original sample, which does not work for accounting sampling variability. Note that the elements in the bootstrap samples are already collected and saved in our original data. The resampling step does not really conduct any new experiments, perform any new trials, or do any new survey as sampling from the target population does that may be too costly for our study. We save our study by our bootstraps.\nFigure 14.3: Illustration of boostrapping: Resampling from the sample data with replacement. Each sample has 15 data points, same as the original sample.\nThe original sample in Figure 14.3 has 1 blacks, 2 reds, 3 greens, 4 blues, and 5 yellows. If the sample is representative of the target population, the color distribution in the population should more or less follow the color distribution in the data, although not exactly the same with pretty high chance. To mimic the sampling variability found by collecting data from a population, sampling with replacement produces some variations while keeping the general distribution pattern shown in the data. As a results, the bootstrap samples tend to have more yellows and blues, but could have more reds or greens. It is such resampling variation that creates the sampling variability in the computed bootstrap statistics \\(\\bar{x}_b^1, \\dots, \\bar{x}_b^M\\).\nThe entire workflow of sampling and resampling is illustrated in Figure 14.4. First, the original sample is collected from the target population. Usually we only have one data set. To ensure that the data look similar to the population, we hope the sample is a random sample. Next, in the resampling step, we draw samples with replacement, replicating several bootstrap samples. Then for each bootstrap sample, the desired statistic is computed. Finally, the collection of all the bootstrap statistics forms a bootstrap distribution that is used to approximate the sampling distribution of the desired statistic. With the distribution, we now can create the bootstrap confidence interval for the target population parameter.\nFigure 14.4: Source: Bootstrapping (statistics) Wiki.",
     "crumbs": [
       "Statistical Inference",
       "<span class='chapter-number'>14</span>  <span class='chapter-title'>Bootstrapping</span>"
@@ -1239,7 +1239,7 @@
     "href": "infer-bayes.html",
     "title": "20  Bayesian Inference",
     "section": "",
-    "text": "Coming soon.",
+    "text": "20.1 Bayesian Thinking\nBefore we dive into Bayesian statistics, let’s take a quiz to determine whether you currently lean more towards a Bayesian or frequentist mindset. This quiz is adapted from Bayes Rules, a great new book on Bayesian statistics. I encourage you to spend some time on this if you would like to delve deeper.\nTime tally up your quiz score. Are you frequentist or Bayesian? Totals from 4–5 indicate that your current thinking is fairly frequentist, whereas totals from 9–12 indicate alignment with the Bayesian philosophy. In between these extremes, totals from 6–8 indicate that you see strengths in both philosophies.\nYou are a frequentist or Bayesian? Are those confidence interval or hypothesis testing thing all Greek to you? Maybe it is because",
     "crumbs": [
       "Statistical Inference",
       "<span class='chapter-number'>20</span>  <span class='chapter-title'>Bayesian Inference</span>"
@@ -1623,10 +1623,329 @@
     "href": "infer-bt.html#bootstrap-confidence-interval",
     "title": "14  Bootstrapping",
     "section": "\n14.2 Bootstrap Confidence Interval",
-    "text": "14.2 Bootstrap Confidence Interval\nThe example is borrowed from STA 199 by Dr.",
+    "text": "14.2 Bootstrap Confidence Interval\nIn this section we learn to create a bootstrap confidence interval using a real data set. This example is borrowed from STA 199 by Dr. Çetinkaya-Rundel.\nHow much do you think it costs to rent a typical one bedroom apartment in Manhattan NYC? Well if you have no idea, at least we can say we are 100% confident that the average one-bedroom rent in Manhattan is between 0 to one million dollars. It’s not helping though. Let’s have some data, and get an idea of the rent in Manhattan NYC. The data manhattan.csv consider 20 one-bedroom apartments that were randomly selected on Craigslist Manhattan from apartments listed as “by owner”.\n\nmanhattan &lt;- readr::read_csv(\"./data/manhattan.csv\")\nmanhattan$rent\n#  [1] 3850 3800 2350 3200 2150 3267 2495 2349 3950 1795 2145 2300 1775 2000 2175\n# [16] 2350 2550 4195 1470 2350\nrange(manhattan)\n# [1] 1470 4195\n\nThe minimum rent is $1470 and the rent can be as high as near $4200. 1\n\n\n\n\n\n\n\n\nIf we want to estimate the (population) mean one-bedroom rent in Manhattan, an easy point estimate is the sample mean, which is about $ 2625.8. However, considering the entire rental housing market in Manhattan, this sample is so small, so we are not that convinced of that number, and want a range of plausible mean one-bedroom rent for us to decide whether we rent a bedroom there.\n\n\n\n\n\n\n\n\n\n\nSample median = $2625.8\n\n\n\n\n\n\n\n\n\nPopulation median = ❓\n\n\nThe question is what’s our bootstrap population look like that we can sample from? Well the idea is that we assume that there are probably more apartments like the ones in our observed sample in the population as well. So here, basically the bootstrap artificial population is made from our sample data, and the population is like so many replicates of our given sample. Again, this is an artificial population, not the real population. If I had the real population, no inference or estimation is needed. We know the truth. Right?\n\n Bootstrapping using R \nThe good news is that there are several R packages out there to help us do bootstrapping without the need to write long lines of code. Here we use the boot() function in the boot package for demonstration. Before calling boot, we still need to write a function that returns the statistic(s) that you would like to bootstrap. The first argument passed to the function should be your dataset. The second argument can be an index vector of the observations in your dataset to use or a frequency or weight vector that informs the sampling probabilities. For example, if our statistic is sample mean, we can create a function mean_fcn() as follows.\n\nmean_fcn &lt;- function(data, index) {\n    data_ind &lt;- data[index]\n    return(mean(data_ind))\n}\n\nThe function compute the mean of resampled data. The index argument is for resampling our data. It tells us which data points in the original data will be chosen to create a bootstrap sample. We don’t need to generate the index vector ourselves, and the boot() function will use the function like sample() to generate it for us.\nWe can now use the boot() command, providing our dataset name, our function, and the number of bootstrap samples to be drawn.\n\nlibrary(boot)\nset.seed(2024)\nboot_mean &lt;- boot(data = manhattan$rent, statistic = mean_fcn, R = 10000)\n\nThe three required arguments of boot() are data, statistic, and R. We specify the data as a vector, matrix or data frame. Here manhattan$rent is a vector. The argument statistic is a function which when applied to data returns a vector containing the statistic(s) of interest. This is what mean_fcn is doing. The argument R is the number of bootstrap replicates. We generate 10000 bootstrap samples, and 10000 corresponding bootstrap sample means. The boostrapping result is saved in the object boot_mean which is a list. boot_mean$t0 saves the sample mean from the original data, and boot_mean$t saves the 10000 bootstrap sample means. The bias shown in the printed output comes from mean(boot_mean$t) - boot$t0, i.e., the difference between the mean of bootstrap sample means and the original sample mean. This is an estimate of the difference between the original sample mean and the population mean. The std. error is derived from sd(boot_mean$t) that estimates the variance of the sample mean.\n\nboot_mean\n# \n# ORDINARY NONPARAMETRIC BOOTSTRAP\n# \n# \n# Call:\n# boot(data = manhattan$rent, statistic = mean_fcn, R = 10000)\n# \n# \n# Bootstrap Statistics :\n#     original  bias    std. error\n# t1*     2626   -1.76         175\n\n\nmean(boot_mean$t) - boot_mean$t0\n# [1] -1.76\n\n\nsd(boot_mean$t)\n# [1] 175\n\nTo show the bootstrap sampling distribution of sample mean (one-bedroom rent in Manhattan), we can simply use plot() command:\n\nplot(x = boot_mean)\n\n\n\n\n\n\n\nUsing the boot.ci command, we can generate several types of confidence intervals from our bootstrap samples. By default, the function provides four different 95% confidence intervals.\n\nboot.ci(boot.out = boot_mean)\n# BOOTSTRAP CONFIDENCE INTERVAL CALCULATIONS\n# Based on 10000 bootstrap replicates\n# \n# CALL : \n# boot.ci(boot.out = boot_mean)\n# \n# Intervals : \n# Level      Normal              Basic         \n# 95%   (2285, 2970 )   (2273, 2955 )  \n# \n# Level     Percentile            BCa          \n# 95%   (2297, 2978 )   (2326, 3015 )  \n# Calculations and Intervals on Original Scale\n\nWe don’t need to worry too much about which interval we should use at this moment. When the bootstrap distribution is symmetric and looks like Gaussian, those intervals are pretty similar. Second, those intervals are not exact but approximate by its nature. They vary every time we run a new bootstrapping (unless we use the same random seed). We accept this random variation. The point is, this range of plausible values gives us a general idea of how much the mean one-bedroom rent is.\nCheck UCLA tutorial for more details about implementing bootstrapping using the boot package.\n\n\nAlgorithm\nSimulation Result\nCode\n\n\n\n\nBootstrapped confidence interval\n\n\nTake a bootstrap sample\n\na random sample taken with replacement from the original sample, of the same size as the original sample.\n\n\n\nCalculate the bootstrap statistic\n\na statistic such as mean, median, proportion, slope, etc. computed on the bootstrap samples.\n\n\n\nRepeat steps (1) and (2) many times to create a bootstrap distribution\n\na distribution of bootstrap statistics.\n\n\n\nCalculate the bounds of the \\((1-\\alpha)100\\%\\) confidence interval\n\nthe middle \\((1-\\alpha)100\\%\\) of the bootstrap distribution\n\n\n\n\n\n\n\n# \n# ORDINARY NONPARAMETRIC BOOTSTRAP\n# \n# \n# Call:\n# boot(data = manhattan$rent, statistic = mean_fcn, R = 10000)\n# \n# \n# Bootstrap Statistics :\n#     original  bias    std. error\n# t1*     2626   -1.76         175\n# BOOTSTRAP CONFIDENCE INTERVAL CALCULATIONS\n# Based on 10000 bootstrap replicates\n# \n# CALL : \n# boot.ci(boot.out = boot_mean)\n# \n# Intervals : \n# Level      Normal              Basic         \n# 95%   (2285, 2970 )   (2273, 2955 )  \n# \n# Level     Percentile            BCa          \n# 95%   (2297, 2978 )   (2326, 3015 )  \n# Calculations and Intervals on Original Scale\n\n\n\n\nmean_fcn &lt;- function(data, index) {\n    data_ind &lt;- data[index]\n    return(mean(data_ind))\n}\nlibrary(boot)\nset.seed(2024)\nboot_mean &lt;- boot(data = manhattan$rent, statistic = mean_fcn, R = 10000)\nboot_mean\nboot.ci(boot.out = boot_mean)\n\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nThere are two sources of error in bootstrap inference:\n\nThe error induced by using a particular sample to represent the population. If the sample data do not represent the population well, any bias caused by that will remain in bootstrapping. Unfortunately this error cannot be corrected.\nThe sampling error produced by failing to enumerate all bootstrap samples. When sample size is \\(n\\), if we distinguish the order of elements in the bootstrap samples and treat all of the elements of the original sample as distinct (even when some have the same values) then there are \\(n^n\\) bootstrap samples, each occurring with probability \\(1/n^n\\). This source of error can be controlled by making the number of bootstrap replications sufficiently large.",
     "crumbs": [
       "Statistical Inference",
       "<span class='chapter-number'>14</span>  <span class='chapter-title'>Bootstrapping</span>"
+    ]
+  },
+  {
+    "objectID": "infer-bt.html#further-readings-and-references",
+    "href": "infer-bt.html#further-readings-and-references",
+    "title": "14  Bootstrapping",
+    "section": "\n14.3 Further Readings and References",
+    "text": "14.3 Further Readings and References\n\nIMS chapter 12\nSTA 199 course website\nBootstrapping regression models\nUCLA tutorial",
+    "crumbs": [
+      "Statistical Inference",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Bootstrapping</span>"
+    ]
+  },
+  {
+    "objectID": "prob-llnclt.html#further-readings-and-references",
+    "href": "prob-llnclt.html#further-readings-and-references",
+    "title": "12  Law of Large Numbers and Central Limit Theorem",
+    "section": "\n12.4 Further Readings and References",
+    "text": "12.4 Further Readings and References",
+    "crumbs": [
+      "Probability",
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Law of Large Numbers and Central Limit Theorem</span>"
+    ]
+  },
+  {
+    "objectID": "infer-bt.html#idea-of-bootstrapping",
+    "href": "infer-bt.html#idea-of-bootstrapping",
+    "title": "14  Bootstrapping",
+    "section": "",
+    "text": "We view the observed data as the target population\n\n\nWe treat the bootstrap samples as the replicates of the samples from the population\n\n\nWe use the collection of bootstrap samples to mimic the collection of samples generated from the target population, which is the sampling distribution of the sample statistic.",
+    "crumbs": [
+      "Statistical Inference",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Bootstrapping</span>"
+    ]
+  },
+  {
+    "objectID": "infer-bt.html#footnotes",
+    "href": "infer-bt.html#footnotes",
+    "title": "14  Bootstrapping",
+    "section": "",
+    "text": "The housing market in the U.S. has been going crazy, and the rent this year of course is much higher than the rent shown in this data set.↩︎",
+    "crumbs": [
+      "Statistical Inference",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Bootstrapping</span>"
+    ]
+  },
+  {
+    "objectID": "infer-bayes.html#further-readings-and-references",
+    "href": "infer-bayes.html#further-readings-and-references",
+    "title": "20  Bayesian Inference",
+    "section": "\n20.3 Further Readings and References",
+    "text": "20.3 Further Readings and References\n\nBayes Rules\nAll About that Bayes: Probability, Statistics, and the Quest to Quantify Uncertainty by Dr. Kristin Lennox",
+    "crumbs": [
+      "Statistical Inference",
+      "<span class='chapter-number'>20</span>  <span class='chapter-title'>Bayesian Inference</span>"
+    ]
+  },
+  {
+    "objectID": "infer-bayes.html#bayesian-thinking",
+    "href": "infer-bayes.html#bayesian-thinking",
+    "title": "20  Bayesian Inference",
+    "section": "",
+    "text": "When flipping a fair coin, we say that “the probability of flipping Heads is 0.5.” How do you interpret this probability? (a = 1 pt, b = 3 pts, c = 2 pts)\n\nIf I flip this coin over and over, roughly 50% will be Heads.\nHeads and Tails are equally plausible.\nBoth a. and b. make sense.\n\n\n\nAn election is coming up and a pollster claims that candidate Yu has a 0.9 probability of winning. How do you interpret this probability? (a = 1 pt, b = 3 pts, c = 1 pt)\n\nIf we observe the election over and over, candidate Yu will win roughly 90% of the time.\nCandidate Yu is much more likely to win than to lose.\nThe pollster’s calculation is wrong. Candidate Yu will either win or lose, thus their probability of winning can only be 0 or 1.\n\n\n\nTwo claims. (a = 3 pts, b = 1 pt)\n(1) Ben claims he can predict the coin flip outcome. To test his claim, you flip a fair coin 8 times and he correctly predicts all.\n(2) Emma claims she can distinguish natural and artificial sweeteners. To test her claim, you give her 8 samples and she correctly identifies each.\nIn light of these experiments, what do you conclude?\n\nYou’re more confident in Emma’s claim than Ben’s claim.\nThe evidence supporting Ben’s claim is just as strong as the evidence supporting Emma’s claim.\n\n\n\nSuppose that during a doctor’s visit, you tested positive for COVID. If you only get to ask the doctor one question, which would it be? (a = 3 pts, b = 1 pt)\n\nWhat’s the chance that I actually have COVID?\nIf in fact I don’t have COVID, what’s the chance that I would’ve gotten this positive test result?\n\n\n\n\n\n\n\nTotals 4-5: your thinking is frequentist\n\n\n\n\n\n\nYoung Fisher from Wiki\n\n\n\n\n\nTotals 9-12: your thinking is Bayesian\n\n\n\n\n\n\nThomas Bayes from Wiki\n\n\n\n\n\n\nTotals 6-8: you see strengths in both philosophies",
+    "crumbs": [
+      "Statistical Inference",
+      "<span class='chapter-number'>20</span>  <span class='chapter-title'>Bayesian Inference</span>"
+    ]
+  },
+  {
+    "objectID": "infer-bayes.html#the-meaning-of-probability",
+    "href": "infer-bayes.html#the-meaning-of-probability",
+    "title": "20  Bayesian Inference",
+    "section": "\n20.2 The Meaning of Probability",
+    "text": "20.2 The Meaning of Probability\nThe frequentist interprets probability as the long-run relative frequency of a repeatable experiment. We’ve seen this interpretation before in Chapter 6. We know that using relative frequencies as probability has several issues:\n\n😕 How large of a number is large enough?\n😕 Meaning of “under similar conditions”\n😕 The relative frequency is reliable under identical conditions?\n👉 We only obtain an approximation instead of exact value.\n😂 How do you compute the probability that Chicago Cubs wins the World Series next year?\n\n\n\n\n\n\n\n\n\nIn statistical inference, our research questions or events of interest are often not repeatable or very difficult to replicate. For example, what is the probability that Donald Trump will win the 2024 presidential election? What is the probability that the Milwaukee Bucks will win the 2025 NBA championship? What would the mean income level for males be if every man was required to serve in the military for two years? Still many political scientists, sport analysts, or economists are answering\nTo better answer these types of research questions, we must interpret probability in a different way.\n\nThe Meaning of Probability: Relative Plausibility\n\nIn the Bayesian philosophy, a probability measures the relative plausibility of an event.\n\n\n\n\nFor the statement “candidate A has a 0.9 probability of winning”\n\nA frequentist might\n\nsay the conclusion is wrong\nweirdly say in long-run hypothetical repetitions of the election, candidate A would win roughly 90% of the time.\n\n\nA Bayesian would say based on analysis the candidate A is 9 times more likely to win than to lose.\n\n\n\n\n\n\n\n\n\nSource: https://x.com/nytgraphics/status/796195155158171648\n\n\n\n\n\n\n\n\n\n\nEverybody Changes Their Mind\n\n\n&gt; How can we live if we don’t change? &gt; - Beyoncé. Lyric from “Satellites.”\n\n\n- Using data and prior beliefs to update our knowledge (posterior), and repeating.\n\n\n- We continuously update our knowledge about the world as we accumulate lived experiences, or collect data.\n\n\n::: {.cell .fig-cap-location-bottom layout-align=“center”} ::: {.cell-output-display}  ::: :::\n\n\n\nBayesian Knowledge-building Process\n\n\n\n\n\n\n\n\n\n20.2.1 Frequentist Relys on (Limited) Data Only\n\nIn Question 3, in a frequentist analysis, “8 out of 8” is “8 out of 8” no matter if it’s in the context of Ben’s coins or Emma’s sweeteners.\n\n\nEqually confident conclusions that Ben can predict coin flips and Emma can distinguish between natural and artificial sweeteners.\n\n\n\n\n\n\n\n\n\n\n\n\nBut do you really believe Ben’s claim 100%? 🤔 😕\nIn fact, we judge their claim before evidence are collected, don’t we? 🤔\nYou probably think Ben overstates his ability but Emma’s claim sounds relatively reasonable, right?\n\n20.2.2 The Bayesian Balancing\n\nFrequentist throws out all prior knowledge in favor of a mere 8 data points.\nBayesian analyses balance and weight our prior experience/knowledge/belief and new data/evidence to judge a claim or make a conclusion.\n\n\n\n\n\n\n\n\n\n\n\n\n\nWe are not stubborn! If Ben had correctly predicted the outcome of 1 million coin flips, the strength of this data would far surpass that of our prior judgement, leading to a posterior conclusion that perhaps Ben is psychic!",
+    "crumbs": [
+      "Statistical Inference",
+      "<span class='chapter-number'>20</span>  <span class='chapter-title'>Bayesian Inference</span>"
+    ]
+  },
+  {
+    "objectID": "infer-bayes.html#further-reading-and-references",
+    "href": "infer-bayes.html#further-reading-and-references",
+    "title": "20  Bayesian Inference",
+    "section": "\n20.7 Further Reading and References",
+    "text": "20.7 Further Reading and References\n\nBayes Rules\nAll About that Bayes: Probability, Statistics, and the Quest to Quantify Uncertainty by Dr. Kristin Lennox\nThe Equation of Knowledge by Dr. Le Nguyen Hoang",
+    "crumbs": [
+      "Statistical Inference",
+      "<span class='chapter-number'>20</span>  <span class='chapter-title'>Bayesian Inference</span>"
+    ]
+  },
+  {
+    "objectID": "infer-bayes.html#asking-different-questions",
+    "href": "infer-bayes.html#asking-different-questions",
+    "title": "20  Bayesian Inference",
+    "section": "\n20.4 Asking Different Questions",
+    "text": "20.4 Asking Different Questions\n\n\nIn Question 4,\n\nBayesians answer (a) what’s the chance that I actually have COVID?\n\nFrequentists answer (b) if in fact I do not have COVID, what’s the chance that I would’ve gotten this positive test result?\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTest Positive\nTest Negative\nTotal\n\n\n\nCOVID\n3\n1\n4\n\n\nNo COVID\n9\n87\n96\n\n\nTotal\n12\n88\n100\n\n\n\n\n\\(H_0\\): Do not have COVID vs. \\(H_1\\): Have COVID\nA frequestist assesses the uncertainty of the observed data in light of an assumed hypothesis \\(P(Data \\mid H_0) = 9/96\\)\nA Bayesian assesses the uncertainty of the hypothesis in light of the observed data \\(P(H_0 \\mid Data) = 9/12\\)\n\nA Bayesian analysis would ask: Given my positive test result, what’s the chance that I actually have the disease? Since only 3 of the 12 people that tested positive have the disease (Table 1.1), there’s only a 25% chance that you have the disease. Thus, when we take into account the disease’s rarity and the relatively high false positive rate, it’s relatively unlikely that you actually have the disease. What a relief.\nSince disease status isn’t repeatable, the probability you have the disease is either 1 or 0 – you have it or you don’t. To the contrary, medical testing (and data collection in general) is repeatable. You can get tested for the disease over and over and over. Thus, a frequentist analysis would ask: If I don’t actually have the disease, what’s the chance that I would’ve tested positive? Since only 9 of the 96 people without the disease tested positive, there’s a roughly 10% (9/96) chance that you would’ve tested positive even if you didn’t have the disease.",
+    "crumbs": [
+      "Statistical Inference",
+      "<span class='chapter-number'>20</span>  <span class='chapter-title'>Bayesian Inference</span>"
+    ]
+  },
+  {
+    "objectID": "infer-bayes.html#fake-news",
+    "href": "infer-bayes.html#fake-news",
+    "title": "20  Bayesian Inference",
+    "section": "\n20.5 Fake News",
+    "text": "20.5 Fake News\n\n\n\nTell if an incoming article is fake.\n\n\n\nPrior info: 40% of the articles are fake\n\n\n#   type   n percent\n#   fake  60     0.4\n#   real  90     0.6\n#  Total 150     1.0\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nData come in: Check several fake and real articles, and found ! is more consistent with fake news.\n\n\n#  title_has_excl fake real\n#           FALSE   44   88\n#            TRUE   16    2\n#           Total   60   90",
+    "crumbs": [
+      "Statistical Inference",
+      "<span class='chapter-number'>20</span>  <span class='chapter-title'>Bayesian Inference</span>"
+    ]
+  },
+  {
+    "objectID": "infer-bayes.html#bayesian-updating-rule",
+    "href": "infer-bayes.html#bayesian-updating-rule",
+    "title": "20  Bayesian Inference",
+    "section": "\n20.6 Bayesian Updating Rule",
+    "text": "20.6 Bayesian Updating Rule\n\n\n\n\n\n\n\n\n\n\\(F\\): an article is fake.\nThe prior probability model\n\n\n\n\n\n\n\n\n\nEvent\n\\(F\\)\n\\(F^c\\)\nTotal\n\n\nProbability \\(P(\\cdot)\\)\n\n0.4\n0.6\n1",
+    "crumbs": [
+      "Statistical Inference",
+      "<span class='chapter-number'>20</span>  <span class='chapter-title'>Bayesian Inference</span>"
+    ]
+  },
+  {
+    "objectID": "infer-bayes.html#bayesian-model-for-events",
+    "href": "infer-bayes.html#bayesian-model-for-events",
+    "title": "20  Bayesian Inference",
+    "section": "\n20.7 Bayesian Model for Events",
+    "text": "20.7 Bayesian Model for Events\n\n\n\n\n\n\n\n\n\n#  title_has_excl fake real\n#           FALSE   44   88\n#            TRUE   16    2\n#           Total   60   90\n\n\n\\(D\\): an article title has exclamation mark.\nConditional probability: \\(P(D \\mid F) = 16/60 = 0.27\\); \\(P(D \\mid F^c) = 2/90 = 0.02\\).\n\nOpposite position:\n\nKnow the incoming article used ! (observed data)\nDon’t know whether or not the article is fake (what we want to decide).\n\n\nCompare \\(P(D \\mid F)\\) and \\(P(D \\mid F^c)\\) to ascertain the relative likelihoods of observed data \\(D\\) under different scenarios of the uncertain article status.",
+    "crumbs": [
+      "Statistical Inference",
+      "<span class='chapter-number'>20</span>  <span class='chapter-title'>Bayesian Inference</span>"
+    ]
+  },
+  {
+    "objectID": "infer-bayes.html#likelihood-function",
+    "href": "infer-bayes.html#likelihood-function",
+    "title": "20  Bayesian Inference",
+    "section": "\n20.6 Likelihood Function",
+    "text": "20.6 Likelihood Function\n\n\n\nLikelihood function \\(L(\\cdot\\mid D)\\):\n\n\\[L(F \\mid D) = P(D \\mid F) \\text{ and } L(F^c \\mid D) = P(D \\mid F^c)\\]\n\n\n\nWhen \\(F\\) is known, the conditional probability function \\(P(\\cdot \\mid F)\\) compares the probabilities of an unknown event \\(D\\), \\(D^c\\), occurring with \\(F\\): \\[P(D \\mid F) \\text{  vs. } P(D^c \\mid F)\\]\n\n\n\n\n\nWhen \\(D\\) is known, the likelihood function \\(L(\\cdot \\mid D) = P(D \\mid \\cdot)\\) evaluates the relative compatibility of data \\(D\\) with \\(F\\) or \\(F^c\\): \\[L(F \\mid D) \\text{  vs. } L(F^c \\mid D)\\]\n\n\n\n\n\n\n\n\n\n\n\n\nEvent\n\\(F\\)\n\\(F^c\\)\nTotal\n\n\n\nProbability \\(P(\\cdot)\\)\n\n0.4\n0.6\n1\n\n\nLikelihood \\(L(\\cdot \\mid D)\\)\n\n0.27\n0.02\n0.29\n\n\n\n\n\nThe likelihood function is not a probability function!",
+    "crumbs": [
+      "Statistical Inference",
+      "<span class='chapter-number'>20</span>  <span class='chapter-title'>Bayesian Inference</span>"
+    ]
+  },
+  {
+    "objectID": "infer-bayes.html#bayes-rule",
+    "href": "infer-bayes.html#bayes-rule",
+    "title": "20  Bayesian Inference",
+    "section": "\n20.7 Bayes’ Rule",
+    "text": "20.7 Bayes’ Rule\n\\[\\begin{align*} P(F \\mid D) &= \\frac{P(F \\cap D)}{P(D)}\\\\ &= \\frac{L(F \\mid D)P(F)}{P(D)}\\end{align*}\\]\n\\[\\text{posterior = } \\frac{\\text{likelihood} \\cdot \\text{prior }}{ \\text{normalizing constant}} \\]\n\nThe normalizing constant \\(P(D)\\) is known as marginal likelihood or evidence.",
+    "crumbs": [
+      "Statistical Inference",
+      "<span class='chapter-number'>20</span>  <span class='chapter-title'>Bayesian Inference</span>"
+    ]
+  },
+  {
+    "objectID": "infer-bayes.html#posterior",
+    "href": "infer-bayes.html#posterior",
+    "title": "20  Bayesian Inference",
+    "section": "\n20.8 Posterior",
+    "text": "20.8 Posterior\n\nStarted with a prior understanding that there’s a 40% chance that the incoming article would be fake.\nYet upon observing the use of an exclamation point in the title\n\n\n\n“The president has a funny secret!”\n\n\na feature that’s more common to fake news.\n\nOur posterior understanding evolved quite a bit – the chance that the article is fake jumped to 89%.\n\n\n\n\n\n\n\n\n\nEvent\n\\(F\\)\n\\(F^c\\)\nTotal\n\n\n\nPrior prob \\(P(\\cdot)\\)\n\n0.4\n0.6\n1\n\n\nPosterior prob \\(P(\\cdot \\mid D)\\)\n\n0.89\n0.11\n1",
+    "crumbs": [
+      "Statistical Inference",
+      "<span class='chapter-number'>20</span>  <span class='chapter-title'>Bayesian Inference</span>"
+    ]
+  },
+  {
+    "objectID": "infer-bayes.html#bayesian-inference-for-random-variables",
+    "href": "infer-bayes.html#bayesian-inference-for-random-variables",
+    "title": "20  Bayesian Inference",
+    "section": "\n20.6 Bayesian Inference for Random Variables",
+    "text": "20.6 Bayesian Inference for Random Variables\nFor any random variables parameter \\(\\theta\\) and data \\({\\bf Y} = (Y_1, \\dots, Y_n)\\),\n\n\\(\\pi(\\theta)\\): the prior pmf/pdf of \\(\\theta\\)\n\\(L(\\theta \\mid y_1,\\dots, y_n)\\): the likelihood of \\(\\theta\\) given observed data \\(\\mathbf{y}= \\{y_i \\}_{i = 1}^n\\).\nThe posterior distribution of \\(\\theta\\) given \\(\\mathbf{y}\\) is\n\n\\[\\pi(\\theta \\mid \\mathbf{y}) = \\frac{L(\\theta \\mid \\mathbf{y})\\pi(\\theta)}{p(\\mathbf{y})}\\] where \\[p(\\mathbf{y}) = \\begin{cases} \\int_{\\Theta} L(\\theta \\mid \\mathbf{y})\\pi(\\theta) ~ d\\theta & \\text{if } \\theta \\text{ is continuous }\\\\\n\\sum_{\\theta \\in \\Theta} L(\\theta \\mid \\mathbf{y})\\pi(\\theta) & \\text{if } \\theta \\text{ is discrete }\n\\end{cases}\\]\n\n\n20.6.1 Proportionality\n\\[\\pi(\\theta \\mid \\mathbf{y}) = \\frac{L(\\theta \\mid \\mathbf{y})\\pi(\\theta)}{p(\\mathbf{y})} \\propto_{\\theta} L(\\theta \\mid \\mathbf{y})\\pi(\\theta)\\]\n\\[\\text{posterior } \\propto \\text{ likelihood } \\cdot \\text{ prior } \\]\n\n20.6.2 Motivation Example\n\n\n\nMichelle has decided to run for governor of Wisconsin.\n\n\nAccording to previous 30 polls,\n\nMichelle’s support is centered round 45%\nshe polled at around 35% in the dreariest days and around 55% in the best days\n\n\nWith this prior information, we’d like to estimate/update Michelle’s support by conducting a new poll.\n\n\n\n\n\n\n\n\n\n\n\n\nKey: Describe prior and data information using probabilistic models.\n\nThe parameter to be estimated is \\(\\theta\\), the Michelle’s support, which is between 0 and 1.\n\n\n20.6.2.1 Prior Distribution\n\nA popular probability distribution for probability is beta distribution, \\(\\text{beta}(\\alpha, \\beta)\\), where \\(\\alpha &gt; 0\\) and \\(\\beta &gt; 0\\) are shape parameters.\n\n\\[\\pi(\\theta \\mid \\alpha, \\beta) = \\frac{\\Gamma(\\alpha+\\beta)}{\\Gamma(\\alpha)\\Gamma(\\beta)}\\theta^{\\alpha - 1}(1-\\theta)^{\\beta-1}\\]\n\n\n\n\n\n\n\n\n\n\\(\\theta \\sim \\text{beta}(\\alpha, \\beta)\\)\nIn the prior model, \\(\\alpha\\) and \\(\\beta\\) are hyperparameters to be chosen to reflect our prior information.\n\n\nMichelle’s support is centered round 45%, and she polled at around 35% in the dreariest days and around 55% in the best days.\n\n\nChoose \\(\\alpha\\) and \\(\\beta\\) so that the prior mean is about 0.45 and the range is from 0.35 to 0.55.\n\\(\\text{E}(\\theta) = \\frac{\\alpha}{\\alpha + \\beta}\\)\n\\(\\var(\\theta) = \\frac{\\alpha\\beta}{(\\alpha+\\beta)^2(\\alpha+\\beta+1)}\\)\n\n\n\n\n\n\n\n\n\n\n20.6.2.2 Likelihood\n\nYou plan to conduct a new poll of \\(n = 50\\) Cheeseheads and record \\(Y\\), the number that support Michelle.\n\n\nWhat distribution can be used for modeling likelihood connecting the data \\(y\\) and the parameter we are interested, \\(\\theta\\)?\n\n\nIf voters answer the poll independently, and the probability that any polled voter supports Michelle is \\(\\theta\\), we could consider\n\n\\[Y \\mid \\theta \\sim \\text{binomial}(n=50, \\theta)\\]\n\nThe poll result is \\(y = 30\\), the likelihood is\n\n\\[L(\\theta \\mid y = 30) = {50 \\choose 30}\\theta^{30}(1-\\theta)^{20}, \\quad \\theta \\in (0, 1)\\]\n\n\n\n\n\n\n\n\n\n20.6.2.3 Bayesian Model\n\\[\\begin{align}Y \\mid \\theta &\\sim \\text{binomial}(n=50, \\theta)\\\\ \\theta &\\sim \\text{beta}(45, 55)\n\\end{align}\\]\nGoal: Obtain the posterior distribution \\(\\pi(\\theta \\mid y)\\).\n\\[\n\\begin{align} \\pi(\\theta \\mid y) &\\propto_{\\theta} L(\\theta \\mid y)\\pi(\\theta) \\\\\n&= {50 \\choose 30}\\theta^{30}(1-\\theta)^{20} \\times \\frac{\\Gamma(100)}{\\Gamma(45)\\Gamma(55)}\\theta^{44}(1-\\theta)^{54}\\\\\n&\\propto_{\\theta} \\theta^{74}(1-\\theta)^{74}\\\\\n&= \\frac{\\Gamma(150)}{\\Gamma(75)\\Gamma(75)} \\theta^{74}(1-\\theta)^{74} \\\\\n&= \\text{beta}(75, 75)\\end{align}\n\\]\nusing the fact that \\(\\int_{\\mathcal{X}} f(x) dx = 1\\) for any pdf \\(f(x)\\).\n\n20.6.2.4 Posterior Distribution",
+    "crumbs": [
+      "Statistical Inference",
+      "<span class='chapter-number'>20</span>  <span class='chapter-title'>Bayesian Inference</span>"
+    ]
+  },
+  {
+    "objectID": "infer-bayes.html#proportionality",
+    "href": "infer-bayes.html#proportionality",
+    "title": "20  Bayesian Inference",
+    "section": "\n20.10 Proportionality",
+    "text": "20.10 Proportionality\n\\[\\pi(\\theta \\mid \\mathbf{y}) = \\frac{L(\\theta \\mid \\mathbf{y})\\pi(\\theta)}{p(\\mathbf{y})} \\propto_{\\theta} L(\\theta \\mid \\mathbf{y})\\pi(\\theta)\\]\n\\[\\text{posterior } \\propto \\text{ likelihood } \\cdot \\text{ prior } \\]",
+    "crumbs": [
+      "Statistical Inference",
+      "<span class='chapter-number'>20</span>  <span class='chapter-title'>Bayesian Inference</span>"
+    ]
+  },
+  {
+    "objectID": "infer-bayes.html#motivation-example",
+    "href": "infer-bayes.html#motivation-example",
+    "title": "20  Bayesian Inference",
+    "section": "\n20.11 Motivation Example",
+    "text": "20.11 Motivation Example\n\n\n\nMichelle has decided to run for governor of Wisconsin.\n\n\nAccording to previous 30 polls,\n\nMichelle’s support is centered round 45%\nshe polled at around 35% in the dreariest days and around 55% in the best days\n\n\nWith this prior information, we’d like to estimate/update Michelle’s support by conducting a new poll.\n\n\n\n\n\n\n\n\n\n\n\n\nKey: Describe prior and data information using probabilistic models.\n\nThe parameter to be estimated is \\(\\theta\\), the Michelle’s support, which is between 0 and 1.",
+    "crumbs": [
+      "Statistical Inference",
+      "<span class='chapter-number'>20</span>  <span class='chapter-title'>Bayesian Inference</span>"
+    ]
+  },
+  {
+    "objectID": "infer-bayes.html#prior-distribution",
+    "href": "infer-bayes.html#prior-distribution",
+    "title": "20  Bayesian Inference",
+    "section": "\n20.6 Prior Distribution",
+    "text": "20.6 Prior Distribution\n\nA popular probability distribution for probability is beta distribution, \\(\\text{beta}(\\alpha, \\beta)\\), where \\(\\alpha &gt; 0\\) and \\(\\beta &gt; 0\\) are shape parameters.\n\n\\[\\pi(\\theta \\mid \\alpha, \\beta) = \\frac{\\Gamma(\\alpha+\\beta)}{\\Gamma(\\alpha)\\Gamma(\\beta)}\\theta^{\\alpha - 1}(1-\\theta)^{\\beta-1}\\]",
+    "crumbs": [
+      "Statistical Inference",
+      "<span class='chapter-number'>20</span>  <span class='chapter-title'>Bayesian Inference</span>"
+    ]
+  },
+  {
+    "objectID": "infer-bayes.html#prior-distribution-1",
+    "href": "infer-bayes.html#prior-distribution-1",
+    "title": "20  Bayesian Inference",
+    "section": "\n20.7 Prior Distribution",
+    "text": "20.7 Prior Distribution\n\n\\(\\theta \\sim \\text{beta}(\\alpha, \\beta)\\)\nIn the prior model, \\(\\alpha\\) and \\(\\beta\\) are hyperparameters to be chosen to reflect our prior information.\n\n\nMichelle’s support is centered round 45%, and she polled at around 35% in the dreariest days and around 55% in the best days.\n\n\nChoose \\(\\alpha\\) and \\(\\beta\\) so that the prior mean is about 0.45 and the range is from 0.35 to 0.55.\n\\(\\text{E}(\\theta) = \\frac{\\alpha}{\\alpha + \\beta}\\)\n\\(\\var(\\theta) = \\frac{\\alpha\\beta}{(\\alpha+\\beta)^2(\\alpha+\\beta+1)}\\)",
+    "crumbs": [
+      "Statistical Inference",
+      "<span class='chapter-number'>20</span>  <span class='chapter-title'>Bayesian Inference</span>"
+    ]
+  },
+  {
+    "objectID": "infer-bayes.html#prior-distribution-2",
+    "href": "infer-bayes.html#prior-distribution-2",
+    "title": "20  Bayesian Inference",
+    "section": "\n20.8 Prior Distribution",
+    "text": "20.8 Prior Distribution",
+    "crumbs": [
+      "Statistical Inference",
+      "<span class='chapter-number'>20</span>  <span class='chapter-title'>Bayesian Inference</span>"
+    ]
+  },
+  {
+    "objectID": "infer-bayes.html#likelihood",
+    "href": "infer-bayes.html#likelihood",
+    "title": "20  Bayesian Inference",
+    "section": "\n20.9 Likelihood",
+    "text": "20.9 Likelihood\n\nYou plan to conduct a new poll of \\(n = 50\\) Cheeseheads and record \\(Y\\), the number that support Michelle.\n\n\nWhat distribution can be used for modeling likelihood connecting the data \\(y\\) and the parameter we are interested, \\(\\theta\\)?\n\n\nIf voters answer the poll independently, and the probability that any polled voter supports Michelle is \\(\\theta\\), we could consider\n\n\\[Y \\mid \\theta \\sim \\text{binomial}(n=50, \\theta)\\]\n\nThe poll result is \\(y = 30\\), the likelihood is\n\n\\[L(\\theta \\mid y = 30) = {50 \\choose 30}\\theta^{30}(1-\\theta)^{20}, \\quad \\theta \\in (0, 1)\\]",
+    "crumbs": [
+      "Statistical Inference",
+      "<span class='chapter-number'>20</span>  <span class='chapter-title'>Bayesian Inference</span>"
+    ]
+  },
+  {
+    "objectID": "infer-bayes.html#likelihood-1",
+    "href": "infer-bayes.html#likelihood-1",
+    "title": "20  Bayesian Inference",
+    "section": "\n20.10 Likelihood",
+    "text": "20.10 Likelihood",
+    "crumbs": [
+      "Statistical Inference",
+      "<span class='chapter-number'>20</span>  <span class='chapter-title'>Bayesian Inference</span>"
+    ]
+  },
+  {
+    "objectID": "infer-bayes.html#bayesian-model",
+    "href": "infer-bayes.html#bayesian-model",
+    "title": "20  Bayesian Inference",
+    "section": "\n20.5 Bayesian Model",
+    "text": "20.5 Bayesian Model\nFake News\n\n\n\nTell if an incoming article is fake. The usage of an ! might seem odd for a real article. The exclamation point data is more consistent with fake news.\n\n\n\nPrior info: 40% of the articles are fake\n\n\n#   type   n percent\n#   fake  60     0.4\n#   real  90     0.6\n#  Total 150     1.0\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nData come in: Check several fake and real articles, and found ! is more consistent with fake news.\n\n\n#  title_has_excl fake real\n#           FALSE   44   88\n#            TRUE   16    2\n#           Total   60   90\n\n\n\n20.5.1 Bayesian Updating Rule\n\n\n\n\n\n\n\n\n\n\\(F\\): an article is fake.\nThe prior probability model\n\n\n\n\n\n\n\n\n\nEvent\n\\(F\\)\n\\(F^c\\)\nTotal\n\n\nProbability \\(P(\\cdot)\\)\n\n0.4\n0.6\n1\n\n\n\n#  title_has_excl fake real\n#           FALSE   44   88\n#            TRUE   16    2\n#           Total   60   90\n\n\n\\(D\\): an article title has exclamation mark.\nConditional probability: \\(P(D \\mid F) = 16/60 = 0.27\\); \\(P(D \\mid F^c) = 2/90 = 0.02\\).\n\nOpposite position:\n\nKnow the incoming article used ! (observed data)\nDon’t know whether or not the article is fake (what we want to decide).\n\n\nCompare \\(P(D \\mid F)\\) and \\(P(D \\mid F^c)\\) to ascertain the relative likelihoods of observed data \\(D\\) under different scenarios of the uncertain article status.\n\nSince exclamation point usage is so much more likely among fake news than real news, this data provides some evidence that the article is fake To help distinguish this application of conditional probability calculations from that when D is uncertain and F is known, we’ll utilize the following likelihood function notation.\n\n20.5.2 Likelihood Function\n\n\n\nLikelihood function \\(L(\\cdot\\mid D)\\):\n\n\\[L(F \\mid D) = P(D \\mid F) \\text{ and } L(F^c \\mid D) = P(D \\mid F^c)\\]\n\n\n\nWhen \\(F\\) is known, the conditional probability function \\(P(\\cdot \\mid F)\\) compares the probabilities of an unknown event \\(D\\), \\(D^c\\), occurring with \\(F\\): \\[P(D \\mid F) \\text{  vs. } P(D^c \\mid F)\\]\n\n\n\n\n\nWhen \\(D\\) is known, the likelihood function \\(L(\\cdot \\mid D) = P(D \\mid \\cdot)\\) evaluates the relative compatibility of data \\(D\\) with \\(F\\) or \\(F^c\\): \\[L(F \\mid D) \\text{  vs. } L(F^c \\mid D)\\]\n\n\n\n\n\n\n\n\n\n\n\n\nEvent\n\\(F\\)\n\\(F^c\\)\nTotal\n\n\n\nProbability \\(P(\\cdot)\\)\n\n0.4\n0.6\n1\n\n\nLikelihood \\(L(\\cdot \\mid D)\\)\n\n0.27\n0.02\n0.29\n\n\n\n\n\nThe likelihood function is not a probability function!\n\n\n20.5.3 Bayes’ Rule\n\\[\\begin{align*} P(F \\mid D) &= \\frac{P(F \\cap D)}{P(D)}\\\\ &= \\frac{L(F \\mid D)P(F)}{P(D)}\\end{align*}\\]\n\\[\\text{posterior = } \\frac{\\text{likelihood} \\cdot \\text{prior }}{ \\text{normalizing constant}} \\]\n\nThe normalizing constant \\(P(D)\\) is known as marginal likelihood or evidence.\n\n\n20.5.4 Posterior\n\nStarted with a prior understanding that there’s a 40% chance that the incoming article would be fake.\nYet upon observing the use of an exclamation point in the title\n\n\n\n“The president has a funny secret!”\n\n\na feature that’s more common to fake news.\n\nOur posterior understanding evolved quite a bit – the chance that the article is fake jumped to 89%.\n\n\n\n\n\n\n\n\n\nEvent\n\\(F\\)\n\\(F^c\\)\nTotal\n\n\n\nPrior prob \\(P(\\cdot)\\)\n\n0.4\n0.6\n1\n\n\nPosterior prob \\(P(\\cdot \\mid D)\\)\n\n0.89\n0.11\n1",
+    "crumbs": [
+      "Statistical Inference",
+      "<span class='chapter-number'>20</span>  <span class='chapter-title'>Bayesian Inference</span>"
+    ]
+  },
+  {
+    "objectID": "infer-bayes.html#posterior-distribution",
+    "href": "infer-bayes.html#posterior-distribution",
+    "title": "20  Bayesian Inference",
+    "section": "\n20.12 Posterior Distribution",
+    "text": "20.12 Posterior Distribution",
+    "crumbs": [
+      "Statistical Inference",
+      "<span class='chapter-number'>20</span>  <span class='chapter-title'>Bayesian Inference</span>"
+    ]
+  },
+  {
+    "objectID": "infer-bayes.html#take-home-message",
+    "href": "infer-bayes.html#take-home-message",
+    "title": "20  Bayesian Inference",
+    "section": "\n20.13 Take-home Message",
+    "text": "20.13 Take-home Message\n\nThe parameter is a random variable in the Bayesian world.\nIt is fixed and constant in the frequentist world.",
+    "crumbs": [
+      "Statistical Inference",
+      "<span class='chapter-number'>20</span>  <span class='chapter-title'>Bayesian Inference</span>"
+    ]
+  },
+  {
+    "objectID": "infer-bayes.html#the-meaning-of-probability-relative-frequency-vs.-relative-plausibility",
+    "href": "infer-bayes.html#the-meaning-of-probability-relative-frequency-vs.-relative-plausibility",
+    "title": "20  Bayesian Inference",
+    "section": "\n20.2 The Meaning of Probability: Relative Frequency vs. Relative Plausibility\n",
+    "text": "20.2 The Meaning of Probability: Relative Frequency vs. Relative Plausibility\n\nThe frequentist interprets probability as the long-run relative frequency of a repeatable experiment. We’ve seen this interpretation before in Chapter 6. We know that using relative frequencies as probability has several issues:\n\n😕 How large of a number is large enough?\n😕 Meaning of “under similar conditions”\n😕 The relative frequency is reliable under identical conditions?\n👉 We only obtain an approximation instead of exact value.\n😂 How do you compute the probability that Chicago Cubs wins the World Series next year?\n\n\n\n\n\n\n\n\n\nIn statistical inference, our research questions or events of interest are often not repeatable or very difficult to replicate. For example, what is the probability that Donald Trump will win the 2024 presidential election? What is the probability that the Milwaukee Bucks will win the 2025 NBA championship? What would the mean income level for males be if every man was required to serve in the military for two years? Still many political scientists, sport analysts, or economists are answering those questions, right?! To rationalize their arguments, and to better answer these types of research questions, we must interpret probability in a different way.\n\nIn the Bayesian philosophy, a probability measures the relative plausibility of an event.\n\n\nFor the statement “candidate A has a 0.9 probability of winning”, a frequentist might say the conclusion is wrong or weirdly say in long-run hypothetical repetitions of the election, candidate A would win roughly 90% of the time. A Bayesian would say based on analysis the candidate A is 9 times more likely to win than to lose.\nBack to our Quiz 1. For the statement “the probability of flipping Heads is 0.5”, a frequentist would conclude that if we flip the coin over and over, roughly 1/2 of these flips will be Heads. A Bayesian would conclude that Heads and Tails are equally likely.\n\n\n\n\n\n\nSource: https://x.com/nytgraphics/status/796195155158171648",
+    "crumbs": [
+      "Statistical Inference",
+      "<span class='chapter-number'>20</span>  <span class='chapter-title'>Bayesian Inference</span>"
+    ]
+  },
+  {
+    "objectID": "infer-bayes.html#prior-information-and-empirical-evidence",
+    "href": "infer-bayes.html#prior-information-and-empirical-evidence",
+    "title": "20  Bayesian Inference",
+    "section": "\n20.3 Prior Information and Empirical Evidence",
+    "text": "20.3 Prior Information and Empirical Evidence\n\nHow can we live if we don’t change? - Beyoncé. Lyric from “Satellites.”\n\nEverybody changes their mind. You likely even changed your mind in the last minute. For example, suppose there’s a new Italian restaurant in your town. It has a 5-star online rating and you love Italian food! Thus, prior to ever stepping foot in the restaurant, you anticipate that it will be quite delicious. On your first visit, you collect some edible data: your pasta dish arrives a soggy mess. Weighing the stellar online rating against your own terrible meal (which might have just been a fluke), you update your knowledge: this is a 3-star not 5-star restaurant. Willing to give the restaurant another chance, you make a second trip. On this visit, you’re pleased with your Alfredo and increase the restaurant’s rating to 4 stars. You continue to visit the restaurant, collecting edible data and updating your knowledge each time.\n\n\n\n\n\n\n\nFigure 20.1: Fig 1.1 of Bayes Rules. The figures not being sourced come from this book too.\n\n\n\n\n\nWe use data and prior beliefs to update our knowledge (posterior), and repeating.\nWe continuously update our knowledge about the world as we accumulate lived experiences, or collect data.\n\nFigure 20.2 shows Bayesian Knowledge-building Process. If you’re an environmental scientist, yours might be an analysis of the human role in climate change. You don’t walk into such an inquiry without context – you carry a degree of incoming or prior information based on previous research and experience. Naturally, it’s in light of this information that you interpret new data, weighing both in developing your updated or posterior information.\n\n\n\n\n\n\n\nFigure 20.2\n\n\n\n\nFrequentist relies on (limited) data only. In Question 3, in a frequentist analysis, “8 out of 8” is “8 out of 8” no matter if it’s in the context of Ben’s coins or Emma’s sweeteners.\n\n\nEqually confident conclusions that Ben can predict coin flips and Emma can distinguish between natural and artificial sweeteners.\n\n\n\n\n\n\n\n\n\n\nBut do you really believe Ben’s claim 100%? 🤔 😕\nIn fact, we judge their claim before evidence are collected, don’t we? 🤔\nYou probably think Ben overstates his ability but Emma’s claim sounds relatively reasonable, right?\n\n\nFrequentist throws out all prior knowledge in favor of a mere 8 data points.\nBayesian analyses balance and weight our prior experience/knowledge/belief and new data/evidence to judge a claim or make a conclusion.\n\n\n\n\n\n\n\n\n\n\n\n\n\nWe are not stubborn! If Ben had correctly predicted the outcome of 1 million coin flips, the strength of this data would far surpass that of our prior judgement, leading to a posterior conclusion that perhaps Ben is psychic!",
+    "crumbs": [
+      "Statistical Inference",
+      "<span class='chapter-number'>20</span>  <span class='chapter-title'>Bayesian Inference</span>"
+    ]
+  },
+  {
+    "objectID": "infer-bayes.html#bayesian-model-1",
+    "href": "infer-bayes.html#bayesian-model-1",
+    "title": "20  Bayesian Inference",
+    "section": "\n20.11 Bayesian Model",
+    "text": "20.11 Bayesian Model\n\\[\\begin{align}Y \\mid \\theta &\\sim \\text{binomial}(n=50, \\theta)\\\\ \\theta &\\sim \\text{beta}(45, 55)\n\\end{align}\\]\nGoal: Obtain the posterior distribution \\(\\pi(\\theta \\mid y)\\).\n\\[\n\\begin{align} \\pi(\\theta \\mid y) &\\propto_{\\theta} L(\\theta \\mid y)\\pi(\\theta) \\\\\n&= {50 \\choose 30}\\theta^{30}(1-\\theta)^{20} \\times \\frac{\\Gamma(100)}{\\Gamma(45)\\Gamma(55)}\\theta^{44}(1-\\theta)^{54}\\\\\n&\\propto_{\\theta} \\theta^{74}(1-\\theta)^{74}\\\\\n&= \\frac{\\Gamma(150)}{\\Gamma(75)\\Gamma(75)} \\theta^{74}(1-\\theta)^{74} \\\\\n&= \\text{beta}(75, 75)\\end{align}\n\\]\nusing the fact that \\(\\int_{\\mathcal{X}} f(x) dx = 1\\) for any pdf \\(f(x)\\).",
+    "crumbs": [
+      "Statistical Inference",
+      "<span class='chapter-number'>20</span>  <span class='chapter-title'>Bayesian Inference</span>"
     ]
   }
 ]

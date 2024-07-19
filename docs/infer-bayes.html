@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.4.555">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
 <meta name="description" content="An comprehensive introductory statistical data science book.">
-
 <title>Introduction to Statistics - 20&nbsp; Bayesian Inference</title>
 <style>
 code{white-space: pre-wrap;}
@@ -22,7 +19,6 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 </style>
-
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
@@ -41,8 +37,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
-<script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -68,17 +63,37 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script>
-
-
+}</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 </head>
-
 <body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
@@ -89,13 +104,9 @@ ul.task-list li input[type="checkbox"] {
         <i class="bi bi-search"></i>
       </button>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Introduction to Statistics</a> 
         <div class="sidebar-tools-main">
@@ -110,7 +121,7 @@ ul.task-list li input[type="checkbox"] {
         </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Welcome</span></a>
@@ -124,8 +135,8 @@ ul.task-list li input[type="checkbox"] {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./intro-stats.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Science of Data and Data Science</span></span></a>
@@ -144,7 +155,7 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./datasummary.html" class="sidebar-item-text sidebar-link">
@@ -153,8 +164,8 @@ ul.task-list li input[type="checkbox"] {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./data-graphics.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Visualization</span></span></a>
@@ -167,7 +178,7 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./prob.html" class="sidebar-item-text sidebar-link">
@@ -176,8 +187,8 @@ ul.task-list li input[type="checkbox"] {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prob-define.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Definition of Probability</span></span></a>
@@ -220,7 +231,7 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./infer.html" class="sidebar-item-text sidebar-link">
@@ -229,8 +240,8 @@ ul.task-list li input[type="checkbox"] {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-ci.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Point and Interval Estimation</span></span></a>
@@ -285,7 +296,7 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./model.html" class="sidebar-item-text sidebar-link">
@@ -294,8 +305,8 @@ ul.task-list li input[type="checkbox"] {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-anova.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></span></a>
@@ -326,26 +337,67 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </li>
       </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">References</span></span>
   </li>
-        <li class="sidebar-item">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./references.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">References</span></a>
+  <a href="./a-r_prog.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">R programming</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./a-py_prog.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Python programming</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
     </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li><a href="#bayesian-thinking" id="toc-bayesian-thinking" class="nav-link active" data-scroll-target="#bayesian-thinking"><span class="header-section-number">20.1</span> Bayesian Thinking</a></li>
+  <li><a href="#the-meaning-of-probability-relative-frequency-vs.-relative-plausibility" id="toc-the-meaning-of-probability-relative-frequency-vs.-relative-plausibility" class="nav-link" data-scroll-target="#the-meaning-of-probability-relative-frequency-vs.-relative-plausibility"><span class="header-section-number">20.2</span> The Meaning of Probability: <strong>Relative Frequency</strong> vs.&nbsp;<strong>Relative Plausibility</strong></a></li>
+  <li><a href="#prior-information-and-empirical-evidence" id="toc-prior-information-and-empirical-evidence" class="nav-link" data-scroll-target="#prior-information-and-empirical-evidence"><span class="header-section-number">20.3</span> Prior Information and Empirical Evidence</a></li>
+  <li><a href="#asking-different-questions" id="toc-asking-different-questions" class="nav-link" data-scroll-target="#asking-different-questions"><span class="header-section-number">20.4</span> Asking Different Questions</a></li>
+  <li>
+<a href="#bayesian-model" id="toc-bayesian-model" class="nav-link" data-scroll-target="#bayesian-model"><span class="header-section-number">20.5</span> Bayesian Model</a>
+  <ul class="collapse">
+<li><a href="#bayesian-updating-rule" id="toc-bayesian-updating-rule" class="nav-link" data-scroll-target="#bayesian-updating-rule"><span class="header-section-number">20.5.1</span> Bayesian Updating Rule</a></li>
+  <li><a href="#likelihood-function" id="toc-likelihood-function" class="nav-link" data-scroll-target="#likelihood-function"><span class="header-section-number">20.5.2</span> Likelihood Function</a></li>
+  <li><a href="#bayes-rule" id="toc-bayes-rule" class="nav-link" data-scroll-target="#bayes-rule"><span class="header-section-number">20.5.3</span> Bayes’ Rule</a></li>
+  <li><a href="#posterior" id="toc-posterior" class="nav-link" data-scroll-target="#posterior"><span class="header-section-number">20.5.4</span> Posterior</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#bayesian-inference-for-random-variables" id="toc-bayesian-inference-for-random-variables" class="nav-link" data-scroll-target="#bayesian-inference-for-random-variables"><span class="header-section-number">20.6</span> Bayesian Inference for Random Variables</a>
+  <ul class="collapse">
+<li><a href="#proportionality" id="toc-proportionality" class="nav-link" data-scroll-target="#proportionality"><span class="header-section-number">20.6.1</span> Proportionality</a></li>
+  <li><a href="#motivation-example" id="toc-motivation-example" class="nav-link" data-scroll-target="#motivation-example"><span class="header-section-number">20.6.2</span> Motivation Example</a></li>
+  </ul>
+</li>
+  <li><a href="#further-reading-and-references" id="toc-further-reading-and-references" class="nav-link" data-scroll-target="#further-reading-and-references"><span class="header-section-number">20.7</span> Further Reading and References</a></li>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/infer-bayes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./infer.html">Statistical Inference</a></li><li class="breadcrumb-item"><a href="./infer-bayes.html"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></a></li></ol></nav>
-<div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./infer.html">Statistical Inference</a></li><li class="breadcrumb-item"><a href="./infer-bayes.html"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title"><span id="sec-infer-bayes" class="quarto-section-identifier"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></span></h1>
 </div>
 
@@ -360,15 +412,610 @@ ul.task-list li input[type="checkbox"] {
   
 
 
-</header>
+</header><div class="hidden">
+
+</div>
+<p>The inference methods we have learned so far assume that unknown (population) parameters to be estimated or tested are constants. They are fixed and their values do not change. In other words, the parameters are not random variables, and the uncertainty that arises when estimating them is entirely due to sampling variation, not the variability of the parameters themselves. Additionally, when dealing with uncertainty, we use relative frequency to describe probabilities. Lots of times the answer to our questions relies on repetitions of experiments or trials. These methods adopt the so-called <strong>frequentist</strong> philosophy. The frequentist approach, also known as the classical approach, has dominated the statistics community since the early 20th century. This dominance followed the development of a comprehensive inference framework by several great statisticians, such as Ronald Fisher, Jerzy Neyman, and Egon Pearson. This framework, which includes confidence intervals, hypothesis testing, p-values, and statistical significance, is taught in every introductory statistics course.</p>
+<p>In fact, there is another way of thinking about statistical inference: the <strong>Bayesian</strong> philosophy. The Bayesian approach did not emerge after the frequentist approach; rather, it has historical roots that trace back to Bayes’ theorem (Bayes’ rule), named after Thomas Bayes. People in the late 18th or early 19th century already used the Bayesian philosophy to tackle problems. For instance, Pierre-Simon Laplace used the Bayesian theorem to calculate the probability that the sun would rise the next day. However, the Bayesian approach lost popularity later on because as problems became more complex, solving them within the Bayesian framework became very tedious and time-consuming, especially given the lack of powerful computing resources at the time. With the advancement of computing power starting in the late 20th century, more statisticians and scientists began to embrace the Bayesian approach.</p>
+<p>It is important to understand the frequentist and Bayesian philosophies, particularly their differences, advantages, and disadvantages. Depending on the research question and available resources, one method may be more suitable than the other. Alternatively, it may be beneficial to combine these two paradigms to leverage the advantages of both. Currently, introductory statistics courses focus heavily on the frequentist approach. Given the ease of computation and the increasing use of Bayesian methods in scientific research, it is time to introduce more Bayesian thinking to STAT 101 students, not just one lecture of Bayes theorem.</p>
+<section id="bayesian-thinking" class="level2" data-number="20.1"><h2 data-number="20.1" class="anchored" data-anchor-id="bayesian-thinking">
+<span class="header-section-number">20.1</span> Bayesian Thinking</h2>
+<p>Before we dive into Bayesian statistics, let’s take a quiz to determine whether you currently lean more towards a Bayesian or frequentist mindset. This quiz is adapted from <a href="https://www.bayesrulesbook.com/">Bayes Rules</a>, a great new book on Bayesian statistics. I encourage you to spend some time on this if you would like to delve deeper.</p>
+<ol type="1">
+<li>
+<p><span class="green">When flipping a fair coin, we say that “the probability of flipping Heads is 0.5.” How do you interpret this probability?</span> <em>(a = 1 pt, b = 3 pts, c = 2 pts)</em></p>
+<ol type="a">
+<li>If I flip this coin over and over, roughly 50% will be Heads.</li>
+<li>Heads and Tails are equally plausible.</li>
+<li>Both a. and b. make sense.</li>
+</ol>
+</li>
+<li>
+<p><span class="green">An election is coming up and a pollster claims that candidate Yu has a 0.9 probability of winning. How do you interpret this probability?</span> <em>(a = 1 pt, b = 3 pts, c = 1 pt)</em></p>
+<ol type="a">
+<li>If we observe the election over and over, candidate Yu will win roughly 90% of the time.</li>
+<li>Candidate Yu is much more likely to win than to lose.</li>
+<li>The pollster’s calculation is wrong. Candidate Yu will either win or lose, thus their probability of winning can only be 0 or 1.</li>
+</ol>
+</li>
+<li>
+<p><span class="green">Two claims.</span> <em>(a = 3 pts, b = 1 pt)</em></p>
+<p><span class="green">(1) Ben claims he can predict the coin flip outcome. To test his claim, you flip a fair coin 8 times and he correctly predicts all.</span></p>
+<p><span class="green">(2) Emma claims she can distinguish natural and artificial sweeteners. To test her claim, you give her 8 samples and she correctly identifies each.</span></p>
+<p><span class="green">In light of these experiments, what do you conclude?</span></p>
+<ol type="a">
+<li>You’re more confident in Emma’s claim than Ben’s claim.</li>
+<li>The evidence supporting Ben’s claim is just as strong as the evidence supporting Emma’s claim.</li>
+</ol>
+</li>
+<li>
+<p><span class="green">Suppose that during a doctor’s visit, you tested positive for COVID. If you only get to ask the doctor one question, which would it be?</span> <em>(a = 3 pts, b = 1 pt)</em></p>
+<ol type="a">
+<li>What’s the chance that I actually have COVID?</li>
+<li>If in fact I don’t have COVID, what’s the chance that I would’ve gotten this positive test result?</li>
+</ol>
+</li>
+</ol>
+<p>Time tally up your quiz score. Are you frequentist or Bayesian? Totals from 4–5 indicate that your current thinking is fairly frequentist, whereas totals from 9–12 indicate alignment with the Bayesian philosophy. In between these extremes, totals from 6–8 indicate that you see strengths in both philosophies.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li>Totals <strong>4-5</strong>: your thinking is <strong>frequentist</strong>
+</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="https://upload.wikimedia.org/wikipedia/commons/a/aa/Youngronaldfisher2.JPG" class="img-fluid figure-img" style="width:80.0%"></p>
+<figcaption>Young Fisher from Wiki</figcaption></figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<ul>
+<li>Totals <strong>9-12</strong>: your thinking is <strong>Bayesian</strong>
+</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="https://upload.wikimedia.org/wikipedia/commons/d/d4/Thomas_Bayes.gif" class="img-fluid figure-img"></p>
+<figcaption>Thomas Bayes from Wiki</figcaption></figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>Totals <strong>6-8</strong>: you see strengths in both philosophies</li>
+</ul>
+<p>You are a frequentist or Bayesian? Are those confidence interval or hypothesis testing thing all Greek to you? Maybe it is because</p>
+</section><section id="the-meaning-of-probability-relative-frequency-vs.-relative-plausibility" class="level2" data-number="20.2"><h2 data-number="20.2" class="anchored" data-anchor-id="the-meaning-of-probability-relative-frequency-vs.-relative-plausibility">
+<span class="header-section-number">20.2</span> The Meaning of Probability: <strong>Relative Frequency</strong> vs.&nbsp;<strong>Relative Plausibility</strong>
+</h2>
+<p>The <em>frequentist</em> interprets probability as the <span class="green"><em>long-run</em> relative frequency of a <em>repeatable</em> experiment</span>. We’ve seen this interpretation before in <a href="prob-define.html" class="quarto-xref"><span>Chapter 6</span></a>. We know that using relative frequencies as probability has several issues:</p>
+<ul>
+<li><p>😕 How large of a number is large enough?</p></li>
+<li><p>😕 Meaning of “under similar conditions”</p></li>
+<li><p>😕 The relative frequency is reliable under identical conditions?</p></li>
+<li><p>👉 We only obtain an approximation instead of exact value.</p></li>
+<li><p>😂 How do you compute the probability that Chicago Cubs wins the World Series next year?</p></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="https://media.giphy.com/media/EKURBxKKkw0uY/giphy.gif" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>In statistical inference, our research questions or events of interest are often not repeatable or very difficult to replicate. For example, what is the probability that Donald Trump will win the 2024 presidential election? What is the probability that the Milwaukee Bucks will win the 2025 NBA championship? What would the mean income level for males be if every man was required to serve in the military for two years? Still many political scientists, sport analysts, or economists are answering those questions, right?! To rationalize their arguments, and to better answer these types of research questions, we must interpret probability in a different way.</p>
+<hr>
+<p>In the <em>Bayesian</em> philosophy, a probability measures the <span class="green"><strong>relative plausibility</strong></span> of an event.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>For the statement “<em>candidate A has a 0.9 probability of winning</em>”, a frequentist might say the conclusion is wrong or weirdly say in long-run <em>hypothetical</em> repetitions of the election, candidate A would win roughly 90% of the time. A Bayesian would say based on analysis the candidate A is 9 times more likely to win than to lose.</p>
+<p>Back to our Quiz 1. For the statement “the probability of flipping Heads is 0.5”, a frequentist would conclude that if we flip the coin over and over, roughly 1/2 of these flips will be Heads. A Bayesian would conclude that Heads and Tails are equally likely.</p>
+</div><div class="column" style="width:50%;">
+<div class="small">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="./images/img-infer/winning.jpeg" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>Source: https://x.com/nytgraphics/status/796195155158171648</figcaption></figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section id="prior-information-and-empirical-evidence" class="level2" data-number="20.3"><h2 data-number="20.3" class="anchored" data-anchor-id="prior-information-and-empirical-evidence">
+<span class="header-section-number">20.3</span> Prior Information and Empirical Evidence</h2>
+<blockquote class="blockquote">
+<p>How can we live if we don’t change? - Beyoncé. Lyric from “Satellites.”</p>
+</blockquote>
+<p>Everybody changes their mind. You likely even changed your mind in the last minute. For example, suppose there’s a new Italian restaurant in your town. It has a 5-star online rating and you love Italian food! Thus, prior to ever stepping foot in the restaurant, you anticipate that it will be quite delicious. On your first visit, you collect some edible data: your pasta dish arrives a soggy mess. Weighing the stellar online rating against your own terrible meal (which might have just been a fluke), you update your knowledge: this is a 3-star not 5-star restaurant. Willing to give the restaurant another chance, you make a second trip. On this visit, you’re pleased with your Alfredo and increase the restaurant’s rating to 4 stars. You continue to visit the restaurant, collecting edible data and updating your knowledge each time.</p>
+<div class="cell fig-cap-location-bottom" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-restaurant" class="quarto-figure quarto-figure-center quarto-float anchored" data-cap-location="bottom" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-restaurant-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/img-infer/restaurant_diagram.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="2000">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-restaurant-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;20.1: Fig 1.1 of Bayes Rules. The figures not being sourced come from this book too.
+</figcaption></figure>
+</div>
+</div>
+</div>
+<ul>
+<li><p>We use <strong>data</strong> and <strong>prior beliefs</strong> to update our knowledge (<strong>posterior</strong>), and repeating.</p></li>
+<li><p>We continuously update our knowledge about the world as we accumulate lived experiences, or <em>collect data</em>.</p></li>
+</ul>
+<p><a href="#fig-bayes" class="quarto-xref">Figure&nbsp;<span>20.2</span></a> shows Bayesian Knowledge-building Process. If you’re an environmental scientist, yours might be an analysis of the human role in climate change. You don’t walk into such an inquiry without context – you carry a degree of incoming or prior information based on previous research and experience. Naturally, it’s in light of this information that you interpret new data, weighing both in developing your updated or posterior information.</p>
+<div class="cell fig-cap-location-bottom" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-bayes" class="quarto-figure quarto-figure-center quarto-float anchored" width="50%" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-bayes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/img-infer/bayes_diagram.png" id="fig-bayes" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" style="width:50.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-bayes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;20.2
+</figcaption></figure>
+</div>
+</div>
+</div>
+<p>Frequentist relies on (limited) data only. In Question 3, in a frequentist analysis, “8 out of 8” is “8 out of 8” no matter if it’s in the context of Ben’s coins or Emma’s sweeteners.</p>
+<ul>
+<li>
+<em>Equally confident</em> conclusions that Ben can predict coin flips and Emma can distinguish between natural and artificial sweeteners.</li>
+</ul>
+<div class="cell fig-cap-location-bottom" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="./images/img-infer/freq_diagram.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:30.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><p>But do you really believe Ben’s claim 100%? 🤔 😕</p></li>
+<li><p>In fact, we judge their claim before evidence are collected, don’t we? 🤔</p></li>
+<li><p>You probably think Ben overstates his ability but Emma’s claim sounds relatively reasonable, right?</p></li>
+</ul>
+<!-- ### The Bayesian Balancing --><ul>
+<li><p>Frequentist throws out all prior knowledge in favor of a mere 8 data points.</p></li>
+<li><p>Bayesian analyses <em>balance</em> and <em>weight</em> our prior experience/knowledge/belief and new data/evidence to judge a claim or make a conclusion.</p></li>
+</ul>
+<div class="cell fig-cap-location-bottom" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="./images/img-infer/bayes-balance-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:56.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="columns">
+<div class="column" style="width:80%;">
+<ul>
+<li>
+<span class="green"><em>We are not stubborn!</em></span> If Ben had correctly predicted the outcome of <em>1 million</em> coin flips, the strength of this data would far surpass that of our prior judgement, leading to a posterior conclusion that perhaps Ben is psychic!</li>
+</ul>
+</div><div class="column" style="width:20%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="./images/img-infer/psychic.jpeg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section id="asking-different-questions" class="level2" data-number="20.4"><h2 data-number="20.4" class="anchored" data-anchor-id="asking-different-questions">
+<span class="header-section-number">20.4</span> Asking Different Questions</h2>
+<div class="columns">
+<div class="column" style="width:80%;">
+<p>In Question 4,</p>
+<ul>
+<li>Bayesians answer (a) <em>what’s the chance that I actually have COVID?</em>
+</li>
+<li>Frequentists answer (b) <em>if in fact I do not have COVID, what’s the chance that I would’ve gotten this positive test result?</em>
+</li>
+</ul>
+</div><div class="column" style="width:20%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="./images/img-infer/covid.jpeg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="2484"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 22%">
+<col style="width: 22%">
+<col style="width: 31%">
+<col style="width: 19%">
+</colgroup>
+<thead><tr class="header">
+<th></th>
+<th>Test Positive</th>
+<th>Test Negative</th>
+<th>Total</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>COVID</td>
+<td>3</td>
+<td>1</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td>No COVID</td>
+<td>9</td>
+<td>87</td>
+<td>96</td>
+</tr>
+<tr class="odd">
+<td>Total</td>
+<td>12</td>
+<td>88</td>
+<td>100</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p><span class="math inline">\(H_0\)</span>: Do not have COVID vs.&nbsp;<span class="math inline">\(H_1\)</span>: Have COVID</p></li>
+<li><p>A frequestist assesses <em>the uncertainty of the observed data in light of an assumed hypothesis</em> <span class="math inline">\(P(Data \mid H_0) = 9/96\)</span></p></li>
+<li><p>A Bayesian assesses <em>the uncertainty of the hypothesis in light of the observed data</em> <span class="math inline">\(P(H_0 \mid Data) = 9/12\)</span></p></li>
+</ul>
+<p>A Bayesian analysis would ask: Given my positive test result, what’s the chance that I actually have the disease? Since only 3 of the 12 people that tested positive have the disease (Table 1.1), there’s only a 25% chance that you have the disease. Thus, when we take into account the disease’s rarity and the relatively high false positive rate, it’s relatively unlikely that you actually have the disease. What a relief.</p>
+<p>Since disease status isn’t repeatable, the probability you have the disease is either 1 or 0 – you have it or you don’t. To the contrary, medical testing (and data collection in general) is repeatable. You can get tested for the disease over and over and over. Thus, a frequentist analysis would ask: If I don’t actually have the disease, what’s the chance that I would’ve tested positive? Since only 9 of the 96 people without the disease tested positive, there’s a roughly 10% (9/96) chance that you would’ve tested positive even if you didn’t have the disease.</p>
+</section><section id="bayesian-model" class="level2" data-number="20.5"><h2 data-number="20.5" class="anchored" data-anchor-id="bayesian-model">
+<span class="header-section-number">20.5</span> Bayesian Model</h2>
+<p>Fake News</p>
+<div class="columns">
+<div class="column" style="width:80%;">
+<ul>
+<li>Tell if an incoming article is fake. The usage of an ! might seem odd for a real article. The exclamation point data is more consistent with fake news.</li>
+</ul>
+<ul>
+<li>
+<span class="green"><strong>Prior info</strong>:</span> 40% of the articles are fake</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<pre><code>#   type   n percent
+#   fake  60     0.4
+#   real  90     0.6
+#  Total 150     1.0</code></pre>
+</div>
+</div><div class="column" style="width:20%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="./images/img-infer/fake_news.jpeg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="750"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>
+<span class="green"><strong>Data come in</strong>:</span> Check several fake and real articles, and found <code>!</code> is more consistent with fake news.</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<pre><code>#  title_has_excl fake real
+#           FALSE   44   88
+#            TRUE   16    2
+#           Total   60   90</code></pre>
+</div>
+<hr>
+<section id="bayesian-updating-rule" class="level3" data-number="20.5.1"><h3 data-number="20.5.1" class="anchored" data-anchor-id="bayesian-updating-rule">
+<span class="header-section-number">20.5.1</span> Bayesian Updating Rule</h3>
+<div class="cell fig-cap-location-bottom" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="./images/img-infer/fake_news_diagram.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><p><span class="math inline">\(F\)</span>: <em>an article is fake</em>.</p></li>
+<li><p>The <strong>prior probability model</strong></p></li>
+</ul>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 32%">
+<col style="width: 19%">
+<col style="width: 28%">
+<col style="width: 17%">
+</colgroup>
+<thead><tr class="header">
+<th>Event</th>
+<th><span class="math inline">\(F\)</span></th>
+<th><span class="math inline">\(F^c\)</span></th>
+<th>Total</th>
+</tr></thead>
+<tbody><tr class="odd">
+<td>Probability <span class="math inline">\(P(\cdot)\)</span>
+</td>
+<td>0.4</td>
+<td>0.6</td>
+<td>1</td>
+</tr></tbody>
+</table>
+<div class="cell" data-layout-align="center">
+<pre><code>#  title_has_excl fake real
+#           FALSE   44   88
+#            TRUE   16    2
+#           Total   60   90</code></pre>
+</div>
+<ul>
+<li><p><span class="math inline">\(D\)</span>: <em>an article title has exclamation mark</em>.</p></li>
+<li><p>Conditional probability: <span class="math inline">\(P(D \mid F) = 16/60 = 0.27\)</span>; <span class="math inline">\(P(D \mid F^c) = 2/90 = 0.02\)</span>.</p></li>
+<li>
+<p><span class="green"><em>Opposite position</em></span>:</p>
+<ul>
+<li>Know the incoming article used <code>!</code> (observed data)</li>
+<li>Don’t know whether or not the article is fake (what we want to decide).</li>
+</ul>
+</li>
+<li><p>Compare <span class="math inline">\(P(D \mid F)\)</span> and <span class="math inline">\(P(D \mid F^c)\)</span> to ascertain the relative <strong>likelihoods</strong> of <em>observed data</em> <span class="math inline">\(D\)</span> under different scenarios of the <em>uncertain</em> article status.</p></li>
+</ul>
+<p>Since exclamation point usage is so much more likely among fake news than real news, this data provides some evidence that the article is fake To help distinguish this application of conditional probability calculations from that when D is uncertain and F is known, we’ll utilize the following likelihood function notation.</p>
+<hr></section><section id="likelihood-function" class="level3" data-number="20.5.2"><h3 data-number="20.5.2" class="anchored" data-anchor-id="likelihood-function">
+<span class="header-section-number">20.5.2</span> Likelihood Function</h3>
+<div class="midi">
+<ul>
+<li>
+<strong>Likelihood function</strong> <span class="math inline">\(L(\cdot\mid D)\)</span>:</li>
+</ul>
+<p><span class="math display">\[L(F \mid D) = P(D \mid F) \text{ and } L(F^c \mid D) = P(D \mid F^c)\]</span></p>
+</div>
+<div class="midi">
+<ul>
+<li>When <span class="math inline">\(F\)</span> is known, the <em>conditional probability</em> function <span class="math inline">\(P(\cdot \mid F)\)</span> compares the probabilities of an unknown event <span class="math inline">\(D\)</span>, <span class="math inline">\(D^c\)</span>, occurring with <span class="math inline">\(F\)</span>: <span class="math display">\[P(D \mid F) \text{  vs. } P(D^c \mid F)\]</span>
+</li>
+</ul>
+</div>
+<div class="midi">
+<ul>
+<li>When <span class="math inline">\(D\)</span> is known, the <em>likelihood function</em> <span class="math inline">\(L(\cdot \mid D) = P(D \mid \cdot)\)</span> evaluates the <em>relative compatibility</em> of data <span class="math inline">\(D\)</span> with <span class="math inline">\(F\)</span> or <span class="math inline">\(F^c\)</span>: <span class="math display">\[L(F \mid D) \text{  vs. } L(F^c \mid D)\]</span>
+</li>
+</ul>
+</div>
+<div class="small">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 36%">
+<col style="width: 18%">
+<col style="width: 26%">
+<col style="width: 16%">
+</colgroup>
+<thead><tr class="header">
+<th>Event</th>
+<th><span class="math inline">\(F\)</span></th>
+<th><span class="math inline">\(F^c\)</span></th>
+<th>Total</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Probability <span class="math inline">\(P(\cdot)\)</span>
+</td>
+<td>0.4</td>
+<td>0.6</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>Likelihood <span class="math inline">\(L(\cdot \mid D)\)</span>
+</td>
+<td>0.27</td>
+<td>0.02</td>
+<td>0.29</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li><span class="green"><em>The likelihood function is not a probability function!</em></span></li>
+</ul>
+<hr></section><section id="bayes-rule" class="level3" data-number="20.5.3"><h3 data-number="20.5.3" class="anchored" data-anchor-id="bayes-rule">
+<span class="header-section-number">20.5.3</span> Bayes’ Rule</h3>
+<p><span class="math display">\[\begin{align*} P(F \mid D) &amp;= \frac{P(F \cap D)}{P(D)}\\ &amp;= \frac{L(F \mid D)P(F)}{P(D)}\end{align*}\]</span></p>
+<p><span class="math display">\[\text{posterior = } \frac{\text{likelihood} \cdot \text{prior }}{ \text{normalizing constant}} \]</span></p>
+<ul>
+<li>The normalizing constant <span class="math inline">\(P(D)\)</span> is known as <strong>marginal likelihood</strong> or <strong>evidence</strong>.</li>
+</ul>
+<hr></section><section id="posterior" class="level3" data-number="20.5.4"><h3 data-number="20.5.4" class="anchored" data-anchor-id="posterior">
+<span class="header-section-number">20.5.4</span> Posterior</h3>
+<ul>
+<li><p>Started with a prior understanding that there’s a 40% chance that the incoming article would be fake.</p></li>
+<li><p>Yet upon observing the use of an exclamation point in the title</p></li>
+</ul>
+<div class="center">
+<blockquote class="blockquote">
+<p><em>“The president has a funny secret!”</em></p>
+</blockquote>
+</div>
+<p>a feature that’s more common to fake news.</p>
+<ul>
+<li>Our posterior understanding evolved quite a bit – the chance that the article is fake jumped to 89%.</li>
+</ul>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 40%">
+<col style="width: 17%">
+<col style="width: 24%">
+<col style="width: 15%">
+</colgroup>
+<thead><tr class="header">
+<th>Event</th>
+<th><span class="math inline">\(F\)</span></th>
+<th><span class="math inline">\(F^c\)</span></th>
+<th>Total</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Prior prob <span class="math inline">\(P(\cdot)\)</span>
+</td>
+<td>0.4</td>
+<td>0.6</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>Posterior prob <span class="math inline">\(P(\cdot \mid D)\)</span>
+</td>
+<td>0.89</td>
+<td>0.11</td>
+<td>1</td>
+</tr>
+</tbody>
+</table></section></section><section id="bayesian-inference-for-random-variables" class="level2" data-number="20.6"><h2 data-number="20.6" class="anchored" data-anchor-id="bayesian-inference-for-random-variables">
+<span class="header-section-number">20.6</span> Bayesian Inference for Random Variables</h2>
+<p>For any random variables parameter <span class="math inline">\(\theta\)</span> and data <span class="math inline">\({\bf Y} = (Y_1, \dots, Y_n)\)</span>,</p>
+<ul>
+<li><p><span class="math inline">\(\pi(\theta)\)</span>: the prior pmf/pdf of <span class="math inline">\(\theta\)</span></p></li>
+<li><p><span class="math inline">\(L(\theta \mid y_1,\dots, y_n)\)</span>: the likelihood of <span class="math inline">\(\theta\)</span> given observed data <span class="math inline">\(\mathbf{y}= \{y_i \}_{i = 1}^n\)</span>.</p></li>
+<li><p>The posterior distribution of <span class="math inline">\(\theta\)</span> given <span class="math inline">\(\mathbf{y}\)</span> is</p></li>
+</ul>
+<p><span class="math display">\[\pi(\theta \mid \mathbf{y}) = \frac{L(\theta \mid \mathbf{y})\pi(\theta)}{p(\mathbf{y})}\]</span> where <span class="math display">\[p(\mathbf{y}) = \begin{cases} \int_{\Theta} L(\theta \mid \mathbf{y})\pi(\theta) ~ d\theta &amp; \text{if } \theta \text{ is continuous }\\
+\sum_{\theta \in \Theta} L(\theta \mid \mathbf{y})\pi(\theta) &amp; \text{if } \theta \text{ is discrete }
+\end{cases}\]</span></p>
+<hr>
+<section id="proportionality" class="level3" data-number="20.6.1"><h3 data-number="20.6.1" class="anchored" data-anchor-id="proportionality">
+<span class="header-section-number">20.6.1</span> Proportionality</h3>
+<p><span class="math display">\[\pi(\theta \mid \mathbf{y}) = \frac{L(\theta \mid \mathbf{y})\pi(\theta)}{p(\mathbf{y})} \propto_{\theta} L(\theta \mid \mathbf{y})\pi(\theta)\]</span></p>
+<p><span class="math display">\[\text{posterior } \propto \text{ likelihood } \cdot \text{ prior } \]</span></p>
+<hr></section><section id="motivation-example" class="level3" data-number="20.6.2"><h3 data-number="20.6.2" class="anchored" data-anchor-id="motivation-example">
+<span class="header-section-number">20.6.2</span> Motivation Example</h3>
+<div class="columns">
+<div class="column" style="width:70%;">
+<ul>
+<li>Michelle has decided to run for governor of Wisconsin.</li>
+</ul>
+<!-- - You've conducted 30 different polls throughout the election season. --><ul>
+<li>According to <em>previous</em> 30 polls,
+<ul>
+<li>Michelle’s support is centered round 45%</li>
+<li>she polled at around 35% in the dreariest days and around 55% in the best days</li>
+</ul>
+</li>
+<li>With this prior information, we’d like to estimate/update Michelle’s support by <em>conducting a new poll</em>.</li>
+</ul>
+</div><div class="column" style="width:30%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="./images/img-infer/vote.jpeg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="3008"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Key: Describe prior and data information using probabilistic models.</p>
+<ul>
+<li>The parameter to be estimated is <span class="math inline">\(\theta\)</span>, the Michelle’s support, which is between 0 and 1.</li>
+</ul>
+<section id="prior-distribution" class="level4" data-number="20.6.2.1"><h4 data-number="20.6.2.1" class="anchored" data-anchor-id="prior-distribution">
+<span class="header-section-number">20.6.2.1</span> Prior Distribution</h4>
+<ul>
+<li>A popular probability distribution for probability is <strong>beta distribution</strong>, <span class="math inline">\(\text{beta}(\alpha, \beta)\)</span>, where <span class="math inline">\(\alpha &gt; 0\)</span> and <span class="math inline">\(\beta &gt; 0\)</span> are shape parameters.</li>
+</ul>
+<p><span class="math display">\[\pi(\theta \mid \alpha, \beta) = \frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}\theta^{\alpha - 1}(1-\theta)^{\beta-1}\]</span></p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="https://upload.wikimedia.org/wikipedia/commons/f/f3/Beta_distribution_pdf.svg" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><p><span class="math inline">\(\theta \sim \text{beta}(\alpha, \beta)\)</span></p></li>
+<li><p>In the prior model, <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> are <strong>hyperparameters</strong> to be chosen to reflect our prior information.</p></li>
+</ul>
+<blockquote class="blockquote">
+<p>Michelle’s support is centered round 45%, and she polled at around 35% in the dreariest days and around 55% in the best days.</p>
+</blockquote>
+<ul>
+<li><p>Choose <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> so that the <em>prior mean is about 0.45</em> and <em>the range is from 0.35 to 0.55</em>.</p></li>
+<li><p><span class="math inline">\(\text{E}(\theta) = \frac{\alpha}{\alpha + \beta}\)</span></p></li>
+<li><p><span class="math inline">\(\var(\theta) = \frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}\)</span></p></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="infer-bayes_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="likelihood" class="level4" data-number="20.6.2.2"><h4 data-number="20.6.2.2" class="anchored" data-anchor-id="likelihood">
+<span class="header-section-number">20.6.2.2</span> Likelihood</h4>
+<blockquote class="blockquote">
+<p>You plan to conduct a new poll of <span class="math inline">\(n = 50\)</span> Cheeseheads and record <span class="math inline">\(Y\)</span>, the number that support Michelle.</p>
+</blockquote>
+<div class="question">
+<p>What distribution can be used for modeling likelihood connecting the data <span class="math inline">\(y\)</span> and the parameter we are interested, <span class="math inline">\(\theta\)</span>?</p>
+</div>
+<ul>
+<li>If voters answer the poll <em>independently</em>, and the probability that any polled voter supports Michelle is <span class="math inline">\(\theta\)</span>, we could consider</li>
+</ul>
+<p><span class="math display">\[Y \mid \theta \sim \text{binomial}(n=50, \theta)\]</span></p>
+<ul>
+<li>The poll result is <span class="math inline">\(y = 30\)</span>, the likelihood is</li>
+</ul>
+<p><span class="math display">\[L(\theta \mid y = 30) = {50 \choose 30}\theta^{30}(1-\theta)^{20}, \quad \theta \in (0, 1)\]</span></p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="infer-bayes_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="bayesian-model-1" class="level4" data-number="20.6.2.3"><h4 data-number="20.6.2.3" class="anchored" data-anchor-id="bayesian-model-1">
+<span class="header-section-number">20.6.2.3</span> Bayesian Model</h4>
+<p><span class="math display">\[\begin{align}Y \mid \theta &amp;\sim \text{binomial}(n=50, \theta)\\ \theta &amp;\sim \text{beta}(45, 55)
+\end{align}\]</span></p>
+<p>Goal: Obtain the posterior distribution <span class="math inline">\(\pi(\theta \mid y)\)</span>.</p>
+<p><span class="math display">\[
+\begin{align} \pi(\theta \mid y) &amp;\propto_{\theta} L(\theta \mid y)\pi(\theta) \\
+&amp;= {50 \choose 30}\theta^{30}(1-\theta)^{20} \times \frac{\Gamma(100)}{\Gamma(45)\Gamma(55)}\theta^{44}(1-\theta)^{54}\\
+&amp;\propto_{\theta} \theta^{74}(1-\theta)^{74}\\
+&amp;= \frac{\Gamma(150)}{\Gamma(75)\Gamma(75)} \theta^{74}(1-\theta)^{74} \\
+&amp;= \text{beta}(75, 75)\end{align}
+\]</span></p>
+<p>using the fact that <span class="math inline">\(\int_{\mathcal{X}} f(x) dx = 1\)</span> for any pdf <span class="math inline">\(f(x)\)</span>.</p>
+</section><section id="posterior-distribution" class="level4" data-number="20.6.2.4"><h4 data-number="20.6.2.4" class="anchored" data-anchor-id="posterior-distribution">
+<span class="header-section-number">20.6.2.4</span> Posterior Distribution</h4>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="infer-bayes_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<!-- #### Take-home Message -->
+<!-- - The parameter is a random variable in the Bayesian world. -->
+<!-- - It is fixed and constant in the frequentist world. -->
+</section></section></section><section id="further-reading-and-references" class="level2" data-number="20.7"><h2 data-number="20.7" class="anchored" data-anchor-id="further-reading-and-references">
+<span class="header-section-number">20.7</span> Further Reading and References</h2>
+<ul>
+<li><p><a href="https://www.bayesrulesbook.com/">Bayes Rules</a></p></li>
+<li><p><a href="https://www.youtube.com/watch?v=eDMGDhyDxuY">All About that Bayes: Probability, Statistics, and the Quest to Quantify Uncertainty</a> by Dr.&nbsp;Kristin Lennox</p></li>
+<li><p><a href="https://www.amazon.com/Equation-Knowledge-Unified-Philosophy-Science/dp/0367428156">The Equation of Knowledge</a> by Dr.&nbsp;Le Nguyen Hoang</p></li>
+</ul>
 
 
-<p>Coming soon.</p>
-
-
-
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -776,9 +1423,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./infer-cat.html" class="pagination-link" aria-label="Inference about Categorical Data">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Inference about Categorical Data</span></span>
       </a>          
@@ -790,28 +1435,25 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<footer class="footer">
-  <div class="nav-footer">
+<footer class="footer"><div class="nav-footer">
     <div class="nav-footer-left">
 <p>Copyright 2024, Dr.&nbsp;Cheng-Han Yu</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/infer-bayes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/infer-bayes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
-    <li class="nav-item compact">
+<li class="nav-item compact">
     <a class="nav-link active" href="https://github.com/chenghanyustats/introstatsbook" aria-current="page">
       <i class="bi bi-github" role="img">
 </i> 
     </a>
   </li>  
 </ul>
-    </div>
+</div>
   </div>
 </footer>
-
-
 
 
 </body></html>

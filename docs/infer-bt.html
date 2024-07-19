@@ -18,6 +18,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -63,7 +97,32 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script>
+}</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 </head>
 <body class="nav-sidebar floating">
 
@@ -313,11 +372,32 @@ ul.task-list li input[type="checkbox"] {
 </li>
       </ul>
 </li>
-        <li class="sidebar-item">
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">References</span></span>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./references.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">References</span></a>
+  <a href="./a-r_prog.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">R programming</span></span></a>
   </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./a-py_prog.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Python programming</span></span></a>
+  </div>
+</li>
+      </ul>
 </li>
     </ul>
 </div>
@@ -329,6 +409,7 @@ ul.task-list li input[type="checkbox"] {
   <ul>
 <li><a href="#idea-of-bootstrapping" id="toc-idea-of-bootstrapping" class="nav-link active" data-scroll-target="#idea-of-bootstrapping"><span class="header-section-number">14.1</span> Idea of Bootstrapping</a></li>
   <li><a href="#bootstrap-confidence-interval" id="toc-bootstrap-confidence-interval" class="nav-link" data-scroll-target="#bootstrap-confidence-interval"><span class="header-section-number">14.2</span> Bootstrap Confidence Interval</a></li>
+  <li><a href="#further-readings-and-references" id="toc-further-readings-and-references" class="nav-link" data-scroll-target="#further-readings-and-references"><span class="header-section-number">14.3</span> Further Readings and References</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/infer-bt.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -352,8 +433,8 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <p>So far we learn that</p>
 <ul>
-<li><p>When the population is Gaussian, then the sampling distribution of sample mean is also Gaussian.</p></li>
-<li><p>When the population follows some distribution with finite mean and standard deviation, with the central limit theorem, the sampling distribution of sample mean gets closer to a Gaussian distribution as the sample size gets large.</p></li>
+<li><p>When the population is Gaussian, the sampling distribution of sample mean is also Gaussian.</p></li>
+<li><p>When the population follows a non-Gaussian distribution with finite mean and standard deviation, with the central limit theorem, the sampling distribution of sample mean gets closer to a Gaussian distribution as the sample size gets large.</p></li>
 </ul>
 <div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -386,12 +467,302 @@ What if the population is not Gaussian and the sample size is small?
 </div>
 <section id="idea-of-bootstrapping" class="level2" data-number="14.1"><h2 data-number="14.1" class="anchored" data-anchor-id="idea-of-bootstrapping">
 <span class="header-section-number">14.1</span> Idea of Bootstrapping</h2>
+<p>Bootstrapping is a <strong>resampling</strong> method that repeatedly generates the <strong>bootstrap samples</strong> from the data at hand <em>with replacement</em>. Each bootstrap sample data are of the <em>same</em> size of the original observed data. For each bootstrap sample, we calculate our interested statistic, for example the (bootstrap) sample mean. Then the collection of the sample means calculated from the bootstrap samples forms the sampling distribution of the sample mean. Therefore, bootstrapping models how a statistic varies from one sample to another taken from the population. This approach provides insights into how much the statistic deviates from the parameter of interest.</p>
+<p>The main idea of bootstrapping is that</p>
+<blockquote class="blockquote">
+<p><strong>We view the observed data as the target population</strong></p>
+</blockquote>
+<blockquote class="blockquote">
+<p><strong>We treat the bootstrap samples as the replicates of the samples from the population</strong></p>
+</blockquote>
+<blockquote class="blockquote">
+<p><strong>We use the collection of bootstrap samples to mimic the collection of samples generated from the target population, which is the sampling distribution of the sample statistic.</strong></p>
+</blockquote>
+<p>Let’s figure out the idea behind it step by step. Suppose there is a target population, and we want to estimate its mean <span class="math inline">\(\mu\)</span> possibly with uncertainty quantification. Usually our first step is to collect our sample data from the population, and use the sample mean <span class="math inline">\(\bar{x}\)</span> to estimate <span class="math inline">\(\mu\)</span>. Due to resources constraint, we may only be able to collect one single data set, and the sample size can’t be large. We hope the data set is quite representative of the population, so that <span class="math inline">\(\bar{x}\)</span> is quite close to <span class="math inline">\(\mu\)</span>. In other words, if we <em>were</em> expanding the sample data proportionally, having the sample size same as the population size, the population and the expanded sample data should look very alike. <a href="#fig-boot1" class="quarto-xref">Figure&nbsp;<span>14.1</span></a> illustrate this idea.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-boot1" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-boot1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/img-infer/boot1prop1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-boot1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14.1: Source: Figure 12.1 of Introduction to Modern Statistics
+</figcaption></figure>
+</div>
+</div>
+</div>
+<p>However, due to the sampling variability, we never know whether or not the one we collect is representative enough. Even we know the data at hand looks pretty similar to the population, we are not sure how much we are confident about the estimation, unless we have lots of sample data replicates.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-replicates" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-replicates-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="infer-bt_files/figure-html/fig-replicates-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="576">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-replicates-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14.2: Repeatedly generating sample data from the target population. This is often not feasible in many scientific experiments and studies.
+</figcaption></figure>
+</div>
+</div>
+</div>
+<p>By taking repeated samples from the population, the variability from sample to sample can be observed. In <a href="#fig-replicates" class="quarto-xref">Figure&nbsp;<span>14.2</span></a> the repeated samples are obviously different both from each other and from the original population. The samples were taken from the same population, and the differences are due entirely to natural variability in the sampling procedure. By summarizing each of the samples (sample mean), we see, directly, the variability of the sample mean from sample to sample. This is exactly the idea of sampling distribution we learn in <a href="prob-sampling.html" class="quarto-xref"><span>Chapter 11</span></a> illustrated in <a href="prob-sampling.html#fig-sampling-distribution" class="quarto-xref">Figure&nbsp;<span>11.2</span></a>. The problem again is that quite often it is difficult to obtain sample replicates, and quantify the variability. How do we solve this problem? Smart statisticians came up with a solution: <em>apply exactly the same idea just mentioned to the one single sample data set we have at hand!</em></p>
+<p>We can think that our sample data is a small version of the target population. The illustration of bootstrapping is shown in <a href="#fig-boot" class="quarto-xref">Figure&nbsp;<span>14.3</span></a>. Suppose the collected sample data from some population has 10 data points. To have sample data replicates, the data work as if our population, and the new sample replicates are generated from the original data set. These new data replicates are called <strong>bootstrap samples</strong>. The bootstrap samples must have the same sample size as the original sample data. So they all have 10 data points too. Additionally, these samples are drawn from the original data <em>with replacement</em>. Think about it, if they are drawn without replacement, all the bootstrap samples will be exactly the same as the original sample, which does not work for accounting sampling variability. Note that the elements in the bootstrap samples are already collected and saved in our original data. The resampling step does not really conduct any new experiments, perform any new trials, or do any new survey as sampling from the target population does that may be too costly for our study. We save our study by our bootstraps.</p>
+<!-- # ```{r} -->
+<!-- # #| out-width: 80% -->
+<!-- # #| fig-cap: "Source: Figure 12.4 of Introduction to Modern Statistics" -->
+<!-- # knitr::include_graphics("./images/img-infer/boot1prop4.png") -->
+<!-- # ``` -->
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-boot" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-boot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="infer-bt_files/figure-html/fig-boot-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="576">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-boot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14.3: Illustration of boostrapping: Resampling from the sample data with replacement. Each sample has 15 data points, same as the original sample.
+</figcaption></figure>
+</div>
+</div>
+</div>
+<p>The original sample in <a href="#fig-boot" class="quarto-xref">Figure&nbsp;<span>14.3</span></a> has 1 blacks, 2 reds, 3 greens, 4 blues, and 5 yellows. If the sample is representative of the target population, the color distribution in the population should more or less follow the color distribution in the data, although not exactly the same with pretty high chance. To mimic the sampling variability found by collecting data from a population, sampling with replacement produces some variations while keeping the general distribution pattern shown in the data. As a results, the bootstrap samples tend to have more yellows and blues, but could have more reds or greens. It is such resampling variation that creates the sampling variability in the computed <strong>bootstrap statistics</strong> <span class="math inline">\(\bar{x}_b^1, \dots, \bar{x}_b^M\)</span>.</p>
+<p>The entire workflow of sampling and resampling is illustrated in <a href="#fig-boot-workflow" class="quarto-xref">Figure&nbsp;<span>14.4</span></a>. First, the original sample is collected from the target population. Usually we only have one data set. To ensure that the data look similar to the population, we hope the sample is a random sample. Next, in the resampling step, we draw samples with replacement, replicating several bootstrap samples. Then for each bootstrap sample, the desired statistic is computed. Finally, the collection of all the bootstrap statistics forms a <strong>bootstrap distribution</strong> that is used to approximate the sampling distribution of the desired statistic. With the distribution, we now can create the <strong>bootstrap confidence interval</strong> for the target population parameter.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-boot-workflow" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-boot-workflow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Illustration_bootstrap.svg" class="img-fluid quarto-figure quarto-figure-center figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-boot-workflow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14.4: Source: Bootstrapping (statistics) Wiki.
+</figcaption></figure>
+</div>
+</div>
+</div>
 </section><section id="bootstrap-confidence-interval" class="level2" data-number="14.2"><h2 data-number="14.2" class="anchored" data-anchor-id="bootstrap-confidence-interval">
 <span class="header-section-number">14.2</span> Bootstrap Confidence Interval</h2>
-<p>The example is borrowed from <a href="https://www2.stat.duke.edu/courses/Spring18/Sta199/">STA 199 by Dr.&nbsp;</a></p>
+<p>In this section we learn to create a bootstrap confidence interval using a real data set. This example is borrowed from <a href="https://www2.stat.duke.edu/courses/Spring18/Sta199/">STA 199 by Dr.&nbsp;Çetinkaya-Rundel</a>.</p>
+<p>How much do you think it costs to rent a typical one bedroom apartment in Manhattan NYC? Well if you have no idea, at least we can say we are 100% confident that the average one-bedroom rent in Manhattan is between 0 to one million dollars. It’s not helping though. Let’s have some data, and get an idea of the rent in Manhattan NYC. The data <code>manhattan.csv</code> consider 20 one-bedroom apartments that were randomly selected on Craigslist Manhattan from apartments listed as “by owner”.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">manhattan</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"./data/manhattan.csv"</span><span class="op">)</span></span>
+<span><span class="va">manhattan</span><span class="op">$</span><span class="va">rent</span></span>
+<span><span class="co">#  [1] 3850 3800 2350 3200 2150 3267 2495 2349 3950 1795 2145 2300 1775 2000 2175</span></span>
+<span><span class="co"># [16] 2350 2550 4195 1470 2350</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span><span class="op">(</span><span class="va">manhattan</span><span class="op">)</span></span>
+<span><span class="co"># [1] 1470 4195</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The minimum rent is $1470 and the rent can be as high as near $4200. <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="infer-bt_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>If we want to estimate the (population) mean one-bedroom rent in Manhattan, an easy point estimate is the sample mean, which is about $ 2625.8. However, considering the entire rental housing market in Manhattan, this sample is so small, so we are not that convinced of that number, and want a range of plausible mean one-bedroom rent for us to decide whether we rent a bedroom there.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="./images/img-infer/rent-bootsamp.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:90.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Sample median = $2625.8</p>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="./images/img-infer/rent-bootpop.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="400"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Population median = ❓</p>
+</div>
+</div>
+<p>The question is what’s our bootstrap population look like that we can sample from? Well the idea is that we assume that there are probably more apartments like the ones in our observed sample in the population as well. So here, basically the bootstrap artificial population is made from our sample data, and the population is like so many replicates of our given sample. Again, this is an artificial population, not the real population. If I had the real population, no inference or estimation is needed. We know the truth. Right?</p>
+<hr>
+<p><span style="color:blue"> <strong>Bootstrapping using R</strong> </span></p>
+<p>The good news is that there are several R packages out there to help us do bootstrapping without the need to write long lines of code. Here we use the <code><a href="https://rdrr.io/pkg/boot/man/boot.html">boot()</a></code> function in the <code>boot</code> package for demonstration. Before calling boot, we still need to write a function that returns the statistic(s) that you would like to bootstrap. The first argument passed to the function should be your dataset. The second argument can be an index vector of the observations in your dataset to use or a frequency or weight vector that informs the sampling probabilities. For example, if our statistic is sample mean, we can create a function <code>mean_fcn()</code> as follows.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mean_fcn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">index</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">data_ind</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="va">index</span><span class="op">]</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">data_ind</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The function compute the mean of resampled data. The <code>index</code> argument is for resampling our data. It tells us which data points in the original <code>data</code> will be chosen to create a bootstrap sample. We don’t need to generate the index vector ourselves, and the <code><a href="https://rdrr.io/pkg/boot/man/boot.html">boot()</a></code> function will use the function like <code><a href="https://rdrr.io/r/base/sample.html">sample()</a></code> to generate it for us.</p>
+<p>We can now use the <code><a href="https://rdrr.io/pkg/boot/man/boot.html">boot()</a></code> command, providing our dataset name, our function, and the number of bootstrap samples to be drawn.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2024</span><span class="op">)</span></span>
+<span><span class="va">boot_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/boot/man/boot.html">boot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">manhattan</span><span class="op">$</span><span class="va">rent</span>, statistic <span class="op">=</span> <span class="va">mean_fcn</span>, R <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The three required arguments of <code><a href="https://rdrr.io/pkg/boot/man/boot.html">boot()</a></code> are <code>data</code>, <code>statistic</code>, and <code>R</code>. We specify the <code>data</code> as a vector, matrix or data frame. Here <code>manhattan$rent</code> is a vector. The argument <code>statistic</code> is a function which when applied to data returns a vector containing the statistic(s) of interest. This is what <code>mean_fcn</code> is doing. The argument <code>R</code> is the number of bootstrap replicates. We generate 10000 bootstrap samples, and 10000 corresponding bootstrap sample means. The boostrapping result is saved in the object <code>boot_mean</code> which is a list. <code>boot_mean$t0</code> saves the sample mean from the original data, and <code>boot_mean$t</code> saves the 10000 bootstrap sample means. The <code>bias</code> shown in the printed output comes from <code>mean(boot_mean$t) - boot$t0</code>, i.e., the difference between the mean of bootstrap sample means and the original sample mean. This is an estimate of the difference between the original sample mean and the population mean. The <code>std. error</code> is derived from <code>sd(boot_mean$t)</code> that estimates the variance of the sample mean.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">boot_mean</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># ORDINARY NONPARAMETRIC BOOTSTRAP</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># Call:</span></span>
+<span><span class="co"># boot(data = manhattan$rent, statistic = mean_fcn, R = 10000)</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># Bootstrap Statistics :</span></span>
+<span><span class="co">#     original  bias    std. error</span></span>
+<span><span class="co"># t1*     2626   -1.76         175</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">boot_mean</span><span class="op">$</span><span class="va">t</span><span class="op">)</span> <span class="op">-</span> <span class="va">boot_mean</span><span class="op">$</span><span class="va">t0</span></span>
+<span><span class="co"># [1] -1.76</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">boot_mean</span><span class="op">$</span><span class="va">t</span><span class="op">)</span></span>
+<span><span class="co"># [1] 175</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To show the bootstrap sampling distribution of sample mean (one-bedroom rent in Manhattan), we can simply use <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> command:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">boot_mean</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="infer-bt_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Using the <code>boot.ci</code> command, we can generate several types of confidence intervals from our bootstrap samples. By default, the function provides four different 95% confidence intervals.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/boot/man/boot.ci.html">boot.ci</a></span><span class="op">(</span>boot.out <span class="op">=</span> <span class="va">boot_mean</span><span class="op">)</span></span>
+<span><span class="co"># BOOTSTRAP CONFIDENCE INTERVAL CALCULATIONS</span></span>
+<span><span class="co"># Based on 10000 bootstrap replicates</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># CALL : </span></span>
+<span><span class="co"># boot.ci(boot.out = boot_mean)</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># Intervals : </span></span>
+<span><span class="co"># Level      Normal              Basic         </span></span>
+<span><span class="co"># 95%   (2285, 2970 )   (2273, 2955 )  </span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># Level     Percentile            BCa          </span></span>
+<span><span class="co"># 95%   (2297, 2978 )   (2326, 3015 )  </span></span>
+<span><span class="co"># Calculations and Intervals on Original Scale</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We don’t need to worry too much about which interval we should use at this moment. When the bootstrap distribution is symmetric and looks like Gaussian, those intervals are pretty similar. Second, those intervals are not exact but approximate by its nature. They vary every time we run a new bootstrapping (unless we use the same random seed). We accept this random variation. The point is, this range of plausible values gives us a general idea of how much the mean one-bedroom rent is.</p>
+<p>Check <a href="https://stats.oarc.ucla.edu/r/faq/how-can-i-generate-bootstrap-statistics-in-r/">UCLA tutorial</a> for more details about implementing bootstrapping using the <code>boot</code> package.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">Algorithm</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Simulation Result</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Code</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="instructions">
+<p><strong>Bootstrapped confidence interval</strong></p>
+<ol type="1">
+<li>
+<strong>Take a bootstrap sample</strong>
+<ul>
+<li>a random sample taken <em>with replacement</em> from the original sample, of the <em>same</em> size as the original sample.</li>
+</ul>
+</li>
+<li>
+<strong>Calculate the bootstrap statistic</strong>
+<ul>
+<li>a statistic such as mean, median, proportion, slope, etc. computed on the bootstrap samples.</li>
+</ul>
+</li>
+<li>
+<strong>Repeat steps (1) and (2) many times to create a bootstrap distribution</strong>
+<ul>
+<li>a distribution of bootstrap statistics.</li>
+</ul>
+</li>
+<li>
+<strong>Calculate the bounds of the <span class="math inline">\((1-\alpha)100\%\)</span> confidence interval</strong>
+<ul>
+<li>the middle <span class="math inline">\((1-\alpha)100\%\)</span> of the bootstrap distribution</li>
+</ul>
+</li>
+</ol>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="cell" data-layout-align="center">
+<pre><code># 
+# ORDINARY NONPARAMETRIC BOOTSTRAP
+# 
+# 
+# Call:
+# boot(data = manhattan$rent, statistic = mean_fcn, R = 10000)
+# 
+# 
+# Bootstrap Statistics :
+#     original  bias    std. error
+# t1*     2626   -1.76         175
+# BOOTSTRAP CONFIDENCE INTERVAL CALCULATIONS
+# Based on 10000 bootstrap replicates
+# 
+# CALL : 
+# boot.ci(boot.out = boot_mean)
+# 
+# Intervals : 
+# Level      Normal              Basic         
+# 95%   (2285, 2970 )   (2273, 2955 )  
+# 
+# Level     Percentile            BCa          
+# 95%   (2297, 2978 )   (2326, 3015 )  
+# Calculations and Intervals on Original Scale</code></pre>
+</div>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mean_fcn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">index</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">data_ind</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="va">index</span><span class="op">]</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">data_ind</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2024</span><span class="op">)</span></span>
+<span><span class="va">boot_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/boot/man/boot.html">boot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">manhattan</span><span class="op">$</span><span class="va">rent</span>, statistic <span class="op">=</span> <span class="va">mean_fcn</span>, R <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span></span>
+<span><span class="va">boot_mean</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/boot/man/boot.ci.html">boot.ci</a></span><span class="op">(</span>boot.out <span class="op">=</span> <span class="va">boot_mean</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>There are two sources of error in bootstrap inference:</p>
+<ol type="1">
+<li><p>The error induced by using a particular sample to represent the population. If the sample data do not represent the population well, any bias caused by that will remain in bootstrapping. Unfortunately this error cannot be corrected.</p></li>
+<li><p>The sampling error produced by failing to enumerate all bootstrap samples. When sample size is <span class="math inline">\(n\)</span>, if we distinguish the order of elements in the bootstrap samples and treat all of the elements of the original sample as distinct (even when some have the same values) then there are <span class="math inline">\(n^n\)</span> bootstrap samples, each occurring with probability <span class="math inline">\(1/n^n\)</span>. This source of error can be controlled by making the number of bootstrap replications sufficiently large.</p></li>
+</ol>
+</div>
+</div>
+</section><section id="further-readings-and-references" class="level2" data-number="14.3"><h2 data-number="14.3" class="anchored" data-anchor-id="further-readings-and-references">
+<span class="header-section-number">14.3</span> Further Readings and References</h2>
+<ul>
+<li><p><a href="https://openintro-ims.netlify.app/foundations-bootstrapping">IMS chapter 12</a></p></li>
+<li><p><a href="https://www2.stat.duke.edu/courses/Spring18/Sta199/">STA 199 course website</a></p></li>
+<li><p><a href="https://www.john-fox.ca/Companion/appendices/Appendix-Bootstrapping.pdf">Bootstrapping regression models</a></p></li>
+<li><p><a href="https://stats.oarc.ucla.edu/r/faq/how-can-i-generate-bootstrap-statistics-in-r/">UCLA tutorial</a></p></li>
+</ul>
 
 
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
+<ol>
+<li id="fn1"><p>The housing market in the U.S. has been going crazy, and the rent this year of course is much higher than the rent shown in this data set.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -821,7 +1192,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
 <li class="nav-item compact">
-    <a class="nav-link active" href="https://github.com/chenghanyustats/introstatsbook" aria-current="page">
+    <a class="nav-link" href="https://github.com/chenghanyustats/introstatsbook">
       <i class="bi bi-github" role="img">
 </i> 
     </a>
