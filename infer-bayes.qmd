@@ -1,4 +1,4 @@
-# Bayesian Inference {#sec-infer-bayes}
+# Bayesian Thinking and Inference {#sec-infer-bayes}
 
 {{< include macros.qmd >}}
 
@@ -7,16 +7,19 @@
 source("./_common.R")
 ```
 
-The inference methods we have learned so far assume that unknown (population) parameters to be estimated or tested are constants. They are fixed and their values do not change. In other words, the parameters are not random variables, and the uncertainty that arises when estimating them is entirely due to sampling variation, not the variability of the parameters themselves. Additionally, when dealing with uncertainty, we use relative frequency to describe probabilities. Lots of times the answer to our questions relies on repetitions of experiments or trials. These methods adopt the so-called **frequentist** philosophy. The frequentist approach, also known as the classical approach, has dominated the statistics community since the early 20th century. This dominance followed the development of a comprehensive inference framework by several great statisticians, such as Ronald Fisher, Jerzy Neyman, and Egon Pearson. This framework, which includes confidence intervals, hypothesis testing, p-values, and statistical significance, is taught in every introductory statistics course.
+The inference methods we have learned so far assume that unknown (population) parameters to be estimated or tested are constants. They are fixed and their values do not change. In other words, the parameters are not random variables, and the uncertainty that arises when estimating them is entirely due to sampling variation, not the variability of the parameters themselves. Additionally, when dealing with uncertainty, we use relative frequency to describe probabilities. Lots of times the answer to our questions relies on repetitions of experiments or trials. These methods adopt the so-called **frequentist** philosophy (**frequentism**). The frequentist approach, also known as the classical approach, has dominated the statistics community since the early 20th century. This dominance followed the development of a comprehensive inference framework by several great statisticians, such as Ronald Fisher, Jerzy Neyman, and Egon Pearson. This framework, which includes confidence intervals, hypothesis testing, p-values, and statistical significance, is taught in every introductory statistics course.
 
 
 
-In fact, there is another way of thinking about statistical inference: the **Bayesian** philosophy. The Bayesian approach did not emerge after the frequentist approach; rather, it has historical roots that trace back to Bayes' theorem (Bayes' rule), named after Thomas Bayes. People in the late 18th or early 19th century already used the Bayesian philosophy to tackle problems. For instance, Pierre-Simon Laplace used the Bayesian theorem to calculate the probability that the sun would rise the next day. However, the Bayesian approach lost popularity later on because as problems became more complex, solving them within the Bayesian framework became very tedious and time-consuming, especially given the lack of powerful computing resources at the time. With the advancement of computing power starting in the late 20th century, more statisticians and scientists began to embrace the Bayesian approach.
+In fact, there is another way of thinking about statistical inference: the **Bayesian** philosophy (**Bayesianism**). The Bayesian approach did not emerge after the frequentist approach; rather, it has historical roots that trace back to Bayes' theorem (Bayes' rule), named after Thomas Bayes. People in the late 18th or early 19th century already used the Bayesian philosophy to tackle problems. For instance, Pierre-Simon Laplace used the Bayesian theorem to calculate the probability that the sun would rise the next day. However, the Bayesian approach lost popularity later on because as problems became more complex, solving them within the Bayesian framework became very tedious and time-consuming, especially given the lack of powerful computing resources at the time. With the advancement of computing power starting in the late 20th century, more statisticians and scientists began to embrace the Bayesian approach.
 
-It is important to understand the frequentist and Bayesian philosophies, particularly their differences, advantages, and disadvantages. Depending on the research question and available resources, one method may be more suitable than the other. Alternatively, it may be beneficial to combine these two paradigms to leverage the advantages of both. Currently, introductory statistics courses focus heavily on the frequentist approach. Given the ease of computation and the increasing use of Bayesian methods in scientific research, it is time to introduce more Bayesian thinking to STAT 101 students, not just one lecture of Bayes theorem.
+It is important to understand the frequentist and Bayesian philosophies, particularly their differences, advantages, and disadvantages. Depending on the research question and available resources, one method may be more suitable than the other. Alternatively, it may be beneficial to combine these two paradigms to leverage the advantages of both. Currently, introductory statistics courses focus heavily on the frequentist approach. Given the ease of computation and the increasing use of Bayesian methods in scientific research, I believe it is beneficial to introduce more Bayesian thinking to STAT 101 students, not just one lecture of Bayes theorem.
 
 
 ## Bayesian Thinking
+
+> All knowledge degenerates into probability; and this probability is greater or less, according to our expereience of veracity or deceitfulness of our understanding, and according to the simplicity or intricacy of the question.
+> -- David Hume (1711 - 1776)
 
 Before we dive into Bayesian statistics, let's take a quiz to determine whether you currently lean more towards a Bayesian or frequentist mindset. This quiz is adapted from [Bayes Rules](https://www.bayesrulesbook.com/), a great new book on Bayesian statistics. I encourage you to spend some time on this if you would like to delve deeper.
 
@@ -110,13 +113,21 @@ In statistical inference, our research questions or events of interest are often
 
 ----------------------------------------------------------------------
 
-In the *Bayesian* philosophy, a probability measures the [**relative plausibility**]{.green} of an event.
+In the *Bayesian* philosophy, a probability measures the [**relative plausibility**]{.green} of an event. In the Bayesian paradigm, we can still compute the probability of some event whose frequency is 0! Here, *probability* is a quantitative measure that quantifies the relative plausibility of the event *according to some mathematical/statistical model*. This probability is *subjective*, and it logically describes our *epistemic* uncertainty about some thing. Because "Milwaukee Bucks wins the 2025 NBA championship" cannot be repeatable, we are not able to observe its "*objective*" frequencies. However, anybody, from a 5th grade girl to an ESPN NBA analyst, can express their opinion about how likely this event occurs, based on information they currently have and their own judgmental rules. The Bayesian probability is a unified way of expressing everybody's judgement and uncertainty about something happening, and such relative plausibility is computed through a statistical model including the information or beliefs one carries. In Bayesian eyes, no probability is purely objective. Probability is *model-dependent*. Think about it. When you, or even an artificial intelligence (AI) machine choose which method to use to calculate the desired probability, whether or not the event is repeatable and relative frequencies can be collected, you (AI) implicitly express your preference and judgement on how the probability, or more generally the knowledge you make inference to, is computed.
+
+
+Let's conclude the interpretation of probability by some examples. We usually see the chance of winning presidency when we watch TV news waiting for the election result. Apparently, the chance of winning is a (subjective) relative plausibility measure calculated by some political scientists using some statistical models.
 
 :::: {.columns}
 
 ::: {.column width="50%"}
 
-For the statement "_candidate A has a 0.9 probability of winning_", a frequentist might say the conclusion is wrong or weirdly say in long-run *hypothetical* repetitions of the election, candidate A would win roughly 90% of the time. A Bayesian would say based on analysis the candidate A is 9 times more likely to win than to lose.
+For the statement "_candidate A has a 0.9 probability of winning_", a frequentist might say 
+
+- the conclusion is wrong or 
+- weirdly say in long-run *hypothetical* repetitions of the election, candidate A would win roughly 90% of the time. 
+
+A Bayesian would say based on analysis the candidate A is 9 times more likely to win than to lose.
 
 Back to our Quiz 1. For the statement "the probability of flipping Heads is 0.5", a frequentist would conclude that if we flip the coin over and over, roughly 1/2 of these flips will be Heads. A Bayesian would conclude that Heads and Tails are equally likely.
 
@@ -137,8 +148,31 @@ knitr::include_graphics("./images/img-infer/winning.jpeg")
 
 ## Prior Information and Empirical Evidence
 
+
+
+<!-- - Examples of adding prior makes more sense -->
+<!-- - Prejudices are subjective, but definitely not arbitrary. Personal life experience. (purely objective?) -->
+<!-- - Cumulative learning -->
+<!-- - Being difficulty to specify a good or reasonable prior does not mean the Bayesian paradigm does not make sense. In fact, it is priors that make the Bayesian paradigm makes more sense than frequentism. -->
+<!-- - Our opinion is not Bayesian. -->
+<!-- - Being objective does not mean being rational. -->
+<!-- - According to Bayesianism, only those who uses their opinions can claim to be rational. -->
+<!-- - Probability deduction; Statistical inference induction -->
+<!-- - More and more Bayesian papers (data), someday conclude that Bayesian is the *correct* method using frequentist $p$-value. -->
+<!-- - Uncertainty is a personal matter; it is not the uncertainty but your uncertainty. Dennis Lindley, Understanding Uncertainty (2006) -->
+
 > How can we live if we don’t change? 
-> - Beyoncé. Lyric from “Satellites.”
+> -- Beyoncé. Lyric from “Satellites.”
+
+> Uncertainty is a personal matter; it is not the uncertainty but your uncertainty.
+> -- Dennis Lindley, Understanding Uncertainty (2006)
+
+
+> A people without the knowledge of their past history, origin and culture is like a tree without roots.
+> -- Marcus Garvey (1887 - 1940)
+
+> Opinion is the medium between knowledge and ignorance.
+> -- Plato (427 – 348 BC)
 
 Everybody changes their mind. You likely even changed your mind in the last minute. For example, suppose there’s a new Italian restaurant in your town. It has a 5-star online rating and you love Italian food! Thus, prior to ever stepping foot in the restaurant, you anticipate that it will be quite delicious. On your first visit, you collect some edible data: your pasta dish arrives a soggy mess. Weighing the stellar online rating against your own terrible meal (which might have just been a fluke), you update your knowledge: this is a 3-star not 5-star restaurant. Willing to give the restaurant another chance, you make a second trip. On this visit, you’re pleased with your Alfredo and increase the restaurant’s rating to 4 stars. You continue to visit the restaurant, collecting edible data and updating your knowledge each time.
 
@@ -149,7 +183,7 @@ Everybody changes their mind. You likely even changed your mind in the last minu
 knitr::include_graphics("./images/img-infer/restaurant_diagram.png")
 ```
 
-- We use **data** and **prior beliefs** to update our knowledge (**posterior**), and repeating.
+- We use **data** and **prior beliefs** to update our knowledge (**posterior**), and repeating. So *today's prior is yesterday's posterior!*
 
 - We continuously update our knowledge about the world as we accumulate lived experiences, or *collect data*.
 
@@ -211,6 +245,10 @@ knitr::include_graphics("./images/img-infer/psychic.jpeg")
 :::
 ::::
 
+
+Here is the thing. Whether we call it prior information or prior belief, it means the *current state of knowledge* about something *before* more evidence, data, or observations are collected that help us better understand or have more knowledge of the thing we are interested. 
+
+Personally, I prefer calling the *current state of knowledge* our **opinion**, or to be more humble, our **two cents**! As a Bayesian, we are people with opinions. We learn to be a better man from our living experiences; we become more knowledgeable by making our opinions closer and closer to the *truth*. And I claim (which is my opinion) that this is how we learn anything from our birth to the last day alive. A person without his own opinions is like a person with no brain. If you ask him a question, his answer will always be like "I have no idea", "I have no judgement", "we should collect evidence to answer the question", ...etc.
 
 
 ## Asking Different Questions
@@ -397,6 +435,8 @@ $$\text{posterior = } \frac{\text{likelihood} \cdot \text{prior }}{ \text{normal
 
 - The normalizing constant $P(D)$ is known as **marginal likelihood** or **evidence**.
 
+
+To be Bayesian is to rest all knowledge upon the language of conditional probabilities.
 --------------------------------------------------------------------------------
 
 ### Posterior

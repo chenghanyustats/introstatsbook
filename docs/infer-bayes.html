@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.4.555">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta name="description" content="An comprehensive introductory statistical data science book.">
-<title>Introduction to Statistics - 20&nbsp; Bayesian Inference</title>
+<meta name="description" content="A comprehensive introductory statistical data science book.">
+<title>Introduction to Statistics - 21&nbsp; Bayesian Thinking and Inference</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -28,16 +28,18 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./infer-nonpar.html" rel="next">
-<link href="./infer-cat.html" rel="prev">
+<link href="./infer-p.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -88,7 +90,7 @@ const typesetMath = (el) => {
 window.Quarto = {
   typesetMath
 };
-</script>
+</script><link rel="stylesheet" href="custom.css">
 </head>
 <body class="nav-sidebar floating">
 
@@ -97,7 +99,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./infer.html">Statistical Inference</a></li><li class="breadcrumb-item"><a href="./infer-bayes.html"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./infer.html">Statistical Inference</a></li><li class="breadcrumb-item"><a href="./infer-bayes.html"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Bayesian Thinking and Inference</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -109,8 +111,33 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Introduction to Statistics</a> 
-        <div class="sidebar-tools-main">
+        <div class="sidebar-tools-main tools-wide">
     <a href="https://github.com/chenghanyustats/introstatsbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="./Introduction-to-Statistics.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+    <div class="dropdown">
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Share"><i class="bi bi-share"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+<li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=%7Curl%7C">
+              <i class="bi bi-bi-twitter pe-1"></i>
+            Twitter
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=%7Curl%7C">
+              <i class="bi bi-bi-facebook pe-1"></i>
+            Facebook
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=%7Curl%7C">
+              <i class="bi bi-bi-linkedin pe-1"></i>
+            LinkedIn
+            </a>
+          </li>
+      </ul>
+</div>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
     </div>
       </div>
@@ -285,14 +312,20 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./infer-p.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">The Issues of <span class="math inline">\(p\)</span>-value and Statistical Significance</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./infer-bayes.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Bayesian Thinking and Inference</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-nonpar.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Nonparametric Methods</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Nonparametric Methods</span></span></a>
   </div>
 </li>
       </ul>
@@ -309,31 +342,31 @@ window.Quarto = {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-anova.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-reg.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Linear Regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Linear Regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-logistic.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Logistic Regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Logistic Regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-bayes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-survival.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Survival Analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Survival Analysis</span></span></a>
   </div>
 </li>
       </ul>
@@ -373,32 +406,37 @@ window.Quarto = {
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#bayesian-thinking" id="toc-bayesian-thinking" class="nav-link active" data-scroll-target="#bayesian-thinking"><span class="header-section-number">20.1</span> Bayesian Thinking</a></li>
-  <li><a href="#the-meaning-of-probability-relative-frequency-vs.-relative-plausibility" id="toc-the-meaning-of-probability-relative-frequency-vs.-relative-plausibility" class="nav-link" data-scroll-target="#the-meaning-of-probability-relative-frequency-vs.-relative-plausibility"><span class="header-section-number">20.2</span> The Meaning of Probability: <strong>Relative Frequency</strong> vs.&nbsp;<strong>Relative Plausibility</strong></a></li>
-  <li><a href="#prior-information-and-empirical-evidence" id="toc-prior-information-and-empirical-evidence" class="nav-link" data-scroll-target="#prior-information-and-empirical-evidence"><span class="header-section-number">20.3</span> Prior Information and Empirical Evidence</a></li>
-  <li><a href="#asking-different-questions" id="toc-asking-different-questions" class="nav-link" data-scroll-target="#asking-different-questions"><span class="header-section-number">20.4</span> Asking Different Questions</a></li>
+<li><a href="#bayesian-thinking" id="toc-bayesian-thinking" class="nav-link active" data-scroll-target="#bayesian-thinking"><span class="header-section-number">21.1</span> Bayesian Thinking</a></li>
+  <li><a href="#the-meaning-of-probability-relative-frequency-vs.-relative-plausibility" id="toc-the-meaning-of-probability-relative-frequency-vs.-relative-plausibility" class="nav-link" data-scroll-target="#the-meaning-of-probability-relative-frequency-vs.-relative-plausibility"><span class="header-section-number">21.2</span> The Meaning of Probability: <strong>Relative Frequency</strong> vs.&nbsp;<strong>Relative Plausibility</strong></a></li>
+  <li><a href="#prior-information-and-empirical-evidence" id="toc-prior-information-and-empirical-evidence" class="nav-link" data-scroll-target="#prior-information-and-empirical-evidence"><span class="header-section-number">21.3</span> Prior Information and Empirical Evidence</a></li>
+  <li><a href="#asking-different-questions" id="toc-asking-different-questions" class="nav-link" data-scroll-target="#asking-different-questions"><span class="header-section-number">21.4</span> Asking Different Questions</a></li>
   <li>
-<a href="#bayesian-model" id="toc-bayesian-model" class="nav-link" data-scroll-target="#bayesian-model"><span class="header-section-number">20.5</span> Bayesian Model</a>
+<a href="#bayesian-model" id="toc-bayesian-model" class="nav-link" data-scroll-target="#bayesian-model"><span class="header-section-number">21.5</span> Bayesian Model</a>
   <ul class="collapse">
-<li><a href="#bayesian-updating-rule" id="toc-bayesian-updating-rule" class="nav-link" data-scroll-target="#bayesian-updating-rule"><span class="header-section-number">20.5.1</span> Bayesian Updating Rule</a></li>
-  <li><a href="#likelihood-function" id="toc-likelihood-function" class="nav-link" data-scroll-target="#likelihood-function"><span class="header-section-number">20.5.2</span> Likelihood Function</a></li>
-  <li><a href="#bayes-rule" id="toc-bayes-rule" class="nav-link" data-scroll-target="#bayes-rule"><span class="header-section-number">20.5.3</span> Bayes’ Rule</a></li>
-  <li><a href="#posterior" id="toc-posterior" class="nav-link" data-scroll-target="#posterior"><span class="header-section-number">20.5.4</span> Posterior</a></li>
+<li><a href="#bayesian-updating-rule" id="toc-bayesian-updating-rule" class="nav-link" data-scroll-target="#bayesian-updating-rule"><span class="header-section-number">21.5.1</span> Bayesian Updating Rule</a></li>
+  <li><a href="#likelihood-function" id="toc-likelihood-function" class="nav-link" data-scroll-target="#likelihood-function"><span class="header-section-number">21.5.2</span> Likelihood Function</a></li>
+  <li><a href="#bayes-rule" id="toc-bayes-rule" class="nav-link" data-scroll-target="#bayes-rule"><span class="header-section-number">21.5.3</span> Bayes’ Rule</a></li>
   </ul>
 </li>
   <li>
-<a href="#bayesian-inference-for-random-variables" id="toc-bayesian-inference-for-random-variables" class="nav-link" data-scroll-target="#bayesian-inference-for-random-variables"><span class="header-section-number">20.6</span> Bayesian Inference for Random Variables</a>
+<a href="#to-be-bayesian-is-to-rest-all-knowledge-upon-the-language-of-conditional-probabilities." id="toc-to-be-bayesian-is-to-rest-all-knowledge-upon-the-language-of-conditional-probabilities." class="nav-link" data-scroll-target="#to-be-bayesian-is-to-rest-all-knowledge-upon-the-language-of-conditional-probabilities."><span class="header-section-number">21.6</span> To be Bayesian is to rest all knowledge upon the language of conditional probabilities.</a>
   <ul class="collapse">
-<li><a href="#proportionality" id="toc-proportionality" class="nav-link" data-scroll-target="#proportionality"><span class="header-section-number">20.6.1</span> Proportionality</a></li>
-  <li><a href="#motivation-example" id="toc-motivation-example" class="nav-link" data-scroll-target="#motivation-example"><span class="header-section-number">20.6.2</span> Motivation Example</a></li>
+<li><a href="#posterior" id="toc-posterior" class="nav-link" data-scroll-target="#posterior"><span class="header-section-number">21.6.1</span> Posterior</a></li>
   </ul>
 </li>
-  <li><a href="#further-reading-and-references" id="toc-further-reading-and-references" class="nav-link" data-scroll-target="#further-reading-and-references"><span class="header-section-number">20.7</span> Further Reading and References</a></li>
+  <li>
+<a href="#bayesian-inference-for-random-variables" id="toc-bayesian-inference-for-random-variables" class="nav-link" data-scroll-target="#bayesian-inference-for-random-variables"><span class="header-section-number">21.7</span> Bayesian Inference for Random Variables</a>
+  <ul class="collapse">
+<li><a href="#proportionality" id="toc-proportionality" class="nav-link" data-scroll-target="#proportionality"><span class="header-section-number">21.7.1</span> Proportionality</a></li>
+  <li><a href="#motivation-example" id="toc-motivation-example" class="nav-link" data-scroll-target="#motivation-example"><span class="header-section-number">21.7.2</span> Motivation Example</a></li>
+  </ul>
+</li>
+  <li><a href="#further-reading-and-references" id="toc-further-reading-and-references" class="nav-link" data-scroll-target="#further-reading-and-references"><span class="header-section-number">21.8</span> Further Reading and References</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/infer-bayes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./infer.html">Statistical Inference</a></li><li class="breadcrumb-item"><a href="./infer-bayes.html"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></a></li></ol></nav><div class="quarto-title">
-<h1 class="title"><span id="sec-infer-bayes" class="quarto-section-identifier"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></span></h1>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./infer.html">Statistical Inference</a></li><li class="breadcrumb-item"><a href="./infer-bayes.html"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Bayesian Thinking and Inference</span></a></li></ol></nav><div class="quarto-title">
+<h1 class="title"><span id="sec-infer-bayes" class="quarto-section-identifier"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Bayesian Thinking and Inference</span></span></h1>
 </div>
 
 
@@ -415,11 +453,14 @@ window.Quarto = {
 </header><div class="hidden">
 
 </div>
-<p>The inference methods we have learned so far assume that unknown (population) parameters to be estimated or tested are constants. They are fixed and their values do not change. In other words, the parameters are not random variables, and the uncertainty that arises when estimating them is entirely due to sampling variation, not the variability of the parameters themselves. Additionally, when dealing with uncertainty, we use relative frequency to describe probabilities. Lots of times the answer to our questions relies on repetitions of experiments or trials. These methods adopt the so-called <strong>frequentist</strong> philosophy. The frequentist approach, also known as the classical approach, has dominated the statistics community since the early 20th century. This dominance followed the development of a comprehensive inference framework by several great statisticians, such as Ronald Fisher, Jerzy Neyman, and Egon Pearson. This framework, which includes confidence intervals, hypothesis testing, p-values, and statistical significance, is taught in every introductory statistics course.</p>
-<p>In fact, there is another way of thinking about statistical inference: the <strong>Bayesian</strong> philosophy. The Bayesian approach did not emerge after the frequentist approach; rather, it has historical roots that trace back to Bayes’ theorem (Bayes’ rule), named after Thomas Bayes. People in the late 18th or early 19th century already used the Bayesian philosophy to tackle problems. For instance, Pierre-Simon Laplace used the Bayesian theorem to calculate the probability that the sun would rise the next day. However, the Bayesian approach lost popularity later on because as problems became more complex, solving them within the Bayesian framework became very tedious and time-consuming, especially given the lack of powerful computing resources at the time. With the advancement of computing power starting in the late 20th century, more statisticians and scientists began to embrace the Bayesian approach.</p>
-<p>It is important to understand the frequentist and Bayesian philosophies, particularly their differences, advantages, and disadvantages. Depending on the research question and available resources, one method may be more suitable than the other. Alternatively, it may be beneficial to combine these two paradigms to leverage the advantages of both. Currently, introductory statistics courses focus heavily on the frequentist approach. Given the ease of computation and the increasing use of Bayesian methods in scientific research, it is time to introduce more Bayesian thinking to STAT 101 students, not just one lecture of Bayes theorem.</p>
-<section id="bayesian-thinking" class="level2" data-number="20.1"><h2 data-number="20.1" class="anchored" data-anchor-id="bayesian-thinking">
-<span class="header-section-number">20.1</span> Bayesian Thinking</h2>
+<p>The inference methods we have learned so far assume that unknown (population) parameters to be estimated or tested are constants. They are fixed and their values do not change. In other words, the parameters are not random variables, and the uncertainty that arises when estimating them is entirely due to sampling variation, not the variability of the parameters themselves. Additionally, when dealing with uncertainty, we use relative frequency to describe probabilities. Lots of times the answer to our questions relies on repetitions of experiments or trials. These methods adopt the so-called <strong>frequentist</strong> philosophy (<strong>frequentism</strong>). The frequentist approach, also known as the classical approach, has dominated the statistics community since the early 20th century. This dominance followed the development of a comprehensive inference framework by several great statisticians, such as Ronald Fisher, Jerzy Neyman, and Egon Pearson. This framework, which includes confidence intervals, hypothesis testing, p-values, and statistical significance, is taught in every introductory statistics course.</p>
+<p>In fact, there is another way of thinking about statistical inference: the <strong>Bayesian</strong> philosophy (<strong>Bayesianism</strong>). The Bayesian approach did not emerge after the frequentist approach; rather, it has historical roots that trace back to Bayes’ theorem (Bayes’ rule), named after Thomas Bayes. People in the late 18th or early 19th century already used the Bayesian philosophy to tackle problems. For instance, Pierre-Simon Laplace used the Bayesian theorem to calculate the probability that the sun would rise the next day. However, the Bayesian approach lost popularity later on because as problems became more complex, solving them within the Bayesian framework became very tedious and time-consuming, especially given the lack of powerful computing resources at the time. With the advancement of computing power starting in the late 20th century, more statisticians and scientists began to embrace the Bayesian approach.</p>
+<p>It is important to understand the frequentist and Bayesian philosophies, particularly their differences, advantages, and disadvantages. Depending on the research question and available resources, one method may be more suitable than the other. Alternatively, it may be beneficial to combine these two paradigms to leverage the advantages of both. Currently, introductory statistics courses focus heavily on the frequentist approach. Given the ease of computation and the increasing use of Bayesian methods in scientific research, I believe it is beneficial to introduce more Bayesian thinking to STAT 101 students, not just one lecture of Bayes theorem.</p>
+<section id="bayesian-thinking" class="level2" data-number="21.1"><h2 data-number="21.1" class="anchored" data-anchor-id="bayesian-thinking">
+<span class="header-section-number">21.1</span> Bayesian Thinking</h2>
+<blockquote class="blockquote">
+<p>All knowledge degenerates into probability; and this probability is greater or less, according to our expereience of veracity or deceitfulness of our understanding, and according to the simplicity or intricacy of the question. – David Hume (1711 - 1776)</p>
+</blockquote>
 <p>Before we dive into Bayesian statistics, let’s take a quiz to determine whether you currently lean more towards a Bayesian or frequentist mindset. This quiz is adapted from <a href="https://www.bayesrulesbook.com/">Bayes Rules</a>, a great new book on Bayesian statistics. I encourage you to spend some time on this if you would like to delve deeper.</p>
 <ol type="1">
 <li>
@@ -490,8 +531,8 @@ window.Quarto = {
 <li>Totals <strong>6-8</strong>: you see strengths in both philosophies</li>
 </ul>
 <p>You are a frequentist or Bayesian? Are those confidence interval or hypothesis testing thing all Greek to you? Maybe it is because</p>
-</section><section id="the-meaning-of-probability-relative-frequency-vs.-relative-plausibility" class="level2" data-number="20.2"><h2 data-number="20.2" class="anchored" data-anchor-id="the-meaning-of-probability-relative-frequency-vs.-relative-plausibility">
-<span class="header-section-number">20.2</span> The Meaning of Probability: <strong>Relative Frequency</strong> vs.&nbsp;<strong>Relative Plausibility</strong>
+</section><section id="the-meaning-of-probability-relative-frequency-vs.-relative-plausibility" class="level2" data-number="21.2"><h2 data-number="21.2" class="anchored" data-anchor-id="the-meaning-of-probability-relative-frequency-vs.-relative-plausibility">
+<span class="header-section-number">21.2</span> The Meaning of Probability: <strong>Relative Frequency</strong> vs.&nbsp;<strong>Relative Plausibility</strong>
 </h2>
 <p>The <em>frequentist</em> interprets probability as the <span class="green"><em>long-run</em> relative frequency of a <em>repeatable</em> experiment</span>. We’ve seen this interpretation before in <a href="prob-define.html" class="quarto-xref"><span>Chapter 6</span></a>. We know that using relative frequencies as probability has several issues:</p>
 <ul>
@@ -511,10 +552,16 @@ window.Quarto = {
 </div>
 <p>In statistical inference, our research questions or events of interest are often not repeatable or very difficult to replicate. For example, what is the probability that Donald Trump will win the 2024 presidential election? What is the probability that the Milwaukee Bucks will win the 2025 NBA championship? What would the mean income level for males be if every man was required to serve in the military for two years? Still many political scientists, sport analysts, or economists are answering those questions, right?! To rationalize their arguments, and to better answer these types of research questions, we must interpret probability in a different way.</p>
 <hr>
-<p>In the <em>Bayesian</em> philosophy, a probability measures the <span class="green"><strong>relative plausibility</strong></span> of an event.</p>
+<p>In the <em>Bayesian</em> philosophy, a probability measures the <span class="green"><strong>relative plausibility</strong></span> of an event. In the Bayesian paradigm, we can still compute the probability of some event whose frequency is 0! Here, <em>probability</em> is a quantitative measure that quantifies the relative plausibility of the event <em>according to some mathematical/statistical model</em>. This probability is <em>subjective</em>, and it logically describes our <em>epistemic</em> uncertainty about some thing. Because “Milwaukee Bucks wins the 2025 NBA championship” cannot be repeatable, we are not able to observe its “<em>objective</em>” frequencies. However, anybody, from a 5th grade girl to an ESPN NBA analyst, can express their opinion about how likely this event occurs, based on information they currently have and their own judgmental rules. The Bayesian probability is a unified way of expressing everybody’s judgement and uncertainty about something happening, and such relative plausibility is computed through a statistical model including the information or beliefs one carries. In Bayesian eyes, no probability is purely objective. Probability is <em>model-dependent</em>. Think about it. When you, or even an artificial intelligence (AI) machine choose which method to use to calculate the desired probability, whether or not the event is repeatable and relative frequencies can be collected, you (AI) implicitly express your preference and judgement on how the probability, or more generally the knowledge you make inference to, is computed.</p>
+<p>Let’s conclude the interpretation of probability by some examples. We usually see the chance of winning presidency when we watch TV news waiting for the election result. Apparently, the chance of winning is a (subjective) relative plausibility measure calculated by some political scientists using some statistical models.</p>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p>For the statement “<em>candidate A has a 0.9 probability of winning</em>”, a frequentist might say the conclusion is wrong or weirdly say in long-run <em>hypothetical</em> repetitions of the election, candidate A would win roughly 90% of the time. A Bayesian would say based on analysis the candidate A is 9 times more likely to win than to lose.</p>
+<p>For the statement “<em>candidate A has a 0.9 probability of winning</em>”, a frequentist might say</p>
+<ul>
+<li>the conclusion is wrong or</li>
+<li>weirdly say in long-run <em>hypothetical</em> repetitions of the election, candidate A would win roughly 90% of the time.</li>
+</ul>
+<p>A Bayesian would say based on analysis the candidate A is 9 times more likely to win than to lose.</p>
 <p>Back to our Quiz 1. For the statement “the probability of flipping Heads is 0.5”, a frequentist would conclude that if we flip the coin over and over, roughly 1/2 of these flips will be Heads. A Bayesian would conclude that Heads and Tails are equally likely.</p>
 </div><div class="column" style="width:50%;">
 <div class="small">
@@ -529,10 +576,29 @@ window.Quarto = {
 </div>
 </div>
 </div>
-</section><section id="prior-information-and-empirical-evidence" class="level2" data-number="20.3"><h2 data-number="20.3" class="anchored" data-anchor-id="prior-information-and-empirical-evidence">
-<span class="header-section-number">20.3</span> Prior Information and Empirical Evidence</h2>
+</section><section id="prior-information-and-empirical-evidence" class="level2" data-number="21.3"><h2 data-number="21.3" class="anchored" data-anchor-id="prior-information-and-empirical-evidence">
+<span class="header-section-number">21.3</span> Prior Information and Empirical Evidence</h2>
+<!-- - Examples of adding prior makes more sense -->
+<!-- - Prejudices are subjective, but definitely not arbitrary. Personal life experience. (purely objective?) -->
+<!-- - Cumulative learning -->
+<!-- - Being difficulty to specify a good or reasonable prior does not mean the Bayesian paradigm does not make sense. In fact, it is priors that make the Bayesian paradigm makes more sense than frequentism. -->
+<!-- - Our opinion is not Bayesian. -->
+<!-- - Being objective does not mean being rational. -->
+<!-- - According to Bayesianism, only those who uses their opinions can claim to be rational. -->
+<!-- - Probability deduction; Statistical inference induction -->
+<!-- - More and more Bayesian papers (data), someday conclude that Bayesian is the *correct* method using frequentist $p$-value. -->
+<!-- - Uncertainty is a personal matter; it is not the uncertainty but your uncertainty. Dennis Lindley, Understanding Uncertainty (2006) -->
 <blockquote class="blockquote">
-<p>How can we live if we don’t change? - Beyoncé. Lyric from “Satellites.”</p>
+<p>How can we live if we don’t change? – Beyoncé. Lyric from “Satellites.”</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>Uncertainty is a personal matter; it is not the uncertainty but your uncertainty. – Dennis Lindley, Understanding Uncertainty (2006)</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>A people without the knowledge of their past history, origin and culture is like a tree without roots. – Marcus Garvey (1887 - 1940)</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>Opinion is the medium between knowledge and ignorance. – Plato (427 – 348 BC)</p>
 </blockquote>
 <p>Everybody changes their mind. You likely even changed your mind in the last minute. For example, suppose there’s a new Italian restaurant in your town. It has a 5-star online rating and you love Italian food! Thus, prior to ever stepping foot in the restaurant, you anticipate that it will be quite delicious. On your first visit, you collect some edible data: your pasta dish arrives a soggy mess. Weighing the stellar online rating against your own terrible meal (which might have just been a fluke), you update your knowledge: this is a 3-star not 5-star restaurant. Willing to give the restaurant another chance, you make a second trip. On this visit, you’re pleased with your Alfredo and increase the restaurant’s rating to 4 stars. You continue to visit the restaurant, collecting edible data and updating your knowledge each time.</p>
 <div class="cell fig-cap-location-bottom" data-layout-align="center">
@@ -542,16 +608,16 @@ window.Quarto = {
 <img src="./images/img-infer/restaurant_diagram.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="2000">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-restaurant-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;20.1: Fig 1.1 of Bayes Rules. The figures not being sourced come from this book too.
+Figure&nbsp;21.1: Fig 1.1 of Bayes Rules. The figures not being sourced come from this book too.
 </figcaption></figure>
 </div>
 </div>
 </div>
 <ul>
-<li><p>We use <strong>data</strong> and <strong>prior beliefs</strong> to update our knowledge (<strong>posterior</strong>), and repeating.</p></li>
+<li><p>We use <strong>data</strong> and <strong>prior beliefs</strong> to update our knowledge (<strong>posterior</strong>), and repeating. So <em>today’s prior is yesterday’s posterior!</em></p></li>
 <li><p>We continuously update our knowledge about the world as we accumulate lived experiences, or <em>collect data</em>.</p></li>
 </ul>
-<p><a href="#fig-bayes" class="quarto-xref">Figure&nbsp;<span>20.2</span></a> shows Bayesian Knowledge-building Process. If you’re an environmental scientist, yours might be an analysis of the human role in climate change. You don’t walk into such an inquiry without context – you carry a degree of incoming or prior information based on previous research and experience. Naturally, it’s in light of this information that you interpret new data, weighing both in developing your updated or posterior information.</p>
+<p><a href="#fig-bayes" class="quarto-xref">Figure&nbsp;<span>21.2</span></a> shows Bayesian Knowledge-building Process. If you’re an environmental scientist, yours might be an analysis of the human role in climate change. You don’t walk into such an inquiry without context – you carry a degree of incoming or prior information based on previous research and experience. Naturally, it’s in light of this information that you interpret new data, weighing both in developing your updated or posterior information.</p>
 <div class="cell fig-cap-location-bottom" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-bayes" class="quarto-figure quarto-figure-center quarto-float anchored" width="50%" data-fig-align="center">
@@ -559,7 +625,7 @@ Figure&nbsp;20.1: Fig 1.1 of Bayes Rules. The figures not being sourced come fro
 <img src="./images/img-infer/bayes_diagram.png" id="fig-bayes" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" style="width:50.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-bayes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;20.2
+Figure&nbsp;21.2
 </figcaption></figure>
 </div>
 </div>
@@ -611,8 +677,10 @@ Figure&nbsp;20.2
 </div>
 </div>
 </div>
-</section><section id="asking-different-questions" class="level2" data-number="20.4"><h2 data-number="20.4" class="anchored" data-anchor-id="asking-different-questions">
-<span class="header-section-number">20.4</span> Asking Different Questions</h2>
+<p>Here is the thing. Whether we call it prior information or prior belief, it means the <em>current state of knowledge</em> about something <em>before</em> more evidence, data, or observations are collected that help us better understand or have more knowledge of the thing we are interested.</p>
+<p>Personally, I prefer calling the <em>current state of knowledge</em> our <strong>opinion</strong>, or to be more humble, our <strong>two cents</strong>! As a Bayesian, we are people with opinions. We learn to be a better man from our living experiences; we become more knowledgeable by making our opinions closer and closer to the <em>truth</em>. And I claim (which is my opinion) that this is how we learn anything from our birth to the last day alive. A person without his own opinions is like a person with no brain. If you ask him a question, his answer will always be like “I have no idea”, “I have no judgement”, “we should collect evidence to answer the question”, …etc.</p>
+</section><section id="asking-different-questions" class="level2" data-number="21.4"><h2 data-number="21.4" class="anchored" data-anchor-id="asking-different-questions">
+<span class="header-section-number">21.4</span> Asking Different Questions</h2>
 <div class="columns">
 <div class="column" style="width:80%;">
 <p>In Question 4,</p>
@@ -674,8 +742,8 @@ Figure&nbsp;20.2
 </ul>
 <p>A Bayesian analysis would ask: Given my positive test result, what’s the chance that I actually have the disease? Since only 3 of the 12 people that tested positive have the disease (Table 1.1), there’s only a 25% chance that you have the disease. Thus, when we take into account the disease’s rarity and the relatively high false positive rate, it’s relatively unlikely that you actually have the disease. What a relief.</p>
 <p>Since disease status isn’t repeatable, the probability you have the disease is either 1 or 0 – you have it or you don’t. To the contrary, medical testing (and data collection in general) is repeatable. You can get tested for the disease over and over and over. Thus, a frequentist analysis would ask: If I don’t actually have the disease, what’s the chance that I would’ve tested positive? Since only 9 of the 96 people without the disease tested positive, there’s a roughly 10% (9/96) chance that you would’ve tested positive even if you didn’t have the disease.</p>
-</section><section id="bayesian-model" class="level2" data-number="20.5"><h2 data-number="20.5" class="anchored" data-anchor-id="bayesian-model">
-<span class="header-section-number">20.5</span> Bayesian Model</h2>
+</section><section id="bayesian-model" class="level2" data-number="21.5"><h2 data-number="21.5" class="anchored" data-anchor-id="bayesian-model">
+<span class="header-section-number">21.5</span> Bayesian Model</h2>
 <p>Fake News</p>
 <div class="columns">
 <div class="column" style="width:80%;">
@@ -714,8 +782,8 @@ Figure&nbsp;20.2
 #           Total   60   90</code></pre>
 </div>
 <hr>
-<section id="bayesian-updating-rule" class="level3" data-number="20.5.1"><h3 data-number="20.5.1" class="anchored" data-anchor-id="bayesian-updating-rule">
-<span class="header-section-number">20.5.1</span> Bayesian Updating Rule</h3>
+<section id="bayesian-updating-rule" class="level3" data-number="21.5.1"><h3 data-number="21.5.1" class="anchored" data-anchor-id="bayesian-updating-rule">
+<span class="header-section-number">21.5.1</span> Bayesian Updating Rule</h3>
 <div class="cell fig-cap-location-bottom" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -768,8 +836,8 @@ Figure&nbsp;20.2
 <li><p>Compare <span class="math inline">\(P(D \mid F)\)</span> and <span class="math inline">\(P(D \mid F^c)\)</span> to ascertain the relative <strong>likelihoods</strong> of <em>observed data</em> <span class="math inline">\(D\)</span> under different scenarios of the <em>uncertain</em> article status.</p></li>
 </ul>
 <p>Since exclamation point usage is so much more likely among fake news than real news, this data provides some evidence that the article is fake To help distinguish this application of conditional probability calculations from that when D is uncertain and F is known, we’ll utilize the following likelihood function notation.</p>
-<hr></section><section id="likelihood-function" class="level3" data-number="20.5.2"><h3 data-number="20.5.2" class="anchored" data-anchor-id="likelihood-function">
-<span class="header-section-number">20.5.2</span> Likelihood Function</h3>
+<hr></section><section id="likelihood-function" class="level3" data-number="21.5.2"><h3 data-number="21.5.2" class="anchored" data-anchor-id="likelihood-function">
+<span class="header-section-number">21.5.2</span> Likelihood Function</h3>
 <div class="midi">
 <ul>
 <li>
@@ -824,15 +892,16 @@ Figure&nbsp;20.2
 <ul>
 <li><span class="green"><em>The likelihood function is not a probability function!</em></span></li>
 </ul>
-<hr></section><section id="bayes-rule" class="level3" data-number="20.5.3"><h3 data-number="20.5.3" class="anchored" data-anchor-id="bayes-rule">
-<span class="header-section-number">20.5.3</span> Bayes’ Rule</h3>
+<hr></section><section id="bayes-rule" class="level3" data-number="21.5.3"><h3 data-number="21.5.3" class="anchored" data-anchor-id="bayes-rule">
+<span class="header-section-number">21.5.3</span> Bayes’ Rule</h3>
 <p><span class="math display">\[\begin{align*} P(F \mid D) &amp;= \frac{P(F \cap D)}{P(D)}\\ &amp;= \frac{L(F \mid D)P(F)}{P(D)}\end{align*}\]</span></p>
 <p><span class="math display">\[\text{posterior = } \frac{\text{likelihood} \cdot \text{prior }}{ \text{normalizing constant}} \]</span></p>
 <ul>
 <li>The normalizing constant <span class="math inline">\(P(D)\)</span> is known as <strong>marginal likelihood</strong> or <strong>evidence</strong>.</li>
-</ul>
-<hr></section><section id="posterior" class="level3" data-number="20.5.4"><h3 data-number="20.5.4" class="anchored" data-anchor-id="posterior">
-<span class="header-section-number">20.5.4</span> Posterior</h3>
+</ul></section></section><section id="to-be-bayesian-is-to-rest-all-knowledge-upon-the-language-of-conditional-probabilities." class="level2" data-number="21.6"><h2 data-number="21.6" class="anchored" data-anchor-id="to-be-bayesian-is-to-rest-all-knowledge-upon-the-language-of-conditional-probabilities.">
+<span class="header-section-number">21.6</span> To be Bayesian is to rest all knowledge upon the language of conditional probabilities.</h2>
+<section id="posterior" class="level3" data-number="21.6.1"><h3 data-number="21.6.1" class="anchored" data-anchor-id="posterior">
+<span class="header-section-number">21.6.1</span> Posterior</h3>
 <ul>
 <li><p>Started with a prior understanding that there’s a 40% chance that the incoming article would be fake.</p></li>
 <li><p>Yet upon observing the use of an exclamation point in the title</p></li>
@@ -875,8 +944,8 @@ Figure&nbsp;20.2
 <td>1</td>
 </tr>
 </tbody>
-</table></section></section><section id="bayesian-inference-for-random-variables" class="level2" data-number="20.6"><h2 data-number="20.6" class="anchored" data-anchor-id="bayesian-inference-for-random-variables">
-<span class="header-section-number">20.6</span> Bayesian Inference for Random Variables</h2>
+</table></section></section><section id="bayesian-inference-for-random-variables" class="level2" data-number="21.7"><h2 data-number="21.7" class="anchored" data-anchor-id="bayesian-inference-for-random-variables">
+<span class="header-section-number">21.7</span> Bayesian Inference for Random Variables</h2>
 <p>For any random variables parameter <span class="math inline">\(\theta\)</span> and data <span class="math inline">\({\bf Y} = (Y_1, \dots, Y_n)\)</span>,</p>
 <ul>
 <li><p><span class="math inline">\(\pi(\theta)\)</span>: the prior pmf/pdf of <span class="math inline">\(\theta\)</span></p></li>
@@ -887,12 +956,12 @@ Figure&nbsp;20.2
 \sum_{\theta \in \Theta} L(\theta \mid \mathbf{y})\pi(\theta) &amp; \text{if } \theta \text{ is discrete }
 \end{cases}\]</span></p>
 <hr>
-<section id="proportionality" class="level3" data-number="20.6.1"><h3 data-number="20.6.1" class="anchored" data-anchor-id="proportionality">
-<span class="header-section-number">20.6.1</span> Proportionality</h3>
+<section id="proportionality" class="level3" data-number="21.7.1"><h3 data-number="21.7.1" class="anchored" data-anchor-id="proportionality">
+<span class="header-section-number">21.7.1</span> Proportionality</h3>
 <p><span class="math display">\[\pi(\theta \mid \mathbf{y}) = \frac{L(\theta \mid \mathbf{y})\pi(\theta)}{p(\mathbf{y})} \propto_{\theta} L(\theta \mid \mathbf{y})\pi(\theta)\]</span></p>
 <p><span class="math display">\[\text{posterior } \propto \text{ likelihood } \cdot \text{ prior } \]</span></p>
-<hr></section><section id="motivation-example" class="level3" data-number="20.6.2"><h3 data-number="20.6.2" class="anchored" data-anchor-id="motivation-example">
-<span class="header-section-number">20.6.2</span> Motivation Example</h3>
+<hr></section><section id="motivation-example" class="level3" data-number="21.7.2"><h3 data-number="21.7.2" class="anchored" data-anchor-id="motivation-example">
+<span class="header-section-number">21.7.2</span> Motivation Example</h3>
 <div class="columns">
 <div class="column" style="width:70%;">
 <ul>
@@ -922,8 +991,8 @@ Figure&nbsp;20.2
 <ul>
 <li>The parameter to be estimated is <span class="math inline">\(\theta\)</span>, the Michelle’s support, which is between 0 and 1.</li>
 </ul>
-<section id="prior-distribution" class="level4" data-number="20.6.2.1"><h4 data-number="20.6.2.1" class="anchored" data-anchor-id="prior-distribution">
-<span class="header-section-number">20.6.2.1</span> Prior Distribution</h4>
+<section id="prior-distribution" class="level4" data-number="21.7.2.1"><h4 data-number="21.7.2.1" class="anchored" data-anchor-id="prior-distribution">
+<span class="header-section-number">21.7.2.1</span> Prior Distribution</h4>
 <ul>
 <li>A popular probability distribution for probability is <strong>beta distribution</strong>, <span class="math inline">\(\text{beta}(\alpha, \beta)\)</span>, where <span class="math inline">\(\alpha &gt; 0\)</span> and <span class="math inline">\(\beta &gt; 0\)</span> are shape parameters.</li>
 </ul>
@@ -956,8 +1025,8 @@ Figure&nbsp;20.2
 </div>
 </div>
 </div>
-</section><section id="likelihood" class="level4" data-number="20.6.2.2"><h4 data-number="20.6.2.2" class="anchored" data-anchor-id="likelihood">
-<span class="header-section-number">20.6.2.2</span> Likelihood</h4>
+</section><section id="likelihood" class="level4" data-number="21.7.2.2"><h4 data-number="21.7.2.2" class="anchored" data-anchor-id="likelihood">
+<span class="header-section-number">21.7.2.2</span> Likelihood</h4>
 <blockquote class="blockquote">
 <p>You plan to conduct a new poll of <span class="math inline">\(n = 50\)</span> Cheeseheads and record <span class="math inline">\(Y\)</span>, the number that support Michelle.</p>
 </blockquote>
@@ -980,8 +1049,8 @@ Figure&nbsp;20.2
 </div>
 </div>
 </div>
-</section><section id="bayesian-model-1" class="level4" data-number="20.6.2.3"><h4 data-number="20.6.2.3" class="anchored" data-anchor-id="bayesian-model-1">
-<span class="header-section-number">20.6.2.3</span> Bayesian Model</h4>
+</section><section id="bayesian-model-1" class="level4" data-number="21.7.2.3"><h4 data-number="21.7.2.3" class="anchored" data-anchor-id="bayesian-model-1">
+<span class="header-section-number">21.7.2.3</span> Bayesian Model</h4>
 <p><span class="math display">\[\begin{align}Y \mid \theta &amp;\sim \text{binomial}(n=50, \theta)\\ \theta &amp;\sim \text{beta}(45, 55)
 \end{align}\]</span></p>
 <p>Goal: Obtain the posterior distribution <span class="math inline">\(\pi(\theta \mid y)\)</span>.</p>
@@ -993,8 +1062,8 @@ Figure&nbsp;20.2
 &amp;= \text{beta}(75, 75)\end{align}
 \]</span></p>
 <p>using the fact that <span class="math inline">\(\int_{\mathcal{X}} f(x) dx = 1\)</span> for any pdf <span class="math inline">\(f(x)\)</span>.</p>
-</section><section id="posterior-distribution" class="level4" data-number="20.6.2.4"><h4 data-number="20.6.2.4" class="anchored" data-anchor-id="posterior-distribution">
-<span class="header-section-number">20.6.2.4</span> Posterior Distribution</h4>
+</section><section id="posterior-distribution" class="level4" data-number="21.7.2.4"><h4 data-number="21.7.2.4" class="anchored" data-anchor-id="posterior-distribution">
+<span class="header-section-number">21.7.2.4</span> Posterior Distribution</h4>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -1006,8 +1075,8 @@ Figure&nbsp;20.2
 <!-- #### Take-home Message -->
 <!-- - The parameter is a random variable in the Bayesian world. -->
 <!-- - It is fixed and constant in the frequentist world. -->
-</section></section></section><section id="further-reading-and-references" class="level2" data-number="20.7"><h2 data-number="20.7" class="anchored" data-anchor-id="further-reading-and-references">
-<span class="header-section-number">20.7</span> Further Reading and References</h2>
+</section></section></section><section id="further-reading-and-references" class="level2" data-number="21.8"><h2 data-number="21.8" class="anchored" data-anchor-id="further-reading-and-references">
+<span class="header-section-number">21.8</span> Further Reading and References</h2>
 <ul>
 <li><p><a href="https://www.bayesrulesbook.com/">Bayes Rules</a></p></li>
 <li><p><a href="https://www.youtube.com/watch?v=eDMGDhyDxuY">All About that Bayes: Probability, Statistics, and the Quest to Quantify Uncertainty</a> by Dr.&nbsp;Kristin Lennox</p></li>
@@ -1035,6 +1104,150 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
@@ -1424,13 +1637,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./infer-cat.html" class="pagination-link" aria-label="Inference about Categorical Data">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Inference about Categorical Data</span></span>
+      <a href="./infer-p.html" class="pagination-link" aria-label="The Issues of $p$-value and Statistical Significance">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">The Issues of <span class="math inline">\(p\)</span>-value and Statistical Significance</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./infer-nonpar.html" class="pagination-link" aria-label="Nonparametric Methods">
-        <span class="nav-page-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Nonparametric Methods</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Nonparametric Methods</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
