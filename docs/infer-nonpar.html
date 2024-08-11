@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.4.555">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
-<meta name="description" content="An comprehensive introductory statistical data science book.">
-
-<title>Introduction to Statistics - 21&nbsp; Nonparametric Methods</title>
+<meta name="description" content="A comprehensive introductory statistical data science book.">
+<title>Introduction to Statistics - 22&nbsp; Nonparametric Tests</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,8 +18,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
-
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
@@ -38,11 +68,12 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
-<script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -68,38 +99,79 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script>
-
-
+}</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script><link rel="stylesheet" href="custom.css">
 </head>
-
 <body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./infer.html">Statistical Inference</a></li><li class="breadcrumb-item"><a href="./infer-nonpar.html"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Nonparametric Methods</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./infer.html">Statistical Inference</a></li><li class="breadcrumb-item"><a href="./infer-nonpar.html"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Nonparametric Tests</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Introduction to Statistics</a> 
-        <div class="sidebar-tools-main">
+        <div class="sidebar-tools-main tools-wide">
     <a href="https://github.com/chenghanyustats/introstatsbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="./Introduction-to-Statistics.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+    <div class="dropdown">
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Share"><i class="bi bi-share"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+<li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=%7Curl%7C">
+              <i class="bi bi-bi-twitter pe-1"></i>
+            Twitter
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=%7Curl%7C">
+              <i class="bi bi-bi-facebook pe-1"></i>
+            Facebook
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=%7Curl%7C">
+              <i class="bi bi-bi-linkedin pe-1"></i>
+            LinkedIn
+            </a>
+          </li>
+      </ul>
+</div>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
     </div>
       </div>
@@ -110,7 +182,7 @@ ul.task-list li input[type="checkbox"] {
         </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Welcome</span></a>
@@ -124,8 +196,8 @@ ul.task-list li input[type="checkbox"] {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./intro-stats.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Science of Data and Data Science</span></span></a>
@@ -144,7 +216,7 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./datasummary.html" class="sidebar-item-text sidebar-link">
@@ -153,8 +225,8 @@ ul.task-list li input[type="checkbox"] {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./data-graphics.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Visualization</span></span></a>
@@ -167,7 +239,7 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./prob.html" class="sidebar-item-text sidebar-link">
@@ -176,8 +248,8 @@ ul.task-list li input[type="checkbox"] {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prob-define.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Definition of Probability</span></span></a>
@@ -220,7 +292,7 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./infer.html" class="sidebar-item-text sidebar-link">
@@ -229,8 +301,8 @@ ul.task-list li input[type="checkbox"] {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-ci.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Point and Interval Estimation</span></span></a>
@@ -274,18 +346,24 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./infer-p.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">The Issues of <span class="math inline">\(p\)</span>-value and Statistical Significance</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./infer-bayes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Bayesian Thinking and Inference</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-nonpar.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Nonparametric Methods</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Nonparametric Tests</span></span></a>
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./model.html" class="sidebar-item-text sidebar-link">
@@ -294,39 +372,39 @@ ul.task-list li input[type="checkbox"] {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-anova.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-reg.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Linear Regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Linear Regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-logistic.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Logistic Regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Logistic Regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-bayes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-survival.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Survival Analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Survival Analysis</span></span></a>
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <span class="sidebar-item-text sidebar-link text-start">
  <span class="menu-text">References</span></span>
@@ -339,8 +417,8 @@ ul.task-list li input[type="checkbox"] {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./a-r_prog.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">R programming</span></span></a>
@@ -353,21 +431,35 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </li>
       </ul>
-  </li>
+</li>
     </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li>
+<a href="#wilcoxon-signed-rank-test-for-matched-pairs" id="toc-wilcoxon-signed-rank-test-for-matched-pairs" class="nav-link active" data-scroll-target="#wilcoxon-signed-rank-test-for-matched-pairs"><span class="header-section-number">22.1</span> Wilcoxon Signed-Rank Test for Matched Pairs</a>
+  <ul class="collapse">
+<li><a href="#idea-of-wilcoxon-signed-rank-test" id="toc-idea-of-wilcoxon-signed-rank-test" class="nav-link" data-scroll-target="#idea-of-wilcoxon-signed-rank-test"><span class="header-section-number">22.1.1</span> Idea of Wilcoxon Signed-Rank Test</a></li>
+  </ul>
+</li>
+  <li><a href="#example-of-wilcoxon-signed-rank-test-example-6.9-of-ott" id="toc-example-of-wilcoxon-signed-rank-test-example-6.9-of-ott" class="nav-link" data-scroll-target="#example-of-wilcoxon-signed-rank-test-example-6.9-of-ott"><span class="header-section-number">22.2</span> Example of Wilcoxon Signed-Rank Test (Example 6.9 of OTT)</a></li>
+  <li>
+<a href="#wilcoxon-rank-sum-test-mann-whitney-u-test1-for-two-independent-samples" id="toc-wilcoxon-rank-sum-test-mann-whitney-u-test1-for-two-independent-samples" class="nav-link" data-scroll-target="#wilcoxon-rank-sum-test-mann-whitney-u-test1-for-two-independent-samples"><span class="header-section-number">22.3</span> Wilcoxon Rank-Sum Test (Mann-Whitney U Test) for Two Independent Samples</a>
+  <ul class="collapse">
+<li><a href="#idea-of-wilcoxon-rank-sum-test" id="toc-idea-of-wilcoxon-rank-sum-test" class="nav-link" data-scroll-target="#idea-of-wilcoxon-rank-sum-test"><span class="header-section-number">22.3.1</span> Idea of Wilcoxon Rank-Sum Test</a></li>
+  </ul>
+</li>
+  <li><a href="#example-of-wilcoxon-rank-sum-test-example-6.5-of-ott" id="toc-example-of-wilcoxon-rank-sum-test-example-6.5-of-ott" class="nav-link" data-scroll-target="#example-of-wilcoxon-rank-sum-test-example-6.5-of-ott"><span class="header-section-number">22.4</span> Example of Wilcoxon Rank-Sum Test (Example 6.5 of OTT)</a></li>
+  <li><a href="#kruskal-wallis-test-for-three-or-more-samples" id="toc-kruskal-wallis-test-for-three-or-more-samples" class="nav-link" data-scroll-target="#kruskal-wallis-test-for-three-or-more-samples"><span class="header-section-number">22.5</span> Kruskal-Wallis Test for Three or More Samples</a></li>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/infer-nonpar.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./infer.html">Statistical Inference</a></li><li class="breadcrumb-item"><a href="./infer-nonpar.html"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Nonparametric Methods</span></a></li></ol></nav>
-<div class="quarto-title">
-<h1 class="title"><span id="sec-infer-nonpar" class="quarto-section-identifier"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Nonparametric Methods</span></span></h1>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./infer.html">Statistical Inference</a></li><li class="breadcrumb-item"><a href="./infer-nonpar.html"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Nonparametric Tests</span></a></li></ol></nav><div class="quarto-title">
+<h1 class="title"><span id="sec-infer-nonpar" class="quarto-section-identifier"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Nonparametric Tests</span></span></h1>
 </div>
 
 
@@ -381,15 +473,416 @@ ul.task-list li input[type="checkbox"] {
   
 
 
-</header>
+</header><p>In this chapter we are going to learn some nonparametric testing methods. In general, <strong>nonparametric methods</strong> do not require that samples come from population with normal distributions or any other particular distributions. Nonparametric methods are <em>distribution-free</em> methods.</p>
+<p>Because nonparametric methods have less rigid requirements than parametric methods, usually they can be applied to wider variety of situations. However, nonparametric methods usually need stronger evidence such as larger sample or greater group mean difference to have the same performance as their parametric equivalent methods used for the same purpose. Therefore, the bottom line is, it’s generally better to use the parametric methods when their required assumptions are satisfied. If we have no idea of what the population distribution or sampling distribution looks like, we consider using nonparametric methods.</p>
+<p>Here we introduce three nonparametric tests. Note that nonparametric methods are much more than testing, and <a href="https://en.wikipedia.org/wiki/Nonparametric_statistics">nonparametric statistics</a> is one of the popular research area of statistics. It is also discussed as a one-semester course at many colleges.</p>
+<section id="wilcoxon-signed-rank-test-for-matched-pairs" class="level2" data-number="22.1"><h2 data-number="22.1" class="anchored" data-anchor-id="wilcoxon-signed-rank-test-for-matched-pairs">
+<span class="header-section-number">22.1</span> Wilcoxon Signed-Rank Test for Matched Pairs</h2>
+<p>The Wilcoxon sign-rank test is a nonparametric test that uses ranks for the following tests:</p>
+<ol type="1">
+<li><p>Testing the claim that a population of <em>matched pairs</em> has the property that the matched pairs have differences with a <em>median</em> equal to zero.</p></li>
+<li><p>Testing the claim that a single population of individual values has a <em>median</em> equal to some claimed value.</p></li>
+</ol>
+<p>Therefore, the Wilcoxon sign-rank test can be used for one or paired samples. When comparing matched pairs, the Wilcoxon sign-rank test is the nonparametric version of the <strong>paired <span class="math inline">\(t\)</span>-test</strong>.</p>
+<p>Here we talk about the procedure for <em>matched pairs</em>, The same procedure is used for the one population case by creating matched pairs by pairing each sample value with the claimed median.</p>
+<p>The requirements of the Wilcoxon sign-rank test are</p>
+<ul>
+<li>The data are (simple) random samples.</li>
+<li>The population distribution of differences is approximately <strong>symmetric</strong> about the unknown median.</li>
+</ul>
+<p>There is <em>no</em> requirement that the data have a normal distribution.</p>
+<!-- - The two populations are **non-normal and can follow any distribution**. -->
+<p>Keep in mind that instead of testing the <em>mean</em> of differences, the Wilcoxon signed-rank test tests the <em>median</em> of the differences (<span class="math inline">\(med_d\)</span>).</p>
+<hr>
+<section id="idea-of-wilcoxon-signed-rank-test" class="level3" data-number="22.1.1"><h3 data-number="22.1.1" class="anchored" data-anchor-id="idea-of-wilcoxon-signed-rank-test">
+<span class="header-section-number">22.1.1</span> Idea of Wilcoxon Signed-Rank Test</h3>
+<p>The hypothesis is</p>
+<ul>
+<li>
+<span class="math inline">\(H_0: med_d = 0\)</span> (median of the difference = 0)</li>
+<li>
+<span class="math inline">\(H_1: med_d &gt; 0\)</span> or <span class="math inline">\(med_d &lt; 0\)</span> or <span class="math inline">\(med_d \ne 0\)</span>
+</li>
+</ul>
+<p>The first thought is that <strong>If the median of the differences is 0, we expect to see about half of the differences <span class="math inline">\(d_1, \dots, d_n\)</span> is negative (<span class="math inline">\(-\)</span>), and the other half of differences is positive (<span class="math inline">\(+\)</span>)</strong>. But this <em>sign test</em> uses only the information about <em>direction</em> (sign) of the data, and ignores the <em>magnitude</em> of the differences.</p>
+<!-- ### Illustration of the Sign Test -->
+<p>The following example demonstrates that relying solely on the signs of differences to determine whether the median is zero can be misleading. Consider the paired data presented on the left. As with the two-sample paired <span class="math inline">\(t\)</span> test, we first calculate the differences between the paired observations. Next, we count the number of positive and negative differences. In this case, we have 3 positive differences <span class="math inline">\((+1, +2, +3)\)</span> and 4 negative differences <span class="math inline">\((-20, -18, -10, -14)\)</span>. Since the number of positive signs is roughly equal to the number of negative signs, one might hastily conclude that the median of the differences is 0. However, this conclusion ignores the magnitude of the differences, which could lead to an incorrect inference.</p>
+<p>However, if we examine the difference data more closely, we notice that the positive differences have relatively small magnitudes, while the negative differences have much larger magnitudes. This observation suggests that <em>the median of the differences is likely to be negative</em>, contrary to what the simple count of positive and negative signs might indicate.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="./images/img-infer/sign_test.jpg" class="img-fluid figure-img" width="1070"></p>
+</figure>
+</div>
+</div>
+</div>
+<!-- ![](./figures/sign_test.jpg){height=380px width=990px} -->
+<p><br></p>
+<p>As a result, the core idea behind the Wilcoxon Signed-Rank Test is that if the median of the differences is indeed 0, not only should the number of positive differences be roughly equal to the number of negative differences, but also <strong>the rank sum of the positive differences should be close to the rank sum of the negative differences</strong>. This approach takes into account both the number and the magnitude of the differences, providing a more accurate assessment of whether the median is truly zero.</p>
+<p>The figure below illustrates the concept behind the Wilcoxon Signed-Rank test. After calculating the difference data, we take the absolute values of these differences to determine their magnitudes. Next, we rank these magnitudes from smallest to largest, with the smallest magnitude receiving the first rank, the next smallest receiving the second rank, and so on.</p>
+<p>Once the ranks are assigned, we calculate the <strong>rank sum</strong>. For the positive differences, the ranks are 1, 2, and 3, resulting in a rank sum of 6. For the negative differences, the ranks are 4, 5, 6, and 7, leading to a rank sum of 22. If the median of the differences were zero, these two rank sums should be fairly close to each other, ideally around half of the total rank sum, which is <span class="math inline">\((1 + 2 + 3 + \cdots + 7)/2 = 14\)</span>.</p>
+<p>However, in this case, the larger rank sum for the negative differences suggests that the median is likely negative. Whether this difference in rank sums is significant enough to reject the null hypothesis depends on the test statistic, critical value, or p-value obtained through a formal testing procedure, which is typically handled by statistical software nowadays. The details are skipped here, and you can explore more from other introductory statistics textbooks.</p>
+<!-- ### Illustration of the Wilcoxon Signed-Rank Test -->
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="./images/img-infer/signed_rank.jpg" class="img-fluid figure-img" width="1169"></p>
+</figure>
+</div>
+</div>
+</div>
+<!-- ![](./figures/signed_rank.jpg){height=380px width=990px} -->
+<!-- ### Procedure of Wilcoxon Signed-Rank Test When $\small n \le 50$  -->
+<p>The entire procedure of Wilcoxon signed-rank test when <span class="math inline">\(n\)</span> is small (<span class="math inline">\(&lt; 50\)</span>) is summarized below. <!-- \text{ or } 30 --></p>
+<ul>
+<li>
+<p>The hypothesis is</p>
+<ul>
+<li>
+<span class="math inline">\(H_0: med_d = 0\)</span> (median of the difference = 0)</li>
+<li>
+<span class="math inline">\(H_1: med_d &gt; 0\)</span> or <span class="math inline">\(med_d &lt; 0\)</span> or <span class="math inline">\(med_d \ne 0\)</span>
+</li>
+</ul>
+</li>
+<li><p>Step 1: <strong>Calculate the differences (<span class="math inline">\(d_i\)</span>s) in the <span class="math inline">\(n\)</span> pairs of observations</strong>.</p></li>
+<li><p>Step 2: <strong>Delete all zero values of <span class="math inline">\(d_i\)</span></strong>.</p></li>
+<li><p>Step 3: <strong>Rank the absolute values (magnitude) of the differences</strong>.</p></li>
+<li><p>Step 4: <strong>Compute the rank sums for positive and negative differences, <span class="math inline">\(T_+\)</span> and <span class="math inline">\(T_{-}\)</span></strong>.</p></li>
+<li><p>Step 5: <strong>Let the test statistic <span class="math inline">\(T_{test}\)</span> be the smaller of <span class="math inline">\(T_+\)</span> and <span class="math inline">\(T_{-}\)</span></strong>.</p></li>
+<li><p>Step 6: <strong>Given <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(n\)</span>, find the critical value <span class="math inline">\(T_{crit}\)</span>. Or find the p-value</strong>.</p></li>
+<li><p>Step 7: <strong>Reject <span class="math inline">\(H_0\)</span> if <span class="math inline">\(T_{test} &lt; T_{crit}\)</span> or p-value &lt; <span class="math inline">\(\alpha\)</span></strong>.</p></li>
+</ul>
+<p>When <span class="math inline">\(n\)</span> is relatively large, say larger than 50, we can transform <span class="math inline">\(T_{test}\)</span> into a <span class="math inline">\(z\)</span> test statistic, and follow the ordinary testing procedure using the standard normal distribution. The entire procedure is shown below. <!-- Procedure of Wilcoxon Signed-Rank Test When $\small n > 50$ --> <!-- \text{ or } 30 --></p>
+<!-- - The hypothesis is -->
+<!--   + $H_0: med_d = 0$ (median of the difference = 0) -->
+<!--   + $H_1: med_d > 0$ or $med_d < 0$ or $med_d \ne 0$ -->
+<ul>
+<li><p>Step 1: <strong>Calculate the differences (<span class="math inline">\(d_i\)</span>s) in the <span class="math inline">\(n\)</span> pairs of observations</strong>.</p></li>
+<li><p>Step 2: <strong>Delete all zero values of <span class="math inline">\(d_i\)</span></strong>.</p></li>
+<li><p>Step 3: <strong>Rank the absolute values (magnitude) of the differences</strong>.</p></li>
+<li><p>Step 4: <strong>Compute the rank sums for positive and negative differences, <span class="math inline">\(T_+\)</span> and <span class="math inline">\(T_{-}\)</span></strong>.</p></li>
+<li><p>Step 5: <strong>Let <span class="math inline">\(T\)</span> be the smaller of <span class="math inline">\(T_+\)</span> and <span class="math inline">\(T_{-}\)</span></strong>.</p></li>
+<li><p>Step 6: <strong>Compute the test statistic <span class="math inline">\(z_{test} = \frac{T - \frac{n(n+1)}{4}}{\sqrt{\frac{n(n+1)(2n+1)}{24}}}\)</span></strong>.</p></li>
+<li><p>Step 7: <strong>Given <span class="math inline">\(\alpha\)</span>, find the critical value <span class="math inline">\(z_{\alpha}\)</span> (one-tailed) or <span class="math inline">\(z_{\alpha/2}\)</span> (two-tailed)</strong>.</p></li>
+<li>
+<p>Step 8: <strong>Decision Rule</strong></p>
+<ul>
+<li><p><strong><span class="math inline">\(H_1: med_d &gt; 0\)</span>: Reject <span class="math inline">\(H_0\)</span> if <span style="color:blue"> <span class="math inline">\(z_{test} &lt; -z_{\alpha}\)</span> </span></strong>.</p></li>
+<li><p><strong><span class="math inline">\(H_1: med_d &lt; 0\)</span>: Reject <span class="math inline">\(H_0\)</span> if <span style="color:blue"> <span class="math inline">\(z_{test} &lt; -z_{\alpha}\)</span> </span></strong>.</p></li>
+<li><p><strong><span class="math inline">\(H_1: med_d \ne 0\)</span>: Reject <span class="math inline">\(H_0\)</span> if <span style="color:blue"> <span class="math inline">\(z_{test} &lt; -z_{\alpha/2}\)</span> </span></strong>.</p></li>
+</ul>
+</li>
+</ul></section></section><section id="example-of-wilcoxon-signed-rank-test-example-6.9-of-ott" class="level2" data-number="22.2"><h2 data-number="22.2" class="anchored" data-anchor-id="example-of-wilcoxon-signed-rank-test-example-6.9-of-ott">
+<span class="header-section-number">22.2</span> Example of Wilcoxon Signed-Rank Test (Example 6.9 of OTT)</h2>
+<p>A city park department compared a new formulation of a fertilizer, brand A, to the previously used fertilizer, brand B, on each of 20 different softball fields. Each field was divided in half, with brand A randomly assigned to one half of the field and brand B to the other. Sixty pounds of fertilizer per acre were then applied to the fields. The effect of the fertilizer on the grass grown at each field was measured by the weight (in pounds) of grass clippings produced by mowing the grass at the fields over a 1-month period. Evaluate whether brand A tends to produce more grass than brand B.</p>
+<!-- - Does Brand A fertilizer produce more grass than Brand B? -->
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="./images/img-infer/signed_rank_example.png" class="img-fluid figure-img" width="682"></p>
+</figure>
+</div>
+</div>
+</div>
+<!-- ![](./figures/signed_rank_example.png){height=350px width=990px} -->
+<!-- ## Example 6.9:  Wilcoxon Signed-Rank Test in R -->
+<p>We will perform the Wilcoxon signed-rank test using R. First we prepare the data set <code>paired_data</code> in R like this:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>   Field     a     b difference
+1      1 211.4 186.3       25.1
+2      2 204.4 205.7       -1.3
+3      3 202.0 184.4       17.6
+4      4 201.9 203.6       -1.7
+5      5 202.4 180.4       22.0
+6      6 202.0 202.0        0.0
+7      7 202.4 181.5       20.9
+8      8 207.1 186.7       20.4
+9      9 203.6 205.7       -2.1
+10    10 216.0 189.1       26.9
+11    11 208.9 183.6       25.3
+12    12 208.7 188.7       20.0
+13    13 213.8 188.6       25.2
+14    14 201.6 204.2       -2.6
+15    15 201.8 181.6       20.2
+16    16 200.3 208.7       -8.4
+17    17 201.8 181.5       20.3
+18    18 201.5 208.7       -7.2
+19    19 212.1 186.8       25.3
+20    20 203.4 182.9       20.5</code></pre>
+</div>
+</div>
+<!-- ## Example 6.9:  Wilcoxon Signed-Rank Test in R -->
+<!-- \tiny -->
+<p>The command <code><a href="https://rdrr.io/r/stats/wilcox.test.html">wilcox.test()</a></code> can perform the Wilcoxon signed-rank test. The arguments <code>x</code> and <code>y</code> are the paired data from Brand A and Brand B, respectively. By default, <code>paired = FALSE</code>. So we have to set <code>paired = TRUE</code> because we have matched pairs data. We set <code>alternative = "greater"</code> because we would like to know whether brand A (in <code>x</code>) tends to produce <em>more</em> grass than brand B (in <code>y</code>). Here <code>mu</code> is actually referred to median, not the mean.</p>
+<p>By default, when <span class="math inline">\(n &lt; 50\)</span> and the difference data have no zero values, the exact p-value and confidence interval are constructed, i.e., the first procedure before is used. When <span class="math inline">\(n &gt; 50\)</span>, <code><a href="https://rdrr.io/r/stats/wilcox.test.html">wilcox.test()</a></code> will compute the p-value and confidence interval based on normal approximation, like the second procedure shown before. When normal approximation is used, <code>correct</code> argument is be further specified to decide whether continuity correction is used.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The <code>x</code> and <code>y</code> data should be consistent with <code>alternative</code>. If we put <code>paired_data$b</code> in the <code>x</code> argument, and <code>paired_data$a</code> in the <code>y</code> argument, then <code>alternative = "less"</code> should be set. The order matters.</p>
+</div>
+</div>
+<p>Our dataset consists of 20 observations, but it’s important to note that we have a tie in the sixth observation where brand A and brand B have the same measurements. If you do not specify <code>exact=TRUE</code> in the function, R will issue a warning and automatically use the normal approximation with continuity correction. The following two code snippets will produce the same result.</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/wilcox.test.html">wilcox.test</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">paired_data</span><span class="op">$</span><span class="va">a</span>, y <span class="op">=</span> <span class="va">paired_data</span><span class="op">$</span><span class="va">b</span>, mu <span class="op">=</span> <span class="fl">0</span>, </span>
+<span>            alternative <span class="op">=</span> <span class="st">"greater"</span>, paired <span class="op">=</span> <span class="cn">TRUE</span>, conf.int <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in wilcox.test.default(x = paired_data$a, y = paired_data$b, mu = 0, :
+cannot compute exact p-value with zeroes</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in wilcox.test.default(x = paired_data$a, y = paired_data$b, mu = 0, :
+cannot compute exact confidence interval with zeroes</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Wilcoxon signed rank test with continuity correction
+
+data:  paired_data$a and paired_data$b
+V = 169, p-value = 0.001549
+alternative hypothesis: true location shift is greater than 0
+95 percent confidence interval:
+ 9.049985      Inf
+sample estimates:
+(pseudo)median 
+      12.12435 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/wilcox.test.html">wilcox.test</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">paired_data</span><span class="op">$</span><span class="va">a</span>, y <span class="op">=</span> <span class="va">paired_data</span><span class="op">$</span><span class="va">b</span>, mu <span class="op">=</span> <span class="fl">0</span>, </span>
+<span>            alternative <span class="op">=</span> <span class="st">"greater"</span>, paired <span class="op">=</span> <span class="cn">TRUE</span>, conf.int <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>            exact <span class="op">=</span> <span class="cn">FALSE</span>, correct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Wilcoxon signed rank test with continuity correction
+
+data:  paired_data$a and paired_data$b
+V = 169, p-value = 0.001549
+alternative hypothesis: true location shift is greater than 0
+95 percent confidence interval:
+ 9.049985      Inf
+sample estimates:
+(pseudo)median 
+      12.12435 </code></pre>
+</div>
+</div>
+<p>If we remove the sixth observation, the exact p-value and confidence interval can be constructed. In the following examples, the first two code chunks will yield the same result, both utilizing the exact p-value. However, the third code chunk, with <code>exact = FALSE</code>, will use the normal approximation to calculate the p-value instead.</p>
+<div class="cell">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paired_data</span> <span class="op">&lt;-</span> <span class="va">paired_data</span><span class="op">[</span><span class="op">-</span><span class="fl">6</span>, <span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/wilcox.test.html">wilcox.test</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">paired_data</span><span class="op">$</span><span class="va">a</span>, y <span class="op">=</span> <span class="va">paired_data</span><span class="op">$</span><span class="va">b</span>, mu <span class="op">=</span> <span class="fl">0</span>, </span>
+<span>            alternative <span class="op">=</span> <span class="st">"greater"</span>, paired <span class="op">=</span> <span class="cn">TRUE</span>, conf.int <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Wilcoxon signed rank exact test
+
+data:  paired_data$a and paired_data$b
+V = 169, p-value = 0.0008469
+alternative hypothesis: true location shift is greater than 0
+95 percent confidence interval:
+ 9.05  Inf
+sample estimates:
+(pseudo)median 
+        12.075 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/wilcox.test.html">wilcox.test</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">paired_data</span><span class="op">$</span><span class="va">a</span>, y <span class="op">=</span> <span class="va">paired_data</span><span class="op">$</span><span class="va">b</span>, mu <span class="op">=</span> <span class="fl">0</span>, </span>
+<span>            alternative <span class="op">=</span> <span class="st">"greater"</span>, paired <span class="op">=</span> <span class="cn">TRUE</span>, conf.int <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>            exact <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Wilcoxon signed rank exact test
+
+data:  paired_data$a and paired_data$b
+V = 169, p-value = 0.0008469
+alternative hypothesis: true location shift is greater than 0
+95 percent confidence interval:
+ 9.05  Inf
+sample estimates:
+(pseudo)median 
+        12.075 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/wilcox.test.html">wilcox.test</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">paired_data</span><span class="op">$</span><span class="va">a</span>, y <span class="op">=</span> <span class="va">paired_data</span><span class="op">$</span><span class="va">b</span>, mu <span class="op">=</span> <span class="fl">0</span>, </span>
+<span>            alternative <span class="op">=</span> <span class="st">"greater"</span>, paired <span class="op">=</span> <span class="cn">TRUE</span>, conf.int <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>            exact <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Wilcoxon signed rank test with continuity correction
+
+data:  paired_data$a and paired_data$b
+V = 169, p-value = 0.001549
+alternative hypothesis: true location shift is greater than 0
+95 percent confidence interval:
+ 9.049985      Inf
+sample estimates:
+(pseudo)median 
+      12.12435 </code></pre>
+</div>
+</div>
+<p>As the sample size increases, the exact p-value and confidence interval will become increasingly similar to those obtained using the normal approximation.</p>
+</section><section id="wilcoxon-rank-sum-test-mann-whitney-u-test1-for-two-independent-samples" class="level2" data-number="22.3"><h2 data-number="22.3" class="anchored" data-anchor-id="wilcoxon-rank-sum-test-mann-whitney-u-test1-for-two-independent-samples">
+<span class="header-section-number">22.3</span> Wilcoxon Rank-Sum Test (Mann-Whitney U Test)<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> for Two Independent Samples</h2>
+<p>Wilcoxon rank-sum test is the nonparametric version of the <strong>independent two-sample <span class="math inline">\(t\)</span>-test</strong>. The only requirementof this method is that the two independent samples are random samples.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> The two populations can be <strong>non-normal and follow any distribution</strong>.</p>
+<p>Like Wilcoxon signed-rank test, instead of comparing two means, the Wilcoxon rank-sum test compares two medians (<span class="math inline">\(med\)</span>). The figure below shows two non-normal distributions with different median values.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="infer-nonpar_files/figure-html/shift_dist-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<!-- ------------------------------------------------------------------------- -->
+<section id="idea-of-wilcoxon-rank-sum-test" class="level3" data-number="22.3.1"><h3 data-number="22.3.1" class="anchored" data-anchor-id="idea-of-wilcoxon-rank-sum-test">
+<span class="header-section-number">22.3.1</span> Idea of Wilcoxon Rank-Sum Test</h3>
+<p>The Wilcoxon rank-sum test uses ranks of sample data from two independent populations to test the null hypothesis that two independent samples come from populations with equal medians. Symbolically we write our <span class="math inline">\(H_0\)</span> and <span class="math inline">\(H_1\)</span> as follows.</p>
+<ul>
+<li><span class="math inline">\(H_0: med_1 = med_2\)</span></li>
+<li>
+<span class="math inline">\(H_1: med_1 &gt; med_2\)</span> or <span class="math inline">\(med_1 &lt; med_2\)</span> or <span class="math inline">\(med_1 \ne med_2\)</span>
+</li>
+</ul>
+<p>The idea is that <strong>if the two samples are from the distributions with the same median value, then if we combine the two samples into one big sample, and all sample values are ranked, the high and low ranks should fall evenly between the two samples.</strong></p>
+<p>Check my hand-written example below. If the true medians are such that <span class="math inline">\(med_1 \ne med_2\)</span>, the two distributions (green and yellow) will generally not be closely located.. Suppose we have 5 data values from each population, <span class="math inline">\((x_1, \dots, x_5)\)</span> for the green distribution, and <span class="math inline">\((y_1, \dots, y_5)\)</span> for the yellow distribution. We can combine the <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> samples, and rank all 10 value from <em>smallest to largest</em>. This ranking helps us compare the positions of the green and yellow sample values within the combined dataset, providing insight into the relationship between the two distributions.</p>
+<p>In this example, all <span class="math inline">\(x\)</span> values are smaller than the <span class="math inline">\(y\)</span> values, so so the ranks 1st through 5th belong to the <span class="math inline">\(x\)</span> sample, while the <span class="math inline">\(y\)</span> values are ranked 6th through 10th. When we calculate the rank sum for each group, the <span class="math inline">\(x\)</span> sample has rank sum of 15 and the <span class="math inline">\(y\)</span> sample has rank sum of 40. These two rank sums are significantly different from each other.</p>
+<p>When the two distributions are far apart or their medians differ greatly, the sample values from one population will generally be smaller (or larger) than those from the other, leading to a large difference in rank sums. This difference in rank sums forms the basis for inferring whether the two medians are equal or not. By examining the gap between the two rank sums, we can draw conclusions about the relationship between the medians of the two populations.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="./images/img-infer/rank_sum_nonequal.jpg" class="img-fluid figure-img" width="750"></p>
+</figure>
+</div>
+</div>
+</div>
+<!-- ![](./figures/rank_sum_nonequal.jpg){height=580px width=990px} -->
+<p>What if <span class="math inline">\(med_1 = med_2\)</span>? Now consider the example below, where again we have two populations—green and yellow. Although their shapes differ, they share the same median value, and the two distributions are more or less aligned in the same position. As a result, the <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> samples generated from these two populations will have fairly similar values.</p>
+<p>When we combine the two samples and rank the data values from smallest to largest, the ranks are interspersed between the two samples. Specifically, the <span class="math inline">\(x\)</span> sample has ranks 1, 3, 6, 8, and 10, while the <span class="math inline">\(y\)</span> sample has ranks 2, 4, 5, 7, and 9. In this scenario, a data value from one population is just as likely to be greater than or smaller than a data value from the other population.</p>
+<p>When we calculate the rank sum for each group, the two rank sums will not differ significantly. The Wilcoxon rank-sum test uses a threshold to determine how large the difference between the two rank sums needs to be in order to conclude that there is sufficient evidence to claim the two medians are different. If the rank sums are close, as in this example, it suggests that the medians are likely equal. Conversely, a large gap in rank sums would indicate a difference in medians.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="./images/img-infer/rank_sum_equal.jpg" class="img-fluid figure-img" width="803"></p>
+</figure>
+</div>
+</div>
+</div>
+<!-- ![](./figures/rank_sum_equal.jpg){height=580px width=990px} -->
+<p>The procedures for conducting the Wilcoxon rank-sum test differ slightly depending on whether the sample size is small or large. For large samples, the normal approximation is used. While the specific details of the method can be complex, understanding the underlying concept is more important. In practice, the Wilcoxon rank-sum test is typically performed using statistical software, which handles the computations for both small and large sample scenarios.</p>
+<ul>
+<li>
+<p>Procedure of Wilcoxon Rank-Sum Test When <span class="math inline">\(\small n_1 \le 10\)</span> and <span class="math inline">\(\small n_2 \le 10\)</span></p>
+<ul>
+<li><p>Step 1: <strong>Combine the two samples into one big sample</strong>.</p></li>
+<li><p>Step 2: <strong>Find the test statistic, <span class="math inline">\(T_{test}\)</span>, the sum of the ranks for the observations from population 1</strong>.</p></li>
+<li><p>Step 3: <strong>Find the critical values, <span class="math inline">\(T_U\)</span> and <span class="math inline">\(T_L\)</span></strong>.</p></li>
+<li>
+<p>Step 4: <strong>Decision Rule</strong></p>
+<ul>
+<li><p><strong><span class="math inline">\(H_1: med_1 &gt; med_2\)</span>: Reject <span class="math inline">\(H_0\)</span> if <span class="math inline">\(T_{test} &gt; T_U\)</span></strong></p></li>
+<li><p><strong><span class="math inline">\(H_1: med_1 &lt; med_2\)</span>: Reject <span class="math inline">\(H_0\)</span> if <span class="math inline">\(T_{test} &lt; T_L\)</span></strong></p></li>
+<li><p><strong><span class="math inline">\(H_1: med_1 \ne med_2\)</span>: Reject <span class="math inline">\(H_0\)</span> if <span class="math inline">\(T_{test} &lt; T_L\)</span> or <span class="math inline">\(T_{test} &gt; T_U\)</span></strong></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<!-- ## Example --><ul>
+<li>
+<p>Procedure of Wilcoxon rank-sum test When <span class="math inline">\(\small n_1 &gt; 10\)</span> and <span class="math inline">\(\small n_2 &gt; 10\)</span></p>
+<ul>
+<li><p>Step 1: <strong>Combine the two samples into one big sample</strong>.</p></li>
+<li><p>Step 2: <strong>Find the test statistic, <span class="math inline">\(z_{test} = \frac{T - \mu_T}{\sigma_T}\)</span></strong>, where <span class="math inline">\(R\)</span> is the sum of the ranks for the observations from population 1, <span class="math inline">\(\mu_T = \frac{n_1(n_1+n_2+1)}{2}\)</span>, <span class="math inline">\(\sigma_T = \sqrt{\frac{n_1n_2(n_1+n_2+1)}{12}}\)</span>.</p></li>
+<li><p>Step 3: <strong>Find the critical value</strong> <span class="math inline">\(z_{\alpha}\)</span> (one-tailed) or <span class="math inline">\(z_{\alpha/2}\)</span> (two-tailed).</p></li>
+<li>
+<p>Step 4: <strong>Decision Rule</strong></p>
+<ul>
+<li><p><strong><span class="math inline">\(H_1: med_1 &gt; med_2\)</span>: Reject <span class="math inline">\(H_0\)</span> if <span class="math inline">\(z_{test} \ge z_{\alpha}\)</span></strong></p></li>
+<li><p><strong><span class="math inline">\(H_1: med_1 &lt; med_2\)</span>: Reject <span class="math inline">\(H_0\)</span> if <span class="math inline">\(z_{test} \le -z_{\alpha}\)</span></strong></p></li>
+<li><p><strong><span class="math inline">\(H_1: med_1 \ne med_2\)</span>: Reject <span class="math inline">\(H_0\)</span> if <span class="math inline">\(|z_{test}| \ge z_{\alpha/2}\)</span></strong></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul></section></section><section id="example-of-wilcoxon-rank-sum-test-example-6.5-of-ott" class="level2" data-number="22.4"><h2 data-number="22.4" class="anchored" data-anchor-id="example-of-wilcoxon-rank-sum-test-example-6.5-of-ott">
+<span class="header-section-number">22.4</span> Example of Wilcoxon Rank-Sum Test (Example 6.5 of OTT)</h2>
+<p>Many states are considering lowering the blood-alcohol level at which a driver is designated as driving under the influence (DUI) of alcohol. An investigator for a legislative committee designed the following test to study the effect of alcohol on reaction time. Ten participants consumed a specified amount of alcohol. Another group of 10 participants consumed the same amount of a nonalcoholic drink, a placebo. The two groups did not know whether they were receiving alcohol or the placebo. The 20 participants’ average reaction times (in seconds) to a series of simulated driving situations are saved in <code>two_sample_data</code> in R shown below. Does it appear that alcohol consumption increases reaction time?</p>
+<!-- ### Example 6.5: Wilcoxon Rank-Sum Test in R -->
+<!-- - An investigator is interested to study the effect of alcohol on reaction time. The following data is collected on the reaction time to an instruction. -->
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>   Placebo Alcohol
+1     0.90    1.46
+2     0.37    1.45
+3     1.63    1.76
+4     0.83    1.44
+5     0.95    1.11
+6     0.78    3.07
+7     0.86    0.98
+8     0.61    1.27
+9     0.38    2.56
+10    1.97    1.32</code></pre>
+</div>
+</div>
+<!-- ### Example 6.5:  Wilcoxon Rank-Sum Test in R -->
+<!-- \tiny -->
+<p>To perform the Wilcoxon rank-sum test, we again use the function <code><a href="https://rdrr.io/r/stats/wilcox.test.html">wilcox.test()</a></code>. This time <code>paired = FALSE</code> should be used because we are dealing with two independent samples. In this example, the sample size is 10, so we can consider using the small-size procedure. In R, we set <code>exact = TRUE</code>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/wilcox.test.html">wilcox.test</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">two_sample_data</span><span class="op">$</span><span class="va">Placebo</span>, y <span class="op">=</span> <span class="va">two_sample_data</span><span class="op">$</span><span class="va">Alcohol</span>, mu <span class="op">=</span> <span class="fl">0</span>, </span>
+<span>            alternative <span class="op">=</span> <span class="st">"less"</span>, paired <span class="op">=</span> <span class="cn">FALSE</span>, conf.int <span class="op">=</span> <span class="cn">TRUE</span>, </span>
+<span>            exact <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Wilcoxon rank sum exact test
+
+data:  two_sample_data$Placebo and two_sample_data$Alcohol
+W = 15, p-value = 0.003421
+alternative hypothesis: true location shift is less than 0
+95 percent confidence interval:
+  -Inf -0.37
+sample estimates:
+difference in location 
+                 -0.61 </code></pre>
+</div>
+</div>
+<p>We could still use the normal approximation that is mainly for studies with a large sample size, like the the following code chunk is doing. The two results are different, and since the sample size is small, the first approach is preferred.</p>
+<div class="cell">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/wilcox.test.html">wilcox.test</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">two_sample_data</span><span class="op">$</span><span class="va">Placebo</span>, y <span class="op">=</span> <span class="va">two_sample_data</span><span class="op">$</span><span class="va">Alcohol</span>, mu <span class="op">=</span> <span class="fl">0</span>, </span>
+<span>            alternative <span class="op">=</span> <span class="st">"less"</span>, paired <span class="op">=</span> <span class="cn">FALSE</span>, conf.int <span class="op">=</span> <span class="cn">TRUE</span>, </span>
+<span>            exact <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Wilcoxon rank sum test with continuity correction
+
+data:  two_sample_data$Placebo and two_sample_data$Alcohol
+W = 15, p-value = 0.004554
+alternative hypothesis: true location shift is less than 0
+95 percent confidence interval:
+       -Inf -0.3699702
+sample estimates:
+difference in location 
+            -0.6100186 </code></pre>
+</div>
+</div>
+</section><section id="kruskal-wallis-test-for-three-or-more-samples" class="level2" data-number="22.5"><h2 data-number="22.5" class="anchored" data-anchor-id="kruskal-wallis-test-for-three-or-more-samples">
+<span class="header-section-number">22.5</span> Kruskal-Wallis Test for Three or More Samples</h2>
+<p>Kruskal-Wallis test is for comparing three or more samples. We discuss it in <a href="model-anova.html" class="quarto-xref"><span>Chapter 23</span></a>.</p>
 
 
-<p>Coming soon.</p>
-
-
-
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+</section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
+<ol>
+<li id="fn1"><p>Wilcoxon rank-sum test and Mann-Whitney U test are equivalent. Although the two methods construct a different test statistic, they both apply to the same situations and always lead to the same conclusions.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>When either one or both samples have 10 or fewer values, some extra steps are needed. We don’t need to worry about that at the moment.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -409,6 +902,150 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
@@ -797,11 +1434,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
-      <a href="./infer-bayes.html" class="pagination-link" aria-label="Bayesian Inference">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Bayesian Inference</span></span>
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./infer-bayes.html" class="pagination-link" aria-label="Bayesian Thinking and Inference">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Bayesian Thinking and Inference</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
@@ -811,28 +1446,25 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<footer class="footer">
-  <div class="nav-footer">
+<footer class="footer"><div class="nav-footer">
     <div class="nav-footer-left">
 <p>Copyright 2024, Dr.&nbsp;Cheng-Han Yu</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/infer-nonpar.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/infer-nonpar.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
-    <li class="nav-item compact">
+<li class="nav-item compact">
     <a class="nav-link active" href="https://github.com/chenghanyustats/introstatsbook" aria-current="page">
       <i class="bi bi-github" role="img">
 </i> 
     </a>
   </li>  
 </ul>
-    </div>
+</div>
   </div>
 </footer>
-
-
 
 
 </body></html>

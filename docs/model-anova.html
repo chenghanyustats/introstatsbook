@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.4.555">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta name="description" content="An comprehensive introductory statistical data science book.">
-<title>Introduction to Statistics - 22&nbsp; Analysis of Variance</title>
+<meta name="description" content="A comprehensive introductory statistical data science book.">
+<title>Introduction to Statistics - 23&nbsp; Analysis of Variance</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -68,10 +68,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -122,7 +124,7 @@ const typesetMath = (el) => {
 window.Quarto = {
   typesetMath
 };
-</script>
+</script><link rel="stylesheet" href="custom.css">
 </head>
 <body class="nav-sidebar floating">
 
@@ -131,7 +133,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./model.html">Statistical Models</a></li><li class="breadcrumb-item"><a href="./model-anova.html"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./model.html">Statistical Models</a></li><li class="breadcrumb-item"><a href="./model-anova.html"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -143,8 +145,33 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Introduction to Statistics</a> 
-        <div class="sidebar-tools-main">
+        <div class="sidebar-tools-main tools-wide">
     <a href="https://github.com/chenghanyustats/introstatsbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="./Introduction-to-Statistics.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+    <div class="dropdown">
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Share"><i class="bi bi-share"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+<li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=%7Curl%7C">
+              <i class="bi bi-bi-twitter pe-1"></i>
+            Twitter
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=%7Curl%7C">
+              <i class="bi bi-bi-facebook pe-1"></i>
+            Facebook
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=%7Curl%7C">
+              <i class="bi bi-bi-linkedin pe-1"></i>
+            LinkedIn
+            </a>
+          </li>
+      </ul>
+</div>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
     </div>
       </div>
@@ -319,14 +346,20 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./infer-p.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">The Issues of <span class="math inline">\(p\)</span>-value and Statistical Significance</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./infer-bayes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Bayesian Thinking and Inference</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Bayesian Thinking and Inference</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-nonpar.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Nonparametric Methods</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Nonparametric Tests</span></span></a>
   </div>
 </li>
       </ul>
@@ -343,31 +376,31 @@ window.Quarto = {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-anova.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-reg.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Linear Regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Linear Regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-logistic.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Logistic Regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Logistic Regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-bayes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-survival.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Survival Analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Survival Analysis</span></span></a>
   </div>
 </li>
       </ul>
@@ -407,18 +440,19 @@ window.Quarto = {
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#anova-rationale" id="toc-anova-rationale" class="nav-link active" data-scroll-target="#anova-rationale"><span class="header-section-number">22.1</span> ANOVA Rationale</a></li>
-  <li><a href="#anova-procedures" id="toc-anova-procedures" class="nav-link" data-scroll-target="#anova-procedures"><span class="header-section-number">22.2</span> ANOVA Procedures</a></li>
-  <li><a href="#anova-example" id="toc-anova-example" class="nav-link" data-scroll-target="#anova-example"><span class="header-section-number">22.3</span> ANOVA Example</a></li>
-  <li><a href="#unequal-variances" id="toc-unequal-variances" class="nav-link" data-scroll-target="#unequal-variances"><span class="header-section-number">22.4</span> Unequal Variances</a></li>
-  <li><a href="#anova-mathematical-model" id="toc-anova-mathematical-model" class="nav-link" data-scroll-target="#anova-mathematical-model"><span class="header-section-number">22.5</span> ANOVA Mathematical Model</a></li>
-  <li><a href="#pairwise-comparison" id="toc-pairwise-comparison" class="nav-link" data-scroll-target="#pairwise-comparison"><span class="header-section-number">22.6</span> Pairwise Comparison</a></li>
-  <li><a href="#two-way-anova" id="toc-two-way-anova" class="nav-link" data-scroll-target="#two-way-anova"><span class="header-section-number">22.7</span> Two-Way ANOVA</a></li>
+<li><a href="#anova-rationale" id="toc-anova-rationale" class="nav-link active" data-scroll-target="#anova-rationale"><span class="header-section-number">23.1</span> ANOVA Rationale</a></li>
+  <li><a href="#anova-procedures" id="toc-anova-procedures" class="nav-link" data-scroll-target="#anova-procedures"><span class="header-section-number">23.2</span> ANOVA Procedures</a></li>
+  <li><a href="#anova-example" id="toc-anova-example" class="nav-link" data-scroll-target="#anova-example"><span class="header-section-number">23.3</span> ANOVA Example</a></li>
+  <li><a href="#unequal-variances" id="toc-unequal-variances" class="nav-link" data-scroll-target="#unequal-variances"><span class="header-section-number">23.4</span> Unequal Variances</a></li>
+  <li><a href="#anova-mathematical-model" id="toc-anova-mathematical-model" class="nav-link" data-scroll-target="#anova-mathematical-model"><span class="header-section-number">23.5</span> ANOVA Mathematical Model</a></li>
+  <li><a href="#pairwise-comparison" id="toc-pairwise-comparison" class="nav-link" data-scroll-target="#pairwise-comparison"><span class="header-section-number">23.6</span> Pairwise Comparison</a></li>
+  <li><a href="#nonparametric-approach-kruskal-wallis-test" id="toc-nonparametric-approach-kruskal-wallis-test" class="nav-link" data-scroll-target="#nonparametric-approach-kruskal-wallis-test"><span class="header-section-number">23.7</span> Nonparametric Approach: Kruskal-Wallis Test</a></li>
+  <li><a href="#two-way-anova" id="toc-two-way-anova" class="nav-link" data-scroll-target="#two-way-anova"><span class="header-section-number">23.8</span> Two-Way ANOVA</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/model-anova.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./model.html">Statistical Models</a></li><li class="breadcrumb-item"><a href="./model-anova.html"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></a></li></ol></nav><div class="quarto-title">
-<h1 class="title"><span id="sec-model-anova" class="quarto-section-identifier"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></span></h1>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./model.html">Statistical Models</a></li><li class="breadcrumb-item"><a href="./model-anova.html"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></a></li></ol></nav><div class="quarto-title">
+<h1 class="title"><span id="sec-model-anova" class="quarto-section-identifier"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></span></h1>
 </div>
 
 
@@ -463,8 +497,8 @@ window.Quarto = {
 </div>
 <!-- ------------------------------------------------------------------------ -->
 <p>In both cases, four means are compared. The two-sample <span class="math inline">\(z\)</span> or <span class="math inline">\(t\)</span> test cannot be used anymore. Our solution is the <strong>analysis of variance</strong>, or <strong>ANOVA</strong>.</p>
-<section id="anova-rationale" class="level2" data-number="22.1"><h2 data-number="22.1" class="anchored" data-anchor-id="anova-rationale">
-<span class="header-section-number">22.1</span> ANOVA Rationale</h2>
+<section id="anova-rationale" class="level2" data-number="23.1"><h2 data-number="23.1" class="anchored" data-anchor-id="anova-rationale">
+<span class="header-section-number">23.1</span> ANOVA Rationale</h2>
 <p><span style="color:blue"> <strong>One-Way Analysis of Variance</strong> </span></p>
 <p>A <strong>factor</strong> (treatment) is a property or characteristic (categorical variable) that allows us to <em>distinguish the different populations from one another</em>. In fact, when we compare two population means, the two samples are from the populations separated by the categories of a factor. For example, we have gender as a factor that separates the human population into male and female populations, then we compare their mean salary. In our previous examples, <em>type of device</em> and <em>treatment of trees</em> are factors.</p>
 <p>One-way ANOVA examines the effect of single <em>categorical variable</em> on the <em>mean of a numerical variable</em>. The ANOVA model is one-way because there is only one factor being considered. If two factors are examined to see how they affect the mean of a numerical variable, the model is called two-way ANOVA. The numerical variable in ANOVA or regression model (<a href="model-reg.html" class="quarto-xref"><span>Chapter 23</span></a>) is called the <strong>response variable</strong> because we want to see how the variable responses to the changes of factors or other variables.</p>
@@ -511,7 +545,7 @@ Data and Math Notation for ANOVA
 </div>
 <p><span style="color:red"> <strong><em>Rationale</em></strong> </span></p>
 <p>The section is quite important because we discuss in detail why we use variance size to test whether or not population means are equal.</p>
-<p>Suppose we have two data sets Data 1 and Data 2, and both have three groups to be compared. Interestingly, Data 1 and Data 2 have the same group sample means <span class="math inline">\(\bar{y}_1\)</span>, <span class="math inline">\(\bar{y}_2\)</span> and <span class="math inline">\(\bar{y}_3\)</span> denoted as red dots in <a href="#fig-boxplots-var" class="quarto-xref">Figure&nbsp;<span>22.1</span></a>. However, they differ with regards to the variance within each group. Data 1 has small variance within samples, while Data 2 has large variance within samples. Within groups, the data points in Data 1 are quite tight and close each other, and therefore they are all close to their sample mean. On the contrary, the data points in Data 2 are quite distant each other, even they are in the same group. Such distribution pattern tells us that the populations from which the samples of Data 1 are drawn have small variance <span class="math inline">\(\sigma^2\)</span>.</p>
+<p>Suppose we have two data sets Data 1 and Data 2, and both have three groups to be compared. Interestingly, Data 1 and Data 2 have the same group sample means <span class="math inline">\(\bar{y}_1\)</span>, <span class="math inline">\(\bar{y}_2\)</span> and <span class="math inline">\(\bar{y}_3\)</span> denoted as red dots in <a href="#fig-boxplots-var" class="quarto-xref">Figure&nbsp;<span>23.1</span></a>. However, they differ with regards to the variance within each group. Data 1 has small variance within samples, while Data 2 has large variance within samples. Within groups, the data points in Data 1 are quite tight and close each other, and therefore they are all close to their sample mean. On the contrary, the data points in Data 2 are quite distant each other, even they are in the same group. Such distribution pattern tells us that the populations from which the samples of Data 1 are drawn have small variance <span class="math inline">\(\sigma^2\)</span>.</p>
 <p>Before we go into more details, let’s see if you have a great intuition.</p>
 <div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -533,7 +567,7 @@ For which data do you feel more confident in saying the population means <span c
 <img src="model-anova_files/figure-html/fig-boxplots-var-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-boxplots-var-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;22.1: Boxplots illustrating the variance within samples.
+Figure&nbsp;23.1: Boxplots illustrating the variance within samples.
 </figcaption></figure>
 </div>
 </div>
@@ -542,8 +576,8 @@ Figure&nbsp;22.1: Boxplots illustrating the variance within samples.
 <!-- ## For which data do you feel more confident in saying the population means $\mu_1$, $\mu_2$ and $\mu_3$ are not all the same? -->
 <!-- ::: -->
 <p>If your answer is Data 1, congratulations you are correct!</p>
-<p>The difference in sample means in Data 1 is more likely due to the true difference in population means (<span class="math inline">\(\mu_1, \mu_2, \mu_3\)</span> not all the same). Because of the small variation within groups, in Data 1 a value drawn from group 1 is very unlikely to be drawn from another group because with the normality assumption, the chance to be drawn from another group is very tiny. <a href="#fig-normal-var" class="quarto-xref">Figure&nbsp;<span>22.2</span></a> clearly illustrates this idea. The samples of Data 1 are so well-separated that we are more confident to say they are drawn from three well-separated populations that are not overlapped each other, and have distinct population means <span class="math inline">\(\mu_1, \mu_2\)</span>, and <span class="math inline">\(\mu_3\)</span>.</p>
-<p>If the variance within groups is large, as shown at the bottom of <a href="#fig-normal-var" class="quarto-xref">Figure&nbsp;<span>22.2</span></a>, all three samples are mixed up together, as if they are all from the common population, even though they are in fact are from three distinct populations <span class="math inline">\(N(\mu_1, \sigma^2), N(\mu_2, \sigma^2), N(\mu_3, \sigma^2)\)</span> and <span class="math inline">\(\mu_1 \ne \mu_2 \ne \mu_3\)</span>. Note that the three populations still have their own distinct population mean which is actually identical to the mean with small variance, but it is hard for us to learn this fact from their mixed random samples. Because the three samples are indistinguishable, we don’t have strong evidence to conclude that their corresponding population has its own population mean, and tend to conclude that the three samples are from a common population <span class="math inline">\(N(\mu, \sigma^2)\)</span>.</p>
+<p>The difference in sample means in Data 1 is more likely due to the true difference in population means (<span class="math inline">\(\mu_1, \mu_2, \mu_3\)</span> not all the same). Because of the small variation within groups, in Data 1 a value drawn from group 1 is very unlikely to be drawn from another group because with the normality assumption, the chance to be drawn from another group is very tiny. <a href="#fig-normal-var" class="quarto-xref">Figure&nbsp;<span>23.2</span></a> clearly illustrates this idea. The samples of Data 1 are so well-separated that we are more confident to say they are drawn from three well-separated populations that are not overlapped each other, and have distinct population means <span class="math inline">\(\mu_1, \mu_2\)</span>, and <span class="math inline">\(\mu_3\)</span>.</p>
+<p>If the variance within groups is large, as shown at the bottom of <a href="#fig-normal-var" class="quarto-xref">Figure&nbsp;<span>23.2</span></a>, all three samples are mixed up together, as if they are all from the common population, even though they are in fact are from three distinct populations <span class="math inline">\(N(\mu_1, \sigma^2), N(\mu_2, \sigma^2), N(\mu_3, \sigma^2)\)</span> and <span class="math inline">\(\mu_1 \ne \mu_2 \ne \mu_3\)</span>. Note that the three populations still have their own distinct population mean which is actually identical to the mean with small variance, but it is hard for us to learn this fact from their mixed random samples. Because the three samples are indistinguishable, we don’t have strong evidence to conclude that their corresponding population has its own population mean, and tend to conclude that the three samples are from a common population <span class="math inline">\(N(\mu, \sigma^2)\)</span>.</p>
 <!-- Therefore, the blue points can only be the draws from blue normal distribution,  -->
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -552,12 +586,12 @@ Figure&nbsp;22.1: Boxplots illustrating the variance within samples.
 <img src="model-anova_files/figure-html/fig-normal-var-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-normal-var-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;22.2: Populations with small and large variance within samples.
+Figure&nbsp;23.2: Populations with small and large variance within samples.
 </figcaption></figure>
 </div>
 </div>
 </div>
-<p>The three samples in <a href="#fig-normal-one" class="quarto-xref">Figure&nbsp;<span>22.3</span></a> are from a common population <span class="math inline">\(N(\mu, \sigma^2)\)</span>. The samples look pretty similar to the samples with large variance in <a href="#fig-normal-var" class="quarto-xref">Figure&nbsp;<span>22.2</span></a>. In other words, either one common population or three populations with large variance can produce quite similar samples. With the samples only, we cannot tell which data generating mechanism is the true one generating such data.</p>
+<p>The three samples in <a href="#fig-normal-one" class="quarto-xref">Figure&nbsp;<span>23.3</span></a> are from a common population <span class="math inline">\(N(\mu, \sigma^2)\)</span>. The samples look pretty similar to the samples with large variance in <a href="#fig-normal-var" class="quarto-xref">Figure&nbsp;<span>23.2</span></a>. In other words, either one common population or three populations with large variance can produce quite similar samples. With the samples only, we cannot tell which data generating mechanism is the true one generating such data.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-normal-one" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
@@ -565,7 +599,7 @@ Figure&nbsp;22.2: Populations with small and large variance within samples.
 <img src="model-anova_files/figure-html/fig-normal-one-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-normal-one-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;22.3: Three samples drawn from a common normal population.
+Figure&nbsp;23.3: Three samples drawn from a common normal population.
 </figcaption></figure>
 </div>
 </div>
@@ -589,7 +623,7 @@ Note
 <p><span style="color:blue"> <strong>Variation Between Samples &amp; Variation Within Samples</strong> </span></p>
 <p>There are two types of variation we need to consider in order to determine whether population means are identical. They are <strong>variation between samples</strong> and <strong>variation within samples</strong>.</p>
 <p>We have discussed the variation within samples or variance within groups, which measures the variability of data points in each group. This is actually the sample point estimate of the population variance <span class="math inline">\(\sigma^2\)</span> because the data points in the <span class="math inline">\(i\)</span>-th group are assumed from the <span class="math inline">\(i\)</span>-th population <span class="math inline">\(N(\mu_i, \sigma^2).\)</span> There are <span class="math inline">\(k\)</span> sample variance, one for each group. Later, we will learn how to combine them to get one single variance within samples as an estimate of <span class="math inline">\(\sigma^2\)</span>.</p>
-<p>Variation between samples, on the other hand, measures variability of sample means. <em>The farther away from each other the sample means are, the larger variation between samples</em>. In our Data 1 and Data 2 example, their variation between samples are very close because the relative location of their sample means are basically the same. <a href="#fig-boxplot-bw" class="quarto-xref">Figure&nbsp;<span>22.4</span></a> illustrating the variance between samples. Data 3 and 4 have the same variance within samples, but Data 3 have small variation between samples and Data 4 have large variation between samples. Clearly, the sample means in Data 4 are farther away from each other, comparing to Data 3.</p>
+<p>Variation between samples, on the other hand, measures variability of sample means. <em>The farther away from each other the sample means are, the larger variation between samples</em>. In our Data 1 and Data 2 example, their variation between samples are very close because the relative location of their sample means are basically the same. <a href="#fig-boxplot-bw" class="quarto-xref">Figure&nbsp;<span>23.4</span></a> illustrating the variance between samples. Data 3 and 4 have the same variance within samples, but Data 3 have small variation between samples and Data 4 have large variation between samples. Clearly, the sample means in Data 4 are farther away from each other, comparing to Data 3.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-boxplot-bw" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
@@ -597,7 +631,7 @@ Note
 <img src="model-anova_files/figure-html/fig-boxplot-bw-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-boxplot-bw-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;22.4: Boxplots illustrating the variance between samples.
+Figure&nbsp;23.4: Boxplots illustrating the variance between samples.
 </figcaption></figure>
 </div>
 </div>
@@ -630,8 +664,8 @@ For which data do you feel more confident in saying the population means <span c
 <!-- # #| fig-cap: Illustration of small and large variance within samples -->
 <!-- # knitr::include_graphics("./images/img-model/figure8-1.png") -->
 <!-- # ``` -->
-</section><section id="anova-procedures" class="level2" data-number="22.2"><h2 data-number="22.2" class="anchored" data-anchor-id="anova-procedures">
-<span class="header-section-number">22.2</span> ANOVA Procedures</h2>
+</section><section id="anova-procedures" class="level2" data-number="23.2"><h2 data-number="23.2" class="anchored" data-anchor-id="anova-procedures">
+<span class="header-section-number">23.2</span> ANOVA Procedures</h2>
 <p>ANOVA is usually done by providing the ANOVA table below.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -728,8 +762,8 @@ For which data do you feel more confident in saying the population means <span c
 </div>
 </div>
 </div>
-</section><section id="anova-example" class="level2" data-number="22.3"><h2 data-number="22.3" class="anchored" data-anchor-id="anova-example">
-<span class="header-section-number">22.3</span> ANOVA Example</h2>
+</section><section id="anova-example" class="level2" data-number="23.3"><h2 data-number="23.3" class="anchored" data-anchor-id="anova-example">
+<span class="header-section-number">23.3</span> ANOVA Example</h2>
 <p>We hypothesize that a nutrient called “isoflavones” varies among three types of food: (1) cereals and snacks, (2) energy bars and (3) veggie burgers.</p>
 <div class="columns">
 <div class="column" style="width:32%;">
@@ -821,7 +855,7 @@ For which data do you feel more confident in saying the population means <span c
 <img src="model-anova_files/figure-html/fig-boxplot-isoflavone-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-boxplot-isoflavone-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;22.5: Boxplot of the Isoflavone Content in 3 Types of Food
+Figure&nbsp;23.5: Boxplot of the Isoflavone Content in 3 Types of Food
 </figcaption></figure>
 </div>
 </div>
@@ -835,7 +869,7 @@ Figure&nbsp;22.5: Boxplot of the Isoflavone Content in 3 Types of Food
 <li>Data are generated from a normal distribution for each type of food.</li>
 </ul>
 <p>Well we did not learn to test the equality of more than two population variances, but believe me I did the test, and the three variances are not significantly different from each other. <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Even the the variances are not all equal, the ANOVA performance will not be worse much. Equality of variances is not a strict requirement. George Box of UW-Madison showed that as long as the sample sizes are (nearly) equal, the largest variance can be up to 9 times the smallest one and the result of ANOVA will continue to be reliable. A general rule of thumb for equal variances is to compare the smallest and largest sample standard deviations. This is much like the rule of thumb for equal variances for the test for independent means. If the ratio of these two sample standard deviations falls within 0.5 to 2, then it may be that the assumption is not violated.</p>
-<p>To check the normality, we can check their QQ plots. <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> <a href="#fig-qqplots" class="quarto-xref">Figure&nbsp;<span>22.6</span></a> shows that there is no obvious non-normal pattern although two data points are outside the blue 95% confidence region. The normality is not very restrictive as well. As long as the distribution is not very skewed, ANOVA works pretty well.</p>
+<p>To check the normality, we can check their QQ plots. <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> <a href="#fig-qqplots" class="quarto-xref">Figure&nbsp;<span>23.6</span></a> shows that there is no obvious non-normal pattern although two data points are outside the blue 95% confidence region. The normality is not very restrictive as well. As long as the distribution is not very skewed, ANOVA works pretty well.</p>
 <p>We say the ANOVA <span class="math inline">\(F\)</span> test is <strong>robust</strong> to the violation of the two assumptions.</p>
 <!-- https://cran.r-project.org/web/packages/onewaytests/index.html -->
 <!-- Shapiro-Wilk’s method is widely recommended for normality test and it provides better power than K-S. It is based on the correlation between the data and the corresponding normal scores. -->
@@ -847,7 +881,7 @@ Figure&nbsp;22.5: Boxplot of the Isoflavone Content in 3 Types of Food
 <img src="model-anova_files/figure-html/fig-qqplots-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-qqplots-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;22.6: QQ plots for each type of food
+Figure&nbsp;23.6: QQ plots for each type of food
 </figcaption></figure>
 </div>
 </div>
@@ -910,17 +944,20 @@ Residuals   12  437.6   36.47               </code></pre>
 </div>
 </div>
 </div>
-</section><section id="unequal-variances" class="level2" data-number="22.4"><h2 data-number="22.4" class="anchored" data-anchor-id="unequal-variances">
-<span class="header-section-number">22.4</span> Unequal Variances</h2>
+</section><section id="unequal-variances" class="level2" data-number="23.4"><h2 data-number="23.4" class="anchored" data-anchor-id="unequal-variances">
+<span class="header-section-number">23.4</span> Unequal Variances</h2>
 <p>To be added.</p>
-</section><section id="anova-mathematical-model" class="level2" data-number="22.5"><h2 data-number="22.5" class="anchored" data-anchor-id="anova-mathematical-model">
-<span class="header-section-number">22.5</span> ANOVA Mathematical Model</h2>
+</section><section id="anova-mathematical-model" class="level2" data-number="23.5"><h2 data-number="23.5" class="anchored" data-anchor-id="anova-mathematical-model">
+<span class="header-section-number">23.5</span> ANOVA Mathematical Model</h2>
 <p>To be added.</p>
-</section><section id="pairwise-comparison" class="level2" data-number="22.6"><h2 data-number="22.6" class="anchored" data-anchor-id="pairwise-comparison">
-<span class="header-section-number">22.6</span> Pairwise Comparison</h2>
+</section><section id="pairwise-comparison" class="level2" data-number="23.6"><h2 data-number="23.6" class="anchored" data-anchor-id="pairwise-comparison">
+<span class="header-section-number">23.6</span> Pairwise Comparison</h2>
 <p>To be added.</p>
-</section><section id="two-way-anova" class="level2" data-number="22.7"><h2 data-number="22.7" class="anchored" data-anchor-id="two-way-anova">
-<span class="header-section-number">22.7</span> Two-Way ANOVA</h2>
+</section><section id="nonparametric-approach-kruskal-wallis-test" class="level2" data-number="23.7"><h2 data-number="23.7" class="anchored" data-anchor-id="nonparametric-approach-kruskal-wallis-test">
+<span class="header-section-number">23.7</span> Nonparametric Approach: Kruskal-Wallis Test</h2>
+<p>To be added.</p>
+</section><section id="two-way-anova" class="level2" data-number="23.8"><h2 data-number="23.8" class="anchored" data-anchor-id="two-way-anova">
+<span class="header-section-number">23.8</span> Two-Way ANOVA</h2>
 <p>To be added.</p>
 
 
@@ -948,6 +985,150 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
@@ -1343,7 +1524,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
   <div class="nav-page nav-page-next">
       <a href="./model-reg.html" class="pagination-link" aria-label="Linear Regression">
-        <span class="nav-page-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Linear Regression</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Linear Regression</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
