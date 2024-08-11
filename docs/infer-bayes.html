@@ -411,27 +411,20 @@ window.Quarto = {
   <li><a href="#prior-information-and-empirical-evidence" id="toc-prior-information-and-empirical-evidence" class="nav-link" data-scroll-target="#prior-information-and-empirical-evidence"><span class="header-section-number">21.3</span> Prior Information and Empirical Evidence</a></li>
   <li><a href="#asking-different-questions" id="toc-asking-different-questions" class="nav-link" data-scroll-target="#asking-different-questions"><span class="header-section-number">21.4</span> Asking Different Questions</a></li>
   <li>
-<a href="#bayesian-model" id="toc-bayesian-model" class="nav-link" data-scroll-target="#bayesian-model"><span class="header-section-number">21.5</span> Bayesian Model</a>
+<a href="#bayesian-inference" id="toc-bayesian-inference" class="nav-link" data-scroll-target="#bayesian-inference"><span class="header-section-number">21.5</span> Bayesian Inference</a>
   <ul class="collapse">
 <li><a href="#bayesian-updating-rule" id="toc-bayesian-updating-rule" class="nav-link" data-scroll-target="#bayesian-updating-rule"><span class="header-section-number">21.5.1</span> Bayesian Updating Rule</a></li>
   <li><a href="#likelihood-function" id="toc-likelihood-function" class="nav-link" data-scroll-target="#likelihood-function"><span class="header-section-number">21.5.2</span> Likelihood Function</a></li>
-  <li><a href="#bayes-rule" id="toc-bayes-rule" class="nav-link" data-scroll-target="#bayes-rule"><span class="header-section-number">21.5.3</span> Bayes’ Rule</a></li>
+  <li><a href="#bayes-rule-for-posterior" id="toc-bayes-rule-for-posterior" class="nav-link" data-scroll-target="#bayes-rule-for-posterior"><span class="header-section-number">21.5.3</span> Bayes’ Rule for Posterior</a></li>
   </ul>
 </li>
   <li>
-<a href="#to-be-bayesian-is-to-rest-all-knowledge-upon-the-language-of-conditional-probabilities." id="toc-to-be-bayesian-is-to-rest-all-knowledge-upon-the-language-of-conditional-probabilities." class="nav-link" data-scroll-target="#to-be-bayesian-is-to-rest-all-knowledge-upon-the-language-of-conditional-probabilities."><span class="header-section-number">21.6</span> To be Bayesian is to rest all knowledge upon the language of conditional probabilities.</a>
+<a href="#bayesian-inference-for-random-variables" id="toc-bayesian-inference-for-random-variables" class="nav-link" data-scroll-target="#bayesian-inference-for-random-variables"><span class="header-section-number">21.6</span> Bayesian Inference for Random Variables</a>
   <ul class="collapse">
-<li><a href="#posterior" id="toc-posterior" class="nav-link" data-scroll-target="#posterior"><span class="header-section-number">21.6.1</span> Posterior</a></li>
+<li><a href="#motivation-example" id="toc-motivation-example" class="nav-link" data-scroll-target="#motivation-example"><span class="header-section-number">21.6.1</span> Motivation Example</a></li>
   </ul>
 </li>
-  <li>
-<a href="#bayesian-inference-for-random-variables" id="toc-bayesian-inference-for-random-variables" class="nav-link" data-scroll-target="#bayesian-inference-for-random-variables"><span class="header-section-number">21.7</span> Bayesian Inference for Random Variables</a>
-  <ul class="collapse">
-<li><a href="#proportionality" id="toc-proportionality" class="nav-link" data-scroll-target="#proportionality"><span class="header-section-number">21.7.1</span> Proportionality</a></li>
-  <li><a href="#motivation-example" id="toc-motivation-example" class="nav-link" data-scroll-target="#motivation-example"><span class="header-section-number">21.7.2</span> Motivation Example</a></li>
-  </ul>
-</li>
-  <li><a href="#further-reading-and-references" id="toc-further-reading-and-references" class="nav-link" data-scroll-target="#further-reading-and-references"><span class="header-section-number">21.8</span> Further Reading and References</a></li>
+  <li><a href="#further-reading-and-references" id="toc-further-reading-and-references" class="nav-link" data-scroll-target="#further-reading-and-references"><span class="header-section-number">21.7</span> Further Reading and References</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/infer-bayes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -451,8 +444,58 @@ window.Quarto = {
 
 
 </header><div class="hidden">
-
+<p><span class="math display">\[
+\def\cD{{\cal D}}
+\def\cL{{\cal L}}
+\def\cX{{\cal X}}
+\def\cF{{\cal F}}
+\def\cH{{\cal H}}
+\def\bA{\mathbf{A}}
+\def\bB{\mathbf{B}}
+\def\bX{\mathbf{X}}
+\def\bH{\mathbf{H}}
+\def\bI{\mathbf{I}}
+\def\bU{\mathbf{U}}
+\def\bD{\mathbf{D}}
+\def\bV{\mathbf{V}}
+\def\bS{\mathbf{S}}
+\def\bW{\mathbf{W}}
+\def\bY{\mathbf{Y}}
+\def\bZ{\mathbf{Z}}
+\def\bK{\mathbf{K}}
+\def\bx{\mathbf{x}}
+\def\by{\mathbf{y}}
+\def\bs{\mathbf{s}}
+\def\br{\mathbf{r}}
+\def\bu{\mathbf{u}}
+\def\be{\mathbf{e}}
+\def\bv{\mathbf{v}}
+\def\bp{\mathbf{p}}
+\def\bw{\mathbf{w}}
+\def\bz{\mathbf{z}}
+\def\bzero{\mathbf{0}}
+\def\balpha{\boldsymbol \alpha}
+\def\bbeta{\boldsymbol \beta}
+\def\btheta{\boldsymbol \theta}
+\def\bSigma{\boldsymbol \Sigma}
+\def\bxi{\boldsymbol \xi}
+\def\bmu{\boldsymbol \mu}
+\def\bep{\boldsymbol \epsilon}
+\def\T{\text{T}}
+\def\Trace{\text{Trace}}
+\def\Cov{\text{Cov}}
+\def\Corr{\text{Corr}}
+\def\Var{\text{Var}}
+\def\E{\text{E}}
+\def\pr{\text{pr}}
+\def\Prob{\text{P}}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\]</span></p>
 </div>
+<blockquote class="blockquote">
+<p>All models are wrong, but some are useful. – George E. P. Box (1919 - 2013)</p>
+</blockquote>
 <p>The inference methods we have learned so far assume that unknown (population) parameters to be estimated or tested are constants. They are fixed and their values do not change. In other words, the parameters are not random variables, and the uncertainty that arises when estimating them is entirely due to sampling variation, not the variability of the parameters themselves. Additionally, when dealing with uncertainty, we use relative frequency to describe probabilities. Lots of times the answer to our questions relies on repetitions of experiments or trials. These methods adopt the so-called <strong>frequentist</strong> philosophy (<strong>frequentism</strong>). The frequentist approach, also known as the classical approach, has dominated the statistics community since the early 20th century. This dominance followed the development of a comprehensive inference framework by several great statisticians, such as Ronald Fisher, Jerzy Neyman, and Egon Pearson. This framework, which includes confidence intervals, hypothesis testing, p-values, and statistical significance, is taught in every introductory statistics course.</p>
 <p>In fact, there is another way of thinking about statistical inference: the <strong>Bayesian</strong> philosophy (<strong>Bayesianism</strong>). The Bayesian approach did not emerge after the frequentist approach; rather, it has historical roots that trace back to Bayes’ theorem (Bayes’ rule), named after Thomas Bayes. People in the late 18th or early 19th century already used the Bayesian philosophy to tackle problems. For instance, Pierre-Simon Laplace used the Bayesian theorem to calculate the probability that the sun would rise the next day. However, the Bayesian approach lost popularity later on because as problems became more complex, solving them within the Bayesian framework became very tedious and time-consuming, especially given the lack of powerful computing resources at the time. With the advancement of computing power starting in the late 20th century, more statisticians and scientists began to embrace the Bayesian approach.</p>
 <p>It is important to understand the frequentist and Bayesian philosophies, particularly their differences, advantages, and disadvantages. Depending on the research question and available resources, one method may be more suitable than the other. Alternatively, it may be beneficial to combine these two paradigms to leverage the advantages of both. Currently, introductory statistics courses focus heavily on the frequentist approach. Given the ease of computation and the increasing use of Bayesian methods in scientific research, I believe it is beneficial to introduce more Bayesian thinking to STAT 101 students, not just one lecture of Bayes theorem.</p>
@@ -620,7 +663,7 @@ Figure&nbsp;21.1: Fig 1.1 of Bayes Rules. The figures not being sourced come fro
 <p><a href="#fig-bayes" class="quarto-xref">Figure&nbsp;<span>21.2</span></a> shows Bayesian Knowledge-building Process. If you’re an environmental scientist, yours might be an analysis of the human role in climate change. You don’t walk into such an inquiry without context – you carry a degree of incoming or prior information based on previous research and experience. Naturally, it’s in light of this information that you interpret new data, weighing both in developing your updated or posterior information.</p>
 <div class="cell fig-cap-location-bottom" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-bayes" class="quarto-figure quarto-figure-center quarto-float anchored" width="50%" data-fig-align="center">
+<div id="fig-bayes" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" width="50%">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-bayes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="./images/img-infer/bayes_diagram.png" id="fig-bayes" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" style="width:50.0%">
 </div>
@@ -630,11 +673,7 @@ Figure&nbsp;21.2
 </div>
 </div>
 </div>
-<p>Frequentist relies on (limited) data only. In Question 3, in a frequentist analysis, “8 out of 8” is “8 out of 8” no matter if it’s in the context of Ben’s coins or Emma’s sweeteners.</p>
-<ul>
-<li>
-<em>Equally confident</em> conclusions that Ben can predict coin flips and Emma can distinguish between natural and artificial sweeteners.</li>
-</ul>
+<p>Frequentist relies on (limited) data only. In Question 3, in a frequentist analysis, “8 out of 8” is “8 out of 8” no matter if it’s in the context of Ben’s coins or Emma’s sweeteners. Thus frequentists have <em>equally confident</em> conclusions that Ben can predict coin flips and Emma can distinguish between natural and artificial sweeteners.</p>
 <div class="cell fig-cap-location-bottom" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -643,15 +682,8 @@ Figure&nbsp;21.2
 </div>
 </div>
 </div>
-<ul>
-<li><p>But do you really believe Ben’s claim 100%? 🤔 😕</p></li>
-<li><p>In fact, we judge their claim before evidence are collected, don’t we? 🤔</p></li>
-<li><p>You probably think Ben overstates his ability but Emma’s claim sounds relatively reasonable, right?</p></li>
-</ul>
-<!-- ### The Bayesian Balancing --><ul>
-<li><p>Frequentist throws out all prior knowledge in favor of a mere 8 data points.</p></li>
-<li><p>Bayesian analyses <em>balance</em> and <em>weight</em> our prior experience/knowledge/belief and new data/evidence to judge a claim or make a conclusion.</p></li>
-</ul>
+<p>However, do you really believe Ben’s claim 100%? 🤔 😕. Let me guess. In fact, we judge their claim before evidence are collected, don’t we? 🤔 You probably think Ben overstates his ability but Emma’s claim sounds relatively reasonable, right?</p>
+<p>Frequentist throws out all prior knowledge in favor of a mere 8 data points. Bayesian analyses <em>balance</em> and <em>weight</em> our prior experience/knowledge/belief and new data/evidence to judge a claim or make a conclusion.</p>
 <div class="cell fig-cap-location-bottom" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -662,10 +694,7 @@ Figure&nbsp;21.2
 </div>
 <div class="columns">
 <div class="column" style="width:80%;">
-<ul>
-<li>
-<span class="green"><em>We are not stubborn!</em></span> If Ben had correctly predicted the outcome of <em>1 million</em> coin flips, the strength of this data would far surpass that of our prior judgement, leading to a posterior conclusion that perhaps Ben is psychic!</li>
-</ul>
+<p>However, <span class="green"><em>we are not stubborn!</em></span> If Ben had correctly predicted the outcome of <em>1 million</em> coin flips, the strength of this data would far surpass that of our prior judgement, leading to a posterior conclusion that perhaps Ben is psychic!</p>
 </div><div class="column" style="width:20%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -677,12 +706,22 @@ Figure&nbsp;21.2
 </div>
 </div>
 </div>
-<p>Here is the thing. Whether we call it prior information or prior belief, it means the <em>current state of knowledge</em> about something <em>before</em> more evidence, data, or observations are collected that help us better understand or have more knowledge of the thing we are interested.</p>
-<p>Personally, I prefer calling the <em>current state of knowledge</em> our <strong>opinion</strong>, or to be more humble, our <strong>two cents</strong>! As a Bayesian, we are people with opinions. We learn to be a better man from our living experiences; we become more knowledgeable by making our opinions closer and closer to the <em>truth</em>. And I claim (which is my opinion) that this is how we learn anything from our birth to the last day alive. A person without his own opinions is like a person with no brain. If you ask him a question, his answer will always be like “I have no idea”, “I have no judgement”, “we should collect evidence to answer the question”, …etc.</p>
+<p>The concept, whether referred to as prior information or prior belief, essentially represents our <em>current state of knowledge</em> about something <em>before</em> we gather additional evidence, data, or observations. This prior knowledge serves as the foundation upon which we build our understanding or enhance our knowledge of the subject of interest.</p>
+<p>Personally, I prefer referring to <em>the current state of knowledge</em> as our <strong>opinion</strong> — or, to be more modest, our <strong>two cents</strong>! As Bayesians, we are individuals with opinions. We learn and grow from our life experiences, gradually aligning our opinions closer to the <em>truth</em> as we become more knowledgeable. I believe (and this is my opinion) that this process mirrors how we learn anything throughout our lives, from birth until our last day. A person without opinions is akin to someone without a brain—if you ask them a question, their response might always be, <em>“I have no idea,”</em> <em>“I have no judgment,”</em> or <em>“we should gather evidence to answer the question.”</em></p>
+<p>However, as we grow up, we watch TV, read papers, attend classes, and continuously build our knowledge and judgments about the world around us. Our opinions, values, and the behavior shaped by these values and judgments define who we are. In essence, <em>a Bayesian holds an opinion on everything!</em></p>
+<p><em>Opinions</em> lie at the core of the debate between Bayesians and frequentists. The reliance on <em>opinions</em> is a key reason why Bayes’ rule faced rejection over the past two centuries. Scientists have long sought to ensure that their work remains objective, but <em>opinions</em> are often viewed as inherently subjective. Consequently, frequentists and the broader scientific community have considered the subjectivity of <em>opinions</em> to be a fundamental flaw of Bayesianism.</p>
+<p>However, while <em>opinions</em> are indeed subjective, they are by no means arbitrary, particularly when they are derived using Bayes’ rule and adhere to the laws of probability. In fact, Bayesians view <em>opinions</em> as fundamental strengths of Bayesian reasoning—provided these <em>opinions</em> are shaped by Bayes’ rule. <em>Opinions are considered a cornerstone of rationality</em>. This is the most contentious assertion of Bayesianism.</p>
 </section><section id="asking-different-questions" class="level2" data-number="21.4"><h2 data-number="21.4" class="anchored" data-anchor-id="asking-different-questions">
 <span class="header-section-number">21.4</span> Asking Different Questions</h2>
+<blockquote class="blockquote">
+<p>Our brain has this annoying habit to think that […], if under some hypothesis, results are unlikely, then the hypothesis is unlikely. This is false. – Christophe Michel (1974 - )</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>An approximate answer to the right problem is worth a good deal more than an exact answer to an approximate problem. – John Tukey (1915 - 2000)</p>
+</blockquote>
 <div class="columns">
 <div class="column" style="width:80%;">
+<p>Interestingly, Bayesians usually answer the question we care about.</p>
 <p>In Question 4,</p>
 <ul>
 <li>Bayesians answer (a) <em>what’s the chance that I actually have COVID?</em>
@@ -740,11 +779,11 @@ Figure&nbsp;21.2
 <li><p>A frequestist assesses <em>the uncertainty of the observed data in light of an assumed hypothesis</em> <span class="math inline">\(P(Data \mid H_0) = 9/96\)</span></p></li>
 <li><p>A Bayesian assesses <em>the uncertainty of the hypothesis in light of the observed data</em> <span class="math inline">\(P(H_0 \mid Data) = 9/12\)</span></p></li>
 </ul>
-<p>A Bayesian analysis would ask: Given my positive test result, what’s the chance that I actually have the disease? Since only 3 of the 12 people that tested positive have the disease (Table 1.1), there’s only a 25% chance that you have the disease. Thus, when we take into account the disease’s rarity and the relatively high false positive rate, it’s relatively unlikely that you actually have the disease. What a relief.</p>
+<p>A Bayesian analysis would ask: Given my positive test result, what’s the chance that I actually have the disease? Since only 3 of the 12 people that tested positive have the disease, there’s only a 25% chance that you have the disease. Thus, when we take into account the disease’s rarity and the relatively high false positive rate, it’s relatively unlikely that you actually have the disease. What a relief.</p>
 <p>Since disease status isn’t repeatable, the probability you have the disease is either 1 or 0 – you have it or you don’t. To the contrary, medical testing (and data collection in general) is repeatable. You can get tested for the disease over and over and over. Thus, a frequentist analysis would ask: If I don’t actually have the disease, what’s the chance that I would’ve tested positive? Since only 9 of the 96 people without the disease tested positive, there’s a roughly 10% (9/96) chance that you would’ve tested positive even if you didn’t have the disease.</p>
-</section><section id="bayesian-model" class="level2" data-number="21.5"><h2 data-number="21.5" class="anchored" data-anchor-id="bayesian-model">
-<span class="header-section-number">21.5</span> Bayesian Model</h2>
-<p>Fake News</p>
+</section><section id="bayesian-inference" class="level2" data-number="21.5"><h2 data-number="21.5" class="anchored" data-anchor-id="bayesian-inference">
+<span class="header-section-number">21.5</span> Bayesian Inference</h2>
+<p>Here we use the Fake News example in the <a href="https://www.bayesrulesbook.com/chapter-2#building-a-bayesian-model-for-events">Bayes Rules! book</a> to illustrate a Bayesian model.</p>
 <div class="columns">
 <div class="column" style="width:80%;">
 <ul>
@@ -835,7 +874,7 @@ Figure&nbsp;21.2
 </li>
 <li><p>Compare <span class="math inline">\(P(D \mid F)\)</span> and <span class="math inline">\(P(D \mid F^c)\)</span> to ascertain the relative <strong>likelihoods</strong> of <em>observed data</em> <span class="math inline">\(D\)</span> under different scenarios of the <em>uncertain</em> article status.</p></li>
 </ul>
-<p>Since exclamation point usage is so much more likely among fake news than real news, this data provides some evidence that the article is fake To help distinguish this application of conditional probability calculations from that when D is uncertain and F is known, we’ll utilize the following likelihood function notation.</p>
+<p>Since exclamation point usage is so much more likely among fake news than real news, this data provides some evidence that the article is fake To help distinguish this application of conditional probability calculations from that when <span class="math inline">\(D\)</span> is uncertain and <span class="math inline">\(F\)</span> is known, we’ll utilize the following likelihood function notation.</p>
 <hr></section><section id="likelihood-function" class="level3" data-number="21.5.2"><h3 data-number="21.5.2" class="anchored" data-anchor-id="likelihood-function">
 <span class="header-section-number">21.5.2</span> Likelihood Function</h3>
 <div class="midi">
@@ -892,29 +931,24 @@ Figure&nbsp;21.2
 <ul>
 <li><span class="green"><em>The likelihood function is not a probability function!</em></span></li>
 </ul>
-<hr></section><section id="bayes-rule" class="level3" data-number="21.5.3"><h3 data-number="21.5.3" class="anchored" data-anchor-id="bayes-rule">
-<span class="header-section-number">21.5.3</span> Bayes’ Rule</h3>
-<p><span class="math display">\[\begin{align*} P(F \mid D) &amp;= \frac{P(F \cap D)}{P(D)}\\ &amp;= \frac{L(F \mid D)P(F)}{P(D)}\end{align*}\]</span></p>
+<p>The likelihood function is essential to Bayesianism. When we want to update our belief or knowledge about the chance that a book is fake or not, given the information collected from the data, we need the likelihood function. Sometimes it may require a little imagination. It is like a <a href="https://en.wikipedia.org/wiki/Thought_experiment"><em>thought experiment</em></a>. If we were in the world that all books/articles are fake, what is the chance that we get the data like the one at hand? Similarly, what is that chance if we now lived in the world without any fake articles? Here the two hypotheses (fake vs.&nbsp;not fake), alternative theories, or proposed mechanisms postulate how data are generated and what data will be like under such mechanisms. And the likelihood function tells us which mechanism the current data fit in better.</p>
+<p>The likelihood function is not a probability function! Although the word probability is avoided, the word likelihood is still misleading or hard to understand sometimes. <em>The likelihood of the data is not the credence of the theory/mechanism</em> which is <span class="math inline">\(P(F \mid D)\)</span> obtained by the Bayes’ rule.</p>
+<hr></section><section id="bayes-rule-for-posterior" class="level3" data-number="21.5.3"><h3 data-number="21.5.3" class="anchored" data-anchor-id="bayes-rule-for-posterior">
+<span class="header-section-number">21.5.3</span> Bayes’ Rule for Posterior</h3>
+<p>To be Bayesian is to rest all knowledge upon the language of conditional probabilities. We obtain the credence of an article being fake given the fact that it has an exclamation mark in its title <span class="math inline">\(P(F \mid D)\)</span> using the conditional probability formula, and the law of total probabilities.</p>
+<p><span class="math display">\[\begin{align*} P(F \mid D) &amp;= \frac{P(F \cap D)}{P(D)}\\ &amp;= \frac{P(D \mid F)P(F)}{P(D)} \\ &amp;= \frac{P(D \mid F)P(F)}{P(D \mid F)P(F) + P(D \mid F^c)P(F^c)}\\ &amp;= \frac{L(F \mid D)P(F)}{L(F \mid D)P(F) + L(F^c \mid D)P(F^c)}\end{align*}\]</span></p>
+<p>In general, the update rule has the form</p>
 <p><span class="math display">\[\text{posterior = } \frac{\text{likelihood} \cdot \text{prior }}{ \text{normalizing constant}} \]</span></p>
-<ul>
-<li>The normalizing constant <span class="math inline">\(P(D)\)</span> is known as <strong>marginal likelihood</strong> or <strong>evidence</strong>.</li>
-</ul></section></section><section id="to-be-bayesian-is-to-rest-all-knowledge-upon-the-language-of-conditional-probabilities." class="level2" data-number="21.6"><h2 data-number="21.6" class="anchored" data-anchor-id="to-be-bayesian-is-to-rest-all-knowledge-upon-the-language-of-conditional-probabilities.">
-<span class="header-section-number">21.6</span> To be Bayesian is to rest all knowledge upon the language of conditional probabilities.</h2>
-<section id="posterior" class="level3" data-number="21.6.1"><h3 data-number="21.6.1" class="anchored" data-anchor-id="posterior">
-<span class="header-section-number">21.6.1</span> Posterior</h3>
-<ul>
-<li><p>Started with a prior understanding that there’s a 40% chance that the incoming article would be fake.</p></li>
-<li><p>Yet upon observing the use of an exclamation point in the title</p></li>
-</ul>
+<p>The normalizing constant <span class="math inline">\(P(D)\)</span> is known as <strong>marginal likelihood</strong> or <strong>evidence</strong>. Here, the thing we care about, whether it is fake or not, only has two possible values, <span class="math inline">\(F\)</span> or <span class="math inline">\(F^c\)</span>. The marginal likelihood is then a sum of two terms. It combines different reasonings in mutually incompatible versions of reality. Even two terms summed up together could make Bayes’ rule hard to apply and understand, not to mention that there could be several even infinitely many possible values of what we care about. The computation of this normalizing constant can be extremely hard, and that’s why some people do not want to use Bayesian methods, even Bayesianism makes more sense to them. Fortunately, many statistical software packages for implementing Bayesian methods have been developed, doing all the necessary computation for us. If you love the Bayesian philosophy, don’t hesitate to use Bayes’ rule!</p>
+<!-- -------------------------------------------------------------------------------- -->
+<!-- ### Posterior -->
+<p>Started with a prior understanding that there’s a 40% chance that the incoming article would be fake. Yet upon observing the use of an exclamation point in the title</p>
 <div class="center">
 <blockquote class="blockquote">
 <p><em>“The president has a funny secret!”</em></p>
 </blockquote>
 </div>
-<p>a feature that’s more common to fake news.</p>
-<ul>
-<li>Our posterior understanding evolved quite a bit – the chance that the article is fake jumped to 89%.</li>
-</ul>
+<p>a feature that’s more common to fake news. Our posterior understanding evolved quite a bit – the chance that the article is fake jumped to 89%.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 40%">
@@ -944,24 +978,34 @@ Figure&nbsp;21.2
 <td>1</td>
 </tr>
 </tbody>
-</table></section></section><section id="bayesian-inference-for-random-variables" class="level2" data-number="21.7"><h2 data-number="21.7" class="anchored" data-anchor-id="bayesian-inference-for-random-variables">
-<span class="header-section-number">21.7</span> Bayesian Inference for Random Variables</h2>
-<p>For any random variables parameter <span class="math inline">\(\theta\)</span> and data <span class="math inline">\({\bf Y} = (Y_1, \dots, Y_n)\)</span>,</p>
-<ul>
-<li><p><span class="math inline">\(\pi(\theta)\)</span>: the prior pmf/pdf of <span class="math inline">\(\theta\)</span></p></li>
-<li><p><span class="math inline">\(L(\theta \mid y_1,\dots, y_n)\)</span>: the likelihood of <span class="math inline">\(\theta\)</span> given observed data <span class="math inline">\(\mathbf{y}= \{y_i \}_{i = 1}^n\)</span>.</p></li>
-<li><p>The posterior distribution of <span class="math inline">\(\theta\)</span> given <span class="math inline">\(\mathbf{y}\)</span> is</p></li>
-</ul>
-<p><span class="math display">\[\pi(\theta \mid \mathbf{y}) = \frac{L(\theta \mid \mathbf{y})\pi(\theta)}{p(\mathbf{y})}\]</span> where <span class="math display">\[p(\mathbf{y}) = \begin{cases} \int_{\Theta} L(\theta \mid \mathbf{y})\pi(\theta) ~ d\theta &amp; \text{if } \theta \text{ is continuous }\\
-\sum_{\theta \in \Theta} L(\theta \mid \mathbf{y})\pi(\theta) &amp; \text{if } \theta \text{ is discrete }
+</table></section></section><section id="bayesian-inference-for-random-variables" class="level2" data-number="21.6"><h2 data-number="21.6" class="anchored" data-anchor-id="bayesian-inference-for-random-variables">
+<span class="header-section-number">21.6</span> Bayesian Inference for Random Variables</h2>
+<blockquote class="blockquote">
+<p>If people do not believe that mathematics is simple, it is only because they do not realize how complicated life is. – John von Neumann (1903 - 1957)</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>Truth is much too complicated to allow anything but approximations. – John von Neumann (1903 - 1957)</p>
+</blockquote>
+<p>In this section, we use the example in <a href="https://www.bayesrulesbook.com/chapter-3">Chapther 3 of Bayes Rules!</a> to illustrate how to do the inference about the unknown parameter, for example the population mean <span class="math inline">\(\mu\)</span>, using Bayes’ rule. Instead of either simply providing a point estimate or calculating the confidence interval for the parameter, the Bayesian inference estimates the whole probability distribution of the parameter given the data. The distribution is the <strong>posterior distribution</strong> of the parameter that shows our credence of the parameter value.</p>
+<p>In frequentist approaches, the parameter is considered unknown but fixed and constant. In contrast, Bayesian philosophy treats the parameter as variable, often assuming it to be <em>a random variable following some probability distribution</em>. This perspective acknowledges that the parameter may frequently change over time. For instance, do you believe the mean GPA of Marquette students remains unchanged? Or that the mean height or weight of Marquette students stays constant over time? These examples illustrate that many parameters are not static but evolve, reflecting the Bayesian view of a dynamic and probabilistic world.</p>
+<p>Even if the parameter remains fixed at an unknown value, Bayesians still consider all the values they believe the <em>true</em> value could possibly be when making inferences. When Bayesians say the parameter value varies, they are referring to the idea that the <em>true</em> value has many possible values, and their belief about the <em>true</em> value is not quite certain or changes. The posterior distribution, or posterior probability, represents the plausibility of each possible value of the parameter, reflecting how their understanding of the <em>true</em> value changes with new evidence.</p>
+<p>In the Bayesian framework, one never places all their confidence in a single model or parameter because, as the saying goes, “All models are wrong.” In parametric statistical inference, each parameter value typically corresponds to a specific model. Even if there were a <em>true</em> model defined by a <em>true</em> parameter value, Bayesians avoid putting all their eggs in one basket. Why is that? Consider this analogy: if you believe one of five company stocks will rise in value tomorrow, would you invest all your money in just one stock, or would you diversify your investments across all five stocks, allocating different shares based on your belief in the likelihood of each stock’s price increase? Moreover, what is considered “<em>truth</em>” can change over time. For instance, people once believed the world was flat—a “<em>truth</em>” that later proved to be incorrect. Therefore, Bayesians spread their credence across a range of possibilities, acknowledging that even widely accepted truths can evolve.</p>
+<p>Yes, I know you want to pursue the truth. But unfortunately, <em>“truth is much too complicated to allow anything but approximations.”</em> Also <em>“all models are wrong.”</em> However, <em>some models are more believable and useful than others</em>. The universe is too complicated to be fully described by a model, whether it is mathematical, statistical, or physical. Since we never be able to capture the <em>truth</em>, it would benefit us if we switch our focus to the useful models that better approximates the <em>truth</em>. In estimation and prediction, almost all questions have no simple, unambiguous answer because we are always uncertain about something we don’t know. Therefore, the uncertainty quantification for the unknowns is important because good uncertainty quantification better describes what the truth could possibly be. As a result, what we need to pursue or develop is a less wrong but quite <em>useful</em> model that well qualifies the uncertainty and our credence of the unknown parameter. In other words, the model gives us a pretty well approximated posterior distribution.</p>
+<p>Yes, the pursuit of truth is a noble endeavor, but as the saying goes, <em>“truth is much too complicated to allow anything but approximations.”</em> Furthermore, <em>“all models are wrong, but some models are more believable and useful than others.”</em> The complexity of the universe is such that no model—whether mathematical, statistical, or physical—can fully capture it. Since we can never truly grasp the truth, it is more beneficial to focus on developing models that better approximate the truth and are <em>useful</em> in practice.</p>
+<p>In the realms of estimation and prediction, most questions lack simple, unambiguous answers because there is always some uncertainty surrounding the unknowns. This is why uncertainty quantification is crucial; it provides a better description of what the truth could potentially be. Consequently, our goal should be to develop models that are less wrong but highly <em>useful</em>, effectively quantifying uncertainty and our confidence in the unknown parameter. In other words, we should strive to create models that provide a well-approximated posterior distribution, offering a more accurate representation of the possible <em>truths</em>.</p>
+<p>Done with the concepts. Let’s see the mathematical formulation of Bayesian inference. Suppose the unknown parameter to be estimated is <span class="math inline">\(\theta\)</span> and data are denoted as <span class="math inline">\({\bf Y} = (Y_1, \dots, Y_n)\)</span>. Both are assumed random variables before the data are collected. Our job is to do inference about <span class="math inline">\(\theta\)</span>, or obtain the posterior distribution of <span class="math inline">\(\theta\)</span>. Unlike frequentists, who develop a variety of tools for different estimation problems, Bayesians rely on just one fundamental principle: Bayes’ rule.</p>
+<p>Let <span class="math inline">\(\pi(\theta)\)</span> be the prior pmf/pdf of <span class="math inline">\(\theta\)</span>. Let <span class="math inline">\(L(\theta \mid y_1,\dots, y_n)\)</span> be the likelihood of <span class="math inline">\(\theta\)</span> given observed data <span class="math inline">\(\by = \{y_i \}_{i = 1}^n\)</span>. Then with the Bayes’ rule, the posterior distribution of <span class="math inline">\(\theta\)</span> given <span class="math inline">\(\by\)</span> is</p>
+<p><span class="math display">\[\pi(\theta \mid \by) = \frac{L(\theta \mid \by)\pi(\theta)}{p(\by)}\]</span> where <span class="math display">\[p(\by) = \begin{cases} \int_{\Theta} L(\theta \mid \by)\pi(\theta) ~ d\theta &amp; \text{if } \theta \text{ is continuous }\\
+\sum_{\theta \in \Theta} L(\theta \mid \by)\pi(\theta) &amp; \text{if } \theta \text{ is discrete }
 \end{cases}\]</span></p>
-<hr>
-<section id="proportionality" class="level3" data-number="21.7.1"><h3 data-number="21.7.1" class="anchored" data-anchor-id="proportionality">
-<span class="header-section-number">21.7.1</span> Proportionality</h3>
-<p><span class="math display">\[\pi(\theta \mid \mathbf{y}) = \frac{L(\theta \mid \mathbf{y})\pi(\theta)}{p(\mathbf{y})} \propto_{\theta} L(\theta \mid \mathbf{y})\pi(\theta)\]</span></p>
+<p>Here, <span class="math inline">\(\Theta\)</span> is the collection of all possible values of <span class="math inline">\(\theta\)</span>. To obtain the posterior <span class="math inline">\(\pi(\theta \mid \by)\)</span>, we need to compute the marginal likelihood <span class="math inline">\(p(\by)\)</span> that is the core of Bayesian computation. As you can see, when <span class="math inline">\(\Theta\)</span> contains plenty of or infinitely many possible values of <span class="math inline">\(\theta\)</span>, or when several, say <span class="math inline">\(K\)</span>, unknown parameters are estimated simultaneously in one single model, i.e., <span class="math inline">\(\theta = (\theta_1, \dots, \theta_K)\)</span>, this normalizing constant is getting hard to compute. One of the Bayesian mainstream research is to develop well-approximated and computationally efficient algorithms to compute the marginal likelihood, and hence the posterior distribution.</p>
+<p>We don’t need to worry about the computation issue at this moment. We focus on the ideas and concepts of applying Bayes’ formula. Notice that the marginal likelihood <span class="math inline">\(p(\by)\)</span> has nothing to do with <span class="math inline">\(\theta\)</span> because <span class="math inline">\(\theta\)</span> has been integrated out. Therefore, the posterior is in fact proportional to the numerator of the formula:</p>
+<p><span class="math display">\[\pi(\theta \mid \by ) = \frac{L(\theta \mid \by)\pi(\theta)}{p(\by)} \propto_{\theta} L(\theta \mid \by)\pi(\theta)\]</span></p>
 <p><span class="math display">\[\text{posterior } \propto \text{ likelihood } \cdot \text{ prior } \]</span></p>
-<hr></section><section id="motivation-example" class="level3" data-number="21.7.2"><h3 data-number="21.7.2" class="anchored" data-anchor-id="motivation-example">
-<span class="header-section-number">21.7.2</span> Motivation Example</h3>
+<p>If, from our model, we determine that our posterior distribution is proportional to a known probability distribution, then our work is essentially complete. We have captured the entire shape of the posterior distribution, and the missing constant simply serves to scale it so that it becomes a valid probability distribution, with the integral under its density curve equal to one.</p>
+<hr>
+<section id="motivation-example" class="level3" data-number="21.6.1"><h3 data-number="21.6.1" class="anchored" data-anchor-id="motivation-example">
+<span class="header-section-number">21.6.1</span> Motivation Example</h3>
 <div class="columns">
 <div class="column" style="width:70%;">
 <ul>
@@ -991,8 +1035,8 @@ Figure&nbsp;21.2
 <ul>
 <li>The parameter to be estimated is <span class="math inline">\(\theta\)</span>, the Michelle’s support, which is between 0 and 1.</li>
 </ul>
-<section id="prior-distribution" class="level4" data-number="21.7.2.1"><h4 data-number="21.7.2.1" class="anchored" data-anchor-id="prior-distribution">
-<span class="header-section-number">21.7.2.1</span> Prior Distribution</h4>
+<section id="prior-distribution" class="level4" data-number="21.6.1.1"><h4 data-number="21.6.1.1" class="anchored" data-anchor-id="prior-distribution">
+<span class="header-section-number">21.6.1.1</span> Prior Distribution</h4>
 <ul>
 <li>A popular probability distribution for probability is <strong>beta distribution</strong>, <span class="math inline">\(\text{beta}(\alpha, \beta)\)</span>, where <span class="math inline">\(\alpha &gt; 0\)</span> and <span class="math inline">\(\beta &gt; 0\)</span> are shape parameters.</li>
 </ul>
@@ -1006,17 +1050,23 @@ Figure&nbsp;21.2
 </div>
 </div>
 <ul>
-<li><p><span class="math inline">\(\theta \sim \text{beta}(\alpha, \beta)\)</span></p></li>
+<li><p>In a Bayesian model, we write <span class="math inline">\(\theta \sim \text{beta}(\alpha, \beta)\)</span> or <span class="math inline">\(\pi(\theta) = \text{beta}(\alpha, \beta)\)</span>.</p></li>
 <li><p>In the prior model, <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> are <strong>hyperparameters</strong> to be chosen to reflect our prior information.</p></li>
 </ul>
+<p>Here is what we know before we conduct a new survey.</p>
 <blockquote class="blockquote">
 <p>Michelle’s support is centered round 45%, and she polled at around 35% in the dreariest days and around 55% in the best days.</p>
 </blockquote>
 <ul>
-<li><p>Choose <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> so that the <em>prior mean is about 0.45</em> and <em>the range is from 0.35 to 0.55</em>.</p></li>
-<li><p><span class="math inline">\(\text{E}(\theta) = \frac{\alpha}{\alpha + \beta}\)</span></p></li>
-<li><p><span class="math inline">\(\var(\theta) = \frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}\)</span></p></li>
+<li>
+<p>We can choose <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> so that the <em>prior mean is about 0.45</em> and <em>the range is from 0.35 to 0.55</em> using the fact that</p>
+<ul>
+<li><span class="math inline">\(\E(\theta) = \frac{\alpha}{\alpha + \beta}\)</span></li>
+<li><span class="math inline">\(\Var(\theta) = \frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}\)</span></li>
 </ul>
+</li>
+</ul>
+<p>We decide to use <span class="math inline">\(\text{beta}(45, 55)\)</span> as our prior distribution illustrating our prior belief and uncertainty about the Michelle’s support rate. The distribution is shown below.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -1025,8 +1075,9 @@ Figure&nbsp;21.2
 </div>
 </div>
 </div>
-</section><section id="likelihood" class="level4" data-number="21.7.2.2"><h4 data-number="21.7.2.2" class="anchored" data-anchor-id="likelihood">
-<span class="header-section-number">21.7.2.2</span> Likelihood</h4>
+<p>The process of choosing the optimal or reasonable hyperparameter values is called <strong>tuning</strong> or <strong>hyperparameter optimization</strong>.</p>
+</section><section id="likelihood" class="level4" data-number="21.6.1.2"><h4 data-number="21.6.1.2" class="anchored" data-anchor-id="likelihood">
+<span class="header-section-number">21.6.1.2</span> Likelihood</h4>
 <blockquote class="blockquote">
 <p>You plan to conduct a new poll of <span class="math inline">\(n = 50\)</span> Cheeseheads and record <span class="math inline">\(Y\)</span>, the number that support Michelle.</p>
 </blockquote>
@@ -1041,6 +1092,7 @@ Figure&nbsp;21.2
 <li>The poll result is <span class="math inline">\(y = 30\)</span>, the likelihood is</li>
 </ul>
 <p><span class="math display">\[L(\theta \mid y = 30) = {50 \choose 30}\theta^{30}(1-\theta)^{20}, \quad \theta \in (0, 1)\]</span></p>
+<p>The likelihood function is shown below.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -1049,11 +1101,14 @@ Figure&nbsp;21.2
 </div>
 </div>
 </div>
-</section><section id="bayesian-model-1" class="level4" data-number="21.7.2.3"><h4 data-number="21.7.2.3" class="anchored" data-anchor-id="bayesian-model-1">
-<span class="header-section-number">21.7.2.3</span> Bayesian Model</h4>
+<p>The likelihood tells us that if <span class="math inline">\(\text{binomial}(n=50, \theta)\)</span> is the data generating mechanism, the data <span class="math inline">\(y = 30\)</span> is most compatible with the binomial mechanism when <span class="math inline">\(\theta\)</span> is 0.6. In other words, <span class="math inline">\(\text{binomial}(n=50, 0.6)\)</span> is the model that most likely generate the data <span class="math inline">\(y = 30\)</span>.</p>
+<p>At this point, you might be wondering why we use the beta distribution to describe our prior belief and why we consider the thought experiment as a binomial experiment. These are indeed valid questions. Typically, we choose well-known and popular distributions or functions for our prior and likelihood because they allow us to derive the posterior distribution with minimal computational effort. You could argue that more sophisticated distributions or functions might better capture our belief and the specifics of the thought experiment. However, it’s important to remember that <em>“truth is much too complicated to allow anything but approximations,”</em> and <em>“all models are wrong, but some are useful.”</em> In this context, using the beta distribution and binomial likelihood proves to be particularly useful. It simplifies the tuning of hyperparameters in the prior distribution, and the posterior can be easily obtained. Moreover, as we will see, the posterior distribution remains within the beta distribution family, which greatly aids in interpreting how we update our knowledge.</p>
+</section><section id="bayesian-model-and-posterior-distribution" class="level4" data-number="21.6.1.3"><h4 data-number="21.6.1.3" class="anchored" data-anchor-id="bayesian-model-and-posterior-distribution">
+<span class="header-section-number">21.6.1.3</span> Bayesian model and posterior distribution</h4>
+<p>Once we decide the prior distribution and likelihood, a Bayesian model is specified:</p>
 <p><span class="math display">\[\begin{align}Y \mid \theta &amp;\sim \text{binomial}(n=50, \theta)\\ \theta &amp;\sim \text{beta}(45, 55)
 \end{align}\]</span></p>
-<p>Goal: Obtain the posterior distribution <span class="math inline">\(\pi(\theta \mid y)\)</span>.</p>
+<p>Then our goal is to obtain the posterior distribution <span class="math inline">\(\pi(\theta \mid y)\)</span>. Here we don’t need any statistical algorithm, and we can derive the posterior distribution exactly through mathematical calculation.</p>
 <p><span class="math display">\[
 \begin{align} \pi(\theta \mid y) &amp;\propto_{\theta} L(\theta \mid y)\pi(\theta) \\
 &amp;= {50 \choose 30}\theta^{30}(1-\theta)^{20} \times \frac{\Gamma(100)}{\Gamma(45)\Gamma(55)}\theta^{44}(1-\theta)^{54}\\
@@ -1062,23 +1117,39 @@ Figure&nbsp;21.2
 &amp;= \text{beta}(75, 75)\end{align}
 \]</span></p>
 <p>using the fact that <span class="math inline">\(\int_{\mathcal{X}} f(x) dx = 1\)</span> for any pdf <span class="math inline">\(f(x)\)</span>.</p>
-</section><section id="posterior-distribution" class="level4" data-number="21.7.2.4"><h4 data-number="21.7.2.4" class="anchored" data-anchor-id="posterior-distribution">
-<span class="header-section-number">21.7.2.4</span> Posterior Distribution</h4>
+<p>In the calculation, we first write down the specific expression of the prior distribution and likelihood. Then we drop all constant terms with respect to <span class="math inline">\(\theta\)</span>, for example, <span class="math inline">\({50 \choose 30}\)</span> and <span class="math inline">\(\frac{\Gamma(100)}{\Gamma(45)\Gamma(55)}\)</span>. These terms have nothing to do with the shape of the posterior distribution.</p>
+<p>The interesting part is that the terms related to <span class="math inline">\(\theta\)</span> from the prior and likelihood can be combined together, ending up with a single term <span class="math inline">\(\theta^{74}(1-\theta)^{74}\)</span>. Take a closer look at this term. First, it can be written as <span class="math inline">\(\theta^{75 - 1}(1-\theta)^{75-1}\)</span>. Then this term is actually the term related to <span class="math inline">\(\theta\)</span> in the beta distribution when <span class="math inline">\(\alpha = 75\)</span> and <span class="math inline">\(\beta = 75\)</span>, which is called the <strong>kernel</strong> of the probability distribution. Therefore, through the calculation, we actually capture the kernel of the distribution <span class="math inline">\(\text{beta}(75, 75)\)</span>. We are done. When we get the kernel of some probability distribution in the calculation of the posterior distribution, the posterior distribution will be that probability distribution. Therefore, the posterior distribution <span class="math inline">\(\pi(\theta \mid y)\)</span> is <span class="math inline">\(\frac{\Gamma(150)}{\Gamma(75)\Gamma(75)} \theta^{74}(1-\theta)^{74}\)</span>, the <span class="math inline">\(\text{beta}(75, 75)\)</span> distribution. We don’t need to worry about how to calculate the normalizing constant <span class="math inline">\(\frac{\Gamma(150)}{\Gamma(75)\Gamma(75)}\)</span>. Once we get <span class="math inline">\(\theta^{74}(1-\theta)^{74}\)</span>, the only way we make the kernel become a valid probability distribution is to multiply by the constant (w.r.t <span class="math inline">\(\theta\)</span>) <span class="math inline">\(\frac{\Gamma(150)}{\Gamma(75)\Gamma(75)}\)</span> that has been known from the beta distribution.</p>
+<!-- #### Posterior Distribution -->
+<p>Did you find that the prior and the posterior belong to the same family of probability distribution? They are both beta distributions. The prior is <span class="math inline">\(\pi(\theta) = \text{beta}(45, 55)\)</span> and the posterior is <span class="math inline">\(\pi(\theta \mid y) = \text{beta}(75, 75)\)</span>. When the prior and the posterior belong to the same family with respect to some likelihood, such prior is called a <strong>conjugate prior</strong>.</p>
+</section><section id="relationship-between-prior-likelihood-and-posterior" class="level4" data-number="21.6.1.4"><h4 data-number="21.6.1.4" class="anchored" data-anchor-id="relationship-between-prior-likelihood-and-posterior">
+<span class="header-section-number">21.6.1.4</span> Relationship between prior, likelihood and posterior</h4>
+<p><a href="#fig-prior-lik-post" class="quarto-xref">Figure&nbsp;<span>21.3</span></a> illustrates the prior, likelihood, and posterior distributions in Michelle’s example. First, it’s important to note that the likelihood is not a probability distribution, so it has been scaled to resemble a density function for comparison. Let’s examine how our belief about Michelle’s support is updated. Initially, we believed her support was likely around 45%. However, after incorporating the new poll results, the model suggests that support around 60% offers the highest likelihood. This new evidence leads us to reconsider, suggesting that Michelle’s support may have increased.</p>
+<p>Bayesians are not rigid in their thinking; we continuously update our knowledge and beliefs as new evidence emerges. The updated belief, reflected in the posterior distribution, effectively combines both prior information and new evidence. As a result, the posterior distribution typically falls between the prior and the likelihood. In this case, our belief about Michelle’s support is now highest within the range of 45% to 60%.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="infer-bayes_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="576"></p>
-</figure>
+<div id="fig-prior-lik-post" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-prior-lik-post-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="infer-bayes_files/figure-html/fig-prior-lik-post-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="576">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-prior-lik-post-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;21.3: Prior, likelihood and posterior of the motivation beta-binomial example.
+</figcaption></figure>
 </div>
 </div>
 </div>
+<p>Additionally, the variation in the posterior distribution is always smaller than that in the prior distribution. This occurs because the posterior distribution incorporates more information about Michelle’s support than the prior distribution does. The posterior distribution not only reflects the original prior information but also integrates the new data provided by the recent evidence. As a result, with more information about the parameter, we gain greater confidence in its likely value, leading to reduced uncertainty. Essentially, our belief becomes more refined and precise as we gather more evidence.</p>
+<p>This process of belief updating can be understood more deeply through the mathematical relationship between the prior and posterior distributions. The parameters <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> in the beta distribution are not just arbitrary numbers; they carry significant meaning. Specifically, the variance of the beta distribution decreases as<span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> increase. This explains why the posterior distribution <span class="math inline">\(\pi(\theta \mid y) = \text{beta}(75, 75)\)</span> has a smaller variance than the prior distribution <span class="math inline">\(\pi(\theta \mid y) = \text{beta}(45, 55)\)</span>.</p>
+<p>In this beta-binomial example, <span class="math inline">\(\alpha + \beta = 45 + 55 = 100\)</span> an be interpreted as the <em>“prior sample size.”</em> Out of these 100 hypothetical prior samples, 45 support Michelle. The new data consists of a sample size of 50, with 30 supporting Michelle. Now, observe what happens with the posterior. When we combine the <em>prior sample</em> with the <em>new data sample</em>, we have a total of 150 samples in the posterior analysis. Out of these 150 data points, <span class="math inline">\(45 + 30 = 75\)</span> support Michelle, leading to the posterior distribution <span class="math inline">\(\pi(\theta \mid y) = \text{beta}(75, 75)\)</span>. The <em>posterior sample size</em> is now <span class="math inline">\(75 + 75 = 150\)</span>, with exactly 75 supporting Michelle.</p>
+<p>Through this beta distribution, we can see that the parameters <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> reflect the amount of information we have about the parameter <span class="math inline">\(\theta\)</span>. This is how we systematically update our knowledge, with the posterior distribution representing a refined belief that incorporates both the prior information and the new data.</p>
+<p>If each data point represents one piece of information, it’s clear that the posterior distribution now holds 150 pieces of information - 50 more than the prior distribution. Where do these additional 50 pieces come from? They come from the newly collected data. As we gather more information, the variability and uncertainty about the parameter decrease, leading to greater knowledge and confidence in the potential values of the parameter. The process of updating the posterior reflects this accumulation of information, resulting in a more precise and reliable estimate.</p>
+<p>our posterior belief can be viewed as a weighted average of the prior and the likelihood, with the weights determined by the amount of information each contributes. In this example, the prior carries 100 pieces of information, while the new data contributes 50 pieces. Consequently, when we update our belief, the posterior belief is influenced two-thirds by the prior and one-third by the new data, since <span class="math inline">\(100/(100+50) = 2/3\)</span> and <span class="math inline">\(50/(100+50) =1/3\)</span>. This explains why the posterior mean support rate is <span class="math inline">\(0.45 \times (2/3) + 0.6 \times 1/3 = 0.5\)</span>. The posterior reflects a balanced combination of our prior knowledge and the new evidence, weighted by the information each provides. The Bayesians are logically consistent.</p>
 <!-- #### Take-home Message -->
 <!-- - The parameter is a random variable in the Bayesian world. -->
 <!-- - It is fixed and constant in the frequentist world. -->
-</section></section></section><section id="further-reading-and-references" class="level2" data-number="21.8"><h2 data-number="21.8" class="anchored" data-anchor-id="further-reading-and-references">
-<span class="header-section-number">21.8</span> Further Reading and References</h2>
+</section></section></section><section id="further-reading-and-references" class="level2" data-number="21.7"><h2 data-number="21.7" class="anchored" data-anchor-id="further-reading-and-references">
+<span class="header-section-number">21.7</span> Further Reading and References</h2>
 <ul>
-<li><p><a href="https://www.bayesrulesbook.com/">Bayes Rules</a></p></li>
+<li><p><a href="https://www.bayesrulesbook.com/">Bayes Rules!</a></p></li>
 <li><p><a href="https://www.youtube.com/watch?v=eDMGDhyDxuY">All About that Bayes: Probability, Statistics, and the Quest to Quantify Uncertainty</a> by Dr.&nbsp;Kristin Lennox</p></li>
 <li><p><a href="https://www.amazon.com/Equation-Knowledge-Unified-Philosophy-Science/dp/0367428156">The Equation of Knowledge</a> by Dr.&nbsp;Le Nguyen Hoang</p></li>
 </ul>
