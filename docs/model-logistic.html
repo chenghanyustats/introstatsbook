@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.4.555">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta name="description" content="An comprehensive introductory statistical data science book.">
-<title>Introduction to Statistics - 24&nbsp; Logistic Regression</title>
+<meta name="description" content="A comprehensive introductory statistical data science book.">
+<title>Introduction to Statistics - 25&nbsp; Logistic Regression</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -68,10 +68,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -122,7 +124,7 @@ const typesetMath = (el) => {
 window.Quarto = {
   typesetMath
 };
-</script>
+</script><link rel="stylesheet" href="custom.css">
 </head>
 <body class="nav-sidebar floating">
 
@@ -131,7 +133,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./model.html">Statistical Models</a></li><li class="breadcrumb-item"><a href="./model-logistic.html"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Logistic Regression</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./model.html">Statistical Models</a></li><li class="breadcrumb-item"><a href="./model-logistic.html"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Logistic Regression</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -143,8 +145,33 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Introduction to Statistics</a> 
-        <div class="sidebar-tools-main">
+        <div class="sidebar-tools-main tools-wide">
     <a href="https://github.com/chenghanyustats/introstatsbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="./Introduction-to-Statistics.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+    <div class="dropdown">
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Share"><i class="bi bi-share"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+<li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=%7Curl%7C">
+              <i class="bi bi-bi-twitter pe-1"></i>
+            Twitter
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=%7Curl%7C">
+              <i class="bi bi-bi-facebook pe-1"></i>
+            Facebook
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=%7Curl%7C">
+              <i class="bi bi-bi-linkedin pe-1"></i>
+            LinkedIn
+            </a>
+          </li>
+      </ul>
+</div>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
     </div>
       </div>
@@ -319,14 +346,20 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./infer-p.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">The Issues of <span class="math inline">\(p\)</span>-value and Statistical Significance</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./infer-bayes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Bayesian Thinking and Inference</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Bayesian Thinking and Inference</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-nonpar.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Nonparametric Methods</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Nonparametric Tests</span></span></a>
   </div>
 </li>
       </ul>
@@ -343,31 +376,31 @@ window.Quarto = {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-anova.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-reg.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Linear Regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Linear Regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-logistic.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Logistic Regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Logistic Regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-bayes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-survival.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Survival Analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Survival Analysis</span></span></a>
   </div>
 </li>
       </ul>
@@ -407,17 +440,17 @@ window.Quarto = {
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#regression-vs.-classification" id="toc-regression-vs.-classification" class="nav-link active" data-scroll-target="#regression-vs.-classification"><span class="header-section-number">24.1</span> Regression vs.&nbsp;Classification</a></li>
-  <li><a href="#introduction-to-logistic-regression" id="toc-introduction-to-logistic-regression" class="nav-link" data-scroll-target="#introduction-to-logistic-regression"><span class="header-section-number">24.2</span> Introduction to Logistic Regression</a></li>
-  <li><a href="#simple-logistic-regression-model" id="toc-simple-logistic-regression-model" class="nav-link" data-scroll-target="#simple-logistic-regression-model"><span class="header-section-number">24.3</span> Simple Logistic Regression Model</a></li>
-  <li><a href="#logistic-regression-in-r" id="toc-logistic-regression-in-r" class="nav-link" data-scroll-target="#logistic-regression-in-r"><span class="header-section-number">24.4</span> Logistic Regression in R</a></li>
-  <li><a href="#evaluation-metrics" id="toc-evaluation-metrics" class="nav-link" data-scroll-target="#evaluation-metrics"><span class="header-section-number">24.5</span> Evaluation Metrics</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">24.6</span> Exercises</a></li>
+<li><a href="#regression-vs.-classification" id="toc-regression-vs.-classification" class="nav-link active" data-scroll-target="#regression-vs.-classification"><span class="header-section-number">25.1</span> Regression vs.&nbsp;Classification</a></li>
+  <li><a href="#introduction-to-logistic-regression" id="toc-introduction-to-logistic-regression" class="nav-link" data-scroll-target="#introduction-to-logistic-regression"><span class="header-section-number">25.2</span> Introduction to Logistic Regression</a></li>
+  <li><a href="#simple-logistic-regression-model" id="toc-simple-logistic-regression-model" class="nav-link" data-scroll-target="#simple-logistic-regression-model"><span class="header-section-number">25.3</span> Simple Logistic Regression Model</a></li>
+  <li><a href="#logistic-regression-in-r" id="toc-logistic-regression-in-r" class="nav-link" data-scroll-target="#logistic-regression-in-r"><span class="header-section-number">25.4</span> Logistic Regression in R</a></li>
+  <li><a href="#evaluation-metrics" id="toc-evaluation-metrics" class="nav-link" data-scroll-target="#evaluation-metrics"><span class="header-section-number">25.5</span> Evaluation Metrics</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">25.6</span> Exercises</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/model-logistic.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./model.html">Statistical Models</a></li><li class="breadcrumb-item"><a href="./model-logistic.html"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Logistic Regression</span></a></li></ol></nav><div class="quarto-title">
-<h1 class="title"><span id="sec-model-logistic" class="quarto-section-identifier"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Logistic Regression</span></span></h1>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./model.html">Statistical Models</a></li><li class="breadcrumb-item"><a href="./model-logistic.html"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Logistic Regression</span></a></li></ol></nav><div class="quarto-title">
+<h1 class="title"><span id="sec-model-logistic" class="quarto-section-identifier"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Logistic Regression</span></span></h1>
 </div>
 
 
@@ -431,8 +464,8 @@ window.Quarto = {
   
 
 
-</header><section id="regression-vs.-classification" class="level2" data-number="24.1"><h2 data-number="24.1" class="anchored" data-anchor-id="regression-vs.-classification">
-<span class="header-section-number">24.1</span> Regression vs.&nbsp;Classification</h2>
+</header><section id="regression-vs.-classification" class="level2" data-number="25.1"><h2 data-number="25.1" class="anchored" data-anchor-id="regression-vs.-classification">
+<span class="header-section-number">25.1</span> Regression vs.&nbsp;Classification</h2>
 <ul>
 <li>Linear regression assumes that the response <span class="math inline">\(Y\)</span> is <em>numerical</em>.</li>
 <li>In many situations, <span class="math inline">\(Y\)</span> is <strong>categorical</strong>.</li>
@@ -482,7 +515,7 @@ window.Quarto = {
 <img src="./images/img-model/classification.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-classification-regression-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;24.1: Difference between classification and regression (https://daviddalpiaz.github.io/r4sl/classification-overview.html)
+Figure&nbsp;25.1: Difference between classification and regression (https://daviddalpiaz.github.io/r4sl/classification-overview.html)
 </figcaption></figure>
 </div>
 </div>
@@ -502,7 +535,7 @@ Figure&nbsp;24.1: Difference between classification and regression (https://davi
 <img src="model-logistic_files/figure-html/fig-credit-boxplot-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-credit-boxplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;24.2: Boxplot of Default vs.&nbsp;Balance
+Figure&nbsp;25.2: Boxplot of Default vs.&nbsp;Balance
 </figcaption></figure>
 </div>
 </div>
@@ -553,7 +586,7 @@ What is the problem with this dummy variable approach?
 <img src="model-logistic_files/figure-html/fig-simple-regression-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:72.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-simple-regression-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;24.3: Graphical illustration of why a simple linear regression model won’t work for Default ~ Balance
+Figure&nbsp;25.3: Graphical illustration of why a simple linear regression model won’t work for Default ~ Balance
 </figcaption></figure>
 </div>
 </div>
@@ -575,13 +608,13 @@ Figure&nbsp;24.3: Graphical illustration of why a simple linear regression model
 <img src="model-logistic_files/figure-html/fig-logistic-reg-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:65.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-logistic-reg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;24.4: Graphical illustration of why a logistic regression model works better for Default ~ Balance
+Figure&nbsp;25.4: Graphical illustration of why a logistic regression model works better for Default ~ Balance
 </figcaption></figure>
 </div>
 </div>
 </div>
-</section><section id="introduction-to-logistic-regression" class="level2" data-number="24.2"><h2 data-number="24.2" class="anchored" data-anchor-id="introduction-to-logistic-regression">
-<span class="header-section-number">24.2</span> Introduction to Logistic Regression</h2>
+</section><section id="introduction-to-logistic-regression" class="level2" data-number="25.2"><h2 data-number="25.2" class="anchored" data-anchor-id="introduction-to-logistic-regression">
+<span class="header-section-number">25.2</span> Introduction to Logistic Regression</h2>
 <p><span style="color:blue"> <strong>Binary Responses</strong> </span></p>
 <ul>
 <li>Treat each outcome, default <span class="math inline">\((y = 1)\)</span> and not default <span class="math inline">\((y = 0)\)</span>, as success and failure arising from separate <strong>Bernoulli</strong> trials.</li>
@@ -683,7 +716,7 @@ In the default credit card example,
 <img src="model-logistic_files/figure-html/fig-logit-function-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:72.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-logit-function-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;24.5: Graphical illustration of the logit function
+Figure&nbsp;25.5: Graphical illustration of the logit function
 </figcaption></figure>
 </div>
 </div>
@@ -704,13 +737,13 @@ Figure&nbsp;24.5: Graphical illustration of the logit function
 <img src="model-logistic_files/figure-html/fig-logistic-function-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:72.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-logistic-function-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;24.6: Graphical illustration of the logistic function
+Figure&nbsp;25.6: Graphical illustration of the logistic function
 </figcaption></figure>
 </div>
 </div>
 </div>
-</section><section id="simple-logistic-regression-model" class="level2" data-number="24.3"><h2 data-number="24.3" class="anchored" data-anchor-id="simple-logistic-regression-model">
-<span class="header-section-number">24.3</span> Simple Logistic Regression Model</h2>
+</section><section id="simple-logistic-regression-model" class="level2" data-number="25.3"><h2 data-number="25.3" class="anchored" data-anchor-id="simple-logistic-regression-model">
+<span class="header-section-number">25.3</span> Simple Logistic Regression Model</h2>
 <ul>
 <li>For <span class="math inline">\(i = 1, \dots, n\)</span> and with one predictor <span class="math inline">\(X\)</span>: <span class="math display">\[(Y_i \mid X = x_i) \stackrel{indep}{\sim} \text{Bernoulli}(\pi(x_i))\]</span> <span class="math display">\[\text{logit}(\pi_i) = \ln \left( \frac{\pi(x_i)}{1 - \pi(x_i)} \right) = \eta_i = \beta_0+\beta_1 x_{i}\]</span>
 </li>
@@ -766,8 +799,8 @@ Note
 </ul>
 </div>
 </div>
-</section><section id="logistic-regression-in-r" class="level2" data-number="24.4"><h2 data-number="24.4" class="anchored" data-anchor-id="logistic-regression-in-r">
-<span class="header-section-number">24.4</span> Logistic Regression in R</h2>
+</section><section id="logistic-regression-in-r" class="level2" data-number="25.4"><h2 data-number="25.4" class="anchored" data-anchor-id="logistic-regression-in-r">
+<span class="header-section-number">25.4</span> Logistic Regression in R</h2>
 <div class="columns">
 <div class="column" style="width:49%;">
 <ul>
@@ -943,8 +976,8 @@ What is the probability of being male when the <code>HEIGHT</code> is 160 cm? Wh
 </ul>
 </div>
 </div>
-</section><section id="evaluation-metrics" class="level2" data-number="24.5"><h2 data-number="24.5" class="anchored" data-anchor-id="evaluation-metrics">
-<span class="header-section-number">24.5</span> Evaluation Metrics</h2>
+</section><section id="evaluation-metrics" class="level2" data-number="25.5"><h2 data-number="25.5" class="anchored" data-anchor-id="evaluation-metrics">
+<span class="header-section-number">25.5</span> Evaluation Metrics</h2>
 <p><span style="color:blue"> <strong>Sensitivity and Specificity</strong> </span></p>
 <table class="caption-top table">
 <colgroup>
@@ -1022,13 +1055,13 @@ gender_predict   0   1
 <img src="model-logistic_files/figure-html/fig-roc-curve-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-roc-curve-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;24.7: ROC curve for Gender ~ Height
+Figure&nbsp;25.7: ROC curve for Gender ~ Height
 </figcaption></figure>
 </div>
 </div>
 </div>
-</section><section id="exercises" class="level2" data-number="24.6"><h2 data-number="24.6" class="anchored" data-anchor-id="exercises">
-<span class="header-section-number">24.6</span> Exercises</h2>
+</section><section id="exercises" class="level2" data-number="25.6"><h2 data-number="25.6" class="anchored" data-anchor-id="exercises">
+<span class="header-section-number">25.6</span> Exercises</h2>
 <ol type="1">
 <li>The following logistic regression equation is used for predicting whether a bear is male or female. The value of <span class="math inline">\(\pi\)</span> is the probability that the bear is male. <span class="math display">\[\log\left(\frac{\pi}{1-\pi}\right) = 2.3 - 0.0573 (\text{Length}) + 0.00842(\text{Weight})\]</span>
 <ol type="a">
@@ -1061,6 +1094,150 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
@@ -1451,12 +1628,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./model-reg.html" class="pagination-link" aria-label="Linear Regression">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Linear Regression</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Linear Regression</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./model-bayes.html" class="pagination-link" aria-label="Bayesian Linear Regression">
-        <span class="nav-page-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

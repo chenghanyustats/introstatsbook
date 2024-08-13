@@ -662,7 +662,9 @@ $$\small \begin{align} P(X < a \text{ or } X > b) &= P(Z < z_a \text{ or } Z > z
 <!-- - If the calculation involves the "greater than" form, add `lower.tail = FALSE` in `pnorm()`. -->
 <!-- ::: -->
 
-## Checking Normality: Normal Quantile Plot
+## Checking Normality
+
+### Normal quantile plot
 
 If we use a statistical method with its assumption being violated, the analysis results and conclusion made by the method will be worthless. Many statistical methods assume variables are normally distributed. Therefore, testing the appropriateness of the normal assumption is a key step. 
 
@@ -705,7 +707,90 @@ qqline(right_skewed_sample)
 ```
 
 
-## Normal Approximation
+### Normality test
+
+If visualization is not enough for you to tell whether the data are far from normally distributed, we can use some formal procedures to make such conclusion. Since the methods are about **hypothesis testing** which will be first introduced in @sec-infer-ht, we will take about normality test in later chapters after we learn **hypothesis testing**.
+
+
+
+
+
+## Normal Approximation to Binomial Distribution
+
+In @sec-prob-disc, we learn that a binomial distribution can be approximated by a Poisson distribution. In this section we learn that a binomial distribution can also be approximated by a normal distribution. How good the approximation is again depends on the size of $n$ and $\pi$. Centuries ago, with no computing technology, calculating binomial probabilities is a pain in the neck, especially when $n$ is large. This motivates mathematicians to find another way to calculate the probabilities, or at least approximate them well. Not only binomial distributions, many other distributions are related to the normal distribution. This will be discussed in a probability theory course.
+
+To determine a normal distribution, we need parameters $\mu$ and $\sigma$. We know that if $X \sim Binomial(n, \pi)$, then the mean and standard deviation of $X$ are
+$$ \begin{align}
+\mu &= n\pi,\\
+\sigma &= \sqrt{n\pi(1-\pi)}.
+\end{align}$$
+
+When $n$ is large, we can approximate $X$ with a normal distribution $N\left(\mu = n\pi, \sigma^2 = n\pi(1-\pi)\right)$. When this normal approximation  does a pretty good job? Usually, the normal approximation performs well when $n$ is so large that $n\pi \ge 5$ and $n(1-\pi) \ge 5$. As you can see, when $\pi$ is near 0 or 1, $n$ needs to be much larger to satisfy the two conditions. The intuition is that normal distributions are symmetric, but binomial distributions are generally asymmetric. The more $\pi$ is close to 0 or 1, the more asymmetric the binomial distribution is, unless $n$ gets larger.
+
+Can you see any potential issue of using normal to approximate binomial? In fact, we are using a *continuous* normal distribution to approximate a *discrete* binomial distribution. In order to have a good approximation, especially when $n$ is not that large, we need something called **continuity correction**. 
+
+**Continuity correction** is made to transform discrete binomial values $0, 1, 2, \dots, n$ to a continuous interval from 0 to $n$ by adding and subtracting 0.5 from the whole number $0, 1, 2, \dots, n$. 
+
+```{r}
+#| label: fig-nor-approx-binom
+par(mar = c(4, 4, 2, 0), mgp = c(2.7, 1, 0), las = 1)
+plot(x = 0:15, y = dbinom(0:15, size = 15, prob = 0.2), 
+     type = 'h', xlab = "x", ylab = "P(X = x)", lwd = 5, 
+     main = "binomial(15, 0.2)")
+axis(1, at = seq(0, 15, by = 1))
+xx <- seq(-0.5, 15.5, length = 1000)
+lines(xx, dnorm(xx, mean = 15*0.2, sd = 15*0.2*0.8), col = 2, lwd = 3)
+segments(x0 = 4.5, y0 = 0, x1 = 4.5, y1 = dnorm(4.5, mean = 15*0.2, sd = 15*0.2*0.8), col = "red")
+segments(x0 = 3.5, y0 = 0, x1 = 3.5, y1 = dnorm(3.5, mean = 15*0.2, sd = 15*0.2*0.8), col = "red")
+for (i in 10:1) {
+  segments(x0 = 3.5, y0 = dnorm(3.5, mean = 15*0.2, sd = 15*0.2*0.8) * i/10, 
+           x1 = 4.5, y1 = dnorm(4.5, mean = 15*0.2, sd = 15*0.2*0.8) * i/10,
+           col = "red")
+}
+```
+
+By doing so, $P_{Binomial}(X = k) \approx$ integral of normal from $k-0.5$ to $k+0.5$. The idea is that in normal distribution, we treat any value between 0.5 and 1.5 as an integer 1 of the value of the discrete binomial distribution. The followings are some examples of continuity correction.
+
+- $P_{Binomial}(X \ge 1) \approx P_{Normal}(X > 0.5)$.
+
+- $P_{Binomial}(X > 1) \approx P_{Normal}(X > 1.5)$
+
+- $P_{Binomial}(X \le 4) \approx P_{Normal}(X < 4.5)$
+
+- $P_{Binomial}(X < 4) \approx P_{Normal}(X < 3.5)$
+
+- $P_{Binomial}(X = 4) \approx P_{Normal}(3.5 < X < 4.5)$
+
+@fig-nor-approx-binom illustrate that $P_{Binomial}(X = 4) \approx P_{Normal}(3.5 < X < 4.5)$. The height of the black bar at $x = 4$ is 0.187 showing $P_{Binomial}(X = 4)$ with $X \sim binomial(15, 0.2)$. This can be approximated by the integral of the normal density curve between 3.5 and 4.5, the red shaded area, which is $P_{Normal}(3.5 < X < 4.5)$ where $X \sim N(15(0.2), 15(0.2)(0.8))$.
+
+
+------------------------------------------------------------------------
+
+<span style="color:blue"> **Example of Normal Approximation (4.26 of OTT)** </span>
+
+A large drug company has 100 potential new prescription drugs under clinical test. About 20% of all drugs that reach this stage are eventually licensed for sale. What is the probability that at least 15 of the 100 drugs are eventually licensed?
+
+```{r}
+#| echo: true
+#| label: normal_approximation_to_binommial
+n <- 100  # number of trials
+p <- 0.2  # probability of being licensed for sale
+
+## 1. Exact Binomial Probability P(X >= 15) = 1 - P(X < 14)
+1 - pbinom(q = 14, size = n, prob = p)
+
+## 2. Normal approximation with Continuity Correction 
+## P(X >= 14.5) = 1 - P(X < 14.5)
+1 - pnorm(q = 14.5, mean = n * p, sd = sqrt(n * p * (1 - p)))
+
+## 3. Normal approximation with NO Continuity Correction 
+## P(X >= 15) = 1 - P(X < 15)
+1 - pnorm(q = 15, mean = n * p, sd = sqrt(n * p * (1 - p)))
+```
+
+
+
+
 
 ## Exercises
 
@@ -715,7 +800,7 @@ qqline(right_skewed_sample)
     (c) $|Z| > 1$
   
 2. The average daily high temperature in June in Chicago is 74$^{\circ}$F with a standard deviation of 4$^{\circ}$F. Suppose that the temperatures in June closely follows a normal distribution.
-    (a) What is the probability of observing an 81$^{\circ}$ F temperature or higher in Chigcago during a randomly chosen day in June?
+    (a) What is the probability of observing an 81$^{\circ}$ F temperature or higher in Chicago during a randomly chosen day in June?
     (b) How cool are the coldest 15\% of the days (days with lowest average high temperature) during June in Chicago?
 
 3. Head lengths of Virginia opossums follow a normal distribution with mean 104 mm and standard deviation 6 mm. 

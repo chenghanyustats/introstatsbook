@@ -614,22 +614,485 @@ summary(aov(y ~ food, data = data_anova))
 
 ## Unequal Variances
 
-To be added.
+The assumption of normality and equality of variances are both loose requirements. George Box of UW-Madison showed that as long as the sample sizes are (nearly) equal, the largest variance can be up to 9 times the smallest one and the result of ANOVA will continue to be reliable.
 
-## ANOVA Mathematical Model
+If population variances differ by large amount, we can **transform the data**. If the original variable is $y$, and the variances associated with $y$ across the treatments are not equal (heterogeneous), it may be necessary to work with a new variable such $\sqrt{y}$, $\log y$, or some other transformed variable.
 
-To be added.
+- <span style="color:blue"> If $\sigma^2 \propto \mu$, use $Y_T = \sqrt{Y}$ or $\sqrt{Y+0.375}$. </span>
+
+- <span style="color:blue"> If $\sigma^2 \propto \mu^2$, use $Y_T = \log{(Y)}$ or $\log(Y+1)$. </span>
+
+<!-- ## Heterogeneous Variances on Original $y$ Scale -->
+
+The following example demonstrates how data transformation can significantly equalize variances across groups. In the original data  $y$, variance increases with the treatment type, which violates the assumption of homogeneity of variance necessary for performing ANOVA. Directly applying ANOVA to $y$ may result in unconvincing outcomes. However, by transforming the data from $y$ to $\sqrt{y}$, the variances across the three groups become much more similar, thereby satisfying the homogeneity of variance assumption and making the ANOVA results more reliable.
+ 
+ 
+
+```{r, fig.height=8, fig.width=13}
+# k <- 1
+n <- 100
+df_heter_var <- data.frame("y" = c(rpois(n, 5), rpois(n, 20), rpois(n, 50)),
+                           "treatment" = c(rep(1, n), rep(2, n), rep(3, n)))
+boxplot(y~treatment, data = df_heter_var, axes = FALSE, ylab = "", xlab = "",
+        main = "Heterogeneous Variances on y", horizontal = FALSE)
+axis(2)
+axis(1, las = 1, at = 1:3, labels = c("Treatment 1", "Treatment 2", "Treatment 3"))
+original_y <- df_heter_var$y
+```
 
 
-## Pairwise Comparison
 
-To be added.
+<!-- ## Square Root Transformation ($y \rightarrow \sqrt{y}$) -->
+
+```{r, fig.height=8, fig.width=13}
+boxplot(sqrt(original_y)~treatment, data = df_heter_var, axes = FALSE, ylab = "", xlab = "",
+        main = expression(paste("Equal Variances on ", sqrt(y))), horizontal = FALSE)
+axis(2)
+axis(1, las = 1, at = 1:3, labels = c("Treatment 1", "Treatment 2", "Treatment 3"))
+```
+
+### Example of Unequal Variances (Example 8.4 SMD)
+
+Biologists believe that Mississippi river causes the oxygen level to be depleted near the Gulf of Mexico. To test this hypothesis water samples are taken at different distances from the mouth of Mississippi river, and the amounts of dissolve oxygen (in ppm) are recorded.
+
+```{r}
+#| out-width: 100%
+knitr::include_graphics("./images/img-model/table8-16.png")
+```
+
+<!-- ![](./figures/table8-16.png){height=400px width=900px} -->
+
+
+<!-- ## Example 8.4 Cont'd: Check the Data -->
+
+The origin data set `data_oxygen` is saved as
+
+```{r, fig.height=6, fig.width=10}
+load("../../intro_stats/OTT_Final/R_WORKSPACE/CH08/table08-16.rdata")
+data_8_16 <- `table08-16`  ## This is a data frame
+# original_y <- df_heter_var$y
+data_oxygen <- data_8_16[, 2:5]
+data_oxygen
+```
+
+<!-- ## Example 8.4 Cont'd: Test for Equal Variances -->
+
+First we learn that the homogeneity of variance assumption is violated by checking the boxplot.
+
+```{r}
+#| echo: true
+#| eval: false
+boxplot(data_oxygen)
+```
+
+```{r}
+boxplot(data_8_16[, 2:5], axes = FALSE, ylab = "", xlab = "",
+        main = "Boxplot of Oxygen Content", horizontal = FALSE)
+axis(2)
+axis(1, las = 1, at = 1:4, labels = paste(c(1, 5, 10, 20), "km"))
+```
+
+
+```{r}
+#| echo: !expr c(2)
+data_oxygen_tidy <- data.frame(oxygen = c(data_8_16[, 2], data_8_16[, 3], 
+                                        data_8_16[, 4], data_8_16[, 5]),
+                             km = c(rep("1", 10), rep("5", 10), 
+                                    rep("10", 10), rep("20", 10)))
+```
+
+This is also verified by the Levene's test using the function `car::leveneTest()`. The Levene’s test $p$-value is 0.02, so we reject the $H_0$: Equality of variance.
+
+```{r}
+#| echo: true
+library(car)
+leveneTest(oxygen ~ km, data = data_oxygen_tidy)
+```
+
+Note that here we use the data `data_oxygen_tidy`. As mentioned before, when doing analysis or fitting a statistical model, we prefer this *tidy data* that each column represents a variable, and each row stands for one observed value.
+
+```{r}
+data_oxygen_tidy
+```
+
+
+
+To get some understanding of how we should transform our data to make the variances equal, let’s calculate $\frac{s_i^2}{\bar{y}_i}$ for $i = 1, 2, 3, 4$.
+
+- $\frac{s_1^2}{\bar{y}_1} = 0.99$, $\frac{s_2^2}{\bar{y}_2} = 0.97$, $\frac{s_3^2}{\bar{y}_3} = 1.06$, $\frac{s_4^2}{\bar{y}_4} = 0.97$
+
+This tells us, nearly, the sample variance is proportional to the sample mean of the same group. So we can use the transformation $Y_T = \sqrt{Y+0.375}$.
+
+
+<!-- ## Example 8.4 Cont'd: Transforming the Data -->
+
+<!-- ![](./figures/table8-17.png){height=500px width=900px} -->
+
+
+```{r}
+#| out-width: 100%
+knitr::include_graphics("./images/img-model/table8-17.png")
+```
+
+Now, the variances for each group of the transformed data are much reasonably close.
+
+
+## ANOVA Mathematical Model*
+
+To generalize the ANOVA, it is easier to think of one-factor ANOVA in the following way:
+$$y_{ij} = \mu + \tau_i + \epsilon_{ij}, \quad j = 1, 2, \dots, n_i, \quad i = 1, 2, \dots, t$$
+
+  + $\mu$ is the overall mean across all $t$ populations.
+  + $\tau_i$ is the effect due to $i$-th treatment.
+  + $\epsilon_{ij}$ is the random deviation of $y_{ij}$ about the $i$-th population mean $\mu_i = \mu+ \tau_i$.
+  + $\mu$ and $\tau_i$ are unknown constants. 
+  + ANOVA is a **linear** model.
+  
+The assumptions of ANOVA are
+
+  + $\epsilon_{ij}$s are independent and normally distributed with mean 0.
+  + $Var(\epsilon_{ij}) = \sigma^2$ (<span style="color:blue"> a constant value </span>)
+  + $\epsilon_{ij} \sim N(0, \sigma^2)$
+  
+  
+<!-- ## ANOVA Model -->
+
+@fig-anova-model illustrate the ANOVA model structure. There are 4 treatments, and the overall mean $\mu = 75.5$. The 4 treatments are $\tau_1 = -5.5$,  $\tau_2 = -17.5$,  $\tau_3= -14.5$, and $\tau_4 = 8.5$.
+
+
+```{r}
+#| label: fig-anova-model
+#| out-width: 100%
+#| fig-cap: Illustration of ANOVA model structure. Figure 16.7 of Applied Linear Statistical Models, 5th ed.
+knitr::include_graphics("./images/img-model/anova_model.png")
+```
+<!-- ![](./figures/anova_model.png){height=300px width=500px} -->
+
+Let $y_{13}$ is the third measurement drawn from population 1, the its value can be decomposed into three parts: the overall mean, the adjustment due to being in the first treatment, and the random variation of the first population: $$y_{13} = \mu + \tau_1 + \epsilon_{13}.$$
+
+If $y_{13} = 72$, then $$y_{13} = \mu + \tau_1 + \epsilon_{13} \iff 72 = 75.5 + (-5.5) + 2.$$
+
+
+<!-- ### Hypothesis Testing of the ANOVA Model -->
+Again, our model is
+$y_{ij} = \mu + \tau_i + \epsilon_{ij} = \mu_i + \epsilon_{ij}, \quad j = 1, 2, \dots, n_i, \quad i = 1, 2, \dots, t.$
+
+To test whether all samples come from the same population, we test whether all group means are equal:
+
+ <span style="color:blue"> $\begin{align} 
+  &H_0: \mu_1 = \mu_2 = \cdots = \mu_t\\ 
+  &H_1: \text{Population means are not all equal}
+  \end{align}$ </span>
+  
+This is equivalent to testing whether all treatment effects are zero, or there is no treatment/factor/group effect: 
+
+<span style="color:blue"> $\begin{align} 
+  &H_0: \tau_i = 0 \text{ for all } i = 1, 2, \dots, t\\ 
+  &H_1: \tau_i \ne 0 \text{ for some } i
+  \end{align}$ </span>
+  
+Test statistics and decision rule are same as before. $s^2_{B} = MSB = \frac{SSB}{df_B}$ and $s^2_{W} = MSW = \frac{SSW}{df_W}$. Then the test statistic is $F_{test} = \frac{s^2_{B}}{s_W^2}$. We reject $H_0$ if $F_{test} > F_{\alpha, \, df_{B},\, df_{W}}$ or the $p$-value $P(F > F_{test}) < \alpha$.
+
+
+### Check Assumption that $\epsilon_{ij} \sim N(0, \sigma^2)$
+
+We learn that $y_{ij} = \mu + \tau_i + \epsilon_{ij} =  \mu_i + \epsilon_{ij}$ where $\mu_i = \mu + \tau_i$. As before, we need to check model assumptions. One assumption is $\epsilon_{ij} \sim N(0, \sigma^2)$. Notice that it implies normality and homogeneity of variance assumptions.
+
+For the model, we have $\epsilon_{ij} = y_{ij} - \mu_i$. However, $\mu_i$ is unknown. We are not able to get the values of $\epsilon_{ij}$ and check whether they are normally distributed. One solution is to find its estimate. We first estimate the errors $\epsilon_{ij}$ by $e_{ij}$ called **residuals**:
+$$e_{ij} = y_{ij} - \hat{\mu}_i =  y_{ij} - \bar{y}_{i\cdot},$$ where $\hat{\mu}_i = \bar{y}_{i\cdot}$. We use a *hat* symbol $\hat{}$ to denote the estimated value for an unknown parameter, or the predicted value of the response. Here we don't know the group population means $\mu_i$, but they can be estimated by their corresponding group sample means $\bar{y}_{i\cdot}$.
+
+<!-- - Even when $n_i$s are small, we would have $n_T$ residuals, which provide a sufficient number of values to evaluate normality condition. -->
+
+- To test normal distribution of errors $\epsilon_{ij}$, we look at the normal probability plot of $e_{ij}$.
+
+- To test that the $Var(\epsilon_{ij})$ is constant of $\sigma^2$, we look at the scatter plot of the residuals $e_{ij}$ and the predicted or **fitted values** $\hat{y}_{ij}$, where
+$$\hat{y}_{ij} = \hat{\mu}_i = \bar{y}_{i\cdot}.$$
+$\hat{y}_{ij}$ is the fitted value of the $j$th observation in the $i$th group, which is an estimate of the observed data point $y_{ij}$. The fitted value $\hat{y}_{ij}$ is the one produced from the model, and of course for the most of the time will not be the same as the observed value $y_{ij}$. From ANOVA, $\hat{y}_{ij} = \bar{y}_{i\cdot}$. That is, if we want to estimate any value drawn from the $i$th population, ANOVA gives us a point estimate, the $i$th group sample mean, to estimate any $j$th observation from the $i$th population. 
+
+  The samples in the $i$th population are not the same due to the variation of the normal distribution. However, when estimating each individual observation, ANOVA would not provide different values for different observations, but one single common value for all individual observations. The sampling variation cannot be captured by ANOVA, and using the mean value $\bar{y}_{i\cdot}$ as an estimate is the best ANOVA can do.
+
+
+<!-- ## Going Back to Example 8.4 -->
+
+<!-- - Biologists believe that Mississippi river causes the oxygen level to be depleted near the Gulf of Mexico. To test this hypothesis water samples are taken at different distances from the mouth of Mississippi river, and the amounts of dissolve oxygen (in ppm) are recorded. -->
+
+<!-- ![](./figures/table8-16.png){height=400px width=900px} -->
+
+------------------------------------------
+
+Let's go back to the oxygen level example. The original data look like 
+
+<!-- ## Fitted Values $\hat{y}_{ij} = \bar{y}_{i\cdot}$ {.tiny} -->
+<!-- <div class="columns-2"> -->
+<!-- # ```{r} -->
+<!-- #  -->
+<!-- # ``` -->
+<!-- </br> -->
+<!-- # ```{r} -->
+<!-- # #| echo: !expr c(-1, -2) -->
+<!-- # ## original data -->
+<!-- # data_oxygen <- data_8_16[, 2:5] -->
+<!-- # data_oxygen -->
+<!-- # ``` -->
+<!-- </div> -->
+
+To get the sample mean for each group, we can grab each column data, and calculate its average. For example, $\bar{y}_{1\cdot} = 2.2$.
+
+```{r}
+#| echo: true
+colMeans(data_oxygen)
+```
+
+
+The fitted value can also be obtained from the fitted result by the fitted linear model from `lm()`. `oxygen_fit$fitted.values` gives us fitted values for all observations. Note that the first 10 observations all have the same fitted value 2.2 because they are all from the first group (1 km). Similarly for other groups.
+
+```{r}
+#| echo: true
+# data_oxygen_tidy
+## fit a linear model to get fitted values and residuals
+oxygen_fit <- lm(oxygen ~ km, data = data_oxygen_tidy)
+oxygen_fit$fitted.values
+```
+
+We can organize the fitted values, saving them as a data frame like the original data `data_oxygen`.
+
+```{r}
+#| echo: true
+fitted_val <- matrix(oxygen_fit$fitted.values, 10, 4)
+
+## use the same column name as the original data
+colnames(fitted_val) <- paste0(c(1, 5, 10, 20), "KM")
+
+## fitted value data
+as.data.frame(fitted_val)
+```
+
+
+
+------------------------------------------
+
+Now let's check the residuals $e_{ij} = y_{ij} - \bar{y}_{i\cdot}$. We can obtain the residuals using its definition 
+
+```{r}
+#| echo: true
+data_oxygen_tidy[, 1] - oxygen_fit$fitted.values
+```
+
+or we can simply grab them from the fitted result:
+
+```{r}
+#| echo: true
+oxygen_fit$residuals
+```
+
+
+
+<!-- ## Residuals $e_{ij} = y_{ij} - \bar{y}_{i\cdot}$  -->
+<!-- -We have relatively large total sample size $n_T = 40$. -->
+
+
+The residuals must look like a normal distribution. The normal probability plot is somewhat close to a straight line. 
+
+```{r, fig.height=5}
+par(mgp = c(2.5, 1, 0))
+par(mar = c(4, 4, 2, 1))
+library(car)
+qqPlot(oxygen_fit$residuals, pch = 19, id = FALSE, ylab = "residuals", 
+       main = "Normal Probability Plot for Residuals")
+```
+
+The Shapiro test and Anderson-Darling test give us a different conclusion. We could either transform the data to make it look more normal, or collect more data points to gain more information about how the data are distributed.
+
+```{r}
+shapiro.test(oxygen_fit$residuals)
+ad.test(oxygen_fit$residuals)
+```
+
+
+<!-- ## Fitted Values versus Residuals -->
+
+**Residual plots** is another good way to check the model assumptions, especially whether or not the homogeneity of variance is hold. A residual plot is a scatterplot of $e_{ij}$ (y-axis) versus $\hat{y}_{ij}$ (x-axis).
+
+<!-- - Scatterplot of $\hat{y}_{ij}$ versus $e_{ij}$ -->
+
+```{r}
+#| echo: true
+#| eval: false
+plot(x = oxygen_fit$fitted.values, y = oxygen_fit$residuals)
+```
+
+```{r, fig.height=4}
+par(mar = c(4, 4, 2, 1))
+plot(oxygen_fit$fitted.values, oxygen_fit$residuals, xlab = "Fitted Value",
+     ylab = "Residual", main = "Versus Fits", pch = 19, col = "red",
+     xlim = c(0, 35))
+abline(h = 0)
+```
+
+If the homogeneity of variance holds, the residual points should be scattered around value 0 with the same degree of spreadness. Due to the cone shape, we see that the residual variance is increasing with the fitted values or kilometers, a sign of non-constant variances. We can conclude that $Var(\epsilon_{ij})$ is not constant. We can further say that this variance is a function of $\bar{y}_{i\cdot}$.
+
+
+<!-- ## Correct Analysis Based on Transformed Data -->
+
+Since the model assumptions are violated, we transform our data to correct unequal variances. As we learned in the previous section, we use the transformation $Y_T = \sqrt{Y + 0.375}$. The transformed data set is called `data_oxygen_tidy_trans`.
+
+```{r}
+#| echo: true
+data_oxygen_tidy_trans <- data_oxygen_tidy
+data_oxygen_tidy_trans[, 1] <- sqrt(data_oxygen_tidy[, 1] + 0.375)
+```
+
+
+
+We then fit ANOVA model on the transformed data.
+
+```{r}
+#| echo: true
+oxygen_fit_trans <- lm(oxygen ~ km, data = data_oxygen_tidy_trans)
+anova(oxygen_fit_trans)
+```
+
+We can check the model assumptions on the transformed data too to make sure that fitting ANOVA to the data makes sense.
+
+```{r}
+#| fig-height: 5
+#| fig-width: 11.5
+library(car)
+par(mgp = c(2.5, 1, 0))
+par(mar = c(4, 4, 2, 1))
+par(mfrow = c(1, 2))
+qqPlot(oxygen_fit_trans$residuals, pch = 19, id = FALSE, ylab = "residuals", 
+       main = "Normal Probability Plot for Residuals (transformed y)")
+plot(oxygen_fit_trans$fitted.values, oxygen_fit_trans$residuals, xlab = "Fitted Value",
+     ylab = "Residual", main = "Versus Fits (transformed y)", pch = 19, col = "red",
+     xlim = c(0, 6))
+abline(h = 0)
+```
+
+```{r}
+shapiro.test(oxygen_fit_trans$residuals)
+ad.test(oxygen_fit_trans$residuals)
+```
+
+From the qqplot and the testing results we can see that the transformed data are more like a normal distribution. There is no significant pattern in the residual plot, showing that unequal variances have been corrected.
+
+This result is more convincing than the one using the original data that violates the ANOVA model assumptions. Although the two models both reject the null hypothesis, the numerical results obtained from the transformed data interpret the relationship between the response and the factors more accurately.
+
+```{r}
+#| echo: true
+anova(oxygen_fit)
+```
+
+
+
+<!-- ## Checking Asumptions Based on Transformed Data -->
+
+
 
 
 ## Nonparametric Approach: Kruskal-Wallis Test
 
-To be added.
+In ANOVA, the sample from each factor level is from a normal population. What if the distribution is **non-normal**? One solution is to use the **Kruskal-Wallis test**, which can be viewed as a generalization of the Wilcoxon rank sum test (Mann-Whitney U test). Suppose we have $k$ samples from $k$ populations. We like to test the hypothesis that the $k$ samples were drawn from populations with the same **median**:
 
-## Two-Way ANOVA
+- <span style="color:blue"> $\begin{align} 
+  &H_0: \text{All $k$ populations have the same median}\\ 
+  &H_1: \text{Not all the medians are the same}
+  \end{align}$ </span>
 
-To be added.
+The requirements of the Kruskal-Wallis test are
+
+  + At least 3 **independent** samples
+  + Each sample has at least 5 observations for approximating a $\chi^2$ distribution. If samples have fewer than 5 observations, the $\chi^2$ approximation doe snot work well, and another way to find critical values is needed.
+
+There is **no** requirement that the populations have a normal distribution or any other particular distribution.
+
+The testing details are skipped here, but let's see how we can perform this test to answer our question when the normality assumption of ANOVA is not satisfied.
+
+
+----------------------------------------------------------------------
+
+<span style="color:blue">  **Example: `airquality` data** </span>
+
+We use the R built-in data set `airquality` for illustration. The data collected daily air quality measurements in New York, May to September 1973.
+
+```{r}
+#| echo: true
+str(airquality)
+head(airquality)
+## remove observations with missing values using complete.cases()
+air_data <- airquality[complete.cases(airquality), ] 
+```
+
+Our goal is to test at .05 significance level if the monthly ozone densities in New York have the same median from May to September 1973.
+
+First let's check the normality assumption. We can use `qqnorm()`, but here the function `qqPlot()` from the `car` package is used. The blue shaded area shows the 95\% confidence interval for straight line that indicates normality. Since there are not many observations in each group May to September, it may be hard to see whether normality is satisfied for every group. 
+
+```{r}
+#| label: normality-air
+#| fig-height: 3
+#| fig-width: 12
+#| echo: true
+library(car)
+par(mgp = c(2.5, 1, 0))
+par(mar = c(4, 4, 2, 1))
+car::qqPlot(Ozone ~ Month, data = air_data, layout=c(1, 5))
+```
+<!-- kruskal.test(Ozone ~ Month, data = airquality)  -->
+
+What we can do is to use a more formal testing procedure to decide whether are not the normality is satisfied. There are several methods for normality test out there such as **Kolmogorov-Smirnov (K-S) test**, **Shapiro-Wilk's test**, and **Anderson-Darling test**.
+
+The K-S test can be used to compare a sample against any reference distribution, not just the normal distribution. However, the K-S test is more focused on the central part of the distribution and might miss deviations in the tails. It is generally less powerful for detecting deviations from normality compared to other tests like the Shapiro-Wilk or Anderson-Darling tests.
+
+The Shapiro-Wilk test is specifically designed to assess the normality of a distribution. It is generally more powerful than the K-S and Anderson-Darling tests for detecting departures from normality, especially in small to moderately sized samples. The Anderson-Darling test is a modification of the K-S test and gives more weight to the tails of the distribution.
+
+<!-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3693611/ -->
+
+When we do the normality test, the null hypothesis of these tests is that *"sample distribution IS normal"*. If the test is significant, the distribution is non-normal.
+
+To perform Shapiro-Wilk test, we use `shapiro.test()` function in R. Note that May and Semptember are not normal.
+
+```{r}
+#| label: normality-test
+shapiro.test(air_data[air_data$Month == 5, 1])
+shapiro.test(air_data[air_data$Month == 9, 1])
+```
+
+To perform Anderson-Darling test, we use `ad.test()` function in the R package `nortest`.
+
+```{r}
+#| echo: true
+#| eval: true
+library(nortest)
+ad.test(air_data[air_data$Month == 5, 1])
+ad.test(air_data[air_data$Month == 9, 1])
+```
+
+For the K-S test, we use `ks.test()` function. We need to add "pnorm" in the function, so that it knows you are comparing your data with the normal distribution.
+
+```{r}
+ks.test(air_data[air_data$Month == 5, 1], "pnorm")
+ks.test(air_data[air_data$Month == 9, 1], "pnorm")
+```
+
+
+We just conform that not all sub-samples are normally distributed, and using the Kruskal-Wallis test could be making more sense. It is super easy to perform the Kruskal-Wallis test. Just one line of code with the formula as `lm()` in the `kruskal.test()` function.
+<!-- - Just one line of code in R to do Kruskal-Wallis test! -->
+
+```{r}
+#| label: kruskal-wallis-air
+#| echo: true
+kruskal.test(formula = Ozone ~ Month, data = air_data) 
+```
+
+It's an (approximate) $\chi^2$ test with degrees of freedom $k-1$. Here, we have $k=5$ months. Since $p$-value is approaching to 0, we reject $H_0$. We conclude that there is sufficient evidence to reject the claim that the 5 monthly ozone densities in New York have the same median.
+
+
+
+
+<!-- ## Pairwise Comparison -->
+
+
+
+<!-- ## Two-Way ANOVA* -->
+
+<!-- To be added. -->

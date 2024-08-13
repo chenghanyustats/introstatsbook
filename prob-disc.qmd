@@ -518,6 +518,97 @@ Be careful that the Poisson $X$ has no upper limit; the graph is *truncated* at 
 <!-- - $X$ has no upper limit; the graph is *truncated* at $x = 24$.  -->
 <!-- ::: -->
 
+
+## Relationship between Binomial and Poisson
+
+Actually binomial and Poisson distributions are somewhat related. Let's consider the following example. 
+
+Suppose a store owner believes that customers arrive at his store at a rate of 3.6 customers per hour on average. He wants to find the distribution of the number customers who will arrive during a particular one-hour period. And here is what he plans to do.
+
+He models customer arrivals in different time periods as independent. Then he divides the one-hour period into 3600 seconds and thinks of the arrival rate as being $3.6/3600 = 0.001$ per second.During each second either 0 or 1 customer will arrive, and the probability of an arrival
+during any single second is $0.001$.
+
+<!-- - He then tries to use the binomial distribution with -->
+<!-- parameters $n = 3600$ and $\pi = 0.001$ for the distribution of the number of customers -->
+<!-- who arrive during the one-hour period later in the day. -->
+
+Think about it. what he does is actually an **binomial** experiment because his experiment has
+
+  + A fixed number of identical trials: **3600 seconds (each second is one trial)**
+  + Each trial results in one of two outcomes **(No customer or 1 customer)**
+  + Trials are independent. **(customer arrivals in different time periods are independent)**
+  + The probability of success is constant. **(the probability of an arrival during any single second is 0.001)**
+
+If we let $X$ be the number of customers arrived during one-hour period or 3600 seconds, then $X \sim binomial(n=3600, \pi = 0.001)$. However, since he's actually counting the number of occurrences over a unit of time, we know that he can model $X$ as a Poisson random variable with mean 3.6 customers per hour which is happened to be equal to $n\pi$ in the binomial distribution: $X \sim Poisson(\lambda = 3.6 = n\pi)$.
+
+So what do we learn from this example? *"All models are wrong, but some are useful" -- George E. Box (1919 - 2013)*. We can deal with a problem using different approaches or models. Also, the binomial and Poisson distributions are somehow related with each other.
+
+
+---------------------------------------------------------------
+
+So in fact, when $n$ is large and $\pi$ is small, like the ones in our example, we can use Poisson distribution as approximation to binomial distribution with parameters $n$ and $\pi$, where the $\lambda$ parameter in Poisson distribution equals $n\pi$.
+
+Let's see the two probability distributions with different size of $n$ and $\pi$. On the left, $n$ is not large, just 10, and $\pi$ is not small, just $0.5$. We can see that the two distributions are not alike. The binomial distribution is symmetric and the Poisson is a little bit right-skewed, and more spread out.
+
+When $n$ is large, say 100, and $\pi$ is small like $0.01$, the two distributions are almost the same! It is hard to distinguish them by our eyes. If you want to learn formal proof about how a binomial distribution converges to Poisson as $n$ goes to infinity, and $\pi$ goes to zero while $n\pi$ stays constant, you can take a probability theory course.
+
+::::{.columns}
+:::{.column width="50%"}
+
+```{r}
+#| label: poisson_approx_1
+#| echo: false
+#| fig-height: 2.5
+#| fig-width: 5
+## n = 15, pi = 0.5
+par(mar = c(4,4,2,1))
+n <- 10
+p <- 0.5
+plot(0:n, dbinom(0:n, size = n, prob = p), type = 'h', ylim = c(0, 0.3),
+      ylab = "P(X = x)", xlab = "x", las = 1, axes = F, lwd = 4, main = "Binomial(10, 0.5)")
+points(0:n, dbinom(0:n, size = n, prob = p), pch = 16, cex = 1.2, col = "#FFCC00")
+axis(1, 0:n, col.axis = "black", cex.axis = 0.6)
+axis(2, seq(0, 0.2, by = 0.05), col.axis = "black", las = 2)
+
+plot(0:n, dpois(0:n, lambda = n * p), type = 'h', ylim = c(0, 0.3),
+      ylab = "P(X = x)", xlab = "x", las = 1, axes = F, lwd = 4, main = "Poisson(10*0.5)")
+points(0:n, dpois(0:n, lambda = n * p), pch = 16, cex = 1.2, col = "#FFCC00")
+axis(1, 0:n, col.axis = "black", cex.axis = 0.6)
+axis(2, seq(0, 0.2, by = 0.05), col.axis = "black", las = 2)
+
+```
+
+:::
+
+:::{.column width="50%"}
+
+```{r}
+#| label: poisson_approx_2
+#| echo: false
+#| fig-height: 2.5
+#| fig-width: 5
+## n = 100, pi = 0.01
+par(mar = c(4,4,2,1))
+n <- 100
+plot(0:15, dbinom(0:15, size = n, prob = 0.01), type = 'h', ylim = c(0, 0.4),
+      ylab = "P(X = x)", xlab = "x", las = 1, axes = F, lwd = 4, main = "Binomial(100, 0.01)")
+points(0:15, dbinom(0:15, size = n, prob = 0.01), pch = 16, cex = 1, col = "#FFCC00")
+axis(1, 0:15, col.axis = "black", cex.axis = 0.6)
+axis(2, seq(0, 0.4, by = 0.1), col.axis = "black", las = 2)
+
+plot(0:15, dpois(0:15, lambda = n * 0.01), type = 'h', ylim = c(0, 0.4),
+      ylab = "P(X = x)", xlab = "x", las = 1, axes = F, lwd = 4, main = "Poisson(100*0.01)")
+points(0:15, dpois(0:15, lambda = n * 0.01), pch = 16, cex = 1, col = "#FFCC00")
+axis(1, 0:n, col.axis = "black", cex.axis = 0.6)
+axis(2, seq(0, 0.4, by = 0.1), col.axis = "black", las = 2)
+```
+:::
+::::
+
+
+
+
+
 ## Exercises
 
 1. Data collected by the Substance Abuse and Mental Health Services Administration (SAMSHA) suggests that 65\% of 18-20 year olds consumed alcoholic beverages in any given year.

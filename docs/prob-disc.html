@@ -443,7 +443,8 @@ window.Quarto = {
 <li><a href="#probability-mass-function" id="toc-probability-mass-function" class="nav-link active" data-scroll-target="#probability-mass-function"><span class="header-section-number">9.1</span> Probability Mass Function</a></li>
   <li><a href="#binomial-distribution" id="toc-binomial-distribution" class="nav-link" data-scroll-target="#binomial-distribution"><span class="header-section-number">9.2</span> Binomial Distribution</a></li>
   <li><a href="#poisson-distribution" id="toc-poisson-distribution" class="nav-link" data-scroll-target="#poisson-distribution"><span class="header-section-number">9.3</span> Poisson Distribution</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">9.4</span> Exercises</a></li>
+  <li><a href="#relationship-between-binomial-and-poisson" id="toc-relationship-between-binomial-and-poisson" class="nav-link" data-scroll-target="#relationship-between-binomial-and-poisson"><span class="header-section-number">9.4</span> Relationship between Binomial and Poisson</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">9.5</span> Exercises</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/prob-disc.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -891,8 +892,66 @@ What are the differences between Binomial and Poisson distributions?
 <!-- :::{.callout-note} -->
 <!-- - $X$ has no upper limit; the graph is *truncated* at $x = 24$.  -->
 <!-- ::: -->
-</section><section id="exercises" class="level2" data-number="9.4"><h2 data-number="9.4" class="anchored" data-anchor-id="exercises">
-<span class="header-section-number">9.4</span> Exercises</h2>
+</section><section id="relationship-between-binomial-and-poisson" class="level2" data-number="9.4"><h2 data-number="9.4" class="anchored" data-anchor-id="relationship-between-binomial-and-poisson">
+<span class="header-section-number">9.4</span> Relationship between Binomial and Poisson</h2>
+<p>Actually binomial and Poisson distributions are somewhat related. Let’s consider the following example.</p>
+<p>Suppose a store owner believes that customers arrive at his store at a rate of 3.6 customers per hour on average. He wants to find the distribution of the number customers who will arrive during a particular one-hour period. And here is what he plans to do.</p>
+<p>He models customer arrivals in different time periods as independent. Then he divides the one-hour period into 3600 seconds and thinks of the arrival rate as being <span class="math inline">\(3.6/3600 = 0.001\)</span> per second.During each second either 0 or 1 customer will arrive, and the probability of an arrival during any single second is <span class="math inline">\(0.001\)</span>.</p>
+<!-- - He then tries to use the binomial distribution with -->
+<!-- parameters $n = 3600$ and $\pi = 0.001$ for the distribution of the number of customers -->
+<!-- who arrive during the one-hour period later in the day. -->
+<p>Think about it. what he does is actually an <strong>binomial</strong> experiment because his experiment has</p>
+<ul>
+<li>A fixed number of identical trials: <strong>3600 seconds (each second is one trial)</strong>
+</li>
+<li>Each trial results in one of two outcomes <strong>(No customer or 1 customer)</strong>
+</li>
+<li>Trials are independent. <strong>(customer arrivals in different time periods are independent)</strong>
+</li>
+<li>The probability of success is constant. <strong>(the probability of an arrival during any single second is 0.001)</strong>
+</li>
+</ul>
+<p>If we let <span class="math inline">\(X\)</span> be the number of customers arrived during one-hour period or 3600 seconds, then <span class="math inline">\(X \sim binomial(n=3600, \pi = 0.001)\)</span>. However, since he’s actually counting the number of occurrences over a unit of time, we know that he can model <span class="math inline">\(X\)</span> as a Poisson random variable with mean 3.6 customers per hour which is happened to be equal to <span class="math inline">\(n\pi\)</span> in the binomial distribution: <span class="math inline">\(X \sim Poisson(\lambda = 3.6 = n\pi)\)</span>.</p>
+<p>So what do we learn from this example? <em>“All models are wrong, but some are useful” – George E. Box (1919 - 2013)</em>. We can deal with a problem using different approaches or models. Also, the binomial and Poisson distributions are somehow related with each other.</p>
+<hr>
+<p>So in fact, when <span class="math inline">\(n\)</span> is large and <span class="math inline">\(\pi\)</span> is small, like the ones in our example, we can use Poisson distribution as approximation to binomial distribution with parameters <span class="math inline">\(n\)</span> and <span class="math inline">\(\pi\)</span>, where the <span class="math inline">\(\lambda\)</span> parameter in Poisson distribution equals <span class="math inline">\(n\pi\)</span>.</p>
+<p>Let’s see the two probability distributions with different size of <span class="math inline">\(n\)</span> and <span class="math inline">\(\pi\)</span>. On the left, <span class="math inline">\(n\)</span> is not large, just 10, and <span class="math inline">\(\pi\)</span> is not small, just <span class="math inline">\(0.5\)</span>. We can see that the two distributions are not alike. The binomial distribution is symmetric and the Poisson is a little bit right-skewed, and more spread out.</p>
+<p>When <span class="math inline">\(n\)</span> is large, say 100, and <span class="math inline">\(\pi\)</span> is small like <span class="math inline">\(0.01\)</span>, the two distributions are almost the same! It is hard to distinguish them by our eyes. If you want to learn formal proof about how a binomial distribution converges to Poisson as <span class="math inline">\(n\)</span> goes to infinity, and <span class="math inline">\(\pi\)</span> goes to zero while <span class="math inline">\(n\pi\)</span> stays constant, you can take a probability theory course.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="prob-disc_files/figure-html/poisson_approx_1-1.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="prob-disc_files/figure-html/poisson_approx_1-2.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="prob-disc_files/figure-html/poisson_approx_2-1.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="prob-disc_files/figure-html/poisson_approx_2-2.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section id="exercises" class="level2" data-number="9.5"><h2 data-number="9.5" class="anchored" data-anchor-id="exercises">
+<span class="header-section-number">9.5</span> Exercises</h2>
 <ol type="1">
 <li>Data collected by the Substance Abuse and Mental Health Services Administration (SAMSHA) suggests that 65% of 18-20 year olds consumed alcoholic beverages in any given year.
 <ol type="a">
