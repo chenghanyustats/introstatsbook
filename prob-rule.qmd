@@ -1,4 +1,4 @@
-# Probability Rules {#sec-prob-rule}
+# Probability Rules and Bayes Formula {#sec-prob-rule}
 
 In this chapter, we formally define some terms used in probability, and learn some basic probability operations.
 
@@ -522,6 +522,62 @@ knitr::include_graphics("./images/img-prob/bayestree.png")
 $$\begin{align*} & P(\text{yes} \mid \text{pass}) \\ &= \frac{P(\text{yes and }  \text{pass})}{P(\text{pass})} \\ &= \frac{P(\text{yes and }  \text{pass})}{P(\text{pass and yes}) + P(\text{pass and no})}\\ &= \frac{P(\text{pass | yes})P(\text{yes})}{P(\text{pass | yes})P(\text{yes}) + P(\text{pass | no})P(\text{no})} \\ &= \frac{0.76}{0.76 + 0.12} = 0.86 \end{align*}$$
 :::
 ::::
+
+
+
+
+
+## Law of Total Probability
+- If $A_1 \dots, A_n$ are disjoint, each event has positive probability and one of the events must
+occur, then
+$$ P(B) = \sum_{i=1}^n P(B\mid A_i)P(A_i) $$ 
+
+- <font size="4.9"> We've seen this with $n = 2$ in the denominator of Bayes' formula! Let $A_1 = A$ and $A_2 = A^c$,
+$P(B) = P(B \mid A)P(A) + P(B \mid A^c)P(A^c) = P(B \mid A_1)P(A_1) + P(B \mid A_2)P(A_2) = \sum_{i=1}^2 P(B\mid A_i)P(A_i)$ </font>
+
+- How about $n = 3$? Notice that $B = (B \cap A_1) \cup (B \cap A_2) \cup (B\cap A_3)$ and this can be generalized to arbitrary $n$.
+
+
+```{r}
+#| echo: false
+knitr::include_graphics("./images/img-prob/partition.png")
+```
+
+<!-- ![](./figures/partition.png){height=220px width=350px} -->
+
+## General Bayes' Formula
+
+- If $P(B) > 0$, the previous result implies 
+
+$$ P(A_k \mid B) = \frac{P(B \mid A_k)P(A_k)}{\sum_{i=1}^n P(B \mid A_i)P(A_i)} $$
+
+
+- **Example 4.33**: Of all homes having wood-burning furnaces, 30% own a type 1 furnace, 25%
+a type 2 furnace, 15% a type 3, and 30% other types. Over 3 years, 5% of type 1 furnaces, 3% of
+type 2, 2% of type 3, and 4% of other types have resulted in fires. If a fire occurs in a particular
+home, what is the probability that a type 1 furnace is in the home?
+
+
+> - <span style="color:blue"> Step 1: Formulate what we would like to compute  </span>: $P(\text{type 1} \mid \text{fire occurs})$
+
+<!-- > -  $P(\text{defaulted} \mid \text{poor-risk})$ -->
+
+> - <span style="color:blue"> Step 2: Define relevant events </span>: Let $B =$ fire occurs, $A_i =$ type $i$ furnace, $i = 1, 2, 3$ and $A_4 =$ other furnaces.
+
+<!-- > - Let $A =$ loan defaulted. $B =$ poor risk. Then $A^c =$ loan nondefaulted -->
+
+> - <span style="color:blue"> Step 3: Find probabilities in the Bayes' formula. </span>: You do it.
+
+<!-- > - <font size="4.5"> $P(B \mid A) = P(\text{poor risk} \mid \text{defaulted}) = 0.3$, $P(B \mid A^c) = P(\text{poor risk} \mid \text{nondefaulted}) = 0.1$ -->
+<!-- $P(A) = P(\text{defaulted}) = 0.01$, $P(A^c) = 1 - P(A) = 0.99$. </font> -->
+
+> - <span style="color:blue"> Step 4: Apply Bayes' formula. </span> Your answer should be 0.4.
+
+<!-- > - <font size="4.5"> $P(\text{defaulted} \mid \text{poor-risk}) = P(A \mid B) = \frac{P(B \mid A)P(A)}{P(B \mid A)P(A) + P(B \mid A^c)P(A^c)} = \frac{(0.3)(0.01)}{(0.3)(0.01) + (0.1)(0.99)} = 0.0294$ </font> -->
+
+
+
+
 
 ## Exercises
 

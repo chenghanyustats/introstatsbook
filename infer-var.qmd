@@ -761,6 +761,168 @@ If we have the entire two samples data, we can use the R built-in function `var.
 :::
 :::
 
+
+
+## Comparing More Than Two Population Variances*
+
+So far we use $\chi^2$ distribution to do inference for one population variance, and $F$ distribution to compare two variances. What if we want to compare more than two population variances? For example, what do we do if we have this kind of test:
+
+<span style="color:blue"> $\begin{align} 
+  &H_0: \sigma_1 = \sigma_2 = \dots = \sigma_t\\ 
+  &H_1: \text{Population variances are not all equal}
+  \end{align}$ </span>
+
+where we have $t > 2$ different groups. In this scenario, we can use the so-called **Brown-Forsythe-Levene (BFL) test**. The BFL test assumes that we have $t > 2$ independent samples. Then BFL replaces $y_{ij}$, the $j$-th observation in group $i$, with $z_{ij}$. $z_{ij} = |y_{ij} - \tilde{y}_i|$, where $\tilde{y}_i$ is the sample **median** or **mean** of group $i$. 
+
+:::{.callout-note}
+Brown-Forsythe-Levene test actually represents two tests: *Brown-Forsythe test* and *Levene's test*, where Brown-Forsythe test uses the sample **medians** in $z_{ij}$ and Levene's test uses the sample **means**. This is the only difference between the two tests, and therefore some will refer them as one Brown-Forsythe-Levene test, or some even refer one to the other. For example, the R function `car::leveneTest()` used in the example actually perform the Brown-Forsythe test by default with its argument `center=median`.
+
+Using means has larger statistical power for symmetric, moderate-tailed, distributions. But when data are non-normal, either skewed or heavy tailed, using medians is recommended because of good robustness against many types of non-normal data and while retaining good statistical power.
+:::
+  
+The test statistic is $\color{blue}{L_{test} = \frac{\sum_{i=1}^tn_i(\overline{z}_{i\cdot} - \overline{z}_{\cdot\cdot})^2 / (t - 1)}{\sum_{i=1}^t \sum_{j = 1}^{n_i}(z_{ij} - \overline{z}_{i\cdot})^2 / (N-t)}}$, where $\overline{z}_{i\cdot} = \sum_{j = 1}^{n_i}z_{ij}/n_{i}$ is the mean of the $z_{ij}$s from the group $i$, $\overline{z}_{\cdot\cdot} = \sum_{i=1}^t\sum_{j = 1}^{n_i}z_{ij}/N$ is the mean of all $z_{ij}$s, and $N = \sum_{i=1}^tn_i$.
+
+The decision rule is that we reject $H_0$ if $\color{blue}{L_{test} > F_{\alpha, \, t-1, \, N-t}}$.
+
+
+
+<!-- ## Idea of Brown-Forsythe-Levene (BFL) test -->
+
+<!-- - $\color{blue}{L = \frac{\sum_{i=1}^tn_i(\overline{z}_{i\cdot} - \overline{z}_{\cdot\cdot})^2 / (t - 1)}{\sum_{i=1}^t \sum_{j = 1}^{n_i}(z_{ij} - \overline{z}_{i\cdot})^2 / (N-t)}}$ -->
+
+<!-- - $z_{ij} = |y_{ij} - \tilde{y}_i|$, $\overline{z}_{i\cdot} = \sum_{j = 1}^{n_i}z_{ij}/n_{i}$, $\overline{z}_{\cdot\cdot} = \sum_{i=1}^t\sum_{j = 1}^{n_i}z_{ij}/N$ -->
+
+<!-- - We actually compare variation between samples. -->
+
+There are other tests for testing the homogeneity of variances, but the BFL test performs better when data are from a **non-normal** distribution. It corrects for the skewness of distribution by using deviations from group *medians*. The BFL test is more **robust**. It is less likely to incorrectly declare that the assumption of equal variances has been violated.
+
+
+-------------------------------------------------------------------
+
+<span style="color:blue"> **Example: Automobile Additives (Example 7.8 in SMD)** </span>
+
+Three different additives that are marketed for increasing the miles per gallon (mpg) for automobiles. The percentage increase in mpg was recorded for a 250-mile test drive for each additive for 10 randomly assigned cars. Is there a difference between the three additives with respect to their variability? The data are saved in R data frame `data_additive`.
+
+```{r}
+par(mar = c(2,6,1,1))
+y1 <- c(4.2, 2.9, 0.2, 25.7, 6.3, 7.2, 2.3, 9.9, 5.3, 6.5)
+y2 <- c(0.2, 11.3, 0.3, 17.1, 51, 10.1, 0.3, 0.6, 7.9, 7.2)
+y3 <- c(7.2, 6.4, 9.9, 3.5, 10.6, 10.8, 10.6, 8.4, 6.0, 11.9)
+# data_ex78 <- data.frame("mpg_increase" = c(y1, y2, y3), "additive" = factor(rep(1:3, each = 10)))
+data_additive <- data.frame("mpg_increase" = c(y1, y2, y3), "additive" = factor(rep(1:3, each = 10)))
+```
+
+```{r}
+#| echo: true
+data_additive
+```
+
+```{r}
+#| label: additive-boxplot
+#| echo: false
+#| fig-height: 3.6
+#| fig-width: 10
+par(mar = c(4, 5, 1.5, 0))
+boxplot(mpg_increase~additive, data = data_additive, axes = FALSE, ylab = "",
+        main = "Boxplots for three additives", horizontal = TRUE)
+axis(1)
+axis(2, las = 2, at = 1:3, labels = paste("Additive", 1:3))
+```
+
+The boxplot suggests that Additive 2 has larger variation than the other two in terms of the percentage increase in mpg. We will use the BFL test to decide whether or not their variation difference is just a random sampling consequences or it is statistically significant.
+
+<!-- ## Example 7.8 Data {.columns-2 .larger} -->
+<!-- # ```{r ex7-8data, echo=FALSE} -->
+<!-- # data_additive[1:15, ] -->
+<!-- # data_additive[16:30, ] -->
+<!-- # ``` -->
+
+<!-- # ```{r ex7-8data, echo=FALSE} -->
+<!-- # data_ex78[1:10, ] -->
+<!-- # data_ex78[11:20, ] -->
+<!-- # data_ex78[21:30, ] -->
+<!-- # ``` -->
+
+<!-- <div class="columns-2"> -->
+<!-- ```{r ex7-8, echo=FALSE} -->
+<!-- data_ex78[1:10, ] -->
+<!-- ``` -->
+<!-- ```{r ex7-81, echo=FALSE} -->
+<!-- data_ex78[11:20, ] -->
+<!-- ``` -->
+<!-- ```{r ex7-82, echo=FALSE} -->
+<!-- data_ex78[21:30, ] -->
+<!-- ``` -->
+<!-- </div> -->
+
+<!-- ::: {.tiny} -->
+
+<!-- ::: -->
+
+
+
+
+
+<!-- ## Example 7.8 Check Normality -->
+<!-- ```{r ex7-8qqplot, echo=FALSE, fig.height=2.5, fig.width=10} -->
+<!-- library(car) -->
+<!-- library(nortest) -->
+<!-- par(mgp = c(2.5, 1, 0)) -->
+<!-- par(mar = c(4, 4, 2, 1)) -->
+<!-- par(mfrow = c(1, 3)) -->
+<!-- for (i in 1:3) { -->
+<!--     qqPlot(data_additive[data_additive$additive == i, 1], las = 2, ylab = "sample quantiles", col = "#003366",  -->
+<!--        col.lines = "red", pch = 16, grid = FALSE, main = paste("QQ-plot Additive", i), cex = 2, id = FALSE) -->
+<!-- }  -->
+<!-- ad.test(data_additive[data_additive$additive == 1, 1]) -->
+<!-- ad.test(data_additive[data_additive$additive == 2, 1]) -->
+<!-- ad.test(data_additive[data_additive$additive == 3, 1]) -->
+<!-- ``` -->
+
+
+<!-- ## Example 7.8 BFL Test -->
+The procedure of BLT test is shown step by step as follows.
+
+- **Step 1**: <span style="color:blue"> $\begin{align} 
+  &H_0: \sigma_1 = \sigma_2 = \sigma_3\\ 
+  &H_1: \text{Population variances are not all equal}
+  \end{align}$ </span>
+  
+- **Step 2**: $\alpha = 0.05$
+
+- **Step 3**: Test statistic $\color{blue}{L_{test} = \frac{\sum_{i=1}^tn_i(\overline{z}_{i\cdot} - \overline{z}_{\cdot\cdot})^2 / (t - 1)}{\sum_{i=1}^t \sum_{j = 1}^{n_i}(z_{ij} - \overline{z}_{i\cdot})^2 / (N-t)}} = \frac{235.8/(3-1)}{1742.6/(30-3)} = 1.872$.
+
+- **Step4-c**: Critical value is $F_{\alpha, \, t-1, \, N-t} = F_{0.05, \, 3-1, \, 30-3} = 3.35$.
+
+- **Step5-c**: Since $L_{test}  = 1.872 < F_{\alpha, \, t-1, \, N-t} = 3.35$, we do not reject $H_0$.
+
+- **Step6**: There is insufficient evidence to support the claim that there is a difference in the population variances of the percentage increase in mpg for the three additives.
+
+Once you understand the idea and the process of doing the test, in practice, we use R function `leveneTest()` in the `car` ([Companion to Applied Regression](https://www.john-fox.ca/Companion/index.html)) package to help us perform the test.
+
+
+
+<!-- ## Example 7.8 BFL Test in R -->
+<!-- - The test statistic is $\color{blue}{L_{test} = \frac{\sum_{i=1}^tn_i(\overline{z}_{i\cdot} - \overline{z}_{\cdot\cdot})^2 / (t - 1)}{\sum_{i=1}^t \sum_{j = 1}^{n_i}(z_{ij} - \overline{z}_{i\cdot})^2 / (N-t)}}$, where $\overline{z}_{i\cdot}$ is the mean of the $z_{ij}$s from the group $i$, $\overline{z}_{\cdot\cdot}$ is the mean of all $z_{ij}$s, and $N = \sum_{i=1}^tn_i$. -->
+
+```{r}
+#| echo: true
+#| message: false
+library(car) # Load the package car ()
+leveneTest(y = data_additive$mpg_increase, 
+           group = data_additive$additive)
+```
+
+In the function, we put the response variable data in `y`, and the factor defining groups in `group`. By default, it will use sample medians to perform the test. The p-value is greater than 0.05 and it leads to the same conclusion that there is insufficient evidence to say there is a difference in the population variances of the percentage increase in mpg for the three additives.
+
+<!-- Yes. Just one line of code after you install the `car` R package. -->
+
+<!-- - Check Table 7.5 in the textbook if you really want to obtain the test statistic by hand. -->
+
+
+
+
+
 ## Exercises
 
 1. The data about male and female pulse rates are summarized below.
