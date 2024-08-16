@@ -1,0 +1,1734 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.555">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="description" content="A comprehensive introductory statistical data science book.">
+<title>Introduction to Statistics - 24&nbsp; Multiple Comparison*</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./model-twoway.html" rel="next">
+<link href="./model-anova.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script><link rel="stylesheet" href="custom.css">
+</head>
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./model.html">Statistical Models</a></li><li class="breadcrumb-item"><a href="./model-multicomp.html"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Multiple Comparison*</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Introduction to Statistics</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/chenghanyustats/introstatsbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="./Introduction-to-Statistics.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+    <div class="dropdown">
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Share"><i class="bi bi-share"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+<li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=%7Curl%7C">
+              <i class="bi bi-bi-twitter pe-1"></i>
+            Twitter
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=%7Curl%7C">
+              <i class="bi bi-bi-facebook pe-1"></i>
+            Facebook
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=%7Curl%7C">
+              <i class="bi bi-bi-linkedin pe-1"></i>
+            LinkedIn
+            </a>
+          </li>
+      </ul>
+</div>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Statistics and Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro-stats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Science of Data and Data Science</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data Collection and Data Type</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Tool foR Data</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./datasummary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Summarizing Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-graphics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Visualization</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-numerics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Numerical Measures of Data</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./prob.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Probability</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./prob-define.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Definition of Probability</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./prob-rule.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability Rules</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./prob-rv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Random Variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./prob-disc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Discrete Probability Distributions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./prob-cont.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Continuous Probability Distributions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./prob-sampling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Random Sampling and Sampling Distribution</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./prob-llnclt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Law of Large Numbers and Central Limit Theorem</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./infer.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Statistical Inference</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./infer-ci.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Point and Interval Estimation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./infer-bt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Bootstrapping</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./infer-ht.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Hypothesis Testing</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./infer-twomean.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Comparing Two Population Means</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./infer-var.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Inference About Variances</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./infer-prop.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Inference About Proportions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./infer-cat.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Inference about Categorical Data</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./infer-p.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">The Issues of <span class="math inline">\(p\)</span>-value and Statistical Significance</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./infer-bayes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Bayesian Thinking and Inference</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./infer-nonpar.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Nonparametric Tests</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Statistical Models</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./model-anova.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./model-multicomp.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Multiple Comparison*</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./model-twoway.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Two-Way ANOVA*</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./model-reg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Linear Regression</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./model-logistic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Logistic Regression</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./model-bayes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./model-survival.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Survival Analysis</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">References</span></span>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./a-r_prog.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">R programming</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./a-py_prog.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Python programming</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li><a href="#multiplicity-of-hypotheses" id="toc-multiplicity-of-hypotheses" class="nav-link active" data-scroll-target="#multiplicity-of-hypotheses"><span class="header-section-number">24.1</span> Multiplicity of Hypotheses</a></li>
+  <li>
+<a href="#familywise-error-rate-fwer-and-bonferroni-correction" id="toc-familywise-error-rate-fwer-and-bonferroni-correction" class="nav-link" data-scroll-target="#familywise-error-rate-fwer-and-bonferroni-correction"><span class="header-section-number">24.2</span> Familywise Error Rate (FWER) and Bonferroni Correction</a>
+  <ul class="collapse">
+<li><a href="#familywise-error-rate-fwer" id="toc-familywise-error-rate-fwer" class="nav-link" data-scroll-target="#familywise-error-rate-fwer"><span class="header-section-number">24.2.1</span> Familywise Error Rate (FWER)</a></li>
+  <li><a href="#bonferroni-correction" id="toc-bonferroni-correction" class="nav-link" data-scroll-target="#bonferroni-correction"><span class="header-section-number">24.2.2</span> Bonferroni Correction</a></li>
+  </ul>
+</li>
+  <li><a href="#fishers-lsd-least-significant-difference" id="toc-fishers-lsd-least-significant-difference" class="nav-link" data-scroll-target="#fishers-lsd-least-significant-difference"><span class="header-section-number">24.3</span> Fisher’s LSD (Least Significant Difference)</a></li>
+  <li><a href="#tukeys-hsd-honestly-significant-difference" id="toc-tukeys-hsd-honestly-significant-difference" class="nav-link" data-scroll-target="#tukeys-hsd-honestly-significant-difference"><span class="header-section-number">24.4</span> Tukey’s HSD (honestly significant difference)</a></li>
+  <li><a href="#dunnetts-method" id="toc-dunnetts-method" class="nav-link" data-scroll-target="#dunnetts-method"><span class="header-section-number">24.5</span> Dunnett’s Method</a></li>
+  <li><a href="#comparison-of-methods" id="toc-comparison-of-methods" class="nav-link" data-scroll-target="#comparison-of-methods"><span class="header-section-number">24.6</span> Comparison of Methods</a></li>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/model-multicomp.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./model.html">Statistical Models</a></li><li class="breadcrumb-item"><a href="./model-multicomp.html"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Multiple Comparison*</span></a></li></ol></nav><div class="quarto-title">
+<h1 class="title"><span id="sec-model-multicomp" class="quarto-section-identifier"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Multiple Comparison*</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header><section id="multiplicity-of-hypotheses" class="level2" data-number="24.1"><h2 data-number="24.1" class="anchored" data-anchor-id="multiplicity-of-hypotheses">
+<span class="header-section-number">24.1</span> Multiplicity of Hypotheses</h2>
+<p>What do we do after ANOVA? In ANOVA we test</p>
+<ul>
+<li><span style="color:blue"> <span class="math inline">\(\begin{align}
+  &amp;H_0: \mu_1 = \mu_2 = \dots = \mu_t\\
+  &amp;H_1: \mu_i \ne \mu_j \text{ for some } i, j
+  \end{align}\)</span> </span></li>
+</ul>
+<p>If we reject <span class="math inline">\(H_0\)</span> in favor of <span class="math inline">\(H_1\)</span>, we conclude that at least one of the <span class="math inline">\(t\)</span> population means differ from the others, or <span class="math inline">\(\mu_i \ne \mu_j\)</span> for some <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>. But the question is, we only conclude that there is some difference, but we don’t know which means differ from each other, or what pairs <span class="math inline">\((\mu_i, \mu_j)\)</span> are different. ANONA itself does not answer such questions. Results of an ANOVA do NOT tell us which group(s) is(are) different from the others.</p>
+<p>So after ANOVA, we may want to test</p>
+<ul>
+<li>
+<span style="color:blue"> <span class="math inline">\(\begin{align}
+  &amp;H_0^{ij}: \mu_i = \mu_j\\
+  &amp;H_1^{ij}: \mu_i \ne \mu_j
+  \end{align}\)</span> </span> for all pairs of <span class="math inline">\((i, j)\)</span> using, say, two-sample <span class="math inline">\(t\)</span>-test.</li>
+</ul>
+<p>We will be testing many hypotheses. As we discussed before, if there are <span class="math inline">\(t\)</span> populations under the study, there are <span class="math inline">\(t\)</span> chooses 2 <span class="math inline">\(t \choose{2}\)</span> pairs to be tested. For example, if there are 5 treatments, there will be 10 hypotheses. The test statistic will be like <span class="math inline">\(t_{ij} = \frac{\bar{y}_i - \bar{y}_j}{s_p^{ij} \sqrt{\left( \frac{1}{n_i} + \frac{1}{n_j} \right)}}\)</span> for all pairs of <span class="math inline">\((i, j)\)</span>, assuming all have the same population variance.</p>
+<p>However, performing too many pairewise tests simultaneously is problematic. If there are 10 hypotheses and each is tested at <span class="math inline">\(\alpha = 0.05\)</span>, there will be a high chance that one hypothesis will be falsely rejected. <span class="math display">\[\small{\begin{align} P(\text{At least 1 hypothesis is falsely rejected}) &amp;= 1 - P(\text{No hypothesis is falsely rejected}) \\ &amp;= 1 - (1 - \alpha)^{t} \\ &amp; = 1 - (1 - 0.05)^{10} = 0.4 \end{align}}\]</span> provided that all tests or hypotheses are independent. This probability is called the <strong>family-wise error rate (FWER)</strong>. We’ll take about it in more detail later.</p>
+<p>This high probability problem always arises due to <strong>multiplicity of hypotheses</strong>, meaning that multiple testings are conducted simultaneously in one single research study. This problem of multiplicity is more serious when you are testing more hypotheses.</p>
+<p><strong>[Example: Gene Expression Analysis]</strong> A data set is collected on gene expressions on 10,000 genes. This kind of research is done if you are trying to find genes responsible for cancer. If those genes are correctly detected, you can study their structure and come up with a cure.</p>
+<p>If we test each of the hypotheses at <span class="math inline">\(\alpha = 0.05\)</span>, then <span class="math inline">\(P(\text{At least 1 hypothesis is falsely rejected}) \approx 1\)</span>. In fact, on average 5% of them (<strong>500</strong> hypotheses) will be <em>falsely</em> discovered even if all null hypotheses are true. This is a big problem in scientific studies.</p>
+<p>In this chapter we will learn how to do multiple pairwise comparisons or testings simultaneously while controlling the familywise error rate at a low level, reducing the number of false positives, or mitigating the inflated Type-I error rate due to multiple comparisons. The main methods introduced here include <strong>Bonferroni correction</strong>, <strong>Fisher’s LSD (Least Significant Difference)</strong>, <strong>Tukey’s HSD (honestly significant difference)</strong>, and <strong>Dunnett’s Method</strong>. Before we jump into these methods, let’s first look at an examples, refreshing our knowledge of ANOVA.</p>
+<hr>
+<p><span style="color:blue"> <strong>Example of Multiple Comparison: ANOVA (Example 9.4 in SMD)</strong> </span></p>
+<p>A study was done to test 5 different agents used to control weeds. Each of these agents were applied to sample of 6 one-acre plots. The hay was harvested and the total yield was recorded. The data set is saved in the R data frame <code>data_weed</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>   yield agent type
+1   1.05     1 None
+2   1.09     1 None
+3   1.32     1 None
+4   1.13     1 None
+5   1.13     1 None
+6   1.33     1 None
+7   1.37     2 Bio1
+8   1.12     2 Bio1
+9   1.20     2 Bio1
+10  1.24     2 Bio1
+11  1.47     2 Bio1
+12  1.35     2 Bio1
+13  1.36     3 Bio2
+14  1.33     3 Bio2
+15  1.27     3 Bio2
+16  1.50     3 Bio2
+17  1.37     3 Bio2
+18  1.14     3 Bio2
+19  1.64     4 Chm1
+20  1.41     4 Chm1
+21  1.30     4 Chm1
+22  1.46     4 Chm1
+23  1.31     4 Chm1
+24  1.37     4 Chm1
+25  1.45     5 Chm2
+26  1.34     5 Chm2
+27  1.61     5 Chm2
+28  1.54     5 Chm2
+29  1.40     5 Chm2
+30  1.66     5 Chm2</code></pre>
+</div>
+</div>
+<p>Summary statistics are shown below.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code> agent sample_mean sample_sd sample_size type
+     1        1.17     0.120           6 None
+     2        1.29     0.127           6 Bio1
+     3        1.33     0.120           6 Bio2
+     4        1.42     0.125           6 Chm1
+     5        1.50     0.127           6 Chm2</code></pre>
+</div>
+</div>
+<!-- # ```{r} -->
+<!-- # #| out-width: 100% -->
+<!-- # knitr::include_graphics("./images/img-model/ex9_3.png") -->
+<!-- # ``` -->
+<p>The questions are</p>
+<ul>
+<li>if there is a difference between the agents</li>
+<li>which agent provides the best yield</li>
+</ul>
+<!-- ![Table 9.1 in Stats](./figures/ex9_3.png){height=220px width=690px} --><p>The first question can be answered by ANOVA. Let’s check the assumptions, and perform ANOVA. <!-- ## Example 9.3 Check Equal Variances {.smaller} --></p>
+<p>First we check the equality of variances <span class="math inline">\(H_0: \sigma_1^2 = \dots = \sigma_5^2\)</span>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-forge.r-project.org/projects/car/">car</a></span><span class="op">)</span></span>
+<span><span class="op">(</span><span class="va">levene_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/car/man/leveneTest.html">leveneTest</a></span><span class="op">(</span><span class="va">yield</span> <span class="op">~</span> <span class="va">agent</span>, data <span class="op">=</span> <span class="va">data_weed</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Levene's Test for Homogeneity of Variance (center = median)
+      Df F value Pr(&gt;F)
+group  4    0.12   0.97
+      25               </code></pre>
+</div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Bartlett test is adapted for normally distributed data.</span></span>
+<span><span class="op">(</span><span class="va">bartlett_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/bartlett.test.html">bartlett.test</a></span><span class="op">(</span><span class="va">yield</span> <span class="op">~</span> <span class="va">agent</span>, data <span class="op">=</span> <span class="va">data_weed</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Bartlett test of homogeneity of variances
+
+data:  yield by agent
+Bartlett's K-squared = 0.03, df = 4, p-value = 1</code></pre>
+</div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># The Fligner-Killeen test is most robust against departures from normality. Use it when there are outliers.</span></span>
+<span><span class="op">(</span><span class="va">fligner_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/fligner.test.html">fligner.test</a></span><span class="op">(</span><span class="va">yield</span> <span class="op">~</span> <span class="va">agent</span>, data <span class="op">=</span> <span class="va">data_weed</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Fligner-Killeen test of homogeneity of variances
+
+data:  yield by agent
+Fligner-Killeen:med chi-squared = 0.4, df = 4, p-value = 1</code></pre>
+</div>
+</div>
+<!-- ## Example 9.3 Check Normality -->
+<p>Then we check the normality assumption <span class="math inline">\(H_0:\)</span> Data are generated from a normal distribution for each type of weed agents. The qqplot looks good.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-forge.r-project.org/projects/car/">car</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/car/man/qqPlot.html">qqPlot</a></span><span class="op">(</span><span class="va">yield</span> <span class="op">~</span> <span class="va">type</span>, data <span class="op">=</span> <span class="va">data_weed</span>, layout<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-multicomp_files/figure-html/ex9_3_normality_test-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<!-- ## Example 9.3 ANOVA -->
+<p>Next, we perform ANOVA to test if there is a difference among the agents.</p>
+<ul>
+<li>
+<span class="math inline">\(\begin{align}
+&amp;H_0: \mu_1 = \mu_2 = \cdots = \mu_5\\
+&amp;H_1: \mu_i \ne \mu_j \text{ for some pairs } (i, j)
+\end{align}\)</span> </li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">yield</span> <span class="op">~</span> <span class="va">agent</span>, data <span class="op">=</span> <span class="va">data_weed</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Variance Table
+
+Response: yield
+          Df Sum Sq Mean Sq F value Pr(&gt;F)   
+agent      4  0.365  0.0912    5.96 0.0016 **
+Residuals 25  0.383  0.0153                  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>We reject <span class="math inline">\(H_0\)</span>, and conclude that there is a difference among the agents.</p>
+<!-- ## Post Hoc ANOVA and  -->
+<p>In the ANOVA, we only conclude that mean yields are different under different agents. How do we say which agent is the best? Are chemical agents (Agent 4, 5) better than the biological agents (Agent 2, 3)? All of these questions can be answered by all pairwise comparisons.</p>
+<ul>
+<li><span style="color:blue"> <span class="math inline">\(\begin{align}
+&amp;H_0^{ij}: \mu_i = \mu_j\\
+&amp;H_1^{ij}: \mu_i \ne \mu_j
+\end{align}\)</span> </span></li>
+</ul>
+<p>Here shows the boxplot for each weed agent. The ANOVA has told us there are some mean yield differences among these agents, and we are going to find out which 2 agents or which pair produce statistically discernible different mean yields.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-multicomp_files/figure-html/ex9_3_boxplot-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="familywise-error-rate-fwer-and-bonferroni-correction" class="level2" data-number="24.2"><h2 data-number="24.2" class="anchored" data-anchor-id="familywise-error-rate-fwer-and-bonferroni-correction">
+<span class="header-section-number">24.2</span> Familywise Error Rate (FWER) and Bonferroni Correction</h2>
+<section id="familywise-error-rate-fwer" class="level3" data-number="24.2.1"><h3 data-number="24.2.1" class="anchored" data-anchor-id="familywise-error-rate-fwer">
+<span class="header-section-number">24.2.1</span> Familywise Error Rate (FWER)</h3>
+<p>Instead of using Type I error rate <span class="math inline">\(\alpha\)</span> for each single 2-sample test, we should use a different type of error rate. We need to control the so-called <strong>familywise error rate (FWER)</strong> denoted as <span class="math inline">\(\alpha_F=P(\text{Falsely reject at least one hypotheses}) \le \alpha_0\)</span>, <span class="math inline">\(F\)</span> for Familywise. This is a probability of falsely rejecting at least one hypothesis of all the hypotheses considered. We hope <span class="math inline">\(\alpha_F\)</span> is less than or equal to some small value say <span class="math inline">\(\alpha_0\)</span>, just like we hope the Type I error rate of each individual test <span class="math inline">\(\alpha &lt; 0.05\)</span>.</p>
+<p>The idea is that when we are doing multiple comparisons, we view all the comparisons, here in the weed yield example, all 10 2-sample tests, as a whole single problem like one single family, and we are controlling the falsely rejection rate for that one family, not the falsely rejection rate for every single family member, a 2 sample test in the family.</p>
+<p>If there are <span class="math inline">\(m\)</span> (independent) hypotheses each tested at significance level <span class="math inline">\(\alpha_I\)</span>, then <span class="math inline">\(\alpha_F = 1 - (1 - \alpha_I)^m\)</span>. So the larger <span class="math inline">\(m\)</span> is, the higher <span class="math inline">\(\alpha_F\)</span> is. To achieve a desired level of <span class="math inline">\(\alpha_F\)</span>, which is typically as small as individual <span class="math inline">\(\alpha_I\)</span>, we might lose power of true discovery because to make <span class="math inline">\(\alpha_F\)</span> small, that is, we decrease the probability of falsely rejecting a <span class="math inline">\(H_0\)</span>, we tend to be more conservative to reject <span class="math inline">\(H_0\)</span>, and we make it harder to reject <span class="math inline">\(H_0\)</span>. But when doing so, we may miss some false <span class="math inline">\(H_0\)</span> that should have been rejected.</p>
+<!-- ## Familywise Error Rate (FWER) -->
+<!-- ![](./figures/fwer.png){height=390px width=690px} -->
+<!-- # ```{r} -->
+<!-- # #| out-width: 100% -->
+<!-- # knitr::include_graphics("./images/img-model/fwer.png") -->
+<!-- # ``` -->
+<p>As shown in the figure below, if <span class="math inline">\(\alpha_I = 0.1\)</span>, then <span class="math inline">\(\alpha_F \approx 1\)</span> when <span class="math inline">\(m\)</span> is more than 40, meaning that there will definitely be a false discovery in the study. If <span class="math inline">\(\alpha_I = 0.05\)</span>, then the probability of committing a false discovery is higher than 80%! In practice, <span class="math inline">\(m\)</span> can be 10 thousands or even millions large. Then <span class="math inline">\(\alpha_F\)</span> is basically one, and there are lots of false rejections of <span class="math inline">\(H_0\)</span> in the study, resulting in misleading scientific conclusions. We need to find a way to control or adjust <span class="math inline">\(\alpha_F\)</span> to a much smaller level.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-multicomp_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<!-- ## Multiple Comparison Methods {.smaller} -->
+</section><section id="bonferroni-correction" class="level3" data-number="24.2.2"><h3 data-number="24.2.2" class="anchored" data-anchor-id="bonferroni-correction">
+<span class="header-section-number">24.2.2</span> Bonferroni Correction</h3>
+<p>We will discuss four methods: Bonferroni, Fisher’s LSD (Least Significant Difference), Tukey’s HSD (Honestly Significant Difference), and Dunnett’s method. With <span class="math inline">\(H_0^{ij}: \mu_i = \mu_j\)</span> and <span class="math inline">\(H_1^{ij}: \mu_i \ne \mu_j\)</span>, in all of the methods we reject <span class="math inline">\(H_0^{ij}\)</span> if <span class="math inline">\(|\overline{y}_i - \overline{y}_j| &gt; C\)</span> for some value <span class="math inline">\(C\)</span>.</p>
+<p>The idea is that when <span class="math inline">\(\mu_i \ne \mu_j\)</span>, it’s more likely to have large <span class="math inline">\(|\overline{y}_i - \overline{y}_j|\)</span>. When <span class="math inline">\(|\overline{y}_i - \overline{y}_j|\)</span> is so large that is over some determined threshold <span class="math inline">\(C\)</span>, we conclude that <span class="math inline">\(\mu_i \ne \mu_j\)</span>. Think about the 2-sample pooled <span class="math inline">\(t\)</span>-test. The test statistic is <span class="math inline">\(\small t_{test} = \frac{\overline{y}_1 - \overline{y}_2}{\sqrt{s_p^2 \left(\frac{1}{n_1}+\frac{1}{n_2}\right)}}\)</span>, and we reject <span class="math inline">\(H_0\)</span> if <span class="math inline">\(|t_{test}| &gt; t_{\alpha/2, \, n_1+n_2-2}\)</span>. Therefore, we reject <span class="math inline">\(H_0\)</span> if</p>
+<p><span class="math display">\[|\overline{y}_1 - \overline{y}_2| &gt; t_{\alpha/2, \, n_1+n_2-2} \sqrt{s_p^2 \left(\frac{1}{n_1}+\frac{1}{n_2}\right)}.\]</span></p>
+<p>The problem is the threshold <span class="math inline">\(t_{\alpha/2, \, n_1+n_2-2} \sqrt{s_p^2 \left(\frac{1}{n_1}+\frac{1}{n_2}\right)}\)</span> is not that good when lots of tests being considered simultaneously. The multiple comparison methods try to provide better critical value and estimate of variance, so that <span class="math inline">\(\alpha_F\)</span> is properly controlled. We will look into the pros and cons for these methods later.</p>
+<!-- ## Bonferroni Correction {.smaller} -->
+<p>The first method is Bonferroni correction. The Bonferroni inequality provides a method for selecting <span class="math inline">\(\alpha_I\)</span> so that <span class="math inline">\(\alpha_F\)</span> is bounded below a specific value. The Bonferroni inequality provides a rough upper bound for <span class="math inline">\(\alpha_F\)</span> that <span class="math display">\[ \alpha_F = 1 - (1 - \alpha_I)^m \le (\alpha_I^0 + \dots + \alpha_I^m).\]</span> When each of the <span class="math inline">\(m\)</span> tests has the same rate <span class="math inline">\(\alpha_I\)</span>, <span class="math display">\[ \alpha_F \le m\alpha_I.\]</span></p>
+<p>If there are <span class="math inline">\(m\)</span> hypotheses, and we want <span class="math inline">\(\alpha_F \le \alpha_0 = 0.05\)</span>, then we can test individual hypothesis at <span class="math inline">\(\alpha_I = \frac{\alpha_0}{m} = \frac{0.05}{m}\)</span>, and then use a standard method such as <span class="math inline">\(t\)</span>-test. This will guarantee that <span class="math display">\[\alpha_F \le m\alpha_I=m\left(\frac{\alpha_0}{m}\right) = m\left(\frac{0.05}{m}\right) = 0.05.\]</span></p>
+<p>However, the problem with this approach is that if <span class="math inline">\(m\)</span> is large, <span class="math inline">\(\alpha_I = \frac{0.05}{m}\)</span> will be very small, and the chance of rejecting <span class="math inline">\(H_0\)</span> will be small. This correction procedure is very conservative with respect to <span class="math inline">\(\alpha_F\)</span> and the power of Bonferroni correction method is very poor.</p>
+<!-- ## Bonferroni Method {.smaller} -->
+<p>In the Bonferroni method, we use test statistic <span class="math inline">\(t_{ij} = \dfrac{|\overline{y}_i - \overline{y}_j|}{\sqrt{\hat{\sigma}^2\left( \frac{1}{n_i} + \frac{1}{n_j}\right)}}\)</span> with Type I error rate of <span class="math inline">\(\alpha_I = \frac{\alpha}{m}\)</span>, <span class="math inline">\(m\)</span> is the number of hypotheses.</p>
+<p>The value <span class="math inline">\(\hat{\sigma}^2 = s_W^2 = MSW = \frac{SSW}{df_{W}}\)</span> from ANOVA is the pooled variance (pooled by total <span class="math inline">\(t\)</span> samples) that estimates the common variance <span class="math inline">\(\sigma^2\)</span>, where <span class="math inline">\(df_{W} = n_1+\dots +n_t - t\)</span>. We then reject <span class="math inline">\(H_0\)</span> or say that pair <span class="math inline">\((\mu_i, \mu_j)\)</span> are statistically discernibly different if <span class="math display">\[\color{blue}{\boxed{|\overline{y}_i - \overline{y}_j| &gt; t_{\frac{\alpha}{2m}, df_{W}}\sqrt{s_W^2\left( \frac{1}{n_i} + \frac{1}{n_j}\right)}}}\]</span></p>
+<p>Look at the formula carefully. The differences between Bonferroni and the unadjusted 2-sample pooled <span class="math inline">\(t\)</span>-test are</p>
+<ul>
+<li>Change the critical value from <span class="math inline">\(t_{\frac{\alpha}{2}, \, n_i+n_j-2}\)</span> to <span class="math inline">\(t_{\frac{\alpha/m}{2}, \, n_1+\dots +n_t - t}\)</span>
+</li>
+<li>Change the pooled variance from <span class="math inline">\(s_p^2\)</span> pooled by the <span class="math inline">\(i\)</span>-th and <span class="math inline">\(j\)</span>-th samples only to <span class="math inline">\(\hat{\sigma}^2 = s_W^2\)</span> pooled by all <span class="math inline">\(t\)</span> samples</li>
+</ul>
+<!-- ## Example 9.3 Bonferroni Method {.smaller} --><!-- # ```{r} --><!-- # knitr::include_graphics("./images/img-model/ex9_3.png") --><!-- # ``` --><!-- ![](./figures/ex9_3.png){height=150px width=450px} --><p>In Bonferroni method, we make the individual error rate smaller, and we consider all groups when estimating <span class="math inline">\(\sigma^2\)</span>. The estimate <span class="math inline">\(\hat{\sigma}^2\)</span> is generally better than <span class="math inline">\(s_p^2\)</span> because it averages over more sample variances together, and it makes the estimate less varied and closer to the true value of <span class="math inline">\(\sigma^2\)</span> if the truth is that all populations have the common <span class="math inline">\(\sigma^2\)</span>. Think about it. <span class="math inline">\(\hat{\sigma}^2\)</span> uses more information from all samples, but <span class="math inline">\(s_p^2\)</span> only considers the <span class="math inline">\(i\)</span>th and <span class="math inline">\(j\)</span>th groups.</p>
+<hr>
+<p><span style="color:blue"> <strong>Example of Multiple Comparison: Bonferroni</strong> </span></p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code> agent sample_mean sample_sd sample_size type
+     1        1.17     0.120           6 None
+     2        1.29     0.127           6 Bio1
+     3        1.33     0.120           6 Bio2
+     4        1.42     0.125           6 Chm1
+     5        1.50     0.127           6 Chm2</code></pre>
+</div>
+</div>
+<p>Back to the weed yield example, and see the pair comparison result using the Bonferroni method. We have 5 different weed agents. One is control group, no agent (Agent 1), 2 biological agents (Agent 2 and 3), and 2 chemical agents (Agent 4 and 5).</p>
+<p>We know <span class="math inline">\(n_i\)</span> and <span class="math inline">\(s_i\)</span>, so we can get the followings:</p>
+<ul>
+<li><p><span class="math inline">\(SSW = \sum_{i}(n_i-1)s_i^2 = 0.3825\)</span>, <span class="math inline">\(df_{W} = 25\)</span>.</p></li>
+<li><p><span class="math inline">\(s_W^2 = MSW = \hat{\sigma}^2 = \frac{SSW}{df_{W}} = \frac{0.3825}{25} = 0.0153\)</span>.</p></li>
+</ul>
+<p>Also, set <span class="math inline">\(\alpha = 0.05\)</span>, and <span class="math inline">\(m = 10\)</span>, so</p>
+<ul>
+<li>
+<span class="math inline">\(\frac{\alpha}{2m} = \frac{0.05}{2\cdot 10} = 0.0025\)</span>, and <span class="math inline">\(t_{\frac{\alpha}{2m}=0.0025, \, df_W=25} = 3.078\)</span>
+</li>
+</ul>
+<p>Therefore, using the Bonferroni method, we conclude <span class="math inline">\(\mu_i - \mu_j \ne 0\)</span> if <span class="math inline">\(|\overline{y}_i - \overline{y}_j| &gt; 3.078\sqrt{0.0153\left(\frac{1}{6}+ \frac{1}{6}\right)} = 0.2198.\)</span></p>
+<p>Here lists comparisons between Agent 1 (control) with Agent 2 to 5.</p>
+<ul>
+<li><strong>Agent 1 v.s. 5: <span class="math inline">\(|1.500 –1.175| = 0.325 &gt; 0.2198\)</span></strong></li>
+<li><strong>Agent 1 v.s. 4: <span class="math inline">\(|1.415 –1.175| = 0.240 &gt; 0.2198\)</span></strong></li>
+<li>Agent 1 v.s. 3: <span class="math inline">\(|1.328 –1.175| = 0.153 &lt; 0.2198\)</span>
+</li>
+<li>Agent 1 v.s. 2: <span class="math inline">\(|1.293 –1.175| = 0.118 &lt; 0.2198\)</span>
+</li>
+</ul>
+<p>We can see that Chm2 (Agent 5) and Chm1 (Agent 4) are different from Control (Agent 1), but Bio1 and Bio2 are not significantly different from the control group.</p>
+<!-- ## Example 9.3 Bonferroni Method in R (Most Conservative) {.smaller} -->
+<p><span class="math inline">\(\color{blue}{|\overline{y}_i - \overline{y}_j| &gt; t_{\frac{\alpha}{2m}, df_{W}}\sqrt{s_W^2\left( \frac{1}{n_i} + \frac{1}{n_j}\right)}}\)</span></p>
+<p>Let me first show how I do the Bonferroni correction using R step by step.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">y_bar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1.175</span>, <span class="fl">1.293</span>, <span class="fl">1.328</span>, <span class="fl">1.415</span>, <span class="fl">1.500</span><span class="op">)</span></span>
+<span><span class="co">## all pairs</span></span>
+<span><span class="op">(</span><span class="va">y_bar_pair</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/combn.html">combn</a></span><span class="op">(</span><span class="va">y_bar</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+[1,] 1.18 1.18 1.18 1.18 1.29 1.29 1.29 1.33 1.33  1.42
+[2,] 1.29 1.33 1.42 1.50 1.33 1.42 1.50 1.42 1.50  1.50</code></pre>
+</div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## all pair distances |y_bar_i - y_bar_j|</span></span>
+<span><span class="va">y_bar_dist</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">y_bar_pair</span>, <span class="fl">2</span>, <span class="va">dist</span><span class="op">)</span></span>
+<span><span class="va">dd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/combn.html">combn</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">y_bar_dist</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">dd</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, <span class="va">dd</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span>, sep <span class="op">=</span> <span class="st">" vs "</span><span class="op">)</span></span>
+<span><span class="va">y_bar_dist</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1 vs 2 1 vs 3 1 vs 4 1 vs 5 2 vs 3 2 vs 4 2 vs 5 3 vs 4 3 vs 5 4 vs 5 
+ 0.118  0.153  0.240  0.325  0.035  0.122  0.207  0.087  0.172  0.085 </code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## set values</span></span>
+<span><span class="va">alpha</span> <span class="op">&lt;-</span> <span class="fl">0.05</span>; <span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Special.html">choose</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">2</span><span class="op">)</span>; <span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">6</span></span>
+<span></span>
+<span><span class="co">## perform anova</span></span>
+<span><span class="va">aov_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aov.html">aov</a></span><span class="op">(</span><span class="va">yield</span> <span class="op">~</span> <span class="va">agent</span>, data <span class="op">=</span> <span class="va">data_weed</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="co">## extract df_W</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/df.residual.html">df.residual</a></span><span class="op">(</span><span class="va">aov_res</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="co">## extract s_W</span></span>
+<span><span class="va">sw</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/sigma.html">sigma</a></span><span class="op">(</span><span class="va">aov_res</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="co">## critical value of bonferroni</span></span>
+<span><span class="va">t_bon</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">qt</a></span><span class="op">(</span>p <span class="op">=</span> <span class="va">alpha</span> <span class="op">/</span> <span class="op">(</span><span class="fl">2</span> <span class="op">*</span> <span class="va">m</span><span class="op">)</span>, df <span class="op">=</span> <span class="va">df</span>, lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## margin of error</span></span>
+<span><span class="op">(</span><span class="va">E_bon</span> <span class="op">&lt;-</span> <span class="va">t_bon</span> <span class="op">*</span> <span class="va">sw</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="va">n</span> <span class="op">+</span> <span class="fl">1</span><span class="op">/</span><span class="va">n</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.22</code></pre>
+</div>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## decision</span></span>
+<span><span class="op">(</span><span class="va">y_bar_dist</span> <span class="op">&gt;</span> <span class="va">E_bon</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1 vs 2 1 vs 3 1 vs 4 1 vs 5 2 vs 3 2 vs 4 2 vs 5 3 vs 4 3 vs 5 4 vs 5 
+ FALSE  FALSE   TRUE   TRUE  FALSE  FALSE  FALSE  FALSE  FALSE  FALSE </code></pre>
+</div>
+</div>
+<!-- # c("holm", "hochberg", "hommel", "bonferroni", "BH", "BY", -->
+<!-- #   "fdr", "none") -->
+<!-- ## Example 9.3 2-sample pooled $t$-test in R -->
+<!-- $|\overline{y}_1 - \overline{y}_2| > t_{\alpha/2, \, n_1+n_2-2} \sqrt{s_p^2 \left(\frac{1}{n_1}+\frac{1}{n_2}\right)}$ -->
+<!-- ```{r, tidy=FALSE} -->
+<!-- s <- c(.1204, .1269, .1196, .1249, .1265); s2_pair <- combn(s^2, 2); s2_pooled <- apply(s2_pair, 2, mean) -->
+<!-- t_cv <- qt(p = alpha/2, df = 2 * n - 2, lower.tail = FALSE) -->
+<!-- (E_t <- t_cv * sqrt(s2_pooled * (1/n + 1/n))) -->
+<!-- (y_bar_dist > E_t)  ## decision -->
+<!-- ts <- y_bar_dist / sqrt(s2_pooled * (1/n + 1/n))  ## test statistic -->
+<!-- round(pt(ts, df = 2 * n - 2, lower.tail = FALSE) * 2, 4)  ## p-value -->
+<!-- ``` -->
+<!-- ## Example 9.3 Bonferroni Method in R {.smaller} -->
+<p>There is a shortcut to do Bonferroni correction for pairwise comparisons. We can use the function <code><a href="https://rdrr.io/r/stats/pairwise.t.test.html">pairwise.t.test()</a></code>. If we want to do 2-sample pooled <span class="math inline">\(t\)</span> test, aregument <code>pool.sd</code> should be FALSE because this argument is for the pooled variance pooled by all groups combined, not group <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>. The <code>p.adjust.method</code> is <code>none</code> because we do not control or adjust FWER. The <code>var.equal</code> should be <code>TRUE</code>, so that the pooled <span class="math inline">\(t\)</span> test is used. Otherwise, it will perform 2 sample <span class="math inline">\(t\)</span> test with non-equal variances.</p>
+<p>The output is a matrix including p-values of all pair comparison testings. We can tell which pairs are significant by comparing their p-value with the significance level <span class="math inline">\(\alpha\)</span>.</p>
+<p>If we want to do Bonferroni correction, use <code>p.adjust.method = "bonferroni"</code>. Again, in Bonferroni, (1, 4) and (1, 5) are statistically significantly different. In traditional 2 sample <span class="math inline">\(t\)</span> test, significant results include (1, 4), (1, 5), (2, 5), and (3, 5).</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## individual 2-sample pooled t-test but not pooled by all groups</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/pairwise.t.test.html">pairwise.t.test</a></span><span class="op">(</span><span class="va">data_weed</span><span class="op">$</span><span class="va">yield</span>, <span class="va">data_weed</span><span class="op">$</span><span class="va">agent</span>, pool.sd <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>                p.adjust.method <span class="op">=</span> <span class="st">"none"</span>, var.equal <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Pairwise comparisons using t tests with non-pooled SD 
+
+data:  data_weed$yield and data_weed$agent 
+
+  1     2     3     4    
+2 0.129 -     -     -    
+3 0.052 0.634 -     -    
+4 0.007 0.124 0.246 -    
+5 0.001 0.018 0.036 0.269
+
+P value adjustment method: none </code></pre>
+</div>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## Bonferroni correction</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/pairwise.t.test.html">pairwise.t.test</a></span><span class="op">(</span><span class="va">data_weed</span><span class="op">$</span><span class="va">yield</span>, <span class="va">data_weed</span><span class="op">$</span><span class="va">agent</span>, </span>
+<span>                p.adjust.method <span class="op">=</span> <span class="st">"bonferroni"</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Pairwise comparisons using t tests with pooled SD 
+
+data:  data_weed$yield and data_weed$agent 
+
+  1     2     3     4    
+2 1.000 -     -     -    
+3 0.421 1.000 -     -    
+4 0.025 1.000 1.000 -    
+5 0.001 0.077 0.237 1.000
+
+P value adjustment method: bonferroni </code></pre>
+</div>
+</div>
+<p>For each pair, we can draw its confidence interval for <span class="math inline">\(\mu_i - \mu_j\)</span>. The CI formula is <span class="math inline">\(\color{blue}{(\overline{y}_i - \overline{y}_j) \pm t_{\frac{\alpha}{2m}, df_{W}}\sqrt{s_W^2\left( \frac{1}{n_i} + \frac{1}{n_j}\right)}}\)</span>. The yellow dot represents <span class="math inline">\(\overline{y}_i - \overline{y}_j\)</span>. Centered at <span class="math inline">\(\overline{y}_i - \overline{y}_j\)</span>, we plus and minus the margin of error <span class="math inline">\(t_{\frac{\alpha}{2m}, df_{W}}\sqrt{s_W^2\left( \frac{1}{n_i} + \frac{1}{n_j}\right)}\)</span> to get the upper and lower bound of the CI. If the CI does not include zero, we conclude that <span class="math inline">\(\mu_i\)</span> and <span class="math inline">\(\mu_j\)</span> are not equal. Here again <span class="math inline">\(\mu_1\)</span> and <span class="math inline">\(\mu_4\)</span> are different. <span class="math inline">\(\mu_1\)</span> and <span class="math inline">\(\mu_5\)</span> are different too.</p>
+<!-- ## Example 9.3 Bonferroni Method in R {.smaller} -->
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-multicomp_files/figure-html/bonferroni_plot-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<!-- # ```{r, bonferroni_plot, echo=FALSE} -->
+<!-- # (y_bar_diff <- -apply(y_bar_pair, 2, diff))  ## all pair distances -->
+<!-- # ci_bon <- rbind(y_bar_diff - E, y_bar_diff + E) -->
+<!-- #  -->
+<!-- # plot(rep(0, 10), seq(10), type = 'l', xlim = c(min(ci_bon), max(ci_bon)),  -->
+<!-- #      col = "yellow", las = 1, -->
+<!-- #      xlab = "95% interval", ylab = "Sample",  -->
+<!-- #      main = paste("95% confidence Intervals from", M, "different samples")) -->
+<!-- #  -->
+<!-- # segments(x0 = ci_lower, y0 = 1:M, x1 = ci_upper, y1 = 1:M, col = '#003366', lwd = 1) -->
+<!-- # segments(x0 = ci_lower[contained], y0 = (1:M)[contained], x1 = ci_upper[contained],  -->
+<!-- #          y1 = (1:M)[contained], col = 'red', lwd = 1) -->
+<!-- #  -->
+<!-- # abline(v = mu, col = "#FFCC00", lwd = 2) -->
+<!-- #  -->
+<!-- # ``` -->
+</section></section><section id="fishers-lsd-least-significant-difference" class="level2" data-number="24.3"><h2 data-number="24.3" class="anchored" data-anchor-id="fishers-lsd-least-significant-difference">
+<span class="header-section-number">24.3</span> Fisher’s LSD (Least Significant Difference)</h2>
+<p>The second method introduced here is Fisher’s LSD, short for Least Significant Difference. We reject <span class="math inline">\(H_0\)</span> or say that pair <span class="math inline">\((\mu_i, \mu_j)\)</span> are significantly different if <span class="math display">\[\color{blue}{\boxed{|\overline{y}_i - \overline{y}_j| &gt; t_{\frac{\alpha}{2}, df_{W}}\sqrt{s_W^2\left( \frac{1}{n_i} + \frac{1}{n_j}\right)}}}\]</span> Unlike the Bonferroni method, Fisher’s LSD <strong>does NOT</strong> correct for multiple comparisons or FWER. The diffrence between Bonferroni and Fisher’s LSD is that Bonferroni uses <span class="math inline">\(\alpha/m\)</span> but Fisher’s LSD uses <span class="math inline">\(\alpha\)</span> itself. The Fisher’s LSD test is basically a set of individual <span class="math inline">\(t\)</span>-tests. Two-sample pooled <span class="math inline">\(t\)</span>-tests compute the pooled variance from only the two groups being compared, while the Fisher’s LSD test computes the pooled variance from all the groups (which gains power). Also, the degrees fo freedom in the <span class="math inline">\(t\)</span> critical value is <span class="math inline">\(df_W\)</span>, not <span class="math inline">\(n_i+n_j-2\)</span> in the 2 sample pooled <span class="math inline">\(t\)</span> test.</p>
+<!-- ## Example 9.3 Fisher’s LSD {.smaller} -->
+<!-- ![](./figures/ex9_3.png){height=150px width=450px} -->
+<!-- - $\color{blue}{|\overline{y}_i - \overline{y}_j| > t_{\frac{\alpha}{2}, df_{error}}\sqrt{MSE\left( \frac{1}{n_i} + \frac{1}{n_j}\right)}}$ -->
+<hr>
+<p><span style="color:blue"> <strong>Example of Multiple Comparison: Fisher’s LSD</strong> </span></p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code> agent sample_mean sample_sd sample_size type
+     1        1.17     0.120           6 None
+     2        1.29     0.127           6 Bio1
+     3        1.33     0.120           6 Bio2
+     4        1.42     0.125           6 Chm1
+     5        1.50     0.127           6 Chm2</code></pre>
+</div>
+</div>
+<p>The process of doing Fisher’s LSD is pretty similar to doing Bonferroni.</p>
+<ul>
+<li><p><span class="math inline">\(\frac{\alpha}{2}  = 0.025\)</span>, and <span class="math inline">\(t_{0.025, 25} = 2.0595\)</span></p></li>
+<li><p>We conclude <span class="math inline">\(\mu_i - \mu_j \ne 0\)</span> if <span class="math inline">\(|\overline{y}_i - \overline{y}_j| &gt; 2.0595\sqrt{0.0153\left(\frac{1}{6}+ \frac{1}{6}\right)} = 0.1471\)</span></p></li>
+<li><p><strong>Agent 1 v.s. 5: <span class="math inline">\(|1.500 –1.175| = 0.325 &gt; 0.1471\)</span></strong></p></li>
+<li><p><strong>Agent 1 v.s. 4: <span class="math inline">\(|1.415 –1.175| = 0.240 &gt; 0.1471\)</span></strong></p></li>
+<li><p><strong>Agent 1 v.s. 3: <span class="math inline">\(|1.328 –1.175| = 0.153 &gt; 0.1471\)</span></strong></p></li>
+<li><p>Agent 1 v.s. 2: <span class="math inline">\(|1.293 –1.175| = 0.118 &lt; 0.1471\)</span></p></li>
+<li><p><strong>Agent 2 v.s. 5: <span class="math inline">\(|1.500 –1.293| = 0.207 &gt; 0.1471\)</span></strong></p></li>
+<li><p>Agent 2 v.s. 4: <span class="math inline">\(|1.415 –1.293| = 0.112 &lt; 0.1471\)</span></p></li>
+<li><p>Agent 2 v.s. 3: <span class="math inline">\(|1.328 –1.293| = 0.035 &lt; 0.1471\)</span></p></li>
+<li><p>Agent 3, 4 and 5 are different from control. Agent 2 and 5 are different.</p></li>
+</ul>
+<!-- ## Example 9.3 Fisher’s LSD in R --><ul>
+<li><span class="math inline">\(\color{blue}{|\overline{y}_i - \overline{y}_j| &gt; t_{\frac{\alpha}{2}, df_{W}}\sqrt{s_W^2\left( \frac{1}{n_i} + \frac{1}{n_j}\right)}}\)</span></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 25</code></pre>
+</div>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sw</span> <span class="op">^</span> <span class="fl">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.0153</code></pre>
+</div>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">t_lsd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">qt</a></span><span class="op">(</span>p <span class="op">=</span> <span class="va">alpha</span><span class="op">/</span><span class="fl">2</span>, df <span class="op">=</span> <span class="va">df</span>, lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="op">(</span><span class="va">E_lsd</span> <span class="op">&lt;-</span> <span class="va">t_lsd</span> <span class="op">*</span> <span class="va">sw</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="va">n</span> <span class="op">+</span> <span class="fl">1</span><span class="op">/</span><span class="va">n</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.147</code></pre>
+</div>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">y_bar_dist</span> <span class="op">&gt;</span> <span class="va">E_lsd</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1 vs 2 1 vs 3 1 vs 4 1 vs 5 2 vs 3 2 vs 4 2 vs 5 3 vs 4 3 vs 5 4 vs 5 
+ FALSE   TRUE   TRUE   TRUE  FALSE  FALSE   TRUE  FALSE   TRUE  FALSE </code></pre>
+</div>
+</div>
+<!-- # c("holm", "hochberg", "hommel", "bonferroni", "BH", "BY", -->
+<!-- #   "fdr", "none") -->
+<!-- ## Example 9.3 Fisher’s LSD in R {.smaller} -->
+<p>If we use <code><a href="https://rdrr.io/r/stats/pairwise.t.test.html">pairwise.t.test()</a></code>, <code>pool.sd = TRUE</code> because we do use the pooled variance <span class="math inline">\(s_W^2\)</span> that is pooled by all 5 samples. <code>p.adjust.method = "none"</code> because Fisher’s LSD does not adjust the Type I error rate. It still uses <span class="math inline">\(\alpha\)</span> in every individual testing. The p-value result for every pair comparison shows that if <span class="math inline">\(\alpha = 0.05\)</span> is the threshold or cutoff value, (1, 3), (1, 4), (1, 5), (2, 5), and (3, 5) pair comparisons reject their <span class="math inline">\(H_0\)</span> and conclude that there is a mean yield difference between their groups.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/pairwise.t.test.html">pairwise.t.test</a></span><span class="op">(</span><span class="va">data_weed</span><span class="op">$</span><span class="va">yield</span>, <span class="va">data_weed</span><span class="op">$</span><span class="va">agent</span>, pool.sd <span class="op">=</span> <span class="cn">TRUE</span>, </span>
+<span>                p.adjust.method <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="co">## Fisher’s LSD</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Pairwise comparisons using t tests with pooled SD 
+
+data:  data_weed$yield and data_weed$agent 
+
+  1     2     3     4    
+2 0.111 -     -     -    
+3 0.042 0.628 -     -    
+4 0.002 0.100 0.235 -    
+5 1e-04 0.008 0.024 0.245
+
+P value adjustment method: none </code></pre>
+</div>
+</div>
+<!-- ## Example 9.3 Fisher’s LSD in R {.smaller} -->
+<p>The Fisher’s LSD confidence interval for <span class="math inline">\(\mu_i - \mu_j\)</span> is <span class="math inline">\(\color{blue}{(\overline{y}_i - \overline{y}_j) \pm t_{\frac{\alpha}{2}, df_{W}}\sqrt{s_W^2\left( \frac{1}{n_i} + \frac{1}{n_j}\right)}}\)</span>. The CI for (1, 3), (1, 4), (1, 5), (2, 5), and (3, 5) do not include zero, leading to the same conclusion as the previous p-value method.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-multicomp_files/figure-html/lsd_plot-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="tukeys-hsd-honestly-significant-difference" class="level2" data-number="24.4"><h2 data-number="24.4" class="anchored" data-anchor-id="tukeys-hsd-honestly-significant-difference">
+<span class="header-section-number">24.4</span> Tukey’s HSD (honestly significant difference)</h2>
+<!-- - Tukey HSD is used to compare all groups to each other (so all possible comparisons of 2 groups). -->
+<!-- - For the common sample sizes, $n_i = n$, we reject $H_0$ or say that pair $(\mu_i, \mu_j)$ are significantly different if  -->
+<!-- $$\color{blue}{\boxed{|\overline{y}_i - \overline{y}_j| > q_{\alpha}(k, df_{W})\sqrt{\frac{s_W^2}{n}}}},$$ -->
+<p>The next method is the Tukey’s HSD method. We reject <span class="math inline">\(H_0\)</span> or say that pair <span class="math inline">\((\mu_i, \mu_j)\)</span> are significantly different if <span class="math display">\[\color{blue}{\boxed{|\overline{y}_i - \overline{y}_j| &gt; \frac{q_{\alpha}(t, df_{W})}{\sqrt{2}}\sqrt{s_W^2\left( \frac{1}{n_i} + \frac{1}{n_j}\right)}}}\]</span></p>
+<p>Here, the square root term or the standard error keeps the same as before, but we don’t use a <span class="math inline">\(t\)</span> critical value anymore. Instead, we use a different critical value <span class="math inline">\(\frac{q_{\alpha}(t, df_{W})}{\sqrt{2}}\)</span>, where <span class="math inline">\(q_{\alpha}(k, v)\)</span> is the upper-tail critical value of the <a href="https://en.wikipedia.org/wiki/Studentized_range_distribution"><strong>studentized range distribution</strong></a> for comparing <span class="math inline">\(k\)</span> different populations with degrees of freedom <span class="math inline">\(v\)</span>. Because we assume there are <span class="math inline">\(t\)</span> populations and df is <span class="math inline">\(df_W\)</span>, I put them in the formula.</p>
+<p>Studentized range distribution is similar to <span class="math inline">\(t\)</span> distribution when comparing 2 population means, but they are different things, and studentized range distribution actually controls FWER in some way but <span class="math inline">\(t\)</span> distribution does not. No need to worry about the details of this distribution. We just use it to apply the Tukey’s HSD method.</p>
+<p>In R, we can use <strong><code>qtukey(p = alpha, nmeans = k, df = v, lower.tail = FALSE)</code></strong> to obtain <span class="math inline">\(q_{\alpha}(k, v)\)</span> with specified <span class="math inline">\(\alpha\)</span>, number of means to be compared <span class="math inline">\(k\)</span>, and the degrees of freedom <span class="math inline">\(v\)</span>. Notice that the <span class="math inline">\(\alpha\)</span> here is the familywise error rate <span class="math inline">\(\alpha_F\)</span>. We directly specify and control <span class="math inline">\(\alpha_F\)</span> level, and the probability of falsely rejecting at least one pairwise tests is <span class="math inline">\(\alpha_F\)</span>.</p>
+<!-- - If sample sizes $n_i$s are not same, then a modified Tukey’s test is -->
+<!-- $$\color{blue}{\boxed{|\overline{y}_i - \overline{y}_j| > \frac{q_{\alpha}(k, df_{W})}{\sqrt{2}}\sqrt{s_W^2\left( \frac{1}{n_i} + \frac{1}{n_j}\right)}}}$$ -->
+<!-- ## Example 9.3 Tukey's HSD {.smaller} -->
+<!-- ![](./figures/ex9_3.png){height=150px width=450px} -->
+<!-- - $\color{blue}{|\overline{y}_i - \overline{y}_j| > t_{\frac{\alpha}{2}, df_{error}}\sqrt{MSE\left( \frac{1}{n_i} + \frac{1}{n_j}\right)}}$ -->
+<hr>
+<p><span style="color:blue"> <strong>Example of Multiple Comparison: Tukey’s HSD</strong> </span></p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code> agent sample_mean sample_sd sample_size type
+     1        1.17     0.120           6 None
+     2        1.29     0.127           6 Bio1
+     3        1.33     0.120           6 Bio2
+     4        1.42     0.125           6 Chm1
+     5        1.50     0.127           6 Chm2</code></pre>
+</div>
+</div>
+<ul>
+<li><p><span class="math inline">\(k = 5\)</span>, <span class="math inline">\(df_{W} = 25\)</span>, <span class="math inline">\(n = 6\)</span>. Therefore, <span class="math inline">\(q_{\alpha}(k, v) = q_{0.05}(5, 25) = 4.153\)</span>.</p></li>
+<li><p>We conclude <span class="math inline">\(\mu_i - \mu_j \ne 0\)</span> if <span class="math inline">\(|\overline{y}_i - \overline{y}_j| &gt; 4.153\sqrt{\frac{0.0153}{6}} = 0.2097\)</span></p></li>
+<li><p><strong>Agent 1 v.s. 5: <span class="math inline">\(|1.500 –1.175| = 0.325 &gt; 0.2097\)</span></strong></p></li>
+<li><p><strong>Agent 1 v.s. 4: <span class="math inline">\(|1.415 –1.175| = 0.240 &gt; 0.2097\)</span></strong></p></li>
+<li><p>Agent 1 v.s. 3: <span class="math inline">\(|1.328 –1.175| = 0.153 &lt; 0.2097\)</span></p></li>
+<li><p>Agent 1 v.s. 2: <span class="math inline">\(|1.293 –1.175| = 0.118 &lt; 0.2097\)</span></p></li>
+<li><p>Agent 2 v.s. 5: <span class="math inline">\(|1.500 –1.293| = 0.207 &lt; 0.2097\)</span></p></li>
+<li><p>Agent 2 v.s. 4: <span class="math inline">\(|1.415 –1.293| = 0.112 &lt; 0.2097\)</span></p></li>
+<li><p>Agent 2 v.s. 3: <span class="math inline">\(|1.328 –1.293| = 0.035 &lt; 0.2097\)</span></p></li>
+<li><p>Agents 4 and 5 are different from control. No Significant difference between agents 3, 4, 5 and 2.</p></li>
+</ul>
+<!-- ## Example 9.3 Tukey's HSD in R --><ul>
+<li><span class="math inline">\(\color{blue}{|\overline{y}_i - \overline{y}_j| &gt; q_{\alpha}(k, df_{W})\sqrt{\frac{s_W^2}{n}}}\)</span></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 25</code></pre>
+</div>
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sw</span><span class="op">^</span><span class="fl">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.0153</code></pre>
+</div>
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">q_tukey</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Tukey.html">qtukey</a></span><span class="op">(</span>p <span class="op">=</span> <span class="va">alpha</span>, nmeans <span class="op">=</span> <span class="fl">5</span>, df <span class="op">=</span> <span class="va">df</span>, lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4.15</code></pre>
+</div>
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">E_tukey</span> <span class="op">&lt;-</span> <span class="va">q_tukey</span> <span class="op">*</span> <span class="va">sw</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">/</span> <span class="va">n</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.21</code></pre>
+</div>
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">y_bar_dist</span> <span class="op">&gt;</span> <span class="va">E_tukey</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1 vs 2 1 vs 3 1 vs 4 1 vs 5 2 vs 3 2 vs 4 2 vs 5 3 vs 4 3 vs 5 4 vs 5 
+ FALSE  FALSE   TRUE   TRUE  FALSE  FALSE  FALSE  FALSE  FALSE  FALSE </code></pre>
+</div>
+</div>
+<!-- # c("holm", "hochberg", "hommel", "bonferroni", "BH", "BY", -->
+<!-- #   "fdr", "none") -->
+<!-- ## Example 9.3 Tukey's HSD in R  -->
+<p>A faster way to conduct Tukey’s HSD test is to use R function <code><a href="https://rdrr.io/r/stats/TukeyHSD.html">TukeyHSD()</a></code>. After doing ANOVA, we can save the result, say <code>res_aov</code>, then to implement Tukey method, just put the ANOVA result in the function <code><a href="https://rdrr.io/r/stats/TukeyHSD.html">TukeyHSD()</a></code>. It will provide all information for each pair comparison.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">res_aov</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aov.html">aov</a></span><span class="op">(</span><span class="va">yield</span> <span class="op">~</span> <span class="va">agent</span>, data <span class="op">=</span> <span class="va">data_weed</span><span class="op">)</span></span>
+<span><span class="op">(</span><span class="va">tukey_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/TukeyHSD.html">TukeyHSD</a></span><span class="op">(</span><span class="va">res_aov</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Tukey multiple comparisons of means
+    95% family-wise confidence level
+
+Fit: aov(formula = yield ~ agent, data = data_weed)
+
+$agent
+     diff      lwr   upr p adj
+2-1 0.118 -0.09172 0.328 0.480
+3-1 0.153 -0.05672 0.363 0.234
+4-1 0.240  0.03028 0.450 0.019
+5-1 0.325  0.11526 0.535 0.001
+3-2 0.035 -0.17474 0.245 0.988
+4-2 0.122 -0.08774 0.332 0.447
+5-2 0.207 -0.00276 0.417 0.054
+4-3 0.087 -0.12274 0.297 0.741
+5-3 0.172 -0.03776 0.382 0.146
+5-4 0.085 -0.12476 0.295 0.757</code></pre>
+</div>
+</div>
+<!-- ## Example 9.3 Tukey's HSD in R {.smaller} -->
+<!-- ```{r tukey_test2, tidy=FALSE} -->
+<!-- res_aov <- aov(yield ~ agent, data = data_weed) -->
+<!-- library(multcomp) -->
+<!-- tukey_test_2 <- glht(res_aov, linfct = mcp(agent = "Tukey")) -->
+<!-- summary(tukey_test_2) -->
+<!-- ``` -->
+<p>In the output, <code>diff</code> is <span class="math inline">\(\overline{y}_i - \overline{y}_j\)</span> where <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> are shown in the first column. <code>lwr</code> and <code>upr</code> are the lower bound and upper bound of the CI for <span class="math inline">\(\mu_i - \mu_j\)</span>, respectively. The last column represents p-values. With <span class="math inline">\(\alpha_F = 0.05\)</span>, (4, 1) and (5, 1) are statistically discernible. Their corresponding lower bound is greater than zero, meaning that it’s CI for <span class="math inline">\(\mu_i - \mu_j\)</span> does not cover zero, so <span class="math inline">\(\mu_i - \mu_j\)</span> is statistically significantly different from zero.</p>
+<!-- ## Example 9.3 Tukey's HSD in R {.smaller} -->
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-multicomp_files/figure-html/tukey_plot-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="dunnetts-method" class="level2" data-number="24.5"><h2 data-number="24.5" class="anchored" data-anchor-id="dunnetts-method">
+<span class="header-section-number">24.5</span> Dunnett’s Method</h2>
+<p>The last but not least method introduced here is Dunnett’s method. We reject <span class="math inline">\(H_0\)</span> or say that pair <span class="math inline">\((\mu_i, \mu_j)\)</span> are significantly different if</p>
+<p><span class="math display">\[\color{blue}{\boxed{|\overline{y}_i - \overline{y}_j| &gt; d_{\alpha}(t - 1, df_{W})\sqrt{s_W^2\left( \frac{1}{n_i} + \frac{1}{n_j}\right)}}}\]</span></p>
+<p>Well we still have the same standard error, the square root term, but we use another critical value <span class="math inline">\(d_{\alpha}(t-1, df_W)\)</span>. In general, for <span class="math inline">\(d_{\alpha}(k, df)\)</span>, the value of Dunnett’s test distribution, <span class="math inline">\(k\)</span> is the number of <strong>non-control</strong> groups or factors.</p>
+<p>Note that this method is only used for comparing with a <em>control or reference group</em>. In our example, Agent 1 is the control group. So the parameter <span class="math inline">\(k\)</span> is <span class="math inline">\(t-1\)</span>, where <span class="math inline">\(t\)</span> is the number of agents, which is 5. Again, the <span class="math inline">\(\alpha\)</span> here is the familywise error rate <span class="math inline">\(\alpha_F\)</span>. We directly specify and control <span class="math inline">\(\alpha_F\)</span> level, and the probability of falsely rejecting at least one pairwise tests is <span class="math inline">\(\alpha_F\)</span>.</p>
+<p>Consider 2 treatment groups and one control group. If you only want to compare the 2 treatment groups with the control group, and do not want to compare the 2 treatment groups to each other, the Dunnett’s test is preferred.</p>
+<!-- ## Example 9.3 Dunnett's Method {.smaller} -->
+<!-- ![](./figures/ex9_3.png){height=150px width=450px} -->
+<!-- - $\color{blue}{|\overline{y}_i - \overline{y}_j| > t_{\frac{\alpha}{2}, df_{error}}\sqrt{MSE\left( \frac{1}{n_i} + \frac{1}{n_j}\right)}}$ -->
+<!-- - <span style="color:blue"> $\begin{align}  -->
+<!--   &H_0^{i1}: \mu_i = \mu_1\\  -->
+<!--   &H_1^{i1}: \mu_i > \mu_1 -->
+<!--   \end{align}, i = 2, 3, 4, 5$ </span>  -->
+<hr>
+<p><span style="color:blue"> <strong>Example of Multiple Comparison: Dunnett’s Method</strong> </span></p>
+<ul>
+<li><p><span class="math inline">\(t - 1 = 4\)</span>, <span class="math inline">\(df_{W} = 25\)</span>, <span class="math inline">\(n = 6\)</span>. Therefore, <span class="math inline">\(d_{\alpha}(t - 1,  df_{W}) = d_{0.05}(4, 25) = 2.61\)</span>.</p></li>
+<li><p>We conclude <span class="math inline">\(\mu_i - \mu_j \ne 0\)</span> if <span class="math inline">\(|\overline{y}_i - \overline{y}_j| &gt; 2.61\sqrt{\frac{2(0.0153)}{6}} = 0.1862\)</span></p></li>
+<li><p><strong>Agent 1 v.s. 5: <span class="math inline">\(|1.500 –1.175| = 0.325 &gt; 0.1862\)</span></strong></p></li>
+<li><p><strong>Agent 1 v.s. 4: <span class="math inline">\(|1.415 –1.175| = 0.240 &gt; 0.1862\)</span></strong></p></li>
+<li><p>Agent 1 v.s. 3: <span class="math inline">\(|1.328 –1.175| = 0.153 &lt; 0.1862\)</span></p></li>
+<li><p>Agent 1 v.s. 2: <span class="math inline">\(|1.293 –1.175| = 0.118 &lt; 0.1862\)</span></p></li>
+<li><p>Only the chemical agents 4 and 5 are different from control. No biological agents are different from control.</p></li>
+</ul>
+<!-- ## Example 9.3 Dunnett's Method in R --><p><span class="math inline">\(\color{blue}{|\overline{y}_i - \overline{y}_j| &gt; d_{\alpha}(t - 1, df_{W})\sqrt{\frac{2s_W^2}{n}}}\)</span></p>
+<p>There is no R built-in function that computes <span class="math inline">\(d_{\alpha}\)</span> critical value. But we can install the package <code>nCDunnett</code>, and use the function <code><a href="https://rdrr.io/pkg/nCDunnett/man/nCDunnett.html">qNCDun()</a></code>. NC stands for Non-Central. The argument <code>p</code> is the probability to the left tail and keep in mind that the subscript <span class="math inline">\(\alpha\)</span> in the critical value is the probability to the right tail. So we get to put <span class="math inline">\(1-\alpha\)</span> there. <code>nu</code> is the degrees of freedom. <code>rho</code> here we use 0.5, meaning that all sample sizes are equal. The sample size in each group is 6, and we need to specify it 4 times corresponding to the number of non-control groups. <code>delta</code> is the non-centrality parameter that needs to be specified 4 times too. Here we assume they are all zero, i.e., the test uses the central distribution.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">nCDunnett</span><span class="op">)</span></span>
+<span><span class="op">(</span><span class="va">d_dun</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/nCDunnett/man/nCDunnett.html">qNCDun</a></span><span class="op">(</span>p <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">alpha</span>, nu <span class="op">=</span> <span class="va">df</span>, </span>
+<span>                rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span><span class="op">)</span>, </span>
+<span>                delta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, two.sided <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.61</code></pre>
+</div>
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">E_dun</span> <span class="op">&lt;-</span> <span class="va">d_dun</span> <span class="op">*</span> <span class="va">sw</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">2</span> <span class="op">/</span> <span class="va">n</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.186</code></pre>
+</div>
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">y_bar_dist</span> <span class="op">&gt;</span> <span class="va">E_dun</span>, <span class="fl">4</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1 vs 2 1 vs 3 1 vs 4 1 vs 5 
+ FALSE  FALSE   TRUE   TRUE </code></pre>
+</div>
+</div>
+<!-- ## Example 9.3 Dunnett's Method in R {.smaller} -->
+<!-- ```{r dunnett_test2, tidy=FALSE} -->
+<!-- # res_aov <- aov(yield ~ agent, data = data_weed) -->
+<!-- # library(multcomp) -->
+<!-- # dunnett_test <- glht(res_aov, linfct = mcp(agent = "Dunnett")) -->
+<!-- # (sum_dunnett <- summary(dunnett_test)) -->
+<!-- ``` -->
+<!-- ## Example 9.3 Dunnett's Method in R {.smaller} -->
+<p>The result shows (1, 4) and (1, 5) have different means. The figure below shows the CIs for <span class="math inline">\(\mu_1 - \mu_j, j = 2, 3, 4, 5\)</span>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-multicomp_files/figure-html/dunnett_plot-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>All comparisons illustrated are two-sided tests. One-sided tests can be applied too.</p>
+</div>
+</div>
+</section><section id="comparison-of-methods" class="level2 smaller" data-number="24.6"><h2 class="smaller anchored" data-number="24.6" data-anchor-id="comparison-of-methods">
+<span class="header-section-number">24.6</span> Comparison of Methods</h2>
+<p>To sum up, from the example, we had <span class="math inline">\(\mu_i - \mu_j \ne 0\)</span> if</p>
+<ul>
+<li><p>Bonferroni: <span class="math inline">\(|\overline{y}_i - \overline{y}_j| &gt; 0.2198\)</span></p></li>
+<li><p>Fisher’s LSD: <span class="math inline">\(|\overline{y}_i - \overline{y}_j| &gt; 0.1471\)</span></p></li>
+<li><p>Tukey HSD: <span class="math inline">\(|\overline{y}_i - \overline{y}_j| &gt; 0.2097\)</span></p></li>
+<li><p>Dunnett: <span class="math inline">\(|\overline{y}_i - \overline{y}_j| &gt; 0.1862\)</span></p></li>
+<li><p>Fisher’s LSD does not control FWER, but all others do have FWER 0.05.</p></li>
+<li><p>Bonferroni is the most conservative method and has the poorest discovery rate. You see its threshold value is the largest, making it the most difficult one to reject <span class="math inline">\(H_0\)</span>, and hence results in a lower power or lower discovery rate.</p></li>
+<li><p>Discovery rate for the Tukey’s is better than Bonferroni, but not as good as Dunnett’s. However, Dunnett’s used only to compare with the control.</p></li>
+<li><p>If the objective is to compare only with a control, then Dunnett’s is more powerful among three. Otherwise, Tukey’s is more powerful than Bonferroni.</p></li>
+<li><p>Although Bonferroni is not very powerful, it does have advantage that it can be used in any situation (whether it is one factor or multi-factor analyses) whenever there are multiple hypotheses.</p></li>
+<li><p>All methods here are based on the condition that the data are random samples from normal distributions with equal variances. There are nonparametric multiple comparison procedures out there, such as Kruskal–Wallis.</p></li>
+<li><p>Here we focus on balanced data. When there are large differences in the number of samples, care should be taken when selecting multiple comparison procedures.</p></li>
+</ul>
+<!-- If you are looking for any type of difference and you don't know how many you are going to end up doing, you should probably be using Scheffé to protect you against all of them. But if you know it is all pairwise and that is it, then Tukey's would be best.  --><ul>
+<li>
+<p>There is another method called <strong>Scheffe’s method</strong>. Unlike methods specifically for pairwise comparisons such as Tukey HSD, Scheffe’s method can generally investigate all possible <strong>contrasts</strong> of the means. In other words, it considers not only th pairwise comparisons but any possible combinations of the means, for example <span class="math inline">\(c_1\mu_1 + c_2\mu_2 + \cdots + c_t\mu_t\)</span>.</p>
+<p>For pairwise comparisons, we reject <span class="math inline">\(H_0\)</span> or say that pair <span class="math inline">\((\mu_i, \mu_j)\)</span> are significantly different if</p>
+<p><span class="math display">\[\color{blue}{\boxed{|\overline{y}_i - \overline{y}_j| &gt; \sqrt{(t-1) F_{\alpha, t-1, N-t}}\sqrt{s_W^2\left( \frac{1}{n_i} + \frac{1}{n_j}\right)}}}\]</span> For pairwise comparisons, the Scheffé test has <em>lower</em> statistical power than other tests, even more conservative than Bonferroni method. To increase power, the Scheffé method needs larger sample size.</p>
+</li>
+</ul>
+<!-- corresponds exactly to the F-test in the following sense. If the F-test rejects the null hypothesis at level  --><!-- , then there exists at least one contrast which would be rejected using the Scheffé procedure at level  --><!-- . Therefore, Scheffé provides  --><!--  level protection against rejecting the null hypothesis when it is true, regardless of how many contrasts of the means are tested. --><!-- https://stattrek.com/anova/follow-up-tests/scheffe -->
+
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/chenghanyu-introstatsbook\.netlify\.app\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./model-anova.html" class="pagination-link" aria-label="Analysis of Variance">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./model-twoway.html" class="pagination-link" aria-label="Two-Way ANOVA*">
+        <span class="nav-page-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Two-Way ANOVA*</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Copyright 2024, Dr.&nbsp;Cheng-Han Yu</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/model-multicomp.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+<li class="nav-item compact">
+    <a class="nav-link active" href="https://github.com/chenghanyustats/introstatsbook" aria-current="page">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+</div>
+  </div>
+</footer>
+
+
+</body></html>

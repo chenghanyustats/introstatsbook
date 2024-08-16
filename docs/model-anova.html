@@ -61,7 +61,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./model-reg.html" rel="next">
+<link href="./model-multicomp.html" rel="next">
 <link href="./model.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -381,26 +381,38 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./model-multicomp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Multiple Comparison</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./model-twoway.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Two-Way ANOVA</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./model-reg.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Linear Regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Linear Regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-logistic.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Logistic Regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Logistic Regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-bayes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-survival.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Survival Analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Survival Analysis</span></span></a>
   </div>
 </li>
       </ul>
@@ -509,7 +521,7 @@ window.Quarto = {
 <span class="header-section-number">23.1</span> ANOVA Rationale</h2>
 <p><span style="color:blue"> <strong>One-Way Analysis of Variance</strong> </span></p>
 <p>A <strong>factor</strong> (treatment) is a property or characteristic (categorical variable) that allows us to <em>distinguish the different populations from one another</em>. In fact, when we compare two population means, the two samples are from the populations separated by the categories of a factor. For example, we have gender as a factor that separates the human population into male and female populations, then we compare their mean salary. In our previous examples, <em>type of device</em> and <em>treatment of trees</em> are factors.</p>
-<p>One-way ANOVA examines the effect of single <em>categorical variable</em> on the <em>mean of a numerical variable</em>. The ANOVA model is one-way because there is only one factor being considered. If two factors are examined to see how they affect the mean of a numerical variable, the model is called two-way ANOVA. The numerical variable in ANOVA or regression model (<a href="model-reg.html" class="quarto-xref"><span>Chapter 24</span></a>) is called the <strong>response variable</strong> because we want to see how the variable responses to the changes of factors or other variables.</p>
+<p>One-way ANOVA examines the effect of single <em>categorical variable</em> on the <em>mean of a numerical variable</em>. The ANOVA model is one-way because there is only one factor being considered. If two factors are examined to see how they affect the mean of a numerical variable, the model is called two-way ANOVA. The numerical variable in ANOVA or regression model (<a href="model-reg.html" class="quarto-xref"><span>Chapter 26</span></a>) is called the <strong>response variable</strong> because we want to see how the variable responses to the changes of factors or other variables.</p>
 <p>Interestingly, we analyze <span style="color:red"> variances </span> to test the equality of three or more population <span style="color:red"> means</span> 🤔. It sounds counterintuitive, but later you will see why this makes sense.</p>
 <p><!-- + The method is **one-way** because we use one single property (categorical variable) for categorizing the populations. --></p>
 <p><span style="color:red"> <strong><em>Requirements</em></strong> </span></p>
@@ -908,7 +920,7 @@ Figure&nbsp;23.6: QQ plots for each type of food
 </div>
 </div>
 <p>In R, we can do all the calculations and generate an ANOVA table using just one line of code. We first use the popular function <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> to implement ANOVA. The first argument is <code>formula</code> that has the form <code>response ~ factor</code> where <code>response</code> is the numeric response vector, and <code>factor</code> is the categorical factor vector. In our data <code>data_anova</code>, <code>y</code> is our response, and <code>food</code> is our factor. Note that if we just write <code>y</code> and <code>food</code> in the formula, R will render an error because R does not recognize <code>y</code> and <code>food</code> because they are not an R object but a column name of data <code>data_anova</code>. Therefore, we need to tell R where <code>y</code> and <code>food</code> are from by specifying the data set they are referred. If you want to specify the data name, you can get access to the response and factor vector by extracting them using <code>data_anova$y</code> and <code>data_anova$food</code>.</p>
-<p>The word <code>lm</code> stands for <strong>linear model</strong>, and ANOVA is a linear model. If you just run <code>lm(formula = data_anova$y ~ data_anova$food)</code>, it will show the linear model output related to ANOVA. We don’t need it at this moment, and we will discuss more about linear model in Regression <a href="model-reg.html" class="quarto-xref"><span>Chapter 24</span></a>.</p>
+<p>The word <code>lm</code> stands for <strong>linear model</strong>, and ANOVA is a linear model. If you just run <code>lm(formula = data_anova$y ~ data_anova$food)</code>, it will show the linear model output related to ANOVA. We don’t need it at this moment, and we will discuss more about linear model in Regression <a href="model-reg.html" class="quarto-xref"><span>Chapter 26</span></a>.</p>
 <p>To obtain the ANOVA table, we apply the function <code><a href="https://rdrr.io/r/stats/anova.html">anova()</a></code> to the <code>lm</code> object. In the output, <code>food</code> is the source of variation between samples. <code>Residuals</code> is for the source of variation within samples. <code>F value</code> is the <span class="math inline">\(F\)</span> test statistic value, not the critical value. <code>Pr(&gt;F)</code> is the <span class="math inline">\(p\)</span>-value. Since <span class="math inline">\(p\)</span>-value &gt; 0.05, we do not reject <span class="math inline">\(H_0\)</span>. The evidence is not sufficient to reject the equality of population means.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">y</span> <span class="op">~</span> <span class="va">food</span>, data <span class="op">=</span> <span class="va">data_anova</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2066,8 +2078,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./model-reg.html" class="pagination-link" aria-label="Linear Regression">
-        <span class="nav-page-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Linear Regression</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./model-multicomp.html" class="pagination-link" aria-label="Multiple Comparison">
+        <span class="nav-page-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Multiple Comparison</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
