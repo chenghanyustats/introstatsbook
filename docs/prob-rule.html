@@ -421,9 +421,7 @@ window.Quarto = {
 <li><a href="#probability-operations-and-rules" id="toc-probability-operations-and-rules" class="nav-link active" data-scroll-target="#probability-operations-and-rules"><span class="header-section-number">7.1</span> Probability Operations and Rules</a></li>
   <li><a href="#conditional-probability-and-independence" id="toc-conditional-probability-and-independence" class="nav-link" data-scroll-target="#conditional-probability-and-independence"><span class="header-section-number">7.2</span> Conditional Probability and Independence</a></li>
   <li><a href="#bayes-formula" id="toc-bayes-formula" class="nav-link" data-scroll-target="#bayes-formula"><span class="header-section-number">7.3</span> Bayes’ Formula</a></li>
-  <li><a href="#law-of-total-probability" id="toc-law-of-total-probability" class="nav-link" data-scroll-target="#law-of-total-probability"><span class="header-section-number">7.4</span> Law of Total Probability</a></li>
-  <li><a href="#general-bayes-formula" id="toc-general-bayes-formula" class="nav-link" data-scroll-target="#general-bayes-formula"><span class="header-section-number">7.5</span> General Bayes’ Formula</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">7.6</span> Exercises</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">7.4</span> Exercises</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/prob-rule.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -901,7 +899,6 @@ Figure&nbsp;7.6: Venn Diagram illustration for Bayes’ formula
 </div>
 <p>The first equality is just the definition of conditional probability. For the second equality, we partition <span class="math inline">\(B\)</span> into <span class="math inline">\((B \cap A)\)</span> and <span class="math inline">\((B \cap A^c)\)</span> as <span class="math inline">\((B \cap A) \cup (B \cap A^c) = B\)</span> and <span class="math inline">\((B \cap A)\)</span> and <span class="math inline">\((B \cap A^c)\)</span> are disjoint, as illustrated in <a href="#fig-bayes-venn" class="quarto-xref">Figure&nbsp;<span>7.6</span></a>. <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Since <span class="math inline">\((B \cap A)\)</span> and <span class="math inline">\((B \cap A^c)\)</span> are disjoint, <span class="math inline">\(P((B \cap A) \cup (B \cap A^c)) = P(B \cap A) + P(B \cap A^c)\)</span>. Finally, we can use the multiplication rule to write <span class="math inline">\(P(B \cap A)\)</span> as <span class="math inline">\(P(B \mid A)P(A)\)</span> and <span class="math inline">\(P(B \cap A^c)\)</span> as <span class="math inline">\(P(B \mid A^c)P(A^c)\)</span>. The derivation of the Bayes’ formula is complete.</p>
 <p>Notice that we use the information about <span class="math inline">\(P(B \mid A)\)</span>, <span class="math inline">\(P(B \mid A^c)\)</span>, <span class="math inline">\(P(A)\)</span> and <span class="math inline">\(P(A^c)\)</span> to obtain <span class="math inline">\(P(A \mid B)\)</span>. In general, <span class="math inline">\(P(A \mid B) \ne P(A \mid B)\)</span>, and they are completely different probabilities. Interpret your probability with additional care.</p>
-<p>[Extended formula]</p>
 <p><span style="color:red"> <strong><em>Example: Passing Rate</em></strong> </span></p>
 <div class="columns">
 <div class="column" style="width:60%;">
@@ -992,64 +989,36 @@ Figure&nbsp;7.7: Tree Diagram illustration of Passing Rate example
 <p><span class="math display">\[\begin{align*} &amp; P(\text{yes} \mid \text{pass}) \\ &amp;= \frac{P(\text{yes and }  \text{pass})}{P(\text{pass})} \\ &amp;= \frac{P(\text{yes and }  \text{pass})}{P(\text{pass and yes}) + P(\text{pass and no})}\\ &amp;= \frac{P(\text{pass | yes})P(\text{yes})}{P(\text{pass | yes})P(\text{yes}) + P(\text{pass | no})P(\text{no})} \\ &amp;= \frac{0.76}{0.76 + 0.12} = 0.86 \end{align*}\]</span></p>
 </div>
 </div>
-</section><section id="law-of-total-probability" class="level2" data-number="7.4"><h2 data-number="7.4" class="anchored" data-anchor-id="law-of-total-probability">
-<span class="header-section-number">7.4</span> Law of Total Probability</h2>
-<ul>
-<li><p>If <span class="math inline">\(A_1 \dots, A_n\)</span> are disjoint, each event has positive probability and one of the events must occur, then <span class="math display">\[ P(B) = \sum_{i=1}^n P(B\mid A_i)P(A_i) \]</span></p></li>
-<li><p><font size="4.9"> We’ve seen this with <span class="math inline">\(n = 2\)</span> in the denominator of Bayes’ formula! Let <span class="math inline">\(A_1 = A\)</span> and <span class="math inline">\(A_2 = A^c\)</span>, <span class="math inline">\(P(B) = P(B \mid A)P(A) + P(B \mid A^c)P(A^c) = P(B \mid A_1)P(A_1) + P(B \mid A_2)P(A_2) = \sum_{i=1}^2 P(B\mid A_i)P(A_i)\)</span> </font></p></li>
-<li><p>How about <span class="math inline">\(n = 3\)</span>? Notice that <span class="math inline">\(B = (B \cap A_1) \cup (B \cap A_2) \cup (B\cap A_3)\)</span> and this can be generalized to arbitrary <span class="math inline">\(n\)</span>.</p></li>
-</ul>
-<div class="cell">
+<hr>
+<p><span style="color:blue"> <strong>Law of total probability</strong>* </span></p>
+<p>If in general <span class="math inline">\(n\)</span> events <span class="math inline">\(A_1 \dots, A_n\)</span> are disjoint, each event has positive probability and one of the events must occur, then <span class="math display">\[ P(B) = \sum_{i=1}^n P(B\mid A_i)P(A_i).\]</span></p>
+<p>This is the <strong>law of total probability</strong>. We’ve seen this with <span class="math inline">\(n = 2\)</span> in the denominator of Bayes’ formula! Let <span class="math inline">\(A_1 = A\)</span> and <span class="math inline">\(A_2 = A^c\)</span>, <span class="math display">\[
+\begin{align*}
+P(B) &amp;= P(B \mid A)P(A) + P(B \mid A^c)P(A^c) \\
+&amp;= P(B \mid A_1)P(A_1) + P(B \mid A_2)P(A_2) \\
+&amp;= \sum_{i=1}^2 P(B\mid A_i)P(A_i)
+\end{align*}
+\]</span></p>
+<p>How about <span class="math inline">\(n = 3\)</span>? Check <a href="#fig-venn-law" class="quarto-xref">Figure&nbsp;<span>7.8</span></a> to learn the idea. Notice that <span class="math inline">\(B = (B \cap A_1) \cup (B \cap A_2) \cup (B\cap A_3)\)</span> and this can be generalized to arbitrary <span class="math inline">\(n\)</span>.</p>
+<div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div>
-<figure class="figure"><p><img src="./images/img-prob/partition.png" class="img-fluid figure-img" width="190"></p>
-</figure>
+<div id="fig-venn-law" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-venn-law-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/img-prob/partition.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="190">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-venn-law-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.8: Venn diagram of illustraing the law of total probability when <span class="math inline">\(n = 3\)</span>.
+</figcaption></figure>
 </div>
 </div>
 </div>
 <!-- ![](./figures/partition.png){height=220px width=350px} -->
-</section><section id="general-bayes-formula" class="level2" data-number="7.5"><h2 data-number="7.5" class="anchored" data-anchor-id="general-bayes-formula">
-<span class="header-section-number">7.5</span> General Bayes’ Formula</h2>
-<ul>
-<li>If <span class="math inline">\(P(B) &gt; 0\)</span>, the previous result implies</li>
-</ul>
+<!-- ## General Bayes' Formula -->
+<p>If <span class="math inline">\(P(B) &gt; 0\)</span>, the previous general <span class="math inline">\(n\)</span> case implies</p>
 <p><span class="math display">\[ P(A_k \mid B) = \frac{P(B \mid A_k)P(A_k)}{\sum_{i=1}^n P(B \mid A_i)P(A_i)} \]</span></p>
-<ul>
-<li>
-<strong>Example 4.33</strong>: Of all homes having wood-burning furnaces, 30% own a type 1 furnace, 25% a type 2 furnace, 15% a type 3, and 30% other types. Over 3 years, 5% of type 1 furnaces, 3% of type 2, 2% of type 3, and 4% of other types have resulted in fires. If a fire occurs in a particular home, what is the probability that a type 1 furnace is in the home?</li>
-</ul>
-<blockquote class="blockquote">
-<ul>
-<li>
-<span style="color:blue"> Step 1: Formulate what we would like to compute </span>: <span class="math inline">\(P(\text{type 1} \mid \text{fire occurs})\)</span>
-</li>
-</ul>
-</blockquote>
-<!-- > -  $P(\text{defaulted} \mid \text{poor-risk})$ -->
-<blockquote class="blockquote">
-<ul>
-<li>
-<span style="color:blue"> Step 2: Define relevant events </span>: Let <span class="math inline">\(B =\)</span> fire occurs, <span class="math inline">\(A_i =\)</span> type <span class="math inline">\(i\)</span> furnace, <span class="math inline">\(i = 1, 2, 3\)</span> and <span class="math inline">\(A_4 =\)</span> other furnaces.</li>
-</ul>
-</blockquote>
-<!-- > - Let $A =$ loan defaulted. $B =$ poor risk. Then $A^c =$ loan nondefaulted -->
-<blockquote class="blockquote">
-<ul>
-<li>
-<span style="color:blue"> Step 3: Find probabilities in the Bayes’ formula. </span>: You do it.</li>
-</ul>
-</blockquote>
-<!-- > - <font size="4.5"> $P(B \mid A) = P(\text{poor risk} \mid \text{defaulted}) = 0.3$, $P(B \mid A^c) = P(\text{poor risk} \mid \text{nondefaulted}) = 0.1$ -->
-<!-- $P(A) = P(\text{defaulted}) = 0.01$, $P(A^c) = 1 - P(A) = 0.99$. </font> -->
-<blockquote class="blockquote">
-<ul>
-<li>
-<span style="color:blue"> Step 4: Apply Bayes’ formula. </span> Your answer should be 0.4.</li>
-</ul>
-</blockquote>
-<!-- > - <font size="4.5"> $P(\text{defaulted} \mid \text{poor-risk}) = P(A \mid B) = \frac{P(B \mid A)P(A)}{P(B \mid A)P(A) + P(B \mid A^c)P(A^c)} = \frac{(0.3)(0.01)}{(0.3)(0.01) + (0.1)(0.99)} = 0.0294$ </font> -->
-</section><section id="exercises" class="level2" data-number="7.6"><h2 data-number="7.6" class="anchored" data-anchor-id="exercises">
-<span class="header-section-number">7.6</span> Exercises</h2>
+<p>This is the general Bayes’ formula for arbitrary integer <span class="math inline">\(n\)</span>.</p>
+</section><section id="exercises" class="level2" data-number="7.4"><h2 data-number="7.4" class="anchored" data-anchor-id="exercises">
+<span class="header-section-number">7.4</span> Exercises</h2>
 <ol type="1">
 <li>A Pew Research survey asked 2,422 randomly sampled registered voters their political affiliation (Republican, Democrat, or Independent) and whether or not they identify as swing voters. 38% of respondents identified as Independent, 25% identified as swing voters, and 13% identified as both.
 <ol type="a">
@@ -1116,7 +1085,8 @@ Figure&nbsp;7.7: Tree Diagram illustration of Passing Rate example
 </tbody>
 </table>
 <ol start="2" type="1">
-<li>A Pew Research poll asked 1,423 Americans, “From what you’ve read and heard, is there solid evidence that the average temperature on earth has been getting warmer over the past few decades, or not?”. The table above shows the distribution of responses by party and ideology, where the counts have been replaced with relative frequencies.
+<li>
+<p>A Pew Research poll asked 1,423 Americans, “From what you’ve read and heard, is there solid evidence that the average temperature on earth has been getting warmer over the past few decades, or not?”. The table above shows the distribution of responses by party and ideology, where the counts have been replaced with relative frequencies.</p>
 <ol type="a">
 <li>Are believing that the earth is warming and being a liberal Democrat mutually exclusive?</li>
 <li>What is the probability that a randomly chosen respondent believes the earth is warming or is a Mod/Cons Democrat?</li>
@@ -1125,9 +1095,10 @@ Figure&nbsp;7.7: Tree Diagram illustration of Passing Rate example
 <li>Does it appear that whether or not a respondent believes the earth is warming is independent of their party and ideology? Explain your reasoning.</li>
 </ol>
 </li>
-<li>After an MATH 4740/MSSC 5740 course, 73% of students could successfully construct scatter plots using R. Of those who could construct scatter plots, 84% passed, while only 62% of those students who could not construct scatter plots passed. Calculate the probability that a student is able to construct a scatter plot if it is known that she passed.</li>
+<li><p>After an MATH 4740/MSSC 5740 course, 73% of students could successfully construct scatter plots using R. Of those who could construct scatter plots, 84% passed, while only 62% of those students who could not construct scatter plots passed. Calculate the probability that a student is able to construct a scatter plot if it is known that she passed.</p></li>
+<li><p>Of all homes having wood-burning furnaces, 30% own a type 1 furnace, 25% a type 2 furnace, 15% a type 3, and 30% other types. Over 3 years, 5% of type 1 furnaces, 3% of type 2, 2% of type 3, and 4% of other types have resulted in fires. If a fire occurs in a particular home, what is the probability that a type 1 furnace is in the home?</p></li>
 </ol>
-
+<!-- > - <span style="color:blue"> Step 1: Formulate what we would like to compute  </span>: $P(\text{type 1} \mid \text{fire occurs})$ --><!-- > -  $P(\text{defaulted} \mid \text{poor-risk})$ --><!-- > - <span style="color:blue"> Step 2: Define relevant events </span>: Let $B =$ fire occurs, $A_i =$ type $i$ furnace, $i = 1, 2, 3$ and $A_4 =$ other furnaces. --><!-- > - Let $A =$ loan defaulted. $B =$ poor risk. Then $A^c =$ loan nondefaulted --><!-- > - <span style="color:blue"> Step 3: Find probabilities in the Bayes' formula. </span>: You do it. --><!-- > - <font size="4.5"> $P(B \mid A) = P(\text{poor risk} \mid \text{defaulted}) = 0.3$, $P(B \mid A^c) = P(\text{poor risk} \mid \text{nondefaulted}) = 0.1$ --><!-- $P(A) = P(\text{defaulted}) = 0.01$, $P(A^c) = 1 - P(A) = 0.99$. </font> --><!-- > - <span style="color:blue"> Step 4: Apply Bayes' formula. </span> Your answer should be 0.4. --><!-- > - <font size="4.5"> $P(\text{defaulted} \mid \text{poor-risk}) = P(A \mid B) = \frac{P(B \mid A)P(A)}{P(B \mid A)P(A) + P(B \mid A^c)P(A^c)} = \frac{(0.3)(0.01)}{(0.3)(0.01) + (0.1)(0.99)} = 0.0294$ </font> -->
 
 </section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
 <ol>

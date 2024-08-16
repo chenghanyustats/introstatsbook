@@ -455,8 +455,6 @@ The first equality is just the definition of conditional probability. For the se
 
 Notice that we use the information about $P(B \mid A)$, $P(B \mid A^c)$, $P(A)$ and $P(A^c)$ to obtain $P(A \mid B)$. In general, $P(A \mid B) \ne P(A \mid B)$, and they are completely different probabilities. Interpret your probability with additional care.
 
-[Extended formula]
-
 
 
 <span style="color:red"> ***Example: Passing Rate*** </span>
@@ -525,56 +523,41 @@ $$\begin{align*} & P(\text{yes} \mid \text{pass}) \\ &= \frac{P(\text{yes and } 
 
 
 
+------------------------------------------------------------
 
+<span style="color:blue"> **Law of total probability*** </span>
 
-## Law of Total Probability
-- If $A_1 \dots, A_n$ are disjoint, each event has positive probability and one of the events must
-occur, then
-$$ P(B) = \sum_{i=1}^n P(B\mid A_i)P(A_i) $$ 
+If in general $n$ events $A_1 \dots, A_n$ are disjoint, each event has positive probability and one of the events must occur, then
+$$ P(B) = \sum_{i=1}^n P(B\mid A_i)P(A_i).$$ 
 
-- <font size="4.9"> We've seen this with $n = 2$ in the denominator of Bayes' formula! Let $A_1 = A$ and $A_2 = A^c$,
-$P(B) = P(B \mid A)P(A) + P(B \mid A^c)P(A^c) = P(B \mid A_1)P(A_1) + P(B \mid A_2)P(A_2) = \sum_{i=1}^2 P(B\mid A_i)P(A_i)$ </font>
+This is the **law of total probability**. We've seen this with $n = 2$ in the denominator of Bayes' formula! Let $A_1 = A$ and $A_2 = A^c$, $$
+\begin{align*}
+P(B) &= P(B \mid A)P(A) + P(B \mid A^c)P(A^c) \\
+&= P(B \mid A_1)P(A_1) + P(B \mid A_2)P(A_2) \\
+&= \sum_{i=1}^2 P(B\mid A_i)P(A_i)
+\end{align*}
+$$
 
-- How about $n = 3$? Notice that $B = (B \cap A_1) \cup (B \cap A_2) \cup (B\cap A_3)$ and this can be generalized to arbitrary $n$.
+How about $n = 3$? Check @fig-venn-law to learn the idea. Notice that $B = (B \cap A_1) \cup (B \cap A_2) \cup (B\cap A_3)$ and this can be generalized to arbitrary $n$.
 
 
 ```{r}
 #| echo: false
+#| fig-align: center
+#| label: fig-venn-law
+#| fig-cap: Venn diagram of illustraing the law of total probability when $n = 3$. 
 knitr::include_graphics("./images/img-prob/partition.png")
 ```
 
 <!-- ![](./figures/partition.png){height=220px width=350px} -->
 
-## General Bayes' Formula
+<!-- ## General Bayes' Formula -->
 
-- If $P(B) > 0$, the previous result implies 
+If $P(B) > 0$, the previous general $n$ case implies 
 
 $$ P(A_k \mid B) = \frac{P(B \mid A_k)P(A_k)}{\sum_{i=1}^n P(B \mid A_i)P(A_i)} $$
 
-
-- **Example 4.33**: Of all homes having wood-burning furnaces, 30% own a type 1 furnace, 25%
-a type 2 furnace, 15% a type 3, and 30% other types. Over 3 years, 5% of type 1 furnaces, 3% of
-type 2, 2% of type 3, and 4% of other types have resulted in fires. If a fire occurs in a particular
-home, what is the probability that a type 1 furnace is in the home?
-
-
-> - <span style="color:blue"> Step 1: Formulate what we would like to compute  </span>: $P(\text{type 1} \mid \text{fire occurs})$
-
-<!-- > -  $P(\text{defaulted} \mid \text{poor-risk})$ -->
-
-> - <span style="color:blue"> Step 2: Define relevant events </span>: Let $B =$ fire occurs, $A_i =$ type $i$ furnace, $i = 1, 2, 3$ and $A_4 =$ other furnaces.
-
-<!-- > - Let $A =$ loan defaulted. $B =$ poor risk. Then $A^c =$ loan nondefaulted -->
-
-> - <span style="color:blue"> Step 3: Find probabilities in the Bayes' formula. </span>: You do it.
-
-<!-- > - <font size="4.5"> $P(B \mid A) = P(\text{poor risk} \mid \text{defaulted}) = 0.3$, $P(B \mid A^c) = P(\text{poor risk} \mid \text{nondefaulted}) = 0.1$ -->
-<!-- $P(A) = P(\text{defaulted}) = 0.01$, $P(A^c) = 1 - P(A) = 0.99$. </font> -->
-
-> - <span style="color:blue"> Step 4: Apply Bayes' formula. </span> Your answer should be 0.4.
-
-<!-- > - <font size="4.5"> $P(\text{defaulted} \mid \text{poor-risk}) = P(A \mid B) = \frac{P(B \mid A)P(A)}{P(B \mid A)P(A) + P(B \mid A^c)P(A^c)} = \frac{(0.3)(0.01)}{(0.3)(0.01) + (0.1)(0.99)} = 0.0294$ </font> -->
-
+This is the general Bayes' formula for arbitrary integer $n$.
 
 
 
@@ -608,3 +591,25 @@ home, what is the probability that a type 1 furnace is in the home?
 
 
 3. After an MATH 4740/MSSC 5740 course, 73% of students could successfully construct scatter plots using R. Of those who could construct scatter plots, 84% passed, while only 62% of those students who could not construct scatter plots passed. Calculate the probability that a student is able to construct a scatter plot if it is known that she passed.
+
+4. Of all homes having wood-burning furnaces, 30% own a type 1 furnace, 25%
+a type 2 furnace, 15% a type 3, and 30% other types. Over 3 years, 5% of type 1 furnaces, 3% of type 2, 2% of type 3, and 4% of other types have resulted in fires. If a fire occurs in a particular home, what is the probability that a type 1 furnace is in the home?
+
+
+<!-- > - <span style="color:blue"> Step 1: Formulate what we would like to compute  </span>: $P(\text{type 1} \mid \text{fire occurs})$ -->
+
+<!-- > -  $P(\text{defaulted} \mid \text{poor-risk})$ -->
+
+<!-- > - <span style="color:blue"> Step 2: Define relevant events </span>: Let $B =$ fire occurs, $A_i =$ type $i$ furnace, $i = 1, 2, 3$ and $A_4 =$ other furnaces. -->
+
+<!-- > - Let $A =$ loan defaulted. $B =$ poor risk. Then $A^c =$ loan nondefaulted -->
+
+<!-- > - <span style="color:blue"> Step 3: Find probabilities in the Bayes' formula. </span>: You do it. -->
+
+<!-- > - <font size="4.5"> $P(B \mid A) = P(\text{poor risk} \mid \text{defaulted}) = 0.3$, $P(B \mid A^c) = P(\text{poor risk} \mid \text{nondefaulted}) = 0.1$ -->
+<!-- $P(A) = P(\text{defaulted}) = 0.01$, $P(A^c) = 1 - P(A) = 0.99$. </font> -->
+
+<!-- > - <span style="color:blue"> Step 4: Apply Bayes' formula. </span> Your answer should be 0.4. -->
+
+<!-- > - <font size="4.5"> $P(\text{defaulted} \mid \text{poor-risk}) = P(A \mid B) = \frac{P(B \mid A)P(A)}{P(B \mid A)P(A) + P(B \mid A^c)P(A^c)} = \frac{(0.3)(0.01)}{(0.3)(0.01) + (0.1)(0.99)} = 0.0294$ </font> -->
+
