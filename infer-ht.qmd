@@ -712,7 +712,7 @@ The critical value is $-t_{\alpha, n-1}$, or the quantile such that $P(T_{n-1} <
 
 
 
-## Example: Two-tailed z-test
+## Example: Two-tailed z-test {#sec-ex-two-tailed}
 
 ::::{.columns}
 :::{.column width="80%"}
@@ -900,7 +900,424 @@ It would be great if we correctly reject $H_0$ when $H_0$ is actually false. We 
 <!-- - The power depends on the same factors as $\beta$ does, including the size of $\alpha$, the sample size, and the true value of parameter. -->
 
  
-## Statistical Power and Choosing Sample Size
+## Statistical Power and Choosing Sample Size*
+
+
+### Power of a Hypothesis Test
+
+$\beta = P(\text{type II error}) = P(\text{failing to reject } H_0 \text{ when } H_0 \text{ is false})$. In statistics, $1 - \beta =  P(\text{rejecting } H_0 \text{ when } H_0 \text{ is false})$ is called the (statistical) **power** of the test. We hope a test has high power because it means the test is able to correctly reject $H_0$ when $H_0$ is false, like we hope all criminals get arrested! The power depends on the same factors as $\beta$ does, including the size of $\alpha$, the sample size, and the true value of parameter.
+
+
+<!-- ## Type I Error, Type II Error and Power Illustration -->
+
+Now let's learn type I error, type II error, and power through distributions. Here a right-tailed example $H_0: \mu = \mu_0$ v.s. $H_1: \mu > \mu_0$ is illustrated in @fig-power.
+
+The distribution on the top is the distribution under $H_0$, that is, the distribution has the mean $\mu_0$. Since it is a right-tailed test, we reject $H_0$ in favor of $H_1$ if the test statistic is greater than the critical value on the right of the distribution that is indicated at the green vertical line. If we reject $H_0$ when $H_0$ is actually true, we commit a type I error, and the probability of committing a type I error, which is $\alpha$, is the green area on the right tail of the distribution.
+
+```{r}
+#| label: fig-power
+#| fig-cap: Example of Power. Source
+#| out-width: 90%
+knitr::include_graphics("./images/img-infer/alpha_beta.png")
+```
+
+
+<!-- ![](./figures/alpha_beta.png){height=550px width=600px} -->
+
+
+Now, suppose the true population mean is $\mu_a > \mu_0$. That is, $H_0$ is false and $H_1$ is true, then the true distribution is the blue curve one centered at $\mu_a$ at the bottom. However, in reality most of the time we do not know the exact value of $\mu_a$. Remember that we make our decision under the mechanism or assumption of $H_0$. So we actually do our hypothesis testing under the distribution depicted by the purple-dashed curve. And we know this distribution because $mu_0$ is the hypothesized value of $\mu$ we specify when we do the testing. If we fail to reject the false $H_0$, we commit the type II error. The yellow area is the probability of committing the type II error. This yellow area is the probability that we fail to reject $H_0$ when $H_0$ is false and $H_1$ is true $(\mu = \mu_a)$, which is $\beta$. Although we don't know the true value $\mu_a$, for this right-tailed test, the left-tailed area whose value is smaller than the critical value is always the rejection region. The size of the yellow area, the chance of committing type II error, and the rejection region is smaller (larger) if $\mu_a$ is much (less) greater than $\mu_0$.
+
+Which part represents the power in the figure? The power is $1 - \beta$ which is the green area under the blue density curve at the bottom. Remember that the total area under a probability density curve is 1, and the power is the total area minus $\beta$, the yellow area.
+
+
+### Power Calculation 
+
+In this section we illustrate how to calculate the type II error rate and power. Suppose we randomly sampled 36 values from a normally distributed population with $\sigma = 18$ and unknown $\mu$. At $\alpha = 0.05$, we are going to test a right-tailed test
+   <span style="color:blue"> $\begin{align} 
+  &H_0: \mu = \mu_0 = 50 \\ 
+  &H_1: \mu > 50 
+  \end{align}$ </span>
+
+Suppose we are sampling from a normal distribution and $\sigma$ is known. Then the test statistic is $Z_{test} = \frac{\overline{X} - \mu_0}{\sigma/\sqrt{n}} \sim N(0, 1)$ under $H_0$. Since it is a right-tailed test, we reject $H_0$ if $z_{test} > z_{\alpha} = z_{0.05} = 1.645$.
+
+Now we are going to re-express the rejection region in terms of $\overline{X}$ because it is going to help us calculate $\beta$. The question is, for what values of $\overline{X}$ will we reject $H_0$? Remember, we reject $H_0$ if the observed test statistic $z_{test} = \frac{\overline{x} - \mu_0}{\sigma/\sqrt{n}} > 1.645$. We can isolate $\overline{x}$ in the expression by multiplying $\sigma/\sqrt{n}$ and adding $\mu_0$ on both sides. Then we have $\overline{x} > \mu_0 + 1.645\frac{\sigma}{\sqrt{n}} = 50 + 1.645\frac{18}{\sqrt{36}} = 54.94$. 
+
+Therefore, having evidence $z_{test} > 1.645$ is equivalent to having evidence $\overline{x} > 54.94$. Both represent the same rejection region. One represents the evidence using standard normal distribution as the benchmark, and the other uses the original hypothesized distribution $N(50, 18^2)$ as the benchmark. The figure below illustrates this idea. We use different scales to measure the same thing.
+  
+  
+```{r beta_plot, echo=FALSE, fig.height=3.4, fig.width=6}
+par(mar = c(2, 2, 2, 1))
+x <- seq(-4, 4, length=1000)
+hx <- dnorm(x)
+alpha <- 0.05
+x_bar <- 121.5
+sigma <- 5
+n <- 100
+mu_0 <- 120
+cri_val <- qnorm(alpha, lower.tail = FALSE)
+plot(x, hx, type="l", lty=1, xlab="x value", axes = FALSE,ylim= c(-0.02, 0.4),
+  ylab="Density", main="Right-tailed test: Rejection region in terms of x_bar")
+# axis(1, labels = FALSE,  tck = -0.01)
+i <- x > cri_val
+z_test <- (x_bar - mu_0) / (sigma / sqrt(n))
+i_test <- x > z_test
+polygon(c(cri_val,x[i]), c(0,hx[i]), col="red", border = NA)
+text(ub+0.4, 0.01, paste0(round(qnorm(0.95), 3)), cex = 1, col = "black")
+text(ub+0.4,-0.025, "54.94", cex = 1, col = "green4")
+# text(1, 0.05, paste0("alpha=",alpha), cex = 1.3, col = "red")
+segments(0, 0, 0, dnorm(0), lty = 2, lwd = 0.5)
+text(0, 0.01, 0, col = "black", cex = 1)
+text(0, -0.025, "50", col = "green4", cex = 1)
+```
+
+
+<!-- ## Beta Calculation Example  Cont'd {.smaller} -->
+
+We are not able to calculate $\beta$ or power without knowing or assuming the true value of $\mu$ which is not $\mu_0 = 50$ because $\beta$ is based on the fact that $H_0$ is false. Suppose the true mean is $\mu = 56$. Let's calculate $P(\text{Type II error}) = \beta$.
+
+<!-- $H_0: \mu = 50$, $H_1: \mu > 50$ -->
+Now $\beta = P(\text{Do not reject } H_0 \mid \mu = 56)$.
+
+Because we reject $H_0$ if $\overline{X} > 54.94$, it means that we do not reject $H_0$ if $\overline{X} < 54.94$. Plug into information into the probability, we have
+
+$\begin{align*}
+\beta = P(\text{Do not reject } H_0 \mid \mu = 56) &= P(\overline{X} < 54.94 \mid \mu = 56)\\
+&=P\left(\frac{\overline{X} - 56}{18/\sqrt{36}} < \frac{54.94 - 56}{18/\sqrt{36}} \, \middle| \, \mu = 56 \right)\\
+&= P(Z < -0.355) = 0.361
+\end{align*}$
+
+```{r}
+#| echo: true
+pnorm(-0.355)
+pnorm(54.94, mean = 56, sd = 18/sqrt(36))
+```
+
+Therefore, Power $= P(\text{Reject } H_0 \mid \mu = 56) = 1 - P(\text{Do not reject } H_0 \mid \mu = 56) = 1 - \beta = 0.639$
+
+```{r beta_plot_2, echo=FALSE, fig.height=3.1, fig.width=6}
+par(mar = c(2, 2, 2, 1))
+x <- seq(-4, 6, length=1000)
+hx <- dnorm(x)
+hx_1 <- dnorm(x, 2.5, 1)
+alpha <- 0.05
+x_bar <- 121.5
+sigma <- 5
+n <- 100
+mu_0 <- 120
+cri_val <- qnorm(alpha, lower.tail = FALSE)
+plot(x, hx, type="l", lty=1, xlab="x value", axes = FALSE,ylim= c(-0.02, 0.4),
+  ylab="Density", main="Type I error (red) and Type II error (yellow)", lwd = 2)
+lines(x, hx_1, col = "blue", lwd = 2)
+# axis(1, labels = FALSE,  tck = -0.01)
+i <- x > cri_val
+z_test <- (x_bar - mu_0) / (sigma / sqrt(n))
+i_test <- x > z_test
+polygon(c(cri_val,x[i]), c(0,hx[i]), col="red", border = "black")
+# text(ub+0.4, 0.01, paste0(round(qnorm(0.95), 3)), cex = 1, col = "black")
+text(ub+0.4,-0.025, "54.94", cex = 1, col = "green4")
+# text(1, 0.05, paste0("alpha=",alpha), cex = 1.3, col = "red")
+segments(0, 0, 0, dnorm(0), lty = 2, lwd = 0.5, col = "black")
+# text(0, 0.01, 0, col = "black", cex = 1)
+text(0, -0.025, "50", col = "green4", cex = 1)
+segments(2.5, 0, 2.5, dnorm(2.5, 2.5, 1), lty = 2, lwd = 0.5, col = "blue")
+text(2.5, -0.025, "56", col = "green4", cex = 1)
+j <- x < cri_val
+polygon(c(cri_val,x[j]), c(0,hx_1[j]), col="yellow1", border = "blue")
+lines(x, hx, col = "black", lwd = 2)
+```
+
+
+
+<!-- ## Formula of $\beta$ (Textbook page 251) -->
+
+<!-- The probability of Type II error $\beta = P(\text{type II error}) = P(\text{failing to reject } H_0 \text{ when } H_0 \text{ is false})$  -->
+
+<!-- Suppose $\mu_0$ is the mean value under $H_0$ and $\mu_1$ is the mean value under $H_1$. -->
+In general, if the hypothesized mean value is $\mu_0$, and the true mean value is $\mu_1$, for one sample $z$ test, we have the formula for calculating $\beta$ as follows. The derivation is left as an exercise.
+
+- For one-tailed tests (either left-tailed or right-tailed), 
+
+$$ \beta(\mu_1) = P\left( Z \le \color{blue}{z_{\alpha}} - \frac{|\mu_0 - \mu_1|}{\sigma/\sqrt{n}}\right) $$ 
+
+- For two-tailed tests,
+
+$$ \beta(\mu_1) = P\left( Z \le \color{blue}{z_{\alpha/2}} - \frac{|\mu_0 - \mu_1|}{\sigma/\sqrt{n}}\right) $$ 
+
+Note that again to compute $\beta$, we need the value $\mu_1$ of the true $H_1$, which in reality is usually unknown. But we could definitely check how the value of $\mu_1$ affects $\beta$ through this formula.
+
+### Power Analysis
+
+Back to the milk price example in @sec-ex-two-tailed. we have the test
+
+<span style="color:blue"> $\begin{align} 
+  &H_0: \mu = 2.78 \\ 
+  &H_1: \mu \ne 2.78 
+  \end{align}$ </span>
+and we do not reject $H_0$.
+
+The question here is 
+
+- If $|\mu_0 - \mu_1| = |2.78 - \mu_1| \ge 0.05$, is the conclusion that price has not
+changed reasonable or acceptable? Let's see the chance of making the wrong decision.
+
+We check the probability that we do not reject $H_0$ when $H_0$ is false, i.e., the probability that **we conclude that the mean milk price has not changed, but it actually did**.
+
+
+<!-- ## Back to Example 3: Power Analysis Cont'd -->
+
+Since it is a two-tailed test, and $|\mu_0 - \mu_1| \ge 0.05$, the type II error rate can be as high as
+$$
+\begin{align}
+\beta &= P\left( Z \le \color{blue}{z_{\alpha/2}} - \frac{|\mu_0 - \mu_1|}{\sigma/\sqrt{n}}\right) \\
+&\le P\left( Z \le 1.96 - \frac{0.05}{0.1/\sqrt{25}}\right) = P\left(Z < -0.54 \right) = 0.2946.
+\end{align}
+$$
+If the actual mean milk price this week is $\mu_1 = 2.83$ or $\mu_1 = 2.73$, (since $|\mu_0 - \mu_1| = 0.05$), there is about 3 in 10 chance of making a wrong conclusion. If we think the risk is too high, we need to collect more than 25 samples. With a fixed $\alpha$, we can increase the testing power or decrease type II error rate by increasing the sample size. This leaves a question: *How do we choose a sample size that keeps $\beta$ at some low level?* 
+
+
+<!-- ### Factors Affect $\beta$ or the Power -->
+Let's go back to the formula of $\beta$.
+
+$$ \beta(\mu_1) = P\left( Z \le \color{blue}{z_{\alpha}} - \frac{|\mu_0 - \mu_1|}{\sigma/\sqrt{n}}\right) $$
+
+What will increase the power (decrease $\beta$)? 
+
++ **$\mu_0$ and $\mu_1$ are further away**: When $\mu_0$ and $\mu_1$ are far apart, the evidence that $\mu$ is not $\mu_0$ is stronger, and it's more likely to reject $H_0$ when it is false. The chance of making type II error decreases. Look how $\beta$ decreases from the blue area to the red area when the true mean value increases from 56 to 60.
+  
+```{r}
+#| label: beta_mu1
+#| echo: false
+#| fig-height: 2.6
+#| fig-width: 6
+x <- seq(-3, 7, length=1000)
+hx <- dnorm(x)
+hx_1 <- dnorm(x, 2.5, 1)
+hx_2 <- dnorm(x, 4, 1)
+sd <- 0.7
+hx_small_sig <- dnorm(x, 0, sd)
+hx_1_small_sig <- dnorm(x, 2.5, sd)
+# hx_2_small_sig <- dnorm(x, 4, 0.5)
+alpha <- 0.05
+cri_val <- qnorm(alpha, 0, 1, lower.tail = FALSE)
+alpha_large <- 0.2
+cri_val_large <- qnorm(alpha_large, 0, 1, lower.tail = FALSE)
+par(mar = c(1, 1, 1, 1))
+# par(mfrow = c(3, 1))
+## |mu_0 - mu_1| further
+plot(x, hx, type="l", lty=1, xlab="x value", axes = FALSE,ylim= c(-0.02, 0.4),
+     ylab="Density", main = "mu_0 and mu_a further away", lwd = 2)
+lines(x, hx_1, col = "blue", lwd = 2)
+lines(x, hx_2, col = "red", lwd = 2)
+# axis(1, labels = FALSE,  tck = -0.01)
+# text(ub+0.4, 0.01, paste0(round(qnorm(0.95), 3)), cex = 1, col = "black")
+# text(ub+0.4,-0.025, "54.94", cex = 1, col = "green4")
+# text(1, 0.05, paste0("alpha=",alpha), cex = 1.3, col = "red")
+segments(0, 0, 0, dnorm(0), lty = 2, lwd = 0.5)
+segments(2.5, 0, 2.5, dnorm(2.5, 2.5, 1), lty = 2, lwd = 0.5, col = "blue")
+segments(4, 0, 4, dnorm(4, 4, 1), lty = 2, lwd = 0.5, col = "red")
+# text(0, 0.01, 0, col = "black", cex = 1)
+text(0, -0.025, "50", col = "black", cex = 1)
+text(2.5, -0.025, "56", col = "blue", cex = 1)
+text(4, -0.025, "60", col = "red", cex = 1)
+j <- x < cri_val
+polygon(c(cri_val,x[j]), c(0,hx_1[j]), col="blue", border = "blue")
+polygon(c(cri_val,x[j]), c(0,hx_2[j]), col="red", border = "red")
+lines(x, hx, col = "black", lwd = 2)
+text(ub+0.4,-0.025, "54.94", cex = 1, col = "green4")
+```
+  
+
++ **Larger $\alpha$**: $\alpha$ and $\beta$ are trading off. Everything held constant, if you increases $\alpha$, it means you use smaller critical values, and allows more type I errors or false discoveries. But at the same time, more rejecting $H_0$ decreases the cases that we don't reject $H_0$ when it is false. In other words, type II error rate goes down. The figure below shows how $\beta$ changes when $\alpha$ is increased from 0.05 to 0.2.
+
+```{r}
+#| label: beta_alpha
+#| echo: false
+#| fig-height: 2.6
+#| fig-width: 6
+
+par(mar = c(1, 1, 1, 1))
+plot(x, hx, type="l", lty=1, xlab="x value", axes = FALSE,ylim= c(-0.02, 0.4),
+     ylab="Density", main = "Large alpha", lwd = 2)
+lines(x, hx_1, col = "blue", lwd = 2)
+j <- x < cri_val
+polygon(c(cri_val,x[j]), c(0,hx_1[j]), col="yellow", border = "blue")
+k <- x < cri_val_large
+polygon(c(cri_val_large,x[k]), c(0,hx_1[k]), col="lightgray", border = "blue")
+text(0, -0.025, "50", col = "black", cex = 1)
+text(2.5, -0.025, "56", col = "blue", cex = 1)
+text(0.45, 0.03, "beta at alpha .2", col = "black", cex = 1.2)
+text(1.3, 0.09, "beta at alpha .05", col = "black", cex = 1.2)
+segments(0, 0, 0, dnorm(0), lty = 2, lwd = 0.5)
+segments(2.5, 0, 2.5, dnorm(2.5, 2.5, 1), lty = 2, lwd = 0.5, col = "blue")
+lines(x, hx, col = "black", lwd = 2)
+```
+  
+  + **Smaller $\sigma$**: When $\sigma$ is small, given the same location of the distributions of $H_0$ and $H_1$, or the same $| \mu_1 - \mu_0|$, the two distributions are more separated apart, and have smaller overlapped regions. The figure below shows how $\beta$ shrinks from the blue area to the red area when $\sigma$ becomes smaller due to the fact that the two distributions become peaky and thin-tailed.
+    
+```{r}
+#| label: beta_n
+#| echo: false
+#| fig-height: 2.6
+#| fig-width: 6
+par(mar = c(1, 1, 1, 1))
+plot(x, hx, type="l", lty=1, xlab="x value", axes = FALSE,ylim= c(-0.02, 0.7),
+     ylab="Density", main = "Smaller sigma (Larger n)", lwd = 0.5)
+lines(x, hx_1, col = "blue", lwd = 0.5)
+lines(x, hx_small_sig, col = "black", lwd = 3)
+lines(x, hx_1_small_sig, col = "red", lwd = 3)
+cri_val_small <- qnorm(alpha, 0, sd, lower.tail = FALSE)
+j_small <- x < cri_val_small
+segments(0, 0, 0, dnorm(0, 0, sd), lty = 2, lwd = 0.5)
+segments(2.5, 0, 2.5, dnorm(2.5, 2.5, sd), lty = 2, lwd = 0.5, col = "blue")
+polygon(c(cri_val,x[j]), c(0,hx_1[j]), col="blue", border = "blue")
+polygon(c(cri_val_small,x[j_small]), c(0,hx_1_small_sig[j_small]), col="red", border = "red")
+lines(x, hx, col = "black")
+lines(x, hx_small_sig, col = "black", lwd = 3)
+lines(x, hx_1_small_sig, col = "red", lwd = 3)
+text(0, -0.03, "50", col = "black", cex = 1)
+text(2.5, -0.03, "56", col = "blue", cex = 1)
+```
+
+
+  + **Larger sample size $n$**: When sample size gets large, more information is collected, and therefore the sampling distribution of the sample mean becomes more certain about its possible values. This results in the same effect of having a smaller $\sigma$.
+  
+
+  
+
+
+
+
+
+<!-- ## Factors Affect $\beta$ or the Power {.smaller} -->
+<!-- - For a right-tailed test $H_0: \mu = \mu_0 = 50$, $H_1: \mu > \mu_0$, we do not reject $H_0$ if $\overline{x} < 54.94$. -->
+
+<!-- ```{r} -->
+<!-- #| label: beta_size -->
+<!-- #| echo: false -->
+<!-- #| fig-height: 5.6 -->
+<!-- #| fig-width: 6 -->
+<!-- x <- seq(-3, 7, length=1000) -->
+<!-- hx <- dnorm(x) -->
+<!-- hx_1 <- dnorm(x, 2.5, 1) -->
+<!-- hx_2 <- dnorm(x, 4, 1) -->
+<!-- sd <- 0.7 -->
+<!-- hx_small_sig <- dnorm(x, 0, sd) -->
+<!-- hx_1_small_sig <- dnorm(x, 2.5, sd) -->
+<!-- # hx_2_small_sig <- dnorm(x, 4, 0.5) -->
+<!-- alpha <- 0.05 -->
+<!-- cri_val <- qnorm(alpha, 0, 1, lower.tail = FALSE) -->
+<!-- alpha_large <- 0.2 -->
+<!-- cri_val_large <- qnorm(alpha_large, 0, 1, lower.tail = FALSE) -->
+<!-- par(mar = c(1, 1, 1, 1)) -->
+<!-- par(mfrow = c(3, 1)) -->
+<!-- ## |mu_0 - mu_1| further -->
+<!-- plot(x, hx, type="l", lty=1, xlab="x value", axes = FALSE,ylim= c(-0.02, 0.4), -->
+<!--      ylab="Density", main = "mu_0 and mu_a further away", lwd = 2) -->
+<!-- lines(x, hx_1, col = "blue", lwd = 2) -->
+<!-- lines(x, hx_2, col = "red", lwd = 2) -->
+<!-- # axis(1, labels = FALSE,  tck = -0.01) -->
+<!-- # text(ub+0.4, 0.01, paste0(round(qnorm(0.95), 3)), cex = 1, col = "black") -->
+<!-- # text(ub+0.4,-0.025, "54.94", cex = 1, col = "green4") -->
+<!-- # text(1, 0.05, paste0("alpha=",alpha), cex = 1.3, col = "red") -->
+<!-- segments(0, 0, 0, dnorm(0), lty = 2, lwd = 0.5) -->
+<!-- segments(2.5, 0, 2.5, dnorm(2.5, 2.5, 1), lty = 2, lwd = 0.5, col = "blue") -->
+<!-- segments(4, 0, 4, dnorm(4, 4, 1), lty = 2, lwd = 0.5, col = "red") -->
+<!-- # text(0, 0.01, 0, col = "black", cex = 1) -->
+<!-- text(0, -0.025, "50", col = "black", cex = 1) -->
+<!-- text(2.5, -0.025, "56", col = "blue", cex = 1) -->
+<!-- text(4, -0.025, "60", col = "red", cex = 1) -->
+<!-- j <- x < cri_val -->
+<!-- polygon(c(cri_val,x[j]), c(0,hx_1[j]), col="blue", border = "blue") -->
+<!-- polygon(c(cri_val,x[j]), c(0,hx_2[j]), col="red", border = "red") -->
+<!-- lines(x, hx, col = "black", lwd = 2) -->
+<!-- text(ub+0.4,-0.025, "54.94", cex = 1, col = "green4") -->
+
+
+<!-- ## large alpha -->
+<!-- plot(x, hx, type="l", lty=1, xlab="x value", axes = FALSE,ylim= c(-0.02, 0.4), -->
+<!--      ylab="Density", main = "Large alpha", lwd = 2) -->
+<!-- lines(x, hx_1, col = "blue", lwd = 2) -->
+<!-- j <- x < cri_val -->
+<!-- polygon(c(cri_val,x[j]), c(0,hx_1[j]), col="yellow", border = "blue") -->
+<!-- k <- x < cri_val_large -->
+<!-- polygon(c(cri_val_large,x[k]), c(0,hx_1[k]), col="lightgray", border = "blue") -->
+<!-- text(0, -0.025, "50", col = "black", cex = 1) -->
+<!-- text(2.5, -0.025, "56", col = "blue", cex = 1) -->
+<!-- text(0.45, 0.03, "beta at alpha .2", col = "black", cex = 1.2) -->
+<!-- text(1.3, 0.09, "beta at alpha .05", col = "black", cex = 1.2) -->
+<!-- segments(0, 0, 0, dnorm(0), lty = 2, lwd = 0.5) -->
+<!-- segments(2.5, 0, 2.5, dnorm(2.5, 2.5, 1), lty = 2, lwd = 0.5, col = "blue") -->
+<!-- lines(x, hx, col = "black", lwd = 2) -->
+
+
+
+<!-- ## smaller sigma -->
+<!-- plot(x, hx, type="l", lty=1, xlab="x value", axes = FALSE,ylim= c(-0.02, 0.7), -->
+<!--      ylab="Density", main = "Smaller sigma (Larger n)", lwd = 0.5) -->
+<!-- lines(x, hx_1, col = "blue", lwd = 0.5) -->
+<!-- lines(x, hx_small_sig, col = "black", lwd = 3) -->
+<!-- lines(x, hx_1_small_sig, col = "red", lwd = 3) -->
+<!-- cri_val_small <- qnorm(alpha, 0, sd, lower.tail = FALSE) -->
+<!-- j_small <- x < cri_val_small -->
+<!-- segments(0, 0, 0, dnorm(0, 0, sd), lty = 2, lwd = 0.5) -->
+<!-- segments(2.5, 0, 2.5, dnorm(2.5, 2.5, sd), lty = 2, lwd = 0.5, col = "blue") -->
+<!-- polygon(c(cri_val,x[j]), c(0,hx_1[j]), col="blue", border = "blue") -->
+<!-- polygon(c(cri_val_small,x[j_small]), c(0,hx_1_small_sig[j_small]), col="red", border = "red") -->
+<!-- lines(x, hx, col = "black") -->
+<!-- lines(x, hx_small_sig, col = "black", lwd = 3) -->
+<!-- lines(x, hx_1_small_sig, col = "red", lwd = 3) -->
+<!-- text(0, -0.03, "50", col = "black", cex = 1) -->
+<!-- text(2.5, -0.03, "56", col = "blue", cex = 1) -->
+<!-- ``` -->
+
+<!-- - We first choose a $\mu_1$ in $H_1$. Then decide how small $\beta$ or how large the power we want. -->
+
+<!-- add power curve slides  -->
+
+<!-- ### Sample Size Formula -->
+
+To keep $\alpha$ and $\beta$ at a specified level, the only way is to increase the sample size. With $\Delta = |\mu_0-\mu_1|$, the formula for required sample size is shown as below. The derivation is left as an exercise.
+
++ One-tailed test (either left-tailed or right-tailed):
+  $$n \ge \sigma^2 \frac{(\color{blue}{z_{\alpha}} + z_{\beta})^2}{\Delta^2}$$
+
++ Two-tailed test:
+  $$n \ge \sigma^2 \frac{( \color{blue}{z_{\alpha/2}} + z_{\beta})^2}{\Delta^2}$$
+
+
+<!-- -------------------------------------------------------------- -->
+
+<span style="color:blue"> **Example: Sample size** </span>
+
+<!-- ## Example 5.11 -->
+
+A cereal company sell boxes of cereal with the labeled weight of 16 oz. The production is based on the mean weight of 16.37 oz. So that only small portion of boxes have weight less than 16 oz. The box weight is normally distributed with $\sigma = 0.225$. The percentage of boxes weighting less than 16 oz. is 5%. They suspect that due to some production defect the weight filled in the boxes have mean less than 16.37, and like to conduct a test under $\alpha = 0.05$.
+
+
+This is a $H_1$ claim and the test is<span style="color:blue"> 
+$\begin{align} 
+  &H_0: \mu = 16.37 \\ 
+  &H_1: \mu < 16.37 
+  \end{align}$ </span>
+
+
+
+<!-- ## Example 5.11 Cont'd  -->
+*Question:* How many boxes should be sampled in order to correctly discover that mean is less than 16.37 with the power of 0.99 if in fact the true mean weight is 16.27 or less?
+
+- $\alpha = 0.05$. $\sigma = 0.225$. We have $\beta = 1 - \text{power} = 0.01$, $\Delta = |\mu_0 - \mu_1| = 16.37-16.27 = 0.1$. 
+
+- The formula is $n = \sigma^2 \frac{(\color{blue}{z_{\alpha}} + z_{\beta})^2}{\Delta^2}$
+
+- $z_{\alpha} = z_{0.05} = 1.645$, $z_{\beta} = z_{0.01} = 2.33$. 
+
+
+- Thus, $$ n \ge 
+\left(0.225^2\right) \frac{(1.645 + 2.33)^2}{\left(0.1^2\right)} = 79.99 $$
+
+- They need at least 80 samples to conduct the test under the specified conditions ($\alpha = 0.05$, $\beta=0.01$).
+
+
  
 ## Exercises
 

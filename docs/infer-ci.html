@@ -454,7 +454,12 @@ window.Quarto = {
   <ul>
 <li><a href="#point-estimator" id="toc-point-estimator" class="nav-link active" data-scroll-target="#point-estimator"><span class="header-section-number">13.1</span> Point Estimator</a></li>
   <li><a href="#confidence-intervals" id="toc-confidence-intervals" class="nav-link" data-scroll-target="#confidence-intervals"><span class="header-section-number">13.2</span> Confidence Intervals</a></li>
-  <li><a href="#confidence-intervals-for-mu-when-sigma-is-known" id="toc-confidence-intervals-for-mu-when-sigma-is-known" class="nav-link" data-scroll-target="#confidence-intervals-for-mu-when-sigma-is-known"><span class="header-section-number">13.3</span> Confidence Intervals for <span class="math inline">\(\mu\)</span> When <span class="math inline">\(\sigma\)</span> is Known</a></li>
+  <li>
+<a href="#confidence-intervals-for-mu-when-sigma-is-known" id="toc-confidence-intervals-for-mu-when-sigma-is-known" class="nav-link" data-scroll-target="#confidence-intervals-for-mu-when-sigma-is-known"><span class="header-section-number">13.3</span> Confidence Intervals for <span class="math inline">\(\mu\)</span> When <span class="math inline">\(\sigma\)</span> is Known</a>
+  <ul class="collapse">
+<li><a href="#reducing-margin-of-error-and-determining-sample-size" id="toc-reducing-margin-of-error-and-determining-sample-size" class="nav-link" data-scroll-target="#reducing-margin-of-error-and-determining-sample-size"><span class="header-section-number">13.3.1</span> Reducing margin of error and determining sample size*</a></li>
+  </ul>
+</li>
   <li><a href="#confidence-intervals-for-mu-when-sigma-is-unknown" id="toc-confidence-intervals-for-mu-when-sigma-is-unknown" class="nav-link" data-scroll-target="#confidence-intervals-for-mu-when-sigma-is-unknown"><span class="header-section-number">13.4</span> Confidence Intervals for <span class="math inline">\(\mu\)</span> When <span class="math inline">\(\sigma\)</span> is Unknown</a></li>
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">13.5</span> Summary</a></li>
   <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">13.6</span> Exercises</a></li>
@@ -986,7 +991,30 @@ Important
 </div>
 </div>
 </div>
-</section><section id="confidence-intervals-for-mu-when-sigma-is-unknown" class="level2" data-number="13.4"><h2 data-number="13.4" class="anchored" data-anchor-id="confidence-intervals-for-mu-when-sigma-is-unknown">
+<section id="reducing-margin-of-error-and-determining-sample-size" class="level3" data-number="13.3.1"><h3 data-number="13.3.1" class="anchored" data-anchor-id="reducing-margin-of-error-and-determining-sample-size">
+<span class="header-section-number">13.3.1</span> Reducing margin of error and determining sample size*</h3>
+<p>We learn that the margin of error is <span class="math inline">\(E = z_{\alpha/2} \frac{\sigma}{\sqrt{n}}\)</span>. Of course we prefer small margin of error for more estimation accuracy and precision. From its formula, we can see that there are three ways to reduce the margin of error:</p>
+<ul>
+<li>Reduce <span class="math inline">\(\sigma\)</span>
+</li>
+<li>Increase <span class="math inline">\(n\)</span>
+</li>
+<li>Reduce <span class="math inline">\(z_{\alpha/2}\)</span>
+</li>
+</ul>
+<p>However, given a confidence level <span class="math inline">\(1 - \alpha\)</span> and known <span class="math inline">\(\sigma\)</span>, we can reduce the margin of error only by increasing sample size <span class="math inline">\(n\)</span>. Due to high sampling costs, we like to find the minimum sample size needed to get a desired margin of error.</p>
+<p>What we can do is to rewrite the margin of error, and represent <span class="math inline">\(n\)</span> as a function of <span class="math inline">\(E\)</span>, <span class="math inline">\(\alpha\)</span>, and <span class="math inline">\(\sigma\)</span>. Once all three are given, we know the how large the sample size is.</p>
+<p><span class="math inline">\(E = z_{\alpha/2} \frac{\sigma}{\sqrt{n}} \iff \frac{1}{\sqrt{n}} = \frac{E}{z_{\alpha/2}\sigma}
+\iff \sqrt{n} = \frac{z_{\alpha/2}\sigma}{E} \iff n = \left(\frac{z_{\alpha/2}\sigma}{E}\right)^2\)</span></p>
+<p>Clearly, to get the desired margin of error, say <span class="math inline">\(E_d\)</span> the sample size should be <em>at least</em> <span class="math inline">\(\left(\frac{z_{\alpha/2}\sigma}{E_d}\right)^2\)</span> because <span class="math inline">\(E\)</span> and <span class="math inline">\(n\)</span> inversely proportional to each other.</p>
+<hr>
+<p><span style="color:blue"> <strong>Example</strong> </span></p>
+<p>State tax advisory board wants to estimate the mean household income with a margin of error of $1,000 with 99% confidence level. Assume that the population standard deviation is $10,000. How many households they need to sample?</p>
+<ul>
+<li><p><span class="math inline">\(E = 1000\)</span>, <span class="math inline">\(\alpha = 0.01\)</span> and <span class="math inline">\(z_{0.005} = 2.58\)</span>, <span class="math inline">\(\sigma = 10000\)</span></p></li>
+<li><p><span class="math inline">\(n = \left(\frac{z_{\alpha/2}\sigma}{E}\right)^2 = \left(\frac{(2.58)(10000)}{1000}\right)^2 = 656.7\)</span></p></li>
+<li><p>They need sample size 657.</p></li>
+</ul></section></section><section id="confidence-intervals-for-mu-when-sigma-is-unknown" class="level2" data-number="13.4"><h2 data-number="13.4" class="anchored" data-anchor-id="confidence-intervals-for-mu-when-sigma-is-unknown">
 <span class="header-section-number">13.4</span> Confidence Intervals for <span class="math inline">\(\mu\)</span> When <span class="math inline">\(\sigma\)</span> is Unknown</h2>
 <p>We complete the discussion of confidence intervals for <span class="math inline">\(\mu\)</span> when <span class="math inline">\(\sigma\)</span> is known. Do you see anything unreasonable? Do you think that assuming <span class="math inline">\(\sigma^2\)</span> is known is reasonable? In fact, the population variance is calculated as <span class="math inline">\(\sigma^2 = \frac{\sum_{i=1}^{N}(x_i - \mu)^2}{N}\)</span>, where <span class="math inline">\(N\)</span> is the population size. The formula involves <span class="math inline">\(\mu\)</span>, the unknown parameter we’d like to estimate. It’s rare that we don’t know <span class="math inline">\(\mu\)</span> but know <span class="math inline">\(\sigma\)</span>. What do we do if <span class="math inline">\(\sigma\)</span> is unknown?</p>
 <p>When <span class="math inline">\(\sigma\)</span> is unknown to us, we cannot use normal distribution anymore. Instead, we use the <strong>Student’s t</strong> distribution (or <span class="math inline">\(t\)</span>-distribution) to construct a confidence interval for <span class="math inline">\(\mu\)</span> when <span class="math inline">\(\sigma\)</span> is <strong>unknown</strong>. To construct these confidence intervals we still need</p>

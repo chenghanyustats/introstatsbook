@@ -258,7 +258,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prob-rule.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability Rules</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability Rules and Bayes Formula</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -454,10 +454,17 @@ window.Quarto = {
   <ul>
 <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">15.1</span> Introduction</a></li>
   <li><a href="#how-to-formally-do-a-statistical-hypothesis-testing" id="toc-how-to-formally-do-a-statistical-hypothesis-testing" class="nav-link" data-scroll-target="#how-to-formally-do-a-statistical-hypothesis-testing"><span class="header-section-number">15.2</span> How to Formally Do a Statistical Hypothesis Testing</a></li>
-  <li><a href="#example-two-tailed-z-test" id="toc-example-two-tailed-z-test" class="nav-link" data-scroll-target="#example-two-tailed-z-test"><span class="header-section-number">15.3</span> Example: Two-tailed z-test</a></li>
+  <li><a href="#sec-ex-two-tailed" id="toc-sec-ex-two-tailed" class="nav-link" data-scroll-target="#sec-ex-two-tailed"><span class="header-section-number">15.3</span> Example: Two-tailed z-test</a></li>
   <li><a href="#testing-summary" id="toc-testing-summary" class="nav-link" data-scroll-target="#testing-summary"><span class="header-section-number">15.4</span> Testing Summary</a></li>
   <li><a href="#type-i-and-type-ii-errors" id="toc-type-i-and-type-ii-errors" class="nav-link" data-scroll-target="#type-i-and-type-ii-errors"><span class="header-section-number">15.5</span> Type I and Type II Errors</a></li>
-  <li><a href="#statistical-power-and-choosing-sample-size" id="toc-statistical-power-and-choosing-sample-size" class="nav-link" data-scroll-target="#statistical-power-and-choosing-sample-size"><span class="header-section-number">15.6</span> Statistical Power and Choosing Sample Size</a></li>
+  <li>
+<a href="#statistical-power-and-choosing-sample-size" id="toc-statistical-power-and-choosing-sample-size" class="nav-link" data-scroll-target="#statistical-power-and-choosing-sample-size"><span class="header-section-number">15.6</span> Statistical Power and Choosing Sample Size*</a>
+  <ul class="collapse">
+<li><a href="#power-of-a-hypothesis-test" id="toc-power-of-a-hypothesis-test" class="nav-link" data-scroll-target="#power-of-a-hypothesis-test"><span class="header-section-number">15.6.1</span> Power of a Hypothesis Test</a></li>
+  <li><a href="#power-calculation" id="toc-power-calculation" class="nav-link" data-scroll-target="#power-calculation"><span class="header-section-number">15.6.2</span> Power Calculation</a></li>
+  <li><a href="#power-analysis" id="toc-power-analysis" class="nav-link" data-scroll-target="#power-analysis"><span class="header-section-number">15.6.3</span> Power Analysis</a></li>
+  </ul>
+</li>
   <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">15.7</span> Exercises</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/infer-ht.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -939,7 +946,7 @@ Figure&nbsp;15.7: Meme about hypothesis testing conclusions. Source: https://www
 </div>
 </div>
 <p>The critical value is <span class="math inline">\(-t_{\alpha, n-1}\)</span>, or the quantile such that <span class="math inline">\(P(T_{n-1} &lt; -t_{\alpha, n-1}) = \alpha\)</span>. Therefore, we use <code><a href="https://rdrr.io/r/stats/TDist.html">qt()</a></code> to get the <span class="math inline">\(t\)</span> value. Notice that the p-value is a probability that the Student’s t variable with degrees of freedom <span class="math inline">\(n-1\)</span> is smaller (more extreme) than the test statistic. In R, we use <code><a href="https://rdrr.io/r/stats/TDist.html">pt()</a></code> to get the probability. Without specifying the <code>lower.tail</code> argument in the function, by default, both <code><a href="https://rdrr.io/r/stats/TDist.html">qt()</a></code> and <code><a href="https://rdrr.io/r/stats/TDist.html">pt()</a></code> function focuses on the lower tail or left tail, which is what we need in this left-tail test.</p>
-</section><section id="example-two-tailed-z-test" class="level2" data-number="15.3"><h2 data-number="15.3" class="anchored" data-anchor-id="example-two-tailed-z-test">
+</section><section id="sec-ex-two-tailed" class="level2" data-number="15.3"><h2 data-number="15.3" class="anchored" data-anchor-id="sec-ex-two-tailed">
 <span class="header-section-number">15.3</span> Example: Two-tailed z-test</h2>
 <div class="columns">
 <div class="column" style="width:80%;">
@@ -1156,8 +1163,172 @@ Figure&nbsp;15.9: Example of Type I and Type II errors (https://www.statisticsso
 <!-- - $1- \beta$ is called the **power** of a test. -->
 <!-- - The power depends on the same factors as $\beta$ does, including the size of $\alpha$, the sample size, and the true value of parameter. -->
 </section><section id="statistical-power-and-choosing-sample-size" class="level2" data-number="15.6"><h2 data-number="15.6" class="anchored" data-anchor-id="statistical-power-and-choosing-sample-size">
-<span class="header-section-number">15.6</span> Statistical Power and Choosing Sample Size</h2>
-</section><section id="exercises" class="level2" data-number="15.7"><h2 data-number="15.7" class="anchored" data-anchor-id="exercises">
+<span class="header-section-number">15.6</span> Statistical Power and Choosing Sample Size*</h2>
+<section id="power-of-a-hypothesis-test" class="level3" data-number="15.6.1"><h3 data-number="15.6.1" class="anchored" data-anchor-id="power-of-a-hypothesis-test">
+<span class="header-section-number">15.6.1</span> Power of a Hypothesis Test</h3>
+<p><span class="math inline">\(\beta = P(\text{type II error}) = P(\text{failing to reject } H_0 \text{ when } H_0 \text{ is false})\)</span>. In statistics, <span class="math inline">\(1 - \beta =  P(\text{rejecting } H_0 \text{ when } H_0 \text{ is false})\)</span> is called the (statistical) <strong>power</strong> of the test. We hope a test has high power because it means the test is able to correctly reject <span class="math inline">\(H_0\)</span> when <span class="math inline">\(H_0\)</span> is false, like we hope all criminals get arrested! The power depends on the same factors as <span class="math inline">\(\beta\)</span> does, including the size of <span class="math inline">\(\alpha\)</span>, the sample size, and the true value of parameter.</p>
+<!-- ## Type I Error, Type II Error and Power Illustration -->
+<p>Now let’s learn type I error, type II error, and power through distributions. Here a right-tailed example <span class="math inline">\(H_0: \mu = \mu_0\)</span> v.s. <span class="math inline">\(H_1: \mu &gt; \mu_0\)</span> is illustrated in <a href="#fig-power" class="quarto-xref">Figure&nbsp;<span>15.10</span></a>.</p>
+<p>The distribution on the top is the distribution under <span class="math inline">\(H_0\)</span>, that is, the distribution has the mean <span class="math inline">\(\mu_0\)</span>. Since it is a right-tailed test, we reject <span class="math inline">\(H_0\)</span> in favor of <span class="math inline">\(H_1\)</span> if the test statistic is greater than the critical value on the right of the distribution that is indicated at the green vertical line. If we reject <span class="math inline">\(H_0\)</span> when <span class="math inline">\(H_0\)</span> is actually true, we commit a type I error, and the probability of committing a type I error, which is <span class="math inline">\(\alpha\)</span>, is the green area on the right tail of the distribution.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-power" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-power-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/img-infer/alpha_beta.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-power-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;15.10: Example of Power. Source
+</figcaption></figure>
+</div>
+</div>
+</div>
+<!-- ![](./figures/alpha_beta.png){height=550px width=600px} -->
+<p>Now, suppose the true population mean is <span class="math inline">\(\mu_a &gt; \mu_0\)</span>. That is, <span class="math inline">\(H_0\)</span> is false and <span class="math inline">\(H_1\)</span> is true, then the true distribution is the blue curve one centered at <span class="math inline">\(\mu_a\)</span> at the bottom. However, in reality most of the time we do not know the exact value of <span class="math inline">\(\mu_a\)</span>. Remember that we make our decision under the mechanism or assumption of <span class="math inline">\(H_0\)</span>. So we actually do our hypothesis testing under the distribution depicted by the purple-dashed curve. And we know this distribution because <span class="math inline">\(mu_0\)</span> is the hypothesized value of <span class="math inline">\(\mu\)</span> we specify when we do the testing. If we fail to reject the false <span class="math inline">\(H_0\)</span>, we commit the type II error. The yellow area is the probability of committing the type II error. This yellow area is the probability that we fail to reject <span class="math inline">\(H_0\)</span> when <span class="math inline">\(H_0\)</span> is false and <span class="math inline">\(H_1\)</span> is true <span class="math inline">\((\mu = \mu_a)\)</span>, which is <span class="math inline">\(\beta\)</span>. Although we don’t know the true value <span class="math inline">\(\mu_a\)</span>, for this right-tailed test, the left-tailed area whose value is smaller than the critical value is always the rejection region. The size of the yellow area, the chance of committing type II error, and the rejection region is smaller (larger) if <span class="math inline">\(\mu_a\)</span> is much (less) greater than <span class="math inline">\(\mu_0\)</span>.</p>
+<p>Which part represents the power in the figure? The power is <span class="math inline">\(1 - \beta\)</span> which is the green area under the blue density curve at the bottom. Remember that the total area under a probability density curve is 1, and the power is the total area minus <span class="math inline">\(\beta\)</span>, the yellow area.</p>
+</section><section id="power-calculation" class="level3" data-number="15.6.2"><h3 data-number="15.6.2" class="anchored" data-anchor-id="power-calculation">
+<span class="header-section-number">15.6.2</span> Power Calculation</h3>
+<p>In this section we illustrate how to calculate the type II error rate and power. Suppose we randomly sampled 36 values from a normally distributed population with <span class="math inline">\(\sigma = 18\)</span> and unknown <span class="math inline">\(\mu\)</span>. At <span class="math inline">\(\alpha = 0.05\)</span>, we are going to test a right-tailed test <span style="color:blue"> <span class="math inline">\(\begin{align}
+  &amp;H_0: \mu = \mu_0 = 50 \\
+  &amp;H_1: \mu &gt; 50
+  \end{align}\)</span> </span></p>
+<p>Suppose we are sampling from a normal distribution and <span class="math inline">\(\sigma\)</span> is known. Then the test statistic is <span class="math inline">\(Z_{test} = \frac{\overline{X} - \mu_0}{\sigma/\sqrt{n}} \sim N(0, 1)\)</span> under <span class="math inline">\(H_0\)</span>. Since it is a right-tailed test, we reject <span class="math inline">\(H_0\)</span> if <span class="math inline">\(z_{test} &gt; z_{\alpha} = z_{0.05} = 1.645\)</span>.</p>
+<p>Now we are going to re-express the rejection region in terms of <span class="math inline">\(\overline{X}\)</span> because it is going to help us calculate <span class="math inline">\(\beta\)</span>. The question is, for what values of <span class="math inline">\(\overline{X}\)</span> will we reject <span class="math inline">\(H_0\)</span>? Remember, we reject <span class="math inline">\(H_0\)</span> if the observed test statistic <span class="math inline">\(z_{test} = \frac{\overline{x} - \mu_0}{\sigma/\sqrt{n}} &gt; 1.645\)</span>. We can isolate <span class="math inline">\(\overline{x}\)</span> in the expression by multiplying <span class="math inline">\(\sigma/\sqrt{n}\)</span> and adding <span class="math inline">\(\mu_0\)</span> on both sides. Then we have <span class="math inline">\(\overline{x} &gt; \mu_0 + 1.645\frac{\sigma}{\sqrt{n}} = 50 + 1.645\frac{18}{\sqrt{36}} = 54.94\)</span>.</p>
+<p>Therefore, having evidence <span class="math inline">\(z_{test} &gt; 1.645\)</span> is equivalent to having evidence <span class="math inline">\(\overline{x} &gt; 54.94\)</span>. Both represent the same rejection region. One represents the evidence using standard normal distribution as the benchmark, and the other uses the original hypothesized distribution <span class="math inline">\(N(50, 18^2)\)</span> as the benchmark. The figure below illustrates this idea. We use different scales to measure the same thing.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="infer-ht_files/figure-html/beta_plot-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<!-- ## Beta Calculation Example  Cont'd {.smaller} -->
+<p>We are not able to calculate <span class="math inline">\(\beta\)</span> or power without knowing or assuming the true value of <span class="math inline">\(\mu\)</span> which is not <span class="math inline">\(\mu_0 = 50\)</span> because <span class="math inline">\(\beta\)</span> is based on the fact that <span class="math inline">\(H_0\)</span> is false. Suppose the true mean is <span class="math inline">\(\mu = 56\)</span>. Let’s calculate <span class="math inline">\(P(\text{Type II error}) = \beta\)</span>.</p>
+<!-- $H_0: \mu = 50$, $H_1: \mu > 50$ -->
+<p>Now <span class="math inline">\(\beta = P(\text{Do not reject } H_0 \mid \mu = 56)\)</span>.</p>
+<p>Because we reject <span class="math inline">\(H_0\)</span> if <span class="math inline">\(\overline{X} &gt; 54.94\)</span>, it means that we do not reject <span class="math inline">\(H_0\)</span> if <span class="math inline">\(\overline{X} &lt; 54.94\)</span>. Plug into information into the probability, we have</p>
+<p><span class="math inline">\(\begin{align*}
+\beta = P(\text{Do not reject } H_0 \mid \mu = 56) &amp;= P(\overline{X} &lt; 54.94 \mid \mu = 56)\\
+&amp;=P\left(\frac{\overline{X} - 56}{18/\sqrt{36}} &lt; \frac{54.94 - 56}{18/\sqrt{36}} \, \middle| \, \mu = 56 \right)\\
+&amp;= P(Z &lt; -0.355) = 0.361
+\end{align*}\)</span></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.355</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3612948</code></pre>
+</div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="fl">54.94</span>, mean <span class="op">=</span> <span class="fl">56</span>, sd <span class="op">=</span> <span class="fl">18</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">36</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3619193</code></pre>
+</div>
+</div>
+<p>Therefore, Power <span class="math inline">\(= P(\text{Reject } H_0 \mid \mu = 56) = 1 - P(\text{Do not reject } H_0 \mid \mu = 56) = 1 - \beta = 0.639\)</span></p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="infer-ht_files/figure-html/beta_plot_2-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<!-- ## Formula of $\beta$ (Textbook page 251) -->
+<!-- The probability of Type II error $\beta = P(\text{type II error}) = P(\text{failing to reject } H_0 \text{ when } H_0 \text{ is false})$  -->
+<!-- Suppose $\mu_0$ is the mean value under $H_0$ and $\mu_1$ is the mean value under $H_1$. -->
+<p>In general, if the hypothesized mean value is <span class="math inline">\(\mu_0\)</span>, and the true mean value is <span class="math inline">\(\mu_1\)</span>, for one sample <span class="math inline">\(z\)</span> test, we have the formula for calculating <span class="math inline">\(\beta\)</span> as follows. The derivation is left as an exercise.</p>
+<ul>
+<li>For one-tailed tests (either left-tailed or right-tailed),</li>
+</ul>
+<p><span class="math display">\[ \beta(\mu_1) = P\left( Z \le \color{blue}{z_{\alpha}} - \frac{|\mu_0 - \mu_1|}{\sigma/\sqrt{n}}\right) \]</span></p>
+<ul>
+<li>For two-tailed tests,</li>
+</ul>
+<p><span class="math display">\[ \beta(\mu_1) = P\left( Z \le \color{blue}{z_{\alpha/2}} - \frac{|\mu_0 - \mu_1|}{\sigma/\sqrt{n}}\right) \]</span></p>
+<p>Note that again to compute <span class="math inline">\(\beta\)</span>, we need the value <span class="math inline">\(\mu_1\)</span> of the true <span class="math inline">\(H_1\)</span>, which in reality is usually unknown. But we could definitely check how the value of <span class="math inline">\(\mu_1\)</span> affects <span class="math inline">\(\beta\)</span> through this formula.</p>
+</section><section id="power-analysis" class="level3" data-number="15.6.3"><h3 data-number="15.6.3" class="anchored" data-anchor-id="power-analysis">
+<span class="header-section-number">15.6.3</span> Power Analysis</h3>
+<p>Back to the milk price example in <a href="#sec-ex-two-tailed" class="quarto-xref"><span>Section 15.3</span></a>. we have the test</p>
+<p><span style="color:blue"> <span class="math inline">\(\begin{align}
+  &amp;H_0: \mu = 2.78 \\
+  &amp;H_1: \mu \ne 2.78
+  \end{align}\)</span> </span> and we do not reject <span class="math inline">\(H_0\)</span>.</p>
+<p>The question here is</p>
+<ul>
+<li>If <span class="math inline">\(|\mu_0 - \mu_1| = |2.78 - \mu_1| \ge 0.05\)</span>, is the conclusion that price has not changed reasonable or acceptable? Let’s see the chance of making the wrong decision.</li>
+</ul>
+<p>We check the probability that we do not reject <span class="math inline">\(H_0\)</span> when <span class="math inline">\(H_0\)</span> is false, i.e., the probability that <strong>we conclude that the mean milk price has not changed, but it actually did</strong>.</p>
+<!-- ## Back to Example 3: Power Analysis Cont'd -->
+<p>Since it is a two-tailed test, and <span class="math inline">\(|\mu_0 - \mu_1| \ge 0.05\)</span>, the type II error rate can be as high as <span class="math display">\[
+\begin{align}
+\beta &amp;= P\left( Z \le \color{blue}{z_{\alpha/2}} - \frac{|\mu_0 - \mu_1|}{\sigma/\sqrt{n}}\right) \\
+&amp;\le P\left( Z \le 1.96 - \frac{0.05}{0.1/\sqrt{25}}\right) = P\left(Z &lt; -0.54 \right) = 0.2946.
+\end{align}
+\]</span> If the actual mean milk price this week is <span class="math inline">\(\mu_1 = 2.83\)</span> or <span class="math inline">\(\mu_1 = 2.73\)</span>, (since <span class="math inline">\(|\mu_0 - \mu_1| = 0.05\)</span>), there is about 3 in 10 chance of making a wrong conclusion. If we think the risk is too high, we need to collect more than 25 samples. With a fixed <span class="math inline">\(\alpha\)</span>, we can increase the testing power or decrease type II error rate by increasing the sample size. This leaves a question: <em>How do we choose a sample size that keeps <span class="math inline">\(\beta\)</span> at some low level?</em></p>
+<!-- ### Factors Affect $\beta$ or the Power -->
+<p>Let’s go back to the formula of <span class="math inline">\(\beta\)</span>.</p>
+<p><span class="math display">\[ \beta(\mu_1) = P\left( Z \le \color{blue}{z_{\alpha}} - \frac{|\mu_0 - \mu_1|}{\sigma/\sqrt{n}}\right) \]</span></p>
+<p>What will increase the power (decrease <span class="math inline">\(\beta\)</span>)?</p>
+<ul>
+<li>
+<strong><span class="math inline">\(\mu_0\)</span> and <span class="math inline">\(\mu_1\)</span> are further away</strong>: When <span class="math inline">\(\mu_0\)</span> and <span class="math inline">\(\mu_1\)</span> are far apart, the evidence that <span class="math inline">\(\mu\)</span> is not <span class="math inline">\(\mu_0\)</span> is stronger, and it’s more likely to reject <span class="math inline">\(H_0\)</span> when it is false. The chance of making type II error decreases. Look how <span class="math inline">\(\beta\)</span> decreases from the blue area to the red area when the true mean value increases from 56 to 60.</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="infer-ht_files/figure-html/beta_mu1-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>
+<strong>Larger <span class="math inline">\(\alpha\)</span></strong>: <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> are trading off. Everything held constant, if you increases <span class="math inline">\(\alpha\)</span>, it means you use smaller critical values, and allows more type I errors or false discoveries. But at the same time, more rejecting <span class="math inline">\(H_0\)</span> decreases the cases that we don’t reject <span class="math inline">\(H_0\)</span> when it is false. In other words, type II error rate goes down. The figure below shows how <span class="math inline">\(\beta\)</span> changes when <span class="math inline">\(\alpha\)</span> is increased from 0.05 to 0.2.</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="infer-ht_files/figure-html/beta_alpha-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>
+<strong>Smaller <span class="math inline">\(\sigma\)</span></strong>: When <span class="math inline">\(\sigma\)</span> is small, given the same location of the distributions of <span class="math inline">\(H_0\)</span> and <span class="math inline">\(H_1\)</span>, or the same <span class="math inline">\(| \mu_1 - \mu_0|\)</span>, the two distributions are more separated apart, and have smaller overlapped regions. The figure below shows how <span class="math inline">\(\beta\)</span> shrinks from the blue area to the red area when <span class="math inline">\(\sigma\)</span> becomes smaller due to the fact that the two distributions become peaky and thin-tailed.</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="infer-ht_files/figure-html/beta_n-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>
+<strong>Larger sample size <span class="math inline">\(n\)</span></strong>: When sample size gets large, more information is collected, and therefore the sampling distribution of the sample mean becomes more certain about its possible values. This results in the same effect of having a smaller <span class="math inline">\(\sigma\)</span>.</li>
+</ul>
+<!-- ## Factors Affect $\beta$ or the Power {.smaller} --><!-- - For a right-tailed test $H_0: \mu = \mu_0 = 50$, $H_1: \mu > \mu_0$, we do not reject $H_0$ if $\overline{x} < 54.94$. --><!-- ```{r} --><!-- #| label: beta_size --><!-- #| echo: false --><!-- #| fig-height: 5.6 --><!-- #| fig-width: 6 --><!-- x <- seq(-3, 7, length=1000) --><!-- hx <- dnorm(x) --><!-- hx_1 <- dnorm(x, 2.5, 1) --><!-- hx_2 <- dnorm(x, 4, 1) --><!-- sd <- 0.7 --><!-- hx_small_sig <- dnorm(x, 0, sd) --><!-- hx_1_small_sig <- dnorm(x, 2.5, sd) --><!-- # hx_2_small_sig <- dnorm(x, 4, 0.5) --><!-- alpha <- 0.05 --><!-- cri_val <- qnorm(alpha, 0, 1, lower.tail = FALSE) --><!-- alpha_large <- 0.2 --><!-- cri_val_large <- qnorm(alpha_large, 0, 1, lower.tail = FALSE) --><!-- par(mar = c(1, 1, 1, 1)) --><!-- par(mfrow = c(3, 1)) --><!-- ## |mu_0 - mu_1| further --><!-- plot(x, hx, type="l", lty=1, xlab="x value", axes = FALSE,ylim= c(-0.02, 0.4), --><!--      ylab="Density", main = "mu_0 and mu_a further away", lwd = 2) --><!-- lines(x, hx_1, col = "blue", lwd = 2) --><!-- lines(x, hx_2, col = "red", lwd = 2) --><!-- # axis(1, labels = FALSE,  tck = -0.01) --><!-- # text(ub+0.4, 0.01, paste0(round(qnorm(0.95), 3)), cex = 1, col = "black") --><!-- # text(ub+0.4,-0.025, "54.94", cex = 1, col = "green4") --><!-- # text(1, 0.05, paste0("alpha=",alpha), cex = 1.3, col = "red") --><!-- segments(0, 0, 0, dnorm(0), lty = 2, lwd = 0.5) --><!-- segments(2.5, 0, 2.5, dnorm(2.5, 2.5, 1), lty = 2, lwd = 0.5, col = "blue") --><!-- segments(4, 0, 4, dnorm(4, 4, 1), lty = 2, lwd = 0.5, col = "red") --><!-- # text(0, 0.01, 0, col = "black", cex = 1) --><!-- text(0, -0.025, "50", col = "black", cex = 1) --><!-- text(2.5, -0.025, "56", col = "blue", cex = 1) --><!-- text(4, -0.025, "60", col = "red", cex = 1) --><!-- j <- x < cri_val --><!-- polygon(c(cri_val,x[j]), c(0,hx_1[j]), col="blue", border = "blue") --><!-- polygon(c(cri_val,x[j]), c(0,hx_2[j]), col="red", border = "red") --><!-- lines(x, hx, col = "black", lwd = 2) --><!-- text(ub+0.4,-0.025, "54.94", cex = 1, col = "green4") --><!-- ## large alpha --><!-- plot(x, hx, type="l", lty=1, xlab="x value", axes = FALSE,ylim= c(-0.02, 0.4), --><!--      ylab="Density", main = "Large alpha", lwd = 2) --><!-- lines(x, hx_1, col = "blue", lwd = 2) --><!-- j <- x < cri_val --><!-- polygon(c(cri_val,x[j]), c(0,hx_1[j]), col="yellow", border = "blue") --><!-- k <- x < cri_val_large --><!-- polygon(c(cri_val_large,x[k]), c(0,hx_1[k]), col="lightgray", border = "blue") --><!-- text(0, -0.025, "50", col = "black", cex = 1) --><!-- text(2.5, -0.025, "56", col = "blue", cex = 1) --><!-- text(0.45, 0.03, "beta at alpha .2", col = "black", cex = 1.2) --><!-- text(1.3, 0.09, "beta at alpha .05", col = "black", cex = 1.2) --><!-- segments(0, 0, 0, dnorm(0), lty = 2, lwd = 0.5) --><!-- segments(2.5, 0, 2.5, dnorm(2.5, 2.5, 1), lty = 2, lwd = 0.5, col = "blue") --><!-- lines(x, hx, col = "black", lwd = 2) --><!-- ## smaller sigma --><!-- plot(x, hx, type="l", lty=1, xlab="x value", axes = FALSE,ylim= c(-0.02, 0.7), --><!--      ylab="Density", main = "Smaller sigma (Larger n)", lwd = 0.5) --><!-- lines(x, hx_1, col = "blue", lwd = 0.5) --><!-- lines(x, hx_small_sig, col = "black", lwd = 3) --><!-- lines(x, hx_1_small_sig, col = "red", lwd = 3) --><!-- cri_val_small <- qnorm(alpha, 0, sd, lower.tail = FALSE) --><!-- j_small <- x < cri_val_small --><!-- segments(0, 0, 0, dnorm(0, 0, sd), lty = 2, lwd = 0.5) --><!-- segments(2.5, 0, 2.5, dnorm(2.5, 2.5, sd), lty = 2, lwd = 0.5, col = "blue") --><!-- polygon(c(cri_val,x[j]), c(0,hx_1[j]), col="blue", border = "blue") --><!-- polygon(c(cri_val_small,x[j_small]), c(0,hx_1_small_sig[j_small]), col="red", border = "red") --><!-- lines(x, hx, col = "black") --><!-- lines(x, hx_small_sig, col = "black", lwd = 3) --><!-- lines(x, hx_1_small_sig, col = "red", lwd = 3) --><!-- text(0, -0.03, "50", col = "black", cex = 1) --><!-- text(2.5, -0.03, "56", col = "blue", cex = 1) --><!-- ``` --><!-- - We first choose a $\mu_1$ in $H_1$. Then decide how small $\beta$ or how large the power we want. --><!-- add power curve slides  --><!-- ### Sample Size Formula --><p>To keep <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> at a specified level, the only way is to increase the sample size. With <span class="math inline">\(\Delta = |\mu_0-\mu_1|\)</span>, the formula for required sample size is shown as below. The derivation is left as an exercise.</p>
+<ul>
+<li><p>One-tailed test (either left-tailed or right-tailed): <span class="math display">\[n \ge \sigma^2 \frac{(\color{blue}{z_{\alpha}} + z_{\beta})^2}{\Delta^2}\]</span></p></li>
+<li><p>Two-tailed test: <span class="math display">\[n \ge \sigma^2 \frac{( \color{blue}{z_{\alpha/2}} + z_{\beta})^2}{\Delta^2}\]</span></p></li>
+</ul>
+<!-- -------------------------------------------------------------- --><p><span style="color:blue"> <strong>Example: Sample size</strong> </span></p>
+<!-- ## Example 5.11 -->
+<p>A cereal company sell boxes of cereal with the labeled weight of 16 oz. The production is based on the mean weight of 16.37 oz. So that only small portion of boxes have weight less than 16 oz. The box weight is normally distributed with <span class="math inline">\(\sigma = 0.225\)</span>. The percentage of boxes weighting less than 16 oz. is 5%. They suspect that due to some production defect the weight filled in the boxes have mean less than 16.37, and like to conduct a test under <span class="math inline">\(\alpha = 0.05\)</span>.</p>
+<p>This is a <span class="math inline">\(H_1\)</span> claim and the test is<span style="color:blue"> <span class="math inline">\(\begin{align}
+  &amp;H_0: \mu = 16.37 \\
+  &amp;H_1: \mu &lt; 16.37
+  \end{align}\)</span> </span></p>
+<!-- ## Example 5.11 Cont'd  -->
+<p><em>Question:</em> How many boxes should be sampled in order to correctly discover that mean is less than 16.37 with the power of 0.99 if in fact the true mean weight is 16.27 or less?</p>
+<ul>
+<li><p><span class="math inline">\(\alpha = 0.05\)</span>. <span class="math inline">\(\sigma = 0.225\)</span>. We have <span class="math inline">\(\beta = 1 - \text{power} = 0.01\)</span>, <span class="math inline">\(\Delta = |\mu_0 - \mu_1| = 16.37-16.27 = 0.1\)</span>.</p></li>
+<li><p>The formula is <span class="math inline">\(n = \sigma^2 \frac{(\color{blue}{z_{\alpha}} + z_{\beta})^2}{\Delta^2}\)</span></p></li>
+<li><p><span class="math inline">\(z_{\alpha} = z_{0.05} = 1.645\)</span>, <span class="math inline">\(z_{\beta} = z_{0.01} = 2.33\)</span>.</p></li>
+<li><p>Thus, <span class="math display">\[ n \ge
+\left(0.225^2\right) \frac{(1.645 + 2.33)^2}{\left(0.1^2\right)} = 79.99 \]</span></p></li>
+<li><p>They need at least 80 samples to conduct the test under the specified conditions (<span class="math inline">\(\alpha = 0.05\)</span>, <span class="math inline">\(\beta=0.01\)</span>).</p></li>
+</ul></section></section><section id="exercises" class="level2" data-number="15.7"><h2 data-number="15.7" class="anchored" data-anchor-id="exercises">
 <span class="header-section-number">15.7</span> Exercises</h2>
 <ol type="1">
 <li>

@@ -727,6 +727,38 @@ abline(v = mu, col = "#FFCC00", lwd = 2)
 :::::
 
 
+### Reducing margin of error and determining sample size*
+
+We learn that the margin of error is $E = z_{\alpha/2} \frac{\sigma}{\sqrt{n}}$. Of course we prefer small margin of error for more estimation accuracy and precision. From its formula, we can see that there are three ways to reduce the margin of error:
+
+  + Reduce $\sigma$
+  + Increase $n$
+  + Reduce $z_{\alpha/2}$
+  
+However, given a confidence level $1 - \alpha$ and known $\sigma$, we can reduce the margin of error only by increasing sample size $n$. Due to high sampling costs, we like to find the minimum sample size needed to get a desired margin of error.
+
+What we can do is to rewrite the margin of error, and represent $n$ as a function of $E$, $\alpha$, and $\sigma$. Once all three are given, we know the how large the sample size is. 
+
+$E = z_{\alpha/2} \frac{\sigma}{\sqrt{n}} \iff \frac{1}{\sqrt{n}} = \frac{E}{z_{\alpha/2}\sigma}
+\iff \sqrt{n} = \frac{z_{\alpha/2}\sigma}{E} \iff n = \left(\frac{z_{\alpha/2}\sigma}{E}\right)^2$
+
+Clearly, to get the desired margin of error, say $E_d$ the sample size should be *at least* $\left(\frac{z_{\alpha/2}\sigma}{E_d}\right)^2$ because $E$ and $n$ inversely proportional to each other.
+
+
+---------------------------------------------------------------------
+
+<span style="color:blue"> **Example** </span>
+
+State tax advisory board wants to estimate the mean household income with a margin of error of $1,000 with 99% confidence level. Assume that the population standard deviation is $10,000. How many households they need to sample? 
+
+- $E = 1000$, $\alpha = 0.01$ and $z_{0.005} = 2.58$, $\sigma = 10000$
+
+- $n = \left(\frac{z_{\alpha/2}\sigma}{E}\right)^2 = \left(\frac{(2.58)(10000)}{1000}\right)^2 = 656.7$
+
+- They need sample size 657.
+
+
+
 ## Confidence Intervals for $\mu$ When $\sigma$ is Unknown
 
 We complete the discussion of confidence intervals for $\mu$ when $\sigma$ is known. Do you see anything unreasonable? Do you think that assuming $\sigma^2$ is known is reasonable? In fact, the population variance is calculated as $\sigma^2 = \frac{\sum_{i=1}^{N}(x_i - \mu)^2}{N}$, where $N$ is the population size. The formula involves $\mu$, the unknown parameter we'd like to estimate. It's rare that we don't know $\mu$ but know $\sigma$. What do we do if $\sigma$ is unknown?
