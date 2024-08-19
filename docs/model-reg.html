@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.4.555">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="description" content="A comprehensive introductory statistical data science book.">
-<title>Introduction to Statistics - 26&nbsp; Linear Regression</title>
+<title>Introduction to Statistics - 26&nbsp; Simple Linear Regression</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -61,7 +61,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./model-logistic.html" rel="next">
+<link href="./model-mlr.html" rel="next">
 <link href="./model-twoway.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -133,7 +133,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./model.html">Statistical Models</a></li><li class="breadcrumb-item"><a href="./model-reg.html"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Linear Regression</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./model.html">Statistical Models</a></li><li class="breadcrumb-item"><a href="./model-reg.html"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Simple Linear Regression</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -258,7 +258,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prob-rule.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability Rules</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probability Rules and Bayes Formula</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -382,37 +382,43 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-multicomp.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Multiple Comparison</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Multiple Comparison*</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-twoway.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Two-Way ANOVA</span></span></a>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Two-Way ANOVA*</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-reg.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Linear Regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Simple Linear Regression</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./model-mlr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Multiple Linear Regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-logistic.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Logistic Regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Logistic Regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-bayes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-survival.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Survival Analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Survival Analysis</span></span></a>
   </div>
 </li>
       </ul>
@@ -459,14 +465,19 @@ window.Quarto = {
   <li><a href="#analysis-of-variance-anova-approach" id="toc-analysis-of-variance-anova-approach" class="nav-link" data-scroll-target="#analysis-of-variance-anova-approach"><span class="header-section-number">26.5</span> Analysis of Variance (ANOVA) Approach</a></li>
   <li><a href="#prediction" id="toc-prediction" class="nav-link" data-scroll-target="#prediction"><span class="header-section-number">26.6</span> Prediction</a></li>
   <li><a href="#simulation-based-inference" id="toc-simulation-based-inference" class="nav-link" data-scroll-target="#simulation-based-inference"><span class="header-section-number">26.7</span> Simulation-based Inference</a></li>
-  <li><a href="#anova-as-a-regression-model" id="toc-anova-as-a-regression-model" class="nav-link" data-scroll-target="#anova-as-a-regression-model"><span class="header-section-number">26.8</span> ANOVA as a Regression Model</a></li>
-  <li><a href="#multiple-linear-regression" id="toc-multiple-linear-regression" class="nav-link" data-scroll-target="#multiple-linear-regression"><span class="header-section-number">26.9</span> Multiple Linear Regression</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">26.10</span> Exercises</a></li>
+  <li>
+<a href="#relationship-between-anova-and-regression" id="toc-relationship-between-anova-and-regression" class="nav-link" data-scroll-target="#relationship-between-anova-and-regression"><span class="header-section-number">26.8</span> Relationship between ANOVA and Regression*</a>
+  <ul class="collapse">
+<li><a href="#categorical-predictors-and-dummy-variables" id="toc-categorical-predictors-and-dummy-variables" class="nav-link" data-scroll-target="#categorical-predictors-and-dummy-variables"><span class="header-section-number">26.8.1</span> Categorical predictors and dummy variables</a></li>
+  <li><a href="#anova-as-a-regression-model" id="toc-anova-as-a-regression-model" class="nav-link" data-scroll-target="#anova-as-a-regression-model"><span class="header-section-number">26.8.2</span> ANOVA as a regression model</a></li>
+  </ul>
+</li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">26.9</span> Exercises</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/model-reg.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./model.html">Statistical Models</a></li><li class="breadcrumb-item"><a href="./model-reg.html"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Linear Regression</span></a></li></ol></nav><div class="quarto-title">
-<h1 class="title"><span id="sec-model-reg" class="quarto-section-identifier"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Linear Regression</span></span></h1>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./model.html">Statistical Models</a></li><li class="breadcrumb-item"><a href="./model-reg.html"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Simple Linear Regression</span></a></li></ol></nav><div class="quarto-title">
+<h1 class="title"><span id="sec-model-reg" class="quarto-section-identifier"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Simple Linear Regression</span></span></h1>
 </div>
 
 
@@ -1580,15 +1591,415 @@ What is the difference between CI for <span class="math inline">\(E(y\mid x_0)\)
 </div>
 </section><section id="simulation-based-inference" class="level2" data-number="26.7"><h2 data-number="26.7" class="anchored" data-anchor-id="simulation-based-inference">
 <span class="header-section-number">26.7</span> Simulation-based Inference</h2>
-<p>To be added.</p>
-</section><section id="anova-as-a-regression-model" class="level2" data-number="26.8"><h2 data-number="26.8" class="anchored" data-anchor-id="anova-as-a-regression-model">
-<span class="header-section-number">26.8</span> ANOVA as a Regression Model</h2>
-<p>To be added.</p>
-</section><section id="multiple-linear-regression" class="level2" data-number="26.9"><h2 data-number="26.9" class="anchored" data-anchor-id="multiple-linear-regression">
-<span class="header-section-number">26.9</span> Multiple Linear Regression</h2>
-<p>To be added.</p>
-</section><section id="exercises" class="level2" data-number="26.10"><h2 data-number="26.10" class="anchored" data-anchor-id="exercises">
-<span class="header-section-number">26.10</span> Exercises</h2>
+<p>We can use bootstrap to estimate the regression coefficients with uncertainty quantification without assuming or relying on normal distribution. Instead of doing distribution-based inference, we are doing simulation-based inference. Please go to <a href="infer-bt.html" class="quarto-xref"><span>Chapter 14</span></a> to review the idea of bootstrapping.</p>
+<p>In simple linear regression, we perform bootstrap inference step by step as follows.</p>
+<ol type="1">
+<li><p><em>Bootstrap new samples <span class="math inline">\(\{x^b_j, y^b_j\}_{j=1}^n\)</span> from the original sample <span class="math inline">\(\{x_i, y_i\}_{i=1}^n\)</span>.</em> Note that the bootstrap sample has the same size of the original sample.</p></li>
+<li><p><em>For each bootstrapped sample, we fit a simple linear regression model to it, and estimate the corresponding slope.</em> If we have <span class="math inline">\(B\)</span> bootstrapped samples, we then have <span class="math inline">\(B\)</span> different bootstrapped estimates of slope. Same idea for the intercept.</p></li>
+<li><p><em>Use the distribution of the bootstrapped slopes to construct a confidence interval.</em> We plot the histogram of those <span class="math inline">\(B\)</span> slopes (and/or intercepts). Use it as the distribution of the slope. Then we can for example construct a 95% confidence interval for the slope by finding the 2.5% and 97.5% percentiles of the distribution.</p></li>
+</ol>
+<!-- # ```{r} --><!-- # set.seed(2023) --><!-- # # Load the data set --><!-- # delivery <- read.csv(file = "./data/data-ex-3-1.csv", --><!-- #                      header = TRUE) --><!-- # delivery_data <- delivery[, -1] --><!-- # colnames(delivery_data) <- c("time", "cases", "distance") --><!-- # df_boot_samples_5 <- delivery_data |> --><!-- #   specify(time ~ cases) |> --><!-- #   generate(reps = 5, type = "bootstrap") --><!-- # ``` --><p>The followings show the scatter plot of <code>hwy</code> vs.&nbsp;<code>displ</code> from the original <code>mpg</code> data set and 5 bootstrapped samples with their linear regression fitted line. First, you can see that due to randomness, the bootstrapped samples are all different although they all are of the same size. Secondly, since bootstrapped samples are different, they will have different intercept and slope estimates. In other words, all the blue fitted lines from the bootstrapped samples are different. They are also different from the red fitted line obtained from the original sample.</p>
+<!-- ## Bootstrap Sample 1 -->
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-50-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-51-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- ## Bootstrap Sample 2 -->
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-52-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-53-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- ## Bootstrap Sample 3 -->
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-54-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-55-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- ## Bootstrap Samples 1 - 5 -->
+<p>We can repeatedly create bootstrapped samples lots of times. The collection of the fitted lines or the estimated intercepts and slopes let us know their possible values and the degree of uncertainty. Same as previous inference, we find that the uncertainty about the mean response when the predictor is away from its mean is larger than the uncertainty when the predictor value is close to its mean.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-56-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-58-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- ## Slopes of bootstrap samples -->
+<p>Another observation is that if we get the average of the 100 intercepts and slopes, as shown in the left panel of the figure below, the mean bootstrapped fitted line (darkblue) will be pretty close to the fitted line obtained from the original sample (red). The distribution of bootstrapped sample of slope with the mean (blue) and the 95% bootstrap CI (dashed green) is shown on the right.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-61-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-62-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- - A 95% confidence interval is bounded by the middle 95% of the bootstrap distribution. -->
+<p>As discussed in <span class="quarto-unresolved-ref">?sec-inter-bt</span>, we can use the <code>boot</code> package and its function <code><a href="https://rdrr.io/pkg/boot/man/boot.html">boot()</a></code> to do bootstrappingin R.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2024</span><span class="op">)</span></span>
+<span><span class="va">coef_fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">index</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">hwy</span> <span class="op">~</span> <span class="va">displ</span>, data <span class="op">=</span> <span class="va">data</span>, subset <span class="op">=</span> <span class="va">index</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">boot_lm</span> <span class="op">&lt;-</span> <span class="fu">boot</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/boot/man/boot.html">boot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">mpg</span>, statistic <span class="op">=</span> <span class="va">coef_fn</span>, R <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span><span class="va">boot_lm</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ORDINARY NONPARAMETRIC BOOTSTRAP
+
+
+Call:
+boot::boot(data = mpg, statistic = coef_fn, R = 100)
+
+
+Bootstrap Statistics :
+     original      bias    std. error
+t1* 35.697651  0.12574153   0.9733547
+t2* -3.530589 -0.03859401   0.2745006</code></pre>
+</div>
+</div>
+<p>The function <code>coef_fn</code> returns the regression coefficient estimates from the bootstrapped samples that are the statistics needed for the argument <code>statistic</code> in the <code><a href="https://rdrr.io/pkg/boot/man/boot.html">boot()</a></code> function. We generate 100 bootstrap samples, and 100 corresponding bootstrap intercepts and slopes. The bootstrapping result is saved in the object <code>boot_lm</code> which is a list. <code>boot_lm$t0</code> saves the <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span> estimates from the original data, and <code>boot_lm$t</code> saves the 100 bootstrap estimated intercepts and slopes. The bias shown in the printed output is the difference between the mean of bootstrap estimates and the original coefficient estimates. The std. error is derived from sd(boot_mean$t) that estimates the variance of the sample mean.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">boot_lm</span><span class="op">$</span><span class="va">t0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Intercept)       displ 
+  35.697651   -3.530589 </code></pre>
+</div>
+<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">boot_lm</span><span class="op">$</span><span class="va">t</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         [,1]      [,2]
+[1,] 37.07809 -3.862234
+[2,] 35.37438 -3.421966
+[3,] 35.15120 -3.383944
+[4,] 38.05982 -4.184231
+[5,] 37.04109 -3.847217
+[6,] 35.22920 -3.335708</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-65-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We can get the confidence intervals for intercept and slope using <code><a href="https://rdrr.io/pkg/boot/man/boot.ci.html">boot.ci()</a></code> as we do in <a href="infer-bt.html" class="quarto-xref"><span>Chapter 14</span></a>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/boot/man/boot.ci.html">boot.ci</a></span><span class="op">(</span>boot.out <span class="op">=</span> <span class="va">boot_lm</span>, index <span class="op">=</span> <span class="fl">1</span>, </span>
+<span>        type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"norm"</span>,<span class="st">"basic"</span>, <span class="st">"perc"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>BOOTSTRAP CONFIDENCE INTERVAL CALCULATIONS
+Based on 100 bootstrap replicates
+
+CALL : 
+boot.ci(boot.out = boot_lm, type = c("norm", "basic", "perc"), 
+    index = 1)
+
+Intervals : 
+Level      Normal              Basic              Percentile     
+95%   (33.66, 37.48 )   (33.52, 37.78 )   (33.62, 37.87 )  
+Calculations and Intervals on Original Scale
+Some basic intervals may be unstable
+Some percentile intervals may be unstable</code></pre>
+</div>
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/boot/man/boot.ci.html">boot.ci</a></span><span class="op">(</span>boot.out <span class="op">=</span> <span class="va">boot_lm</span>, index <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>        type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"norm"</span>,<span class="st">"basic"</span>, <span class="st">"perc"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>BOOTSTRAP CONFIDENCE INTERVAL CALCULATIONS
+Based on 100 bootstrap replicates
+
+CALL : 
+boot.ci(boot.out = boot_lm, type = c("norm", "basic", "perc"), 
+    index = 2)
+
+Intervals : 
+Level      Normal              Basic              Percentile     
+95%   (-4.030, -2.954 )   (-4.071, -2.941 )   (-4.121, -2.990 )  
+Calculations and Intervals on Original Scale
+Some basic intervals may be unstable
+Some percentile intervals may be unstable</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>There are several ways of conducting bootstrapping in R. Here we choose to to use the <code>boot</code> package. Other popular packages include <a href="https://www.john-fox.ca/Companion/"><code>car</code></a>, and <a href="https://infer.netlify.app/"><code>infer</code></a> packages of the <a href="https://www.tidymodels.org/"><code>tidymodels</code></a> ecosystem. The <code>car</code> package is useful for regression analysis, and <code>tidymodels</code> is a trendy R framework of doing data science and machine learning.</p>
+</div>
+</div>
+<!-- ## [R Lab]{.pink} Fit Regression to Bootstrap Samples {visibility="hidden"} -->
+<!-- <!-- Take `100` bootstrap samples and fit models to each one: -->
+<!-- :::: {.columns} -->
+<!-- ::: {.column width="55%"} -->
+<!-- ```{r} -->
+<!-- #| echo: true -->
+<!-- #| eval: false -->
+<!-- set.seed(2023) -->
+<!-- boot_fits <- mpg |>  -->
+<!--   specify(hwy ~ displ) |>  -->
+<!--   generate(reps = 100, type = "bootstrap") |>  -->
+<!--   fit() -->
+<!-- boot_fits -->
+<!-- ``` -->
+<!-- ::: -->
+<!-- ::: {.column width="45%"} -->
+<!-- ```{r} -->
+<!-- #| echo: false -->
+<!-- #| eval: true -->
+<!-- #| class-output: my_class600 -->
+<!-- set.seed(2023) -->
+<!-- boot_fits <- mpg |>  -->
+<!--   specify(hwy ~ displ) |>  -->
+<!--   generate(reps = 100, type = "bootstrap") |>  -->
+<!--   fit() -->
+<!-- boot_fits -->
+<!-- ``` -->
+<!-- ::: -->
+<!-- :::: -->
+<!-- ## [R Lab]{.pink} Bootstrap CI {visibility="hidden"} -->
+<!-- - **Percentile method**: Compute the 95% CI as the middle 95% of the bootstrap distribution: -->
+<!-- ```{r} -->
+<!-- #| echo: true -->
+<!-- observed_fit <- mpg |>  -->
+<!--   specify(hwy ~ displ) |>  -->
+<!--   fit() -->
+<!-- boot_fits |> get_ci(point_estimate = observed_fit, type = "percentile") -->
+<!-- ``` -->
+<!-- . . . -->
+<!-- - **Standard error method**: Compute the 95% CI as the point estimate $\pm$ \~2 standard deviations of the bootstrap distribution: -->
+<!-- ```{r} -->
+<!-- #| echo: true -->
+<!-- boot_fits |> get_ci(point_estimate = observed_fit, type = "se") -->
+<!-- ``` -->
+<!-- ::: notes -->
+<!-- <!-- confint(lm(hwy~displ, data = delivery_data)) -->
+<!-- ::: -->
+<!-- ## [R Lab]{.pink} `car::Boot()` {visibility="hidden"} -->
+<!-- - `car::Boot()` is a simple interface to the `boot::boot()`. -->
+<!-- ```{r} -->
+<!-- #| echo: true -->
+<!-- lm_fit <- lm(hwy ~ displ, data = mpg) -->
+<!-- car_boot <- car::Boot(lm_fit, R = 100) -->
+<!-- car::brief(car_boot$t) -->
+<!-- ``` -->
+<!-- ## [R Lab]{.pink} Histogram of Bootstrap Samples {visibility="hidden"} -->
+<!-- - BC$_a$ is the **accelerated bias-corrected percentile interval**. -->
+<!-- ```{r} -->
+<!-- #| echo: true -->
+<!-- #| out-width: 80% -->
+<!-- hist(car_boot) -->
+<!-- ``` -->
+<!-- ## [R Lab]{.pink} `car::Confint()` {visibility="hidden"} -->
+<!-- ```{r} -->
+<!-- #| echo: true -->
+<!-- car::Confint(lm_fit, vcov. = vcov(car_boot)) -->
+<!-- ``` -->
+<!-- ::: notes -->
+<!-- check boot::boot.ci -->
+<!-- ::: -->
+</section><section id="relationship-between-anova-and-regression" class="level2" data-number="26.8"><h2 data-number="26.8" class="anchored" data-anchor-id="relationship-between-anova-and-regression">
+<span class="header-section-number">26.8</span> Relationship between ANOVA and Regression*</h2>
+<p>The predictor in our regression example is <code>displ</code>, which is a numerical variable. Remember that the regression model can also have categorical predictors. In <a href="model-anova.html" class="quarto-xref"><span>Chapter 23</span></a>, we learn the ANOVA, a model for examining whether or not the factors affect the mean response level. These factors are in fact a “value” of some categorical variable being studied. For example, when we examine the effect of different treatments (None, Fertilizer, Irrigation, Fertilizer and Irrigation) on the mean weights of poplar trees, we are examining the relationship between the two variables, the numerical response variable <code>weight of poplar tree</code> and the categorical explanatory variable <code>treatment type</code>.</p>
+<p>In fact, when all the predictors in the regression model are categorical variables, ANOVA and regression are somewhat equivalent. Let’s first learn how to express a categorical variable in a regression model, then see why ANOVA can be viewed as a specific regression model.</p>
+<section id="categorical-predictors-and-dummy-variables" class="level3" data-number="26.8.1"><h3 data-number="26.8.1" class="anchored" data-anchor-id="categorical-predictors-and-dummy-variables">
+<span class="header-section-number">26.8.1</span> Categorical predictors and dummy variables</h3>
+<p>Suppose now we want to see how the transmission type <code>trans</code> affects high miles per gallon <code>hwy</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 234 × 2
+     hwy trans     
+   &lt;int&gt; &lt;chr&gt;     
+ 1    29 auto(l5)  
+ 2    29 manual(m5)
+ 3    31 manual(m6)
+ 4    30 auto(av)  
+ 5    26 auto(l5)  
+ 6    26 manual(m5)
+ 7    27 auto(av)  
+ 8    26 manual(m5)
+ 9    25 auto(l5)  
+10    28 manual(m6)
+# ℹ 224 more rows</code></pre>
+</div>
+</div>
+<p>Note that <code>trans</code> has so many different categories or “values” because of the parentheses terms. We can remove them so that the <code>trans</code> variable only has two categories: <code>auto</code> and <code>manual</code>, where <code>auto</code> means automatic transmission, and <code>manual</code> means manual transmission. The cleaned data set is called <code>mpg_trans</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mpg_trans</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"hwy"</span>, <span class="st">"trans"</span><span class="op">)</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 234 × 2
+     hwy trans 
+   &lt;int&gt; &lt;chr&gt; 
+ 1    29 auto  
+ 2    29 manual
+ 3    31 manual
+ 4    30 auto  
+ 5    26 auto  
+ 6    26 manual
+ 7    27 auto  
+ 8    26 manual
+ 9    25 auto  
+10    28 manual
+# ℹ 224 more rows</code></pre>
+</div>
+</div>
+<p>Before we fit a regression model, we need to make sure that the categorical variable is of type <code>character</code> or <code>factor</code> in R.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/typeof.html">typeof</a></span><span class="op">(</span><span class="va">mpg_trans</span><span class="op">$</span><span class="va">trans</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "character"</code></pre>
+</div>
+</div>
+<p>We use exactly the same command <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> to fit the regression when the predictor is categorical.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">hwy</span> <span class="op">~</span> <span class="va">trans</span>, data <span class="op">=</span> <span class="va">mpg_trans</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = hwy ~ trans, data = mpg_trans)
+
+Coefficients:
+(Intercept)  transmanual  
+     22.293        3.486  </code></pre>
+</div>
+</div>
+<p>Writing code is a piece of cake. The more important thing is how we interpret the fitted result. Here, the variable <code>trans</code> has 2 categories. R will choose one as the <em>baseline level</em> that is used to compare to other levels, in this case, the only other variable. By default, R will choose the baseline level according to the category names alphabetically. Since <code>a</code> comes earlier than <code>m</code>, R chooses <code>auto</code> as the baseline level.</p>
+<p>The idea is that when we fit a regression model with a categorical variable, we are learning how the (mean) response value changes when the category changes from the baseline level to another level. Notice that in the regression output, the slope coefficient label is <code>transmanual</code>. It is the concatenation of the categorical variable’s name <code>trans</code> and the non-baseline level <code>manual</code>. The slope tells us the changes in <code>hwy</code> when <em>the transmission is changed <strong>from</strong> <code>auto</code> <strong>to</strong> <code>manual</code></em>.</p>
+<p>Mathematically the fitted regression equation is</p>
+<p><span class="math display">\[\widehat{hwy_{i}} = 22.3 + 3.49~trans_i\]</span></p>
+<p>Now the question is, how we define the value of <span class="math inline">\(trans_i\)</span> so that the equation makes sense, and it represents what we want do to for fitting the regression. The answer is, we define the <code>trans</code> variable using a <strong>dummy variable</strong> or indicator variable such as</p>
+<p><span class="math display">\[trans = \begin{cases} 1  &amp; \quad \text{if manual transmission} \\ 0  &amp; \quad \text{if automatic transmission} \end{cases}\]</span> The new dummy variable <span class="math inline">\(trans\)</span> has values 0 or 1 only, and they are representing the two categories <code>auto</code> and <code>manual</code>. Furthermore, when the dummy variable is used in regression, the baseline level is always assigned value 0.</p>
+<p>Now we are ready to interpret our fitted regression result.</p>
+<ul>
+<li>
+<strong>Slope:</strong> Cars with <strong>manual</strong> transmission are expected, on average, to be 3.49 more miles per gallon than cars with <strong>auto</strong> transmission.
+<ul>
+<li>Compare baseline level (<code>trans = auto</code>) to the other level (<code>trans = manual</code>)</li>
+</ul>
+</li>
+<li>
+<strong>Intercept:</strong> Cars with <strong>auto</strong> transmission are expected, on average, to have 22.3 highway miles per gallon.</li>
+</ul>
+<p>Basically, the intercept value 22.3 is the average hwy MPG for cars with <code>auto</code> transmission because when <span class="math inline">\(trans_i\)</span> is <code>auto</code>, <span class="math inline">\(\widehat{hwy_{i}} = 22.3 + 3.49~(0) = 22.3\)</span>. The intercept + slope (22.3 + 3.49) is the average hwy MPG for cars with <code>manual</code> transmission because when <span class="math inline">\(trans_i\)</span> is <code>manual</code>, <span class="math inline">\(\widehat{hwy_{i}} = 22.3 + 3.49~(1) = 22.3 + 3.49\)</span>.</p>
+<p>In general, when the categorical variable has <span class="math inline">\(k\)</span> categories, it needs <span class="math inline">\(k-1\)</span> dummy variables used in the regression model. Take regression or linear model courses for more discussion on categorical variables with more levels and dummy variables.</p>
+</section><section id="anova-as-a-regression-model" class="level3" data-number="26.8.2"><h3 data-number="26.8.2" class="anchored" data-anchor-id="anova-as-a-regression-model">
+<span class="header-section-number">26.8.2</span> ANOVA as a regression model</h3>
+<p>Why ANOVA can be viewed as regression? Let’s first refresh our memory of ANOVA model.</p>
+<p><span class="math display">\[y_{ij} = \mu + \tau_i + \epsilon_{ij}, \quad j = 1, 2, \dots, n_i, \quad i = 1, 2, \dots, t\]</span></p>
+<ul>
+<li>
+<span class="math inline">\(\mu\)</span> is the overall mean across all <span class="math inline">\(t\)</span> populations.</li>
+<li>
+<span class="math inline">\(\tau_i\)</span> is the effect due to <span class="math inline">\(i\)</span>-th treatment.</li>
+<li>
+<span class="math inline">\(\epsilon_{ij}\)</span> is the random deviation of <span class="math inline">\(y_{ij}\)</span> about the <span class="math inline">\(i\)</span>-th population mean <span class="math inline">\(\mu_i = \mu+ \tau_i\)</span>.</li>
+<li>
+<span class="math inline">\(\mu\)</span> and <span class="math inline">\(\tau_i\)</span> are unknown constants.</li>
+<li>ANOVA is a <strong>linear</strong> model.</li>
+</ul>
+<p>The assumptions of ANOVA are</p>
+<ul>
+<li>
+<span class="math inline">\(\epsilon_{ij}\)</span>s are independent and normally distributed with mean 0.</li>
+<li>
+<span class="math inline">\(Var(\epsilon_{ij}) = \sigma^2\)</span> (<span style="color:blue"> a constant value </span>)</li>
+<li><span class="math inline">\(\epsilon_{ij} \sim N(0, \sigma^2)\)</span></li>
+</ul>
+<p>In our transmission example, <span class="math inline">\(t = 2\)</span>. For simplicity, we can drop the subscript <span class="math inline">\(i\)</span> for bookkeeping the categories or groups, and rewrite our model as</p>
+<p><span class="math display">\[y_{j} = \mu + \tau_j + \epsilon_{j}, \quad j = 1, 2, \dots, n, \quad \epsilon_j\sim N(0, \sigma^2).\]</span></p>
+<p>Now <span class="math inline">\(y_{j}\)</span> is the <span class="math inline">\(j\)</span>th response in the data whose value is determined by the overall mean <span class="math inline">\(\mu\)</span>, and the treatment effect <span class="math inline">\(\tau_j\)</span> depending on which group/category this response is in, i.e.,</p>
+<p><span class="math display">\[\tau_j = \begin{cases} \tau_m  &amp; \quad \text{if } j \text{th car has manual transmission} \\ \tau_a  &amp; \quad \text{if } j \text{th car has automatic transmission} \end{cases}\]</span></p>
+<p>Does this model look like a regression model? In general, for a regression model with a categorical variable, we can write the model as</p>
+<p><span class="math display">\[y_{j} = \beta_0 + \beta_1x_j + \epsilon_{j}, \quad j = 1, 2, \dots, n, \quad \epsilon_j\sim N(0, \sigma^2),\]</span> where <span class="math display">\[x_j = \begin{cases} 1  &amp; \quad \text{if } j \text{th subject is in the non-baseline level} \\ 0  &amp; \quad \text{if } j \text{th subject is in the baseline level}  \end{cases}\]</span></p>
+<p>We are done! If we let <span class="math inline">\(\mu = \beta_0\)</span>, <span class="math inline">\(\tau_j = \beta_1x_j\)</span>, i.e., <span class="math inline">\(\tau_m = \beta_1\)</span> and <span class="math inline">\(\tau_a = 0\)</span>, the two models are equivalent.</p>
+<p>By default, the regression model assumes the treatment effect of the baseline group is zero. Therefore <span class="math inline">\(\mu\)</span> is in fact the baseline group mean. The regression slope <span class="math inline">\(\beta_1\)</span> is actually the treatment effect of the other group, <span class="math inline">\(\tau_m\)</span>. Testing <span class="math inline">\(H_0: \tau_m = \tau_a\)</span> is equivalent to testing whether or not <span class="math inline">\(\beta_1\)</span> is zero, <span class="math inline">\(H_0: \beta_1 = 0\)</span>. In other words, the baseline group and the non-baseline group have no effect on the response value. The categorical variable does not contribute to the changes in the response, and therefore the mean response is at the same level regardless of categories or groups. Although here we use the factor having 2 categories as an example, the discussion here can be generalized to the categorical variable with more than two categories.</p>
+</section></section><section id="exercises" class="level2" data-number="26.9"><h2 data-number="26.9" class="anchored" data-anchor-id="exercises">
+<span class="header-section-number">26.9</span> Exercises</h2>
 <p>Use the data in the table below to answer questions 1-7.</p>
 <table class="caption-top table"><tbody>
 <tr class="odd">
@@ -2226,13 +2637,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./model-twoway.html" class="pagination-link" aria-label="Two-Way ANOVA">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Two-Way ANOVA</span></span>
+      <a href="./model-twoway.html" class="pagination-link" aria-label="Two-Way ANOVA*">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Two-Way ANOVA*</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./model-logistic.html" class="pagination-link" aria-label="Logistic Regression">
-        <span class="nav-page-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Logistic Regression</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./model-mlr.html" class="pagination-link" aria-label="Multiple Linear Regression">
+        <span class="nav-page-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Multiple Linear Regression</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -1,4 +1,4 @@
-# Linear Regression {#sec-model-reg}
+# Simple Linear Regression {#sec-model-reg}
 
 ```{r}
 #| echo: false
@@ -15,11 +15,14 @@ library(broom)
 library(rminer)
 library(sets)
 library(parsnip)
+library(tidymodels)
+library(glue)
 ```
 
 ```{r}
 #| echo: false
 knitr::opts_chunk$set(echo = FALSE, fig.align = "center")
+ggplot2::theme_set(ggplot2::theme_bw(base_size = 16))
 ```
 
 ```{r}
@@ -1270,15 +1273,555 @@ legend("topright", c("Regression line", "CI", "PI"),
 
 ## Simulation-based Inference
 
-To be added.
+We can use bootstrap to estimate the regression coefficients with uncertainty quantification without assuming or relying on normal distribution. Instead of doing distribution-based inference, we are doing simulation-based inference. Please go to @sec-infer-bt to review the idea of bootstrapping.
+
+In simple linear regression, we perform bootstrap inference step by step as follows.
+
+1. *Bootstrap new samples $\{x^b_j, y^b_j\}_{j=1}^n$ from the original sample $\{x_i, y_i\}_{i=1}^n$.* Note that the bootstrap sample has the same size of the original sample.
+
+2. *For each bootstrapped sample, we fit a simple linear regression model to it, and estimate the corresponding slope.* If we have $B$ bootstrapped samples, we then have $B$ different bootstrapped estimates of slope. Same idea for the intercept.
+
+3. *Use the distribution of the bootstrapped slopes to construct a confidence interval.* We plot the histogram of those $B$ slopes (and/or intercepts). Use it as the distribution of the slope. Then we can for example construct a 95\% confidence interval for the slope by finding the 2.5\% and 97.5\% percentiles of the distribution.
 
 
-## ANOVA as a Regression Model
-To be added.
+<!-- # ```{r} -->
+<!-- # set.seed(2023) -->
+<!-- # # Load the data set -->
+<!-- # delivery <- read.csv(file = "./data/data-ex-3-1.csv", -->
+<!-- #                      header = TRUE) -->
+<!-- # delivery_data <- delivery[, -1] -->
+<!-- # colnames(delivery_data) <- c("time", "cases", "distance") -->
+<!-- # df_boot_samples_5 <- delivery_data |> -->
+<!-- #   specify(time ~ cases) |> -->
+<!-- #   generate(reps = 5, type = "bootstrap") -->
+<!-- # ``` -->
+
+The followings show the scatter plot of `hwy` vs. `displ` from the original `mpg` data set and 5 bootstrapped samples with their linear regression fitted line. First, you can see that due to randomness, the bootstrapped samples are all different although they all are of the same size. Secondly, since bootstrapped samples are different, they will have different intercept and slope estimates. In other words, all the blue fitted lines from the bootstrapped samples are different. They are also different from the red fitted line obtained from the original sample.
 
 
-## Multiple Linear Regression
-To be added.
+
+```{r}
+df_boot_samples_5 <- mpg |>
+  specify(hwy ~ displ) |>
+  generate(reps = 5, type = "bootstrap")
+```
+
+<!-- ## Bootstrap Sample 1 -->
+
+::: columns
+::: {.column width="50%"}
+```{r}
+#| out.width: 100%
+#| message: false 
+p_df_obs <- ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(size = 3) +
+  geom_smooth(method = "lm", se = FALSE, color = 2, linewidth = 2) +
+  labs(
+    x = "Displacement (litres)",
+    y = "Highway MPG",
+    title = "Original Highway MPG vs. Engine Displacement"
+  ) +
+  scale_x_continuous(labels = label_number())
+
+p_df_obs
+```
+:::
+
+::: {.column width="50%"}
+```{r}
+#| out.width: "100%"
+#| message: false 
+replicate_no <- 1
+
+ggplot(df_boot_samples_5 |> filter(replicate == replicate_no), 
+       aes(x = displ, y = hwy)) +
+  geom_point(alpha = 0.5, size = 3) +
+  geom_line(stat = "smooth", method = "lm", se = FALSE, alpha = 0.8,
+            linewidth = 2, color = 4) +
+  labs(
+    x = "Displacement (litres)",
+    y = "Highway MPG",
+    title = glue("Bootstrap sample {replicate_no}")
+  ) +
+  scale_x_continuous(labels = label_number())
+```
+:::
+:::
+
+<!-- ## Bootstrap Sample 2 -->
+
+::: columns
+::: {.column width="50%"}
+```{r}
+#| out.width: "100%"
+#| message: false 
+replicate_no = 2
+
+ggplot(df_boot_samples_5 |> filter(replicate == replicate_no), 
+       aes(x = displ, y = hwy)) +
+  geom_point(alpha = 0.5, size = 3) +
+  geom_line(stat = "smooth", method = "lm", se = FALSE, alpha = 0.8,
+            linewidth = 2, color = 4) +
+  labs(
+    x = "Displacement (litres)",
+    y = "Highway MPG",
+    title = glue("Bootstrap sample {replicate_no}")
+  ) +
+  scale_x_continuous(labels = label_number())
+```
+:::
+
+::: {.column width="50%"}
+```{r}
+#| out.width: "100%"
+#| message: false 
+replicate_no = 3
+
+ggplot(df_boot_samples_5 |> filter(replicate == replicate_no), 
+       aes(x = displ, y = hwy)) +
+  geom_point(alpha = 0.5, size = 3) +
+  geom_line(stat = "smooth", method = "lm", se = FALSE, alpha = 0.8,
+            linewidth = 2, color = 4) +
+  labs(
+    x = "Displacement (litres)",
+    y = "Highway MPG",
+    title = glue("Bootstrap sample {replicate_no}")
+  ) +
+  scale_x_continuous(labels = label_number())
+```
+:::
+:::
+
+<!-- ## Bootstrap Sample 3 -->
+
+::: columns
+::: {.column width="50%"}
+```{r}
+#| out.width: "100%"
+#| message: false 
+replicate_no = 4
+
+ggplot(df_boot_samples_5 |> filter(replicate == replicate_no), 
+       aes(x = displ, y = hwy)) +
+  geom_point(alpha = 0.5, size = 3) +
+  geom_line(stat = "smooth", method = "lm", se = FALSE, alpha = 0.8,
+            linewidth = 2, color = 4) +
+  labs(
+    x = "Displacement (litres)",
+    y = "Highway MPG",
+    title = glue("Bootstrap sample {replicate_no}")
+  ) +
+  scale_x_continuous(labels = label_number())
+```
+:::
+
+::: {.column width="50%"}
+```{r}
+#| out.width: "100%"
+#| message: false 
+replicate_no = 5
+
+ggplot(df_boot_samples_5 |> filter(replicate == replicate_no), 
+       aes(x = displ, y = hwy)) +
+  geom_point(alpha = 0.5, size = 3) +
+  geom_line(stat = "smooth", method = "lm", se = FALSE, alpha = 0.8,
+            linewidth = 2, color = 4) +
+  labs(
+    x = "Displacement (litres)",
+    y = "Highway MPG",
+    title = glue("Bootstrap sample {replicate_no}")
+  ) +
+  scale_x_continuous(labels = label_number())
+```
+:::
+:::
+
+<!-- ## Bootstrap Samples 1 - 5 -->
+
+We can repeatedly create bootstrapped samples lots of times. The collection of the fitted lines or the estimated intercepts and slopes let us know their possible values and the degree of uncertainty. Same as previous inference, we find that the uncertainty about the mean response when the predictor is away from its mean is larger than the uncertainty when the predictor value is close to its mean.
+
+::: columns
+::: {.column width="50%"}
+```{r}
+#| out.width: "100%"
+#| message: false 
+ggplot(df_boot_samples_5, aes(x = displ, y = hwy, group = replicate)) +
+  geom_line(stat = "smooth", method = "lm", se = FALSE, alpha = 0.5,
+            linewidth = 1.5, color = 4) +
+  labs(
+    x = "Displacement (litres)",
+    y = "Highway MPG",
+    title = glue("Bootstrap samples 1 - 5")
+  ) +
+  scale_x_continuous(labels = label_number())
+```
+:::
+
+::: {.column width="50%"}
+
+```{r}
+set.seed(2023)
+
+df_boot_samples_100 <- mpg |> 
+  specify(hwy ~ displ) |> 
+  generate(reps = 100, type = "bootstrap")
+```
+
+```{r}
+#| out.width: "100%"
+#| message: false 
+p_df_boot_samples_100 <- ggplot(df_boot_samples_100, aes(x = displ, y = hwy, group = replicate)) +
+  geom_line(stat = "smooth", method = "lm", se = FALSE, alpha = 0.05,
+            linewidth = 1.5, color = 4) +
+  labs(
+    x = "Displacement (litres)",
+    y = "Highway MPG",
+    title = glue("Bootstrap samples 1 - 100")
+  ) +
+  scale_x_continuous(labels = label_number())
+
+p_df_boot_samples_100
+```
+:::
+:::
+
+
+<!-- ## Slopes of bootstrap samples -->
+
+```{r}
+df_fit <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(hwy ~ displ, data = mpg)
+```
+
+
+```{r}
+df_100_b0 <- df_boot_samples_100 |> fit() |> filter(term == "intercept")
+df_100_b0_mean <- mean(pull(df_100_b0[, 3]))
+
+df_100_b1 <- df_boot_samples_100 |> fit() |> filter(term == "displ")
+df_100_b1_mean <- mean(pull(df_100_b1[, 3]))
+```
+
+
+
+Another observation is that if we get the average of the 100 intercepts and slopes, as shown in the left panel of the figure below, the mean bootstrapped fitted line (darkblue) will be pretty close to the fitted line obtained from the original sample (red). The distribution of bootstrapped sample of slope with the mean (blue) and the 95% bootstrap CI (dashed green) is shown on the right. 
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+```{r}
+#| message: false 
+intercept <- df_fit$fit$coefficients[1]
+slope <- df_fit$fit$coefficients[2]
+p_df_boot_samples_100 +
+  geom_abline(intercept = intercept, slope = slope, color = 2, 
+              linewidth = 2, alpha = 0.5) +
+  geom_abline(intercept = df_100_b0_mean, 
+              slope = df_100_b1_mean, 
+              color = "darkblue", alpha = 0.5,
+              linewidth = 2)+
+  labs(title = "Fitted line and Bootstrapped Mean Fitted Line")
+```
+:::
+
+
+::: {.column width="50%"}
+
+
+```{r}
+#| message: false 
+
+df_boot_samples_100_fit <- df_boot_samples_100 |> fit()
+
+df_boot_samples_100_hist <- ggplot(df_boot_samples_100_fit %>% filter(term == "displ"), aes(x = estimate)) +
+  geom_histogram(binwidth = 0.05, color = "white") +
+  geom_vline(xintercept = slope, color = 4, linewidth = 2) +
+  labs(x = "Slope", y = "Count",
+       title = "Distribution of Slope and 95% CI")
+
+lower <- df_boot_samples_100_fit %>%
+  ungroup() %>%
+  filter(term == "displ") %>%
+  summarise(quantile(estimate, 0.025)) %>%
+  pull()
+
+upper <- df_boot_samples_100_fit %>%
+  ungroup() %>%
+  filter(term == "displ") %>%
+  summarise(quantile(estimate, 0.975)) %>%
+  pull()
+
+df_boot_samples_100_hist +
+    geom_vline(xintercept = lower, color = "#66CDAA", linewidth = 2, linetype = "dashed") +
+  geom_vline(xintercept = upper, color = "#66CDAA", linewidth = 2, linetype = "dashed")
+```
+:::
+::::
+
+<!-- - A 95% confidence interval is bounded by the middle 95% of the bootstrap distribution. -->
+
+As discussed in @sec-inter-bt, we can use the `boot` package and its function `boot()` to do bootstrappingin R.
+
+```{r}
+#| echo: true
+#| message: false
+library(boot)
+set.seed(2024)
+coef_fn <- function(data, index) {
+    coef(lm(hwy ~ displ, data = data, subset = index))
+}
+
+boot_lm <- boot::boot(data = mpg, statistic = coef_fn, R = 100)
+boot_lm
+```
+
+The function `coef_fn` returns the regression coefficient estimates from the bootstrapped samples that are the statistics needed for the argument `statistic` in the `boot()` function. We generate 100 bootstrap samples, and 100 corresponding bootstrap intercepts and slopes. The bootstrapping result is saved in the object `boot_lm` which is a list. `boot_lm$t0` saves the $b_0$ and $b_1$ estimates from the original data, and `boot_lm$t` saves the 100 bootstrap estimated intercepts and slopes. The bias shown in the printed output is the difference between the mean of bootstrap estimates and the original coefficient estimates. The std. error is derived from sd(boot_mean$t) that estimates the variance of the sample mean.
+
+```{r}
+#| echo: true
+boot_lm$t0
+head(boot_lm$t)
+```
+
+```{r}
+#| out-width: 100%
+par(mfrow = c(1, 2), mar = c(4, 4, 2, 0.5))
+hist(boot_lm$t[, 1], main = "Bootstrap Dist: Intercept", las = 1,
+     xlab = "Intercept")
+hist(boot_lm$t[, 2], main = "Bootstrap Dist: Slope", las = 1,
+     xlab = "Slope")
+```
+
+We can get the confidence intervals for intercept and slope using `boot.ci()` as we do in @sec-infer-bt.
+
+```{r}
+#| echo: true
+boot.ci(boot.out = boot_lm, index = 1, 
+        type = c("norm","basic", "perc"))
+boot.ci(boot.out = boot_lm, index = 2,
+        type = c("norm","basic", "perc"))
+```
+
+
+:::{.callout-note}
+There are several ways of conducting bootstrapping in R. Here we choose to to use the `boot` package. Other popular packages include [`car`](https://www.john-fox.ca/Companion/), and [`infer`](https://infer.netlify.app/) packages of the [`tidymodels`](https://www.tidymodels.org/) ecosystem. The `car` package is useful for regression analysis, and `tidymodels` is a trendy R framework of doing data science and machine learning.
+:::
+
+
+
+<!-- ## [R Lab]{.pink} Fit Regression to Bootstrap Samples {visibility="hidden"} -->
+
+<!-- <!-- Take `100` bootstrap samples and fit models to each one: -->
+
+<!-- :::: {.columns} -->
+
+<!-- ::: {.column width="55%"} -->
+
+<!-- ```{r} -->
+<!-- #| echo: true -->
+<!-- #| eval: false -->
+<!-- set.seed(2023) -->
+<!-- boot_fits <- mpg |>  -->
+<!--   specify(hwy ~ displ) |>  -->
+<!--   generate(reps = 100, type = "bootstrap") |>  -->
+<!--   fit() -->
+<!-- boot_fits -->
+<!-- ``` -->
+
+<!-- ::: -->
+
+
+
+<!-- ::: {.column width="45%"} -->
+
+<!-- ```{r} -->
+<!-- #| echo: false -->
+<!-- #| eval: true -->
+<!-- #| class-output: my_class600 -->
+<!-- set.seed(2023) -->
+<!-- boot_fits <- mpg |>  -->
+<!--   specify(hwy ~ displ) |>  -->
+<!--   generate(reps = 100, type = "bootstrap") |>  -->
+<!--   fit() -->
+<!-- boot_fits -->
+<!-- ``` -->
+
+<!-- ::: -->
+
+<!-- :::: -->
+
+<!-- ## [R Lab]{.pink} Bootstrap CI {visibility="hidden"} -->
+
+<!-- - **Percentile method**: Compute the 95% CI as the middle 95% of the bootstrap distribution: -->
+
+<!-- ```{r} -->
+<!-- #| echo: true -->
+<!-- observed_fit <- mpg |>  -->
+<!--   specify(hwy ~ displ) |>  -->
+<!--   fit() -->
+<!-- boot_fits |> get_ci(point_estimate = observed_fit, type = "percentile") -->
+<!-- ``` -->
+
+<!-- . . . -->
+
+<!-- - **Standard error method**: Compute the 95% CI as the point estimate $\pm$ \~2 standard deviations of the bootstrap distribution: -->
+
+<!-- ```{r} -->
+<!-- #| echo: true -->
+<!-- boot_fits |> get_ci(point_estimate = observed_fit, type = "se") -->
+<!-- ``` -->
+
+
+
+<!-- ::: notes -->
+<!-- <!-- confint(lm(hwy~displ, data = delivery_data)) -->
+<!-- ::: -->
+
+<!-- ## [R Lab]{.pink} `car::Boot()` {visibility="hidden"} -->
+
+<!-- - `car::Boot()` is a simple interface to the `boot::boot()`. -->
+
+<!-- ```{r} -->
+<!-- #| echo: true -->
+<!-- lm_fit <- lm(hwy ~ displ, data = mpg) -->
+<!-- car_boot <- car::Boot(lm_fit, R = 100) -->
+<!-- car::brief(car_boot$t) -->
+<!-- ``` -->
+
+<!-- ## [R Lab]{.pink} Histogram of Bootstrap Samples {visibility="hidden"} -->
+
+<!-- - BC$_a$ is the **accelerated bias-corrected percentile interval**. -->
+
+<!-- ```{r} -->
+<!-- #| echo: true -->
+<!-- #| out-width: 80% -->
+<!-- hist(car_boot) -->
+<!-- ``` -->
+
+
+<!-- ## [R Lab]{.pink} `car::Confint()` {visibility="hidden"} -->
+
+<!-- ```{r} -->
+<!-- #| echo: true -->
+<!-- car::Confint(lm_fit, vcov. = vcov(car_boot)) -->
+<!-- ``` -->
+
+
+<!-- ::: notes -->
+
+<!-- check boot::boot.ci -->
+
+<!-- ::: -->
+
+
+
+
+## Relationship between ANOVA and Regression*
+
+The predictor in our regression example is `displ`, which is a numerical variable. Remember that the regression model can also have categorical predictors. In @sec-model-anova, we learn the ANOVA, a model for examining whether or not the factors affect the mean response level. These factors are in fact a "value" of some categorical variable being studied. For example, when we examine the effect of different treatments (None, Fertilizer, Irrigation, Fertilizer and Irrigation) on the mean weights of poplar trees, we are examining the relationship between the two variables, the numerical response variable `weight of poplar tree` and the categorical explanatory variable `treatment type`. 
+
+In fact, when all the predictors in the regression model are categorical variables, ANOVA and regression are somewhat equivalent. Let's first learn how to express a categorical variable in a regression model, then see why ANOVA can be viewed as a specific regression model.
+
+
+### Categorical predictors and dummy variables
+
+Suppose now we want to see how the transmission type `trans` affects high miles per gallon `hwy`. 
+
+```{r}
+mpg[, c("hwy", "trans")]
+```
+
+Note that `trans` has so many different categories or "values" because of the parentheses terms. We can remove them so that the `trans` variable only has two categories: `auto` and `manual`, where `auto` means automatic transmission, and `manual` means manual transmission. The cleaned data set is called `mpg_trans`.
+
+
+```{r}
+mpg_trans <- mpg
+mpg_trans$trans[grepl("auto", mpg_trans$trans)] <- "auto"
+mpg_trans$trans[grepl("manual", mpg_trans$trans)] <- "manual"
+```
+
+```{r}
+#| echo: true
+mpg_trans[, c("hwy", "trans")]
+```
+
+Before we fit a regression model, we need to make sure that the categorical variable is of type `character` or `factor` in R.
+
+```{r}
+#| echo: true
+typeof(mpg_trans$trans)
+```
+
+We use exactly the same command `lm()` to fit the regression when the predictor is categorical.
+
+```{r}
+#| echo: true
+lm(hwy ~ trans, data = mpg_trans)
+```
+
+Writing code is a piece of cake. The more important thing is how we interpret the fitted result. Here, the variable `trans` has 2 categories. R will choose one as the *baseline level* that is used to compare to other levels, in this case, the only other variable. By default, R will choose the baseline level according to the category names alphabetically. Since `a` comes earlier than `m`, R chooses `auto` as the baseline level.
+
+The idea is that when we fit a regression model with a categorical variable, we are learning how the (mean) response value changes when the category changes from the baseline level to another level. Notice that in the regression output, the slope coefficient label is `transmanual`. It is the concatenation of the categorical variable's name `trans` and the non-baseline level `manual`. The slope tells us the changes in `hwy` when *the transmission is changed __from__ `auto` __to__ `manual`*.
+
+Mathematically the fitted regression equation is
+
+$$\widehat{hwy_{i}} = 22.3 + 3.49~trans_i$$
+
+Now the question is, how we define the value of $trans_i$ so that the equation makes sense, and it represents what we want do to for fitting the regression. The answer is, we define the `trans` variable using a **dummy variable** or indicator variable such as 
+
+$$trans = \begin{cases} 1  & \quad \text{if manual transmission} \\ 0  & \quad \text{if automatic transmission} \end{cases}$$
+The new dummy variable $trans$ has values 0 or 1 only, and they are representing the two categories `auto` and `manual`. Furthermore, when the dummy variable is used in regression, the baseline level is always assigned value 0.
+
+Now we are ready to interpret our fitted regression result. 
+
+- **Slope:** Cars with **manual** transmission are expected, on average, to be 3.49 more miles per gallon than cars with **auto** transmission.
+    + Compare baseline level (`trans = auto`) to the other level (`trans = manual`)
+    
+- **Intercept:** Cars with **auto** transmission are expected, on average, to have 22.3 highway miles per gallon.
+
+Basically, the intercept value 22.3 is the average hwy MPG for cars with `auto` transmission because when $trans_i$ is `auto`, $\widehat{hwy_{i}} = 22.3 + 3.49~(0) = 22.3$. The intercept + slope (22.3 + 3.49) is the average hwy MPG for cars with `manual` transmission because when $trans_i$ is `manual`, $\widehat{hwy_{i}} = 22.3 + 3.49~(1) = 22.3 + 3.49$.
+
+In general, when the categorical variable has $k$ categories, it needs $k-1$ dummy variables used in the regression model. Take regression or linear model courses for more discussion on categorical variables with more levels and dummy variables.
+
+
+### ANOVA as a regression model
+
+Why ANOVA can be viewed as regression? Let's first refresh our memory of ANOVA model.
+
+$$y_{ij} = \mu + \tau_i + \epsilon_{ij}, \quad j = 1, 2, \dots, n_i, \quad i = 1, 2, \dots, t$$
+
+  + $\mu$ is the overall mean across all $t$ populations.
+  + $\tau_i$ is the effect due to $i$-th treatment.
+  + $\epsilon_{ij}$ is the random deviation of $y_{ij}$ about the $i$-th population mean $\mu_i = \mu+ \tau_i$.
+  + $\mu$ and $\tau_i$ are unknown constants. 
+  + ANOVA is a **linear** model.
+  
+The assumptions of ANOVA are
+
+  + $\epsilon_{ij}$s are independent and normally distributed with mean 0.
+  + $Var(\epsilon_{ij}) = \sigma^2$ (<span style="color:blue"> a constant value </span>)
+  + $\epsilon_{ij} \sim N(0, \sigma^2)$
+  
+In our transmission example, $t = 2$. For simplicity, we can drop the subscript $i$ for bookkeeping the categories or groups, and rewrite our model as
+
+$$y_{j} = \mu + \tau_j + \epsilon_{j}, \quad j = 1, 2, \dots, n, \quad \epsilon_j\sim N(0, \sigma^2).$$ 
+
+Now $y_{j}$ is the $j$th response in the data whose value is determined by the overall mean $\mu$, and the treatment effect $\tau_j$ depending on which group/category this response is in, i.e., 
+
+$$\tau_j = \begin{cases} \tau_m  & \quad \text{if } j \text{th car has manual transmission} \\ \tau_a  & \quad \text{if } j \text{th car has automatic transmission} \end{cases}$$
+
+Does this model look like a regression model? In general, for a regression model with a categorical variable, we can write the model as 
+
+$$y_{j} = \beta_0 + \beta_1x_j + \epsilon_{j}, \quad j = 1, 2, \dots, n, \quad \epsilon_j\sim N(0, \sigma^2),$$ 
+where $$x_j = \begin{cases} 1  & \quad \text{if } j \text{th subject is in the non-baseline level} \\ 0  & \quad \text{if } j \text{th subject is in the baseline level}  \end{cases}$$
+
+We are done! If we let $\mu = \beta_0$, $\tau_j = \beta_1x_j$, i.e., $\tau_m = \beta_1$ and $\tau_a = 0$, the two models are equivalent.
+
+By default, the regression model assumes the treatment effect of the baseline group is zero. Therefore $\mu$ is in fact the baseline group mean. The regression slope $\beta_1$ is actually the treatment effect of the other group, $\tau_m$. Testing $H_0: \tau_m = \tau_a$ is equivalent to testing whether or not $\beta_1$ is zero, $H_0: \beta_1 = 0$. In other words, the baseline group and the non-baseline group have no effect on the response value. The categorical variable does not contribute to the changes in the response, and therefore the mean response is at the same level regardless of categories or groups. Although here we use the factor having 2 categories as an example, the discussion here can be generalized to the categorical variable with more than two categories.
+
 
 ## Exercises
 
