@@ -1,12 +1,66 @@
 # Multiple Linear Regression* {#sec-model-mlr}
 
+{{< include macros.qmd >}}
 
-<!-- ## Why Multiple Regression? -->
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: packages
+library(openintro)
+library(knitr)
+library(emoji)
+set.seed(1234)
+library(ggplot2)
+library(tidyverse)
+library(broom)
+library(rminer)
+library(sets)
+library(parsnip)
+library(tidymodels)
+library(glue)
+```
 
+```{r}
+#| echo: false
+knitr::opts_chunk$set(echo = FALSE, fig.align = "center")
+ggplot2::theme_set(ggplot2::theme_bw(base_size = 16))
+options(digits = 3)
+```
 
+```{r}
+hook_output <- knitr::knit_hooks$get("output")
+knitr::knit_hooks$set(output = function(x, options) {
+  lines <- options$output.lines
+  if (is.null(lines)) {
+    return(hook_output(x, options))  # pass to default hook
+  }
+  x <- unlist(strsplit(x, "\n"))
+  more <- "..."
+  if (length(lines)==1) {        # first n lines
+    if (length(x) > lines) {
+      # truncate the output, but add ....
+      x <- c(head(x, lines), more)
+    }
+  } else {
+    x <- c(more, x[lines], more)
+  }
+  # paste these lines together
+  x <- paste(c(x, ""), collapse = "\n")
+  hook_output(x, options)
+})
+```
 
+When more than one predictors are considered and put in a regression model, we are dealing with **multiple linear regression**. Multiple linear regression (MLR) is pretty similar to simple linear regression (SLR). They share the same idea and concept in terms of prediction and inference. 
 
-Our target response may be affected by several factors.
+## Why Multiple Regression?
+
+The first question you may ask is why we want to use multiple regression? In practice, we often have more than one predictor in a given study, and our target response may be affected by several factors. For example, how amount of money spent on advertising on different media affect the total sales of some product? We may need more than one predictors because usually companies will spend money on several different media, not just one.
+
+- Data: total sales $(Y)$ and amount of money spent on advertising on TV $(X_1)$, YouTube $(X_2)$, and Instagram $(X_3)$.
+
+- We want to predict sales based on the three advertising expenditures and see which medium is more effective.
+
 - Total sales $(Y)$ and amount of money spent on advertising on YouTube (YT) $(X_1)$, Facebook (FB) $(X_2)$, Instagram (IG) $(X_3)$.
 
 
@@ -43,21 +97,12 @@ knitr::include_graphics("./images/img-model/ig.jpeg")
 - Predict sales based on the three advertising expenditures and see which medium is more effective.
 
 
+<!-- ## Fit Separate Simple Linear Regression Models -->
 
-::: notes
+You may wonder, how about we just fit three separate simple linear regression models, one for each predictor. Yes, we could do that. And if we do this, we'll see that, as shown in the figure below, advertising on the 3 media is valuable because the more the money we put in, the higher sales of products we'll get. However, fitting a separate SLR model for each predictor is not satisfactory. Let's see why.
 
-- The first question you may ask is Why we want Multiple Regression?
-- In practice, we often have more than one predictor. 
-- How amount of money spent on advertising on different media affect the total sales of some product, we may need more than one predictors. 
-- Because usually company will spend money on several different media, not just one.
-- Data: total sales $(Y)$ and amount of money spent on advertising on TV $(X_1)$, YouTube $(X_2)$, and Instagram $(X_3)$.
-- We want to predict sales based on the three advertising expenditures and see which medium is more effective.
 
-:::
-
-## Fit Separate Simple Linear Regression Models
-
-Fit three separate independent SLR models:
+<!-- Fit three separate independent SLR models: -->
 
 ```{r}
 #| fig-asp: 0.35
@@ -76,48 +121,23 @@ abline(lm(advertising_data$sales ~ advertising_data$instagram), col = "red", lwd
 ```
 
 
-. . .
 
-`r emo::ji('x')` Fitting a separate SLR model for each predictor is not satisfactory. 
-
-::: notes
-
-- You may wonder, how about we just fit three Separate Simple Linear Regression Models, one for each predictor. 
-- Yes, we could do that. And if we do this, we'll see that advertising on the 3 media is valuable because the more the money we put in, the higher sales of products we'll get.
-- Fitting a separate SLR model for each predictor is not satisfactory. That's see why.
-
-:::
-
-## Don't Fit a Separate Simple Linear Regression
+<!-- ## Don't Fit a Separate Simple Linear Regression -->
 
 - `r emo::ji('point_right')` How to make a *single* prediction of sales given levels of the 3 advertising media budgets?
   + <span style="color:blue"> How to predict the sales when the amount spent on YT is 50, 100 on FB and 30 on IG? </span>
+    
+    It is unclear how to make a single prediction of sales given levels of the three advertising media budgets, since each of the budgets is associated with a separate regression equation.
   
-  
-. . .
 
 - `r emo::ji('point_right')` Each regression equation ignores the other 2 media in forming coefficient estimates.
   + <span style="color:blue"> The effect of FB advertising on sales may be increased or decreased when YT and IG advertising are in the model. </span>
   + <span style="color:blue"> IG advertising may have no impact on sales when YT and FB advertising are in the model. </span>
-
-
-
-. . .
+  
+    If the three media budgets are correlated with each other, this can lead to very misleading estimates of the individual media effects on sales.
 
 - `r emo::ji('thumbsup')``r emo::ji('thumbsup')` Better approach: *extend the SLR model so that it can __directly accommodate multiple predictors__.*
 
-::: notes
-
-- Fitting a separate SLR model for each predictor is not satisfactory. 
-  + It is unclear how to make a single prediction of sales given levels of the three advertising media budgets, since each of the budgets is associated with a separate regression equation.
-  + Each of the three regression equations ignores the other two media in forming estimates for the regression coefficients.
-  + If the three media budgets are correlated with each other, this can lead to very misleading estimates of the individual media effects on sales.
-- A better approach is to extend the simple linear regression model so that it can directly accommodate multiple predictors.  
-
-:::
-
-
-##
 
 **I hope you don't feel...**
 
@@ -132,9 +152,6 @@ knitr::include_graphics("./images/img-model/mlr_depress.jpeg")
 :::
 
 
-
-##
-
 **What I hope is...**
 
 ::: small
@@ -147,69 +164,62 @@ knitr::include_graphics("./images/img-model/mlr_meme.jpeg")
 :::
 
 
-
 ## Multiple Linear Regression (MLR) Model
-- We have $k$ distinct predictors. The (population) multiple linear regression model:
+Suppose we have $k$ distinct predictors. The (population) multiple linear regression model is
 $$Y_i= \beta_0 + \beta_1X_{i1} + \beta_2X_{i2} + \dots + \beta_kX_{ik} + \epsilon_i$$
+
 - $X_{ij}$: $j$-th regressor value on $i$-th measurement, $j = 1, \dots, k$.
+
 - $\beta_j$: $j$-th coefficient quantifying the association between $X_j$ and $Y$.
 
-. . .
-
-- In the advertising example, $k = 3$ and
+In the advertising example, $k = 3$ and
 $$\texttt{sales} = \beta_0 + \beta_1 \times \texttt{YouTube} + \beta_2 \times  \texttt{Facebook} + \beta_3 \times \texttt{Instagram} + \epsilon$$
+We interpret $\beta_j$, $j = 1, \dots, p$, as the average effect on $Y$ of a one unit increase in $X_j$, *holding all other predictors fixed*. Later, we will learn how to interpret the coefficients in more detail. 
 
-. . .
+The model assumptions are same same as SLR that $\epsilon_i \stackrel{iid}{\sim} N(0, \sigma^2).$ When $k = 1$, MLR is reduced to SLR.
 
-- Assumptions as SLR
-  + $\epsilon_i \stackrel{iid}{\sim} N(0, \sigma^2)$
-  
-
-. . .
-
-- When $k = 1$, MLR is reduced to SLR.
-
-::: notes
-- Two subscripts of X.
-- Later, we will learn how to interpret the coefficients correctly.
-- We interpret $\beta_j$, $j = 1, \dots, p$, as the average effect on $Y$ of a one unit increase in $X_j$, **holding all other predictors fixed**.
-:::
-
-. . .
-
-::: question
-How many parameters are there in the model?
-:::
+<!-- ::: question -->
+<!-- How many parameters are there in the model? -->
+<!-- ::: -->
 
 
-## Sample MLR Model
-- Given the training sample data $(x_{11}, \dots, x_{1k}, y_1), (x_{21}, \dots, x_{2k}, y_2), \dots, (x_{n1}, \dots, x_{nk}, y_n),$
-- The sample MLR model:
+<!-- ## Sample MLR Model -->
+Given the training sample data $(x_{11}, \dots, x_{1k}, y_1), (x_{21}, \dots, x_{2k}, y_2), \dots, (x_{n1}, \dots, x_{nk}, y_n),$ the sample MLR model is
 $$\begin{align}
 y_i &= \beta_0 + \beta_1x_{i1} + \beta_2x_{i2} + \dots + \beta_k x_{ik} + \epsilon_i \\
-&= \beta_0 + \sum_{j=1}^k\beta_j x_{ij} + \epsilon_i, \quad i = 1, 2, \dots, n
+&= \beta_0 + \sum_{j=1}^k\beta_j x_{ij} + \epsilon_i, \quad i = 1, 2, \dots, n.
 \end{align}$$
 
-```{r}
-#| out-width: 48%
-knitr::include_graphics("./images/img-model/mlr_data_matrix.png")
-```
+<!-- Usually we save our data as a data matrix, or data frame in R -->
+
+<!-- # ```{r} -->
+<!-- # #| out-width: 48% -->
+<!-- # knitr::include_graphics("./images/img-model/mlr_data_matrix.png") -->
+<!-- # ``` -->
 
 
-::: notes
-- Writing our data and model without using matrix starts getting tedious.
-- Later we'll see our to write it in a more clean way using matrix notation.
-- our mpg data set in the homework has this type of structure.
-- In R we usually store this kind of data set in R structure call data frame.
-:::
+<!-- ::: notes -->
+<!-- - Writing our data and model without using matrix starts getting tedious. -->
+<!-- - Later we'll see our to write it in a more clean way using matrix notation. -->
+<!-- - our mpg data set in the homework has this type of structure. -->
+<!-- - In R we usually store this kind of data set in R structure call data frame. -->
+<!-- ::: -->
 
 
-## Regression Hyperplane
-- **SLR**: regression line
-- **MLR: regression hyperplane or response surface**
+<!-- ## Regression Hyperplane -->
+
+Now I'm gonna show you what a MLR looks like when we fit it to the data. If we have two predictors, we will have a sample regression **plane**. If we have more than two predictors in the model, we are not able to visualize it, but the idea is the same. We will have something called **hyperplane** or **response surface** that basically play the same role as the regression plane in 2D or regression line in 1D. 
+
+The plot on the right is the contour plot when we project the plot onto the $X_1$-$X_2$ plane. You can see that basically the higher $X_1$ and/or the higher $X_2$, the higher value of $Y$. Moreover, you can see that the level curves are straight and parallel, meaning that the effect of $X_1$ on $Y$ does not change with the values of $X_2$ or the effect does not depend on the level of $X_2$.
+
+
+
+<!-- - **SLR**: regression line -->
+<!-- - **MLR: regression hyperplane or response surface** -->
 - $y = \beta_0 + \beta_1x_1 + \beta_{2}x_2 + \epsilon$
 - $E(y \mid x_1, x_2) = 50 + 10x_1 + 7x_2$
 ```{r}
+#| message: false
 x1 <- runif(50, 0, 10)
 x2 <- runif(50, 0, 10)
 x1x2 <- x1 * x2
@@ -250,6 +260,7 @@ points(trans3d(x1, x2, mu + rnorm(50, sd = 20),
 ::: {.column width="50%"}
 ```{r}
 #| out-width: 110%
+#| warning: false
 par(mar = c(4, 4, 0.5, 0.5))
 rsm::contour.lm(my_lm, x2 ~ x1, image = TRUE, img.col = cm.colors(50),
                 labcex = 1.4, lwd = 2, cex.axis = 1.5, las = 1)
@@ -258,22 +269,19 @@ rsm::contour.lm(my_lm, x2 ~ x1, image = TRUE, img.col = cm.colors(50),
 ::::
 
 
-::: notes
-- Now I'm gonna show you what a MLR looks like when we fit it to the data.
-- If we have two predictors, we will have a sample regression plane.
-- If we have more than two predictors in the model, we are not able to visualize it, but the idea is the same.
-- We will have a something called hyperplane or response surface that basically play the same role as the regression plane in 2D or regression line in 1D.
-- The plot on the right is the contour plot when we project the plot onto the x1-x2 plane. You can see that basically the higher x1 and/or the higher x2, the higher value of y.
-- Moreover, you can see that the level curves are straight and parallel, meaning that the effect of x1 on y does not change with the values of x2 or the effect does not depend on the level of x2.
+<!-- ::: notes -->
 
-- https://cran.r-project.org/web/packages/rsm/vignettes/rsm-plots.pdf
-- http://www.sthda.com/english/wiki/scatterplot3d-3d-graphics-r-software-and-data-visualization 
-- https://stackoverflow.com/questions/18147595/plot-3d-plane-true-regression-surface
+<!-- - https://cran.r-project.org/web/packages/rsm/vignettes/rsm-plots.pdf -->
+<!-- - http://www.sthda.com/english/wiki/scatterplot3d-3d-graphics-r-software-and-data-visualization  -->
+<!-- - https://stackoverflow.com/questions/18147595/plot-3d-plane-true-regression-surface -->
 
-:::
+<!-- ::: -->
 
 
-## Response Surface : Interaction Model
+<!-- ## Response Surface : Interaction Model -->
+
+Remember in SLR, we can have a liner model that describes a nonlinear relationship. Same in MLR. We can have a linear model that generates a nonlinear response surface!
+
 - $y = \beta_0 + \beta_1x_1 + \beta_{2}x_2 + \beta_{12}x_1x_2 + \epsilon$
 - This is in fact a linear regression model: let $\beta_3 = \beta_{12}, x_3 = x_1x_2$.
 - $E(y \mid x_1, x_2) = 50 + 10x_1 + 7x_2 + 5x_1x_2$
@@ -295,6 +303,7 @@ points(trans3d(x1, x2, mu_interact + rnorm(50, sd = 50),
 
 ::: {.column width="50%"}
 ```{r}
+#| warning: false
 #| out-width: 110%
 par(mar = c(4, 4, 0.5, 0.5))
 rsm::contour.lm(my_lm_interact, x2 ~ x1, image = TRUE, 
@@ -306,20 +315,20 @@ rsm::contour.lm(my_lm_interact, x2 ~ x1, image = TRUE,
 
 
 
-::: notes
-- Remember in SLR, we can have a liner model that describes a nonlinear relationship.
-- Same in MLR. We can have a linear model that generates a nonlinear response surface!
-- $y = \beta_0 + \beta_1x_1 + \beta_{2}x_2 + \beta_{12}x_1x_2 + \epsilon$
-- This is in fact a linear regression model: let $\beta_3 = \beta_{12}, x_3 = x_1x_2$.
-:::
+<!-- ::: notes -->
+
+<!-- ::: -->
 
 
 
 
-## Response Surface : 2nd Order with Interaction Model
+<!-- ## Response Surface : 2nd Order with Interaction Model -->
+
+`r emo::ji('sunglasses')` `r emo::ji('nerd_face')` A **linear** regression model can describe a **complex nonlinear relationship** between the response and predictors! The following is a 2nd order model with interaction.
+
 - $y = \beta_0 + \beta_1x_1 + \beta_{2}x_2 + \beta_{11}x_1^2 + \beta_{22}x_2^2 + \beta_{12}x_1x_2 + \epsilon$
 - $E(y) = 800+10x_1+7x_2 -8.5x_1^2-5x_2^2- 4x_1x_2$
-- `r emo::ji('sunglasses')` `r emo::ji('nerd_face')` A **linear** regression model can describe a **complex nonlinear relationship** between the response and predictors!
+
 
 
 :::: {.columns}
@@ -335,6 +344,7 @@ points(trans3d(x1, x2, mu_order2_interact + rnorm(50, sd = 50),
 
 ::: {.column width="50%"}
 ```{r}
+#| warning: false
 #| out-width: 110%
 par(mar = c(4, 4, 0.5, 0.5))
 rsm::contour.lm(my_lm_order2_interact, x2 ~ x1, image = TRUE, 
@@ -347,32 +357,34 @@ rsm::contour.lm(my_lm_order2_interact, x2 ~ x1, image = TRUE,
 
 
 
-# Point Estimation of Model Parameters
+## Estimation of Model Parameters
 
 
 
-## Least Square Estimation of the Coefficients
+### Least Squares Estimation (LSE)
 
-$$\begin{align}
-y_i &= \beta_0 + \beta_1x_{i1} + \beta_2x_{i2} + \dots + \beta_k x_{ik} + \epsilon_i \\
-&= \beta_0 + \sum_{j=1}^k\beta_j x_{ij} + \epsilon_i, \quad i = 1, 2, \dots, n
-\end{align}$$
-
-- The least-squares function is
+As SLR, we can define the least-squares function as the sum of squares of epsilon.
+<!-- $$\begin{align} -->
+<!-- y_i &= \beta_0 + \beta_1x_{i1} + \beta_2x_{i2} + \dots + \beta_k x_{ik} + \epsilon_i \\ -->
+<!-- &= \beta_0 + \sum_{j=1}^k\beta_j x_{ij} + \epsilon_i, \quad i = 1, 2, \dots, n -->
+<!-- \end{align}$$ -->
+The least-squares function is
 $$S(\alpha_0, \alpha_1, \dots, \alpha_k) = \sum_{i=1}^n\left(y_i - \alpha_0 - \sum_{j=1}^k\alpha_j x_{ij}\right)^2$$
 The function $S(\cdot)$ must be minimized with respect to the coefficients, i.e.,
 $$(b_0, b_1, \dots, b_k) = \underset{{\alpha_0, \alpha_1, \dots, \alpha_k}}{\mathrm{arg \, min}}  S(\alpha_0, \alpha_1, \dots, \alpha_k)$$
 
-
-::: notes
-- As SLR, we can define the least-squares function as the sum of squares of epsilon.
-- The idea is to minimize the function $S$ w.r.t. the model coefficients $\beta_0, \beta_1, \dots, \beta_k$.
-- In other words, we are going to choose the sample statistics $b_0$, $b_1$, ..., $b_k$ as the estimates of $\beta_0, \beta_1, \dots, \beta_k$ so that $S(.)$ is minimized when $b_0$, $b_1$, ..., $b_k$ are plugged in the function.
-:::
+We are going to choose the sample statistics $b_0$, $b_1$, ..., $b_k$ as the estimates of $\beta_0, \beta_1, \dots, \beta_k$ so that $S(.)$ is minimized when $b_0$, $b_1$, ..., $b_k$ are plugged in the function.
 
 
+<!-- ::: notes -->
 
-## Geometry of Least Square Estimation
+<!-- ::: -->
+
+
+<!-- ## Geometry of Least Square Estimation -->
+
+If we look at the geometry of least squares estimation of MLR, we have a visualization like this. Again, in SLR, different $b_0$ and $b_1$s give us different sample regression lines. In MLR, suppose we have two predictors, and different $b_0$ and $b_1$ and $b_2$ give us a different sample regression plane. Geometrically speaking, we are trying to find a sample regression plane such that the sum of the squared distance between the observations (denoted by those blue points) and the plane is minimized. For more than 2 predictor case, we are not able to visualize it because we live a 3D world, but the idea is exactly the same. And we called the regression plane a hyperplane.
+
 
 ```{r}
 # scatter plot
@@ -419,98 +431,78 @@ segments(orig$x, orig$y, plane$x, plane$y, col = 1, lty = c(2, 1)[i.negpos],
 # knitr::include_graphics("./img/multiple_reg_fit.png")
 ```
 
-::: notes
-- If we look at the geometry of Least Square Estimation of the MLR, we have a visualization like this.
-- Again, in SLR, different $b_0$ and $b_1$s give us different sample regression lines.
-- In MLR, suppose we have two predictors, and different $b_0$ and $b_1$ and $b_2$ give us different sample regression planes.
-- so geometrically speaking, we are trying to find a sample regression plane such that the sum of the squared distance between the observations (denoted by those blue points) and the plane is minimized.
-- For more than 2 predictor case, we are not able to visualize it because we live a 3D world, but the idea is exactly the same. And we called the regression plane a hyperplane. OK.
-:::
+<!-- ::: notes -->
+
+<!-- ::: -->
 
 
 
 
-## Least-squares Normal Equations
+<!-- ## Least-squares Normal Equations-->
+
+Again similar to SLR, we can take derivative w.r.t $\beta_0$, $\beta_1$, to the $\beta_k$. And we are gonna have $p = k + 1$ equations with $p$ unknown parameters. So we can find one and only one solution to $\beta_0$, $\beta_1$, to the $\beta_k$, which are $b_0$, $b_1$, ..., $b_k$. And the $p$ equations are the least squares **normal questions**. The ordinary least squares estimators are the solutions to the normal equations.
+<!-- - You guys solve the equations when k = 1. -->
+<!-- - Do you think it is easy to solve the questions when the number of predictors is 2 or more than 2? -->
+
+
+
 $$\begin{align}
 \left.\frac{\partial S}{\partial\alpha_0}\right\vert_{b_0, b_1, \dots, b_k} &= -2 \sum_{i=1}^n\left(y_i - b_0 - \sum_{j=1}^k b_j x_{ij}\right) = 0\\
 \left.\frac{\partial S}{\partial\alpha_j}\right\vert_{b_0, b_1, \dots, b_k} &= -2 \sum_{i=1}^n\left(y_i - b_0 - \sum_{j=1}^k b_j x_{ij}\right)x_{ij} = 0, \quad j = 1, 2, \dots, k
 \end{align}$$
 
-- $p = k + 1$ equations with $p$ unknown parameters.
-- The ordinary least squares estimators are the solutions to the normal equations.
-
-::: notes
-- So again similar to SLR, we can take derivative w.r.t $\beta_0$, $\beta_1$, to the $\beta_k$.
-- And we are gonna have $p = k + 1$ equations with $p$ unknown parameters.
-- So we can find one and only one solution to $\beta_0$, $\beta_1$, to the $\beta_k$, which are $b_0$, $b_1$, ..., $b_k$.
-- And the $p$ equations are the least squares normal questions.
-- You guys solve the equations when k = 1.
-- Do you think it is easy to solve the questions when the number of predictors is 2 or more than 2?
-:::
-
-. . .
-
-::: question
-`r emo::ji("tropical_drink")` `r emo::ji("beer")` `r emo::ji("cocktail")`  `r emo::ji("clinking_glasses")`  I buy you a drink if you solve the equations for $k \ge 2$ by hand without using matrix notations or operations!
-:::
+<!-- ::: question -->
+<!-- `r emo::ji("tropical_drink")` `r emo::ji("beer")` `r emo::ji("cocktail")`  `r emo::ji("clinking_glasses")`  I buy you a drink if you solve the equations for $k \ge 2$ by hand without using matrix notations or operations! -->
+<!-- ::: -->
 
 
-::: notes
-- Here I am happy to treat you and buy you a drink if you can solve the equations for $k \ge 2$ by hand without using matrix notations or operations!
-- Come to my office hours and show your work. And we go to a bar together. Sounds good?
-- In fact, if you try, you are gonna deal with lots of algebra, but if we write the system of equations in a matrix form, the solution becomes very clean.
-- That's see why.
-:::
+<!-- ::: notes -->
+<!-- - Here I am happy to treat you and buy you a drink if you can solve the equations for $k \ge 2$ by hand without using matrix notations or operations! -->
+<!-- - Come to my office hours and show your work. And we go to a bar together. Sounds good? -->
+<!-- - In fact, if you try, you are gonna deal with lots of algebra, but if we write the system of equations in a matrix form, the solution becomes very clean. -->
+<!-- - That's see why. -->
+<!-- ::: -->
 
 
-## [R Lab]{.pink} [Delivery Time Data](./data/data-ex-3-1.csv)
+Based on the MLR model and assumptions, the LS estimator ${\bf b} = (b_0, b_1, \dots, b_k)'$ is **BLUE**, **B**est **L**inear **U**nbiased **E**stimator.  `r emo::ji('thumbsup')` 
 
-:::: {.columns}
+- <span style="color:#DE3163"> **Linear** </span>: Each $b_j$ is a linear combination of $y_1, \dots, y_n$.
 
-::: {.column width="70%"}
+- <span style="color:#DE3163"> **Unbiased** </span>: Each $b_j$ is normally distributed with mean $\beta_j$.
+
+- <span style="color:#DE3163"> **Best** </span>: Each $b_j$ has the minimum variance, comparing to all other unbiased estimator for $\beta_j$ that is a linear combo of $y_1, \dots, y_n$.
+
+
+
+----------------------------------------------------------------
+
+<span style="color:blue"> **Example: Least Squares Estimation** </span>
+
+<!-- ## [R Lab]{.pink} [Delivery Time Data](./data/data-ex-3-1.csv) -->
+
+In this chapter, we use [Delivery Time Data](./data/data-ex-3-1.csv) from [Introduction to Linear Regression Analysis, 6th edition](https://www.wiley.com/en-us/Introduction+to+Linear+Regression+Analysis%2C+6th+Edition-p-9781119578758) to demo MLR in R.
 
 ```{r}
 #| echo: true
 # Load the data set
-delivery <- read.csv(file = "./data/data-ex-3-1.csv",
-                     header = TRUE)
+delivery <- read.csv(file = "./data/data-ex-3-1.csv", header = TRUE)
 delivery_data <- delivery[, -1]
 colnames(delivery_data) <- c("time", "cases", "distance")
-str(delivery_data)
+delivery_data
 ```
 
 - $y$: the amount of time required by the route driver to stock the vending machines with beverages
 - $x_1$: the number of cases stocked
 - $x_2$: the distance walked by the driver
-:::
-
-
-
-::: {.column width="30%"}
-
-::: midi
-```{r}
-#| echo: true
-#| class-output: my_class800
-delivery_data
-```
-:::
-:::
-::::
-
-
-::: notes
-- $y$: the amount of time required by the route driver to stock the vending machines with beverages in an outlet.
-- $x_1$: the number of cases stocked
-- $x_2$: the distance walked by the driver
 - Goal: fit a MLR model $y = \beta_0 + \beta_1x_1 + \beta_2x_2 + \epsilon$ to the amount of time required by the route driver to service the vending machines
-(use readr::read_csv if the file is large)
-:::
 
 
 
 
-## [R Lab]{.pink} Scatterplot Matrix
+<!-- ## [R Lab]{.pink} Scatterplot Matrix -->
+
+Each plot shows the relationship between a pair of variables.
+
 ```{r}
 #| echo: !expr c(2)
 #| out-width: 78%
@@ -519,12 +511,10 @@ pairs(delivery_data)
 ```
 
 
-::: notes
-- Each plot shows the relationship between a pair of variables.
-:::
+<!-- ## [R Lab]{.pink} 3D Scatterplot -->
 
+Sometimes a 3D scatterplot is useful in visualizing the relationship between the response and the regressors when there are only two regressors.
 
-## [R Lab]{.pink} 3D Scatterplot
 ```{r}
 #| out-width: 75%
 #| code-fold: true
@@ -538,13 +528,8 @@ scatterplot3d(x = delivery_data$cases, y = delivery_data$distance, z = delivery_
 ```
 
 
-::: notes
-- Sometimes a 3D scatterplot is useful in visualizing the relationship between the response and the regressors when there are only two regressors.
-:::
 
-
-
-## [R Lab]{.pink} Multiple Linear Regression
+<!-- ## [R Lab]{.pink} Multiple Linear Regression -->
 ```{r}
 #| echo: true
 delivery_lm <- lm(time ~ cases + distance, data = delivery_data)
@@ -559,7 +544,10 @@ $$\hat{y} = 2.34 + 1.62x_1 + 0.014x_2$$
 
 - $b_0$: The delivery time with no number of cases of product stocked and no distance walked by the driver is expected to be 2.34 minutes. (Make sense?!)
 
-## [R Lab]{.pink} Regression Plane
+
+
+
+<!-- ## [R Lab]{.pink} Regression Plane -->
 ```{r}
 #| out-width: 82%
 par(mgp = c(2, 0.8, 0), las = 1)
@@ -603,38 +591,40 @@ segments(orig$x, orig$y, plane$x, plane$y, col = "black", lty = c(2, 1)[i.negpos
 
 
 
-## Estimation of $\sigma^2$
+### Estimation of $\sigma^2$
+
 - $SS_{res} = \sum_{i=1}^ne_i^2 = \sum_{i=1}^n(y_i - \hat{y}_i)^2$.
 
 - $MS_{res} = \frac{SS_{res}}{n - p}$ with $p = k + 1$.
 
 - $S^2 = MS_{res}$ is *unbiased* for $\sigma^2$, i.e., $E[MS_{res}] = \sigma^2$.
 
-<!-- - $\hat{\sigma}^2 = MS_{res}$ is model dependent. Its value varies with change of the model. -->
+- $\hat{\sigma}^2 = MS_{res}$ is model dependent. Its value varies with change of the model. If our model is specified correctly, $\hat{\sigma}^2$ depends on our data quality. If our data have lots of noise itself, there is nothing we can do.
 
 - $S^2$ of SLR may be quite larger than the $S^2$ of MLR.
 
 - $S^2$ measures the variation of the *unexplained* noise about the fitted regression line/hyperplane, so we prefer a small residual mean square.
 
 
-::: notes
-- $SS_{res} = \sum_{i=1}^ne_i^2 = {\bf e'e} = {\bf (y-Xb)'(y-Xb)} = {\bf y'y - b'X'y} = \sum_{i=1}^n(y_i - \hat{y}_i)^2$.
-- If our model is specified correctly, $\hat{\sigma}^2$ depends on our data quality.
-- If our data have lots of noise itself, there is nothing we can do.
-:::
+<!-- ::: notes -->
+<!-- - $SS_{res} = \sum_{i=1}^ne_i^2 = {\bf e'e} = {\bf (y-Xb)'(y-Xb)} = {\bf y'y - b'X'y} = \sum_{i=1}^n(y_i - \hat{y}_i)^2$. -->
+<!-- - If our model is specified correctly, $\hat{\sigma}^2$ depends on our data quality. -->
+<!-- - If our data have lots of noise itself, there is nothing we can do. -->
+<!-- ::: -->
 
 
-## [R Lab]{.pink} Estimation of $\sigma^2$
+
+----------------------------------------------------------------
+
+<span style="color:blue"> **Example: Estimation of $\sigma^2$** </span>
+
 ```{r}
 #| echo: true
 
 ## method 1
 summ_delivery <- summary(delivery_lm)  ## check names(summ_delivery)
 summ_delivery$sigma ^ 2
-
 ```
-
-. . .
 
 ```{r}
 #| echo: true
@@ -645,7 +635,6 @@ n <- length(delivery_lm$residuals)
 SS_res / (n - 3)
 ```
 
-. . .
 
 ```{r}
 #| echo: true
@@ -655,94 +644,82 @@ SS_res / (n - 3)
 SS_res1 / (n - 3)
 ```
 
-::: notes
-```{r, eval=FALSE}
-summ_delivery <- summary(delivery_lm)
-summ_delivery$sigma ^ 2
-# ## Why this is SS_res? Check what crossprod() is doing!
-# (SS_res1 <- crossprod(y) - crossprod(fitted_y, y))
-# SS_res1 / (n - 3)
-## Why this is SS_res?
-n <- length(delivery_lm$residuals)
-(SS_res <- sum(delivery_lm$residuals * delivery_lm$residuals))
-SS_res / (n - 3)
-```
-:::
+<!-- ::: notes -->
+<!-- ```{r, eval=FALSE} -->
+<!-- summ_delivery <- summary(delivery_lm) -->
+<!-- summ_delivery$sigma ^ 2 -->
+<!-- # ## Why this is SS_res? Check what crossprod() is doing! -->
+<!-- # (SS_res1 <- crossprod(y) - crossprod(fitted_y, y)) -->
+<!-- # SS_res1 / (n - 3) -->
+<!-- ## Why this is SS_res? -->
+<!-- n <- length(delivery_lm$residuals) -->
+<!-- (SS_res <- sum(delivery_lm$residuals * delivery_lm$residuals)) -->
+<!-- SS_res / (n - 3) -->
+<!-- ``` -->
+<!-- ::: -->
 
 
 
-# Confidence Interval
-<h2> CI for Coefficients </h2>
-<h2> CI for the Mean Response  </h2>
-<h2> PI for New Observations  </h2>
+<!-- ### Confidence Interval and Prediction Interval -->
+<!-- <h2> CI for Coefficients </h2> -->
+<!-- <h2> CI for the Mean Response  </h2> -->
+<!-- <h2> PI for New Observations  </h2> -->
 
 
-## Properties of LSEs
-- `r emo::ji('thumbsup')` ${\bf b} = (b_0, b_1, \dots, b_k)'$ is BLUE.
-- <span style="color:#DE3163"> **Linear** </span>: Each $b_j$ is a linear combination of $y_1, \dots, y_n$.
-- <span style="color:#DE3163"> **Unbiased** </span>: Each $b_j$ is normally distributed with mean $\beta_j$.
-- <span style="color:#DE3163"> **Best** </span>: Each $b_j$ has the minimum variance, comparing to all other unbiased estimator for $\beta_j$ that is a linear combo of $y_1, \dots, y_n$.
 
+### Wald CI for Coefficients
 
-## Wald CI for Coefficients
 The $(1-\alpha)100\%$ Wald CI for $\beta_j$, $j = 0, 1, \dots, k$ is
 $$\left(b_j- t_{\alpha/2, n-p}~se(b_j), \quad b_j + t_{\alpha/2, n-p}~ se(b_j)\right)$$
+where $se(b_j)$ is the standard error of $b_j$. The formula come from the fact that each of the statistics $\frac{b_j - \beta_j}{se(b_j)}, j = 0, 1, 2, \dots, k$ follows $t_{n-p}$ distribution. $se(b_j)$ is a function of $\hat{\sigma}^2$ and $x_{ij}s$.
 
 ```{r}
 #| echo: true
 (ci <- confint(delivery_lm))
 ```
 
-- These are **marginal** CIs seperately for each $b_j$.
+These are **marginal** CIs separately for each $b_j$. These interval estimates do not take correlation of coefficients into account. One coefficient may be higher when another is lower. We can only use the intervals one at a time when doing interval estimation. When we want to do interval estimation for several coefficients together at the same time, these intervals are not that accurate.
 
 
-::: notes
-- Each of the statistics $\frac{b_j - \beta_j}{\sqrt{\hat{\sigma}^2C_{jj}}}, j = 0, 1, 2, \dots, k$ follows $t_{n-p}$ distribution, where $\hat{\sigma}^2 = MS_{res}$, and $C_{jj}$ is the $j$-th diagonal element of ${\bf (X'X)}^{-1}$.
-- The $(1-\alpha)100\%$ CI for $\beta_j$, $j = 0, 1, \dots, k$ is
-$\left(b_j- t_{\alpha/2, n-p} \sqrt{\hat{\sigma}^2C_{jj}}, \quad b_j + t_{\alpha/2, n-p} \sqrt{\hat{\sigma}^2C_{jj}}\right)$
-- These interval estimates do not take correlation of coefficients into account. One coefficient may be higher when another is lower.
-- We can only use the intervals one at a time when doing interval estimation. When we want to do interval estimation for several coefficients together at the same time, these intervals are not that accurate.
-:::
+<!-- ::: notes -->
+<!-- - Each of the statistics $\frac{b_j - \beta_j}{\sqrt{\hat{\sigma}^2C_{jj}}}, j = 0, 1, 2, \dots, k$ follows $t_{n-p}$ distribution, where $\hat{\sigma}^2 = MS_{res}$, and $C_{jj}$ is the $j$-th diagonal element of ${\bf (X'X)}^{-1}$. -->
+<!-- - The $(1-\alpha)100\%$ CI for $\beta_j$, $j = 0, 1, \dots, k$ is -->
+<!-- $\left(b_j- t_{\alpha/2, n-p} \sqrt{\hat{\sigma}^2C_{jj}}, \quad b_j + t_{\alpha/2, n-p} \sqrt{\hat{\sigma}^2C_{jj}}\right)$ -->
+<!-- ::: -->
 
 
-## Correlated Coefficients {visibility="hidden"}
+<!-- ## Correlated Coefficients {visibility="hidden"} -->
 
-::: fact
 Covariance of random variables $X$ and $Y$, $\cov(X, Y)$ is defined as 
 $$\small \cov(X, Y) = E[(X - E(X))(Y - E(Y))]$$
-::: 
+<!-- :::  -->
 
 
-::: question
-What is $\cov(X, X)$?
-:::
-
-. . .
+<!-- ::: question -->
+<!-- What is $\cov(X, X)$? -->
+<!-- ::: -->
 
 :::: {.columns}
 
 ::: {.column width="50%"}
-::: fact
+
 The covariance matrix of the coefficient vector ${\bf b} = (b_0, b_1, b_2)'$ is  $$\scriptsize \begin{align} \cov({\bf b}) &= \begin{bmatrix} \cov(b_0, b_0) & \cov(b_0, b_1) & \cov(b_0, b_2) \\ \cov(b_1, b_0) & \cov(b_1, b_1) & \cov(b_1, b_2) \\ \cov(b_2, b_0) & \cov(b_2, b_1) & \cov(b_2, b_2) \end{bmatrix} \end{align}$$
-:::
 :::
 
 
 
 ::: {.column width="50%"}
-::: fact
 The correlation matrix of the coefficient vector ${\bf b} = (b_0, b_1, b_2)'$ is  $$\scriptsize \begin{align} \cor({\bf b}) &= \begin{bmatrix} 1 & r_{01} & r_{02} \\ r_{10} & 1 & r_{12} \\ r_{20} & r_{21} & 1 \end{bmatrix} \end{align}$$
-:::
 :::
 ::::
 
 
-> <span style="color:blue"> But all $b_j$ are correlated! </span>
+<span style="color:blue"> All $b_j$ are correlated! </span>
 
-## Correlated Coefficients
+<!-- ## Correlated Coefficients -->
 
-:::: {.columns}
-::: {.column width="50%"}
+<!-- :::: {.columns} -->
+<!-- ::: {.column width="50%"} -->
 
 ```{r}
 #| echo: true
@@ -753,30 +730,26 @@ V <- vcov(delivery_lm)
 sqrt(diag(V))
 ```
 
-:::
+<!-- ::: -->
 
-::: {.column width="50%"}
+<!-- ::: {.column width="50%"} -->
 ```{r}
 #| echo: true
 ## correlation matrix
 cov2cor(V)
 ```
-:::
-::::
+<!-- ::: -->
+<!-- :::: -->
 
 - $b_1$ and $b_2$ are negatively correlated.
 
 - Individual CI ignores the correlation between $b_j$s.
 
-. . .
-
-::: question
-How do we specify a confidence level that applies **simultaneously** to a **set** of interval estimates? For example, a $95\%$ confidence "interval" for both $b_1$ and $b_2$.
-:::
+How do we specify a confidence level that applies **simultaneously** to a **set** of interval estimates? For example, a $95\%$ confidence "interval" for both $b_1$ and $b_2$?
 
 
-## Confidence Region
-- The $(1-\alpha)100\%$ CI for a **set** of $b_j$s will be an **elliptically-shaped region**!
+<!-- ## Confidence Region -->
+The $(1-\alpha)100\%$ CI for a **set** of $b_j$s will be an **elliptically-shaped region**!
 
 <!-- :::: {.columns} -->
 
@@ -823,17 +796,18 @@ points(x = 2, y = 0.008, col = "black", cex = 2, pch = 16)
 - Some points (red) within the marginal intervals are implausible according to the joint region.
 - The joint region includes values of the coefficient for cases (black), for example, that are excluded from the marginal interval.
 
-::: notes
-- Bonferroni
-- Scheffe S-method
-- maximum modulus t procedure
-With repeated sampling, 95% of
-such ellipses will simultaneously include β1 and β2, if the fitted model is correct and normality holds. The orientation of the ellipse reflects the negative correlation between the estimates. 
-Contrast the 95% confidence ellipse with the marginal 95% confidence intervals, also shown on the plot. Some points within the marginal intervals—with larger values for both of the coefficients, for example—are implausible according to the joint region. Similarly, the joint region includes values of the coefficient for income, for example, that are excluded from the marginal interval.
-:::
+With repeated sampling, 95% of such ellipses will simultaneously include $\beta_1$ and $\beta_2$, if the fitted model is correct and normality holds. The orientation of the ellipse reflects the negative correlation between the estimates. Contrast the 95% confidence ellipse with the marginal 95% confidence intervals, also shown on the plot. Some points within the marginal intervals—with larger values for both of the coefficients, for example—are implausible according to the joint region. Similarly, the joint region includes values of the coefficient for income, for example, that are excluded from the marginal interval.
 
 
-## CI for the Mean Response $E(y \mid {\bf x}_0)$
+<!-- ::: notes -->
+<!-- - Bonferroni -->
+<!-- - Scheffe S-method -->
+<!-- - maximum modulus t procedure -->
+<!-- ::: -->
+
+
+### CI for the Mean Response $E(y \mid {\bf x}_0)$
+
 - The fitted value at a point ${\bf x}_0 = (1, x_{01}, x_{02}, \dots, x_{0k})'$ is $$\hat{y}_0 = b_0 + b_1x_{01} + \cdots + b_kx_{0k}$$
 - This is an unbiased estimator for $E(y \mid {\bf x}_0)$
 <!-- - $\frac{\hat{y}_0 - E(y|{\bf x}_0)}{\sqrt{\hat{\sigma}^2{\bf x}_0'{\bf (X'X)}^{-1}{\bf x}_0}}\sim t_{n-p}$. -->
@@ -863,7 +837,7 @@ predict(delivery_lm,
 :::
 
 
-## PI for New Observations
+### PI for New Observations
 - Predict the future observation $y_0$ when ${\bf x} = {\bf x}_0$.
 - A point estimate is $\hat{y}_0 = b_0 + b_1x_{01} + \cdots + b_kx_{0k}$.
 - The $(1-\alpha)100\%$ PI for $y_0$ is
@@ -891,7 +865,7 @@ predict(delivery_lm,
 :::
 
 
-## Predictor Effect Plots
+### Predictor Effect Plots
 - A complete picture of the regression surface requires drawing a $p$-dimensional graph.
 
 - **Predictor effect plots** look at 1 or 2D plots for each predictor.
@@ -922,7 +896,7 @@ predict(delivery_lm,
 
 
 
-## [R Lab]{.pink} Predictor Effect Plots
+<!-- ## [R Lab]{.pink} Predictor Effect Plots -->
 ```{r}
 #| eval: false
 #| echo: true
@@ -965,7 +939,7 @@ plot(effects::predictorEffects(predictor = "distance", mod = delivery_lm))
 'arg' should be one of “pointwise”, “Scheffe”, “scheffe”
 :::
 
-## Extrapolation {visibility="hidden"}
+### Extrapolation {visibility="hidden"}
 - In MLR, it's easy to inadvertently extrapolate since the regressors jointly define the region containing the data.
 
 ```{r}
@@ -1005,7 +979,7 @@ with(delivery_data,
 :::
 
 
-# Hypothesis Testing
+## Hypothesis Testing
 <h2> Test for Significance of Regression </h2>
 <h2> Tests on Individual Coefficients </h2>
 <h2> Tests on Subsets of Coefficients (Later) </h2>
@@ -1021,7 +995,7 @@ with(delivery_data,
 :::
 
 
-## Test for Significance of Regression
+### Test for Significance of Regression
 - **Test for significance**: Determine if there is a **linear** relationship between the response and **any** of the regressor variables.
 - <span style="color:blue">
 $H_0: \beta_1 = \beta_2 = \cdots = \beta_k = 0 \quad H_1: \beta_j \ne 0 \text{ for at least one } j$ </span>
@@ -1207,7 +1181,7 @@ summ_delivery$adj.r.squared
 ```
 
 
-## Tests on Individual Regression Coefficients
+### Tests on Individual Regression Coefficients
 
 - Hypothesis test on any **single** regression coefficient.
 - <span style="color:blue">
