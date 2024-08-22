@@ -480,7 +480,7 @@ Based on the MLR model and assumptions, the LS estimator ${\bf b} = (b_0, b_1, \
 
 <!-- ## [R Lab]{.pink} [Delivery Time Data](./data/data-ex-3-1.csv) -->
 
-In this chapter, we use [Delivery Time Data](./data/data-ex-3-1.csv) from [Introduction to Linear Regression Analysis, 6th edition](https://www.wiley.com/en-us/Introduction+to+Linear+Regression+Analysis%2C+6th+Edition-p-9781119578758) to demo MLR in R.
+In this chapter, we use [Delivery Time Data](./data/data-ex-3-1.csv) of Example 3.1 from [Introduction to Linear Regression Analysis, 6th edition](https://www.wiley.com/en-us/Introduction+to+Linear+Regression+Analysis%2C+6th+Edition-p-9781119578758) to demo MLR in R.
 
 ```{r}
 #| echo: true
@@ -492,14 +492,22 @@ delivery_data
 ```
 
 - $y$: the amount of time required by the route driver to stock the vending machines with beverages
+
 - $x_1$: the number of cases stocked
+
 - $x_2$: the distance walked by the driver
+
 - Goal: fit a MLR model $y = \beta_0 + \beta_1x_1 + \beta_2x_2 + \epsilon$ to the amount of time required by the route driver to service the vending machines
 
 
 
 
 <!-- ## [R Lab]{.pink} Scatterplot Matrix -->
+
+:::{.callout-note}
+Always get to know your data set before you fit any statistical or machine learning model to the data.
+:::
+
 
 Each plot shows the relationship between a pair of variables.
 
@@ -530,13 +538,17 @@ scatterplot3d(x = delivery_data$cases, y = delivery_data$distance, z = delivery_
 
 
 <!-- ## [R Lab]{.pink} Multiple Linear Regression -->
+
+To fit the MLR model, we again use `lm()`. In the `furmula` argument, we use `+` to add predictors. `coef(delivery_lm)` or `delivery_lm$coef` can be used to grab the LS estimates of coefficients.
+
 ```{r}
 #| echo: true
 delivery_lm <- lm(time ~ cases + distance, data = delivery_data)
-delivery_lm$coef
+coef(delivery_lm)
 ```
 
 $$\hat{y} = 2.34 + 1.62x_1 + 0.014x_2$$
+Interpretation of coefficients needs additional attention.
 
 - $b_1$: **All else held constant**, for one case of product stocked increase, we expect the delivery time to be longer, *on average*, by 1.62 minutes.
 
@@ -544,10 +556,15 @@ $$\hat{y} = 2.34 + 1.62x_1 + 0.014x_2$$
 
 - $b_0$: The delivery time with no number of cases of product stocked and no distance walked by the driver is expected to be 2.34 minutes. (Make sense?!)
 
+When we interpret slopes or the effect of any predictor on the response in MLR, for example, $x_1$, it needs to be measured on the same scale, meaning that all other predictors should not change because any change in them will change the response value too, and this response change is not due to $x_1$, and not measured or explained by $b_1$.
 
+For regression we usually don't pay much attention to $\beta_0$ because quite often, it does not have natural physical meaning. Still, depending on your research questions, you may be interested in the intercept term. For example, you may want to know your response value when your predictor, temperature, is at value zero. Moreover, it is quite often that we normalize/standardize our variables before we fit MLR. If that is the case, the intercept means the average response level when the predictors are at their average level.
 
 
 <!-- ## [R Lab]{.pink} Regression Plane -->
+
+The LS fitted regression plane is shown below.
+
 ```{r}
 #| out-width: 82%
 par(mgp = c(2, 0.8, 0), las = 1)
@@ -593,17 +610,15 @@ segments(orig$x, orig$y, plane$x, plane$y, col = "black", lty = c(2, 1)[i.negpos
 
 ### Estimation of $\sigma^2$
 
-- $SS_{res} = \sum_{i=1}^ne_i^2 = \sum_{i=1}^n(y_i - \hat{y}_i)^2$.
+Same as SLR, the estimate of $\sigma^2$, denoted as $\hat{\sigma}^2$ or $s^2$, is the mean square residual of the model.
 
-- $MS_{res} = \frac{SS_{res}}{n - p}$ with $p = k + 1$.
+Remember that the sum of squares residual is $SS_{res} = \sum_{i=1}^ne_i^2 = \sum_{i=1}^n(y_i - \hat{y}_i)^2$. Then the mean square residual is $SS_{res}$ divided by its degrees of freedom: $MS_{res} = \frac{SS_{res}}{n - p}$ with $p = k + 1$. Note that the degrees of freedom is $n - p$ where $p$ is the number of beta coefficients in the model. When $p = 2$, it goes back to the SLR case.
 
-- $S^2 = MS_{res}$ is *unbiased* for $\sigma^2$, i.e., $E[MS_{res}] = \sigma^2$.
+$S^2 = MS_{res}$ is *unbiased* for $\sigma^2$, i.e., $E[MS_{res}] = \sigma^2$. Keep in mind that $S^2 = MS_{res}$ is a random variable. Before data are collected $Y_i$ and $\hat{Y}_i$ are assumed random variables, and $S^2$, a function of random variables, will be a random variable too.
 
-- $\hat{\sigma}^2 = MS_{res}$ is model dependent. Its value varies with change of the model. If our model is specified correctly, $\hat{\sigma}^2$ depends on our data quality. If our data have lots of noise itself, there is nothing we can do.
+$\hat{\sigma}^2 = MS_{res}$ is model dependent. Its value varies with change of the model. If our model is specified correctly, $\hat{\sigma}^2$ depends only on our data quality. If our data have lots of noise itself, there is nothing we can do.
 
-- $S^2$ of SLR may be quite larger than the $S^2$ of MLR.
-
-- $S^2$ measures the variation of the *unexplained* noise about the fitted regression line/hyperplane, so we prefer a small residual mean square.
+$\hat{\sigma}^2$ of SLR may be quite larger than the $\hat{\sigma}^2$ of MLR if the predictors in MLR capture a lots of variation of $y$ that cannot be explained by the only predictor in the SLR, and are treated as noises or unexplained variation. Remember $S^2$ measures the variation or the size of the *unexplained* noise about the fitted regression line/hyperplane, and we prefer a small residual mean square.
 
 
 <!-- ::: notes -->
@@ -618,14 +633,20 @@ segments(orig$x, orig$y, plane$x, plane$y, col = "black", lty = c(2, 1)[i.negpos
 
 <span style="color:blue"> **Example: Estimation of $\sigma^2$** </span>
 
+Here I show three methods to obtain the $\sigma^2$ estimate. The method 1 first compute the summary of the fitted result, which is saved as a list, then get the element `sigma` that is $\hat{\sigma}$. If you look at the summary output, the value of $\hat{\sigma}$ is shown in the row: 
+`Residual standard error: 3.26 on 22 degrees of freedom`
+
 ```{r}
 #| echo: true
 
 ## method 1
 summ_delivery <- summary(delivery_lm)  ## check names(summ_delivery)
 summ_delivery$sigma ^ 2
+summary(delivery_lm)
 ```
 
+
+The second method simply uses the definition of $MS_{res}$. We first calculate $SS_{res}$, then divide it by $n-3$ because in this example, we have 2 predictors $(k = 2)$, and 3 coefficients $\beta_0$, $\beta_1$, and $\beta_2$.
 ```{r}
 #| echo: true
 
@@ -635,6 +656,7 @@ n <- length(delivery_lm$residuals)
 SS_res / (n - 3)
 ```
 
+The third method also uses the definition of $MS_{res}$. The difference is that here we use $\sum_{i=1}^n(y_i - \hat{y}_i)^2$ instead of $\sum_{i=1}^ne_i^2$.
 
 ```{r}
 #| echo: true
@@ -673,10 +695,17 @@ The $(1-\alpha)100\%$ Wald CI for $\beta_j$, $j = 0, 1, \dots, k$ is
 $$\left(b_j- t_{\alpha/2, n-p}~se(b_j), \quad b_j + t_{\alpha/2, n-p}~ se(b_j)\right)$$
 where $se(b_j)$ is the standard error of $b_j$. The formula come from the fact that each of the statistics $\frac{b_j - \beta_j}{se(b_j)}, j = 0, 1, 2, \dots, k$ follows $t_{n-p}$ distribution. $se(b_j)$ is a function of $\hat{\sigma}^2$ and $x_{ij}s$.
 
+----------------------------------------------------------------
+
+<span style="color:blue"> **Example: Wald CI for Coefficients** </span>
+
+We simply use `confint()`command with the fitted result put inside to obtain the CI for coefficients.
+
 ```{r}
 #| echo: true
 (ci <- confint(delivery_lm))
 ```
+
 
 These are **marginal** CIs separately for each $b_j$. These interval estimates do not take correlation of coefficients into account. One coefficient may be higher when another is lower. We can only use the intervals one at a time when doing interval estimation. When we want to do interval estimation for several coefficients together at the same time, these intervals are not that accurate.
 
@@ -714,17 +743,23 @@ The correlation matrix of the coefficient vector ${\bf b} = (b_0, b_1, b_2)'$ is
 ::::
 
 
-<span style="color:blue"> All $b_j$ are correlated! </span>
+<span style="color:blue"> In fact, all $b_j$ are correlated! </span>
 
 <!-- ## Correlated Coefficients -->
 
 <!-- :::: {.columns} -->
 <!-- ::: {.column width="50%"} -->
 
+----------------------------------------------------------------
+
+<span style="color:blue"> **Example: Correlated Coefficients** </span>
+
+We use `vcov()` to obtain the variance-covariance matrix of $b_j$s. The square root of its diagonal terms are $se(b_0)$, $se(b_1)$, and $se(b_2)$ respectively.
+
 ```{r}
 #| echo: true
 ## variance-covariance matrix
-V <- vcov(delivery_lm)
+(V <- vcov(delivery_lm))
 
 ## standard error
 sqrt(diag(V))
@@ -733,23 +768,22 @@ sqrt(diag(V))
 <!-- ::: -->
 
 <!-- ::: {.column width="50%"} -->
+
+We can convert the covariance matrix into a correlation matrix using `cov2cor()`. Clearly $b_1$ and $b_2$ are negatively correlated. The individual CI previously obtained ignores the correlation between $b_j$s.
+
 ```{r}
 #| echo: true
 ## correlation matrix
 cov2cor(V)
 ```
-<!-- ::: -->
-<!-- :::: -->
-
-- $b_1$ and $b_2$ are negatively correlated.
-
-- Individual CI ignores the correlation between $b_j$s.
 
 How do we specify a confidence level that applies **simultaneously** to a **set** of interval estimates? For example, a $95\%$ confidence "interval" for both $b_1$ and $b_2$?
 
 
 <!-- ## Confidence Region -->
-The $(1-\alpha)100\%$ CI for a **set** of $b_j$s will be an **elliptically-shaped region**!
+The $(1-\alpha)100\%$ CI for a **set** of $b_j$s will be an **elliptically-shaped region**! The blue region below is the 95\% confidence region for $\beta_1$ and $\beta_2$. The black dashed lines indicate the 95\% Wald CI for $\beta_1$ and $\beta_2$.
+
+With repeated sampling, 95% of such ellipses will simultaneously include $\beta_1$ and $\beta_2$, if the fitted model is correct and normality holds. The orientation of the ellipse reflects the negative correlation between the estimates. Contrast the 95% confidence ellipse with the marginal 95% confidence intervals, also shown on the plot. Some points within the marginal intervals (red point) — with smaller values for both of the coefficients, for example — are implausible according to the joint region. Similarly, the joint region includes values of the coefficient for `cases` (black point), for example, that are excluded from the marginal interval.
 
 <!-- :::: {.columns} -->
 
@@ -762,7 +796,7 @@ par(mgp = c(2.8, 0.9, 0), mar = c(4, 4, 2, 0))
 ## confidence region
 car::confidenceEllipse(
     delivery_lm, 
-    levels = 0.95, 
+    levels = 0.95, fill = TRUE,
     which.coef = c("cases", "distance"), 
     main = expression(
         paste("95% Confidence Region for ", 
@@ -793,10 +827,10 @@ points(x = 2, y = 0.008, col = "black", cex = 2, pch = 16)
 <!-- ::: -->
 <!-- :::: -->
 
-- Some points (red) within the marginal intervals are implausible according to the joint region.
-- The joint region includes values of the coefficient for cases (black), for example, that are excluded from the marginal interval.
+<!-- - Some points  within the marginal intervals are implausible according to the joint region. -->
+<!-- - The joint region includes values of the coefficient for cases (black), for example, that are excluded from the marginal interval. -->
 
-With repeated sampling, 95% of such ellipses will simultaneously include $\beta_1$ and $\beta_2$, if the fitted model is correct and normality holds. The orientation of the ellipse reflects the negative correlation between the estimates. Contrast the 95% confidence ellipse with the marginal 95% confidence intervals, also shown on the plot. Some points within the marginal intervals—with larger values for both of the coefficients, for example—are implausible according to the joint region. Similarly, the joint region includes values of the coefficient for income, for example, that are excluded from the marginal interval.
+
 
 
 <!-- ::: notes -->
@@ -808,11 +842,20 @@ With repeated sampling, 95% of such ellipses will simultaneously include $\beta_
 
 ### CI for the Mean Response $E(y \mid {\bf x}_0)$
 
-- The fitted value at a point ${\bf x}_0 = (1, x_{01}, x_{02}, \dots, x_{0k})'$ is $$\hat{y}_0 = b_0 + b_1x_{01} + \cdots + b_kx_{0k}$$
-- This is an unbiased estimator for $E(y \mid {\bf x}_0)$
+The fitted value at a point ${\bf x}_0 = (1, x_{01}, x_{02}, \dots, x_{0k})'$ is $$\hat{y}_0 = b_0 + b_1x_{01} + \cdots + b_kx_{0k}$$
+
+This is an unbiased estimator for $E(y \mid {\bf x}_0)$.
 <!-- - $\frac{\hat{y}_0 - E(y|{\bf x}_0)}{\sqrt{\hat{\sigma}^2{\bf x}_0'{\bf (X'X)}^{-1}{\bf x}_0}}\sim t_{n-p}$. -->
-- The $(1-\alpha)100\%$ CI for $E(y \mid {\bf x}_0)$ is
-$$\left(\hat{y}_0 - t_{\alpha/2, n-p} ~ se(\hat{y}_0), \quad \hat{y}_0 + t_{\alpha/2, n-p} ~ se(\hat{y}_0)\right)$$
+
+The $(1-\alpha)100\%$ CI for $E(y \mid {\bf x}_0)$ is
+$$\left(\hat{y}_0 - t_{\alpha/2, n-p} ~ se(\hat{y}_0), \quad \hat{y}_0 + t_{\alpha/2, n-p} ~ se(\hat{y}_0)\right).$$ It is from the fact that $\frac{\hat{y}_0 - E(y|{\bf x}_0)}{se(\hat{y}_0)}\sim t_{n-p}$ where $se(\hat{y}_0)$ is a function of $\hat{\sigma}$, $x_{ij}$s, and ${\bf x}_0$.
+
+
+----------------------------------------------------------------
+
+<span style="color:blue"> **Example: CI for the Mean Response** </span>
+
+We learned how to use `predict()` in the previous chapter. For MLR, we need to specify the 2 predictor values `cases = 8`, and `distance = 275`, and save it as a data frame in the `newdata` argument. Note that the name `cases` and `distance` should be exactly the same as their column name of the data `delivery_data`.
 
 ```{r}
 #| echo: true
@@ -822,26 +865,33 @@ predict(delivery_lm,
 ```
 
 
-::: notes
-- The fitted value at a point ${\bf x}_0 = (1, x_{01}, x_{02}, \dots, x_{0k})'$ is $\hat{y}_0 = {\bf x}_0'\bf b$.
-- This is an unbiased estimator for $E(y \mid {\bf x}_0)$.
-- $\frac{\hat{y}_0 - E(y|{\bf x}_0)}{\sqrt{\hat{\sigma}^2{\bf x}_0'{\bf (X'X)}^{-1}{\bf x}_0}}\sim t_{n-p}$.
-- The $(1-\alpha)100\%$ CI for $E(y \mid {\bf x}_0)$ is
-$\left(\hat{y}_0 - t_{\alpha/2, n-p} \sqrt{\hat{\sigma}^2{\bf x}_0'{\bf (X'X)}^{-1}{\bf x}_0}, \quad \hat{y}_0 + t_{\alpha/2, n-p} \sqrt{\hat{\sigma}^2{\bf x}_0'{\bf (X'X)}^{-1}{\bf x}_0}\right)$
+<!-- ::: notes -->
+<!-- - The fitted value at a point ${\bf x}_0 = (1, x_{01}, x_{02}, \dots, x_{0k})'$ is $\hat{y}_0 = {\bf x}_0'\bf b$. -->
+<!-- - This is an unbiased estimator for $E(y \mid {\bf x}_0)$. -->
+<!-- - $\frac{\hat{y}_0 - E(y|{\bf x}_0)}{\sqrt{\hat{\sigma}^2{\bf x}_0'{\bf (X'X)}^{-1}{\bf x}_0}}\sim t_{n-p}$. -->
+<!-- - The $(1-\alpha)100\%$ CI for $E(y \mid {\bf x}_0)$ is -->
+<!-- $\left(\hat{y}_0 - t_{\alpha/2, n-p} \sqrt{\hat{\sigma}^2{\bf x}_0'{\bf (X'X)}^{-1}{\bf x}_0}, \quad \hat{y}_0 + t_{\alpha/2, n-p} \sqrt{\hat{\sigma}^2{\bf x}_0'{\bf (X'X)}^{-1}{\bf x}_0}\right)$ -->
 
-```{r}
-predict(delivery_lm,
-        newdata = data.frame(cases = 8, distance = 275),
-        interval = "confidence", level = 0.95)
-```
-:::
+<!-- ```{r} -->
+<!-- predict(delivery_lm, -->
+<!--         newdata = data.frame(cases = 8, distance = 275), -->
+<!--         interval = "confidence", level = 0.95) -->
+<!-- ``` -->
+<!-- ::: -->
 
 
 ### PI for New Observations
-- Predict the future observation $y_0$ when ${\bf x} = {\bf x}_0$.
-- A point estimate is $\hat{y}_0 = b_0 + b_1x_{01} + \cdots + b_kx_{0k}$.
-- The $(1-\alpha)100\%$ PI for $y_0$ is
+
+Often we also want to predict the future observation $y_0$ when ${\bf x} = {\bf x}_0$. A point estimate is $\hat{y}_0 = b_0 + b_1x_{01} + \cdots + b_kx_{0k}$, same as the point estimate of the mean response. When we can only use one single value to predict the mean response or a new observation value, $\hat{y}_0$ is the best we can do. The $(1-\alpha)100\%$ PI for $y_0$ is
 $$\left(\hat{y}_0 - t_{\alpha/2, n-p} ~se(y_0 - \hat{y}_0), \quad \hat{y}_0 + t_{\alpha/2, n-p} ~se(y_0 - \hat{y}_0)\right)$$
+
+
+----------------------------------------------------------------
+
+<span style="color:blue"> **Example: PI for New Observations** </span>
+
+When predicting a new observation with uncertainty, we use `interval = "predict"`. The interpretation is the same as the one in SLR.
+
 
 ```{r}
 #| echo: true
@@ -851,52 +901,53 @@ predict(delivery_lm,
 ```
 
 
-::: notes
-- Predict the future observation $y_0$ when ${\bf x} = {\bf x}_0$.
-- A point estimate is $\hat{y}_0 = {\bf x}_0'\bf b$.
-- The $(1-\alpha)100\%$ PI for $y_0$ is
-$\left(\hat{y}_0 - t_{\alpha/2, n-p} \sqrt{\hat{\sigma}^2\left(1+{\bf x}_0'{\bf (X'X)}^{-1}{\bf x}_0\right)}, \quad \hat{y}_0 + t_{\alpha/2, n-p} \sqrt{\hat{\sigma}^2\left(1+{\bf x}_0'{\bf (X'X)}^{-1}{\bf x}_0\right)}\right)$
+<!-- ::: notes -->
+<!-- - Predict the future observation $y_0$ when ${\bf x} = {\bf x}_0$. -->
+<!-- - A point estimate is $\hat{y}_0 = {\bf x}_0'\bf b$. -->
+<!-- - The $(1-\alpha)100\%$ PI for $y_0$ is -->
+<!-- $\left(\hat{y}_0 - t_{\alpha/2, n-p} \sqrt{\hat{\sigma}^2\left(1+{\bf x}_0'{\bf (X'X)}^{-1}{\bf x}_0\right)}, \quad \hat{y}_0 + t_{\alpha/2, n-p} \sqrt{\hat{\sigma}^2\left(1+{\bf x}_0'{\bf (X'X)}^{-1}{\bf x}_0\right)}\right)$ -->
 
-```{r}
-predict(delivery_lm,
-        newdata = data.frame(cases = 8, distance = 275),
-        interval = "predict", level = 0.95)
-```
-:::
+<!-- ```{r} -->
+<!-- predict(delivery_lm, -->
+<!--         newdata = data.frame(cases = 8, distance = 275), -->
+<!--         interval = "predict", level = 0.95) -->
+<!-- ``` -->
+<!-- ::: -->
 
 
 ### Predictor Effect Plots
-- A complete picture of the regression surface requires drawing a $p$-dimensional graph.
+A complete picture of the regression surface requires drawing a $p$-dimensional graph.
 
-- **Predictor effect plots** look at 1 or 2D plots for each predictor.
+**Predictor effect plots** look at 1 or 2D plots for each predictor.
 
-. . .
+To plot the predictor effect plot for $x_j$, $x_1$ for example, we 
 
-- The predictor effect plot for $x_1$: 
-  + fix the values of all other predictors ( $x_2$ in the example)
+  + fix the values of all other predictors ($x_2$ in the example)
+  
   + substitute these fixed values into the fitted regression equation.
 
-- Fix $x_2$ at its average, $\hat{y} = 2.34 + 1.62 ~x_1 + 0.014 (409.28)$
-
-. . .
-
-- **Same** slope for *any* choice of fixed values of other predictors.
-
-- The intercepts depend on the values of other predictors.
+Usually we fix all other predictors ($x_2$ in the example) at their average. In our example, we have $\hat{y} = 2.34 + 1.62 ~x_1 + 0.014 (409.28)$. Note that the slope of $x_1$ would be the **same** for *any* choice of fixed values of other predictors, while the intercept depends on the values of other predictors.
 
 
 
-::: notes
-- A complete picture of the regression surface generated by the fitted model requires drawing a $p$-dimensional graph.
+<!-- ::: notes -->
+<!-- - A complete picture of the regression surface generated by the fitted model requires drawing a $p$-dimensional graph. -->
 
-- Fix $x_1$ at its average, $\hat{y} = 2.34 + 1.62 (8.76) + 0.014 ~x_2$
+<!-- - Fix $x_1$ at its average, $\hat{y} = 2.34 + 1.62 (8.76) + 0.014 ~x_2$ -->
 
-- The slope would be the **same** for *any* choice of fixed values of other predictors.
-:::
+<!-- - The slope would be the **same** for *any* choice of fixed values of other predictors. -->
+<!-- ::: -->
 
 
 
 <!-- ## [R Lab]{.pink} Predictor Effect Plots -->
+
+----------------------------------------------------------------
+
+<span style="color:blue"> **Example: Predictor Effect Plots** </span>
+
+The command `predictorEffects()` in the `effects` package is used to generate the predictor effect plots.
+
 ```{r}
 #| eval: false
 #| echo: true
@@ -929,24 +980,338 @@ plot(effects::predictorEffects(predictor = "distance", mod = delivery_lm))
 :::
 ::::
 
+The shaded area represents pointwise 95\% confidence interval about the fitted line, without correction for simultaneous statistical inference. The short vertical lines at the bottom indicate the values of predictors. The interval length is larger when the predictor value is away from its average. Since our model is linear, the mean of time increases linearly as cases or distance increases.
 
-::: notes
-- rug plot
-- the mean of time increases linearly as cases or distance increases. 
-- Given x2 variable in the model, what is the effect on x1 on the response.
-- Without correction for simultaneous statistical inference
-- plot(effects::predictorEffects(mod = delivery_lm, confint = list(type = "Scheffe")))
-'arg' should be one of “pointwise”, “Scheffe”, “scheffe”
-:::
 
-### Extrapolation {visibility="hidden"}
-- In MLR, it's easy to inadvertently extrapolate since the regressors jointly define the region containing the data.
+<!-- - rug plot -->
+
+<!-- -  -->
+
+<!-- - Given x2 variable in the model, what is the effect on x1 on the response. -->
+
+<!-- - Without correction for simultaneous statistical inference -->
+
+<!-- - plot(effects::predictorEffects(mod = delivery_lm, confint = list(type = "Scheffe"))) -->
+
+<!-- 'arg' should be one of “pointwise”, “Scheffe”, “scheffe” -->
+
+<!-- ::: notes -->
+
+<!-- ::: -->
+
+## Hypothesis Testing
+
+In this section we talk about two tests: Test for significance of regression and Tests on individual coefficients. In fact, one can test whether or not the coefficients form any linear combination relationship, called the **general linear hypotheses**. We leave this part of discussion in the Regression Analysis course.
+
+
+
+
+<!-- <h2> Test for Significance of Regression </h2> -->
+<!-- <h2> Tests on Individual Coefficients </h2> -->
+<!-- <h2> Tests on Subsets of Coefficients (Later) </h2> -->
+
+
+<!-- ::: notes -->
+<!-- - Test for Significance: test if there is any regressor that has a significant effect on predicting $Y$ or explaining the variation of $Y$. -->
+<!-- - In a Test for Significance, we are looking all the regressors. -->
+<!-- - Tests on Individual Coefficients: we are only interested in single one predictor's effect. -->
+<!-- - But sometimes, we may be interested in a subset of Coefficients, not all, not single one, but two or three coefficients. And we'll see how to do this kind of test later. -->
+<!-- - Finally, we'll learn the so-called General Linear Hypothesis that can perform a quite general test. -->
+<!-- - The three tests above are in fact special case of the General Linear Hypothesis. -->
+<!-- ::: -->
+
+
+### Test for Significance of Regression
+
+**Test for significance** determines if there is a **linear** relationship between the response and **any** of the regressor variables. In other words, we are testing
+
+<span style="color:blue">
+$H_0: \beta_1 = \beta_2 = \cdots = \beta_k = 0 \quad H_1: \beta_j \ne 0 \text{ for at least one } j$ </span>
+
+As long as there is one predictor has a significant impact on the response, $H_0$ should be rejected. When $\beta_1 = \beta_2 = \cdots = \beta_k = 0$, it means that the regrssion model has no explanatory power on explaining any variation of the response from the regressors put in the regression model. The regression model is not helping at all. To interpret it more precisely, when we fail to $H_0: \beta_1 = \beta_2 = \cdots = \beta_k = 0$, there are three possibilities. First, it could mean that all the predictors have no relationship with the response. Second, remember our model is a linear model, and $\beta_j$s measure linear effect of $x_j$s on $y$. It may just mean there is no linear relationship between any $x_j$ and $y$ given all other regressors are in the model. Some other types of relationship may exist between the predictors and the response. Third, we make a Type II error that $H_0$ is actually false, and at least one regressor is linearly related to the response, again given all other predictors are in the model.
+
+<!-- - The $F$ test of ANOVA performs the test. -->
+
+<!-- # ```{r} -->
+<!-- # knitr::include_graphics("./images/img-model/anova_mlr.png") -->
+<!-- # ``` -->
+<!-- - $SS_T = {\bf y'y} - \frac{\left(\sum_{i=1}^n y_i \right)^2}{n}$, $SS_R = {\bf b'X'y}-\frac{\left(\sum_{i=1}^n y_i \right)^2}{n}$, $SS_{res} = {\bf y'y} - {\bf b'X'y}$ -->
+
+The test is usually conducted by checking the ANOVA table of MLR as shown below. When $k=1$, it becomes the ANOVA table of SLR.
+
+| Source of Variation | SS | df | MS | F | $p$-value |
+|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|
+| Regression | $SS_R$| $k$ | $MS_R$  |  $\frac{MS_R}{MS_{res}} = F_{test}$ |  $P(F_{k, n-k-1} > F_{test})$ |
+| Residual | $SS_{res}$ | $n-k-1$   |  $MS_{res}$ |   |  | 
+| Total | $SS_{T}$ | $n-1$   |   |   |  | 
+
+We reject $H_0$ if $F_{test} > F_{\alpha, k, n - k - 1}$. In SLR, test for significance is the same as testing individual coefficient $\beta_1 = 0$ because there is only one predictor, and testing its corresponding coefficient is equivalent to testing all the coefficients.
+
+We may reject the null when the truth is all beta's are nonzero, or only one single beta is nonzero. And we may need further *post hoc* analysis to see which coefficients are nonzero.
+
+If there is only one nonzero coefficient, and we reject the null, basically, the nearly all the variation of $Y$ is explained by the corresponding predictor that has the nonzero beta coefficient. We can still say the model is significant because that particular predictor has a significant effect on explaining $y$.
+
+<!-- - Another way to represent SS_T -->
+
+
+
+<!-- ::: notes -->
+<!-- - In SLR, test for significance is the same as testing individual coefficient $\beta_1 = 0$. -->
+<!-- - We may reject the null when the truth is all beta's are nonzero, or only one single beta is nonzero. -->
+<!-- - If there is only one nonzero beta, and we reject the null, basically, the nearly all the variation of Y is explained by the corresponding predictor that has the nonzero beta. -->
+<!-- - We can still say the model is significant because that particular predictor has a significant effect on explaining y. -->
+<!-- - Another way to represent SS_T -->
+<!-- ::: -->
+
+
+<!-- ## [R Lab]{.pink} Test for Significance -->
+
+----------------------------------------------------------------
+
+<span style="color:blue"> **Example: Test for Significance** </span>
+
+
+<span style="color:blue">
+$H_0: \beta_{1} = \beta_{2} = 0 \quad H_1: \beta_j \ne 0 \text{ for at least one } j$ </span>
+
+If we check the summary of the fitted result, it shows some t values and p-values, but no ANOVA table shows up.
 
 ```{r}
-#| out-width: 70%
+#| echo: true
+#| output.lines: !expr c(9:19)
+#| class-output: my_class800
+summ_delivery
+```
+
+How do we obtain the ANOVA Table?
+
+<!-- ## [R Lab]{.pink} Wrong ANOVA Table -->
+
+| Source of Variation | SS | df | MS | F | $p$-value |
+|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|
+| Regression | $SS_R$| $k$ | $MS_R$  |  $\frac{MS_R}{MS_{res}} = F_{test}$ |  $P(F_{k, n-k-1} > F_{test})$ |
+| Residual | $SS_{res}$ | $n-k-1$   |  $MS_{res}$ |   |  | 
+| Total | $SS_{T}$ | $n-1$   |   |   |  | 
+
+We may think using `anova(delivery_lm)` as we do for SLR. 
+
+```{r}
+#| echo: true
+anova(delivery_lm) ## This is for sequential F-test
+```
+
+Unfortunately, this ANOVA table is so called **Type-I** ANOVA table in literature for a **sequential F-test**, which is *NOT* what we want.
+
+
+<!-- # ```{r} -->
+<!-- #  -->
+<!-- # knitr::include_graphics("./images/img-model/anova_mlr.png") -->
+<!-- # ``` -->
+
+
+
+<!-- ## [R Lab]{.pink} ANOVA Table: Null vs. Full -->
+<!-- ::: alert -->
+
+To obtain the correct ANOVA table, we need to view the test in a different way. Testing coefficients is like model comparison: We are comparing two models, the **full model** having all the predictors $x_1, \dots, x_k$ in the model with zero or nonzero $\beta$ coefficients with the **null model** under $H_0$. Mathematically, 
+
++ **Full model**: $y = \beta_0 + \beta_1x_1 + \cdots + \beta_kx_k + \epsilon$
+
++ **Null model**: $y = \beta_0 + \epsilon$ because $\beta_1 = \beta_2 = \cdots = \beta_k = 0$ under $H_0$. The null model is the model with the intercept only.
+
+The idea is that we are trying to see how close the full model fitting is close to the null model fitting. If $H_0$ is true, then using the full model will be more likely to have similar result to the null models result because the full model will have all the coefficients being negligibly zero. The two models are more likely to be indistinguishable. When $H_0$ is not true, and some $\beta_j$s are away from zero, the two models will have pretty different fitting results.
+
+<!-- Compare the full model with the model under $H_0$**! -->
+<!-- ::: -->
+
+<!-- :::: {.columns} -->
+
+<!-- ::: {.column width="50%"} -->
+
+In our example, 
+
++ **Full model**: including both `cases` and `distance` predictors
+
++ **Null model**: no predictors $(\beta_1 = \beta_2 = 0)$
+
+The ANOVA table for the example is 
+
+```{r}
+#| out-width: 100%
+knitr::include_graphics("./images/img-model/anova_ex.png")
+```
+
+<!-- ::: -->
+
+<!-- ::: {.column width="50%"} -->
+<!-- ::: {.fragment} -->
+
+To generate the ANOVA table using R, we first create the null model and save its fitted result. When there is no predictors in the model, we write `time ~ 1` where `1` represents the intercept term. Then we are comparing the two model fitted results using `anova(null_lm, delivery_lm)`.
+
+```{r}
+#| echo: true
+#| output.lines: !expr c(1:7)
+
+## regression with intercept only
+null_lm <- lm(time ~ 1, data = delivery_data)
+anova(null_lm, delivery_lm)
+```
+<!-- ::: -->
+<!-- ::: -->
+<!-- :::: -->
+
+Notice that the output is not exactly the same as the ANOVA table, but both are equivalent. We just need to carefully and correctly interpret the R output. The first row shows the $SS_T$ value in the `RSS` column. `RSS` is the residual sum of squares $SS_{res}$. The first model (Model 1) is the null model. Because there is no predictors, all variation of $y$ is due to random errors, and therefore there is no $SS_R$, and $SS_{res} = SS_T$.
+
+The second row provides information about $SS_R$ and $SS_{res}$ of the full model (Model 2). $SS_R$ is shown in the column `Sum of Sq`, and $SS_{res}$ again in the column `RSS`. 
+
+In Row 2, `Res.Df` is the residual degrees of freedom, and `Df` is the regression degrees of freedom. The value 24 in Row 1, the residual degrees of freedom of the null model, is worked as the *total* degrees of freedom, the same idea that its $SS_{res}$ works as $SS_T$.
+
+The output does not provide the mean square information, but it can be easily calculated.
+
+
+<!-- - first row: info of $SS_T$ -->
+
+<!-- - second row: info of $SS_R$ and $SS_{res}$ -->
+
+<!-- - does not show MS -->
+
+
+
+
+### $R^2$ and Adjusted $R^2$
+
+We learn in SLR that $R^2 = \frac{SS_R}{SS_T} = 1 - \frac{SS_{res}}{SS_T}$. The $R^2$ statistic can also be calculated and used in MLR. The size of $R^2$ assesses how well the regression model fits the data—the larger the $R^2$, the better the fit. Specifically, $R^2$ measures the proportion of variability in $Y$ that is explained by the regression model or the $k$ predictors. It's important to note that adding an additional predictor to the model *always increases $R^2$*. This happens because the model with $k+1$ predictors will have $SS_R$ that is greater than or at least equal to the $SS_R$ of the model with only $k$ predictors, provided that the $k$ predictors are included among the $k+1$ predictors in the larger model.
+
+The model with one additional predictor **always gets a higher $R^2$** even the new predictor has no explanatory power or useless in predicting $y$. This happens because the additional predictor may capture random noise in the data, leading to a decrease in $SS_{res}$. If we rely solely on $R^2$ to compare models that include various predictors, we might always end up selecting the full model with all possible predictors, even if many of them contribute little or nothing to the actual fitting or prediction. 
+
+While this approach might yield a model that fits the current data very well, it poses significant risks if our goal is to predict new, unseen future data. Including too many variables in the regression model can lead to **overfitting**—a situation where the model fits the sample data exceptionally well but performs poorly when predicting the mean response or new response values for a different dataset. Overfitting results in a model that captures noise and idiosyncrasies of the sample data, rather than the underlying patterns, making it less generalizable and less reliable for future predictions.
+
+A complex or a larger model has several other disadvantages. First, it's more difficult to interpret your model and results. It reduces the interpretability. Second, the computing or running time is usually longer, and sometimes much longer depending on the order of complexity. Also, the data or the model itself may consume lots of memory spaces.
+
+<!-- - If we use $R^2$ as the measure of model fit, then we will tend to include lots of regressors in the model, and we will always choose the model that has the most predictors, even though lots of predictors have no or little contribution to the fitting or prediction. -->
+
+<!-- - The idea is a little bit like overfitting in machine learning. -->
+
+> **Occam's Razor: Don't use a complex model if a simpler model can perform equally well!**
+
+
+There are other criterion or metrics for accessing model adequacy or model fit that may be better than $R^2$, for example, **adjusted $R^2$**, $R^2_{adj}$.
+
+  $$R^2_{adj} = 1 - \frac{SS_{res}/(n-p)}{SS_T/(n-1)}$$
+
+$R^2_{adj}$ applies a penalty (through $p$) for number of variables included in the model. It is not the more the better anymore. Adjusted $R^2$ doesn't increase if the new variable provide very little information for prediction. Adjusted $R^2$ will only increase on adding a variable to the model if the addition of the regressor reduces $MS_{res}$. The new added variable must show that it can contribute to explaining the variation of $y$ sufficiently large, so that its contribution is bigger than the price we pay for hiring this guy. This makes adjusted $R^2$ a preferable metric for model selection in multiple regression models.
+
+<!-- ::: notes -->
+
+<!-- - Adjusted $R^2$ will only increase on adding a variable to the model if the addition of the regressor reduces $MS_{res}$ -->
+
+
+<!-- ::: -->
+
+
+<!-- ## Adjusted $R^2$ Example -->
+
+- For a model with 3 predictors, $SS_{res} = 90$, $SS_T = 245$, and $n = 15$.
+$$R^2_{adj} = 1 - \frac{90/(15-4)}{245/(15-1)} = 0.53$$
+
+- The 4-th regressor is added into the model, and $SS_{res} = 88$ (always decreases). Then
+$$R^2_{adj} = 1 - \frac{88/(15-5)}{245/(15-1)} = 0.49$$
+
+The new added regressor should have explanatory power for $y$ large enough, so that $MS_{res}$ is decreased. In this case, adding the 4th regressor does not decrease $SS_{res}$ enough to convince us to put it in the model.
+
+
+<!-- ## [R Lab]{.pink} $R^2$ and Adjusted $R^2$ -->
+
+----------------------------------------------------------------
+
+<span style="color:blue"> **Example: $R^2$ and Adjusted $R^2$** </span>
+
+To get $R^2$ and adjusted $R^2$ in R, we check the summary output. They can also be extracted from the summary list.
+
+
+```{r}
+#| echo: true
+#| output.lines: !expr c(16:18)
+summ_delivery
+```
+
+```{r}
+#| echo: true
+summ_delivery$r.squared
+summ_delivery$adj.r.squared
+```
+
+
+### Tests on Individual Regression Coefficients
+
+This is the hypothesis test on any **single** regression coefficient:
+
+<span style="color:blue">
+$H_0: \beta_{j} = 0 \quad H_1: \beta_j \ne 0$ </span>
+
+It is a $t$ test with the test statistic $t_{test} = \frac{b_j}{se(b_j)}$. We reject $H_0$ if $|t_{test}| > t_{\alpha/2, n-k-1}$. This is a **partial** or **marginal test**: a test of the **contribution of $X_j$ given ALL other regressors in the model**.
+
+We can also do a one-side test for sure. But I am not sure if there is a R function to do a one-sided test. But we can always compute the test statistic or the p-value ourselves.
+
+
+
+
+<!-- ## [R Lab]{.pink} Tests on Individual Coefficients -->
+
+----------------------------------------------------------------
+
+<span style="color:blue"> **Example: Tests on Individual Coefficients** </span>
+
+Suppose we would like to assess the effect of $x_2$ (distance) given that $x_1$ (cases) is in the model.
+
+<span style="color:blue">
+$H_0: \beta_{2} = 0 \quad H_1: \beta_2 \ne 0$ </span>
+
+The marginal test results are shown in the summary of fitted result. The t test statistic value is 3.98, and p-value is close to zero, concluding that $\beta_2 \ne 0$.
+
+```{r}
+#| echo: true
+summ_delivery$coefficients
+```
+
+<!-- :::  notes -->
+
+```{r}
+#| include: false
 X <- cbind(1, delivery_data[, c(2, 3)])
 X <- as.matrix(X)
 y <- as.matrix(delivery_data$time)
+XtX_inv_diag <- diag(solve(t(X) %*% X)) ## diagonal elements of (XtX)^-1
+se_b <- sqrt(summ_delivery$sigma ^ 2 * XtX_inv_diag) ## standard error
+(t_test <- (delivery_lm$coefficients[3] - 0) / se_b[3]) ## t test statistic
+2 * pt(q = t_test, df = 22, lower.tail = FALSE) ## p-value
+qt(0.05/2, df = delivery_lm$df.residual, lower.tail = FALSE) ## t critical value df = n - 3 = 22
+```
+<!-- ::: -->
+
+
+## Inference Pitfalls
+::: danger
+- The test $H_0:\beta_j = 0$ will always be rejected as long as the sample size is large enough, even $x_j$ has a very small effect on $y$.
+  + Consider the **practical significance** of the result, not just the statistical significance.
+  + Use the confidence interval to draw conclusions instead of relying only p-values.
+
+:::
+
+::: danger
+- If the sample size is small, there may not be enough evidence to reject $H_0:\beta_j = 0$.
+  + DON'T immediately conclude that the variable has no association with the response.
+  + There may be a linear association that is just not strong enough to detect given your data, or there may be a non-linear association.
+
+:::
+
+
+<!-- ### Extrapolation {visibility="hidden"} -->
+- In MLR, it's easy to inadvertently extrapolate since the regressors jointly define the region containing the data. We can define the smallest convex set containing all of the original $n$ regressor points, as the regressor variable hull. Any point outside the hull can be viewed as an extrapolate point. A point within the ranges of $x_1$ and $x_2$ may not be necessarily a interpolation point, as shown the blue point in the figure.
+
+```{r}
+#| out-width: 70%
+
 con.hull.pos <- grDevices::chull(delivery_data[, 2:3])
 con.hull <- rbind(delivery_data[con.hull.pos, ], delivery_data[con.hull.pos[1], ])[, 2:3]
 # plot(delivery_data$cases, delivery_data$distance, 
@@ -966,280 +1331,14 @@ legend("topleft", c("interpolate", "extrapolate"), col = c(2, 4),
 lines(con.hull, col = 3, lwd = 4)
 ```
 
-::: notes
-- define the smallest convex set containing all of the original $n$ regressor points, as the regressor vairiable hull (RVH).
-- a point within the ranges of x1 and x2 may not be necessarily a interpolation point.
-
-```{r}
-with(delivery_data,
-     car::dataEllipse(cases, distance,
-        levels = c(0.5, 0.75, 0.9, 0.95)))
-
-```
-:::
-
-
-## Hypothesis Testing
-<h2> Test for Significance of Regression </h2>
-<h2> Tests on Individual Coefficients </h2>
-<h2> Tests on Subsets of Coefficients (Later) </h2>
-
-
-::: notes
-- Test for Significance: test if there is any regressor that has a significant effect on predicting $Y$ or explaining the variation of $Y$.
-- In a Test for Significance, we are looking all the regressors.
-- Tests on Individual Coefficients: we are only interested in single one predictor's effect.
-- But sometimes, we may be interested in a subset of Coefficients, not all, not single one, but two or three coefficients. And we'll see how to do this kind of test later.
-- Finally, we'll learn the so-called General Linear Hypothesis that can perform a quite general test.
-- The three tests above are in fact special case of the General Linear Hypothesis.
-:::
-
-
-### Test for Significance of Regression
-- **Test for significance**: Determine if there is a **linear** relationship between the response and **any** of the regressor variables.
-- <span style="color:blue">
-$H_0: \beta_1 = \beta_2 = \cdots = \beta_k = 0 \quad H_1: \beta_j \ne 0 \text{ for at least one } j$ </span>
-<!-- - The $F$ test of ANOVA performs the test. -->
-
-<!-- # ```{r} -->
-<!-- # knitr::include_graphics("./images/img-model/anova_mlr.png") -->
-<!-- # ``` -->
-<!-- - $SS_T = {\bf y'y} - \frac{\left(\sum_{i=1}^n y_i \right)^2}{n}$, $SS_R = {\bf b'X'y}-\frac{\left(\sum_{i=1}^n y_i \right)^2}{n}$, $SS_{res} = {\bf y'y} - {\bf b'X'y}$ -->
-
-. . .
-
-
-| Source of Variation | SS | df | MS | F | $p$-value |
-|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|
-| Regression | $SS_R$| $k$ | $MS_R$  |  $\frac{MS_R}{MS_{res}} = F_{test}$ |  $P(F_{k, n-k-1} > F_{test})$ |
-| Residual | $SS_{res}$ | $n-k-1$   |  $MS_{res}$ |   |  | 
-| Total | $SS_{T}$ | $n-1$   |   |   |  | 
-
-- Reject $H_0$ if $F_{test} > F_{\alpha, k, n - k - 1}$.
-
-::: notes
-- In SLR, test for significance is the same as testing individual coefficient $\beta_1 = 0$.
-- We may reject the null when the truth is all beta's are nonzero, or only one single beta is nonzero.
-- If there is only one nonzero beta, and we reject the null, basically, the nearly all the variation of Y is explained by the corresponding predictor that has the nonzero beta.
-- We can still say the model is significant because that particular predictor has a significant effect on explaining y.
-- Another way to represent SS_T
-:::
-
-
-## [R Lab]{.pink} Test for Significance
-
-<span style="color:blue">
-$H_0: \beta_{1} = \beta_{2} = 0 \quad H_1: \beta_j \ne 0 \text{ for at least one } j$ </span>
-
-```{r}
-#| echo: true
-#| output.lines: !expr c(9:19)
-#| class-output: my_class800
-summ_delivery
-```
-
-
-::: notes
-- How do we obtain the ANOVA Table?
-:::
-
-
-## [R Lab]{.pink} Wrong ANOVA Table
-
-| Source of Variation | SS | df | MS | F | $p$-value |
-|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|
-| Regression | $SS_R$| $k$ | $MS_R$  |  $\frac{MS_R}{MS_{res}} = F_{test}$ |  $P(F_{k, n-k-1} > F_{test})$ |
-| Residual | $SS_{res}$ | $n-k-1$   |  $MS_{res}$ |   |  | 
-| Total | $SS_{T}$ | $n-1$   |   |   |  | 
-
-
-```{r}
-#| echo: true
-anova(delivery_lm) ## This is for sequential F-test
-```
-
-- This is so called **Type-I** ANOVA table for a *sequential F-test*, which is **NOT** what we want.
+<!-- ::: notes -->
 
 
 <!-- # ```{r} -->
+<!-- # with(delivery_data, -->
+<!-- #      car::dataEllipse(cases, distance, -->
+<!-- #         levels = c(0.5, 0.75, 0.9, 0.95))) -->
 <!-- #  -->
-<!-- # knitr::include_graphics("./images/img-model/anova_mlr.png") -->
 <!-- # ``` -->
-
-
-
-## [R Lab]{.pink} ANOVA Table: Null vs. Full
-::: alert
-Testing coefficients is like model comparison: **Compare the full model with the model under $H_0$**!
-:::
-
-:::: {.columns}
-
-::: {.column width="50%"}
-+ **Full model**: including both `cases` and `distance` predictors
-+ **Null model**: no predictors $(\beta_1 = \beta_2 = 0)$
-
-
-```{r}
-#| out-width: 100%
-knitr::include_graphics("./images/img-model/anova_ex.png")
-```
-
-:::
-
-::: {.column width="50%"}
-::: {.fragment}
-```{r}
-#| echo: true
-#| output.lines: !expr c(1:7)
-
-## regression with intercept only
-null_model <- lm(time ~ 1,
-                 data = delivery_data)
-anova(null_model, delivery_lm)
-```
-:::
-:::
-::::
-
-
-
-
-::: notes
-- first row: info of SS_T
-- second row: info of SS_R and SS_res
-- does not show MS
-:::
-
-
-
-
-## $R^2$ and Adjusted $R^2$
-- $R^2 = \frac{SS_R}{SS_T} = 1 - \frac{SS_{res}}{SS_T}$
-   + calculated as in SLR.
-   + accesses how well the regression model fits the data.
-   + measures the proportion of variability in $Y$ that is explained by the regression or the $k$ predictors.
-   + The model with one additional predictor **always gets a higher $R^2$**.
-
-
-::: notes
-- There are other criterion or metrics for accessing model adequacy or model fit that may be better than R^2
-- The model with one additional predictor **always gets a higher $R^2$** even the new predictor has no explanatory power or useless in predicting y. Because the predictor may capture the random noise variation, leading to decrease in $SS_{res}$.
-- If we use R^2 as the measure of model fit, then we will tend to include lots of regressors in the model, and we will always choose the model that has the most predictors, even though lots of predictors have no or little contribution to the fitting or prediction.
-- The idea is a little bit like overfitting in machine learning.
-- A complex or a larger model has several disadvantages.
-  + First, it's more difficult to interpret your model and results. It reduces the interpretability.
-  + Second, the computing or running time is usually longer, and sometimes much longer depending on the order of complexity.
-  + Also, the data or the model itself may consume lots of memory spaces.
-  
-:::
-
-
-. . .
-
-::: alert
-**Occam's Razor: Don't use a complex model if a simpler model can perform equally well!**
-:::
-
-
-. . .
-
-- **Adjusted $R^2$**
-  + $R^2_{adj} = 1 - \frac{SS_{res}/(n-p)}{SS_T/(n-1)}$
-  + applies a penalty (through $p$) for number of variables included in the model.
-
-
-::: notes
-- Not the more the better anymore
-- Adjusted R2 doesn't increase if the new variable does not provide very little information for prediction
-- Adjusted R2 will only increase on adding a variable to the model if the addition of the regressor reduces $MS_{res}$
-- This makes adjusted R2 a preferable metric for model selection in multiple regression models.
-:::
-
-
-## Adjusted $R^2$ Example
-- For a model with 3 predictors, $SS_{res} = 90$, $SS_T = 245$, and $n = 15$.
-$$R^2_{adj} = 1 - \frac{90/(15-4)}{245/(15-1)} = 0.53$$
-- The 4-th regressor is added into the model, and $SS_{res} = 88$ (always decreases). Then
-$$R^2_{adj} = 1 - \frac{88/(15-5)}{245/(15-1)} = 0.49$$
-
-. . .
-
-**Intuition**: The new added regressor should have explanatory power for $y$ large enough, so that $MS_{res}$ is decreased.
-
-
-## [R Lab]{.pink} $R^2$ and Adjusted $R^2$
-```{r}
-#| echo: true
-#| output.lines: !expr c(16:18)
-summ_delivery
-```
-```{r}
-#| echo: true
-summ_delivery$r.squared
-summ_delivery$adj.r.squared
-```
-
-
-### Tests on Individual Regression Coefficients
-
-- Hypothesis test on any **single** regression coefficient.
-- <span style="color:blue">
-$H_0: \beta_{j} = 0 \quad H_1: \beta_j \ne 0$ </span>
-- $t_{test} = \frac{b_j}{se(b_j)}$
-- Reject $H_0$ if $|t_{test}| > t_{\alpha/2, n-k-1}$
-- This is a **partial** or **marginal test**: a test of the **contribution of $X_j$ given ALL other regressors in the model**.
-
-::: notes
-- We can also do a one-side test for sure. But I am not sure if there is a R function to do a one-sided test.
-- But we can always compute the test statistic or the p-value ourselves.
-- Hypothesis test on any **single** regression coefficient.
-- <span style="color:blue">
-$H_0: \beta_{j} = 0 \quad H_1: \beta_j \ne 0$ </span>
-- $t_{test} = \frac{b_j}{\sqrt{\hat{\sigma}^2C_{jj}}}$, where $C_{jj}$ is the $j$-th diagonal element of $({\bf X'X})^{-1}$.
-- Reject $H_0$ if $|t_{test}| > t_{\alpha/2, n-k-1}$
-- This is a **partial** or **marginal test**: a test of the **contribution of $X_j$ given ALL other regressors in the model**.
-:::
-
-
-
-## [R Lab]{.pink} Tests on Individual Coefficients
-- Assess the value of $x_2$ (distance) given that $x_1$ (cases) is in the model.
-- <span style="color:blue">
-$H_0: \beta_{2} = 0 \quad H_1: \beta_2 \ne 0$ </span>
-
-```{r}
-#| echo: true
-summ_delivery$coefficients
-```
-
-:::  notes
-qt(0.05/2, df = delivery_lm$df.residual, lower.tail = FALSE) ## t critical value df = n - 3 = 22
-```{r}
-XtX_inv_diag <- diag(solve(t(X) %*% X)) ## diagonal elements of (XtX)^-1
-se_b <- sqrt(summ_delivery$sigma ^ 2 * XtX_inv_diag) ## standard error
-(t_test <- (delivery_lm$coefficients[3] - 0) / se_b[3]) ## t test statistic
-2 * pt(q = t_test, df = 22, lower.tail = FALSE) ## p-value
-```
-:::
-
-
-## Inference Pitfalls
-::: danger
-- The test $H_0:\beta_j = 0$ will always be rejected as long as the sample size is large enough, even $x_j$ has a very small effect on $y$.
-  + Consider the **practical significance** of the result, not just the statistical significance.
-  + Use the confidence interval to draw conclusions instead of relying only p-values.
-
-:::
-
-. . .
-
-<br>
-
-::: danger
-- If the sample size is small, there may not be enough evidence to reject $H_0:\beta_j = 0$.
-  + DON'T immediately conclude that the variable has no association with the response.
-  + There may be a linear association that is just not strong enough to detect given your data, or there may be a non-linear association.
-
-:::
+<!-- ::: -->
 

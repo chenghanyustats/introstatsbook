@@ -469,28 +469,17 @@ window.Quarto = {
   <li><a href="#ci-for-the-mean-response-ey-mid-bf-x_0" id="toc-ci-for-the-mean-response-ey-mid-bf-x_0" class="nav-link" data-scroll-target="#ci-for-the-mean-response-ey-mid-bf-x_0"><span class="header-section-number">27.3.4</span> CI for the Mean Response <span class="math inline">\(E(y \mid {\bf x}_0)\)</span></a></li>
   <li><a href="#pi-for-new-observations" id="toc-pi-for-new-observations" class="nav-link" data-scroll-target="#pi-for-new-observations"><span class="header-section-number">27.3.5</span> PI for New Observations</a></li>
   <li><a href="#predictor-effect-plots" id="toc-predictor-effect-plots" class="nav-link" data-scroll-target="#predictor-effect-plots"><span class="header-section-number">27.3.6</span> Predictor Effect Plots</a></li>
-  <li><a href="#extrapolation" id="toc-extrapolation" class="nav-link" data-scroll-target="#extrapolation"><span class="header-section-number">27.3.7</span> Extrapolation</a></li>
   </ul>
 </li>
   <li>
 <a href="#hypothesis-testing" id="toc-hypothesis-testing" class="nav-link" data-scroll-target="#hypothesis-testing"><span class="header-section-number">27.4</span> Hypothesis Testing</a>
   <ul class="collapse">
 <li><a href="#test-for-significance-of-regression" id="toc-test-for-significance-of-regression" class="nav-link" data-scroll-target="#test-for-significance-of-regression"><span class="header-section-number">27.4.1</span> Test for Significance of Regression</a></li>
+  <li><a href="#r2-and-adjusted-r2" id="toc-r2-and-adjusted-r2" class="nav-link" data-scroll-target="#r2-and-adjusted-r2"><span class="header-section-number">27.4.2</span> <span class="math inline">\(R^2\)</span> and Adjusted <span class="math inline">\(R^2\)</span></a></li>
+  <li><a href="#tests-on-individual-regression-coefficients" id="toc-tests-on-individual-regression-coefficients" class="nav-link" data-scroll-target="#tests-on-individual-regression-coefficients"><span class="header-section-number">27.4.3</span> Tests on Individual Regression Coefficients</a></li>
   </ul>
 </li>
-  <li><a href="#r-lab-test-for-significance" id="toc-r-lab-test-for-significance" class="nav-link" data-scroll-target="#r-lab-test-for-significance"><span class="header-section-number">27.5</span> <span class="pink">R Lab</span> Test for Significance</a></li>
-  <li><a href="#r-lab-wrong-anova-table" id="toc-r-lab-wrong-anova-table" class="nav-link" data-scroll-target="#r-lab-wrong-anova-table"><span class="header-section-number">27.6</span> <span class="pink">R Lab</span> Wrong ANOVA Table</a></li>
-  <li><a href="#r-lab-anova-table-null-vs.-full" id="toc-r-lab-anova-table-null-vs.-full" class="nav-link" data-scroll-target="#r-lab-anova-table-null-vs.-full"><span class="header-section-number">27.7</span> <span class="pink">R Lab</span> ANOVA Table: Null vs.&nbsp;Full</a></li>
-  <li><a href="#r2-and-adjusted-r2" id="toc-r2-and-adjusted-r2" class="nav-link" data-scroll-target="#r2-and-adjusted-r2"><span class="header-section-number">27.8</span> <span class="math inline">\(R^2\)</span> and Adjusted <span class="math inline">\(R^2\)</span></a></li>
-  <li><a href="#adjusted-r2-example" id="toc-adjusted-r2-example" class="nav-link" data-scroll-target="#adjusted-r2-example"><span class="header-section-number">27.9</span> Adjusted <span class="math inline">\(R^2\)</span> Example</a></li>
-  <li>
-<a href="#r-lab-r2-and-adjusted-r2" id="toc-r-lab-r2-and-adjusted-r2" class="nav-link" data-scroll-target="#r-lab-r2-and-adjusted-r2"><span class="header-section-number">27.10</span> <span class="pink">R Lab</span> <span class="math inline">\(R^2\)</span> and Adjusted <span class="math inline">\(R^2\)</span></a>
-  <ul class="collapse">
-<li><a href="#tests-on-individual-regression-coefficients" id="toc-tests-on-individual-regression-coefficients" class="nav-link" data-scroll-target="#tests-on-individual-regression-coefficients"><span class="header-section-number">27.10.1</span> Tests on Individual Regression Coefficients</a></li>
-  </ul>
-</li>
-  <li><a href="#r-lab-tests-on-individual-coefficients" id="toc-r-lab-tests-on-individual-coefficients" class="nav-link" data-scroll-target="#r-lab-tests-on-individual-coefficients"><span class="header-section-number">27.11</span> <span class="pink">R Lab</span> Tests on Individual Coefficients</a></li>
-  <li><a href="#inference-pitfalls" id="toc-inference-pitfalls" class="nav-link" data-scroll-target="#inference-pitfalls"><span class="header-section-number">27.12</span> Inference Pitfalls</a></li>
+  <li><a href="#inference-pitfalls" id="toc-inference-pitfalls" class="nav-link" data-scroll-target="#inference-pitfalls"><span class="header-section-number">27.5</span> Inference Pitfalls</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/model-mlr.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -824,7 +813,7 @@ y_i &amp;= \beta_0 + \beta_1x_{i1} + \beta_2x_{i2} + \dots + \beta_k x_{ik} + \e
 <hr>
 <p><span style="color:blue"> <strong>Example: Least Squares Estimation</strong> </span></p>
 <!-- ## [R Lab]{.pink} [Delivery Time Data](./data/data-ex-3-1.csv) -->
-<p>In this chapter, we use <a href="./data/data-ex-3-1.csv">Delivery Time Data</a> from <a href="https://www.wiley.com/en-us/Introduction+to+Linear+Regression+Analysis%2C+6th+Edition-p-9781119578758">Introduction to Linear Regression Analysis, 6th edition</a> to demo MLR in R.</p>
+<p>In this chapter, we use <a href="./data/data-ex-3-1.csv">Delivery Time Data</a> of Example 3.1 from <a href="https://www.wiley.com/en-us/Introduction+to+Linear+Regression+Analysis%2C+6th+Edition-p-9781119578758">Introduction to Linear Regression Analysis, 6th edition</a> to demo MLR in R.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Load the data set</span></span>
 <span><span class="va">delivery</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"./data/data-ex-3-1.csv"</span>, header <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
@@ -861,15 +850,25 @@ y_i &amp;= \beta_0 + \beta_1x_{i1} + \beta_2x_{i2} + \dots + \beta_k x_{ik} + \e
 </div>
 </div>
 <ul>
-<li>
-<span class="math inline">\(y\)</span>: the amount of time required by the route driver to stock the vending machines with beverages</li>
-<li>
-<span class="math inline">\(x_1\)</span>: the number of cases stocked</li>
-<li>
-<span class="math inline">\(x_2\)</span>: the distance walked by the driver</li>
-<li>Goal: fit a MLR model <span class="math inline">\(y = \beta_0 + \beta_1x_1 + \beta_2x_2 + \epsilon\)</span> to the amount of time required by the route driver to service the vending machines</li>
+<li><p><span class="math inline">\(y\)</span>: the amount of time required by the route driver to stock the vending machines with beverages</p></li>
+<li><p><span class="math inline">\(x_1\)</span>: the number of cases stocked</p></li>
+<li><p><span class="math inline">\(x_2\)</span>: the distance walked by the driver</p></li>
+<li><p>Goal: fit a MLR model <span class="math inline">\(y = \beta_0 + \beta_1x_1 + \beta_2x_2 + \epsilon\)</span> to the amount of time required by the route driver to service the vending machines</p></li>
 </ul>
-<!-- ## [R Lab]{.pink} Scatterplot Matrix --><p>Each plot shows the relationship between a pair of variables.</p>
+<!-- ## [R Lab]{.pink} Scatterplot Matrix --><div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Always get to know your data set before you fit any statistical or machine learning model to the data.</p>
+</div>
+</div>
+<p>Each plot shows the relationship between a pair of variables.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html">pairs</a></span><span class="op">(</span><span class="va">delivery_data</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -896,21 +895,26 @@ y_i &amp;= \beta_0 + \beta_1x_{i1} + \beta_2x_{i2} + \dots + \beta_k x_{ik} + \e
 </div>
 </div>
 <!-- ## [R Lab]{.pink} Multiple Linear Regression -->
+<p>To fit the MLR model, we again use <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>. In the <code>furmula</code> argument, we use <code>+</code> to add predictors. <code>coef(delivery_lm)</code> or <code>delivery_lm$coef</code> can be used to grab the LS estimates of coefficients.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">delivery_lm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">time</span> <span class="op">~</span> <span class="va">cases</span> <span class="op">+</span> <span class="va">distance</span>, data <span class="op">=</span> <span class="va">delivery_data</span><span class="op">)</span></span>
-<span><span class="va">delivery_lm</span><span class="op">$</span><span class="va">coef</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">delivery_lm</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(Intercept)       cases    distance 
      2.3412      1.6159      0.0144 </code></pre>
 </div>
 </div>
-<p><span class="math display">\[\hat{y} = 2.34 + 1.62x_1 + 0.014x_2\]</span></p>
+<p><span class="math display">\[\hat{y} = 2.34 + 1.62x_1 + 0.014x_2\]</span> Interpretation of coefficients needs additional attention.</p>
 <ul>
 <li><p><span class="math inline">\(b_1\)</span>: <strong>All else held constant</strong>, for one case of product stocked increase, we expect the delivery time to be longer, <em>on average</em>, by 1.62 minutes.</p></li>
 <li><p><span class="math inline">\(b_2\)</span>: <strong>All else held constant</strong>, one additional foot walked by the driver causes the delivery time, <em>on average</em>, to be 0.014 minutes longer.</p></li>
 <li><p><span class="math inline">\(b_0\)</span>: The delivery time with no number of cases of product stocked and no distance walked by the driver is expected to be 2.34 minutes. (Make sense?!)</p></li>
 </ul>
-<!-- ## [R Lab]{.pink} Regression Plane --><div class="cell" data-layout-align="center">
+<p>When we interpret slopes or the effect of any predictor on the response in MLR, for example, <span class="math inline">\(x_1\)</span>, it needs to be measured on the same scale, meaning that all other predictors should not change because any change in them will change the response value too, and this response change is not due to <span class="math inline">\(x_1\)</span>, and not measured or explained by <span class="math inline">\(b_1\)</span>.</p>
+<p>For regression we usually don’t pay much attention to <span class="math inline">\(\beta_0\)</span> because quite often, it does not have natural physical meaning. Still, depending on your research questions, you may be interested in the intercept term. For example, you may want to know your response value when your predictor, temperature, is at value zero. Moreover, it is quite often that we normalize/standardize our variables before we fit MLR. If that is the case, the intercept means the average response level when the predictors are at their average level.</p>
+<!-- ## [R Lab]{.pink} Regression Plane -->
+<p>The LS fitted regression plane is shown below.</p>
+<div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="model-mlr_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:82.0%"></p>
@@ -921,16 +925,19 @@ y_i &amp;= \beta_0 + \beta_1x_{i1} + \beta_2x_{i2} + \dots + \beta_k x_{ik} + \e
 </section><section id="estimation-of-sigma2" class="level3" data-number="27.3.2"><h3 data-number="27.3.2" class="anchored" data-anchor-id="estimation-of-sigma2">
 <span class="header-section-number">27.3.2</span> Estimation of <span class="math inline">\(\sigma^2\)</span>
 </h3>
-<ul>
-<li><p><span class="math inline">\(SS_{res} = \sum_{i=1}^ne_i^2 = \sum_{i=1}^n(y_i - \hat{y}_i)^2\)</span>.</p></li>
-<li><p><span class="math inline">\(MS_{res} = \frac{SS_{res}}{n - p}\)</span> with <span class="math inline">\(p = k + 1\)</span>.</p></li>
-<li><p><span class="math inline">\(S^2 = MS_{res}\)</span> is <em>unbiased</em> for <span class="math inline">\(\sigma^2\)</span>, i.e., <span class="math inline">\(E[MS_{res}] = \sigma^2\)</span>.</p></li>
-<li><p><span class="math inline">\(\hat{\sigma}^2 = MS_{res}\)</span> is model dependent. Its value varies with change of the model. If our model is specified correctly, <span class="math inline">\(\hat{\sigma}^2\)</span> depends on our data quality. If our data have lots of noise itself, there is nothing we can do.</p></li>
-<li><p><span class="math inline">\(S^2\)</span> of SLR may be quite larger than the <span class="math inline">\(S^2\)</span> of MLR.</p></li>
-<li><p><span class="math inline">\(S^2\)</span> measures the variation of the <em>unexplained</em> noise about the fitted regression line/hyperplane, so we prefer a small residual mean square.</p></li>
-</ul>
-<!-- ::: notes --><!-- - $SS_{res} = \sum_{i=1}^ne_i^2 = {\bf e'e} = {\bf (y-Xb)'(y-Xb)} = {\bf y'y - b'X'y} = \sum_{i=1}^n(y_i - \hat{y}_i)^2$. --><!-- - If our model is specified correctly, $\hat{\sigma}^2$ depends on our data quality. --><!-- - If our data have lots of noise itself, there is nothing we can do. --><!-- ::: --><hr>
+<p>Same as SLR, the estimate of <span class="math inline">\(\sigma^2\)</span>, denoted as <span class="math inline">\(\hat{\sigma}^2\)</span> or <span class="math inline">\(s^2\)</span>, is the mean square residual of the model.</p>
+<p>Remember that the sum of squares residual is <span class="math inline">\(SS_{res} = \sum_{i=1}^ne_i^2 = \sum_{i=1}^n(y_i - \hat{y}_i)^2\)</span>. Then the mean square residual is <span class="math inline">\(SS_{res}\)</span> divided by its degrees of freedom: <span class="math inline">\(MS_{res} = \frac{SS_{res}}{n - p}\)</span> with <span class="math inline">\(p = k + 1\)</span>. Note that the degrees of freedom is <span class="math inline">\(n - p\)</span> where <span class="math inline">\(p\)</span> is the number of beta coefficients in the model. When <span class="math inline">\(p = 2\)</span>, it goes back to the SLR case.</p>
+<p><span class="math inline">\(S^2 = MS_{res}\)</span> is <em>unbiased</em> for <span class="math inline">\(\sigma^2\)</span>, i.e., <span class="math inline">\(E[MS_{res}] = \sigma^2\)</span>. Keep in mind that <span class="math inline">\(S^2 = MS_{res}\)</span> is a random variable. Before data are collected <span class="math inline">\(Y_i\)</span> and <span class="math inline">\(\hat{Y}_i\)</span> are assumed random variables, and <span class="math inline">\(S^2\)</span>, a function of random variables, will be a random variable too.</p>
+<p><span class="math inline">\(\hat{\sigma}^2 = MS_{res}\)</span> is model dependent. Its value varies with change of the model. If our model is specified correctly, <span class="math inline">\(\hat{\sigma}^2\)</span> depends only on our data quality. If our data have lots of noise itself, there is nothing we can do.</p>
+<p><span class="math inline">\(\hat{\sigma}^2\)</span> of SLR may be quite larger than the <span class="math inline">\(\hat{\sigma}^2\)</span> of MLR if the predictors in MLR capture a lots of variation of <span class="math inline">\(y\)</span> that cannot be explained by the only predictor in the SLR, and are treated as noises or unexplained variation. Remember <span class="math inline">\(S^2\)</span> measures the variation or the size of the <em>unexplained</em> noise about the fitted regression line/hyperplane, and we prefer a small residual mean square.</p>
+<!-- ::: notes -->
+<!-- - $SS_{res} = \sum_{i=1}^ne_i^2 = {\bf e'e} = {\bf (y-Xb)'(y-Xb)} = {\bf y'y - b'X'y} = \sum_{i=1}^n(y_i - \hat{y}_i)^2$. -->
+<!-- - If our model is specified correctly, $\hat{\sigma}^2$ depends on our data quality. -->
+<!-- - If our data have lots of noise itself, there is nothing we can do. -->
+<!-- ::: -->
+<hr>
 <p><span style="color:blue"> <strong>Example: Estimation of <span class="math inline">\(\sigma^2\)</span></strong> </span></p>
+<p>Here I show three methods to obtain the <span class="math inline">\(\sigma^2\)</span> estimate. The method 1 first compute the summary of the fitted result, which is saved as a list, then get the element <code>sigma</code> that is <span class="math inline">\(\hat{\sigma}\)</span>. If you look at the summary output, the value of <span class="math inline">\(\hat{\sigma}\)</span> is shown in the row: <code>Residual standard error: 3.26 on 22 degrees of freedom</code></p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## method 1</span></span>
 <span><span class="va">summ_delivery</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">delivery_lm</span><span class="op">)</span>  <span class="co">## check names(summ_delivery)</span></span>
@@ -938,26 +945,50 @@ y_i &amp;= \beta_0 + \beta_1x_{i1} + \beta_2x_{i2} + \dots + \beta_k x_{ik} + \e
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 10.6</code></pre>
 </div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">delivery_lm</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = time ~ cases + distance, data = delivery_data)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-5.788 -0.663  0.436  1.157  7.420 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  2.34123    1.09673    2.13  0.04417 *  
+cases        1.61591    0.17073    9.46  3.3e-09 ***
+distance     0.01438    0.00361    3.98  0.00063 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 3.26 on 22 degrees of freedom
+Multiple R-squared:  0.96,  Adjusted R-squared:  0.956 
+F-statistic:  261 on 2 and 22 DF,  p-value: 4.69e-16</code></pre>
 </div>
+</div>
+<p>The second method simply uses the definition of <span class="math inline">\(MS_{res}\)</span>. We first calculate <span class="math inline">\(SS_{res}\)</span>, then divide it by <span class="math inline">\(n-3\)</span> because in this example, we have 2 predictors <span class="math inline">\((k = 2)\)</span>, and 3 coefficients <span class="math inline">\(\beta_0\)</span>, <span class="math inline">\(\beta_1\)</span>, and <span class="math inline">\(\beta_2\)</span>.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## method 2</span></span>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## method 2</span></span>
 <span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">delivery_lm</span><span class="op">$</span><span class="va">residuals</span><span class="op">)</span></span>
 <span><span class="op">(</span><span class="va">SS_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">delivery_lm</span><span class="op">$</span><span class="va">residuals</span> <span class="op">*</span> <span class="va">delivery_lm</span><span class="op">$</span><span class="va">residuals</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 234</code></pre>
 </div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">SS_res</span> <span class="op">/</span> <span class="op">(</span><span class="va">n</span> <span class="op">-</span> <span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">SS_res</span> <span class="op">/</span> <span class="op">(</span><span class="va">n</span> <span class="op">-</span> <span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 10.6</code></pre>
 </div>
 </div>
+<p>The third method also uses the definition of <span class="math inline">\(MS_{res}\)</span>. The difference is that here we use <span class="math inline">\(\sum_{i=1}^n(y_i - \hat{y}_i)^2\)</span> instead of <span class="math inline">\(\sum_{i=1}^ne_i^2\)</span>.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## method 3</span></span>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## method 3</span></span>
 <span><span class="op">(</span><span class="va">SS_res1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="op">(</span><span class="va">delivery_data</span><span class="op">$</span><span class="va">time</span> <span class="op">-</span> <span class="va">delivery_lm</span><span class="op">$</span><span class="va">fitted.values</span><span class="op">)</span> <span class="op">^</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 234</code></pre>
 </div>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">SS_res1</span> <span class="op">/</span> <span class="op">(</span><span class="va">n</span> <span class="op">-</span> <span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">SS_res1</span> <span class="op">/</span> <span class="op">(</span><span class="va">n</span> <span class="op">-</span> <span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 10.6</code></pre>
 </div>
@@ -982,8 +1013,11 @@ y_i &amp;= \beta_0 + \beta_1x_{i1} + \beta_2x_{i2} + \dots + \beta_k x_{ik} + \e
 </section><section id="wald-ci-for-coefficients" class="level3" data-number="27.3.3"><h3 data-number="27.3.3" class="anchored" data-anchor-id="wald-ci-for-coefficients">
 <span class="header-section-number">27.3.3</span> Wald CI for Coefficients</h3>
 <p>The <span class="math inline">\((1-\alpha)100\%\)</span> Wald CI for <span class="math inline">\(\beta_j\)</span>, <span class="math inline">\(j = 0, 1, \dots, k\)</span> is <span class="math display">\[\left(b_j- t_{\alpha/2, n-p}~se(b_j), \quad b_j + t_{\alpha/2, n-p}~ se(b_j)\right)\]</span> where <span class="math inline">\(se(b_j)\)</span> is the standard error of <span class="math inline">\(b_j\)</span>. The formula come from the fact that each of the statistics <span class="math inline">\(\frac{b_j - \beta_j}{se(b_j)}, j = 0, 1, 2, \dots, k\)</span> follows <span class="math inline">\(t_{n-p}\)</span> distribution. <span class="math inline">\(se(b_j)\)</span> is a function of <span class="math inline">\(\hat{\sigma}^2\)</span> and <span class="math inline">\(x_{ij}s\)</span>.</p>
+<hr>
+<p><span style="color:blue"> <strong>Example: Wald CI for Coefficients</strong> </span></p>
+<p>We simply use <code><a href="https://rdrr.io/r/stats/confint.html">confint()</a></code>command with the fitted result put inside to obtain the CI for coefficients.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">ci</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/confint.html">confint</a></span><span class="op">(</span><span class="va">delivery_lm</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">ci</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/confint.html">confint</a></span><span class="op">(</span><span class="va">delivery_lm</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>              2.5 % 97.5 %
 (Intercept) 0.06675 4.6157
@@ -1009,15 +1043,23 @@ distance    0.00689 0.0219</code></pre>
 <p>The correlation matrix of the coefficient vector <span class="math inline">\({\bf b} = (b_0, b_1, b_2)'\)</span> is <span class="math display">\[\scriptsize \begin{align} \cor({\bf b}) &amp;= \begin{bmatrix} 1 &amp; r_{01} &amp; r_{02} \\ r_{10} &amp; 1 &amp; r_{12} \\ r_{20} &amp; r_{21} &amp; 1 \end{bmatrix} \end{align}\]</span></p>
 </div>
 </div>
-<p><span style="color:blue"> All <span class="math inline">\(b_j\)</span> are correlated! </span></p>
+<p><span style="color:blue"> In fact, all <span class="math inline">\(b_j\)</span> are correlated! </span></p>
 <!-- ## Correlated Coefficients -->
 <!-- :::: {.columns} -->
 <!-- ::: {.column width="50%"} -->
+<hr>
+<p><span style="color:blue"> <strong>Example: Correlated Coefficients</strong> </span></p>
+<p>We use <code><a href="https://rdrr.io/r/stats/vcov.html">vcov()</a></code> to obtain the variance-covariance matrix of <span class="math inline">\(b_j\)</span>s. The square root of its diagonal terms are <span class="math inline">\(se(b_0)\)</span>, <span class="math inline">\(se(b_1)\)</span>, and <span class="math inline">\(se(b_2)\)</span> respectively.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## variance-covariance matrix</span></span>
-<span><span class="va">V</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/vcov.html">vcov</a></span><span class="op">(</span><span class="va">delivery_lm</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## standard error</span></span>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## variance-covariance matrix</span></span>
+<span><span class="op">(</span><span class="va">V</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/vcov.html">vcov</a></span><span class="op">(</span><span class="va">delivery_lm</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            (Intercept)     cases  distance
+(Intercept)    1.202817 -0.047263 -8.89e-04
+cases         -0.047263  0.029150 -5.08e-04
+distance      -0.000889 -0.000508  1.31e-05</code></pre>
+</div>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## standard error</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html">diag</a></span><span class="op">(</span><span class="va">V</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(Intercept)       cases    distance 
@@ -1026,8 +1068,9 @@ distance    0.00689 0.0219</code></pre>
 </div>
 <!-- ::: -->
 <!-- ::: {.column width="50%"} -->
+<p>We can convert the covariance matrix into a correlation matrix using <code><a href="https://rdrr.io/r/stats/cor.html">cov2cor()</a></code>. Clearly <span class="math inline">\(b_1\)</span> and <span class="math inline">\(b_2\)</span> are negatively correlated. The individual CI previously obtained ignores the correlation between <span class="math inline">\(b_j\)</span>s.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## correlation matrix</span></span>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## correlation matrix</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cov2cor</a></span><span class="op">(</span><span class="va">V</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>            (Intercept)  cases distance
@@ -1036,23 +1079,18 @@ cases            -0.252  1.000   -0.824
 distance         -0.224 -0.824    1.000</code></pre>
 </div>
 </div>
-<!-- ::: -->
-<!-- :::: -->
-<ul>
-<li><p><span class="math inline">\(b_1\)</span> and <span class="math inline">\(b_2\)</span> are negatively correlated.</p></li>
-<li><p>Individual CI ignores the correlation between <span class="math inline">\(b_j\)</span>s.</p></li>
-</ul>
 <p>How do we specify a confidence level that applies <strong>simultaneously</strong> to a <strong>set</strong> of interval estimates? For example, a <span class="math inline">\(95\%\)</span> confidence “interval” for both <span class="math inline">\(b_1\)</span> and <span class="math inline">\(b_2\)</span>?</p>
 <!-- ## Confidence Region -->
-<p>The <span class="math inline">\((1-\alpha)100\%\)</span> CI for a <strong>set</strong> of <span class="math inline">\(b_j\)</span>s will be an <strong>elliptically-shaped region</strong>!</p>
+<p>The <span class="math inline">\((1-\alpha)100\%\)</span> CI for a <strong>set</strong> of <span class="math inline">\(b_j\)</span>s will be an <strong>elliptically-shaped region</strong>! The blue region below is the 95% confidence region for <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span>. The black dashed lines indicate the 95% Wald CI for <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span>.</p>
+<p>With repeated sampling, 95% of such ellipses will simultaneously include <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span>, if the fitted model is correct and normality holds. The orientation of the ellipse reflects the negative correlation between the estimates. Contrast the 95% confidence ellipse with the marginal 95% confidence intervals, also shown on the plot. Some points within the marginal intervals (red point) — with smaller values for both of the coefficients, for example — are implausible according to the joint region. Similarly, the joint region includes values of the coefficient for <code>cases</code> (black point), for example, that are excluded from the marginal interval.</p>
 <!-- :::: {.columns} -->
 <!-- ::: {.column width="50%"} -->
 <div class="cell" data-layout-align="center">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mgp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2.8</span>, <span class="fl">0.9</span>, <span class="fl">0</span><span class="op">)</span>, mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">2</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mgp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2.8</span>, <span class="fl">0.9</span>, <span class="fl">0</span><span class="op">)</span>, mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">2</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## confidence region</span></span>
 <span><span class="fu">car</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/car/man/Ellipses.html">confidenceEllipse</a></span><span class="op">(</span></span>
 <span>    <span class="va">delivery_lm</span>, </span>
-<span>    levels <span class="op">=</span> <span class="fl">0.95</span>, </span>
+<span>    levels <span class="op">=</span> <span class="fl">0.95</span>, fill <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>    which.coef <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"cases"</span>, <span class="st">"distance"</span><span class="op">)</span>, </span>
 <span>    main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span></span>
 <span>        <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"95% Confidence Region for "</span>, </span>
@@ -1086,11 +1124,8 @@ distance         -0.224 -0.824    1.000</code></pre>
 <!-- # ``` -->
 <!-- ::: -->
 <!-- :::: -->
-<ul>
-<li>Some points (red) within the marginal intervals are implausible according to the joint region.</li>
-<li>The joint region includes values of the coefficient for cases (black), for example, that are excluded from the marginal interval.</li>
-</ul>
-<p>With repeated sampling, 95% of such ellipses will simultaneously include <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span>, if the fitted model is correct and normality holds. The orientation of the ellipse reflects the negative correlation between the estimates. Contrast the 95% confidence ellipse with the marginal 95% confidence intervals, also shown on the plot. Some points within the marginal intervals—with larger values for both of the coefficients, for example—are implausible according to the joint region. Similarly, the joint region includes values of the coefficient for income, for example, that are excluded from the marginal interval.</p>
+<!-- - Some points  within the marginal intervals are implausible according to the joint region. -->
+<!-- - The joint region includes values of the coefficient for cases (black), for example, that are excluded from the marginal interval. -->
 <!-- ::: notes -->
 <!-- - Bonferroni -->
 <!-- - Scheffe S-method -->
@@ -1099,16 +1134,14 @@ distance         -0.224 -0.824    1.000</code></pre>
 </section><section id="ci-for-the-mean-response-ey-mid-bf-x_0" class="level3" data-number="27.3.4"><h3 data-number="27.3.4" class="anchored" data-anchor-id="ci-for-the-mean-response-ey-mid-bf-x_0">
 <span class="header-section-number">27.3.4</span> CI for the Mean Response <span class="math inline">\(E(y \mid {\bf x}_0)\)</span>
 </h3>
-<ul>
-<li>The fitted value at a point <span class="math inline">\({\bf x}_0 = (1, x_{01}, x_{02}, \dots, x_{0k})'\)</span> is <span class="math display">\[\hat{y}_0 = b_0 + b_1x_{01} + \cdots + b_kx_{0k}\]</span>
-</li>
-<li>This is an unbiased estimator for <span class="math inline">\(E(y \mid {\bf x}_0)\)</span> <!-- - $\frac{\hat{y}_0 - E(y|{\bf x}_0)}{\sqrt{\hat{\sigma}^2{\bf x}_0'{\bf (X'X)}^{-1}{\bf x}_0}}\sim t_{n-p}$. -->
-</li>
-<li>The <span class="math inline">\((1-\alpha)100\%\)</span> CI for <span class="math inline">\(E(y \mid {\bf x}_0)\)</span> is <span class="math display">\[\left(\hat{y}_0 - t_{\alpha/2, n-p} ~ se(\hat{y}_0), \quad \hat{y}_0 + t_{\alpha/2, n-p} ~ se(\hat{y}_0)\right)\]</span>
-</li>
-</ul>
+<p>The fitted value at a point <span class="math inline">\({\bf x}_0 = (1, x_{01}, x_{02}, \dots, x_{0k})'\)</span> is <span class="math display">\[\hat{y}_0 = b_0 + b_1x_{01} + \cdots + b_kx_{0k}\]</span></p>
+<p>This is an unbiased estimator for <span class="math inline">\(E(y \mid {\bf x}_0)\)</span>. <!-- - $\frac{\hat{y}_0 - E(y|{\bf x}_0)}{\sqrt{\hat{\sigma}^2{\bf x}_0'{\bf (X'X)}^{-1}{\bf x}_0}}\sim t_{n-p}$. --></p>
+<p>The <span class="math inline">\((1-\alpha)100\%\)</span> CI for <span class="math inline">\(E(y \mid {\bf x}_0)\)</span> is <span class="math display">\[\left(\hat{y}_0 - t_{\alpha/2, n-p} ~ se(\hat{y}_0), \quad \hat{y}_0 + t_{\alpha/2, n-p} ~ se(\hat{y}_0)\right).\]</span> It is from the fact that <span class="math inline">\(\frac{\hat{y}_0 - E(y|{\bf x}_0)}{se(\hat{y}_0)}\sim t_{n-p}\)</span> where <span class="math inline">\(se(\hat{y}_0)\)</span> is a function of <span class="math inline">\(\hat{\sigma}\)</span>, <span class="math inline">\(x_{ij}\)</span>s, and <span class="math inline">\({\bf x}_0\)</span>.</p>
+<hr>
+<p><span style="color:blue"> <strong>Example: CI for the Mean Response</strong> </span></p>
+<p>We learned how to use <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> in the previous chapter. For MLR, we need to specify the 2 predictor values <code>cases = 8</code>, and <code>distance = 275</code>, and save it as a data frame in the <code>newdata</code> argument. Note that the name <code>cases</code> and <code>distance</code> should be exactly the same as their column name of the data <code>delivery_data</code>.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">delivery_lm</span>,</span>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">delivery_lm</span>,</span>
 <span>        newdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>cases <span class="op">=</span> <span class="fl">8</span>, distance <span class="op">=</span> <span class="fl">275</span><span class="op">)</span>,</span>
 <span>        interval <span class="op">=</span> <span class="st">"confidence"</span>, level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1116,32 +1149,26 @@ distance         -0.224 -0.824    1.000</code></pre>
 1 19.2 17.7 20.8</code></pre>
 </div>
 </div>
-<div class="notes">
-<ul>
-<li>The fitted value at a point <span class="math inline">\({\bf x}_0 = (1, x_{01}, x_{02}, \dots, x_{0k})'\)</span> is <span class="math inline">\(\hat{y}_0 = {\bf x}_0'\bf b\)</span>.</li>
-<li>This is an unbiased estimator for <span class="math inline">\(E(y \mid {\bf x}_0)\)</span>.</li>
-<li>
-<span class="math inline">\(\frac{\hat{y}_0 - E(y|{\bf x}_0)}{\sqrt{\hat{\sigma}^2{\bf x}_0'{\bf (X'X)}^{-1}{\bf x}_0}}\sim t_{n-p}\)</span>.</li>
-<li>The <span class="math inline">\((1-\alpha)100\%\)</span> CI for <span class="math inline">\(E(y \mid {\bf x}_0)\)</span> is <span class="math inline">\(\left(\hat{y}_0 - t_{\alpha/2, n-p} \sqrt{\hat{\sigma}^2{\bf x}_0'{\bf (X'X)}^{-1}{\bf x}_0}, \quad \hat{y}_0 + t_{\alpha/2, n-p} \sqrt{\hat{\sigma}^2{\bf x}_0'{\bf (X'X)}^{-1}{\bf x}_0}\right)\)</span>
-</li>
-</ul>
-<div class="cell" data-layout-align="center">
-<div class="cell-output cell-output-stdout">
-<pre><code>   fit  lwr  upr
-1 19.2 17.7 20.8</code></pre>
-</div>
-</div>
-</div>
+<!-- ::: notes -->
+<!-- - The fitted value at a point ${\bf x}_0 = (1, x_{01}, x_{02}, \dots, x_{0k})'$ is $\hat{y}_0 = {\bf x}_0'\bf b$. -->
+<!-- - This is an unbiased estimator for $E(y \mid {\bf x}_0)$. -->
+<!-- - $\frac{\hat{y}_0 - E(y|{\bf x}_0)}{\sqrt{\hat{\sigma}^2{\bf x}_0'{\bf (X'X)}^{-1}{\bf x}_0}}\sim t_{n-p}$. -->
+<!-- - The $(1-\alpha)100\%$ CI for $E(y \mid {\bf x}_0)$ is -->
+<!-- $\left(\hat{y}_0 - t_{\alpha/2, n-p} \sqrt{\hat{\sigma}^2{\bf x}_0'{\bf (X'X)}^{-1}{\bf x}_0}, \quad \hat{y}_0 + t_{\alpha/2, n-p} \sqrt{\hat{\sigma}^2{\bf x}_0'{\bf (X'X)}^{-1}{\bf x}_0}\right)$ -->
+<!-- ```{r} -->
+<!-- predict(delivery_lm, -->
+<!--         newdata = data.frame(cases = 8, distance = 275), -->
+<!--         interval = "confidence", level = 0.95) -->
+<!-- ``` -->
+<!-- ::: -->
 </section><section id="pi-for-new-observations" class="level3" data-number="27.3.5"><h3 data-number="27.3.5" class="anchored" data-anchor-id="pi-for-new-observations">
 <span class="header-section-number">27.3.5</span> PI for New Observations</h3>
-<ul>
-<li>Predict the future observation <span class="math inline">\(y_0\)</span> when <span class="math inline">\({\bf x} = {\bf x}_0\)</span>.</li>
-<li>A point estimate is <span class="math inline">\(\hat{y}_0 = b_0 + b_1x_{01} + \cdots + b_kx_{0k}\)</span>.</li>
-<li>The <span class="math inline">\((1-\alpha)100\%\)</span> PI for <span class="math inline">\(y_0\)</span> is <span class="math display">\[\left(\hat{y}_0 - t_{\alpha/2, n-p} ~se(y_0 - \hat{y}_0), \quad \hat{y}_0 + t_{\alpha/2, n-p} ~se(y_0 - \hat{y}_0)\right)\]</span>
-</li>
-</ul>
+<p>Often we also want to predict the future observation <span class="math inline">\(y_0\)</span> when <span class="math inline">\({\bf x} = {\bf x}_0\)</span>. A point estimate is <span class="math inline">\(\hat{y}_0 = b_0 + b_1x_{01} + \cdots + b_kx_{0k}\)</span>, same as the point estimate of the mean response. When we can only use one single value to predict the mean response or a new observation value, <span class="math inline">\(\hat{y}_0\)</span> is the best we can do. The <span class="math inline">\((1-\alpha)100\%\)</span> PI for <span class="math inline">\(y_0\)</span> is <span class="math display">\[\left(\hat{y}_0 - t_{\alpha/2, n-p} ~se(y_0 - \hat{y}_0), \quad \hat{y}_0 + t_{\alpha/2, n-p} ~se(y_0 - \hat{y}_0)\right)\]</span></p>
+<hr>
+<p><span style="color:blue"> <strong>Example: PI for New Observations</strong> </span></p>
+<p>When predicting a new observation with uncertainty, we use <code>interval = "predict"</code>. The interpretation is the same as the one in SLR.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">delivery_lm</span>,</span>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">delivery_lm</span>,</span>
 <span>        newdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>cases <span class="op">=</span> <span class="fl">8</span>, distance <span class="op">=</span> <span class="fl">275</span><span class="op">)</span>,</span>
 <span>        interval <span class="op">=</span> <span class="st">"predict"</span>, level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1149,52 +1176,38 @@ distance         -0.224 -0.824    1.000</code></pre>
 1 19.2 12.3 26.2</code></pre>
 </div>
 </div>
-<div class="notes">
-<ul>
-<li>Predict the future observation <span class="math inline">\(y_0\)</span> when <span class="math inline">\({\bf x} = {\bf x}_0\)</span>.</li>
-<li>A point estimate is <span class="math inline">\(\hat{y}_0 = {\bf x}_0'\bf b\)</span>.</li>
-<li>The <span class="math inline">\((1-\alpha)100\%\)</span> PI for <span class="math inline">\(y_0\)</span> is <span class="math inline">\(\left(\hat{y}_0 - t_{\alpha/2, n-p} \sqrt{\hat{\sigma}^2\left(1+{\bf x}_0'{\bf (X'X)}^{-1}{\bf x}_0\right)}, \quad \hat{y}_0 + t_{\alpha/2, n-p} \sqrt{\hat{\sigma}^2\left(1+{\bf x}_0'{\bf (X'X)}^{-1}{\bf x}_0\right)}\right)\)</span>
-</li>
-</ul>
-<div class="cell" data-layout-align="center">
-<div class="cell-output cell-output-stdout">
-<pre><code>   fit  lwr  upr
-1 19.2 12.3 26.2</code></pre>
-</div>
-</div>
-</div>
+<!-- ::: notes -->
+<!-- - Predict the future observation $y_0$ when ${\bf x} = {\bf x}_0$. -->
+<!-- - A point estimate is $\hat{y}_0 = {\bf x}_0'\bf b$. -->
+<!-- - The $(1-\alpha)100\%$ PI for $y_0$ is -->
+<!-- $\left(\hat{y}_0 - t_{\alpha/2, n-p} \sqrt{\hat{\sigma}^2\left(1+{\bf x}_0'{\bf (X'X)}^{-1}{\bf x}_0\right)}, \quad \hat{y}_0 + t_{\alpha/2, n-p} \sqrt{\hat{\sigma}^2\left(1+{\bf x}_0'{\bf (X'X)}^{-1}{\bf x}_0\right)}\right)$ -->
+<!-- ```{r} -->
+<!-- predict(delivery_lm, -->
+<!--         newdata = data.frame(cases = 8, distance = 275), -->
+<!--         interval = "predict", level = 0.95) -->
+<!-- ``` -->
+<!-- ::: -->
 </section><section id="predictor-effect-plots" class="level3" data-number="27.3.6"><h3 data-number="27.3.6" class="anchored" data-anchor-id="predictor-effect-plots">
 <span class="header-section-number">27.3.6</span> Predictor Effect Plots</h3>
+<p>A complete picture of the regression surface requires drawing a <span class="math inline">\(p\)</span>-dimensional graph.</p>
+<p><strong>Predictor effect plots</strong> look at 1 or 2D plots for each predictor.</p>
+<p>To plot the predictor effect plot for <span class="math inline">\(x_j\)</span>, <span class="math inline">\(x_1\)</span> for example, we</p>
 <ul>
-<li><p>A complete picture of the regression surface requires drawing a <span class="math inline">\(p\)</span>-dimensional graph.</p></li>
-<li><p><strong>Predictor effect plots</strong> look at 1 or 2D plots for each predictor.</p></li>
+<li><p>fix the values of all other predictors (<span class="math inline">\(x_2\)</span> in the example)</p></li>
+<li><p>substitute these fixed values into the fitted regression equation.</p></li>
 </ul>
-<p>. . .</p>
-<ul>
-<li>The predictor effect plot for <span class="math inline">\(x_1\)</span>:
-<ul>
-<li>fix the values of all other predictors ( <span class="math inline">\(x_2\)</span> in the example)</li>
-<li>substitute these fixed values into the fitted regression equation.</li>
-</ul>
-</li>
-<li>Fix <span class="math inline">\(x_2\)</span> at its average, <span class="math inline">\(\hat{y} = 2.34 + 1.62 ~x_1 + 0.014 (409.28)\)</span>
-</li>
-</ul>
-<p>. . .</p>
-<ul>
-<li><p><strong>Same</strong> slope for <em>any</em> choice of fixed values of other predictors.</p></li>
-<li><p>The intercepts depend on the values of other predictors.</p></li>
-</ul>
-<div class="notes">
-<ul>
-<li><p>A complete picture of the regression surface generated by the fitted model requires drawing a <span class="math inline">\(p\)</span>-dimensional graph.</p></li>
-<li><p>Fix <span class="math inline">\(x_1\)</span> at its average, <span class="math inline">\(\hat{y} = 2.34 + 1.62 (8.76) + 0.014 ~x_2\)</span></p></li>
-<li><p>The slope would be the <strong>same</strong> for <em>any</em> choice of fixed values of other predictors.</p></li>
-</ul>
-</div>
+<p>Usually we fix all other predictors (<span class="math inline">\(x_2\)</span> in the example) at their average. In our example, we have <span class="math inline">\(\hat{y} = 2.34 + 1.62 ~x_1 + 0.014 (409.28)\)</span>. Note that the slope of <span class="math inline">\(x_1\)</span> would be the <strong>same</strong> for <em>any</em> choice of fixed values of other predictors, while the intercept depends on the values of other predictors.</p>
+<!-- ::: notes -->
+<!-- - A complete picture of the regression surface generated by the fitted model requires drawing a $p$-dimensional graph. -->
+<!-- - Fix $x_1$ at its average, $\hat{y} = 2.34 + 1.62 (8.76) + 0.014 ~x_2$ -->
+<!-- - The slope would be the **same** for *any* choice of fixed values of other predictors. -->
+<!-- ::: -->
 <!-- ## [R Lab]{.pink} Predictor Effect Plots -->
+<hr>
+<p><span style="color:blue"> <strong>Example: Predictor Effect Plots</strong> </span></p>
+<p>The command <code><a href="https://rdrr.io/pkg/effects/man/predictorEffects.html">predictorEffects()</a></code> in the <code>effects</code> package is used to generate the predictor effect plots.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www.r-project.org">effects</a></span><span class="op">)</span></span>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www.r-project.org">effects</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu">effects</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/effects/man/predictorEffects.html">predictorEffects</a></span><span class="op">(</span>mod <span class="op">=</span> <span class="va">delivery_lm</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="columns">
@@ -1202,7 +1215,7 @@ distance         -0.224 -0.824    1.000</code></pre>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="model-mlr_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="model-mlr_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1211,80 +1224,47 @@ distance         -0.224 -0.824    1.000</code></pre>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="model-mlr_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="model-mlr_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="notes">
-<ul>
-<li>rug plot</li>
-<li>the mean of time increases linearly as cases or distance increases.</li>
-<li>Given x2 variable in the model, what is the effect on x1 on the response.</li>
-<li>Without correction for simultaneous statistical inference</li>
-<li>plot(effects::predictorEffects(mod = delivery_lm, confint = list(type = “Scheffe”))) ‘arg’ should be one of “pointwise”, “Scheffe”, “scheffe”</li>
-</ul>
-</div>
-</section><section id="extrapolation" class="level3" data-visibility="hidden" data-number="27.3.7"><h3 data-visibility="hidden" data-number="27.3.7" class="anchored" data-anchor-id="extrapolation">
-<span class="header-section-number">27.3.7</span> Extrapolation</h3>
-<ul>
-<li>In MLR, it’s easy to inadvertently extrapolate since the regressors jointly define the region containing the data.</li>
-</ul>
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="model-mlr_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
-</figure>
-</div>
-</div>
-</div>
-<div class="notes">
-<ul>
-<li>define the smallest convex set containing all of the original <span class="math inline">\(n\)</span> regressor points, as the regressor vairiable hull (RVH).</li>
-<li>a point within the ranges of x1 and x2 may not be necessarily a interpolation point.</li>
-</ul>
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="model-mlr_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
+<p>The shaded area represents pointwise 95% confidence interval about the fitted line, without correction for simultaneous statistical inference. The short vertical lines at the bottom indicate the values of predictors. The interval length is larger when the predictor value is away from its average. Since our model is linear, the mean of time increases linearly as cases or distance increases.</p>
+<!-- - rug plot -->
+<!-- -  -->
+<!-- - Given x2 variable in the model, what is the effect on x1 on the response. -->
+<!-- - Without correction for simultaneous statistical inference -->
+<!-- - plot(effects::predictorEffects(mod = delivery_lm, confint = list(type = "Scheffe"))) -->
+<!-- 'arg' should be one of “pointwise”, “Scheffe”, “scheffe” -->
+<!-- ::: notes -->
+<!-- ::: -->
 </section></section><section id="hypothesis-testing" class="level2" data-number="27.4"><h2 data-number="27.4" class="anchored" data-anchor-id="hypothesis-testing">
 <span class="header-section-number">27.4</span> Hypothesis Testing</h2>
-<h2 class="anchored">
-Test for Significance of Regression
-</h2>
-<h2 class="anchored">
-Tests on Individual Coefficients
-</h2>
-<h2 class="anchored">
-Tests on Subsets of Coefficients (Later)
-</h2>
-<div class="notes">
-<ul>
-<li>Test for Significance: test if there is any regressor that has a significant effect on predicting <span class="math inline">\(Y\)</span> or explaining the variation of <span class="math inline">\(Y\)</span>.</li>
-<li>In a Test for Significance, we are looking all the regressors.</li>
-<li>Tests on Individual Coefficients: we are only interested in single one predictor’s effect.</li>
-<li>But sometimes, we may be interested in a subset of Coefficients, not all, not single one, but two or three coefficients. And we’ll see how to do this kind of test later.</li>
-<li>Finally, we’ll learn the so-called General Linear Hypothesis that can perform a quite general test.</li>
-<li>The three tests above are in fact special case of the General Linear Hypothesis.</li>
-</ul>
-</div>
+<p>In this section we talk about two tests: Test for significance of regression and Tests on individual coefficients. In fact, one can test whether or not the coefficients form any linear combination relationship, called the <strong>general linear hypotheses</strong>. We leave this part of discussion in the Regression Analysis course.</p>
+<!-- <h2> Test for Significance of Regression </h2> -->
+<!-- <h2> Tests on Individual Coefficients </h2> -->
+<!-- <h2> Tests on Subsets of Coefficients (Later) </h2> -->
+<!-- ::: notes -->
+<!-- - Test for Significance: test if there is any regressor that has a significant effect on predicting $Y$ or explaining the variation of $Y$. -->
+<!-- - In a Test for Significance, we are looking all the regressors. -->
+<!-- - Tests on Individual Coefficients: we are only interested in single one predictor's effect. -->
+<!-- - But sometimes, we may be interested in a subset of Coefficients, not all, not single one, but two or three coefficients. And we'll see how to do this kind of test later. -->
+<!-- - Finally, we'll learn the so-called General Linear Hypothesis that can perform a quite general test. -->
+<!-- - The three tests above are in fact special case of the General Linear Hypothesis. -->
+<!-- ::: -->
 <section id="test-for-significance-of-regression" class="level3" data-number="27.4.1"><h3 data-number="27.4.1" class="anchored" data-anchor-id="test-for-significance-of-regression">
 <span class="header-section-number">27.4.1</span> Test for Significance of Regression</h3>
-<ul>
-<li>
-<strong>Test for significance</strong>: Determine if there is a <strong>linear</strong> relationship between the response and <strong>any</strong> of the regressor variables.</li>
-<li>
-<span style="color:blue"> <span class="math inline">\(H_0: \beta_1 = \beta_2 = \cdots = \beta_k = 0 \quad H_1: \beta_j \ne 0 \text{ for at least one } j\)</span> </span> <!-- - The $F$ test of ANOVA performs the test. -->
-</li>
-</ul>
-<!-- # ```{r} --><!-- # knitr::include_graphics("./images/img-model/anova_mlr.png") --><!-- # ``` --><!-- - $SS_T = {\bf y'y} - \frac{\left(\sum_{i=1}^n y_i \right)^2}{n}$, $SS_R = {\bf b'X'y}-\frac{\left(\sum_{i=1}^n y_i \right)^2}{n}$, $SS_{res} = {\bf y'y} - {\bf b'X'y}$ --><p>. . .</p>
+<p><strong>Test for significance</strong> determines if there is a <strong>linear</strong> relationship between the response and <strong>any</strong> of the regressor variables. In other words, we are testing</p>
+<p><span style="color:blue"> <span class="math inline">\(H_0: \beta_1 = \beta_2 = \cdots = \beta_k = 0 \quad H_1: \beta_j \ne 0 \text{ for at least one } j\)</span> </span></p>
+<p>As long as there is one predictor has a significant impact on the response, <span class="math inline">\(H_0\)</span> should be rejected. When <span class="math inline">\(\beta_1 = \beta_2 = \cdots = \beta_k = 0\)</span>, it means that the regrssion model has no explanatory power on explaining any variation of the response from the regressors put in the regression model. The regression model is not helping at all. To interpret it more precisely, when we fail to <span class="math inline">\(H_0: \beta_1 = \beta_2 = \cdots = \beta_k = 0\)</span>, there are three possibilities. First, it could mean that all the predictors have no relationship with the response. Second, remember our model is a linear model, and <span class="math inline">\(\beta_j\)</span>s measure linear effect of <span class="math inline">\(x_j\)</span>s on <span class="math inline">\(y\)</span>. It may just mean there is no linear relationship between any <span class="math inline">\(x_j\)</span> and <span class="math inline">\(y\)</span> given all other regressors are in the model. Some other types of relationship may exist between the predictors and the response. Third, we make a Type II error that <span class="math inline">\(H_0\)</span> is actually false, and at least one regressor is linearly related to the response, again given all other predictors are in the model.</p>
+<!-- - The $F$ test of ANOVA performs the test. -->
+<!-- # ```{r} -->
+<!-- # knitr::include_graphics("./images/img-model/anova_mlr.png") -->
+<!-- # ``` -->
+<!-- - $SS_T = {\bf y'y} - \frac{\left(\sum_{i=1}^n y_i \right)^2}{n}$, $SS_R = {\bf b'X'y}-\frac{\left(\sum_{i=1}^n y_i \right)^2}{n}$, $SS_{res} = {\bf y'y} - {\bf b'X'y}$ -->
+<p>The test is usually conducted by checking the ANOVA table of MLR as shown below. When <span class="math inline">\(k=1\)</span>, it becomes the ANOVA table of SLR.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 16%">
@@ -1330,23 +1310,24 @@ Tests on Subsets of Coefficients (Later)
 </tr>
 </tbody>
 </table>
-<ul>
-<li>Reject <span class="math inline">\(H_0\)</span> if <span class="math inline">\(F_{test} &gt; F_{\alpha, k, n - k - 1}\)</span>.</li>
-</ul>
-<div class="notes">
-<ul>
-<li>In SLR, test for significance is the same as testing individual coefficient <span class="math inline">\(\beta_1 = 0\)</span>.</li>
-<li>We may reject the null when the truth is all beta’s are nonzero, or only one single beta is nonzero.</li>
-<li>If there is only one nonzero beta, and we reject the null, basically, the nearly all the variation of Y is explained by the corresponding predictor that has the nonzero beta.</li>
-<li>We can still say the model is significant because that particular predictor has a significant effect on explaining y.</li>
-<li>Another way to represent SS_T</li>
-</ul>
-</div>
-</section></section><section id="r-lab-test-for-significance" class="level2" data-number="27.5"><h2 data-number="27.5" class="anchored" data-anchor-id="r-lab-test-for-significance">
-<span class="header-section-number">27.5</span> <span class="pink">R Lab</span> Test for Significance</h2>
+<p>We reject <span class="math inline">\(H_0\)</span> if <span class="math inline">\(F_{test} &gt; F_{\alpha, k, n - k - 1}\)</span>. In SLR, test for significance is the same as testing individual coefficient <span class="math inline">\(\beta_1 = 0\)</span> because there is only one predictor, and testing its corresponding coefficient is equivalent to testing all the coefficients.</p>
+<p>We may reject the null when the truth is all beta’s are nonzero, or only one single beta is nonzero. And we may need further <em>post hoc</em> analysis to see which coefficients are nonzero.</p>
+<p>If there is only one nonzero coefficient, and we reject the null, basically, the nearly all the variation of <span class="math inline">\(Y\)</span> is explained by the corresponding predictor that has the nonzero beta coefficient. We can still say the model is significant because that particular predictor has a significant effect on explaining <span class="math inline">\(y\)</span>.</p>
+<!-- - Another way to represent SS_T -->
+<!-- ::: notes -->
+<!-- - In SLR, test for significance is the same as testing individual coefficient $\beta_1 = 0$. -->
+<!-- - We may reject the null when the truth is all beta's are nonzero, or only one single beta is nonzero. -->
+<!-- - If there is only one nonzero beta, and we reject the null, basically, the nearly all the variation of Y is explained by the corresponding predictor that has the nonzero beta. -->
+<!-- - We can still say the model is significant because that particular predictor has a significant effect on explaining y. -->
+<!-- - Another way to represent SS_T -->
+<!-- ::: -->
+<!-- ## [R Lab]{.pink} Test for Significance -->
+<hr>
+<p><span style="color:blue"> <strong>Example: Test for Significance</strong> </span></p>
 <p><span style="color:blue"> <span class="math inline">\(H_0: \beta_{1} = \beta_{2} = 0 \quad H_1: \beta_j \ne 0 \text{ for at least one } j\)</span> </span></p>
+<p>If we check the summary of the fitted result, it shows some t values and p-values, but no ANOVA table shows up.</p>
 <div class="cell" data-layout-align="center" data-output.lines="[9,10,11,12,13,14,15,16,17,18,19]">
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">summ_delivery</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">summ_delivery</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre class="my_class800"><code>...
 Coefficients:
@@ -1363,13 +1344,8 @@ F-statistic:  261 on 2 and 22 DF,  p-value: 4.69e-16
 ...</code></pre>
 </div>
 </div>
-<div class="notes">
-<ul>
-<li>How do we obtain the ANOVA Table?</li>
-</ul>
-</div>
-</section><section id="r-lab-wrong-anova-table" class="level2" data-number="27.6"><h2 data-number="27.6" class="anchored" data-anchor-id="r-lab-wrong-anova-table">
-<span class="header-section-number">27.6</span> <span class="pink">R Lab</span> Wrong ANOVA Table</h2>
+<p>How do we obtain the ANOVA Table?</p>
+<!-- ## [R Lab]{.pink} Wrong ANOVA Table -->
 <table class="caption-top table">
 <colgroup>
 <col style="width: 16%">
@@ -1415,8 +1391,9 @@ F-statistic:  261 on 2 and 22 DF,  p-value: 4.69e-16
 </tr>
 </tbody>
 </table>
+<p>We may think using <code>anova(delivery_lm)</code> as we do for SLR.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="va">delivery_lm</span><span class="op">)</span> <span class="co">## This is for sequential F-test</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="va">delivery_lm</span><span class="op">)</span> <span class="co">## This is for sequential F-test</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Variance Table
 
@@ -1429,23 +1406,29 @@ Residuals 22    234      11
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
+<p>Unfortunately, this ANOVA table is so called <strong>Type-I</strong> ANOVA table in literature for a <strong>sequential F-test</strong>, which is <em>NOT</em> what we want.</p>
+<!-- # ```{r} -->
+<!-- #  -->
+<!-- # knitr::include_graphics("./images/img-model/anova_mlr.png") -->
+<!-- # ``` -->
+<!-- ## [R Lab]{.pink} ANOVA Table: Null vs. Full -->
+<!-- ::: alert -->
+<p>To obtain the correct ANOVA table, we need to view the test in a different way. Testing coefficients is like model comparison: We are comparing two models, the <strong>full model</strong> having all the predictors <span class="math inline">\(x_1, \dots, x_k\)</span> in the model with zero or nonzero <span class="math inline">\(\beta\)</span> coefficients with the <strong>null model</strong> under <span class="math inline">\(H_0\)</span>. Mathematically,</p>
 <ul>
-<li>This is so called <strong>Type-I</strong> ANOVA table for a <em>sequential F-test</em>, which is <strong>NOT</strong> what we want.</li>
+<li><p><strong>Full model</strong>: <span class="math inline">\(y = \beta_0 + \beta_1x_1 + \cdots + \beta_kx_k + \epsilon\)</span></p></li>
+<li><p><strong>Null model</strong>: <span class="math inline">\(y = \beta_0 + \epsilon\)</span> because <span class="math inline">\(\beta_1 = \beta_2 = \cdots = \beta_k = 0\)</span> under <span class="math inline">\(H_0\)</span>. The null model is the model with the intercept only.</p></li>
 </ul>
-<!-- # ```{r} --><!-- #  --><!-- # knitr::include_graphics("./images/img-model/anova_mlr.png") --><!-- # ``` --></section><section id="r-lab-anova-table-null-vs.-full" class="level2" data-number="27.7"><h2 data-number="27.7" class="anchored" data-anchor-id="r-lab-anova-table-null-vs.-full">
-<span class="header-section-number">27.7</span> <span class="pink">R Lab</span> ANOVA Table: Null vs.&nbsp;Full</h2>
-<div class="alert">
-<p>Testing coefficients is like model comparison: <strong>Compare the full model with the model under <span class="math inline">\(H_0\)</span></strong>!</p>
-</div>
-<div class="columns">
-<div class="column" style="width:50%;">
+<p>The idea is that we are trying to see how close the full model fitting is close to the null model fitting. If <span class="math inline">\(H_0\)</span> is true, then using the full model will be more likely to have similar result to the null models result because the full model will have all the coefficients being negligibly zero. The two models are more likely to be indistinguishable. When <span class="math inline">\(H_0\)</span> is not true, and some <span class="math inline">\(\beta_j\)</span>s are away from zero, the two models will have pretty different fitting results.</p>
+<!-- Compare the full model with the model under $H_0$**! -->
+<!-- ::: -->
+<!-- :::: {.columns} -->
+<!-- ::: {.column width="50%"} -->
+<p>In our example,</p>
 <ul>
-<li>
-<strong>Full model</strong>: including both <code>cases</code> and <code>distance</code> predictors</li>
-<li>
-<strong>Null model</strong>: no predictors <span class="math inline">\((\beta_1 = \beta_2 = 0)\)</span>
-</li>
+<li><p><strong>Full model</strong>: including both <code>cases</code> and <code>distance</code> predictors</p></li>
+<li><p><strong>Null model</strong>: no predictors <span class="math inline">\((\beta_1 = \beta_2 = 0)\)</span></p></li>
 </ul>
+<p>The ANOVA table for the example is</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -1454,13 +1437,14 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
 </div>
-</div><div class="column" style="width:50%;">
-<div class="fragment">
+<!-- ::: -->
+<!-- ::: {.column width="50%"} -->
+<!-- ::: {.fragment} -->
+<p>To generate the ANOVA table using R, we first create the null model and save its fitted result. When there is no predictors in the model, we write <code>time ~ 1</code> where <code>1</code> represents the intercept term. Then we are comparing the two model fitted results using <code>anova(null_lm, delivery_lm)</code>.</p>
 <div class="cell" data-layout-align="center" data-output.lines="[1,2,3,4,5,6,7]">
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## regression with intercept only</span></span>
-<span><span class="va">null_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">time</span> <span class="op">~</span> <span class="fl">1</span>,</span>
-<span>                 data <span class="op">=</span> <span class="va">delivery_data</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="va">null_model</span>, <span class="va">delivery_lm</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## regression with intercept only</span></span>
+<span><span class="va">null_lm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">time</span> <span class="op">~</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">delivery_data</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="va">null_lm</span>, <span class="va">delivery_lm</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>...
 Analysis of Variance Table
@@ -1473,83 +1457,46 @@ Model 2: time ~ cases + distance
 ...</code></pre>
 </div>
 </div>
-</div>
-</div>
-</div>
-<div class="notes">
-<ul>
-<li>first row: info of SS_T</li>
-<li>second row: info of SS_R and SS_res</li>
-<li>does not show MS</li>
-</ul>
-</div>
-</section><section id="r2-and-adjusted-r2" class="level2" data-number="27.8"><h2 data-number="27.8" class="anchored" data-anchor-id="r2-and-adjusted-r2">
-<span class="header-section-number">27.8</span> <span class="math inline">\(R^2\)</span> and Adjusted <span class="math inline">\(R^2\)</span>
-</h2>
-<ul>
-<li>
-<span class="math inline">\(R^2 = \frac{SS_R}{SS_T} = 1 - \frac{SS_{res}}{SS_T}\)</span>
-<ul>
-<li>calculated as in SLR.</li>
-<li>accesses how well the regression model fits the data.</li>
-<li>measures the proportion of variability in <span class="math inline">\(Y\)</span> that is explained by the regression or the <span class="math inline">\(k\)</span> predictors.</li>
-<li>The model with one additional predictor <strong>always gets a higher <span class="math inline">\(R^2\)</span></strong>.</li>
-</ul>
-</li>
-</ul>
-<div class="notes">
-<ul>
-<li>There are other criterion or metrics for accessing model adequacy or model fit that may be better than R^2</li>
-<li>The model with one additional predictor <strong>always gets a higher <span class="math inline">\(R^2\)</span></strong> even the new predictor has no explanatory power or useless in predicting y. Because the predictor may capture the random noise variation, leading to decrease in <span class="math inline">\(SS_{res}\)</span>.</li>
-<li>If we use R^2 as the measure of model fit, then we will tend to include lots of regressors in the model, and we will always choose the model that has the most predictors, even though lots of predictors have no or little contribution to the fitting or prediction.</li>
-<li>The idea is a little bit like overfitting in machine learning.</li>
-<li>A complex or a larger model has several disadvantages.
-<ul>
-<li>First, it’s more difficult to interpret your model and results. It reduces the interpretability.</li>
-<li>Second, the computing or running time is usually longer, and sometimes much longer depending on the order of complexity.</li>
-<li>Also, the data or the model itself may consume lots of memory spaces.</li>
-</ul>
-</li>
-</ul>
-</div>
-<p>. . .</p>
-<div class="alert">
+<!-- ::: -->
+<!-- ::: -->
+<!-- :::: -->
+<p>Notice that the output is not exactly the same as the ANOVA table, but both are equivalent. We just need to carefully and correctly interpret the R output. The first row shows the <span class="math inline">\(SS_T\)</span> value in the <code>RSS</code> column. <code>RSS</code> is the residual sum of squares <span class="math inline">\(SS_{res}\)</span>. The first model (Model 1) is the null model. Because there is no predictors, all variation of <span class="math inline">\(y\)</span> is due to random errors, and therefore there is no <span class="math inline">\(SS_R\)</span>, and <span class="math inline">\(SS_{res} = SS_T\)</span>.</p>
+<p>The second row provides information about <span class="math inline">\(SS_R\)</span> and <span class="math inline">\(SS_{res}\)</span> of the full model (Model 2). <span class="math inline">\(SS_R\)</span> is shown in the column <code>Sum of Sq</code>, and <span class="math inline">\(SS_{res}\)</span> again in the column <code>RSS</code>.</p>
+<p>In Row 2, <code>Res.Df</code> is the residual degrees of freedom, and <code>Df</code> is the regression degrees of freedom. The value 24 in Row 1, the residual degrees of freedom of the null model, is worked as the <em>total</em> degrees of freedom, the same idea that its <span class="math inline">\(SS_{res}\)</span> works as <span class="math inline">\(SS_T\)</span>.</p>
+<p>The output does not provide the mean square information, but it can be easily calculated.</p>
+<!-- - first row: info of $SS_T$ -->
+<!-- - second row: info of $SS_R$ and $SS_{res}$ -->
+<!-- - does not show MS -->
+</section><section id="r2-and-adjusted-r2" class="level3" data-number="27.4.2"><h3 data-number="27.4.2" class="anchored" data-anchor-id="r2-and-adjusted-r2">
+<span class="header-section-number">27.4.2</span> <span class="math inline">\(R^2\)</span> and Adjusted <span class="math inline">\(R^2\)</span>
+</h3>
+<p>We learn in SLR that <span class="math inline">\(R^2 = \frac{SS_R}{SS_T} = 1 - \frac{SS_{res}}{SS_T}\)</span>. The <span class="math inline">\(R^2\)</span> statistic can also be calculated and used in MLR. The size of <span class="math inline">\(R^2\)</span> assesses how well the regression model fits the data—the larger the <span class="math inline">\(R^2\)</span>, the better the fit. Specifically, <span class="math inline">\(R^2\)</span> measures the proportion of variability in <span class="math inline">\(Y\)</span> that is explained by the regression model or the <span class="math inline">\(k\)</span> predictors. It’s important to note that adding an additional predictor to the model <em>always increases <span class="math inline">\(R^2\)</span></em>. This happens because the model with <span class="math inline">\(k+1\)</span> predictors will have <span class="math inline">\(SS_R\)</span> that is greater than or at least equal to the <span class="math inline">\(SS_R\)</span> of the model with only <span class="math inline">\(k\)</span> predictors, provided that the <span class="math inline">\(k\)</span> predictors are included among the <span class="math inline">\(k+1\)</span> predictors in the larger model.</p>
+<p>The model with one additional predictor <strong>always gets a higher <span class="math inline">\(R^2\)</span></strong> even the new predictor has no explanatory power or useless in predicting <span class="math inline">\(y\)</span>. This happens because the additional predictor may capture random noise in the data, leading to a decrease in <span class="math inline">\(SS_{res}\)</span>. If we rely solely on <span class="math inline">\(R^2\)</span> to compare models that include various predictors, we might always end up selecting the full model with all possible predictors, even if many of them contribute little or nothing to the actual fitting or prediction.</p>
+<p>While this approach might yield a model that fits the current data very well, it poses significant risks if our goal is to predict new, unseen future data. Including too many variables in the regression model can lead to <strong>overfitting</strong>—a situation where the model fits the sample data exceptionally well but performs poorly when predicting the mean response or new response values for a different dataset. Overfitting results in a model that captures noise and idiosyncrasies of the sample data, rather than the underlying patterns, making it less generalizable and less reliable for future predictions.</p>
+<p>A complex or a larger model has several other disadvantages. First, it’s more difficult to interpret your model and results. It reduces the interpretability. Second, the computing or running time is usually longer, and sometimes much longer depending on the order of complexity. Also, the data or the model itself may consume lots of memory spaces.</p>
+<!-- - If we use $R^2$ as the measure of model fit, then we will tend to include lots of regressors in the model, and we will always choose the model that has the most predictors, even though lots of predictors have no or little contribution to the fitting or prediction. -->
+<!-- - The idea is a little bit like overfitting in machine learning. -->
+<blockquote class="blockquote">
 <p><strong>Occam’s Razor: Don’t use a complex model if a simpler model can perform equally well!</strong></p>
-</div>
-<p>. . .</p>
+</blockquote>
+<p>There are other criterion or metrics for accessing model adequacy or model fit that may be better than <span class="math inline">\(R^2\)</span>, for example, <strong>adjusted <span class="math inline">\(R^2\)</span></strong>, <span class="math inline">\(R^2_{adj}\)</span>.</p>
+<p><span class="math display">\[R^2_{adj} = 1 - \frac{SS_{res}/(n-p)}{SS_T/(n-1)}\]</span></p>
+<p><span class="math inline">\(R^2_{adj}\)</span> applies a penalty (through <span class="math inline">\(p\)</span>) for number of variables included in the model. It is not the more the better anymore. Adjusted <span class="math inline">\(R^2\)</span> doesn’t increase if the new variable provide very little information for prediction. Adjusted <span class="math inline">\(R^2\)</span> will only increase on adding a variable to the model if the addition of the regressor reduces <span class="math inline">\(MS_{res}\)</span>. The new added variable must show that it can contribute to explaining the variation of <span class="math inline">\(y\)</span> sufficiently large, so that its contribution is bigger than the price we pay for hiring this guy. This makes adjusted <span class="math inline">\(R^2\)</span> a preferable metric for model selection in multiple regression models.</p>
+<!-- ::: notes -->
+<!-- - Adjusted $R^2$ will only increase on adding a variable to the model if the addition of the regressor reduces $MS_{res}$ -->
+<!-- ::: -->
+<!-- ## Adjusted $R^2$ Example -->
 <ul>
-<li>
-<strong>Adjusted <span class="math inline">\(R^2\)</span></strong>
-<ul>
-<li><span class="math inline">\(R^2_{adj} = 1 - \frac{SS_{res}/(n-p)}{SS_T/(n-1)}\)</span></li>
-<li>applies a penalty (through <span class="math inline">\(p\)</span>) for number of variables included in the model.</li>
+<li><p>For a model with 3 predictors, <span class="math inline">\(SS_{res} = 90\)</span>, <span class="math inline">\(SS_T = 245\)</span>, and <span class="math inline">\(n = 15\)</span>. <span class="math display">\[R^2_{adj} = 1 - \frac{90/(15-4)}{245/(15-1)} = 0.53\]</span></p></li>
+<li><p>The 4-th regressor is added into the model, and <span class="math inline">\(SS_{res} = 88\)</span> (always decreases). Then <span class="math display">\[R^2_{adj} = 1 - \frac{88/(15-5)}{245/(15-1)} = 0.49\]</span></p></li>
 </ul>
-</li>
-</ul>
-<div class="notes">
-<ul>
-<li>Not the more the better anymore</li>
-<li>Adjusted R2 doesn’t increase if the new variable does not provide very little information for prediction</li>
-<li>Adjusted R2 will only increase on adding a variable to the model if the addition of the regressor reduces <span class="math inline">\(MS_{res}\)</span>
-</li>
-<li>This makes adjusted R2 a preferable metric for model selection in multiple regression models.</li>
-</ul>
-</div>
-</section><section id="adjusted-r2-example" class="level2" data-number="27.9"><h2 data-number="27.9" class="anchored" data-anchor-id="adjusted-r2-example">
-<span class="header-section-number">27.9</span> Adjusted <span class="math inline">\(R^2\)</span> Example</h2>
-<ul>
-<li>For a model with 3 predictors, <span class="math inline">\(SS_{res} = 90\)</span>, <span class="math inline">\(SS_T = 245\)</span>, and <span class="math inline">\(n = 15\)</span>. <span class="math display">\[R^2_{adj} = 1 - \frac{90/(15-4)}{245/(15-1)} = 0.53\]</span>
-</li>
-<li>The 4-th regressor is added into the model, and <span class="math inline">\(SS_{res} = 88\)</span> (always decreases). Then <span class="math display">\[R^2_{adj} = 1 - \frac{88/(15-5)}{245/(15-1)} = 0.49\]</span>
-</li>
-</ul>
-<p>. . .</p>
-<p><strong>Intuition</strong>: The new added regressor should have explanatory power for <span class="math inline">\(y\)</span> large enough, so that <span class="math inline">\(MS_{res}\)</span> is decreased.</p>
-</section><section id="r-lab-r2-and-adjusted-r2" class="level2" data-number="27.10"><h2 data-number="27.10" class="anchored" data-anchor-id="r-lab-r2-and-adjusted-r2">
-<span class="header-section-number">27.10</span> <span class="pink">R Lab</span> <span class="math inline">\(R^2\)</span> and Adjusted <span class="math inline">\(R^2\)</span>
-</h2>
+<p>The new added regressor should have explanatory power for <span class="math inline">\(y\)</span> large enough, so that <span class="math inline">\(MS_{res}\)</span> is decreased. In this case, adding the 4th regressor does not decrease <span class="math inline">\(SS_{res}\)</span> enough to convince us to put it in the model.</p>
+<!-- ## [R Lab]{.pink} $R^2$ and Adjusted $R^2$ -->
+<hr>
+<p><span style="color:blue"> <strong>Example: <span class="math inline">\(R^2\)</span> and Adjusted <span class="math inline">\(R^2\)</span></strong> </span></p>
+<p>To get <span class="math inline">\(R^2\)</span> and adjusted <span class="math inline">\(R^2\)</span> in R, we check the summary output. They can also be extracted from the summary list.</p>
 <div class="cell" data-layout-align="center" data-output.lines="[16,17,18]">
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">summ_delivery</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">summ_delivery</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>...
 
@@ -1559,46 +1506,29 @@ Multiple R-squared:  0.96,  Adjusted R-squared:  0.956
 </div>
 </div>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">summ_delivery</span><span class="op">$</span><span class="va">r.squared</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">summ_delivery</span><span class="op">$</span><span class="va">r.squared</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.96</code></pre>
 </div>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">summ_delivery</span><span class="op">$</span><span class="va">adj.r.squared</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">summ_delivery</span><span class="op">$</span><span class="va">adj.r.squared</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.956</code></pre>
 </div>
 </div>
-<section id="tests-on-individual-regression-coefficients" class="level3" data-number="27.10.1"><h3 data-number="27.10.1" class="anchored" data-anchor-id="tests-on-individual-regression-coefficients">
-<span class="header-section-number">27.10.1</span> Tests on Individual Regression Coefficients</h3>
-<ul>
-<li>Hypothesis test on any <strong>single</strong> regression coefficient.</li>
-<li><span style="color:blue"> <span class="math inline">\(H_0: \beta_{j} = 0 \quad H_1: \beta_j \ne 0\)</span> </span></li>
-<li><span class="math inline">\(t_{test} = \frac{b_j}{se(b_j)}\)</span></li>
-<li>Reject <span class="math inline">\(H_0\)</span> if <span class="math inline">\(|t_{test}| &gt; t_{\alpha/2, n-k-1}\)</span>
-</li>
-<li>This is a <strong>partial</strong> or <strong>marginal test</strong>: a test of the <strong>contribution of <span class="math inline">\(X_j\)</span> given ALL other regressors in the model</strong>.</li>
-</ul>
-<div class="notes">
-<ul>
-<li>We can also do a one-side test for sure. But I am not sure if there is a R function to do a one-sided test.</li>
-<li>But we can always compute the test statistic or the p-value ourselves.</li>
-<li>Hypothesis test on any <strong>single</strong> regression coefficient.</li>
-<li><span style="color:blue"> <span class="math inline">\(H_0: \beta_{j} = 0 \quad H_1: \beta_j \ne 0\)</span> </span></li>
-<li>
-<span class="math inline">\(t_{test} = \frac{b_j}{\sqrt{\hat{\sigma}^2C_{jj}}}\)</span>, where <span class="math inline">\(C_{jj}\)</span> is the <span class="math inline">\(j\)</span>-th diagonal element of <span class="math inline">\(({\bf X'X})^{-1}\)</span>.</li>
-<li>Reject <span class="math inline">\(H_0\)</span> if <span class="math inline">\(|t_{test}| &gt; t_{\alpha/2, n-k-1}\)</span>
-</li>
-<li>This is a <strong>partial</strong> or <strong>marginal test</strong>: a test of the <strong>contribution of <span class="math inline">\(X_j\)</span> given ALL other regressors in the model</strong>.</li>
-</ul>
-</div>
-</section></section><section id="r-lab-tests-on-individual-coefficients" class="level2" data-number="27.11"><h2 data-number="27.11" class="anchored" data-anchor-id="r-lab-tests-on-individual-coefficients">
-<span class="header-section-number">27.11</span> <span class="pink">R Lab</span> Tests on Individual Coefficients</h2>
-<ul>
-<li>Assess the value of <span class="math inline">\(x_2\)</span> (distance) given that <span class="math inline">\(x_1\)</span> (cases) is in the model.</li>
-<li><span style="color:blue"> <span class="math inline">\(H_0: \beta_{2} = 0 \quad H_1: \beta_2 \ne 0\)</span> </span></li>
-</ul>
+</section><section id="tests-on-individual-regression-coefficients" class="level3" data-number="27.4.3"><h3 data-number="27.4.3" class="anchored" data-anchor-id="tests-on-individual-regression-coefficients">
+<span class="header-section-number">27.4.3</span> Tests on Individual Regression Coefficients</h3>
+<p>This is the hypothesis test on any <strong>single</strong> regression coefficient:</p>
+<p><span style="color:blue"> <span class="math inline">\(H_0: \beta_{j} = 0 \quad H_1: \beta_j \ne 0\)</span> </span></p>
+<p>It is a <span class="math inline">\(t\)</span> test with the test statistic <span class="math inline">\(t_{test} = \frac{b_j}{se(b_j)}\)</span>. We reject <span class="math inline">\(H_0\)</span> if <span class="math inline">\(|t_{test}| &gt; t_{\alpha/2, n-k-1}\)</span>. This is a <strong>partial</strong> or <strong>marginal test</strong>: a test of the <strong>contribution of <span class="math inline">\(X_j\)</span> given ALL other regressors in the model</strong>.</p>
+<p>We can also do a one-side test for sure. But I am not sure if there is a R function to do a one-sided test. But we can always compute the test statistic or the p-value ourselves.</p>
+<!-- ## [R Lab]{.pink} Tests on Individual Coefficients -->
+<hr>
+<p><span style="color:blue"> <strong>Example: Tests on Individual Coefficients</strong> </span></p>
+<p>Suppose we would like to assess the effect of <span class="math inline">\(x_2\)</span> (distance) given that <span class="math inline">\(x_1\)</span> (cases) is in the model.</p>
+<p><span style="color:blue"> <span class="math inline">\(H_0: \beta_{2} = 0 \quad H_1: \beta_2 \ne 0\)</span> </span></p>
+<p>The marginal test results are shown in the summary of fitted result. The t test statistic value is 3.98, and p-value is close to zero, concluding that <span class="math inline">\(\beta_2 \ne 0\)</span>.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">summ_delivery</span><span class="op">$</span><span class="va">coefficients</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">summ_delivery</span><span class="op">$</span><span class="va">coefficients</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>            Estimate Std. Error t value Pr(&gt;|t|)
 (Intercept)   2.3412    1.09673    2.13 4.42e-02
@@ -1606,21 +1536,10 @@ cases         1.6159    0.17073    9.46 3.25e-09
 distance      0.0144    0.00361    3.98 6.31e-04</code></pre>
 </div>
 </div>
-<div class="notes">
-<p>qt(0.05/2, df = delivery_lm$df.residual, lower.tail = FALSE) ## t critical value df = n - 3 = 22</p>
-<div class="cell" data-layout-align="center">
-<div class="cell-output cell-output-stdout">
-<pre><code>distance 
-    3.98 </code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>distance 
-0.000631 </code></pre>
-</div>
-</div>
-</div>
-</section><section id="inference-pitfalls" class="level2" data-number="27.12"><h2 data-number="27.12" class="anchored" data-anchor-id="inference-pitfalls">
-<span class="header-section-number">27.12</span> Inference Pitfalls</h2>
+<!-- :::  notes -->
+<!-- ::: -->
+</section></section><section id="inference-pitfalls" class="level2" data-number="27.5"><h2 data-number="27.5" class="anchored" data-anchor-id="inference-pitfalls">
+<span class="header-section-number">27.5</span> Inference Pitfalls</h2>
 <div class="danger">
 <ul>
 <li>The test <span class="math inline">\(H_0:\beta_j = 0\)</span> will always be rejected as long as the sample size is large enough, even <span class="math inline">\(x_j\)</span> has a very small effect on <span class="math inline">\(y\)</span>.
@@ -1631,8 +1550,6 @@ distance      0.0144    0.00361    3.98 6.31e-04</code></pre>
 </li>
 </ul>
 </div>
-<p>. . .</p>
-<p><br></p>
 <div class="danger">
 <ul>
 <li>If the sample size is small, there may not be enough evidence to reject <span class="math inline">\(H_0:\beta_j = 0\)</span>.
@@ -1643,6 +1560,26 @@ distance      0.0144    0.00361    3.98 6.31e-04</code></pre>
 </li>
 </ul>
 </div>
+<!-- ### Extrapolation {visibility="hidden"} -->
+<ul>
+<li>In MLR, it’s easy to inadvertently extrapolate since the regressors jointly define the region containing the data. We can define the smallest convex set containing all of the original <span class="math inline">\(n\)</span> regressor points, as the regressor variable hull. Any point outside the hull can be viewed as an extrapolate point. A point within the ranges of <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span> may not be necessarily a interpolation point, as shown the blue point in the figure.</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-mlr_files/figure-html/unnamed-chunk-43-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<!-- ::: notes -->
+<!-- # ```{r} -->
+<!-- # with(delivery_data, -->
+<!-- #      car::dataEllipse(cases, distance, -->
+<!-- #         levels = c(0.5, 0.75, 0.9, 0.95))) -->
+<!-- #  -->
+<!-- # ``` -->
+<!-- ::: -->
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
