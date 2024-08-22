@@ -394,25 +394,31 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-reg.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Linear Regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Simple Linear Regression</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./model-mlr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Multiple Linear Regression*</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-logistic.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Logistic Regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Logistic Regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-bayes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-survival.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Survival Analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Survival Analysis</span></span></a>
   </div>
 </li>
       </ul>
@@ -475,7 +481,56 @@ window.Quarto = {
 
 
 </header><div class="hidden">
-
+<p><span class="math display">\[
+\def\cD{{\cal D}}
+\def\cL{{\cal L}}
+\def\cX{{\cal X}}
+\def\cF{{\cal F}}
+\def\cH{{\cal H}}
+\def\bA{\mathbf{A}}
+\def\bB{\mathbf{B}}
+\def\bX{\mathbf{X}}
+\def\bH{\mathbf{H}}
+\def\bI{\mathbf{I}}
+\def\bU{\mathbf{U}}
+\def\bD{\mathbf{D}}
+\def\bV{\mathbf{V}}
+\def\bS{\mathbf{S}}
+\def\bW{\mathbf{W}}
+\def\bY{\mathbf{Y}}
+\def\bZ{\mathbf{Z}}
+\def\bK{\mathbf{K}}
+\def\bx{\mathbf{x}}
+\def\by{\mathbf{y}}
+\def\bs{\mathbf{s}}
+\def\br{\mathbf{r}}
+\def\bu{\mathbf{u}}
+\def\be{\mathbf{e}}
+\def\bv{\mathbf{v}}
+\def\bp{\mathbf{p}}
+\def\bw{\mathbf{w}}
+\def\bz{\mathbf{z}}
+\def\bzero{\mathbf{0}}
+\def\balpha{\boldsymbol \alpha}
+\def\bbeta{\boldsymbol \beta}
+\def\btheta{\boldsymbol \theta}
+\def\bSigma{\boldsymbol \Sigma}
+\def\bxi{\boldsymbol \xi}
+\def\bmu{\boldsymbol \mu}
+\def\bep{\boldsymbol \epsilon}
+\def\T{\text{T}}
+\def\Trace{\text{Trace}}
+\def\Cov{\text{Cov}}
+\def\cov{\text{Cov}}
+\def\Corr{\text{Corr}}
+\def\cor{\text{Corr}}
+\def\Var{\text{Var}}
+\def\E{\text{E}}
+\def\pr{\text{pr}}
+\def\Prob{\text{P}}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\]</span></p>
 </div>
 <p>In sampling distribution <a href="prob-sampling.html" class="quarto-xref"><span>Chapter 11</span></a>, we learn that as the sample size <span class="math inline">\(n\)</span> grows, the sampling distribution of sample mean</p>
 <ol type="1">
@@ -526,7 +581,7 @@ Note
 <div class="callout-body-container callout-body">
 <ul>
 <li><p>Remember that sine <span class="math inline">\(\overline{X}\)</span> is a transformation of random variables <span class="math inline">\(X_1, \dots, X_n\)</span>, <span class="math inline">\(\overline{X}\)</span> itself is also a random variable with some randomness and variation. Therefore, when the simulation (random sampling) is run twice (independently), for each size of <span class="math inline">\(n\)</span>, we will get two different sets of values of <span class="math inline">\(x_1, \dots, x_n\)</span>, and two different <span class="math inline">\(\bar{x}\)</span>s, resulting in two lines in <a href="#fig-lln" class="quarto-xref">Figure&nbsp;<span>12.1</span></a>.</p></li>
-<li><p>Additionally, as shown in the figure, the black and green values of <span class="math inline">\(\overline{X}\)</span> are quite different when <span class="math inline">\(n\)</span> is small, showing a larger variation. Why? It comes from the fact that <span class="math inline">\(\text{Var}(\overline{X}) = \sigma^2/n\)</span>. It also tells us why <span class="math inline">\(\overline{X}\)</span> converges to <span class="math inline">\(\mu\)</span>. When <span class="math inline">\(n\)</span> gets large, its variation gets small, and eventually this random variable behaves like a constant with no variation. That constant is <span class="math inline">\(\mu\)</span>.</p></li>
+<li><p>Additionally, as shown in the figure, the black and green values of <span class="math inline">\(\overline{X}\)</span> are quite different when <span class="math inline">\(n\)</span> is small, showing a larger variation. Why? It comes from the fact that <span class="math inline">\(\Var(\overline{X}) = \sigma^2/n\)</span>. It also tells us why <span class="math inline">\(\overline{X}\)</span> converges to <span class="math inline">\(\mu\)</span>. When <span class="math inline">\(n\)</span> gets large, its variation gets small, and eventually this random variable behaves like a constant with no variation. That constant is <span class="math inline">\(\mu\)</span>.</p></li>
 </ul>
 </div>
 </div>
