@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.4.555">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
 <meta name="description" content="A comprehensive introductory statistical data science book.">
-
-<title>Introduction to Statistics - 29&nbsp; Bayesian Linear Regression</title>
+<title>Introduction to Statistics - 29&nbsp; Bayesian Linear Regression*</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,8 +18,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
-
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
@@ -43,8 +73,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -70,12 +99,7 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script>
-
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
+}</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
 const typesetMath = (el) => {
   if (window.MathJax) {
     // MathJax Typeset
@@ -100,34 +124,25 @@ const typesetMath = (el) => {
 window.Quarto = {
   typesetMath
 };
-</script>
-
-<link rel="stylesheet" href="custom.css">
+</script><link rel="stylesheet" href="custom.css">
 </head>
-
 <body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./model.html">Statistical Models</a></li><li class="breadcrumb-item"><a href="./model-bayes.html"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./model.html">Statistical Models</a></li><li class="breadcrumb-item"><a href="./model-bayes.html"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression*</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Introduction to Statistics</a> 
         <div class="sidebar-tools-main tools-wide">
@@ -136,26 +151,26 @@ window.Quarto = {
     <div class="dropdown">
       <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Share"><i class="bi bi-share"></i></a>
       <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
-          <li>
-            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
+<li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=%7Curl%7C">
               <i class="bi bi-bi-twitter pe-1"></i>
             Twitter
             </a>
           </li>
           <li>
-            <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=|url|">
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=%7Curl%7C">
               <i class="bi bi-bi-facebook pe-1"></i>
             Facebook
             </a>
           </li>
           <li>
-            <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=|url|">
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=%7Curl%7C">
               <i class="bi bi-bi-linkedin pe-1"></i>
             LinkedIn
             </a>
           </li>
       </ul>
-    </div>
+</div>
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
     </div>
@@ -167,7 +182,7 @@ window.Quarto = {
         </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Welcome</span></a>
@@ -181,8 +196,8 @@ window.Quarto = {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./intro-stats.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Science of Data and Data Science</span></span></a>
@@ -201,7 +216,7 @@ window.Quarto = {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./datasummary.html" class="sidebar-item-text sidebar-link">
@@ -210,8 +225,8 @@ window.Quarto = {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./data-graphics.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Visualization</span></span></a>
@@ -224,7 +239,7 @@ window.Quarto = {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./prob.html" class="sidebar-item-text sidebar-link">
@@ -233,8 +248,8 @@ window.Quarto = {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prob-define.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Definition of Probability</span></span></a>
@@ -277,7 +292,7 @@ window.Quarto = {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./infer.html" class="sidebar-item-text sidebar-link">
@@ -286,8 +301,8 @@ window.Quarto = {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-ci.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Point and Interval Estimation</span></span></a>
@@ -348,7 +363,7 @@ window.Quarto = {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./model.html" class="sidebar-item-text sidebar-link">
@@ -357,8 +372,8 @@ window.Quarto = {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-anova.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></span></a>
@@ -397,7 +412,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-bayes.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression*</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -407,7 +422,7 @@ window.Quarto = {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <span class="sidebar-item-text sidebar-link text-start">
  <span class="menu-text">References</span></span>
@@ -420,8 +435,8 @@ window.Quarto = {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./a-r_prog.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">R programming</span></span></a>
@@ -434,21 +449,35 @@ window.Quarto = {
   </div>
 </li>
       </ul>
-  </li>
+</li>
     </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li>
+<a href="#bayesian-simple-linear-regression-model" id="toc-bayesian-simple-linear-regression-model" class="nav-link active" data-scroll-target="#bayesian-simple-linear-regression-model"><span class="header-section-number">29.1</span> Bayesian Simple Linear Regression Model</a>
+  <ul class="collapse">
+<li><a href="#tuning-prior-models" id="toc-tuning-prior-models" class="nav-link" data-scroll-target="#tuning-prior-models"><span class="header-section-number">29.1.1</span> Tuning Prior Models</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#posterior-inference" id="toc-posterior-inference" class="nav-link" data-scroll-target="#posterior-inference"><span class="header-section-number">29.2</span> Posterior Inference</a>
+  <ul class="collapse">
+<li><a href="#posterior-distribution-and-sampling" id="toc-posterior-distribution-and-sampling" class="nav-link" data-scroll-target="#posterior-distribution-and-sampling"><span class="header-section-number">29.2.1</span> Posterior distribution and sampling</a></li>
+  <li><a href="#convergence-diagnostics" id="toc-convergence-diagnostics" class="nav-link" data-scroll-target="#convergence-diagnostics"><span class="header-section-number">29.2.2</span> Convergence diagnostics</a></li>
+  <li><a href="#posterior-summary-and-analysis" id="toc-posterior-summary-and-analysis" class="nav-link" data-scroll-target="#posterior-summary-and-analysis"><span class="header-section-number">29.2.3</span> Posterior summary and analysis</a></li>
+  </ul>
+</li>
+  <li><a href="#resources" id="toc-resources" class="nav-link" data-scroll-target="#resources"><span class="header-section-number">29.3</span> Resources</a></li>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/model-bayes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./model.html">Statistical Models</a></li><li class="breadcrumb-item"><a href="./model-bayes.html"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></a></li></ol></nav>
-<div class="quarto-title">
-<h1 class="title"><span id="sec-model-bayes" class="quarto-section-identifier"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></span></h1>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./model.html">Statistical Models</a></li><li class="breadcrumb-item"><a href="./model-bayes.html"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression*</span></a></li></ol></nav><div class="quarto-title">
+<h1 class="title"><span id="sec-model-bayes" class="quarto-section-identifier"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression*</span></span></h1>
 </div>
 
 
@@ -462,14 +491,433 @@ window.Quarto = {
   
 
 
-</header>
+</header><div class="hidden">
+<p><span class="math display">\[
+\def\cD{{\cal D}}
+\def\cL{{\cal L}}
+\def\cX{{\cal X}}
+\def\cF{{\cal F}}
+\def\cH{{\cal H}}
+\def\bA{\mathbf{A}}
+\def\bB{\mathbf{B}}
+\def\bX{\mathbf{X}}
+\def\bH{\mathbf{H}}
+\def\bI{\mathbf{I}}
+\def\bU{\mathbf{U}}
+\def\bD{\mathbf{D}}
+\def\bV{\mathbf{V}}
+\def\bS{\mathbf{S}}
+\def\bW{\mathbf{W}}
+\def\bY{\mathbf{Y}}
+\def\bZ{\mathbf{Z}}
+\def\bK{\mathbf{K}}
+\def\bx{\mathbf{x}}
+\def\by{\mathbf{y}}
+\def\bs{\mathbf{s}}
+\def\br{\mathbf{r}}
+\def\bu{\mathbf{u}}
+\def\be{\mathbf{e}}
+\def\bv{\mathbf{v}}
+\def\bp{\mathbf{p}}
+\def\bw{\mathbf{w}}
+\def\bz{\mathbf{z}}
+\def\bzero{\mathbf{0}}
+\def\balpha{\boldsymbol \alpha}
+\def\bbeta{\boldsymbol \beta}
+\def\btheta{\boldsymbol \theta}
+\def\bSigma{\boldsymbol \Sigma}
+\def\bxi{\boldsymbol \xi}
+\def\bmu{\boldsymbol \mu}
+\def\bep{\boldsymbol \epsilon}
+\def\T{\text{T}}
+\def\Trace{\text{Trace}}
+\def\Cov{\text{Cov}}
+\def\cov{\text{Cov}}
+\def\Corr{\text{Corr}}
+\def\cor{\text{Corr}}
+\def\Var{\text{Var}}
+\def\var{\text{Var}}
+\def\E{\text{E}}
+\def\pr{\text{pr}}
+\def\Prob{\text{P}}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\]</span></p>
+</div>
+<p>We learned the basic Bayesian inference in <a href="infer-bayes.html" class="quarto-xref"><span>Chapter 21</span></a>. In this chapter, we apply the Bayesian rule to the linear regression model, and do the Bayesian inference about the unknown regression coefficients. We will also learn how to update our knowledge or do the prediction with the Bayes rule.</p>
+<p>We will use several R packages to facilitate Bayesian computation, without the need to worry the mathematical and computational details. Some useful packages for Bayesian modeling and analysis are listed below.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://bayes-rules.github.io/bayesrules/docs/">bayesrules</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://mc-stan.org/rstan/">rstan</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://mc-stan.org/rstanarm/">rstanarm</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://mc-stan.org/bayesplot/">bayesplot</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://mjskay.github.io/tidybayes/">tidybayes</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bbolker/broom.mixed">broom.mixed</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="bayesian-simple-linear-regression-model" class="level2" data-number="29.1"><h2 data-number="29.1" class="anchored" data-anchor-id="bayesian-simple-linear-regression-model">
+<span class="header-section-number">29.1</span> Bayesian Simple Linear Regression Model</h2>
+<!-- Normal Data Model -->
+<p>In simple linear regression, we have</p>
+<p><span class="math display">\[Y_i \mid \beta_0, \beta_1, \sigma \stackrel{ind}{\sim}  N\left(\mu_i, \sigma^2 \right) \quad \text{with} \quad \mu_i = \beta_0 + \beta_1 X_i\]</span></p>
+<p>We assume or thought the response values are generated from the normal distribution whose mean depends on their corresponding regressor’s value. In Bayesian inference, this normal data model is our likelihood <span class="math inline">\(L(\btheta = (\beta_0, \beta_1, \sigma) \mid \mathcal{D} = \{\by, \bx \})\)</span>, as it evaluates how the data are compatible with different possible values of parameters.</p>
+<p>Here, in SLR, we have three unknown parameters <span class="math inline">\(\beta_0, \beta_1, \sigma\)</span> to be estimated, and we use <span class="math inline">\(\btheta\)</span> to denote a unknown parameter vector including the three. <span class="math inline">\(\mathcal{D}\)</span> is the collected data set including both response <span class="math inline">\(\by\)</span> vector and regressor <span class="math inline">\(\bx\)</span> vector.</p>
+<p>To be a Bayesian, what do we do next? Bayesians only have one trick. We assign priors to the unknown parameters, then do the posterior inference using Bayes’ rule! The idea is simple, but the big question is HOW. There are countless approaches to construct priors for <span class="math inline">\(\beta_0, \beta_1\)</span>, and <span class="math inline">\(\sigma\)</span>. For simplicity, we can assume <span class="math inline">\(\beta_0, \beta_1\)</span>, and <span class="math inline">\(\sigma\)</span> are <span class="green"><em>independent</em></span>. That is, their joint probability distribution is the product of their own marginal distribution: <span class="math inline">\(\pi(\btheta) = \pi(\beta_0, \beta_1, \sigma) = \pi(\beta_0)\pi(\beta_1)\pi(\sigma)\)</span>.</p>
+<p>The next question is what are <span class="math inline">\(\pi(\beta_0)\)</span>, <span class="math inline">\(\pi(\beta_1)\)</span>, and <span class="math inline">\(\pi(\sigma)\)</span>? <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> can technically take any values in the real line. We can embrace the normal distribution because its support is the whole real line, and it is actually a conjugate prior for the SLR with normally distributed errors. Let’s assume</p>
+<p><span class="math display">\[\begin{align} \beta_0 \sim N(m_0, s_0^2), \\
+\beta_1 \sim N(m_1, s_1^2). \end{align}\]</span></p>
+<p>Here <span class="math inline">\(m_0\)</span> and <span class="math inline">\(m_1\)</span> are prior means, and <span class="math inline">\(s_0^2\)</span> and <span class="math inline">\(s_1^2\)</span> are prior variances. Before new data or evidence come in, we think <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> are sort of located at <span class="math inline">\(m_0\)</span> and <span class="math inline">\(m_1\)</span>, respectively. Of course we are not 100% sure or correct. <span class="math inline">\(s_0^2\)</span> and <span class="math inline">\(s_1^2\)</span> measure how uncertain we feel about the location of <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>.</p>
+<!-- - Big question is how? -->
+<!-- ## Prior Models -->
+<p>By definition, <span class="math inline">\(\sigma\)</span> must be positive practically. Therefore, a distribution having a positive support is more appropriate to reflect the possible values of <span class="math inline">\(\sigma\)</span>. One popular distribution used to describe <span class="math inline">\(\sigma\)</span> is the exponential distribution denoted as</p>
+<p><span class="math display">\[\begin{align} \sigma \sim \text{Exp}(\lambda) \end{align}\]</span> whose density function is <span class="math inline">\(\pi(\sigma) = \lambda e^{-\lambda \sigma}\)</span> with <span class="math inline">\(\lambda &gt; 0\)</span>. The mean and variance are <span class="math inline">\(\E(\sigma) = 1/\lambda\)</span>, and <span class="math inline">\(\Var(\sigma) = 1/\lambda^2\)</span>. The parameter <span class="math inline">\(\lambda\)</span> controls the size of mean and variance. The larger <span class="math inline">\(\lambda\)</span> is, the smaller mean and variance will be</p>
+<!-- ::: notes -->
+<!-- https://mc-stan.org/rstanarm/articles/priors.html -->
+<!-- ::: -->
+<p>Once the prior distributions are specified, with the data likelihood model, the Bayesian simple linear regression model is complete.</p>
+<p><span class="math display">\[\begin{align} Y_i \mid \beta_0, \beta_1, \sigma &amp;\stackrel{ind}{\sim}  N\left(\mu_i, \sigma^2 \right) \quad \text{with} \quad \mu_i = \beta_0 + \beta_1 X_i \\
+\beta_0 &amp;\sim N(m_0, s_0^2) \\
+\beta_1 &amp;\sim N(m_1, s_1^2) \\
+\sigma &amp;\sim \text{Exp}(\lambda) \end{align}\]</span></p>
+<p>Note that in this model, we introduce other parameters, the parameters in the prior distributions, <span class="math inline">\(m_0\)</span>, <span class="math inline">\(s_0^2\)</span>, <span class="math inline">\(m_1\)</span>, <span class="math inline">\(s_1^2\)</span>, and <span class="math inline">\(\lambda\)</span>. Some call them <strong>hyperparameters</strong>. The posterior inference results will depend on those values, so before we compute the posterior distribution, we need to specify those values properly, so that the prior distributions faithfully convey our knowledge and belief about <span class="math inline">\(\beta_0\)</span>, <span class="math inline">\(\beta_1\)</span>, and <span class="math inline">\(\sigma\)</span>. The process of finding appropriate hyperparameters to faithfully describe and represents our knowledge is called <strong>prior parameter tuning</strong>. We explain how we tune the parameters using the following example.</p>
+<hr>
+<p><span style="color:blue"> <strong>Example: Capital Bikeshare <a href="https://cran.r-project.org/web/packages/bayesrules/bayesrules.pdf"><code>bayesrules::bikes</code></a> Data in <em>Washington, D.C.</em></strong> </span></p>
+<p>The data we use for illustration is <code><a href="https://bayes-rules.github.io/bayesrules/docs/reference/bikes.html">bayesrules::bikes</a></code> data set. In particular, we check the relationship between the number of bikeshare rides <code>rides</code> and what the temperature feels like (degrees Fahrenheit) <code>temp_feel</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 500
+Columns: 2
+$ rides     &lt;int&gt; 654, 1229, 1454, 1518, 1362, 891, 1280, 1220, 1137, 1368, 13…
+$ temp_feel &lt;dbl&gt; 64.7, 49.0, 51.1, 52.6, 50.8, 46.6, 45.6, 49.2, 46.4, 45.6, …</code></pre>
+</div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-bayes_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="tuning-prior-models" class="level3" data-number="29.1.1"><h3 data-number="29.1.1" class="anchored" data-anchor-id="tuning-prior-models">
+<span class="header-section-number">29.1.1</span> Tuning Prior Models</h3>
+<p><span class="green"><em>Prior understanding 1</em></span>:</p>
+<ul>
+<li><em>On an average temperature day, say 65 or 70 degrees, there are typically around 5000 riders, though this average could be somewhere between 3000 and 7000.</em></li>
+</ul>
+<p>This piece of information gives us an idea of what <span class="math inline">\(m_0\)</span> and <span class="math inline">\(s_0\)</span> should be, but the information has been <em>centered</em> because it provides the <em>typical</em> situation.</p>
+<p>We can consider the <strong>centered intercept</strong>, <span class="math inline">\(\beta_{0c}\)</span> that reflects the <em>typical</em> ridership at the <em>typical</em> temperature. <span class="math inline">\(\beta_{0c}\)</span> will be centered at the typical number of rides 5000, with standard deviation about 1000 because the mean <span class="math inline">\(\pm\)</span> 2 <span class="math inline">\(\times\)</span> SD <span class="math inline">\(= (3000, 7000)\)</span>. So the prior for the <em>centered</em> intercept is <span class="math inline">\(\beta_{0c} \sim N(5000, 1000^2)\)</span>. Graphically speaking, we believe when temperature is around 65 to 70 degrees, the number of rides is about 5000, and interaction of the two dashed lines in the figure.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-bayes_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<!-- ## Tuning Prior Models -->
+<p><span class="green"><em>Prior understanding 2</em></span>:</p>
+<ul>
+<li><em>For every one degree increase in temperature, ridership typically increases by 100 rides, though this average increase could be as low as 20 or as high as 180.</em></li>
+</ul>
+<p>This information tells us about <span class="math inline">\(\beta_1\)</span>. On average, the slope is 100, and its standard deviation is around 40 because the mean <span class="math inline">\(\pm\)</span> 2 <span class="math inline">\(\times\)</span> SD <span class="math inline">\(= (20, 180)\)</span>. Therefore we can have <span class="math inline">\(\beta_{1} \sim N(100, 40^2)\)</span>.</p>
+<p>Graphically speaking, with the centered intercept, we now have the prior regression line, the relationship between <code>rides</code> and <code>temp_feel</code> that we believe it <em>typically</em> has. Note that the prior regression line passes the the centered intercept.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-bayes_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:55.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<!-- ## Prior Model Simulation -->
+<p>Note that this red line represents just the <em>typical</em> case we believe. There are other (in fact infinitely many) possibilities of <span class="math inline">\(\beta_{0c}\)</span> and <span class="math inline">\(\beta_1\)</span> being considered in our brain that are captured in the prior distributions. We can plot some possible combinations of <span class="math inline">\(\beta_{0c}\)</span> and <span class="math inline">\(\beta_1\)</span>, and see the prior plausible model lines <span class="math inline">\(\mu_{Y|X} = \beta_0 + \beta_1 X\)</span>.</p>
+<!-- 100 prior plausible model lines $\mu_{Y|X} = \beta_0 + \beta_1 X$ -->
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-bayes_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<!-- ## Tuning Prior Models -->
+<p><span class="green"><em>Prior understanding 3</em></span>:</p>
+<ul>
+<li><em>At any given temperature, daily ridership will tend to vary with a moderate standard deviation of 1250 rides.</em></li>
+</ul>
+<p>This information is about <span class="math inline">\(\sigma\)</span>. With <span class="math inline">\(\pi(\sigma) = \text{Exp}(\lambda)\)</span>. We can set <span class="math inline">\(\lambda\)</span> so that the prior mean is 1250, as informed by the description.</p>
+<p><span class="math inline">\(\sigma \sim \text{Exp}(0.0008)\)</span> because <span class="math inline">\(\E(\sigma) = 1/\lambda = 1/0.0008 = 1250\)</span></p>
+<p>We basically complete the tuning, and all prior distributions are clearly specified. We can generate some <strong>prior data points</strong>, the data we believe it should look like if we were collecting them, based on the prior model. The following is the simulated prior data when the regression line comes from the prior mean level of <span class="math inline">\(\beta_{0c}\)</span> and <span class="math inline">\(\beta_1\)</span>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-bayes_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:55.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section></section><section id="posterior-inference" class="level2" data-number="29.2"><h2 data-number="29.2" class="anchored" data-anchor-id="posterior-inference">
+<span class="header-section-number">29.2</span> Posterior Inference</h2>
+<section id="posterior-distribution-and-sampling" class="level3" data-number="29.2.1"><h3 data-number="29.2.1" class="anchored" data-anchor-id="posterior-distribution-and-sampling">
+<span class="header-section-number">29.2.1</span> Posterior distribution and sampling</h3>
+<p>Once the Bayesian model is fully specified, we can start doing posterior inference by obtaining the posterior distribution of unknown parameters. We use Bayes rule to update our prior understanding of the relationship between ridership and temperature using data information provided by likelihood.</p>
+<p>The joint posterior distribution is</p>
+<p><span class="math display">\[\pi(\beta_0, \beta_1, \sigma \mid \by) = \frac{L(\beta_0, \beta_1, \sigma \mid \by)\pi(\beta_0, \beta_1, \sigma)}{p(\by)}\]</span> where</p>
+<ul>
+<li><p><span class="math inline">\(L(\beta_0, \beta_1, \sigma \mid \by) = p(\by \mid \beta_0, \beta_1, \sigma) = \prod_{i=1}^np(y_i \mid \beta_0, \beta_1, \sigma)\)</span>. It means that given the parameters, and the data generating mechanism, data points <span class="math inline">\(y_i\)</span>s are independent each other.</p></li>
+<li><p><span class="math inline">\(\pi(\beta_0, \beta_1, \sigma) = \pi(\beta_0)\pi(\beta_1)\pi(\sigma)\)</span>. Priors are assumed independent.</p></li>
+<li><p><span class="math inline">\(p(\by) = \int \int \int \left[\prod_{i=1}^np(y_i \mid \beta_0, \beta_1, \sigma)\right]\pi(\beta_0)\pi(\beta_1)\pi(\sigma) ~ d\beta_0d\beta_1d\sigma\)</span>. This is marginal likelihood that integrates all the parameters out. It is a function of data only. It works as a normalizing constant, guaranteeing that the posterior distribution <span class="math inline">\(\pi(\beta_0, \beta_1, \sigma \mid \by)\)</span> is a valid probability distribution.</p></li>
+</ul>
+<p>As you can see, <span class="math inline">\(p(\by)\)</span> looks much more complicated than the one we learned in <a href="infer-bayes.html" class="quarto-xref"><span>Chapter 21</span></a>. When there are many parameters to be estimated, and their prior distributions are complex, it is difficult or impossible to obtain this integral by hand. That is why when doing Bayesian inference, we usually need to use some algorithms to help us derive the posterior distribution, either exactly or approximately.</p>
+<p>There are lots of ways to generate/approximate the posterior distribution of parameters. They are discussed in Bayesian statistics course. The method used here is <strong>Markov chain Monte Carlo</strong> (MCMC). Briefly speaking, MCMC is an algorithm that repeatedly draws the samples of the parameters, and eventually the collection of those draws well represents the posterior distribution of parameters. Again, the details are discussed in a Bayesian analysis course.</p>
+<!-- ## [`rstanarm::stan_glm()`](https://mc-stan.org/rstanarm/) -->
+<p>Here we use the R <code>rstanarm</code> package that uses <a href="http://mc-stan.org/rstan/">RStan</a> syntax<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> to do Bayesian inference for <em><strong>a</strong>pplied <strong>r</strong>egression <strong>m</strong>odels</em> (arm).</p>
+<p>The function helping us draw posterior samples is <code><a href="https://mc-stan.org/rstanarm/reference/stan_glm.html">stan_glm()</a></code>. The formula is exactly the same as <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>. The <code>family</code> is gaussian because we have a normal data model. <code>prior_intercept</code> is for <span class="math inline">\(\beta_{0c}\)</span>, <code>prior</code> for <span class="math inline">\(\beta_1\)</span> and <code>prior_aux</code> for <span class="math inline">\(\sigma\)</span>. Here, 4 Markov chains are generated. In other words, 4 distinct collection of posterior samples will be generated, each having 10000 draws or iterations. Each iteration draws a posterior sample of the <span class="math inline">\(\beta_0\)</span>, <span class="math inline">\(\beta_1\)</span>, and <span class="math inline">\(\sigma\)</span>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bike_model</span> <span class="op">&lt;-</span> <span class="fu">rstanarm</span><span class="fu">::</span><span class="fu"><a href="https://mc-stan.org/rstanarm/reference/stan_glm.html">stan_glm</a></span><span class="op">(</span><span class="va">rides</span> <span class="op">~</span> <span class="va">temp_feel</span>, data <span class="op">=</span> <span class="va">bikes</span>,</span>
+<span>                                 family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">gaussian</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>                                 prior_intercept <span class="op">=</span> <span class="fu"><a href="https://mc-stan.org/rstanarm/reference/priors.html">normal</a></span><span class="op">(</span><span class="fl">5000</span>, <span class="fl">1000</span><span class="op">)</span>,</span>
+<span>                                 prior <span class="op">=</span> <span class="fu"><a href="https://mc-stan.org/rstanarm/reference/priors.html">normal</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">40</span><span class="op">)</span>, </span>
+<span>                                 prior_aux <span class="op">=</span> <span class="fu"><a href="https://mc-stan.org/rstanarm/reference/priors.html">exponential</a></span><span class="op">(</span><span class="fl">0.0008</span><span class="op">)</span>,</span>
+<span>                                 chains <span class="op">=</span> <span class="fl">4</span>, iter <span class="op">=</span> <span class="fl">5000</span><span class="op">*</span><span class="fl">2</span>, seed <span class="op">=</span> <span class="fl">2024</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<!-- - Generate 4 Monte Carlo chains (`chains = 4`), each having 10000 iterations (`iter = 5000*2`). -->
+<!-- - Each iteration draw a posterior sample of the $\beta_0$, $\beta_1$, and $\sigma$. -->
+<p>After tossing out the first half of Markov chain values from the <strong>warm-up</strong> or <strong>burn-in</strong> phase, <code><a href="https://mc-stan.org/rstanarm/reference/stan_glm.html">stan_glm()</a></code> simulation produces four parallel chains of length 5000 for each model parameter:</p>
+<p><span class="math inline">\(\{ \beta_0^{(1)}, \beta_0^{(2)}, \dots, \beta_0^{(5000)} \}\)</span>, <span class="math inline">\(\{ \beta_1^{(1)}, \beta_1^{(2)}, \dots, \beta_1^{(5000)} \}\)</span>, <span class="math inline">\(\{ \sigma^{(1)}, \sigma^{(2)}, \dots, \sigma^{(5000)} \}\)</span></p>
+</section><section id="convergence-diagnostics" class="level3" data-number="29.2.2"><h3 data-number="29.2.2" class="anchored" data-anchor-id="convergence-diagnostics">
+<span class="header-section-number">29.2.2</span> Convergence diagnostics</h3>
+<p>When we use MCMC to do posterior inference, we need to make sure that the algorithm converges. In other words, the posterior samples drawn by the algorithm should reach a stable distribution, and the distribution basically won’t change much as samples are continuously collected. One way to check the convergence is to check the traceplot, seeing how the sample values move as the iteration goes. If the algorithm reaches the convergence, the traceplots from the 4 independent runs should be mixed and overlapped very well because the 4 set of samples should represent the same posterior distribution. The traceplots obtained from the model fit are mixed well.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Trace plots of parallel chains</span></span>
+<span><span class="fu">bayesplot</span><span class="fu">::</span><span class="fu"><a href="https://mc-stan.org/bayesplot/reference/MCMC-traces.html">mcmc_trace</a></span><span class="op">(</span><span class="va">bike_model</span>, size <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-bayes_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<!-- ## Convergence Diagnostics -->
+<p>When MCMC just starts, the drawn samples are usually not representative of the posterior distribution. Because of this, we usually don’t include the samples drawn in the early iterations in the final collection of samples used for representing the posterior distribution and for analysis. The following two animations show that it takes a while and several iterations to reach a more stable distribution.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="https://blog.stata.com/wp-content/uploads/2016/11/animation3.gif" class="img-fluid figure-img"></p>
+<figcaption>Source: https://blog.stata.com/2016/11/15/introduction-to-bayesian-statistics-part-2-mcmc-and-the-metropolis-hastings-algorithm/</figcaption></figure>
+</div>
+</div>
+</div>
+<!-- ## Convergence Diagnostics -->
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="./images/img-model/metropolis_hastings_animation.gif" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<!-- ## Convergence Diagnostics -->
+<p>The density curves estimated from the posterior samples approximate posterior distributions. We observe that these four chains produce nearly indistinguishable posterior approximations. This provides evidence that our simulation is stable and sufficiently long – running the chains for more iterations likely wouldn’t produce drastically different or improved posterior approximations.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Density plots of parallel chains</span></span>
+<span><span class="fu">bayesplot</span><span class="fu">::</span><span class="fu"><a href="https://mc-stan.org/bayesplot/reference/MCMC-distributions.html">mcmc_dens_overlay</a></span><span class="op">(</span><span class="va">bike_model</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-bayes_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<!-- ::: notes -->
+<!-- The density estimates quantifies the number of independent samples it would take to produce an equivalently accurate posterior approximation. -->
+<!-- ::: -->
+<!-- ## Convergence Diagnostics -->
+<p>In addition to visualization, we can use some numeric measures to diagnose convergence. Both effective sample size and R-hat are close to 1, indicating that the chains are <em>stable</em>, <em>mixing quickly</em>, and behaving much like an <em>independent</em> sample.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Effective sample size ratio</span></span>
+<span><span class="fu">bayesplot</span><span class="fu">::</span><span class="fu"><a href="https://mc-stan.org/bayesplot/reference/bayesplot-extractors.html">neff_ratio</a></span><span class="op">(</span><span class="va">bike_model</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Intercept)   temp_feel       sigma 
+      1.023       1.021       0.996 </code></pre>
+</div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Rhat</span></span>
+<span><span class="fu">bayesplot</span><span class="fu">::</span><span class="fu"><a href="https://mc-stan.org/bayesplot/reference/bayesplot-extractors.html">rhat</a></span><span class="op">(</span><span class="va">bike_model</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Intercept)   temp_feel       sigma 
+          1           1           1 </code></pre>
+</div>
+</div>
+<!-- ::: notes -->
+<p>There’s no magic rule for interpreting this ratio, and it should be utilized alongside other diagnostics such as the trace plot. That said, we might be suspicious of a Markov chain for which the effective sample size ratio is less than 0.1, i.e., the effective sample size is less than 10% of the actual sample size. An R-hat ratio greater than 1.05 raises some red flags about the stability of the simulation. <!-- ::: --></p>
+<!-- ## Convergence Issues -->
+<p>The followings provide two scenarios that MCMC hasn’t reached convergence.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li>
+<span class="green"><em>Highly Autocorrelated Chain</em></span>: Effective size is small, not many independent samples that are representative of the true posterior distribution.
+<ul>
+<li>Run longer and <em>thinning</em> the chain</li>
+</ul>
+</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-bayes_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<ul>
+<li>
+<span class="green"><em>Slow Convergence</em></span>: Need wait longer to have the chain reached a stable mixing zone that are representative of the true posterior distribution.
+<ul>
+<li>Set a longer <em>burn-in</em> or <em>warm-up</em> period</li>
+</ul>
+</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-bayes_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section id="posterior-summary-and-analysis" class="level3" data-number="29.2.3"><h3 data-number="29.2.3" class="anchored" data-anchor-id="posterior-summary-and-analysis">
+<span class="header-section-number">29.2.3</span> Posterior summary and analysis</h3>
+<p>Once posterior samples are collected, we can calculate important summary statistics, for example posterior mean, and the 80% <strong>credible interval</strong>. The two are shown in the first column and the last two columns in the table below.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Posterior summary statistics</span></span>
+<span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html">tidy</a></span><span class="op">(</span><span class="va">bike_model</span>, effects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"fixed"</span>, <span class="st">"aux"</span><span class="op">)</span>,</span>
+<span>     conf.int <span class="op">=</span> <span class="cn">TRUE</span>, conf.level <span class="op">=</span> <span class="fl">0.80</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 5
+  term        estimate std.error conf.low conf.high
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)  -2194.     355.    -2648.    -1747. 
+2 temp_feel       82.2      5.08     75.7      88.7
+3 sigma         1282.      40.6    1231.     1335. 
+4 mean_PPD      3485.      80.7    3384.     3591. </code></pre>
+</div>
+</div>
+<p>The posterior relationship (on average) is <span class="math inline">\(-2196 + 82.2 X\)</span>. Note that before data come in, we believe one degree increase will increase 100 rides on average. However, data tell us the effect of temperature is not as large as we thought. We can directly quantify the uncertainty about <span class="math inline">\(\beta_1\)</span> by looking at its credible interval. The 80% <strong>credible interval</strong> for <span class="math inline">\(\beta_1\)</span> is <span class="math inline">\((75.7, 88.5)\)</span>. The interval is much more intuitive than the confidence interval. We say, given the data, the <span class="green"><em>probability that <span class="math inline">\(\beta_1\)</span> is between 75.7 and 88.5 is 80%.</em></span>, i.e., <span class="math inline">\(P(\beta_1 \in(75.7, 88.5) \mid \by, \bx) = 80\%\)</span>.</p>
+<!-- ## Posterior Samples -->
+<p>The posterior samples are saved in <code>bike_model_df</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Store the 4 chains for each parameter in 1 data frame</span></span>
+<span><span class="va">bike_model_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">bike_model</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">bike_model_df</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 20000</code></pre>
+</div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">bike_model_df</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  (Intercept) temp_feel sigma
+1       -1993      77.7  1289
+2       -1818      75.9  1292
+3       -2003      78.3  1305
+4       -2515      87.4  1250
+5       -2519      88.0  1293
+6       -1666      74.5  1294</code></pre>
+</div>
+</div>
+<p>How do we learn whether or not <span class="math inline">\(\beta_1 &gt; 0\)</span> is zero without using the frequentist hypothesis testing approach? Since we have the posterior samples, we have (at least well approximated) the entire posterior distribution. As a result, we can sort of quantify the probability <span class="math inline">\(P(\beta_1 &gt; 0 \mid \by, \bx)\)</span>. How? We just need to calculate the relative frequency of <span class="math inline">\(\beta_1\)</span> that is greater than 0.</p>
+<p><span class="math display">\[P(\beta_1 &gt; 0 \mid \by, \bx) \approx \frac{1}{20000}\sum_{t=1}^{20000} \mathbf{1}\left(\beta_1^{(t)} &gt; 0\right)\]</span></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">bike_model_df</span><span class="op">$</span><span class="va">temp_feel</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">bike_model_df</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+</div>
+<p>Instead of making a dichotomous judgement, in the Bayesian world, we provide the probability of something happening. Anything is not just black or white. We live in a world full of different gray, a continuum showing the degree of our credence. In our example, the probability that <span class="math inline">\(\beta_1 &gt; 0\)</span> is basically one. We are pretty certain that temperature has a positive effect on the number of bikeshare rides.</p>
+<!-- ## Posterior Regression Lines -->
+<p>The figure below shows 100 posterior regression lines, one corresponding to one pair of <span class="math inline">\((\beta_0^{(t)}, \beta_1^{(t)})\)</span>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-bayes_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<!-- ## Posterior Predictive Draws -->
+<p>For each posterior draw <span class="math inline">\(\{\beta_0^{(t)}, \beta_1^{(t)}, \sigma^{(t)} \}_{t = 1}^{20000}\)</span>, we have the <strong>posterior predictive distribution</strong> <span class="math display">\[Y_i^{(t)} \sim N\left(\beta_0^{(t)} + \beta_1^{(t)}X_i, \, (\sigma^{(t)})^2\right)\]</span></p>
+<p>We then can have 20000 different posterior predictive response distributions, and 20000 different posterior predictive response data sets. Those data are what we think the data will look like if the true data generating mechanism is one of the regression model with parameters <span class="math inline">\(\{\beta_0^{(t)}, \beta_1^{(t)}, \sigma^{(t)} \}\)</span>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-bayes_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<!-- ## Bayes Factor -->
+<!-- ## Posterior Predictive Distribution -->
+<!-- ## Sensitivity Analysis -->
+<!-- ## Bayesian Interpretation for Ridge and Lasso -->
+<!-- - Lasso and Ridge regression can be interpreted as a Bayesian regression model. -->
+<!-- - The same data-level likelihood $$Y_i \mid \bbeta, \sigma \stackrel{ind}{\sim}  N\left(\mu_i, \sigma^2 \right) \quad \text{with} \quad \mu_i = \bx_i'\bbeta$$ -->
+<!-- - We use prior distributions to *regularize* how parameters behave. -->
+<!-- - The two methods can assign the same prior distributions to $\beta_0$ and $\sigma$, but they use *different priors on $\{\beta_j\}_{j = 1}^p$*.^[Remember we usually standardize coefficients before implementing Ridge and Lasso.] -->
+<!--   + [**Lasso**]{.green}: [$\beta_j \stackrel{iid}{\sim} \text{Laplace}\left(0, \tau(\lambda)\right)$](https://en.wikipedia.org/wiki/Laplace_distribution) -->
+<!--   + [**Ridge**]{.green}: $\beta_j \stackrel{iid}{\sim} N\left(0, \tau(\lambda)\right)$ -->
+<!-- ## Ridge and Lasso Priors -->
+<!-- :::: columns -->
+<!-- ::: column -->
+<!-- [**Lasso**]{.green} -->
+<!-- :::{style="font-size: 0.8em;"} -->
+<!-- $$\beta_j \stackrel{iid}{\sim} \text{Laplace}\left(0, \tau(\lambda)\right)$$ -->
+<!-- Lasso solution is the **posterior mode** of $\bbeta$ -->
+<!-- $$\bbeta^{(l)} = \argmax_{\bbeta} \,\,\, \pi(\bbeta \mid \by, \bx)$$ -->
+<!-- ::: -->
+<!-- ```{r} -->
+<!-- par(mar = c(3, 3, 0, 0), mgp = c(2, 0.6, 0)) -->
+<!-- x <- seq(-3, 3, length = 1000) -->
+<!-- lap_dist <- function(x, mu = 0, b) { -->
+<!--     1/(2*b) * exp(- abs(x - mu)/b) -->
+<!-- } -->
+<!-- plot(x, lap_dist(x, b = sqrt(1/2)),  -->
+<!--      xlab = expression(beta[j]), ylim = c(0, 0.7), -->
+<!--      ylab = expression(paste(pi, "(", beta[j], ")")), type = "l",  -->
+<!--      col = 2, lwd = 3, las = 1) -->
+<!-- abline(v = 0, lty = 2, lwd = 0.4) -->
+<!-- ``` -->
+<!-- ::: -->
+<!-- ::: column -->
+<!-- [**Ridge**]{.green} -->
+<!-- :::{style="font-size: 0.8em;"} -->
+<!-- $$\beta_j \stackrel{iid}{\sim} N\left(0, \tau(\lambda)\right)$$ -->
+<!-- Ridge solution is the **posterior mode/mean** of $\bbeta$ -->
+<!-- $$\bbeta^{(r)} = \argmax_{\bbeta} \,\, \, \pi(\bbeta \mid \by, \bx)$$ -->
+<!-- ::: -->
+<!-- ```{r} -->
+<!-- par(mar = c(3, 3, 0, 0), mgp = c(2, 0.6, 0)) -->
+<!-- x <- seq(-3, 3, length = 1000) -->
+<!-- plot(x, dnorm(x), xlab = expression(beta[j]), ylim = c(0, 0.7), -->
+<!--      ylab = expression(paste(pi, "(", beta[j], ")")), type = "l",  -->
+<!--      col = 2, lwd = 3, las = 1) -->
+<!-- abline(v = 0, lty = 2, lwd = 0.4) -->
+<!-- ``` -->
+<!-- ::: -->
+<!-- :::: -->
+</section></section><section id="resources" class="level2" data-number="29.3"><h2 data-number="29.3" class="anchored" data-anchor-id="resources">
+<span class="header-section-number">29.3</span> Resources</h2>
+<ul>
+<li><p><a href="https://www.bayesrulesbook.com/">Bayes Rules! An Introduction to Applied Bayesian Modeling</a></p></li>
+<li><p><a href="https://xcelab.net/rm/statistical-rethinking/">Statistical Rethinking</a></p></li>
+<li><p><a href="https://uk.sagepub.com/en-gb/eur/book/student%E2%80%99s-guide-bayesian-statistics">A Student’s Guide to Bayesian Statistics</a></p></li>
+<li><p><a href="http://www.stat.columbia.edu/~gelman/book/">Bayesian Data Analysis</a></p></li>
+</ul>
 
 
-
-
-
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+</section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
+<ol>
+<li id="fn1"><p>RStan is the R interface to <a href="https://mc-stan.org/">Stan</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -1021,9 +1469,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./model-logistic.html" class="pagination-link" aria-label="Logistic Regression">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Logistic Regression</span></span>
       </a>          
@@ -1035,28 +1481,25 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<footer class="footer">
-  <div class="nav-footer">
+<footer class="footer"><div class="nav-footer">
     <div class="nav-footer-left">
 <p>Copyright 2024, Dr.&nbsp;Cheng-Han Yu</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/model-bayes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/model-bayes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
-    <li class="nav-item compact">
+<li class="nav-item compact">
     <a class="nav-link active" href="https://github.com/chenghanyustats/introstatsbook" aria-current="page">
       <i class="bi bi-github" role="img">
 </i> 
     </a>
   </li>  
 </ul>
-    </div>
+</div>
   </div>
 </footer>
-
-
 
 
 </body></html>

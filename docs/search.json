@@ -2057,5 +2057,280 @@
       "Statistical Models",
       "<span class='chapter-number'>30</span>  <span class='chapter-title'>Survival Analysis</span>"
     ]
+  },
+  {
+    "objectID": "model-bayes.html",
+    "href": "model-bayes.html",
+    "title": "29  Bayesian Linear Regression*",
+    "section": "",
+    "text": "29.1 Bayesian Simple Linear Regression Model\nIn simple linear regression, we have\n\\[Y_i \\mid \\beta_0, \\beta_1, \\sigma \\stackrel{ind}{\\sim}  N\\left(\\mu_i, \\sigma^2 \\right) \\quad \\text{with} \\quad \\mu_i = \\beta_0 + \\beta_1 X_i\\]\nWe assume or thought the response values are generated from the normal distribution whose mean depends on their corresponding regressor’s value. In Bayesian inference, this normal data model is our likelihood \\(L(\\btheta = (\\beta_0, \\beta_1, \\sigma) \\mid \\mathcal{D} = \\{\\by, \\bx \\})\\), as it evaluates how the data are compatible with different possible values of parameters.\nHere, in SLR, we have three unknown parameters \\(\\beta_0, \\beta_1, \\sigma\\) to be estimated, and we use \\(\\btheta\\) to denote a unknown parameter vector including the three. \\(\\mathcal{D}\\) is the collected data set including both response \\(\\by\\) vector and regressor \\(\\bx\\) vector.\nTo be a Bayesian, what do we do next? Bayesians only have one trick. We assign priors to the unknown parameters, then do the posterior inference using Bayes’ rule! The idea is simple, but the big question is HOW. There are countless approaches to construct priors for \\(\\beta_0, \\beta_1\\), and \\(\\sigma\\). For simplicity, we can assume \\(\\beta_0, \\beta_1\\), and \\(\\sigma\\) are independent. That is, their joint probability distribution is the product of their own marginal distribution: \\(\\pi(\\btheta) = \\pi(\\beta_0, \\beta_1, \\sigma) = \\pi(\\beta_0)\\pi(\\beta_1)\\pi(\\sigma)\\).\nThe next question is what are \\(\\pi(\\beta_0)\\), \\(\\pi(\\beta_1)\\), and \\(\\pi(\\sigma)\\)? \\(\\beta_0\\) and \\(\\beta_1\\) can technically take any values in the real line. We can embrace the normal distribution because its support is the whole real line, and it is actually a conjugate prior for the SLR with normally distributed errors. Let’s assume\n\\[\\begin{align} \\beta_0 \\sim N(m_0, s_0^2), \\\\\n\\beta_1 \\sim N(m_1, s_1^2). \\end{align}\\]\nHere \\(m_0\\) and \\(m_1\\) are prior means, and \\(s_0^2\\) and \\(s_1^2\\) are prior variances. Before new data or evidence come in, we think \\(\\beta_0\\) and \\(\\beta_1\\) are sort of located at \\(m_0\\) and \\(m_1\\), respectively. Of course we are not 100% sure or correct. \\(s_0^2\\) and \\(s_1^2\\) measure how uncertain we feel about the location of \\(\\beta_0\\) and \\(\\beta_1\\).\nBy definition, \\(\\sigma\\) must be positive practically. Therefore, a distribution having a positive support is more appropriate to reflect the possible values of \\(\\sigma\\). One popular distribution used to describe \\(\\sigma\\) is the exponential distribution denoted as\n\\[\\begin{align} \\sigma \\sim \\text{Exp}(\\lambda) \\end{align}\\] whose density function is \\(\\pi(\\sigma) = \\lambda e^{-\\lambda \\sigma}\\) with \\(\\lambda &gt; 0\\). The mean and variance are \\(\\E(\\sigma) = 1/\\lambda\\), and \\(\\Var(\\sigma) = 1/\\lambda^2\\). The parameter \\(\\lambda\\) controls the size of mean and variance. The larger \\(\\lambda\\) is, the smaller mean and variance will be\nOnce the prior distributions are specified, with the data likelihood model, the Bayesian simple linear regression model is complete.\n\\[\\begin{align} Y_i \\mid \\beta_0, \\beta_1, \\sigma &\\stackrel{ind}{\\sim}  N\\left(\\mu_i, \\sigma^2 \\right) \\quad \\text{with} \\quad \\mu_i = \\beta_0 + \\beta_1 X_i \\\\\n\\beta_0 &\\sim N(m_0, s_0^2) \\\\\n\\beta_1 &\\sim N(m_1, s_1^2) \\\\\n\\sigma &\\sim \\text{Exp}(\\lambda) \\end{align}\\]\nNote that in this model, we introduce other parameters, the parameters in the prior distributions, \\(m_0\\), \\(s_0^2\\), \\(m_1\\), \\(s_1^2\\), and \\(\\lambda\\). Some call them hyperparameters. The posterior inference results will depend on those values, so before we compute the posterior distribution, we need to specify those values properly, so that the prior distributions faithfully convey our knowledge and belief about \\(\\beta_0\\), \\(\\beta_1\\), and \\(\\sigma\\). The process of finding appropriate hyperparameters to faithfully describe and represents our knowledge is called prior parameter tuning. We explain how we tune the parameters using the following example.\nExample: Capital Bikeshare bayesrules::bikes Data in Washington, D.C.\nThe data we use for illustration is bayesrules::bikes data set. In particular, we check the relationship between the number of bikeshare rides rides and what the temperature feels like (degrees Fahrenheit) temp_feel.\nRows: 500\nColumns: 2\n$ rides     &lt;int&gt; 654, 1229, 1454, 1518, 1362, 891, 1280, 1220, 1137, 1368, 13…\n$ temp_feel &lt;dbl&gt; 64.7, 49.0, 51.1, 52.6, 50.8, 46.6, 45.6, 49.2, 46.4, 45.6, …",
+    "crumbs": [
+      "Statistical Models",
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+    ]
+  },
+  {
+    "objectID": "model-bayes.html#normal-data-model",
+    "href": "model-bayes.html#normal-data-model",
+    "title": "29  Bayesian Linear Regression*",
+    "section": "",
+    "text": "To be a Bayesian, what do we do next?\n\n\nAssign priors to the unknown parameters, then do the posterior inference using Bayes’ rule!\nBig question is how?",
+    "crumbs": [
+      "Statistical Models",
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+    ]
+  },
+  {
+    "objectID": "model-bayes.html#prior-models",
+    "href": "model-bayes.html#prior-models",
+    "title": "29  Bayesian Linear Regression*",
+    "section": "\n29.2 Prior Models",
+    "text": "29.2 Prior Models\n\nThere are countless approaches to construct priors for \\(\\beta_0, \\beta_1\\), and \\(\\sigma\\).\nFor simplicity, assume \\(\\beta_0, \\beta_1\\), and \\(\\sigma\\) are independent, \\(\\pi(\\btheta) = \\pi(\\beta_0, \\beta_1, \\sigma) = \\pi(\\beta_0)\\pi(\\beta_1)\\pi(\\sigma)\\)\n\\(\\beta_0\\) and \\(\\beta_1\\) can technically take any values in the real line.\n\n\\[\\begin{align} \\beta_0 \\sim N(m_0, s_0^2) \\\\\n\\beta_1 \\sim N(m_1, s_1^2) \\end{align}\\]\n\n\n\\(\\sigma\\) must be positive.\n\n\\[\\begin{align} \\sigma \\sim \\text{Exp}(\\lambda) \\end{align}\\] \\(\\pi(\\sigma) = \\lambda e^{-\\lambda \\sigma}\\), \\(\\lambda &gt; 0\\) and \\(\\E(\\sigma) = 1/\\lambda\\), and \\(\\var(\\sigma) = 1/\\lambda^2\\)\n\nhttps://mc-stan.org/rstanarm/articles/priors.html",
+    "crumbs": [
+      "Statistical Models",
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+    ]
+  },
+  {
+    "objectID": "model-bayes.html#bayesian-simple-linear-regression-model",
+    "href": "model-bayes.html#bayesian-simple-linear-regression-model",
+    "title": "29  Bayesian Linear Regression*",
+    "section": "",
+    "text": "29.1.1 Tuning Prior Models\nPrior understanding 1:\n\nOn an average temperature day, say 65 or 70 degrees, there are typically around 5000 riders, though this average could be somewhere between 3000 and 7000.\n\nThis piece of information gives us an idea of what \\(m_0\\) and \\(s_0\\) should be, but the information has been centered because it provides the typical situation.\nWe can consider the centered intercept, \\(\\beta_{0c}\\) that reflects the typical ridership at the typical temperature. \\(\\beta_{0c}\\) will be centered at the typical number of rides 5000, with standard deviation about 1000 because the mean \\(\\pm\\) 2 \\(\\times\\) SD \\(= (3000, 7000)\\). So the prior for the centered intercept is \\(\\beta_{0c} \\sim N(5000, 1000^2)\\). Graphically speaking, we believe when temperature is around 65 to 70 degrees, the number of rides is about 5000, and interaction of the two dashed lines in the figure.\n\n\n\n\n\n\n\n\n\nPrior understanding 2:\n\nFor every one degree increase in temperature, ridership typically increases by 100 rides, though this average increase could be as low as 20 or as high as 180.\n\nThis information tells us about \\(\\beta_1\\). On average, the slope is 100, and its standard deviation is around 40 because the mean \\(\\pm\\) 2 \\(\\times\\) SD \\(= (20, 180)\\). Therefore we can have \\(\\beta_{1} \\sim N(100, 40^2)\\).\nGraphically speaking, with the centered intercept, we now have the prior regression line, the relationship between rides and temp_feel that we believe it typically has. Note that the prior regression line passes the the centered intercept.\n\n\n\n\n\n\n\n\n\nNote that this red line represents just the typical case we believe. There are other (in fact infinitely many) possibilities of \\(\\beta_{0c}\\) and \\(\\beta_1\\) being considered in our brain that are captured in the prior distributions. We can plot some possible combinations of \\(\\beta_{0c}\\) and \\(\\beta_1\\), and see the prior plausible model lines \\(\\mu_{Y|X} = \\beta_0 + \\beta_1 X\\).\n\n\n\n\n\n\n\n\n\n\nPrior understanding 3:\n\nAt any given temperature, daily ridership will tend to vary with a moderate standard deviation of 1250 rides.\n\nThis information is about \\(\\sigma\\). With \\(\\pi(\\sigma) = \\text{Exp}(\\lambda)\\). We can set \\(\\lambda\\) so that the prior mean is 1250, as informed by the description.\n\\(\\sigma \\sim \\text{Exp}(0.0008)\\) because \\(\\E(\\sigma) = 1/\\lambda = 1/0.0008 = 1250\\)\nWe basically complete the tuning, and all prior distributions are clearly specified. We can generate some prior data points, the data we believe it should look like if we were collecting them, based on the prior model. The following is the simulated prior data when the regression line comes from the prior mean level of \\(\\beta_{0c}\\) and \\(\\beta_1\\).",
+    "crumbs": [
+      "Statistical Models",
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+    ]
+  },
+  {
+    "objectID": "model-bayes.html#capital-bikeshare-bayesrulesbikes-data-in-washington-d.c.",
+    "href": "model-bayes.html#capital-bikeshare-bayesrulesbikes-data-in-washington-d.c.",
+    "title": "29  Bayesian Linear Regression*",
+    "section": "\n29.2 Capital Bikeshare bayesrules::bikes Data in Washington, D.C.\n",
+    "text": "29.2 Capital Bikeshare bayesrules::bikes Data in Washington, D.C.\n\n\n\nRows: 500\nColumns: 2\n$ rides     &lt;int&gt; 654, 1229, 1454, 1518, 1362, 891, 1280, 1220, 1137, 1368, 13…\n$ temp_feel &lt;dbl&gt; 64.7, 49.0, 51.1, 52.6, 50.8, 46.6, 45.6, 49.2, 46.4, 45.6, …",
+    "crumbs": [
+      "Statistical Models",
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+    ]
+  },
+  {
+    "objectID": "model-bayes.html#tuning-prior-models",
+    "href": "model-bayes.html#tuning-prior-models",
+    "title": "29  Bayesian Linear Regression*",
+    "section": "\n29.2 Tuning Prior Models",
+    "text": "29.2 Tuning Prior Models\n\n\nPrior understanding 1:\n\nOn an average temperature day, say 65 or 70 degrees, there are typically around 5000 riders, though this average could be somewhere between 3000 and 7000.\n\n\nThe prior information tells us something about \\(\\beta_0\\), but the information has been centered.\n\nThe centered intercept, \\(\\beta_{0c}\\), reflects the typical ridership at the typical temperature.\n\n\n\n\\(\\beta_{0c} \\sim N(5000, 1000^2)\\)",
+    "crumbs": [
+      "Statistical Models",
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+    ]
+  },
+  {
+    "objectID": "model-bayes.html#tuning-prior-models-1",
+    "href": "model-bayes.html#tuning-prior-models-1",
+    "title": "29  Bayesian Linear Regression*",
+    "section": "\n29.2 Tuning Prior Models",
+    "text": "29.2 Tuning Prior Models\n\n\nPrior understanding 3:\n\nAt any given temperature, daily ridership will tend to vary with a moderate standard deviation of 1250 rides.\n\n\n\n\\(\\sigma \\sim \\text{Exp}(0.0008)\\) because \\(\\E(\\sigma) = 1/\\lambda = 1/0.0008 = 1250\\)",
+    "crumbs": [
+      "Statistical Models",
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+    ]
+  },
+  {
+    "objectID": "model-bayes.html#tuning-prior-models-2",
+    "href": "model-bayes.html#tuning-prior-models-2",
+    "title": "29  Bayesian Linear Regression*",
+    "section": "\n29.3 Tuning Prior Models",
+    "text": "29.3 Tuning Prior Models\n\n\nPrior understanding 3:\n\nAt any given temperature, daily ridership will tend to vary with a moderate standard deviation of 1250 rides.\n\n\n\n\\(\\sigma \\sim \\text{Exp}(0.0008)\\) because \\(\\E(\\sigma) = 1/\\lambda = 1/0.0008 = 1250\\)",
+    "crumbs": [
+      "Statistical Models",
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+    ]
+  },
+  {
+    "objectID": "model-bayes.html#prior-model-simulation",
+    "href": "model-bayes.html#prior-model-simulation",
+    "title": "29  Bayesian Linear Regression*",
+    "section": "\n29.3 Prior Model Simulation",
+    "text": "29.3 Prior Model Simulation\n\n100 prior plausible model lines \\(\\mu_{Y|X} = \\beta_0 + \\beta_1 X\\)",
+    "crumbs": [
+      "Statistical Models",
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+    ]
+  },
+  {
+    "objectID": "model-bayes.html#posterior-inference",
+    "href": "model-bayes.html#posterior-inference",
+    "title": "29  Bayesian Linear Regression*",
+    "section": "\n29.2 Posterior Inference",
+    "text": "29.2 Posterior Inference\n\n29.2.1 Posterior distribution and sampling\nOnce the Bayesian model is fully specified, we can start doing posterior inference by obtaining the posterior distribution of unknown parameters. We use Bayes rule to update our prior understanding of the relationship between ridership and temperature using data information provided by likelihood.\nThe joint posterior distribution is\n\\[\\pi(\\beta_0, \\beta_1, \\sigma \\mid \\by) = \\frac{L(\\beta_0, \\beta_1, \\sigma \\mid \\by)\\pi(\\beta_0, \\beta_1, \\sigma)}{p(\\by)}\\] where\n\n\\(L(\\beta_0, \\beta_1, \\sigma \\mid \\by) = p(\\by \\mid \\beta_0, \\beta_1, \\sigma) = \\prod_{i=1}^np(y_i \\mid \\beta_0, \\beta_1, \\sigma)\\). It means that given the parameters, and the data generating mechanism, data points \\(y_i\\)s are independent each other.\n\\(\\pi(\\beta_0, \\beta_1, \\sigma) = \\pi(\\beta_0)\\pi(\\beta_1)\\pi(\\sigma)\\). Priors are assumed independent.\n\\(p(\\by) = \\int \\int \\int \\left[\\prod_{i=1}^np(y_i \\mid \\beta_0, \\beta_1, \\sigma)\\right]\\pi(\\beta_0)\\pi(\\beta_1)\\pi(\\sigma) ~ d\\beta_0d\\beta_1d\\sigma\\). This is marginal likelihood that integrates all the parameters out. It is a function of data only. It works as a normalizing constant, guaranteeing that the posterior distribution \\(\\pi(\\beta_0, \\beta_1, \\sigma \\mid \\by)\\) is a valid probability distribution.\n\nAs you can see, \\(p(\\by)\\) looks much more complicated than the one we learned in Chapter 21. When there are many parameters to be estimated, and their prior distributions are complex, it is difficult or impossible to obtain this integral by hand. That is why when doing Bayesian inference, we usually need to use some algorithms to help us derive the posterior distribution, either exactly or approximately.\nThere are lots of ways to generate/approximate the posterior distribution of parameters. They are discussed in Bayesian statistics course. The method used here is Markov chain Monte Carlo (MCMC). Briefly speaking, MCMC is an algorithm that repeatedly draws the samples of the parameters, and eventually the collection of those draws well represents the posterior distribution of parameters. Again, the details are discussed in a Bayesian analysis course.\n\nHere we use the R rstanarm package that uses RStan syntax1 to do Bayesian inference for applied regression models (arm).\nThe function helping us draw posterior samples is stan_glm(). The formula is exactly the same as lm(). The family is gaussian because we have a normal data model. prior_intercept is for \\(\\beta_{0c}\\), prior for \\(\\beta_1\\) and prior_aux for \\(\\sigma\\). Here, 4 Markov chains are generated. In other words, 4 distinct collection of posterior samples will be generated, each having 10000 draws or iterations. Each iteration draws a posterior sample of the \\(\\beta_0\\), \\(\\beta_1\\), and \\(\\sigma\\).\n\nbike_model &lt;- rstanarm::stan_glm(rides ~ temp_feel, data = bikes,\n                                 family = gaussian(),\n                                 prior_intercept = normal(5000, 1000),\n                                 prior = normal(100, 40), \n                                 prior_aux = exponential(0.0008),\n                                 chains = 4, iter = 5000*2, seed = 2024)\n\n\n\nAfter tossing out the first half of Markov chain values from the warm-up or burn-in phase, stan_glm() simulation produces four parallel chains of length 5000 for each model parameter:\n\\(\\{ \\beta_0^{(1)}, \\beta_0^{(2)}, \\dots, \\beta_0^{(5000)} \\}\\), \\(\\{ \\beta_1^{(1)}, \\beta_1^{(2)}, \\dots, \\beta_1^{(5000)} \\}\\), \\(\\{ \\sigma^{(1)}, \\sigma^{(2)}, \\dots, \\sigma^{(5000)} \\}\\)\n\n29.2.2 Convergence diagnostics\nWhen we use MCMC to do posterior inference, we need to make sure that the algorithm converges. In other words, the posterior samples drawn by the algorithm should reach a stable distribution, and the distribution basically won’t change much as samples are continuously collected. One way to check the convergence is to check the traceplot, seeing how the sample values move as the iteration goes. If the algorithm reaches the convergence, the traceplots from the 4 independent runs should be mixed and overlapped very well because the 4 set of samples should represent the same posterior distribution. The traceplots obtained from the model fit are mixed well.\n\n# Trace plots of parallel chains\nbayesplot::mcmc_trace(bike_model, size = 0.1)\n\n\n\n\n\n\n\n\nWhen MCMC just starts, the drawn samples are usually not representative of the posterior distribution. Because of this, we usually don’t include the samples drawn in the early iterations in the final collection of samples used for representing the posterior distribution and for analysis. The following two animations show that it takes a while and several iterations to reach a more stable distribution.\n\n\n\n\nSource: https://blog.stata.com/2016/11/15/introduction-to-bayesian-statistics-part-2-mcmc-and-the-metropolis-hastings-algorithm/\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe density curves estimated from the posterior samples approximate posterior distributions. We observe that these four chains produce nearly indistinguishable posterior approximations. This provides evidence that our simulation is stable and sufficiently long – running the chains for more iterations likely wouldn’t produce drastically different or improved posterior approximations.\n\n# Density plots of parallel chains\nbayesplot::mcmc_dens_overlay(bike_model)\n\n\n\n\n\n\n\n\n\n\n\nIn addition to visualization, we can use some numeric measures to diagnose convergence. Both effective sample size and R-hat are close to 1, indicating that the chains are stable, mixing quickly, and behaving much like an independent sample.\n\n# Effective sample size ratio\nbayesplot::neff_ratio(bike_model)\n\n(Intercept)   temp_feel       sigma \n      1.023       1.021       0.996 \n\n# Rhat\nbayesplot::rhat(bike_model)\n\n(Intercept)   temp_feel       sigma \n          1           1           1 \n\n\n\nThere’s no magic rule for interpreting this ratio, and it should be utilized alongside other diagnostics such as the trace plot. That said, we might be suspicious of a Markov chain for which the effective sample size ratio is less than 0.1, i.e., the effective sample size is less than 10% of the actual sample size. An R-hat ratio greater than 1.05 raises some red flags about the stability of the simulation. \n\nThe followings provide two scenarios that MCMC hasn’t reached convergence.\n\n\n\n\nHighly Autocorrelated Chain: Effective size is small, not many independent samples that are representative of the true posterior distribution.\n\nRun longer and thinning the chain\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSlow Convergence: Need wait longer to have the chain reached a stable mixing zone that are representative of the true posterior distribution.\n\nSet a longer burn-in or warm-up period\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n29.2.3 Posterior summary and analysis\nOnce posterior samples are collected, we can calculate important summary statistics, for example posterior mean, and the 80% credible interval. The two are shown in the first column and the last two columns in the table below.\n\n# Posterior summary statistics\ntidy(bike_model, effects = c(\"fixed\", \"aux\"),\n     conf.int = TRUE, conf.level = 0.80)\n\n# A tibble: 4 × 5\n  term        estimate std.error conf.low conf.high\n  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;\n1 (Intercept)  -2194.     355.    -2648.    -1747. \n2 temp_feel       82.2      5.08     75.7      88.7\n3 sigma         1282.      40.6    1231.     1335. \n4 mean_PPD      3485.      80.7    3384.     3591. \n\n\nThe posterior relationship (on average) is \\(-2196 + 82.2 X\\). Note that before data come in, we believe one degree increase will increase 100 rides on average. However, data tell us the effect of temperature is not as large as we thought. We can directly quantify the uncertainty about \\(\\beta_1\\) by looking at its credible interval. The 80% credible interval for \\(\\beta_1\\) is \\((75.7, 88.5)\\). The interval is much more intuitive than the confidence interval. We say, given the data, the probability that \\(\\beta_1\\) is between 75.7 and 88.5 is 80%., i.e., \\(P(\\beta_1 \\in(75.7, 88.5) \\mid \\by, \\bx) = 80\\%\\).\n\nThe posterior samples are saved in bike_model_df.\n\n# Store the 4 chains for each parameter in 1 data frame\nbike_model_df &lt;- as.data.frame(bike_model)\nnrow(bike_model_df)\n\n[1] 20000\n\nhead(bike_model_df)\n\n  (Intercept) temp_feel sigma\n1       -1993      77.7  1289\n2       -1818      75.9  1292\n3       -2003      78.3  1305\n4       -2515      87.4  1250\n5       -2519      88.0  1293\n6       -1666      74.5  1294\n\n\nHow do we learn whether or not \\(\\beta_1 &gt; 0\\) is zero without using the frequentist hypothesis testing approach? Since we have the posterior samples, we have (at least well approximated) the entire posterior distribution. As a result, we can sort of quantify the probability \\(P(\\beta_1 &gt; 0 \\mid \\by, \\bx)\\). How? We just need to calculate the relative frequency of \\(\\beta_1\\) that is greater than 0.\n\\[P(\\beta_1 &gt; 0 \\mid \\by, \\bx) \\approx \\frac{1}{20000}\\sum_{t=1}^{20000} \\mathbf{1}\\left(\\beta_1^{(t)} &gt; 0\\right)\\]\n\nsum(bike_model_df$temp_feel &gt; 0) / nrow(bike_model_df)\n\n[1] 1\n\n\nInstead of making a dichotomous judgement, in the Bayesian world, we provide the probability of something happening. Anything is not just black or white. We live in a world full of different gray, a continuum showing the degree of our credence. In our example, the probability that \\(\\beta_1 &gt; 0\\) is basically one. We are pretty certain that temperature has a positive effect on the number of bikeshare rides.\n\nThe figure below shows 100 posterior regression lines, one corresponding to one pair of \\((\\beta_0^{(t)}, \\beta_1^{(t)})\\).\n\n\n\n\n\n\n\n\n\nFor each posterior draw \\(\\{\\beta_0^{(t)}, \\beta_1^{(t)}, \\sigma^{(t)} \\}_{t = 1}^{20000}\\), we have the posterior predictive distribution \\[Y_i^{(t)} \\sim N\\left(\\beta_0^{(t)} + \\beta_1^{(t)}X_i, \\, (\\sigma^{(t)})^2\\right)\\]\nWe then can have 20000 different posterior predictive response distributions, and 20000 different posterior predictive response data sets. Those data are what we think the data will look like if the true data generating mechanism is one of the regression model with parameters \\(\\{\\beta_0^{(t)}, \\beta_1^{(t)}, \\sigma^{(t)} \\}\\).",
+    "crumbs": [
+      "Statistical Models",
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+    ]
+  },
+  {
+    "objectID": "model-bayes.html#rstanarmstan_glm",
+    "href": "model-bayes.html#rstanarmstan_glm",
+    "title": "29  Bayesian Linear Regression*",
+    "section": "\n29.3 rstanarm::stan_glm()\n",
+    "text": "29.3 rstanarm::stan_glm()\n\n\n\nrstanarm uses RStan syntax1 to do Bayesian inference for applied regression models (arm).\n\n\nbike_model &lt;- rstanarm::stan_glm(rides ~ temp_feel, data = bikes,\n                                 family = gaussian,\n                                 prior_intercept = normal(5000, 1000),\n                                 prior = normal(100, 40), \n                                 prior_aux = exponential(0.0008),\n                                 chains = 4, iter = 5000*2, seed = 2024)\n\n\nGenerate 4 Monte Carlo chains (chains = 4), each having 10000 iterations (iter = 5000*2).\nEach iteration draw a posterior sample of the \\(\\beta_0\\), \\(\\beta_1\\), and \\(\\sigma\\).\nAfter tossing out the first half of Markov chain values from the warm-up or burn-in phase, stan_glm() simulation produces four parallel chains of length 5000 for each model parameter:\n\n\\(\\{ \\beta_0^{(1)}, \\beta_0^{(2)}, \\dots, \\beta_0^{(5000)} \\}\\), \\(\\{ \\beta_1^{(1)}, \\beta_1^{(2)}, \\dots, \\beta_1^{(5000)} \\}\\), \\(\\{ \\sigma^{(1)}, \\sigma^{(2)}, \\dots, \\sigma^{(5000)} \\}\\)",
+    "crumbs": [
+      "Statistical Models",
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+    ]
+  },
+  {
+    "objectID": "model-bayes.html#convergence-diagnostics",
+    "href": "model-bayes.html#convergence-diagnostics",
+    "title": "29  Bayesian Linear Regression*",
+    "section": "\n29.3 Convergence Diagnostics",
+    "text": "29.3 Convergence Diagnostics\n\n# Trace plots of parallel chains\nbayesplot::mcmc_trace(bike_model, size = 0.1)",
+    "crumbs": [
+      "Statistical Models",
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+    ]
+  },
+  {
+    "objectID": "model-bayes.html#convergence-diagnostics-1",
+    "href": "model-bayes.html#convergence-diagnostics-1",
+    "title": "29  Bayesian Linear Regression*",
+    "section": "\n29.4 Convergence Diagnostics",
+    "text": "29.4 Convergence Diagnostics\n\n\n\n\nSource: https://blog.stata.com/2016/11/15/introduction-to-bayesian-statistics-part-2-mcmc-and-the-metropolis-hastings-algorithm/",
+    "crumbs": [
+      "Statistical Models",
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+    ]
+  },
+  {
+    "objectID": "model-bayes.html#convergence-diagnostics-2",
+    "href": "model-bayes.html#convergence-diagnostics-2",
+    "title": "29  Bayesian Linear Regression*",
+    "section": "\n29.5 Convergence Diagnostics",
+    "text": "29.5 Convergence Diagnostics",
+    "crumbs": [
+      "Statistical Models",
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+    ]
+  },
+  {
+    "objectID": "model-bayes.html#convergence-diagnostics-3",
+    "href": "model-bayes.html#convergence-diagnostics-3",
+    "title": "29  Bayesian Linear Regression*",
+    "section": "\n29.6 Convergence Diagnostics",
+    "text": "29.6 Convergence Diagnostics\n\n# Density plots of parallel chains\nbayesplot::mcmc_dens_overlay(bike_model)\n\n\n\n\n\n\n\n\n\nquantifies the number of independent samples it would take to produce an equivalently accurate posterior approximation.\nwe observe that these four chains produce nearly indistinguishable posterior approximations. This provides evidence that our simulation is stable and sufficiently long – running the chains for more iterations likely wouldn’t produce drastically different or improved posterior approximations.",
+    "crumbs": [
+      "Statistical Models",
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+    ]
+  },
+  {
+    "objectID": "model-bayes.html#convergence-diagnostics-4",
+    "href": "model-bayes.html#convergence-diagnostics-4",
+    "title": "29  Bayesian Linear Regression*",
+    "section": "\n29.7 Convergence Diagnostics",
+    "text": "29.7 Convergence Diagnostics\n\n# Effective sample size ratio\nbayesplot::neff_ratio(bike_model)\n\n(Intercept)   temp_feel       sigma \n      1.023       1.021       0.996 \n\n# Rhat\nbayesplot::rhat(bike_model)\n\n(Intercept)   temp_feel       sigma \n          1           1           1 \n\n\n\nBoth effective sample size and R-hat are close to 1, indicating that the chains are stable, mixing quickly, and behaving much like an independent sample.\n\n\n\nThere’s no magic rule for interpreting this ratio, and it should be utilized alongside other diagnostics such as the trace plot. That said, we might be suspicious of a Markov chain for which the effective sample size ratio is less than 0.1, i.e., the effective sample size is less than 10% of the actual sample size.\nan R-hat ratio greater than 1.05 raises some red flags about the stability of the simulation.",
+    "crumbs": [
+      "Statistical Models",
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+    ]
+  },
+  {
+    "objectID": "model-bayes.html#convergence-issues",
+    "href": "model-bayes.html#convergence-issues",
+    "title": "29  Bayesian Linear Regression*",
+    "section": "\n29.8 Convergence Issues",
+    "text": "29.8 Convergence Issues\n\n\n\n\nHighly Autocorrelated Chain: Effective size is small, not many independent samples that are representative of the true posterior distribution.\n\nRun longer and thinning the chain\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSlow Convergence: Need wait longer to have the chain reached a stable mixing zone that are representative of the true posterior distribution.\n\nSet a longer burn-in or warm-up period",
+    "crumbs": [
+      "Statistical Models",
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+    ]
+  },
+  {
+    "objectID": "model-bayes.html#interpreting-the-posterior",
+    "href": "model-bayes.html#interpreting-the-posterior",
+    "title": "29  Bayesian Linear Regression*",
+    "section": "\n29.3 Interpreting the Posterior",
+    "text": "29.3 Interpreting the Posterior\n\n# Posterior summary statistics\ntidy(bike_model, effects = c(\"fixed\", \"aux\"),\n     conf.int = TRUE, conf.level = 0.80)\n\n# A tibble: 4 × 5\n  term        estimate std.error conf.low conf.high\n  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;\n1 (Intercept)  -2194.     355.    -2648.    -1747. \n2 temp_feel       82.2      5.08     75.7      88.7\n3 sigma         1282.      40.6    1231.     1335. \n4 mean_PPD      3485.      80.7    3384.     3591. \n\n\n\nThe posterior relationship is\n\n\\[-2196 + 82.2 X\\]\n\nThe 80% credible interval for \\(\\beta_1\\) is \\((75.7, 88.5)\\).\nGiven the data, the probability that \\(\\beta_1\\) is between 75.7 and 88.5 is 80%., i.e., \\(P(\\beta_1 \\in(75.7, 88.5) \\mid \\by, \\bx) = 80\\%\\).",
+    "crumbs": [
+      "Statistical Models",
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+    ]
+  },
+  {
+    "objectID": "model-bayes.html#posterior-samples",
+    "href": "model-bayes.html#posterior-samples",
+    "title": "29  Bayesian Linear Regression*",
+    "section": "\n29.3 Posterior Samples",
+    "text": "29.3 Posterior Samples\n\n# Store the 4 chains for each parameter in 1 data frame\nbike_model_df &lt;- as.data.frame(bike_model)\nnrow(bike_model_df)\n\n[1] 20000\n\nhead(bike_model_df)\n\n  (Intercept) temp_feel sigma\n1       -1993      77.7  1289\n2       -1818      75.9  1292\n3       -2003      78.3  1305\n4       -2515      87.4  1250\n5       -2519      88.0  1293\n6       -1666      74.5  1294\n\n\nHow to obtain \\(P(\\beta_1 &gt; 0 \\mid \\by, \\bx)\\)?\n\\(P(\\beta_1 &gt; 0 \\mid \\by, \\bx) \\approx \\frac{1}{20000}\\sum_{t=1}^{20000} \\mathbf{1}\\left(\\beta_1^{(t)} &gt; 0\\right)\\)\n\nsum(bike_model_df$temp_feel &gt; 0) / nrow(bike_model_df)\n\n[1] 1",
+    "crumbs": [
+      "Statistical Models",
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+    ]
+  },
+  {
+    "objectID": "model-bayes.html#posterior-regression-lines",
+    "href": "model-bayes.html#posterior-regression-lines",
+    "title": "29  Bayesian Linear Regression*",
+    "section": "\n29.3 Posterior Regression Lines",
+    "text": "29.3 Posterior Regression Lines",
+    "crumbs": [
+      "Statistical Models",
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+    ]
+  },
+  {
+    "objectID": "model-bayes.html#posterior-predictive-draws",
+    "href": "model-bayes.html#posterior-predictive-draws",
+    "title": "29  Bayesian Linear Regression*",
+    "section": "\n29.3 Posterior Predictive Draws",
+    "text": "29.3 Posterior Predictive Draws\nFor each posterior draw \\(\\{\\beta_0^{(t)}, \\beta_1^{(t)}, \\sigma^{(t)} \\}_{t = 1}^{20000}\\), we have the posterior predictive distribution \\[Y_i^{(t)} \\sim N\\left(\\beta_0^{(t)} + \\beta_1^{(t)}X_i, \\, (\\sigma^{(t)})^2\\right)\\]",
+    "crumbs": [
+      "Statistical Models",
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+    ]
+  },
+  {
+    "objectID": "model-bayes.html#bayesian-interpretation-for-ridge-and-lasso",
+    "href": "model-bayes.html#bayesian-interpretation-for-ridge-and-lasso",
+    "title": "29  Bayesian Linear Regression*",
+    "section": "\n29.7 Bayesian Interpretation for Ridge and Lasso",
+    "text": "29.7 Bayesian Interpretation for Ridge and Lasso\n\nLasso and Ridge regression can be interpreted as a Bayesian regression model.\nThe same data-level likelihood \\[Y_i \\mid \\bbeta, \\sigma \\stackrel{ind}{\\sim}  N\\left(\\mu_i, \\sigma^2 \\right) \\quad \\text{with} \\quad \\mu_i = \\bx_i'\\bbeta\\]\nWe use prior distributions to regularize how parameters behave.\n\nThe two methods can assign the same prior distributions to \\(\\beta_0\\) and \\(\\sigma\\), but they use different priors on \\(\\{\\beta_j\\}_{j = 1}^p\\).2\n\nLasso: \\(\\beta_j \\stackrel{iid}{\\sim} \\text{Laplace}\\left(0, \\tau(\\lambda)\\right)\\)\nRidge: \\(\\beta_j \\stackrel{iid}{\\sim} N\\left(0, \\tau(\\lambda)\\right)\\)",
+    "crumbs": [
+      "Statistical Models",
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+    ]
+  },
+  {
+    "objectID": "model-bayes.html#ridge-and-lasso-priors",
+    "href": "model-bayes.html#ridge-and-lasso-priors",
+    "title": "29  Bayesian Linear Regression*",
+    "section": "\n29.8 Ridge and Lasso Priors",
+    "text": "29.8 Ridge and Lasso Priors\n\n\nLasso\n\n\\[\\beta_j \\stackrel{iid}{\\sim} \\text{Laplace}\\left(0, \\tau(\\lambda)\\right)\\]\nLasso solution is the posterior mode of \\(\\bbeta\\)\n\\[\\bbeta^{(l)} = \\argmax_{\\bbeta} \\,\\,\\, \\pi(\\bbeta \\mid \\by, \\bx)\\]\n\n\n\n\n\n\n\n\n\n\nRidge\n\n\\[\\beta_j \\stackrel{iid}{\\sim} N\\left(0, \\tau(\\lambda)\\right)\\]\nRidge solution is the posterior mode/mean of \\(\\bbeta\\)\n\\[\\bbeta^{(r)} = \\argmax_{\\bbeta} \\,\\, \\, \\pi(\\bbeta \\mid \\by, \\bx)\\]",
+    "crumbs": [
+      "Statistical Models",
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+    ]
+  },
+  {
+    "objectID": "model-bayes.html#resources",
+    "href": "model-bayes.html#resources",
+    "title": "29  Bayesian Linear Regression*",
+    "section": "\n29.3 Resources",
+    "text": "29.3 Resources\n\nBayes Rules! An Introduction to Applied Bayesian Modeling\nStatistical Rethinking\nA Student’s Guide to Bayesian Statistics\nBayesian Data Analysis",
+    "crumbs": [
+      "Statistical Models",
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+    ]
+  },
+  {
+    "objectID": "model-bayes.html#footnotes",
+    "href": "model-bayes.html#footnotes",
+    "title": "29  Bayesian Linear Regression*",
+    "section": "",
+    "text": "RStan is the R interface to Stan.↩︎",
+    "crumbs": [
+      "Statistical Models",
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+    ]
   }
 ]
