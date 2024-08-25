@@ -89,7 +89,7 @@ type(1 > 3)
 type(5) is float
 ```
 
-python long (long integers, they can also be represented in octal and hexadecimal)
+<!-- python long (long integers, they can also be represented in octal and hexadecimal) -->
 
 
 
@@ -927,8 +927,418 @@ np.hstack((a, b))
 
 ## Plotting
 
+[matplotlib.markers](https://matplotlib.org/stable/api/markers_api.html)
+
+```{python}
+pch = np.array(['.', ',', 'o', 'v', '^', '<', '>', '1', '2', '3', '4', '8', 's', 'p', 'P', '*', 'h', 'H', '+', 'x', 'X', 'D', 'd', '|', '_'])
+#all types of maker
+pch_len = pch.shape[0]
+x = np.array([i for i in range(1, pch_len+1)])
+y = np.ones(pch_len)
+```
+
+```{python}
+plt.figure(0)
+for i in range(0, pch_len):
+    plt.plot(x[i],y[i],pch[i])
+```
+
+
+### Scatterplot
+
+```{python}
+#| echo: true
+#| out-width: "38%"
+#| class-output: "my_class600"
+#| code-fold: true
+mtcars = pd.read_csv('./data/mtcars.csv')
+mtcars.iloc[0:15,0:4]
+```
+
+```{python}
+#| echo: true
+
+import matplotlib.pyplot as plt
+plt.scatter(x = mtcars.mpg, y = mtcars.hp, color = "r")
+plt.xlabel("Miles per gallon")
+plt.ylabel("Horsepower")
+plt.title("Scatter plot")
+```
+
+
+### Subplots
+
+The command `plt.scatter()` is used for creating one single plot. If multiple subplots are wanted in one single call, one can use the format
+
+```{python}
+#| echo: true
+#| eval: false
+fig, (ax1, ax2) = plt.subplots(1, 2)
+ax1.scatter(x, y)
+ax2.plot(x, y)
+```
+
+```{python}
+fig, (ax1, ax2) = plt.subplots(1, 2)
+ax1.scatter(x = mtcars.mpg, y = mtcars.hp)
+ax2.scatter(x = mtcars.hp, y = mtcars.disp)
+```
+
+
+- Check [Creating multiple subplots using `plt.subplots`](https://matplotlib.org/stable/gallery/subplots_axes_and_figures/subplots_demo.html) for more details.
+
+### Boxplot
+
+```{python}
+#| echo: true
+#| code-fold: true
+cyl_index = np.sort(np.unique(np.array(mtcars.cyl)))
+cyl_shape = cyl_index.shape[0]
+cyl_list = []
+for i in range (0, cyl_shape):
+    cyl_list.append(np.array(mtcars[mtcars.cyl == cyl_index[i]].mpg))
+```
+
+```{python}
+#| echo: true
+#| label: boxplot-py
+#| out-width: 100%
+plt.boxplot(cyl_list, vert=False, tick_labels=[4, 6, 8])
+plt.xlabel("Miles per gallon")
+plt.ylabel("Number of cylinders")
+```
+
+
+### Histogram
+
+```{python}
+#| echo: true
+#| out-width: 100%
+plt.hist(mtcars.wt, 
+         bins = 19, 
+         color="#003366",
+         edgecolor="#FFCC00")
+plt.xlabel("weights")
+plt.title("Histogram of weights")
+```
+
+### Barplot
+
+```{python}
+#| echo: true
+count_py = mtcars.value_counts('gear')
+count_py
+```
+
+```{python}
+#| echo: true
+#| out-width: 100%
+plt.bar(count_py.index, count_py)
+plt.xlabel("Number of Gears")
+plt.title("Car Distribution")
+```
+
+### Pie chart
+
+```{python}
+#| echo: true
+percent = round(count_py / sum(count_py) * 100, 2)
+texts = [str(percent.index[k]) + " gear " + str(percent.array[k]) + "%" for k in range(0,3)]
+```
+
+```{python}
+#| echo: true
+plt.pie(count_py, labels = texts, colors = ['r', 'g', 'b'])
+plt.title("Pie Charts")
+```
+
+### 2D Imaging
+
+
+In [Python](https://matplotlib.org/stable/plot_types/arrays/imshow.html#sphx-glr-plot-types-arrays-imshow-py),
+
+```{python}
+#| echo: true
+mat_img = np.reshape(np.array(range(1,31)), [6,5], "F")
+mat_img
+plt.imshow(mat_img, cmap = 'Oranges')
+```
+
+```{python}
+volcano = pd.read_csv('./data/volcano.csv', index_col=0)
+x = 10*np.arange(1,volcano.shape[0]+1)
+y = 10*np.arange(1,volcano.shape[1]+1)
+X,Y = np. meshgrid(x,y)
+vt = volcano.transpose()
+print(vt.shape)
+print(X.shape)
+print(Y.shape)
+```
+
+```{python}
+fig, ax = plt.subplots()
+IM = ax.matshow(vt, alpha =1, cmap='terrain')
+CS = ax.contour(vt, levels=np.arange(90,200,5))
+ax.clabel(CS, inline=True, fontsize=10)
+ax.set_title('Maunga Whau Volcano')
+```
+
+
+
+### 3D scatterplot
+
+In [Python](https://matplotlib.org/stable/plot_types/3D/scatter3d_simple.html),
+
+```{python}
+fig = plt.figure(figsize=(12, 12))
+ax = fig.add_subplot(projection='3d')
+
+ax.scatter(xs = mtcars.wt, ys = mtcars.disp, zs = mtcars.mpg)
+ax.set_xlabel('Weights')
+ax.set_ylabel("Displacement")
+ax.set_zlabel("Miles per gallon")
+ax.set_title("3D Scatter Plot")
+```
+
+### Perspective plot
+
+In [Python](https://matplotlib.org/stable/plot_types/3D/surface3d_simple.html),
+
+```{python}
+x = 10*np.arange(1,volcano.shape[0]+1)
+y = 10*np.arange(1,volcano.shape[1]+1)
+vt = volcano.transpose()
+Z = 10*vt
+X,Y = np. meshgrid(x,y)
+
+print(Z.shape)
+print(X.shape)
+print(Y.shape)
+```
+
+
+```{python}
+fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
+# Plot the surface.
+ax.plot_surface(X, Y, Z, cmap = 'Greens')
+```
+
+## Special Objects
+
+In python, `NA`, `NaN` and `NULL` are not that distinguishable, comparing to R. 
+
+- `NaN` can be used as a numerical value on mathematical operations, while `None` cannot (or at least shouldn't). 
+
+- `NaN` is a numeric value, as defined in IEEE 754 floating-point standard.
+- `None` is an internal Python type (NoneType) and would be more like "inexistent" or "empty" than "numerically invalid" in this context.
+
+
+
+```{python}
+a = np.array([None, 0.9, 10])
+type(a)
+a == None
+len(a)
+print(type(a[0]))
+```
+
+```{python}
+None == None
+'' == None
+```
+
+```{python}
+a1 = np.array([-1,0,1])/0
+a1
+```
+
+
+```{python}
+math.isfinite(0)
+math.isnan(float("nan"))
+pd.isna(float("nan"))
+np.isnan(float("nan"))
+```
+
+```{python}
+math.isfinite(7.8/1e-307)
+math.isfinite(7.8/1e-308)
+```
+
+
+```{python}
+type(None)
+```
+
+
+```{python}
+#| eval: false
+
+## TypeError: '>' not supported between instances of 'NoneType' and 'int'
+None > 5
+```
+
+```{python}
+#| eval: false
+
+## TypeError: object of type 'NoneType' has no len()
+len(None)
+```
+
+
+```{python}
+float("NaN") > 5
+```
+
+
+```{python}
+v_none = np.array([3, None, 5])
+v_none
+v_nan = np.array([3, float("NaN"), 5])
+v_nan
+```
+
+```{python}
+#| eval: false
+# TypeError: unsupported operand type(s) for +: 'int' and 'NoneType'
+sum(v_none)
+```
+
+
+```{python}
+sum(v_nan)
+```
+
 
 ## Conditions
 
 
+```{python}
+#| eval: false
+if condition:
+    # code executed when condition is true
+else:
+    # code executed when condition is false
+```
+
+```{python}
+a = 5
+b = 20
+if a > 4 or b > 4:
+    print('a > 4 or b > 4')
+if a > 4 and b > 4:
+    print('a > 4 and b > 4')
+```
+
+```{python}
+if (a > 4) | (b > 4):
+    print('a > 4 or b > 4')
+if (a > 4) & (b > 4):
+    print('a > 4 and b > 4')
+```
+
+
+## Multiple conditions
+
+```{python}
+#| eval: false
+if condition A:
+    # do that
+elif condition B:
+    # do something else
+else:
+    # 
+```
+
+```{python}
+rd = np.random.randint(100)
+print(rd)
+if rd <= 20:
+    print("rd <= 20")
+elif rd > 20 and rd <= 40:
+    print('rd > 20 and rd <= 40')
+elif rd > 40 and rd <= 60:
+    print('rd > 40 and rd <= 60')
+elif rd > 60 and rd <= 80:
+    print('rd > 60 and rd <= 80')
+elif rd > 80 and rd <= 100:
+    print('rd > 80 and rd <= 100')
+```
+
+
 ## Functions
+
+```{python}
+#| eval: false
+
+def function_name(arg1, arg2, ...):
+    ## body
+    return(something)
+```
+
+```{python}
+def add_number(a, b):
+    c = a + b
+    return c
+
+n1 = 9
+n2 = 18
+add_number(n1, n2)
+```
+
+
+## Loops
+
+### for loops
+
+```{python}
+#| eval: false
+Python
+for value in that:
+    # do this
+```
+
+```{python}
+for i in range(5):
+    print('for', i)
+```
+
+```{python}
+for i in ['My', '1st', 'for', 'loop']:
+    print(i)
+```
+
+### while loops
+
+```{python}
+#| eval: false
+while (condition):
+    # do this
+```
+
+```{python}
+i = 1
+while(i < 5):
+    print('while',i)
+    i = i + 1
+```
+
+
+```{python}
+np.random.seed(86)
+def flip():
+    return np.random.choice(['T','H'], 1)
+    
+flips = 0
+nheads = 0
+
+while(nheads < 3):
+    if flip() == "H":
+        nheads += 1
+    else:
+        nheads = 0
+    flips += 1
+    
+flips
+```
+

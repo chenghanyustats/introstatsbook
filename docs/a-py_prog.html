@@ -512,6 +512,31 @@ window.Quarto = {
   <li><a href="#stacking-arrays" id="toc-stacking-arrays" class="nav-link" data-scroll-target="#stacking-arrays"><span class="header-section-number">B.10.4</span> Stacking arrays</a></li>
   </ul>
 </li>
+  <li>
+<a href="#plotting" id="toc-plotting" class="nav-link" data-scroll-target="#plotting"><span class="header-section-number">B.11</span> Plotting</a>
+  <ul class="collapse">
+<li><a href="#scatterplot" id="toc-scatterplot" class="nav-link" data-scroll-target="#scatterplot"><span class="header-section-number">B.11.1</span> Scatterplot</a></li>
+  <li><a href="#subplots" id="toc-subplots" class="nav-link" data-scroll-target="#subplots"><span class="header-section-number">B.11.2</span> Subplots</a></li>
+  <li><a href="#boxplot" id="toc-boxplot" class="nav-link" data-scroll-target="#boxplot"><span class="header-section-number">B.11.3</span> Boxplot</a></li>
+  <li><a href="#histogram" id="toc-histogram" class="nav-link" data-scroll-target="#histogram"><span class="header-section-number">B.11.4</span> Histogram</a></li>
+  <li><a href="#barplot" id="toc-barplot" class="nav-link" data-scroll-target="#barplot"><span class="header-section-number">B.11.5</span> Barplot</a></li>
+  <li><a href="#pie-chart" id="toc-pie-chart" class="nav-link" data-scroll-target="#pie-chart"><span class="header-section-number">B.11.6</span> Pie chart</a></li>
+  <li><a href="#d-imaging" id="toc-d-imaging" class="nav-link" data-scroll-target="#d-imaging"><span class="header-section-number">B.11.7</span> 2D Imaging</a></li>
+  <li><a href="#d-scatterplot" id="toc-d-scatterplot" class="nav-link" data-scroll-target="#d-scatterplot"><span class="header-section-number">B.11.8</span> 3D scatterplot</a></li>
+  <li><a href="#perspective-plot" id="toc-perspective-plot" class="nav-link" data-scroll-target="#perspective-plot"><span class="header-section-number">B.11.9</span> Perspective plot</a></li>
+  </ul>
+</li>
+  <li><a href="#special-objects" id="toc-special-objects" class="nav-link" data-scroll-target="#special-objects"><span class="header-section-number">B.12</span> Special Objects</a></li>
+  <li><a href="#conditions" id="toc-conditions" class="nav-link" data-scroll-target="#conditions"><span class="header-section-number">B.13</span> Conditions</a></li>
+  <li><a href="#multiple-conditions" id="toc-multiple-conditions" class="nav-link" data-scroll-target="#multiple-conditions"><span class="header-section-number">B.14</span> Multiple conditions</a></li>
+  <li><a href="#functions" id="toc-functions" class="nav-link" data-scroll-target="#functions"><span class="header-section-number">B.15</span> Functions</a></li>
+  <li>
+<a href="#loops" id="toc-loops" class="nav-link" data-scroll-target="#loops"><span class="header-section-number">B.16</span> Loops</a>
+  <ul class="collapse">
+<li><a href="#for-loops" id="toc-for-loops" class="nav-link" data-scroll-target="#for-loops"><span class="header-section-number">B.16.1</span> for loops</a></li>
+  <li><a href="#while-loops" id="toc-while-loops" class="nav-link" data-scroll-target="#while-loops"><span class="header-section-number">B.16.2</span> while loops</a></li>
+  </ul>
+</li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/a-py_prog.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -658,7 +683,7 @@ window.Quarto = {
 <pre><code>False</code></pre>
 </div>
 </div>
-<p>python long (long integers, they can also be represented in octal and hexadecimal)</p>
+<!-- python long (long integers, they can also be represented in octal and hexadecimal) -->
 </section><section id="data-structure---lists" class="level2" data-number="B.5"><h2 data-number="B.5" class="anchored" data-anchor-id="data-structure---lists">
 <span class="header-section-number">B.5</span> Data Structure - Lists</h2>
 <section id="lists" class="level3" data-number="B.5.1"><h3 data-number="B.5.1" class="anchored" data-anchor-id="lists">
@@ -1550,6 +1575,544 @@ s4    88    99     0  100</code></pre>
 <!-- ## Resources -->
 <!-- - [NumPy](https://numpy.org/doc/stable/user/index.html) -->
 <!-- - [pandas](https://pandas.pydata.org/docs/user_guide/index.html) -->
+</section></section><section id="plotting" class="level2" data-number="B.11"><h2 data-number="B.11" class="anchored" data-anchor-id="plotting">
+<span class="header-section-number">B.11</span> Plotting</h2>
+<p><a href="https://matplotlib.org/stable/api/markers_api.html">matplotlib.markers</a></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb238"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb238-1"><a href="#cb238-1" aria-hidden="true" tabindex="-1"></a>pch <span class="op">=</span> np.array([<span class="st">'.'</span>, <span class="st">','</span>, <span class="st">'o'</span>, <span class="st">'v'</span>, <span class="st">'^'</span>, <span class="st">'&lt;'</span>, <span class="st">'&gt;'</span>, <span class="st">'1'</span>, <span class="st">'2'</span>, <span class="st">'3'</span>, <span class="st">'4'</span>, <span class="st">'8'</span>, <span class="st">'s'</span>, <span class="st">'p'</span>, <span class="st">'P'</span>, <span class="st">'*'</span>, <span class="st">'h'</span>, <span class="st">'H'</span>, <span class="st">'+'</span>, <span class="st">'x'</span>, <span class="st">'X'</span>, <span class="st">'D'</span>, <span class="st">'d'</span>, <span class="st">'|'</span>, <span class="st">'_'</span>])</span>
+<span id="cb238-2"><a href="#cb238-2" aria-hidden="true" tabindex="-1"></a><span class="co">#all types of maker</span></span>
+<span id="cb238-3"><a href="#cb238-3" aria-hidden="true" tabindex="-1"></a>pch_len <span class="op">=</span> pch.shape[<span class="dv">0</span>]</span>
+<span id="cb238-4"><a href="#cb238-4" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.array([i <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, pch_len<span class="op">+</span><span class="dv">1</span>)])</span>
+<span id="cb238-5"><a href="#cb238-5" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.ones(pch_len)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb239"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb239-1"><a href="#cb239-1" aria-hidden="true" tabindex="-1"></a>plt.figure(<span class="dv">0</span>)</span>
+<span id="cb239-2"><a href="#cb239-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, pch_len):</span>
+<span id="cb239-3"><a href="#cb239-3" aria-hidden="true" tabindex="-1"></a>    plt.plot(x[i],y[i],pch[i])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="a-py_prog_files/figure-html/unnamed-chunk-95-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="scatterplot" class="level3" data-number="B.11.1"><h3 data-number="B.11.1" class="anchored" data-anchor-id="scatterplot">
+<span class="header-section-number">B.11.1</span> Scatterplot</h3>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb240"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb240-1"><a href="#cb240-1" aria-hidden="true" tabindex="-1"></a>mtcars <span class="op">=</span> pd.read_csv(<span class="st">'./data/mtcars.csv'</span>)</span>
+<span id="cb240-2"><a href="#cb240-2" aria-hidden="true" tabindex="-1"></a>mtcars.iloc[<span class="dv">0</span>:<span class="dv">15</span>,<span class="dv">0</span>:<span class="dv">4</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre class="my_class600"><code>     mpg  cyl   disp   hp
+0   21.0    6  160.0  110
+1   21.0    6  160.0  110
+2   22.8    4  108.0   93
+3   21.4    6  258.0  110
+4   18.7    8  360.0  175
+5   18.1    6  225.0  105
+6   14.3    8  360.0  245
+7   24.4    4  146.7   62
+8   22.8    4  140.8   95
+9   19.2    6  167.6  123
+10  17.8    6  167.6  123
+11  16.4    8  275.8  180
+12  17.3    8  275.8  180
+13  15.2    8  275.8  180
+14  10.4    8  472.0  205</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb242"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb242-1"><a href="#cb242-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb242-2"><a href="#cb242-2" aria-hidden="true" tabindex="-1"></a>plt.scatter(x <span class="op">=</span> mtcars.mpg, y <span class="op">=</span> mtcars.hp, color <span class="op">=</span> <span class="st">"r"</span>)</span>
+<span id="cb242-3"><a href="#cb242-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Miles per gallon"</span>)</span>
+<span id="cb242-4"><a href="#cb242-4" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Horsepower"</span>)</span>
+<span id="cb242-5"><a href="#cb242-5" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Scatter plot"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="a-py_prog_files/figure-html/unnamed-chunk-97-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="subplots" class="level3" data-number="B.11.2"><h3 data-number="B.11.2" class="anchored" data-anchor-id="subplots">
+<span class="header-section-number">B.11.2</span> Subplots</h3>
+<p>The command <code>plt.scatter()</code> is used for creating one single plot. If multiple subplots are wanted in one single call, one can use the format</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb243"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb243-1"><a href="#cb243-1" aria-hidden="true" tabindex="-1"></a>fig, (ax1, ax2) <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb243-2"><a href="#cb243-2" aria-hidden="true" tabindex="-1"></a>ax1.scatter(x, y)</span>
+<span id="cb243-3"><a href="#cb243-3" aria-hidden="true" tabindex="-1"></a>ax2.plot(x, y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb244"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb244-1"><a href="#cb244-1" aria-hidden="true" tabindex="-1"></a>fig, (ax1, ax2) <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb244-2"><a href="#cb244-2" aria-hidden="true" tabindex="-1"></a>ax1.scatter(x <span class="op">=</span> mtcars.mpg, y <span class="op">=</span> mtcars.hp)</span>
+<span id="cb244-3"><a href="#cb244-3" aria-hidden="true" tabindex="-1"></a>ax2.scatter(x <span class="op">=</span> mtcars.hp, y <span class="op">=</span> mtcars.disp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="a-py_prog_files/figure-html/unnamed-chunk-99-5.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Check <a href="https://matplotlib.org/stable/gallery/subplots_axes_and_figures/subplots_demo.html">Creating multiple subplots using <code>plt.subplots</code></a> for more details.</li>
+</ul></section><section id="boxplot" class="level3" data-number="B.11.3"><h3 data-number="B.11.3" class="anchored" data-anchor-id="boxplot">
+<span class="header-section-number">B.11.3</span> Boxplot</h3>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb245"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb245-1"><a href="#cb245-1" aria-hidden="true" tabindex="-1"></a>cyl_index <span class="op">=</span> np.sort(np.unique(np.array(mtcars.cyl)))</span>
+<span id="cb245-2"><a href="#cb245-2" aria-hidden="true" tabindex="-1"></a>cyl_shape <span class="op">=</span> cyl_index.shape[<span class="dv">0</span>]</span>
+<span id="cb245-3"><a href="#cb245-3" aria-hidden="true" tabindex="-1"></a>cyl_list <span class="op">=</span> []</span>
+<span id="cb245-4"><a href="#cb245-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span> (<span class="dv">0</span>, cyl_shape):</span>
+<span id="cb245-5"><a href="#cb245-5" aria-hidden="true" tabindex="-1"></a>    cyl_list.append(np.array(mtcars[mtcars.cyl <span class="op">==</span> cyl_index[i]].mpg))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb246"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb246-1"><a href="#cb246-1" aria-hidden="true" tabindex="-1"></a>plt.boxplot(cyl_list, vert<span class="op">=</span><span class="va">False</span>, tick_labels<span class="op">=</span>[<span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">8</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'whiskers': [&lt;matplotlib.lines.Line2D object at 0x147694980&gt;, &lt;matplotlib.lines.Line2D object at 0x147694c50&gt;, &lt;matplotlib.lines.Line2D object at 0x147695c40&gt;, &lt;matplotlib.lines.Line2D object at 0x147695e20&gt;, &lt;matplotlib.lines.Line2D object at 0x147696e40&gt;, &lt;matplotlib.lines.Line2D object at 0x147697110&gt;], 'caps': [&lt;matplotlib.lines.Line2D object at 0x147694ec0&gt;, &lt;matplotlib.lines.Line2D object at 0x1476951c0&gt;, &lt;matplotlib.lines.Line2D object at 0x1476960c0&gt;, &lt;matplotlib.lines.Line2D object at 0x1476963c0&gt;, &lt;matplotlib.lines.Line2D object at 0x147697350&gt;, &lt;matplotlib.lines.Line2D object at 0x147697590&gt;], 'boxes': [&lt;matplotlib.lines.Line2D object at 0x147629580&gt;, &lt;matplotlib.lines.Line2D object at 0x147695910&gt;, &lt;matplotlib.lines.Line2D object at 0x147696b70&gt;], 'medians': [&lt;matplotlib.lines.Line2D object at 0x147695460&gt;, &lt;matplotlib.lines.Line2D object at 0x147696660&gt;, &lt;matplotlib.lines.Line2D object at 0x147697890&gt;], 'fliers': [&lt;matplotlib.lines.Line2D object at 0x1476956a0&gt;, &lt;matplotlib.lines.Line2D object at 0x147696930&gt;, &lt;matplotlib.lines.Line2D object at 0x147697b00&gt;], 'means': []}</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb248"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb248-1"><a href="#cb248-1" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Miles per gallon"</span>)</span>
+<span id="cb248-2"><a href="#cb248-2" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Number of cylinders"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="a-py_prog_files/figure-html/boxplot-py-7.png" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="histogram" class="level3" data-number="B.11.4"><h3 data-number="B.11.4" class="anchored" data-anchor-id="histogram">
+<span class="header-section-number">B.11.4</span> Histogram</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb249"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb249-1"><a href="#cb249-1" aria-hidden="true" tabindex="-1"></a>plt.hist(mtcars.wt, </span>
+<span id="cb249-2"><a href="#cb249-2" aria-hidden="true" tabindex="-1"></a>         bins <span class="op">=</span> <span class="dv">19</span>, </span>
+<span id="cb249-3"><a href="#cb249-3" aria-hidden="true" tabindex="-1"></a>         color<span class="op">=</span><span class="st">"#003366"</span>,</span>
+<span id="cb249-4"><a href="#cb249-4" aria-hidden="true" tabindex="-1"></a>         edgecolor<span class="op">=</span><span class="st">"#FFCC00"</span>)</span>
+<span id="cb249-5"><a href="#cb249-5" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"weights"</span>)</span>
+<span id="cb249-6"><a href="#cb249-6" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Histogram of weights"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="a-py_prog_files/figure-html/unnamed-chunk-102-9.png" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="barplot" class="level3" data-number="B.11.5"><h3 data-number="B.11.5" class="anchored" data-anchor-id="barplot">
+<span class="header-section-number">B.11.5</span> Barplot</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb250"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb250-1"><a href="#cb250-1" aria-hidden="true" tabindex="-1"></a>count_py <span class="op">=</span> mtcars.value_counts(<span class="st">'gear'</span>)</span>
+<span id="cb250-2"><a href="#cb250-2" aria-hidden="true" tabindex="-1"></a>count_py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>gear
+3    15
+4    12
+5     5
+Name: count, dtype: int64</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb252"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb252-1"><a href="#cb252-1" aria-hidden="true" tabindex="-1"></a>plt.bar(count_py.index, count_py)</span>
+<span id="cb252-2"><a href="#cb252-2" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Number of Gears"</span>)</span>
+<span id="cb252-3"><a href="#cb252-3" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Car Distribution"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="a-py_prog_files/figure-html/unnamed-chunk-104-11.png" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="pie-chart" class="level3" data-number="B.11.6"><h3 data-number="B.11.6" class="anchored" data-anchor-id="pie-chart">
+<span class="header-section-number">B.11.6</span> Pie chart</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb253"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb253-1"><a href="#cb253-1" aria-hidden="true" tabindex="-1"></a>percent <span class="op">=</span> <span class="bu">round</span>(count_py <span class="op">/</span> <span class="bu">sum</span>(count_py) <span class="op">*</span> <span class="dv">100</span>, <span class="dv">2</span>)</span>
+<span id="cb253-2"><a href="#cb253-2" aria-hidden="true" tabindex="-1"></a>texts <span class="op">=</span> [<span class="bu">str</span>(percent.index[k]) <span class="op">+</span> <span class="st">" gear "</span> <span class="op">+</span> <span class="bu">str</span>(percent.array[k]) <span class="op">+</span> <span class="st">"%"</span> <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>,<span class="dv">3</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb254"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb254-1"><a href="#cb254-1" aria-hidden="true" tabindex="-1"></a>plt.pie(count_py, labels <span class="op">=</span> texts, colors <span class="op">=</span> [<span class="st">'r'</span>, <span class="st">'g'</span>, <span class="st">'b'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>([&lt;matplotlib.patches.Wedge object at 0x14778af90&gt;, &lt;matplotlib.patches.Wedge object at 0x1472e0fb0&gt;, &lt;matplotlib.patches.Wedge object at 0x166048200&gt;], [Text(0.10781885436251686, 1.0947031993394165, '3 gear 46.88%'), Text(-0.6111272563215624, -0.9146165735327998, '4 gear 37.5%'), Text(0.9701133907831904, -0.5185364105085978, '5 gear 15.62%')])</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb256"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb256-1"><a href="#cb256-1" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Pie Charts"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="a-py_prog_files/figure-html/unnamed-chunk-106-13.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="d-imaging" class="level3" data-number="B.11.7"><h3 data-number="B.11.7" class="anchored" data-anchor-id="d-imaging">
+<span class="header-section-number">B.11.7</span> 2D Imaging</h3>
+<p>In <a href="https://matplotlib.org/stable/plot_types/arrays/imshow.html#sphx-glr-plot-types-arrays-imshow-py">Python</a>,</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb257"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb257-1"><a href="#cb257-1" aria-hidden="true" tabindex="-1"></a>mat_img <span class="op">=</span> np.reshape(np.array(<span class="bu">range</span>(<span class="dv">1</span>,<span class="dv">31</span>)), [<span class="dv">6</span>,<span class="dv">5</span>], <span class="st">"F"</span>)</span>
+<span id="cb257-2"><a href="#cb257-2" aria-hidden="true" tabindex="-1"></a>mat_img</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>array([[ 1,  7, 13, 19, 25],
+       [ 2,  8, 14, 20, 26],
+       [ 3,  9, 15, 21, 27],
+       [ 4, 10, 16, 22, 28],
+       [ 5, 11, 17, 23, 29],
+       [ 6, 12, 18, 24, 30]])</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb259"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb259-1"><a href="#cb259-1" aria-hidden="true" tabindex="-1"></a>plt.imshow(mat_img, cmap <span class="op">=</span> <span class="st">'Oranges'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="a-py_prog_files/figure-html/unnamed-chunk-107-15.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb260"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb260-1"><a href="#cb260-1" aria-hidden="true" tabindex="-1"></a>volcano <span class="op">=</span> pd.read_csv(<span class="st">'./data/volcano.csv'</span>, index_col<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb260-2"><a href="#cb260-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> <span class="dv">10</span><span class="op">*</span>np.arange(<span class="dv">1</span>,volcano.shape[<span class="dv">0</span>]<span class="op">+</span><span class="dv">1</span>)</span>
+<span id="cb260-3"><a href="#cb260-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> <span class="dv">10</span><span class="op">*</span>np.arange(<span class="dv">1</span>,volcano.shape[<span class="dv">1</span>]<span class="op">+</span><span class="dv">1</span>)</span>
+<span id="cb260-4"><a href="#cb260-4" aria-hidden="true" tabindex="-1"></a>X,Y <span class="op">=</span> np. meshgrid(x,y)</span>
+<span id="cb260-5"><a href="#cb260-5" aria-hidden="true" tabindex="-1"></a>vt <span class="op">=</span> volcano.transpose()</span>
+<span id="cb260-6"><a href="#cb260-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(vt.shape)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(61, 87)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb262"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb262-1"><a href="#cb262-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(X.shape)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(61, 87)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb264"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb264-1"><a href="#cb264-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(Y.shape)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(61, 87)</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb266"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb266-1"><a href="#cb266-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb266-2"><a href="#cb266-2" aria-hidden="true" tabindex="-1"></a>IM <span class="op">=</span> ax.matshow(vt, alpha <span class="op">=</span><span class="dv">1</span>, cmap<span class="op">=</span><span class="st">'terrain'</span>)</span>
+<span id="cb266-3"><a href="#cb266-3" aria-hidden="true" tabindex="-1"></a>CS <span class="op">=</span> ax.contour(vt, levels<span class="op">=</span>np.arange(<span class="dv">90</span>,<span class="dv">200</span>,<span class="dv">5</span>))</span>
+<span id="cb266-4"><a href="#cb266-4" aria-hidden="true" tabindex="-1"></a>ax.clabel(CS, inline<span class="op">=</span><span class="va">True</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb266-5"><a href="#cb266-5" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Maunga Whau Volcano'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="a-py_prog_files/figure-html/unnamed-chunk-109-17.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="d-scatterplot" class="level3" data-number="B.11.8"><h3 data-number="B.11.8" class="anchored" data-anchor-id="d-scatterplot">
+<span class="header-section-number">B.11.8</span> 3D scatterplot</h3>
+<p>In <a href="https://matplotlib.org/stable/plot_types/3D/scatter3d_simple.html">Python</a>,</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb267"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb267-1"><a href="#cb267-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">12</span>))</span>
+<span id="cb267-2"><a href="#cb267-2" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> fig.add_subplot(projection<span class="op">=</span><span class="st">'3d'</span>)</span>
+<span id="cb267-3"><a href="#cb267-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb267-4"><a href="#cb267-4" aria-hidden="true" tabindex="-1"></a>ax.scatter(xs <span class="op">=</span> mtcars.wt, ys <span class="op">=</span> mtcars.disp, zs <span class="op">=</span> mtcars.mpg)</span>
+<span id="cb267-5"><a href="#cb267-5" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'Weights'</span>)</span>
+<span id="cb267-6"><a href="#cb267-6" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Displacement"</span>)</span>
+<span id="cb267-7"><a href="#cb267-7" aria-hidden="true" tabindex="-1"></a>ax.set_zlabel(<span class="st">"Miles per gallon"</span>)</span>
+<span id="cb267-8"><a href="#cb267-8" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"3D Scatter Plot"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="a-py_prog_files/figure-html/unnamed-chunk-110-19.png" class="img-fluid figure-img" width="1152"></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="perspective-plot" class="level3" data-number="B.11.9"><h3 data-number="B.11.9" class="anchored" data-anchor-id="perspective-plot">
+<span class="header-section-number">B.11.9</span> Perspective plot</h3>
+<p>In <a href="https://matplotlib.org/stable/plot_types/3D/surface3d_simple.html">Python</a>,</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb268"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb268-1"><a href="#cb268-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> <span class="dv">10</span><span class="op">*</span>np.arange(<span class="dv">1</span>,volcano.shape[<span class="dv">0</span>]<span class="op">+</span><span class="dv">1</span>)</span>
+<span id="cb268-2"><a href="#cb268-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> <span class="dv">10</span><span class="op">*</span>np.arange(<span class="dv">1</span>,volcano.shape[<span class="dv">1</span>]<span class="op">+</span><span class="dv">1</span>)</span>
+<span id="cb268-3"><a href="#cb268-3" aria-hidden="true" tabindex="-1"></a>vt <span class="op">=</span> volcano.transpose()</span>
+<span id="cb268-4"><a href="#cb268-4" aria-hidden="true" tabindex="-1"></a>Z <span class="op">=</span> <span class="dv">10</span><span class="op">*</span>vt</span>
+<span id="cb268-5"><a href="#cb268-5" aria-hidden="true" tabindex="-1"></a>X,Y <span class="op">=</span> np. meshgrid(x,y)</span>
+<span id="cb268-6"><a href="#cb268-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb268-7"><a href="#cb268-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(Z.shape)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(61, 87)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb270"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb270-1"><a href="#cb270-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(X.shape)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(61, 87)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb272"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb272-1"><a href="#cb272-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(Y.shape)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(61, 87)</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb274"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb274-1"><a href="#cb274-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(subplot_kw<span class="op">=</span>{<span class="st">"projection"</span>: <span class="st">"3d"</span>})</span>
+<span id="cb274-2"><a href="#cb274-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the surface.</span></span>
+<span id="cb274-3"><a href="#cb274-3" aria-hidden="true" tabindex="-1"></a>ax.plot_surface(X, Y, Z, cmap <span class="op">=</span> <span class="st">'Greens'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="a-py_prog_files/figure-html/unnamed-chunk-112-21.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section></section><section id="special-objects" class="level2" data-number="B.12"><h2 data-number="B.12" class="anchored" data-anchor-id="special-objects">
+<span class="header-section-number">B.12</span> Special Objects</h2>
+<p>In python, <code>NA</code>, <code>NaN</code> and <code>NULL</code> are not that distinguishable, comparing to R.</p>
+<ul>
+<li><p><code>NaN</code> can be used as a numerical value on mathematical operations, while <code>None</code> cannot (or at least shouldn’t).</p></li>
+<li><p><code>NaN</code> is a numeric value, as defined in IEEE 754 floating-point standard.</p></li>
+<li><p><code>None</code> is an internal Python type (NoneType) and would be more like “inexistent” or “empty” than “numerically invalid” in this context.</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb275"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb275-1"><a href="#cb275-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> np.array([<span class="va">None</span>, <span class="fl">0.9</span>, <span class="dv">10</span>])</span>
+<span id="cb275-2"><a href="#cb275-2" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(a)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'numpy.ndarray'&gt;</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb277"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb277-1"><a href="#cb277-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">==</span> <span class="va">None</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>array([ True, False, False])</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb279"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb279-1"><a href="#cb279-1" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(a)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb281"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb281-1"><a href="#cb281-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(a[<span class="dv">0</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'NoneType'&gt;</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb283"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb283-1"><a href="#cb283-1" aria-hidden="true" tabindex="-1"></a><span class="va">None</span> <span class="op">==</span> <span class="va">None</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>True</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb285"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb285-1"><a href="#cb285-1" aria-hidden="true" tabindex="-1"></a><span class="co">''</span> <span class="op">==</span> <span class="va">None</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>False</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb287"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb287-1"><a href="#cb287-1" aria-hidden="true" tabindex="-1"></a>a1 <span class="op">=</span> np.array([<span class="op">-</span><span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>])<span class="op">/</span><span class="dv">0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;string&gt;:1: RuntimeWarning: divide by zero encountered in divide
+&lt;string&gt;:1: RuntimeWarning: invalid value encountered in divide</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb289"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb289-1"><a href="#cb289-1" aria-hidden="true" tabindex="-1"></a>a1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>array([-inf,  nan,  inf])</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb291"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb291-1"><a href="#cb291-1" aria-hidden="true" tabindex="-1"></a>math.isfinite(<span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>True</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb293"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb293-1"><a href="#cb293-1" aria-hidden="true" tabindex="-1"></a>math.isnan(<span class="bu">float</span>(<span class="st">"nan"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>True</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb295"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb295-1"><a href="#cb295-1" aria-hidden="true" tabindex="-1"></a>pd.isna(<span class="bu">float</span>(<span class="st">"nan"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>True</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb297"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb297-1"><a href="#cb297-1" aria-hidden="true" tabindex="-1"></a>np.isnan(<span class="bu">float</span>(<span class="st">"nan"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>True</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb299"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb299-1"><a href="#cb299-1" aria-hidden="true" tabindex="-1"></a>math.isfinite(<span class="fl">7.8</span><span class="op">/</span><span class="fl">1e-307</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>True</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb301"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb301-1"><a href="#cb301-1" aria-hidden="true" tabindex="-1"></a>math.isfinite(<span class="fl">7.8</span><span class="op">/</span><span class="fl">1e-308</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>False</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb303"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb303-1"><a href="#cb303-1" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(<span class="va">None</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'NoneType'&gt;</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb305"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb305-1"><a href="#cb305-1" aria-hidden="true" tabindex="-1"></a><span class="co">## TypeError: '&gt;' not supported between instances of 'NoneType' and 'int'</span></span>
+<span id="cb305-2"><a href="#cb305-2" aria-hidden="true" tabindex="-1"></a><span class="va">None</span> <span class="op">&gt;</span> <span class="dv">5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb306"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb306-1"><a href="#cb306-1" aria-hidden="true" tabindex="-1"></a><span class="co">## TypeError: object of type 'NoneType' has no len()</span></span>
+<span id="cb306-2"><a href="#cb306-2" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(<span class="va">None</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb307"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb307-1"><a href="#cb307-1" aria-hidden="true" tabindex="-1"></a><span class="bu">float</span>(<span class="st">"NaN"</span>) <span class="op">&gt;</span> <span class="dv">5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>False</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb309"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb309-1"><a href="#cb309-1" aria-hidden="true" tabindex="-1"></a>v_none <span class="op">=</span> np.array([<span class="dv">3</span>, <span class="va">None</span>, <span class="dv">5</span>])</span>
+<span id="cb309-2"><a href="#cb309-2" aria-hidden="true" tabindex="-1"></a>v_none</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>array([3, None, 5], dtype=object)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb311"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb311-1"><a href="#cb311-1" aria-hidden="true" tabindex="-1"></a>v_nan <span class="op">=</span> np.array([<span class="dv">3</span>, <span class="bu">float</span>(<span class="st">"NaN"</span>), <span class="dv">5</span>])</span>
+<span id="cb311-2"><a href="#cb311-2" aria-hidden="true" tabindex="-1"></a>v_nan</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>array([ 3., nan,  5.])</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb313"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb313-1"><a href="#cb313-1" aria-hidden="true" tabindex="-1"></a><span class="co"># TypeError: unsupported operand type(s) for +: 'int' and 'NoneType'</span></span>
+<span id="cb313-2"><a href="#cb313-2" aria-hidden="true" tabindex="-1"></a><span class="bu">sum</span>(v_none)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb314"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb314-1"><a href="#cb314-1" aria-hidden="true" tabindex="-1"></a><span class="bu">sum</span>(v_nan)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>nan</code></pre>
+</div>
+</div>
+</section><section id="conditions" class="level2" data-number="B.13"><h2 data-number="B.13" class="anchored" data-anchor-id="conditions">
+<span class="header-section-number">B.13</span> Conditions</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb316"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb316-1"><a href="#cb316-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> condition:</span>
+<span id="cb316-2"><a href="#cb316-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># code executed when condition is true</span></span>
+<span id="cb316-3"><a href="#cb316-3" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb316-4"><a href="#cb316-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># code executed when condition is false</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb317"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb317-1"><a href="#cb317-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb317-2"><a href="#cb317-2" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> <span class="dv">20</span></span>
+<span id="cb317-3"><a href="#cb317-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> a <span class="op">&gt;</span> <span class="dv">4</span> <span class="kw">or</span> b <span class="op">&gt;</span> <span class="dv">4</span>:</span>
+<span id="cb317-4"><a href="#cb317-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'a &gt; 4 or b &gt; 4'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>a &gt; 4 or b &gt; 4</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb319"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb319-1"><a href="#cb319-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> a <span class="op">&gt;</span> <span class="dv">4</span> <span class="kw">and</span> b <span class="op">&gt;</span> <span class="dv">4</span>:</span>
+<span id="cb319-2"><a href="#cb319-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'a &gt; 4 and b &gt; 4'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>a &gt; 4 and b &gt; 4</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb321"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb321-1"><a href="#cb321-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (a <span class="op">&gt;</span> <span class="dv">4</span>) <span class="op">|</span> (b <span class="op">&gt;</span> <span class="dv">4</span>):</span>
+<span id="cb321-2"><a href="#cb321-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'a &gt; 4 or b &gt; 4'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>a &gt; 4 or b &gt; 4</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb323"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb323-1"><a href="#cb323-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (a <span class="op">&gt;</span> <span class="dv">4</span>) <span class="op">&amp;</span> (b <span class="op">&gt;</span> <span class="dv">4</span>):</span>
+<span id="cb323-2"><a href="#cb323-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'a &gt; 4 and b &gt; 4'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>a &gt; 4 and b &gt; 4</code></pre>
+</div>
+</div>
+</section><section id="multiple-conditions" class="level2" data-number="B.14"><h2 data-number="B.14" class="anchored" data-anchor-id="multiple-conditions">
+<span class="header-section-number">B.14</span> Multiple conditions</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb325"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb325-1"><a href="#cb325-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> condition A:</span>
+<span id="cb325-2"><a href="#cb325-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># do that</span></span>
+<span id="cb325-3"><a href="#cb325-3" aria-hidden="true" tabindex="-1"></a><span class="cf">elif</span> condition B:</span>
+<span id="cb325-4"><a href="#cb325-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># do something else</span></span>
+<span id="cb325-5"><a href="#cb325-5" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb325-6"><a href="#cb325-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb326"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb326-1"><a href="#cb326-1" aria-hidden="true" tabindex="-1"></a>rd <span class="op">=</span> np.random.randint(<span class="dv">100</span>)</span>
+<span id="cb326-2"><a href="#cb326-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(rd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>83</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb328"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb328-1"><a href="#cb328-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> rd <span class="op">&lt;=</span> <span class="dv">20</span>:</span>
+<span id="cb328-2"><a href="#cb328-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"rd &lt;= 20"</span>)</span>
+<span id="cb328-3"><a href="#cb328-3" aria-hidden="true" tabindex="-1"></a><span class="cf">elif</span> rd <span class="op">&gt;</span> <span class="dv">20</span> <span class="kw">and</span> rd <span class="op">&lt;=</span> <span class="dv">40</span>:</span>
+<span id="cb328-4"><a href="#cb328-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'rd &gt; 20 and rd &lt;= 40'</span>)</span>
+<span id="cb328-5"><a href="#cb328-5" aria-hidden="true" tabindex="-1"></a><span class="cf">elif</span> rd <span class="op">&gt;</span> <span class="dv">40</span> <span class="kw">and</span> rd <span class="op">&lt;=</span> <span class="dv">60</span>:</span>
+<span id="cb328-6"><a href="#cb328-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'rd &gt; 40 and rd &lt;= 60'</span>)</span>
+<span id="cb328-7"><a href="#cb328-7" aria-hidden="true" tabindex="-1"></a><span class="cf">elif</span> rd <span class="op">&gt;</span> <span class="dv">60</span> <span class="kw">and</span> rd <span class="op">&lt;=</span> <span class="dv">80</span>:</span>
+<span id="cb328-8"><a href="#cb328-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'rd &gt; 60 and rd &lt;= 80'</span>)</span>
+<span id="cb328-9"><a href="#cb328-9" aria-hidden="true" tabindex="-1"></a><span class="cf">elif</span> rd <span class="op">&gt;</span> <span class="dv">80</span> <span class="kw">and</span> rd <span class="op">&lt;=</span> <span class="dv">100</span>:</span>
+<span id="cb328-10"><a href="#cb328-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'rd &gt; 80 and rd &lt;= 100'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>rd &gt; 80 and rd &lt;= 100</code></pre>
+</div>
+</div>
+</section><section id="functions" class="level2" data-number="B.15"><h2 data-number="B.15" class="anchored" data-anchor-id="functions">
+<span class="header-section-number">B.15</span> Functions</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb330"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb330-1"><a href="#cb330-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> function_name(arg1, arg2, ...):</span>
+<span id="cb330-2"><a href="#cb330-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">## body</span></span>
+<span id="cb330-3"><a href="#cb330-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span>(something)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb331"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb331-1"><a href="#cb331-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> add_number(a, b):</span>
+<span id="cb331-2"><a href="#cb331-2" aria-hidden="true" tabindex="-1"></a>    c <span class="op">=</span> a <span class="op">+</span> b</span>
+<span id="cb331-3"><a href="#cb331-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> c</span>
+<span id="cb331-4"><a href="#cb331-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb331-5"><a href="#cb331-5" aria-hidden="true" tabindex="-1"></a>n1 <span class="op">=</span> <span class="dv">9</span></span>
+<span id="cb331-6"><a href="#cb331-6" aria-hidden="true" tabindex="-1"></a>n2 <span class="op">=</span> <span class="dv">18</span></span>
+<span id="cb331-7"><a href="#cb331-7" aria-hidden="true" tabindex="-1"></a>add_number(n1, n2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>27</code></pre>
+</div>
+</div>
+</section><section id="loops" class="level2" data-number="B.16"><h2 data-number="B.16" class="anchored" data-anchor-id="loops">
+<span class="header-section-number">B.16</span> Loops</h2>
+<section id="for-loops" class="level3" data-number="B.16.1"><h3 data-number="B.16.1" class="anchored" data-anchor-id="for-loops">
+<span class="header-section-number">B.16.1</span> for loops</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb333"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb333-1"><a href="#cb333-1" aria-hidden="true" tabindex="-1"></a>Python</span>
+<span id="cb333-2"><a href="#cb333-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> value <span class="kw">in</span> that:</span>
+<span id="cb333-3"><a href="#cb333-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># do this</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb334"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb334-1"><a href="#cb334-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</span>
+<span id="cb334-2"><a href="#cb334-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'for'</span>, i)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>for 0
+for 1
+for 2
+for 3
+for 4</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb336"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb336-1"><a href="#cb336-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> [<span class="st">'My'</span>, <span class="st">'1st'</span>, <span class="st">'for'</span>, <span class="st">'loop'</span>]:</span>
+<span id="cb336-2"><a href="#cb336-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(i)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>My
+1st
+for
+loop</code></pre>
+</div>
+</div>
+</section><section id="while-loops" class="level3" data-number="B.16.2"><h3 data-number="B.16.2" class="anchored" data-anchor-id="while-loops">
+<span class="header-section-number">B.16.2</span> while loops</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb338"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb338-1"><a href="#cb338-1" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (condition):</span>
+<span id="cb338-2"><a href="#cb338-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># do this</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb339"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb339-1"><a href="#cb339-1" aria-hidden="true" tabindex="-1"></a>i <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb339-2"><a href="#cb339-2" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span>(i <span class="op">&lt;</span> <span class="dv">5</span>):</span>
+<span id="cb339-3"><a href="#cb339-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'while'</span>,i)</span>
+<span id="cb339-4"><a href="#cb339-4" aria-hidden="true" tabindex="-1"></a>    i <span class="op">=</span> i <span class="op">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>while 1
+while 2
+while 3
+while 4</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb341"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb341-1"><a href="#cb341-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">86</span>)</span>
+<span id="cb341-2"><a href="#cb341-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> flip():</span>
+<span id="cb341-3"><a href="#cb341-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.random.choice([<span class="st">'T'</span>,<span class="st">'H'</span>], <span class="dv">1</span>)</span>
+<span id="cb341-4"><a href="#cb341-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb341-5"><a href="#cb341-5" aria-hidden="true" tabindex="-1"></a>flips <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb341-6"><a href="#cb341-6" aria-hidden="true" tabindex="-1"></a>nheads <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb341-7"><a href="#cb341-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb341-8"><a href="#cb341-8" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span>(nheads <span class="op">&lt;</span> <span class="dv">3</span>):</span>
+<span id="cb341-9"><a href="#cb341-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> flip() <span class="op">==</span> <span class="st">"H"</span>:</span>
+<span id="cb341-10"><a href="#cb341-10" aria-hidden="true" tabindex="-1"></a>        nheads <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb341-11"><a href="#cb341-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb341-12"><a href="#cb341-12" aria-hidden="true" tabindex="-1"></a>        nheads <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb341-13"><a href="#cb341-13" aria-hidden="true" tabindex="-1"></a>    flips <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb341-14"><a href="#cb341-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb341-15"><a href="#cb341-15" aria-hidden="true" tabindex="-1"></a>flips</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>9</code></pre>
+</div>
+</div>
 
 
 </section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">

@@ -2382,7 +2382,7 @@
     "href": "a-py_prog.html#object-types",
     "title": "Appendix B — Python Programming",
     "section": "\nB.4 Object Types",
-    "text": "B.4 Object Types\nstr, float, int and bool.\n\ntype(5.0)\n\n&lt;class 'float'&gt;\n\ntype(5)\n\n&lt;class 'int'&gt;\n\ntype(\"I_love_data_science!\")\n\n&lt;class 'str'&gt;\n\ntype(1 &gt; 3)\n\n&lt;class 'bool'&gt;\n\ntype(5) is float\n\nFalse\n\n\npython long (long integers, they can also be represented in octal and hexadecimal)",
+    "text": "B.4 Object Types\nstr, float, int and bool.\n\ntype(5.0)\n\n&lt;class 'float'&gt;\n\ntype(5)\n\n&lt;class 'int'&gt;\n\ntype(\"I_love_data_science!\")\n\n&lt;class 'str'&gt;\n\ntype(1 &gt; 3)\n\n&lt;class 'bool'&gt;\n\ntype(5) is float\n\nFalse",
     "crumbs": [
       "Appendices",
       "<span class='chapter-number'>B</span>  <span class='chapter-title'>Python Programming</span>"
@@ -2507,6 +2507,72 @@
     "crumbs": [
       "Appendices",
       "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-py_prog.html#plotting",
+    "href": "a-py_prog.html#plotting",
+    "title": "Appendix B — Python Programming",
+    "section": "\nB.11 Plotting",
+    "text": "B.11 Plotting\nmatplotlib.markers\n\npch = np.array(['.', ',', 'o', 'v', '^', '&lt;', '&gt;', '1', '2', '3', '4', '8', 's', 'p', 'P', '*', 'h', 'H', '+', 'x', 'X', 'D', 'd', '|', '_'])\n#all types of maker\npch_len = pch.shape[0]\nx = np.array([i for i in range(1, pch_len+1)])\ny = np.ones(pch_len)\n\n\nplt.figure(0)\nfor i in range(0, pch_len):\n    plt.plot(x[i],y[i],pch[i])\n\n\n\n\n\n\n\n\nB.11.1 Scatterplot\n\nCodemtcars = pd.read_csv('./data/mtcars.csv')\nmtcars.iloc[0:15,0:4]\n\n     mpg  cyl   disp   hp\n0   21.0    6  160.0  110\n1   21.0    6  160.0  110\n2   22.8    4  108.0   93\n3   21.4    6  258.0  110\n4   18.7    8  360.0  175\n5   18.1    6  225.0  105\n6   14.3    8  360.0  245\n7   24.4    4  146.7   62\n8   22.8    4  140.8   95\n9   19.2    6  167.6  123\n10  17.8    6  167.6  123\n11  16.4    8  275.8  180\n12  17.3    8  275.8  180\n13  15.2    8  275.8  180\n14  10.4    8  472.0  205\n\n\n\nimport matplotlib.pyplot as plt\nplt.scatter(x = mtcars.mpg, y = mtcars.hp, color = \"r\")\nplt.xlabel(\"Miles per gallon\")\nplt.ylabel(\"Horsepower\")\nplt.title(\"Scatter plot\")\n\n\n\n\n\n\n\n\nB.11.2 Subplots\nThe command plt.scatter() is used for creating one single plot. If multiple subplots are wanted in one single call, one can use the format\n\nfig, (ax1, ax2) = plt.subplots(1, 2)\nax1.scatter(x, y)\nax2.plot(x, y)\n\n\nfig, (ax1, ax2) = plt.subplots(1, 2)\nax1.scatter(x = mtcars.mpg, y = mtcars.hp)\nax2.scatter(x = mtcars.hp, y = mtcars.disp)\n\n\n\n\n\n\n\n\nCheck Creating multiple subplots using plt.subplots for more details.\n\nB.11.3 Boxplot\n\nCodecyl_index = np.sort(np.unique(np.array(mtcars.cyl)))\ncyl_shape = cyl_index.shape[0]\ncyl_list = []\nfor i in range (0, cyl_shape):\n    cyl_list.append(np.array(mtcars[mtcars.cyl == cyl_index[i]].mpg))\n\n\n\nplt.boxplot(cyl_list, vert=False, tick_labels=[4, 6, 8])\n\n{'whiskers': [&lt;matplotlib.lines.Line2D object at 0x147694980&gt;, &lt;matplotlib.lines.Line2D object at 0x147694c50&gt;, &lt;matplotlib.lines.Line2D object at 0x147695c40&gt;, &lt;matplotlib.lines.Line2D object at 0x147695e20&gt;, &lt;matplotlib.lines.Line2D object at 0x147696e40&gt;, &lt;matplotlib.lines.Line2D object at 0x147697110&gt;], 'caps': [&lt;matplotlib.lines.Line2D object at 0x147694ec0&gt;, &lt;matplotlib.lines.Line2D object at 0x1476951c0&gt;, &lt;matplotlib.lines.Line2D object at 0x1476960c0&gt;, &lt;matplotlib.lines.Line2D object at 0x1476963c0&gt;, &lt;matplotlib.lines.Line2D object at 0x147697350&gt;, &lt;matplotlib.lines.Line2D object at 0x147697590&gt;], 'boxes': [&lt;matplotlib.lines.Line2D object at 0x147629580&gt;, &lt;matplotlib.lines.Line2D object at 0x147695910&gt;, &lt;matplotlib.lines.Line2D object at 0x147696b70&gt;], 'medians': [&lt;matplotlib.lines.Line2D object at 0x147695460&gt;, &lt;matplotlib.lines.Line2D object at 0x147696660&gt;, &lt;matplotlib.lines.Line2D object at 0x147697890&gt;], 'fliers': [&lt;matplotlib.lines.Line2D object at 0x1476956a0&gt;, &lt;matplotlib.lines.Line2D object at 0x147696930&gt;, &lt;matplotlib.lines.Line2D object at 0x147697b00&gt;], 'means': []}\n\nplt.xlabel(\"Miles per gallon\")\nplt.ylabel(\"Number of cylinders\")\n\n\n\n\n\n\n\n\nB.11.4 Histogram\n\nplt.hist(mtcars.wt, \n         bins = 19, \n         color=\"#003366\",\n         edgecolor=\"#FFCC00\")\nplt.xlabel(\"weights\")\nplt.title(\"Histogram of weights\")\n\n\n\n\n\n\n\n\nB.11.5 Barplot\n\ncount_py = mtcars.value_counts('gear')\ncount_py\n\ngear\n3    15\n4    12\n5     5\nName: count, dtype: int64\n\n\n\nplt.bar(count_py.index, count_py)\nplt.xlabel(\"Number of Gears\")\nplt.title(\"Car Distribution\")\n\n\n\n\n\n\n\n\nB.11.6 Pie chart\n\npercent = round(count_py / sum(count_py) * 100, 2)\ntexts = [str(percent.index[k]) + \" gear \" + str(percent.array[k]) + \"%\" for k in range(0,3)]\n\n\nplt.pie(count_py, labels = texts, colors = ['r', 'g', 'b'])\n\n([&lt;matplotlib.patches.Wedge object at 0x14778af90&gt;, &lt;matplotlib.patches.Wedge object at 0x1472e0fb0&gt;, &lt;matplotlib.patches.Wedge object at 0x166048200&gt;], [Text(0.10781885436251686, 1.0947031993394165, '3 gear 46.88%'), Text(-0.6111272563215624, -0.9146165735327998, '4 gear 37.5%'), Text(0.9701133907831904, -0.5185364105085978, '5 gear 15.62%')])\n\nplt.title(\"Pie Charts\")\n\n\n\n\n\n\n\n\nB.11.7 2D Imaging\nIn Python,\n\nmat_img = np.reshape(np.array(range(1,31)), [6,5], \"F\")\nmat_img\n\narray([[ 1,  7, 13, 19, 25],\n       [ 2,  8, 14, 20, 26],\n       [ 3,  9, 15, 21, 27],\n       [ 4, 10, 16, 22, 28],\n       [ 5, 11, 17, 23, 29],\n       [ 6, 12, 18, 24, 30]])\n\nplt.imshow(mat_img, cmap = 'Oranges')\n\n\n\n\n\n\n\n\nvolcano = pd.read_csv('./data/volcano.csv', index_col=0)\nx = 10*np.arange(1,volcano.shape[0]+1)\ny = 10*np.arange(1,volcano.shape[1]+1)\nX,Y = np. meshgrid(x,y)\nvt = volcano.transpose()\nprint(vt.shape)\n\n(61, 87)\n\nprint(X.shape)\n\n(61, 87)\n\nprint(Y.shape)\n\n(61, 87)\n\n\n\nfig, ax = plt.subplots()\nIM = ax.matshow(vt, alpha =1, cmap='terrain')\nCS = ax.contour(vt, levels=np.arange(90,200,5))\nax.clabel(CS, inline=True, fontsize=10)\nax.set_title('Maunga Whau Volcano')\n\n\n\n\n\n\n\n\nB.11.8 3D scatterplot\nIn Python,\n\nfig = plt.figure(figsize=(12, 12))\nax = fig.add_subplot(projection='3d')\n\nax.scatter(xs = mtcars.wt, ys = mtcars.disp, zs = mtcars.mpg)\nax.set_xlabel('Weights')\nax.set_ylabel(\"Displacement\")\nax.set_zlabel(\"Miles per gallon\")\nax.set_title(\"3D Scatter Plot\")\n\n\n\n\n\n\n\n\nB.11.9 Perspective plot\nIn Python,\n\nx = 10*np.arange(1,volcano.shape[0]+1)\ny = 10*np.arange(1,volcano.shape[1]+1)\nvt = volcano.transpose()\nZ = 10*vt\nX,Y = np. meshgrid(x,y)\n\nprint(Z.shape)\n\n(61, 87)\n\nprint(X.shape)\n\n(61, 87)\n\nprint(Y.shape)\n\n(61, 87)\n\n\n\nfig, ax = plt.subplots(subplot_kw={\"projection\": \"3d\"})\n# Plot the surface.\nax.plot_surface(X, Y, Z, cmap = 'Greens')",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>B</span>  <span class='chapter-title'>Python Programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-py_prog.html#conditions",
+    "href": "a-py_prog.html#conditions",
+    "title": "Appendix B — Python Programming",
+    "section": "\nB.13 Conditions",
+    "text": "B.13 Conditions\n\nif condition:\n    # code executed when condition is true\nelse:\n    # code executed when condition is false\n\n\na = 5\nb = 20\nif a &gt; 4 or b &gt; 4:\n    print('a &gt; 4 or b &gt; 4')\n\na &gt; 4 or b &gt; 4\n\nif a &gt; 4 and b &gt; 4:\n    print('a &gt; 4 and b &gt; 4')\n\na &gt; 4 and b &gt; 4\n\n\n\nif (a &gt; 4) | (b &gt; 4):\n    print('a &gt; 4 or b &gt; 4')\n\na &gt; 4 or b &gt; 4\n\nif (a &gt; 4) & (b &gt; 4):\n    print('a &gt; 4 and b &gt; 4')\n\na &gt; 4 and b &gt; 4",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>B</span>  <span class='chapter-title'>Python Programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-py_prog.html#functions",
+    "href": "a-py_prog.html#functions",
+    "title": "Appendix B — Python Programming",
+    "section": "\nB.15 Functions",
+    "text": "B.15 Functions\n\ndef function_name(arg1, arg2, ...):\n    ## body\n    return(something)\n\n\ndef add_number(a, b):\n    c = a + b\n    return c\n\nn1 = 9\nn2 = 18\nadd_number(n1, n2)\n\n27",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>B</span>  <span class='chapter-title'>Python Programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-py_prog.html#special-objects",
+    "href": "a-py_prog.html#special-objects",
+    "title": "Appendix B — Python Programming",
+    "section": "\nB.12 Special Objects",
+    "text": "B.12 Special Objects\nIn python, NA, NaN and NULL are not that distinguishable, comparing to R.\n\nNaN can be used as a numerical value on mathematical operations, while None cannot (or at least shouldn’t).\nNaN is a numeric value, as defined in IEEE 754 floating-point standard.\nNone is an internal Python type (NoneType) and would be more like “inexistent” or “empty” than “numerically invalid” in this context.\n\n\na = np.array([None, 0.9, 10])\ntype(a)\n\n&lt;class 'numpy.ndarray'&gt;\n\na == None\n\narray([ True, False, False])\n\nlen(a)\n\n3\n\nprint(type(a[0]))\n\n&lt;class 'NoneType'&gt;\n\n\n\nNone == None\n\nTrue\n\n'' == None\n\nFalse\n\n\n\na1 = np.array([-1,0,1])/0\n\n&lt;string&gt;:1: RuntimeWarning: divide by zero encountered in divide\n&lt;string&gt;:1: RuntimeWarning: invalid value encountered in divide\n\na1\n\narray([-inf,  nan,  inf])\n\n\n\nmath.isfinite(0)\n\nTrue\n\nmath.isnan(float(\"nan\"))\n\nTrue\n\npd.isna(float(\"nan\"))\n\nTrue\n\nnp.isnan(float(\"nan\"))\n\nTrue\n\n\n\nmath.isfinite(7.8/1e-307)\n\nTrue\n\nmath.isfinite(7.8/1e-308)\n\nFalse\n\n\n\ntype(None)\n\n&lt;class 'NoneType'&gt;\n\n\n\n## TypeError: '&gt;' not supported between instances of 'NoneType' and 'int'\nNone &gt; 5\n\n\n## TypeError: object of type 'NoneType' has no len()\nlen(None)\n\n\nfloat(\"NaN\") &gt; 5\n\nFalse\n\n\n\nv_none = np.array([3, None, 5])\nv_none\n\narray([3, None, 5], dtype=object)\n\nv_nan = np.array([3, float(\"NaN\"), 5])\nv_nan\n\narray([ 3., nan,  5.])\n\n\n\n# TypeError: unsupported operand type(s) for +: 'int' and 'NoneType'\nsum(v_none)\n\n\nsum(v_nan)\n\nnan",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>B</span>  <span class='chapter-title'>Python Programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-py_prog.html#loops",
+    "href": "a-py_prog.html#loops",
+    "title": "Appendix B — Python Programming",
+    "section": "\nB.16 Loops",
+    "text": "B.16 Loops\n\nB.16.1 for loops\n\nPython\nfor value in that:\n    # do this\n\n\nfor i in range(5):\n    print('for', i)\n\nfor 0\nfor 1\nfor 2\nfor 3\nfor 4\n\n\n\nfor i in ['My', '1st', 'for', 'loop']:\n    print(i)\n\nMy\n1st\nfor\nloop\n\n\n\nB.16.2 while loops\n\nwhile (condition):\n    # do this\n\n\ni = 1\nwhile(i &lt; 5):\n    print('while',i)\n    i = i + 1\n\nwhile 1\nwhile 2\nwhile 3\nwhile 4\n\n\n\nnp.random.seed(86)\ndef flip():\n    return np.random.choice(['T','H'], 1)\n    \nflips = 0\nnheads = 0\n\nwhile(nheads &lt; 3):\n    if flip() == \"H\":\n        nheads += 1\n    else:\n        nheads = 0\n    flips += 1\n    \nflips\n\n9",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>B</span>  <span class='chapter-title'>Python Programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-py_prog.html#multiple-conditions",
+    "href": "a-py_prog.html#multiple-conditions",
+    "title": "Appendix B — Python Programming",
+    "section": "\nB.14 Multiple conditions",
+    "text": "B.14 Multiple conditions\n\nif condition A:\n    # do that\nelif condition B:\n    # do something else\nelse:\n    # \n\n\nrd = np.random.randint(100)\nprint(rd)\n\n83\n\nif rd &lt;= 20:\n    print(\"rd &lt;= 20\")\nelif rd &gt; 20 and rd &lt;= 40:\n    print('rd &gt; 20 and rd &lt;= 40')\nelif rd &gt; 40 and rd &lt;= 60:\n    print('rd &gt; 40 and rd &lt;= 60')\nelif rd &gt; 60 and rd &lt;= 80:\n    print('rd &gt; 60 and rd &lt;= 80')\nelif rd &gt; 80 and rd &lt;= 100:\n    print('rd &gt; 80 and rd &lt;= 100')\n\nrd &gt; 80 and rd &lt;= 100",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>B</span>  <span class='chapter-title'>Python Programming</span>"
     ]
   }
 ]
