@@ -2015,6 +2015,72 @@
     ]
   },
   {
+    "objectID": "model-logistic.html#footnotes",
+    "href": "model-logistic.html#footnotes",
+    "title": "28  Logistic Regression",
+    "section": "",
+    "text": "R packages for ROC curves: ROCR and pROC, yardstick of Tidymodels↩︎",
+    "crumbs": [
+      "Statistical Models",
+      "<span class='chapter-number'>28</span>  <span class='chapter-title'>Logistic Regression</span>"
+    ]
+  },
+  {
+    "objectID": "model-bayes.html",
+    "href": "model-bayes.html",
+    "title": "29  Bayesian Linear Regression*",
+    "section": "",
+    "text": "29.1 Bayesian Simple Linear Regression Model\nIn simple linear regression, we have\n\\[Y_i \\mid \\beta_0, \\beta_1, \\sigma \\stackrel{ind}{\\sim}  N\\left(\\mu_i, \\sigma^2 \\right) \\quad \\text{with} \\quad \\mu_i = \\beta_0 + \\beta_1 X_i\\]\nWe assume or thought the response values are generated from the normal distribution whose mean depends on their corresponding regressor’s value. In Bayesian inference, this normal data model is our likelihood \\(L(\\btheta = (\\beta_0, \\beta_1, \\sigma) \\mid \\mathcal{D} = \\{\\by, \\bx \\})\\), as it evaluates how the data are compatible with different possible values of parameters.\nHere, in SLR, we have three unknown parameters \\(\\beta_0, \\beta_1, \\sigma\\) to be estimated, and we use \\(\\btheta\\) to denote a unknown parameter vector including the three. \\(\\mathcal{D}\\) is the collected data set including both response \\(\\by\\) vector and regressor \\(\\bx\\) vector.\nTo be a Bayesian, what do we do next? Bayesians only have one trick. We assign priors to the unknown parameters, then do the posterior inference using Bayes’ rule! The idea is simple, but the big question is HOW. There are countless approaches to construct priors for \\(\\beta_0, \\beta_1\\), and \\(\\sigma\\). For simplicity, we can assume \\(\\beta_0, \\beta_1\\), and \\(\\sigma\\) are independent. That is, their joint probability distribution is the product of their own marginal distribution: \\(\\pi(\\btheta) = \\pi(\\beta_0, \\beta_1, \\sigma) = \\pi(\\beta_0)\\pi(\\beta_1)\\pi(\\sigma)\\).\nThe next question is what are \\(\\pi(\\beta_0)\\), \\(\\pi(\\beta_1)\\), and \\(\\pi(\\sigma)\\)? \\(\\beta_0\\) and \\(\\beta_1\\) can technically take any values in the real line. We can embrace the normal distribution because its support is the whole real line, and it is actually a conjugate prior for the SLR with normally distributed errors. Let’s assume\n\\[\\begin{align} \\beta_0 \\sim N(m_0, s_0^2), \\\\\n\\beta_1 \\sim N(m_1, s_1^2). \\end{align}\\]\nHere \\(m_0\\) and \\(m_1\\) are prior means, and \\(s_0^2\\) and \\(s_1^2\\) are prior variances. Before new data or evidence come in, we think \\(\\beta_0\\) and \\(\\beta_1\\) are sort of located at \\(m_0\\) and \\(m_1\\), respectively. Of course we are not 100% sure or correct. \\(s_0^2\\) and \\(s_1^2\\) measure how uncertain we feel about the location of \\(\\beta_0\\) and \\(\\beta_1\\).\nBy definition, \\(\\sigma\\) must be positive practically. Therefore, a distribution having a positive support is more appropriate to reflect the possible values of \\(\\sigma\\). One popular distribution used to describe \\(\\sigma\\) is the exponential distribution denoted as\n\\[\\begin{align} \\sigma \\sim \\text{Exp}(\\lambda) \\end{align}\\] whose density function is \\(\\pi(\\sigma) = \\lambda e^{-\\lambda \\sigma}\\) with \\(\\lambda &gt; 0\\). The mean and variance are \\(\\E(\\sigma) = 1/\\lambda\\), and \\(\\Var(\\sigma) = 1/\\lambda^2\\). The parameter \\(\\lambda\\) controls the size of mean and variance. The larger \\(\\lambda\\) is, the smaller mean and variance will be\nOnce the prior distributions are specified, with the data likelihood model, the Bayesian simple linear regression model is complete.\n\\[\\begin{align} Y_i \\mid \\beta_0, \\beta_1, \\sigma &\\stackrel{ind}{\\sim}  N\\left(\\mu_i, \\sigma^2 \\right) \\quad \\text{with} \\quad \\mu_i = \\beta_0 + \\beta_1 X_i \\\\\n\\beta_0 &\\sim N(m_0, s_0^2) \\\\\n\\beta_1 &\\sim N(m_1, s_1^2) \\\\\n\\sigma &\\sim \\text{Exp}(\\lambda) \\end{align}\\]\nNote that in this model, we introduce other parameters, the parameters in the prior distributions, \\(m_0\\), \\(s_0^2\\), \\(m_1\\), \\(s_1^2\\), and \\(\\lambda\\). Some call them hyperparameters. The posterior inference results will depend on those values, so before we compute the posterior distribution, we need to specify those values properly, so that the prior distributions faithfully convey our knowledge and belief about \\(\\beta_0\\), \\(\\beta_1\\), and \\(\\sigma\\). The process of finding appropriate hyperparameters to faithfully describe and represents our knowledge is called prior parameter tuning. We explain how we tune the parameters using the following example.\nExample: Capital Bikeshare bayesrules::bikes Data in Washington, D.C.\nThe data we use for illustration is bayesrules::bikes data set. In particular, we check the relationship between the number of bikeshare rides rides and what the temperature feels like (degrees Fahrenheit) temp_feel.\nRows: 500\nColumns: 2\n$ rides     &lt;int&gt; 654, 1229, 1454, 1518, 1362, 891, 1280, 1220, 1137, 1368, 13…\n$ temp_feel &lt;dbl&gt; 64.7, 49.0, 51.1, 52.6, 50.8, 46.6, 45.6, 49.2, 46.4, 45.6, …",
+    "crumbs": [
+      "Statistical Models",
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+    ]
+  },
+  {
+    "objectID": "model-bayes.html#bayesian-simple-linear-regression-model",
+    "href": "model-bayes.html#bayesian-simple-linear-regression-model",
+    "title": "29  Bayesian Linear Regression*",
+    "section": "",
+    "text": "29.1.1 Tuning Prior Models\nPrior understanding 1:\n\nOn an average temperature day, say 65 or 70 degrees, there are typically around 5000 riders, though this average could be somewhere between 3000 and 7000.\n\nThis piece of information gives us an idea of what \\(m_0\\) and \\(s_0\\) should be, but the information has been centered because it provides the typical situation.\nWe can consider the centered intercept, \\(\\beta_{0c}\\) that reflects the typical ridership at the typical temperature. \\(\\beta_{0c}\\) will be centered at the typical number of rides 5000, with standard deviation about 1000 because the mean \\(\\pm\\) 2 \\(\\times\\) SD \\(= (3000, 7000)\\). So the prior for the centered intercept is \\(\\beta_{0c} \\sim N(5000, 1000^2)\\). Graphically speaking, we believe when temperature is around 65 to 70 degrees, the number of rides is about 5000, and interaction of the two dashed lines in the figure.\n\n\n\n\n\n\n\n\n\nPrior understanding 2:\n\nFor every one degree increase in temperature, ridership typically increases by 100 rides, though this average increase could be as low as 20 or as high as 180.\n\nThis information tells us about \\(\\beta_1\\). On average, the slope is 100, and its standard deviation is around 40 because the mean \\(\\pm\\) 2 \\(\\times\\) SD \\(= (20, 180)\\). Therefore we can have \\(\\beta_{1} \\sim N(100, 40^2)\\).\nGraphically speaking, with the centered intercept, we now have the prior regression line, the relationship between rides and temp_feel that we believe it typically has. Note that the prior regression line passes the the centered intercept.\n\n\n\n\n\n\n\n\n\nNote that this red line represents just the typical case we believe. There are other (in fact infinitely many) possibilities of \\(\\beta_{0c}\\) and \\(\\beta_1\\) being considered in our brain that are captured in the prior distributions. We can plot some possible combinations of \\(\\beta_{0c}\\) and \\(\\beta_1\\), and see the prior plausible model lines \\(\\mu_{Y|X} = \\beta_0 + \\beta_1 X\\).\n\n\n\n\n\n\n\n\n\n\nPrior understanding 3:\n\nAt any given temperature, daily ridership will tend to vary with a moderate standard deviation of 1250 rides.\n\nThis information is about \\(\\sigma\\). With \\(\\pi(\\sigma) = \\text{Exp}(\\lambda)\\). We can set \\(\\lambda\\) so that the prior mean is 1250, as informed by the description.\n\\(\\sigma \\sim \\text{Exp}(0.0008)\\) because \\(\\E(\\sigma) = 1/\\lambda = 1/0.0008 = 1250\\)\nWe basically complete the tuning, and all prior distributions are clearly specified. We can generate some prior data points, the data we believe it should look like if we were collecting them, based on the prior model. The following is the simulated prior data when the regression line comes from the prior mean level of \\(\\beta_{0c}\\) and \\(\\beta_1\\).",
+    "crumbs": [
+      "Statistical Models",
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+    ]
+  },
+  {
+    "objectID": "model-bayes.html#posterior-inference",
+    "href": "model-bayes.html#posterior-inference",
+    "title": "29  Bayesian Linear Regression*",
+    "section": "\n29.2 Posterior Inference",
+    "text": "29.2 Posterior Inference\n\n29.2.1 Posterior distribution and sampling\nOnce the Bayesian model is fully specified, we can start doing posterior inference by obtaining the posterior distribution of unknown parameters. We use Bayes rule to update our prior understanding of the relationship between ridership and temperature using data information provided by likelihood.\nThe joint posterior distribution is\n\\[\\pi(\\beta_0, \\beta_1, \\sigma \\mid \\by) = \\frac{L(\\beta_0, \\beta_1, \\sigma \\mid \\by)\\pi(\\beta_0, \\beta_1, \\sigma)}{p(\\by)}\\] where\n\n\\(L(\\beta_0, \\beta_1, \\sigma \\mid \\by) = p(\\by \\mid \\beta_0, \\beta_1, \\sigma) = \\prod_{i=1}^np(y_i \\mid \\beta_0, \\beta_1, \\sigma)\\). It means that given the parameters, and the data generating mechanism, data points \\(y_i\\)s are independent each other.\n\\(\\pi(\\beta_0, \\beta_1, \\sigma) = \\pi(\\beta_0)\\pi(\\beta_1)\\pi(\\sigma)\\). Priors are assumed independent.\n\\(p(\\by) = \\int \\int \\int \\left[\\prod_{i=1}^np(y_i \\mid \\beta_0, \\beta_1, \\sigma)\\right]\\pi(\\beta_0)\\pi(\\beta_1)\\pi(\\sigma) ~ d\\beta_0d\\beta_1d\\sigma\\). This is marginal likelihood that integrates all the parameters out. It is a function of data only. It works as a normalizing constant, guaranteeing that the posterior distribution \\(\\pi(\\beta_0, \\beta_1, \\sigma \\mid \\by)\\) is a valid probability distribution.\n\nAs you can see, \\(p(\\by)\\) looks much more complicated than the one we learned in Chapter 21. When there are many parameters to be estimated, and their prior distributions are complex, it is difficult or impossible to obtain this integral by hand. That is why when doing Bayesian inference, we usually need to use some algorithms to help us derive the posterior distribution, either exactly or approximately.\nThere are lots of ways to generate/approximate the posterior distribution of parameters. They are discussed in Bayesian statistics course. The method used here is Markov chain Monte Carlo (MCMC). Briefly speaking, MCMC is an algorithm that repeatedly draws the samples of the parameters, and eventually the collection of those draws well represents the posterior distribution of parameters. Again, the details are discussed in a Bayesian analysis course.\n\nHere we use the R rstanarm package that uses RStan syntax1 to do Bayesian inference for applied regression models (arm).\nThe function helping us draw posterior samples is stan_glm(). The formula is exactly the same as lm(). The family is gaussian because we have a normal data model. prior_intercept is for \\(\\beta_{0c}\\), prior for \\(\\beta_1\\) and prior_aux for \\(\\sigma\\). Here, 4 Markov chains are generated. In other words, 4 distinct collection of posterior samples will be generated, each having 10000 draws or iterations. Each iteration draws a posterior sample of the \\(\\beta_0\\), \\(\\beta_1\\), and \\(\\sigma\\).\n\nbike_model &lt;- rstanarm::stan_glm(rides ~ temp_feel, data = bikes,\n                                 family = gaussian(),\n                                 prior_intercept = normal(5000, 1000),\n                                 prior = normal(100, 40), \n                                 prior_aux = exponential(0.0008),\n                                 chains = 4, iter = 5000*2, seed = 2024)\n\n\n\nAfter tossing out the first half of Markov chain values from the warm-up or burn-in phase, stan_glm() simulation produces four parallel chains of length 5000 for each model parameter:\n\\(\\{ \\beta_0^{(1)}, \\beta_0^{(2)}, \\dots, \\beta_0^{(5000)} \\}\\), \\(\\{ \\beta_1^{(1)}, \\beta_1^{(2)}, \\dots, \\beta_1^{(5000)} \\}\\), \\(\\{ \\sigma^{(1)}, \\sigma^{(2)}, \\dots, \\sigma^{(5000)} \\}\\)\n\n29.2.2 Convergence diagnostics\nWhen we use MCMC to do posterior inference, we need to make sure that the algorithm converges. In other words, the posterior samples drawn by the algorithm should reach a stable distribution, and the distribution basically won’t change much as samples are continuously collected. One way to check the convergence is to check the traceplot, seeing how the sample values move as the iteration goes. If the algorithm reaches the convergence, the traceplots from the 4 independent runs should be mixed and overlapped very well because the 4 set of samples should represent the same posterior distribution. The traceplots obtained from the model fit are mixed well.\n\n# Trace plots of parallel chains\nbayesplot::mcmc_trace(bike_model, size = 0.1)\n\n\n\n\n\n\n\n\nWhen MCMC just starts, the drawn samples are usually not representative of the posterior distribution. Because of this, we usually don’t include the samples drawn in the early iterations in the final collection of samples used for representing the posterior distribution and for analysis. The following two animations show that it takes a while and several iterations to reach a more stable distribution.\n\n\n\n\nSource: https://blog.stata.com/2016/11/15/introduction-to-bayesian-statistics-part-2-mcmc-and-the-metropolis-hastings-algorithm/\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe density curves estimated from the posterior samples approximate posterior distributions. We observe that these four chains produce nearly indistinguishable posterior approximations. This provides evidence that our simulation is stable and sufficiently long – running the chains for more iterations likely wouldn’t produce drastically different or improved posterior approximations.\n\n# Density plots of parallel chains\nbayesplot::mcmc_dens_overlay(bike_model)\n\n\n\n\n\n\n\n\n\n\n\nIn addition to visualization, we can use some numeric measures to diagnose convergence. Both effective sample size and R-hat are close to 1, indicating that the chains are stable, mixing quickly, and behaving much like an independent sample.\n\n# Effective sample size ratio\nbayesplot::neff_ratio(bike_model)\n\n(Intercept)   temp_feel       sigma \n      1.023       1.021       0.996 \n\n# Rhat\nbayesplot::rhat(bike_model)\n\n(Intercept)   temp_feel       sigma \n          1           1           1 \n\n\n\nThere’s no magic rule for interpreting this ratio, and it should be utilized alongside other diagnostics such as the trace plot. That said, we might be suspicious of a Markov chain for which the effective sample size ratio is less than 0.1, i.e., the effective sample size is less than 10% of the actual sample size. An R-hat ratio greater than 1.05 raises some red flags about the stability of the simulation. \n\nThe followings provide two scenarios that MCMC hasn’t reached convergence.\n\n\n\n\nHighly Autocorrelated Chain: Effective size is small, not many independent samples that are representative of the true posterior distribution.\n\nRun longer and thinning the chain\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSlow Convergence: Need wait longer to have the chain reached a stable mixing zone that are representative of the true posterior distribution.\n\nSet a longer burn-in or warm-up period\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n29.2.3 Posterior summary and analysis\nOnce posterior samples are collected, we can calculate important summary statistics, for example posterior mean, and the 80% credible interval. The two are shown in the first column and the last two columns in the table below.\n\n# Posterior summary statistics\ntidy(bike_model, effects = c(\"fixed\", \"aux\"),\n     conf.int = TRUE, conf.level = 0.80)\n\n# A tibble: 4 × 5\n  term        estimate std.error conf.low conf.high\n  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;\n1 (Intercept)  -2194.     355.    -2648.    -1747. \n2 temp_feel       82.2      5.08     75.7      88.7\n3 sigma         1282.      40.6    1231.     1335. \n4 mean_PPD      3485.      80.7    3384.     3591. \n\n\nThe posterior relationship (on average) is \\(-2196 + 82.2 X\\). Note that before data come in, we believe one degree increase will increase 100 rides on average. However, data tell us the effect of temperature is not as large as we thought. We can directly quantify the uncertainty about \\(\\beta_1\\) by looking at its credible interval. The 80% credible interval for \\(\\beta_1\\) is \\((75.7, 88.5)\\). The interval is much more intuitive than the confidence interval. We say, given the data, the probability that \\(\\beta_1\\) is between 75.7 and 88.5 is 80%., i.e., \\(P(\\beta_1 \\in(75.7, 88.5) \\mid \\by, \\bx) = 80\\%\\).\n\nThe posterior samples are saved in bike_model_df.\n\n# Store the 4 chains for each parameter in 1 data frame\nbike_model_df &lt;- as.data.frame(bike_model)\nnrow(bike_model_df)\n\n[1] 20000\n\nhead(bike_model_df)\n\n  (Intercept) temp_feel sigma\n1       -1993      77.7  1289\n2       -1818      75.9  1292\n3       -2003      78.3  1305\n4       -2515      87.4  1250\n5       -2519      88.0  1293\n6       -1666      74.5  1294\n\n\nHow do we learn whether or not \\(\\beta_1 &gt; 0\\) is zero without using the frequentist hypothesis testing approach? Since we have the posterior samples, we have (at least well approximated) the entire posterior distribution. As a result, we can sort of quantify the probability \\(P(\\beta_1 &gt; 0 \\mid \\by, \\bx)\\). How? We just need to calculate the relative frequency of \\(\\beta_1\\) that is greater than 0.\n\\[P(\\beta_1 &gt; 0 \\mid \\by, \\bx) \\approx \\frac{1}{20000}\\sum_{t=1}^{20000} \\mathbf{1}\\left(\\beta_1^{(t)} &gt; 0\\right)\\]\n\nsum(bike_model_df$temp_feel &gt; 0) / nrow(bike_model_df)\n\n[1] 1\n\n\nInstead of making a dichotomous judgement, in the Bayesian world, we provide the probability of something happening. Anything is not just black or white. We live in a world full of different gray, a continuum showing the degree of our credence. In our example, the probability that \\(\\beta_1 &gt; 0\\) is basically one. We are pretty certain that temperature has a positive effect on the number of bikeshare rides.\n\nThe figure below shows 100 posterior regression lines, one corresponding to one pair of \\((\\beta_0^{(t)}, \\beta_1^{(t)})\\).\n\n\n\n\n\n\n\n\n\nFor each posterior draw \\(\\{\\beta_0^{(t)}, \\beta_1^{(t)}, \\sigma^{(t)} \\}_{t = 1}^{20000}\\), we have the posterior predictive distribution \\[Y_i^{(t)} \\sim N\\left(\\beta_0^{(t)} + \\beta_1^{(t)}X_i, \\, (\\sigma^{(t)})^2\\right)\\]\nWe then can have 20000 different posterior predictive response distributions, and 20000 different posterior predictive response data sets. Those data are what we think the data will look like if the true data generating mechanism is one of the regression model with parameters \\(\\{\\beta_0^{(t)}, \\beta_1^{(t)}, \\sigma^{(t)} \\}\\).",
+    "crumbs": [
+      "Statistical Models",
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+    ]
+  },
+  {
+    "objectID": "model-bayes.html#resources",
+    "href": "model-bayes.html#resources",
+    "title": "29  Bayesian Linear Regression*",
+    "section": "\n29.3 Resources",
+    "text": "29.3 Resources\n\nBayes Rules! An Introduction to Applied Bayesian Modeling\nStatistical Rethinking\nA Student’s Guide to Bayesian Statistics\nBayesian Data Analysis",
+    "crumbs": [
+      "Statistical Models",
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+    ]
+  },
+  {
+    "objectID": "model-bayes.html#footnotes",
+    "href": "model-bayes.html#footnotes",
+    "title": "29  Bayesian Linear Regression*",
+    "section": "",
+    "text": "RStan is the R interface to Stan.↩︎",
+    "crumbs": [
+      "Statistical Models",
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+    ]
+  },
+  {
     "objectID": "model-survival.html",
     "href": "model-survival.html",
     "title": "30  Survival Analysis",
@@ -2059,289 +2125,168 @@
     ]
   },
   {
-    "objectID": "model-bayes.html",
-    "href": "model-bayes.html",
-    "title": "29  Bayesian Linear Regression*",
+    "objectID": "a-r_prog.html",
+    "href": "a-r_prog.html",
+    "title": "Appendix A — R programming",
     "section": "",
-    "text": "29.1 Bayesian Simple Linear Regression Model\nIn simple linear regression, we have\n\\[Y_i \\mid \\beta_0, \\beta_1, \\sigma \\stackrel{ind}{\\sim}  N\\left(\\mu_i, \\sigma^2 \\right) \\quad \\text{with} \\quad \\mu_i = \\beta_0 + \\beta_1 X_i\\]\nWe assume or thought the response values are generated from the normal distribution whose mean depends on their corresponding regressor’s value. In Bayesian inference, this normal data model is our likelihood \\(L(\\btheta = (\\beta_0, \\beta_1, \\sigma) \\mid \\mathcal{D} = \\{\\by, \\bx \\})\\), as it evaluates how the data are compatible with different possible values of parameters.\nHere, in SLR, we have three unknown parameters \\(\\beta_0, \\beta_1, \\sigma\\) to be estimated, and we use \\(\\btheta\\) to denote a unknown parameter vector including the three. \\(\\mathcal{D}\\) is the collected data set including both response \\(\\by\\) vector and regressor \\(\\bx\\) vector.\nTo be a Bayesian, what do we do next? Bayesians only have one trick. We assign priors to the unknown parameters, then do the posterior inference using Bayes’ rule! The idea is simple, but the big question is HOW. There are countless approaches to construct priors for \\(\\beta_0, \\beta_1\\), and \\(\\sigma\\). For simplicity, we can assume \\(\\beta_0, \\beta_1\\), and \\(\\sigma\\) are independent. That is, their joint probability distribution is the product of their own marginal distribution: \\(\\pi(\\btheta) = \\pi(\\beta_0, \\beta_1, \\sigma) = \\pi(\\beta_0)\\pi(\\beta_1)\\pi(\\sigma)\\).\nThe next question is what are \\(\\pi(\\beta_0)\\), \\(\\pi(\\beta_1)\\), and \\(\\pi(\\sigma)\\)? \\(\\beta_0\\) and \\(\\beta_1\\) can technically take any values in the real line. We can embrace the normal distribution because its support is the whole real line, and it is actually a conjugate prior for the SLR with normally distributed errors. Let’s assume\n\\[\\begin{align} \\beta_0 \\sim N(m_0, s_0^2), \\\\\n\\beta_1 \\sim N(m_1, s_1^2). \\end{align}\\]\nHere \\(m_0\\) and \\(m_1\\) are prior means, and \\(s_0^2\\) and \\(s_1^2\\) are prior variances. Before new data or evidence come in, we think \\(\\beta_0\\) and \\(\\beta_1\\) are sort of located at \\(m_0\\) and \\(m_1\\), respectively. Of course we are not 100% sure or correct. \\(s_0^2\\) and \\(s_1^2\\) measure how uncertain we feel about the location of \\(\\beta_0\\) and \\(\\beta_1\\).\nBy definition, \\(\\sigma\\) must be positive practically. Therefore, a distribution having a positive support is more appropriate to reflect the possible values of \\(\\sigma\\). One popular distribution used to describe \\(\\sigma\\) is the exponential distribution denoted as\n\\[\\begin{align} \\sigma \\sim \\text{Exp}(\\lambda) \\end{align}\\] whose density function is \\(\\pi(\\sigma) = \\lambda e^{-\\lambda \\sigma}\\) with \\(\\lambda &gt; 0\\). The mean and variance are \\(\\E(\\sigma) = 1/\\lambda\\), and \\(\\Var(\\sigma) = 1/\\lambda^2\\). The parameter \\(\\lambda\\) controls the size of mean and variance. The larger \\(\\lambda\\) is, the smaller mean and variance will be\nOnce the prior distributions are specified, with the data likelihood model, the Bayesian simple linear regression model is complete.\n\\[\\begin{align} Y_i \\mid \\beta_0, \\beta_1, \\sigma &\\stackrel{ind}{\\sim}  N\\left(\\mu_i, \\sigma^2 \\right) \\quad \\text{with} \\quad \\mu_i = \\beta_0 + \\beta_1 X_i \\\\\n\\beta_0 &\\sim N(m_0, s_0^2) \\\\\n\\beta_1 &\\sim N(m_1, s_1^2) \\\\\n\\sigma &\\sim \\text{Exp}(\\lambda) \\end{align}\\]\nNote that in this model, we introduce other parameters, the parameters in the prior distributions, \\(m_0\\), \\(s_0^2\\), \\(m_1\\), \\(s_1^2\\), and \\(\\lambda\\). Some call them hyperparameters. The posterior inference results will depend on those values, so before we compute the posterior distribution, we need to specify those values properly, so that the prior distributions faithfully convey our knowledge and belief about \\(\\beta_0\\), \\(\\beta_1\\), and \\(\\sigma\\). The process of finding appropriate hyperparameters to faithfully describe and represents our knowledge is called prior parameter tuning. We explain how we tune the parameters using the following example.\nExample: Capital Bikeshare bayesrules::bikes Data in Washington, D.C.\nThe data we use for illustration is bayesrules::bikes data set. In particular, we check the relationship between the number of bikeshare rides rides and what the temperature feels like (degrees Fahrenheit) temp_feel.\nRows: 500\nColumns: 2\n$ rides     &lt;int&gt; 654, 1229, 1454, 1518, 1362, 891, 1280, 1220, 1137, 1368, 13…\n$ temp_feel &lt;dbl&gt; 64.7, 49.0, 51.1, 52.6, 50.8, 46.6, 45.6, 49.2, 46.4, 45.6, …",
+    "text": "A.1 Arithmetic and Logical Operators\n2 + 3 / (5 * 4) ^ 2\n\n[1] 2.0075\n\n5 == 5.00\n\n[1] TRUE\n\n# 5 and 5L are of the same value too\n# 5 is of type double; 5L is integer\n5 == 5L\n\n[1] TRUE\n\ntypeof(5L)\n\n[1] \"integer\"\n\n!TRUE == FALSE\n\n[1] TRUE\nType coercion: When doing AND/OR comparisons, all nonzero values are treated as TRUE and 0 as FALSE.\n-5 | 0\n\n[1] TRUE\n\n1 & 1\n\n[1] TRUE\n\n2 | 0\n\n[1] TRUE",
     "crumbs": [
-      "Statistical Models",
-      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
     ]
   },
   {
-    "objectID": "model-bayes.html#normal-data-model",
-    "href": "model-bayes.html#normal-data-model",
-    "title": "29  Bayesian Linear Regression*",
-    "section": "",
-    "text": "To be a Bayesian, what do we do next?\n\n\nAssign priors to the unknown parameters, then do the posterior inference using Bayes’ rule!\nBig question is how?",
+    "objectID": "a-r_prog.html#math-functions",
+    "href": "a-r_prog.html#math-functions",
+    "title": "Appendix A — R programming",
+    "section": "\nA.2 Math Functions",
+    "text": "A.2 Math Functions\nMath functions in R are built-in.\n\nsqrt(144)\n\n[1] 12\n\nexp(1)\n\n[1] 2.718282\n\nsin(pi/2)\n\n[1] 1\n\nlog(32, base = 2)\n\n[1] 5\n\nabs(-7)\n\n[1] 7",
     "crumbs": [
-      "Statistical Models",
-      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
     ]
   },
   {
-    "objectID": "model-bayes.html#prior-models",
-    "href": "model-bayes.html#prior-models",
-    "title": "29  Bayesian Linear Regression*",
-    "section": "\n29.2 Prior Models",
-    "text": "29.2 Prior Models\n\nThere are countless approaches to construct priors for \\(\\beta_0, \\beta_1\\), and \\(\\sigma\\).\nFor simplicity, assume \\(\\beta_0, \\beta_1\\), and \\(\\sigma\\) are independent, \\(\\pi(\\btheta) = \\pi(\\beta_0, \\beta_1, \\sigma) = \\pi(\\beta_0)\\pi(\\beta_1)\\pi(\\sigma)\\)\n\\(\\beta_0\\) and \\(\\beta_1\\) can technically take any values in the real line.\n\n\\[\\begin{align} \\beta_0 \\sim N(m_0, s_0^2) \\\\\n\\beta_1 \\sim N(m_1, s_1^2) \\end{align}\\]\n\n\n\\(\\sigma\\) must be positive.\n\n\\[\\begin{align} \\sigma \\sim \\text{Exp}(\\lambda) \\end{align}\\] \\(\\pi(\\sigma) = \\lambda e^{-\\lambda \\sigma}\\), \\(\\lambda &gt; 0\\) and \\(\\E(\\sigma) = 1/\\lambda\\), and \\(\\var(\\sigma) = 1/\\lambda^2\\)\n\nhttps://mc-stan.org/rstanarm/articles/priors.html",
+    "objectID": "a-r_prog.html#variables-and-assignment",
+    "href": "a-r_prog.html#variables-and-assignment",
+    "title": "Appendix A — R programming",
+    "section": "\nA.3 Variables and Assignment",
+    "text": "A.3 Variables and Assignment\nUse &lt;- to do assignment. Why\n\n## we create an object, value 5, \n## and call it x, which is a variable\nx &lt;- 5\nx\n\n[1] 5\n\n(x &lt;- x + 6)\n\n[1] 11\n\nx == 5\n\n[1] FALSE\n\nlog(x)\n\n[1] 2.397895",
     "crumbs": [
-      "Statistical Models",
-      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
     ]
   },
   {
-    "objectID": "model-bayes.html#bayesian-simple-linear-regression-model",
-    "href": "model-bayes.html#bayesian-simple-linear-regression-model",
-    "title": "29  Bayesian Linear Regression*",
-    "section": "",
-    "text": "29.1.1 Tuning Prior Models\nPrior understanding 1:\n\nOn an average temperature day, say 65 or 70 degrees, there are typically around 5000 riders, though this average could be somewhere between 3000 and 7000.\n\nThis piece of information gives us an idea of what \\(m_0\\) and \\(s_0\\) should be, but the information has been centered because it provides the typical situation.\nWe can consider the centered intercept, \\(\\beta_{0c}\\) that reflects the typical ridership at the typical temperature. \\(\\beta_{0c}\\) will be centered at the typical number of rides 5000, with standard deviation about 1000 because the mean \\(\\pm\\) 2 \\(\\times\\) SD \\(= (3000, 7000)\\). So the prior for the centered intercept is \\(\\beta_{0c} \\sim N(5000, 1000^2)\\). Graphically speaking, we believe when temperature is around 65 to 70 degrees, the number of rides is about 5000, and interaction of the two dashed lines in the figure.\n\n\n\n\n\n\n\n\n\nPrior understanding 2:\n\nFor every one degree increase in temperature, ridership typically increases by 100 rides, though this average increase could be as low as 20 or as high as 180.\n\nThis information tells us about \\(\\beta_1\\). On average, the slope is 100, and its standard deviation is around 40 because the mean \\(\\pm\\) 2 \\(\\times\\) SD \\(= (20, 180)\\). Therefore we can have \\(\\beta_{1} \\sim N(100, 40^2)\\).\nGraphically speaking, with the centered intercept, we now have the prior regression line, the relationship between rides and temp_feel that we believe it typically has. Note that the prior regression line passes the the centered intercept.\n\n\n\n\n\n\n\n\n\nNote that this red line represents just the typical case we believe. There are other (in fact infinitely many) possibilities of \\(\\beta_{0c}\\) and \\(\\beta_1\\) being considered in our brain that are captured in the prior distributions. We can plot some possible combinations of \\(\\beta_{0c}\\) and \\(\\beta_1\\), and see the prior plausible model lines \\(\\mu_{Y|X} = \\beta_0 + \\beta_1 X\\).\n\n\n\n\n\n\n\n\n\n\nPrior understanding 3:\n\nAt any given temperature, daily ridership will tend to vary with a moderate standard deviation of 1250 rides.\n\nThis information is about \\(\\sigma\\). With \\(\\pi(\\sigma) = \\text{Exp}(\\lambda)\\). We can set \\(\\lambda\\) so that the prior mean is 1250, as informed by the description.\n\\(\\sigma \\sim \\text{Exp}(0.0008)\\) because \\(\\E(\\sigma) = 1/\\lambda = 1/0.0008 = 1250\\)\nWe basically complete the tuning, and all prior distributions are clearly specified. We can generate some prior data points, the data we believe it should look like if we were collecting them, based on the prior model. The following is the simulated prior data when the regression line comes from the prior mean level of \\(\\beta_{0c}\\) and \\(\\beta_1\\).",
+    "objectID": "a-r_prog.html#object-types",
+    "href": "a-r_prog.html#object-types",
+    "title": "Appendix A — R programming",
+    "section": "\nA.4 Object Types",
+    "text": "A.4 Object Types\ncharacter, double, integer and logical.\n\ntypeof(5)\n\n[1] \"double\"\n\n\n\ntypeof(5L)\n\n[1] \"integer\"\n\n\n\ntypeof(\"I_love_data_science!\")\n\n[1] \"character\"\n\n\n\ntypeof(1 &gt; 3)\n\n[1] \"logical\"\n\n\n\nis.double(5L)\n\n[1] FALSE",
     "crumbs": [
-      "Statistical Models",
-      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
     ]
   },
   {
-    "objectID": "model-bayes.html#capital-bikeshare-bayesrulesbikes-data-in-washington-d.c.",
-    "href": "model-bayes.html#capital-bikeshare-bayesrulesbikes-data-in-washington-d.c.",
-    "title": "29  Bayesian Linear Regression*",
-    "section": "\n29.2 Capital Bikeshare bayesrules::bikes Data in Washington, D.C.\n",
-    "text": "29.2 Capital Bikeshare bayesrules::bikes Data in Washington, D.C.\n\n\n\nRows: 500\nColumns: 2\n$ rides     &lt;int&gt; 654, 1229, 1454, 1518, 1362, 891, 1280, 1220, 1137, 1368, 13…\n$ temp_feel &lt;dbl&gt; 64.7, 49.0, 51.1, 52.6, 50.8, 46.6, 45.6, 49.2, 46.4, 45.6, …",
+    "objectID": "a-r_prog.html#data-structure---vector",
+    "href": "a-r_prog.html#data-structure---vector",
+    "title": "Appendix A — R programming",
+    "section": "\nA.5 Data Structure - Vector",
+    "text": "A.5 Data Structure - Vector\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nVariable defined previously is a scalar value, or in fact a (atomic) vector of length one.\n\n\nA.5.1 (Atomic) Vector\n\nTo create a vector, use c(), short for concatenate or combine.\nAll elements of a vector must be of the same type.\n\n\n(dbl_vec &lt;- c(1, 2.5, 4.5)) \n\n[1] 1.0 2.5 4.5\n\n(int_vec &lt;- c(1L, 6L, 10L))\n\n[1]  1  6 10\n\n## TRUE and FALSE can be written as T and F\n(log_vec &lt;- c(TRUE, FALSE, F))  \n\n[1]  TRUE FALSE FALSE\n\n(chr_vec &lt;- c(\"pretty\", \"girl\"))\n\n[1] \"pretty\" \"girl\"  \n\n\n\n## check how many elements in a vector\nlength(dbl_vec) \n\n[1] 3\n\n## check a compact description of \n## any R data structure\nstr(dbl_vec) \n\n num [1:3] 1 2.5 4.5\n\n\n\nA.5.2 Sequence of Numbers\n\nUse : to create a sequence of integers.\nUse seq() to create a sequence of numbers of type double with more options. \n\n\n(vec &lt;- 1:5) \n\n[1] 1 2 3 4 5\n\ntypeof(vec)\n\n[1] \"integer\"\n\n# a sequence of numbers from 1 to 10 with increment 2\n(seq_vec &lt;- seq(from = 1, to = 10, by = 2))\n\n[1] 1 3 5 7 9\n\ntypeof(seq_vec)\n\n[1] \"double\"\n\n\n\n# a sequence of numbers from 1 to 10\n# with 12 elements\nseq(from = 1, to = 10, length.out = 12)\n\n [1]  1.000000  1.818182  2.636364  3.454545  4.272727  5.090909  5.909091\n [8]  6.727273  7.545455  8.363636  9.181818 10.000000\n\n\n\nA.5.3 Operations on Vectors\n\nWe can do any operations on vectors as we do on a scalar variable (vector of length 1).\n\n\n# Create two vectors\nv1 &lt;- c(3, 8)\nv2 &lt;- c(4, 100) \n\n## All operations happen element-wisely\n# Vector addition\nv1 + v2\n\n[1]   7 108\n\n# Vector subtraction\nv1 - v2\n\n[1]  -1 -92\n\n\n\n# Vector multiplication\nv1 * v2\n\n[1]  12 800\n\n# Vector division\nv1 / v2\n\n[1] 0.75 0.08\n\nsqrt(v2)\n\n[1]  2 10\n\n\n\nA.5.4 Recycling of Vectors\n\nIf we apply arithmetic operations to two vectors of unequal length, the elements of the shorter vector will be recycled to complete the operations.  \n\n\n\nv1 &lt;- c(3, 8, 4, 5)\n# The following 2 operations are the same\nv1 * 2\n\n[1]  6 16  8 10\n\nv1 * c(2, 2, 2, 2)\n\n[1]  6 16  8 10\n\nv3 &lt;- c(4, 11)\nv1 + v3  ## v3 becomes c(4, 11, 4, 11) when doing the operation\n\n[1]  7 19  8 16\n\n\n\nA.5.5 Subsetting Vectors\n\nTo extract element(s) in a vector, we use a pair of brackets [] with element indexing.\nThe indexing starts with 1.\n\n\n\n\nv1\n\n[1] 3 8 4 5\n\nv2\n\n[1]   4 100\n\n## The 3rd element\nv1[3] \n\n[1] 4\n\n\n\n\nv1[c(1, 3)]\n\n[1] 3 4\n\nv1[1:2]\n\n[1] 3 8\n\n## extract all except a few elements\n## put a negative sign before the vector of \n## indices\nv1[-c(2, 3)] \n\n[1] 3 5",
     "crumbs": [
-      "Statistical Models",
-      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
     ]
   },
   {
-    "objectID": "model-bayes.html#tuning-prior-models",
-    "href": "model-bayes.html#tuning-prior-models",
-    "title": "29  Bayesian Linear Regression*",
-    "section": "\n29.2 Tuning Prior Models",
-    "text": "29.2 Tuning Prior Models\n\n\nPrior understanding 1:\n\nOn an average temperature day, say 65 or 70 degrees, there are typically around 5000 riders, though this average could be somewhere between 3000 and 7000.\n\n\nThe prior information tells us something about \\(\\beta_0\\), but the information has been centered.\n\nThe centered intercept, \\(\\beta_{0c}\\), reflects the typical ridership at the typical temperature.\n\n\n\n\\(\\beta_{0c} \\sim N(5000, 1000^2)\\)",
+    "objectID": "a-r_prog.html#data-structure---factor",
+    "href": "a-r_prog.html#data-structure---factor",
+    "title": "Appendix A — R programming",
+    "section": "\nA.6 Data Structure - Factor",
+    "text": "A.6 Data Structure - Factor\n\nA vector of type factor can be ordered in a meaningful way.\nCreate a factor by factor(). It is a type of integer, not character. 😲 🙄\n\n\n## Create a factor from a character vector using function factor()\n(fac &lt;- factor(c(\"med\", \"high\", \"low\")))\n\n[1] med  high low \nLevels: high low med\n\ntypeof(fac)  ## The type is integer.\n\n[1] \"integer\"\n\nstr(fac)  ## The integers show the level each element in vector fac belongs to.\n\n Factor w/ 3 levels \"high\",\"low\",\"med\": 3 1 2\n\n\n\norder_fac &lt;- factor(c(\"med\", \"high\", \"low\"),\n                    levels = c(\"low\", \"med\", \"high\"))\nstr(order_fac)\n\n Factor w/ 3 levels \"low\",\"med\",\"high\": 2 3 1\n\n\n\nlevels(fac) ## Each level represents an integer, ordered from the vector alphabetically.\n\n[1] \"high\" \"low\"  \"med\"",
     "crumbs": [
-      "Statistical Models",
-      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
     ]
   },
   {
-    "objectID": "model-bayes.html#tuning-prior-models-1",
-    "href": "model-bayes.html#tuning-prior-models-1",
-    "title": "29  Bayesian Linear Regression*",
-    "section": "\n29.2 Tuning Prior Models",
-    "text": "29.2 Tuning Prior Models\n\n\nPrior understanding 3:\n\nAt any given temperature, daily ridership will tend to vary with a moderate standard deviation of 1250 rides.\n\n\n\n\\(\\sigma \\sim \\text{Exp}(0.0008)\\) because \\(\\E(\\sigma) = 1/\\lambda = 1/0.0008 = 1250\\)",
+    "objectID": "a-r_prog.html#data-structure---list",
+    "href": "a-r_prog.html#data-structure---list",
+    "title": "Appendix A — R programming",
+    "section": "\nA.7 Data Structure - List",
+    "text": "A.7 Data Structure - List\n\n\n\n\n\n\n\n\n\nLists are different from (atomic) vectors: Elements can be of any type, including lists. (Generic vectors)\nConstruct a list by using list().\n\n\n\n\n## a list of 3 elements of different types\nx_lst &lt;- list(idx = 1:3, \n              \"a\", \n              c(TRUE, FALSE))\n\n\n\n$idx\n[1] 1 2 3\n\n[[2]]\n[1] \"a\"\n\n[[3]]\n[1]  TRUE FALSE\n\n\n\n\nstr(x_lst)\n\nList of 3\n $ idx: int [1:3] 1 2 3\n $    : chr \"a\"\n $    : logi [1:2] TRUE FALSE\n\nnames(x_lst)\n\n[1] \"idx\" \"\"    \"\"   \n\nlength(x_lst)\n\n[1] 3\n\n\n\n\n\nA.7.1 Subsetting a list\n\n\nReturn an  element  of a list\n\n## subset by name (a vector)\nx_lst$idx  \n\n[1] 1 2 3\n\n## subset by indexing (a vector)\nx_lst[[1]]  \n\n[1] 1 2 3\n\ntypeof(x_lst$idx)\n\n[1] \"integer\"\n\n\n\n\nReturn a  sub-list  of a list\n\n## subset by name (still a list)\nx_lst[\"idx\"]  \n\n$idx\n[1] 1 2 3\n\n## subset by indexing (still a list)\nx_lst[1]  \n\n$idx\n[1] 1 2 3\n\ntypeof(x_lst[\"idx\"])\n\n[1] \"list\"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nIf list x is a train carrying objects, then x[[5]] is the object in car 5; x[4:6] is a train of cars 4-6.\n— @RLangTip, https://twitter.com/RLangTip/status/268375867468681216",
     "crumbs": [
-      "Statistical Models",
-      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
     ]
   },
   {
-    "objectID": "model-bayes.html#tuning-prior-models-2",
-    "href": "model-bayes.html#tuning-prior-models-2",
-    "title": "29  Bayesian Linear Regression*",
-    "section": "\n29.3 Tuning Prior Models",
-    "text": "29.3 Tuning Prior Models\n\n\nPrior understanding 3:\n\nAt any given temperature, daily ridership will tend to vary with a moderate standard deviation of 1250 rides.\n\n\n\n\\(\\sigma \\sim \\text{Exp}(0.0008)\\) because \\(\\E(\\sigma) = 1/\\lambda = 1/0.0008 = 1250\\)",
+    "objectID": "a-r_prog.html#data-structure---matrix",
+    "href": "a-r_prog.html#data-structure---matrix",
+    "title": "Appendix A — R programming",
+    "section": "\nA.8 Data Structure - Matrix",
+    "text": "A.8 Data Structure - Matrix\n\nA matrix is a two-dimensional analog of a vector with attribute dim.\nUse command matrix() to create a matrix.\n\n\n## Create a 3 by 2 matrix called mat\n(mat &lt;- matrix(data = 1:6, nrow = 3, ncol = 2)) \n\n     [,1] [,2]\n[1,]    1    4\n[2,]    2    5\n[3,]    3    6\n\ndim(mat); nrow(mat); ncol(mat)\n\n[1] 3 2\n\n\n[1] 3\n\n\n[1] 2\n\n\n\n# elements are arranged by row\nmatrix(data = 1:6, \n       nrow = 3, \n       ncol = 2, \n       byrow = TRUE) #&lt;&lt;\n\n     [,1] [,2]\n[1,]    1    2\n[2,]    3    4\n[3,]    5    6\n\nattributes(mat)\n\n$dim\n[1] 3 2\n\n\n\nA.8.1 Row and Column Names\n\n\n\nmat\n\n     [,1] [,2]\n[1,]    1    4\n[2,]    2    5\n[3,]    3    6\n\n## assign row names and column names\nrownames(mat) &lt;- c(\"A\", \"B\", \"C\")\ncolnames(mat) &lt;- c(\"a\", \"b\")\nmat\n\n  a b\nA 1 4\nB 2 5\nC 3 6\n\n\n\n\nrownames(mat)\n\n[1] \"A\" \"B\" \"C\"\n\ncolnames(mat)\n\n[1] \"a\" \"b\"\n\nattributes(mat)\n\n$dim\n[1] 3 2\n\n$dimnames\n$dimnames[[1]]\n[1] \"A\" \"B\" \"C\"\n\n$dimnames[[2]]\n[1] \"a\" \"b\"\n\n\n\n\n\nA.8.2 Subsetting a Matrix\n\nUse the same indexing approach as vectors on rows and columns.\nUse comma , to separate row and column index.\n\nmat[2, 2] extracts the element of the second row and second column.\n\n\n\n\nmat\n\n  a b\nA 1 4\nB 2 5\nC 3 6\n\n## all rows and 2nd column\n## leave row index blank\n## specify 2 in coln index\nmat[, 2]\n\nA B C \n4 5 6 \n\n\n\n\n## 2nd row and all columns\nmat[2, ] \n\na b \n2 5 \n\n## The 1st and 3rd rows and the 1st column\nmat[c(1, 3), 1] \n\nA C \n1 3 \n\n\n\n\n\nA.8.3 Binding Matrices\n\ncbind() (binding matrices by adding columns)\nrbind() (binding matrices by adding rows)\nWhen matrices are combined by columns (rows), they should have the same number of rows (columns).\n\n\n\n\nmat\n\n  a b\nA 1 4\nB 2 5\nC 3 6\n\nmat_c &lt;- matrix(data = c(7,0,0,8,2,6), \n                nrow = 3, ncol = 2)\n## should have the same number of rows\ncbind(mat, mat_c)  \n\n  a b    \nA 1 4 7 8\nB 2 5 0 2\nC 3 6 0 6\n\n\n\n\nmat_r &lt;- matrix(data = 1:4, \n                nrow = 2, \n                ncol = 2)\n## should have the same number of columns\nrbind(mat, mat_r)  \n\n  a b\nA 1 4\nB 2 5\nC 3 6\n  1 3\n  2 4",
     "crumbs": [
-      "Statistical Models",
-      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
     ]
   },
   {
-    "objectID": "model-bayes.html#prior-model-simulation",
-    "href": "model-bayes.html#prior-model-simulation",
-    "title": "29  Bayesian Linear Regression*",
-    "section": "\n29.3 Prior Model Simulation",
-    "text": "29.3 Prior Model Simulation\n\n100 prior plausible model lines \\(\\mu_{Y|X} = \\beta_0 + \\beta_1 X\\)",
+    "objectID": "a-r_prog.html#data-structure---data-frame",
+    "href": "a-r_prog.html#data-structure---data-frame",
+    "title": "Appendix A — R programming",
+    "section": "\nA.9 Data Structure - Data Frame",
+    "text": "A.9 Data Structure - Data Frame\n\nA data frame is of type list of equal-length vectors, having a 2-dimensional structure.\nMore general than matrix: Different columns can have different types.\nUse data.frame() that takes named vectors as input “element”.\n\n\n\n\n## data frame w/ an dbl column named age\n## and char column named gender.\n(df &lt;- data.frame(age = c(19, 21, 40), \n                  gen = c(\"m\",\"f\", \"m\")))\n\n  age gen\n1  19   m\n2  21   f\n3  40   m\n\n## a data frame has a list structure\nstr(df)  \n\n'data.frame':   3 obs. of  2 variables:\n $ age: num  19 21 40\n $ gen: chr  \"m\" \"f\" \"m\"\n\n\n\n\n## must set column names\n## or they are ugly and non-recognizable\ndata.frame(c(19,21,40), c(\"m\",\"f\",\"m\")) \n\n  c.19..21..40. c..m....f....m..\n1            19                m\n2            21                f\n3            40                m\n\n\n\n\n\nA.9.1 Properties of data frames\nData frame has properties of matrix and list.\n\n\n\nnames(df)  ## df as a list\n\n[1] \"age\" \"gen\"\n\ncolnames(df)  ## df as a matrix\n\n[1] \"age\" \"gen\"\n\nlength(df) ## df as a list\n\n[1] 2\n\nncol(df) ## df as a matrix\n\n[1] 2\n\ndim(df) ## df as a matrix\n\n[1] 3 2\n\n\n\n\n## rbind() and cbind() can be used on df\ndf_r &lt;- data.frame(age = 10, \n                   gen = \"f\")\nrbind(df, df_r)\n\n  age gen\n1  19   m\n2  21   f\n3  40   m\n4  10   f\n\ndf_c &lt;- \n    data.frame(col = c(\"red\",\"blue\",\"gray\"))\n(df_new &lt;- cbind(df, df_c))\n\n  age gen  col\n1  19   m  red\n2  21   f blue\n3  40   m gray\n\n\n\n\n\nA.9.2 Subsetting a data frame\nCan use either list or matrix subsetting methods.\n\n\n\ndf_new\n\n  age gen  col\n1  19   m  red\n2  21   f blue\n3  40   m gray\n\n## Subset rows\ndf_new[c(1, 3), ]\n\n  age gen  col\n1  19   m  red\n3  40   m gray\n\n## select the row where age == 21\ndf_new[df_new$age == 21, ]\n\n  age gen  col\n2  21   f blue\n\n\n\n\n## Subset columns\n## like a list\ndf_new$age\n\n[1] 19 21 40\n\ndf_new[c(\"age\", \"gen\")]\n\n  age gen\n1  19   m\n2  21   f\n3  40   m\n\n## like a matrix\ndf_new[, c(\"age\", \"gen\")]\n\n  age gen\n1  19   m\n2  21   f\n3  40   m\n\n\n\n\n\ndf_new[c(1, 3), ]\n\n  age gen  col\n1  19   m  red\n3  40   m gray\n\nstr(df[\"age\"])  ## a data frame with one column\n\n'data.frame':   3 obs. of  1 variable:\n $ age: num  19 21 40\n\nstr(df[, \"age\"])  ## becomes a vector by default\n\n num [1:3] 19 21 40",
     "crumbs": [
-      "Statistical Models",
-      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
     ]
   },
   {
-    "objectID": "model-bayes.html#posterior-inference",
-    "href": "model-bayes.html#posterior-inference",
-    "title": "29  Bayesian Linear Regression*",
-    "section": "\n29.2 Posterior Inference",
-    "text": "29.2 Posterior Inference\n\n29.2.1 Posterior distribution and sampling\nOnce the Bayesian model is fully specified, we can start doing posterior inference by obtaining the posterior distribution of unknown parameters. We use Bayes rule to update our prior understanding of the relationship between ridership and temperature using data information provided by likelihood.\nThe joint posterior distribution is\n\\[\\pi(\\beta_0, \\beta_1, \\sigma \\mid \\by) = \\frac{L(\\beta_0, \\beta_1, \\sigma \\mid \\by)\\pi(\\beta_0, \\beta_1, \\sigma)}{p(\\by)}\\] where\n\n\\(L(\\beta_0, \\beta_1, \\sigma \\mid \\by) = p(\\by \\mid \\beta_0, \\beta_1, \\sigma) = \\prod_{i=1}^np(y_i \\mid \\beta_0, \\beta_1, \\sigma)\\). It means that given the parameters, and the data generating mechanism, data points \\(y_i\\)s are independent each other.\n\\(\\pi(\\beta_0, \\beta_1, \\sigma) = \\pi(\\beta_0)\\pi(\\beta_1)\\pi(\\sigma)\\). Priors are assumed independent.\n\\(p(\\by) = \\int \\int \\int \\left[\\prod_{i=1}^np(y_i \\mid \\beta_0, \\beta_1, \\sigma)\\right]\\pi(\\beta_0)\\pi(\\beta_1)\\pi(\\sigma) ~ d\\beta_0d\\beta_1d\\sigma\\). This is marginal likelihood that integrates all the parameters out. It is a function of data only. It works as a normalizing constant, guaranteeing that the posterior distribution \\(\\pi(\\beta_0, \\beta_1, \\sigma \\mid \\by)\\) is a valid probability distribution.\n\nAs you can see, \\(p(\\by)\\) looks much more complicated than the one we learned in Chapter 21. When there are many parameters to be estimated, and their prior distributions are complex, it is difficult or impossible to obtain this integral by hand. That is why when doing Bayesian inference, we usually need to use some algorithms to help us derive the posterior distribution, either exactly or approximately.\nThere are lots of ways to generate/approximate the posterior distribution of parameters. They are discussed in Bayesian statistics course. The method used here is Markov chain Monte Carlo (MCMC). Briefly speaking, MCMC is an algorithm that repeatedly draws the samples of the parameters, and eventually the collection of those draws well represents the posterior distribution of parameters. Again, the details are discussed in a Bayesian analysis course.\n\nHere we use the R rstanarm package that uses RStan syntax1 to do Bayesian inference for applied regression models (arm).\nThe function helping us draw posterior samples is stan_glm(). The formula is exactly the same as lm(). The family is gaussian because we have a normal data model. prior_intercept is for \\(\\beta_{0c}\\), prior for \\(\\beta_1\\) and prior_aux for \\(\\sigma\\). Here, 4 Markov chains are generated. In other words, 4 distinct collection of posterior samples will be generated, each having 10000 draws or iterations. Each iteration draws a posterior sample of the \\(\\beta_0\\), \\(\\beta_1\\), and \\(\\sigma\\).\n\nbike_model &lt;- rstanarm::stan_glm(rides ~ temp_feel, data = bikes,\n                                 family = gaussian(),\n                                 prior_intercept = normal(5000, 1000),\n                                 prior = normal(100, 40), \n                                 prior_aux = exponential(0.0008),\n                                 chains = 4, iter = 5000*2, seed = 2024)\n\n\n\nAfter tossing out the first half of Markov chain values from the warm-up or burn-in phase, stan_glm() simulation produces four parallel chains of length 5000 for each model parameter:\n\\(\\{ \\beta_0^{(1)}, \\beta_0^{(2)}, \\dots, \\beta_0^{(5000)} \\}\\), \\(\\{ \\beta_1^{(1)}, \\beta_1^{(2)}, \\dots, \\beta_1^{(5000)} \\}\\), \\(\\{ \\sigma^{(1)}, \\sigma^{(2)}, \\dots, \\sigma^{(5000)} \\}\\)\n\n29.2.2 Convergence diagnostics\nWhen we use MCMC to do posterior inference, we need to make sure that the algorithm converges. In other words, the posterior samples drawn by the algorithm should reach a stable distribution, and the distribution basically won’t change much as samples are continuously collected. One way to check the convergence is to check the traceplot, seeing how the sample values move as the iteration goes. If the algorithm reaches the convergence, the traceplots from the 4 independent runs should be mixed and overlapped very well because the 4 set of samples should represent the same posterior distribution. The traceplots obtained from the model fit are mixed well.\n\n# Trace plots of parallel chains\nbayesplot::mcmc_trace(bike_model, size = 0.1)\n\n\n\n\n\n\n\n\nWhen MCMC just starts, the drawn samples are usually not representative of the posterior distribution. Because of this, we usually don’t include the samples drawn in the early iterations in the final collection of samples used for representing the posterior distribution and for analysis. The following two animations show that it takes a while and several iterations to reach a more stable distribution.\n\n\n\n\nSource: https://blog.stata.com/2016/11/15/introduction-to-bayesian-statistics-part-2-mcmc-and-the-metropolis-hastings-algorithm/\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe density curves estimated from the posterior samples approximate posterior distributions. We observe that these four chains produce nearly indistinguishable posterior approximations. This provides evidence that our simulation is stable and sufficiently long – running the chains for more iterations likely wouldn’t produce drastically different or improved posterior approximations.\n\n# Density plots of parallel chains\nbayesplot::mcmc_dens_overlay(bike_model)\n\n\n\n\n\n\n\n\n\n\n\nIn addition to visualization, we can use some numeric measures to diagnose convergence. Both effective sample size and R-hat are close to 1, indicating that the chains are stable, mixing quickly, and behaving much like an independent sample.\n\n# Effective sample size ratio\nbayesplot::neff_ratio(bike_model)\n\n(Intercept)   temp_feel       sigma \n      1.023       1.021       0.996 \n\n# Rhat\nbayesplot::rhat(bike_model)\n\n(Intercept)   temp_feel       sigma \n          1           1           1 \n\n\n\nThere’s no magic rule for interpreting this ratio, and it should be utilized alongside other diagnostics such as the trace plot. That said, we might be suspicious of a Markov chain for which the effective sample size ratio is less than 0.1, i.e., the effective sample size is less than 10% of the actual sample size. An R-hat ratio greater than 1.05 raises some red flags about the stability of the simulation. \n\nThe followings provide two scenarios that MCMC hasn’t reached convergence.\n\n\n\n\nHighly Autocorrelated Chain: Effective size is small, not many independent samples that are representative of the true posterior distribution.\n\nRun longer and thinning the chain\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSlow Convergence: Need wait longer to have the chain reached a stable mixing zone that are representative of the true posterior distribution.\n\nSet a longer burn-in or warm-up period\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n29.2.3 Posterior summary and analysis\nOnce posterior samples are collected, we can calculate important summary statistics, for example posterior mean, and the 80% credible interval. The two are shown in the first column and the last two columns in the table below.\n\n# Posterior summary statistics\ntidy(bike_model, effects = c(\"fixed\", \"aux\"),\n     conf.int = TRUE, conf.level = 0.80)\n\n# A tibble: 4 × 5\n  term        estimate std.error conf.low conf.high\n  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;\n1 (Intercept)  -2194.     355.    -2648.    -1747. \n2 temp_feel       82.2      5.08     75.7      88.7\n3 sigma         1282.      40.6    1231.     1335. \n4 mean_PPD      3485.      80.7    3384.     3591. \n\n\nThe posterior relationship (on average) is \\(-2196 + 82.2 X\\). Note that before data come in, we believe one degree increase will increase 100 rides on average. However, data tell us the effect of temperature is not as large as we thought. We can directly quantify the uncertainty about \\(\\beta_1\\) by looking at its credible interval. The 80% credible interval for \\(\\beta_1\\) is \\((75.7, 88.5)\\). The interval is much more intuitive than the confidence interval. We say, given the data, the probability that \\(\\beta_1\\) is between 75.7 and 88.5 is 80%., i.e., \\(P(\\beta_1 \\in(75.7, 88.5) \\mid \\by, \\bx) = 80\\%\\).\n\nThe posterior samples are saved in bike_model_df.\n\n# Store the 4 chains for each parameter in 1 data frame\nbike_model_df &lt;- as.data.frame(bike_model)\nnrow(bike_model_df)\n\n[1] 20000\n\nhead(bike_model_df)\n\n  (Intercept) temp_feel sigma\n1       -1993      77.7  1289\n2       -1818      75.9  1292\n3       -2003      78.3  1305\n4       -2515      87.4  1250\n5       -2519      88.0  1293\n6       -1666      74.5  1294\n\n\nHow do we learn whether or not \\(\\beta_1 &gt; 0\\) is zero without using the frequentist hypothesis testing approach? Since we have the posterior samples, we have (at least well approximated) the entire posterior distribution. As a result, we can sort of quantify the probability \\(P(\\beta_1 &gt; 0 \\mid \\by, \\bx)\\). How? We just need to calculate the relative frequency of \\(\\beta_1\\) that is greater than 0.\n\\[P(\\beta_1 &gt; 0 \\mid \\by, \\bx) \\approx \\frac{1}{20000}\\sum_{t=1}^{20000} \\mathbf{1}\\left(\\beta_1^{(t)} &gt; 0\\right)\\]\n\nsum(bike_model_df$temp_feel &gt; 0) / nrow(bike_model_df)\n\n[1] 1\n\n\nInstead of making a dichotomous judgement, in the Bayesian world, we provide the probability of something happening. Anything is not just black or white. We live in a world full of different gray, a continuum showing the degree of our credence. In our example, the probability that \\(\\beta_1 &gt; 0\\) is basically one. We are pretty certain that temperature has a positive effect on the number of bikeshare rides.\n\nThe figure below shows 100 posterior regression lines, one corresponding to one pair of \\((\\beta_0^{(t)}, \\beta_1^{(t)})\\).\n\n\n\n\n\n\n\n\n\nFor each posterior draw \\(\\{\\beta_0^{(t)}, \\beta_1^{(t)}, \\sigma^{(t)} \\}_{t = 1}^{20000}\\), we have the posterior predictive distribution \\[Y_i^{(t)} \\sim N\\left(\\beta_0^{(t)} + \\beta_1^{(t)}X_i, \\, (\\sigma^{(t)})^2\\right)\\]\nWe then can have 20000 different posterior predictive response distributions, and 20000 different posterior predictive response data sets. Those data are what we think the data will look like if the true data generating mechanism is one of the regression model with parameters \\(\\{\\beta_0^{(t)}, \\beta_1^{(t)}, \\sigma^{(t)} \\}\\).",
+    "objectID": "a-r_prog.html#special-objects",
+    "href": "a-r_prog.html#special-objects",
+    "title": "Appendix A — R programming",
+    "section": "\nA.10 Special Objects",
+    "text": "A.10 Special Objects",
     "crumbs": [
-      "Statistical Models",
-      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
     ]
   },
   {
-    "objectID": "model-bayes.html#rstanarmstan_glm",
-    "href": "model-bayes.html#rstanarmstan_glm",
-    "title": "29  Bayesian Linear Regression*",
-    "section": "\n29.3 rstanarm::stan_glm()\n",
-    "text": "29.3 rstanarm::stan_glm()\n\n\n\nrstanarm uses RStan syntax1 to do Bayesian inference for applied regression models (arm).\n\n\nbike_model &lt;- rstanarm::stan_glm(rides ~ temp_feel, data = bikes,\n                                 family = gaussian,\n                                 prior_intercept = normal(5000, 1000),\n                                 prior = normal(100, 40), \n                                 prior_aux = exponential(0.0008),\n                                 chains = 4, iter = 5000*2, seed = 2024)\n\n\nGenerate 4 Monte Carlo chains (chains = 4), each having 10000 iterations (iter = 5000*2).\nEach iteration draw a posterior sample of the \\(\\beta_0\\), \\(\\beta_1\\), and \\(\\sigma\\).\nAfter tossing out the first half of Markov chain values from the warm-up or burn-in phase, stan_glm() simulation produces four parallel chains of length 5000 for each model parameter:\n\n\\(\\{ \\beta_0^{(1)}, \\beta_0^{(2)}, \\dots, \\beta_0^{(5000)} \\}\\), \\(\\{ \\beta_1^{(1)}, \\beta_1^{(2)}, \\dots, \\beta_1^{(5000)} \\}\\), \\(\\{ \\sigma^{(1)}, \\sigma^{(2)}, \\dots, \\sigma^{(5000)} \\}\\)",
+    "objectID": "a-r_prog.html#plotting",
+    "href": "a-r_prog.html#plotting",
+    "title": "Appendix A — R programming",
+    "section": "\nA.11 Plotting",
+    "text": "A.11 Plotting\n\nA.11.1 Scatter plot\n\n\n\nmtcars[1:15, 1:4]\n\n                    mpg cyl  disp  hp\nMazda RX4          21.0   6 160.0 110\nMazda RX4 Wag      21.0   6 160.0 110\nDatsun 710         22.8   4 108.0  93\nHornet 4 Drive     21.4   6 258.0 110\nHornet Sportabout  18.7   8 360.0 175\nValiant            18.1   6 225.0 105\nDuster 360         14.3   8 360.0 245\nMerc 240D          24.4   4 146.7  62\nMerc 230           22.8   4 140.8  95\nMerc 280           19.2   6 167.6 123\nMerc 280C          17.8   6 167.6 123\nMerc 450SE         16.4   8 275.8 180\nMerc 450SL         17.3   8 275.8 180\nMerc 450SLC        15.2   8 275.8 180\nCadillac Fleetwood 10.4   8 472.0 205\n\n\n\n\nplot(x = mtcars$mpg, y = mtcars$hp, \n     xlab  = \"Miles per gallon\", \n     ylab = \"Horsepower\", \n     main = \"Scatter plot\", \n     col = \"red\", \n     pch = 5, las = 1)\n\n\n\n\n\n\n\n\n\n\nA.11.2 Argument pch\n\nplot(x = 1:25, y = rep(1, 25), pch = 1:25, xlab = \"\", ylab = \"\", main = \"pch\", axes = FALSE)\naxis(1, at = 1:25, cex.axis = 0.5)\n\n\n\n\n\n\n\n\nThe default is pch = 1\n\nA.11.3 R Subplots\n\npar(mfrow = c(1, 2))\nplot(x = mtcars$mpg, y = mtcars$hp, xlab = \"mpg\")\nplot(x = mtcars$mpg, y = mtcars$weight, xlab = \"mpg\")\n\n\n\n\n\n\n\n\nA.11.4 Boxplot\n\npar(mar = c(4, 4, 0, 0))\nboxplot(mpg ~ cyl, \n        data = mtcars, \n        col = c(\"blue\", \"green\", \"red\"), \n        las = 1, \n        horizontal = TRUE,\n        xlab = \"Miles per gallon\", \n        ylab = \"Number of cylinders\")\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nA.11.5 Histogram\nhist() decides the class intervals/with based on breaks. If not provided, R chooses one.\n\nhist(mtcars$wt, \n     breaks = 20, \n     col = \"#003366\", \n     border = \"#FFCC00\", \n     xlab = \"weights\", \n     main = \"Histogram of weights\",\n     las = 1)\n\n\n\n\n\n\n\n\nBesides color names, you can also use hex number to specify colors. Pretty handy.\n\nA.11.6 Barplot\n\n(counts &lt;- table(mtcars$gear)) \n\n\n 3  4  5 \n15 12  5 \n\n\n\nmy_bar &lt;- barplot(counts, \n                  main = \"Car Distribution\", \n                  xlab = \"Number of Gears\", \n                  las = 1)\ntext(x = my_bar, y = counts - 0.8, \n     labels = counts, \n     cex = 0.8)\n\n\n\n\n\n\n\n\nA.11.7 Pie chart\n\nPie charts are used for categorical variables, especially when we want to know percentage of each category.\nThe first argument is the frequency table, and you can add labels to each category.\n\n\n(percent &lt;- round(counts / sum(counts) * 100, 2))\n\n\n    3     4     5 \n46.88 37.50 15.62 \n\n(labels &lt;- paste0(3:5, \" gears: \", percent, \"%\"))\n\n[1] \"3 gears: 46.88%\" \"4 gears: 37.5%\"  \"5 gears: 15.62%\"\n\n\n\npie(x = counts, labels = labels,\n    main = \"Pie Chart\", \n    col = 2:4, \n    radius = 1)\n\n\n\n\n\n\n\n\nA.11.8 2D imaging\n\nThe image() function displays the values in a matrix using color.\n\n\nmatrix(1:30, 6, 5)\n\n     [,1] [,2] [,3] [,4] [,5]\n[1,]    1    7   13   19   25\n[2,]    2    8   14   20   26\n[3,]    3    9   15   21   27\n[4,]    4   10   16   22   28\n[5,]    5   11   17   23   29\n[6,]    6   12   18   24   30\n\nimage(matrix(1:30, 6, 5))\n\n\n\n\n\n\n\n\nlibrary(fields)\n\nLoading required package: spam\n\n\nSpam version 2.10-0 (2023-10-23) is loaded.\nType 'help( Spam)' or 'demo( spam)' for a short introduction \nand overview of this package.\nHelp for individual functions is also obtained by adding the\nsuffix '.spam' to the function name, e.g. 'help( chol.spam)'.\n\n\n\nAttaching package: 'spam'\n\n\nThe following objects are masked from 'package:base':\n\n    backsolve, forwardsolve\n\n\nLoading required package: viridisLite\n\n\n\nTry help(fields) to get started.\n\nstr(volcano)\n\n num [1:87, 1:61] 100 101 102 103 104 105 105 106 107 108 ...\n\nimage.plot(volcano)\n\n\n\n\n\n\n\n\nx &lt;- 10*(1:nrow(volcano))\ny &lt;- 10*(1:ncol(volcano))\nimage(x, y, volcano, col = hcl.colors(100, \"terrain\"), axes = FALSE)\ncontour(x, y, volcano, levels = seq(90, 200, by = 5),\n        add = TRUE, col = \"brown\")\naxis(1, at = seq(100, 800, by = 100))\naxis(2, at = seq(100, 600, by = 100))\nbox()\ntitle(main = \"Maunga Whau Volcano\", font.main = 4)\n\n\n\n\n\n\n\n\nA.11.9 3D scatter plot\n\nlibrary(scatterplot3d)\nscatterplot3d(x = mtcars$wt, y = mtcars$disp, z = mtcars$mpg, \n              xlab = \"Weights\", ylab = \"Displacement\", zlab = \"Miles per gallon\", \n              main = \"3D Scatter Plot\",\n              pch = 16, color = \"steelblue\")\n\n\n\n\n\n\n\n\nA.11.10 Perspective plot\n\n# Exaggerate the relief\nz &lt;- 2 * volcano      \n# 10 meter spacing (S to N)\nx &lt;- 10 * (1:nrow(z))   \n# 10 meter spacing (E to W)\ny &lt;- 10 * (1:ncol(z))   \npar(bg = \"slategray\")\npersp(x, y, z, theta = 135, phi = 30, col = \"green3\", scale = FALSE,\n      ltheta = -120, shade = 0.75, border = NA, box = FALSE)",
     "crumbs": [
-      "Statistical Models",
-      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
     ]
   },
   {
-    "objectID": "model-bayes.html#convergence-diagnostics",
-    "href": "model-bayes.html#convergence-diagnostics",
-    "title": "29  Bayesian Linear Regression*",
-    "section": "\n29.3 Convergence Diagnostics",
-    "text": "29.3 Convergence Diagnostics\n\n# Trace plots of parallel chains\nbayesplot::mcmc_trace(bike_model, size = 0.1)",
+    "objectID": "a-r_prog.html#special-objects-1",
+    "href": "a-r_prog.html#special-objects-1",
+    "title": "Appendix A — R programming",
+    "section": "\nA.12 Special Objects",
+    "text": "A.12 Special Objects\n\nA.12.1 NA\n\nNA means Not Available, which is a logical constant of length 1 for a missing value indicator.\nEach type of vector has its own missing value. They all are reserved words.\nYou can always use NA and it will be converted to the correct type.\n\n\n\n\nNA            # logical\n\n[1] NA\n\nNA_integer_   # integer\n\n[1] NA\n\nNA_real_      # double\n\n[1] NA\n\nNA_character_ # character\n\n[1] NA\n\n\n\n\n\n## The NA in the vector x is NA_real_\nx &lt;- c(NA, 0, 1)\ntypeof(x)  \n\n[1] \"double\"\n\nis.na(x)\n\n[1]  TRUE FALSE FALSE\n\n\n\n\n\nA.12.2 NULL\n\n\nNULL represents the null object, an object representing nothing.\n\nNULL is a reserved word and can also be the product of importing data with unknown data type.\n\nNULL typically behaves like a vector of length 0.\n\n\n\n\ny &lt;- c(NA, NULL, \"\")\ny\n\n[1] NA \"\"\n\n## only first element is evaluated...\nis.null(y) \n\n[1] FALSE\n\n\n\n\n## a missing value is a value we don't know.\n## It is something.\nis.null(NA)\n\n[1] FALSE\n\nis.null(NULL)\n\n[1] TRUE\n\n# empty character is something, not nothing!\nis.null(\"\")\n\n[1] FALSE\n\n\n\n\n\nA.12.3 NaN, Inf, and -Inf\n\nIntegers have one special value: NA, while doubles have four: NA, NaN, Inf and -Inf.\nNaN means Not a Number.\nAll three special values NaN, Inf and -Inf can arise during division.\n\n\nc(-1, 0, 1) / 0\n\n[1] -Inf  NaN  Inf\n\n\n\nAvoid using ==. Use functions is.finite(), is.infinite(), and is.nan().\n\n\n\n\nis.finite(0)\n\n[1] TRUE\n\nis.nan(0/0)\n\n[1] TRUE\n\n\n\n\nis.infinite(7.8/1e-307)\n\n[1] FALSE\n\nis.infinite(7.8/1e-308)\n\n[1] TRUE\n\n\n\n\n\nA.12.4 Helper Functions\n\nNaN is a missing value too.\nThere should be something there, but it’s Not Available to us because of invalid operation.\n\n\n\n\n0\nInf\nNA\nNaN\n\n\n\nis.finite()\nv\n\n\n\n\n\nis.infinite()\n\nv\n\n\n\n\nis.na()\n\n\nv\nv\n\n\nis.nan()\n\n\n\nv\n\n\n\nA.12.5 NA, NULL, NaN comparison\n\n\n\nclass(NULL); class(NA); class(NaN)\n\n[1] \"NULL\"\n\n\n[1] \"logical\"\n\n\n[1] \"numeric\"\n\nNULL &gt; 5; NA &gt; 5; NaN &gt; 5\n\nlogical(0)\n\n\n[1] NA\n\n\n[1] NA\n\nlength(NULL); length(NA); length(NaN)\n\n[1] 0\n\n\n[1] 1\n\n\n[1] 1\n\n\n\n\n(vx &lt;- c(3, NULL, 5)); (vy &lt;- c(3, NA, 5)); (vz &lt;- c(3, NaN, 5))\n\n[1] 3 5\n\n\n[1]  3 NA  5\n\n\n[1]   3 NaN   5\n\nsum(vx)  # NULL isn't a problem cuz it doesn't exist\n\n[1] 8\n\nsum(vy)\n\n[1] NA\n\nsum(vy, na.rm = TRUE)\n\n[1] 8\n\nsum(vz)\n\n[1] NaN\n\nsum(vz, na.rm = TRUE)\n\n[1] 8",
     "crumbs": [
-      "Statistical Models",
-      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
     ]
   },
   {
-    "objectID": "model-bayes.html#convergence-diagnostics-1",
-    "href": "model-bayes.html#convergence-diagnostics-1",
-    "title": "29  Bayesian Linear Regression*",
-    "section": "\n29.4 Convergence Diagnostics",
-    "text": "29.4 Convergence Diagnostics\n\n\n\n\nSource: https://blog.stata.com/2016/11/15/introduction-to-bayesian-statistics-part-2-mcmc-and-the-metropolis-hastings-algorithm/",
+    "objectID": "a-r_prog.html#conditions",
+    "href": "a-r_prog.html#conditions",
+    "title": "Appendix A — R programming",
+    "section": "\nA.13 Conditions",
+    "text": "A.13 Conditions\n\n# The condition must evaluate to either TRUE or FALSE.\nif (condition) {\n  # code executed when condition is TRUE\n} else {\n  # code executed when condition is FALSE\n}\n\n\nif (c(TRUE, FALSE)) {}\n#&gt; Warning in if (c(TRUE, FALSE)) {: the condition has length &gt; 1 and only the\n#&gt; first element will be used\n#&gt; NULL\n\nif (NA) {}\n#&gt; Error in if (NA) {: missing value where TRUE/FALSE needed\n\n\nYou can use || (or) and && (and) to combine multiple logical expressions.\n\n\nif (cond1 || cond2) {\n  # code executed when condition is TRUE\n}\n\n\nThe basic If-else statement structure is that we write if then put a condition inside a pair of parenthesis, then use curly braces to wrap the code to be run when the condition is TRUE.\nIf we want to have the code to be run when the condition is FALSE, we add else and another pair of curly braces.\ncurly braces is not necessary if you just have one line of code to be run.\nThe condition must evaluate to either one TRUE or one FALSE.\nIf it’s a vector, you’ll get a warning message, and only the first element will be used.\nIf it’s an NA, you’ll get an error.\n\n\nif (this) {\n    # do that\n} else if (that) {\n    # do something else\n} else {\n    # \n}\n\n\nif (celsius &lt;= 0) {\n    \"freezing\"\n} else if (celsius &lt;= 10) {\n    \"cold\"\n} else if (celsius &lt;= 20) {\n   \"cool\"\n} else if (celsius &lt;= 30) {\n    \"warm\"\n} else {\n    \"hot\"\n}\n\n\nIf we want to have multiple conditions, we add the word else if.\nThe code below is an example of converting numerical data to categorical data, freezing, cold, warm and hot.\nIt’s not the best way to do conversion.\n\n\nIf you end up with a very long series of chained if-else statements, rewrite it!\n\n\n\n\n\nhttps://speakerdeck.com/jennybc/code-smells-and-feels\n\n\n\n\nIf you end up with a very long series of chained if-else statements, rewrite it! Don’t confuse readers and especially yourself.\nWe have a function called “get same data”.\nWhen you read the code in a linear fashion from top to bottom, you are falling down and down into conditions that were like a long time ago that you saw what you are actually checking.\nHere is another way to write the exactly the same function. ….. and now I am on the happy path. I get the data.\nSo if I open a file, and I know that something is gone wrong and checking all these things, I am much happier to be facing this than that!\nI think our brain cannot process too many layers. When we are trying to analyze so many layers, we just get lost.\n\n\n\n\n\nhttps://speakerdeck.com/jennybc/code-smells-and-feels\n\n\n\n\nSo there is no else, there is only if!\nBack, on the left, every if has an else.\nOn the right, we have no else. And this makes your code much more readable!",
     "crumbs": [
-      "Statistical Models",
-      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
     ]
   },
   {
-    "objectID": "model-bayes.html#convergence-diagnostics-2",
-    "href": "model-bayes.html#convergence-diagnostics-2",
-    "title": "29  Bayesian Linear Regression*",
-    "section": "\n29.5 Convergence Diagnostics",
-    "text": "29.5 Convergence Diagnostics",
+    "objectID": "a-r_prog.html#functions",
+    "href": "a-r_prog.html#functions",
+    "title": "Appendix A — R programming",
+    "section": "\nA.14 Functions",
+    "text": "A.14 Functions\n\nWrite a function whenever you’ve copied and pasted your code more than twice.\n\nThree key steps/components:\n\npick a name for the function.\nlist the inputs, or arguments, to the function inside function.\nplace the code you have developed in body of the function.\n\n\n\n\nfunction_name &lt;- function(arg1, arg2, ...) {\n    ## body\n    return(something)\n}\n\n\nadd_number &lt;- function(a, b) {\n    c &lt;- a + b\n    return(c)\n}\n\nn1 &lt;- 9\nn2 &lt;- 18\nadd_number(n1, n2)\n\n[1] 27",
     "crumbs": [
-      "Statistical Models",
-      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
     ]
   },
   {
-    "objectID": "model-bayes.html#convergence-diagnostics-3",
-    "href": "model-bayes.html#convergence-diagnostics-3",
-    "title": "29  Bayesian Linear Regression*",
-    "section": "\n29.6 Convergence Diagnostics",
-    "text": "29.6 Convergence Diagnostics\n\n# Density plots of parallel chains\nbayesplot::mcmc_dens_overlay(bike_model)\n\n\n\n\n\n\n\n\n\nquantifies the number of independent samples it would take to produce an equivalently accurate posterior approximation.\nwe observe that these four chains produce nearly indistinguishable posterior approximations. This provides evidence that our simulation is stable and sufficiently long – running the chains for more iterations likely wouldn’t produce drastically different or improved posterior approximations.",
+    "objectID": "a-r_prog.html#loops",
+    "href": "a-r_prog.html#loops",
+    "title": "Appendix A — R programming",
+    "section": "\nA.15 Loops",
+    "text": "A.15 Loops\n\nA.15.1 for loops\n\n## Syntax\nfor (value in that) {\n    this\n}\n\n\nfor (i in 1:5) {\n    print(i)\n}\n\n[1] 1\n[1] 2\n[1] 3\n[1] 4\n[1] 5\n\n\n\nfor (x in c(\"My\", \"1st\", \"for\", \"loop\")) {\n    print(x)\n}\n\n[1] \"My\"\n[1] \"1st\"\n[1] \"for\"\n[1] \"loop\"\n\n\n\nA.15.2 while loops\n\nwhile (condition) {\n    # body\n}\n\n\nYou can rewrite any for loop as a while loop, but you can’t rewrite every while loop as a for loop.\n\n\nfor (i in seq_along(x)) {\n    # body\n}\n\n# Equivalent to\ni &lt;- 1\nwhile (i &lt;= length(x)) {\n    # body\n    i &lt;- i + 1 \n}\n\n\n\n\n\n\n\n\nWe find how many tries it takes to get 5 heads in a row:\n\n\n## a function that sample one from \"T\" or \"H\"\nflip &lt;- function() sample(c(\"T\", \"H\"), 1)\n\nflips &lt;- 0; nheads &lt;- 0\n\nwhile (nheads &lt; 5) {\n    if (flip() == \"H\") {\n        nheads &lt;- nheads + 1\n    } else {\n        nheads &lt;- 0\n    }\n    flips &lt;- flips + 1\n}\n\nflips\n\n[1] 20",
     "crumbs": [
-      "Statistical Models",
-      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
-    ]
-  },
-  {
-    "objectID": "model-bayes.html#convergence-diagnostics-4",
-    "href": "model-bayes.html#convergence-diagnostics-4",
-    "title": "29  Bayesian Linear Regression*",
-    "section": "\n29.7 Convergence Diagnostics",
-    "text": "29.7 Convergence Diagnostics\n\n# Effective sample size ratio\nbayesplot::neff_ratio(bike_model)\n\n(Intercept)   temp_feel       sigma \n      1.023       1.021       0.996 \n\n# Rhat\nbayesplot::rhat(bike_model)\n\n(Intercept)   temp_feel       sigma \n          1           1           1 \n\n\n\nBoth effective sample size and R-hat are close to 1, indicating that the chains are stable, mixing quickly, and behaving much like an independent sample.\n\n\n\nThere’s no magic rule for interpreting this ratio, and it should be utilized alongside other diagnostics such as the trace plot. That said, we might be suspicious of a Markov chain for which the effective sample size ratio is less than 0.1, i.e., the effective sample size is less than 10% of the actual sample size.\nan R-hat ratio greater than 1.05 raises some red flags about the stability of the simulation.",
-    "crumbs": [
-      "Statistical Models",
-      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
-    ]
-  },
-  {
-    "objectID": "model-bayes.html#convergence-issues",
-    "href": "model-bayes.html#convergence-issues",
-    "title": "29  Bayesian Linear Regression*",
-    "section": "\n29.8 Convergence Issues",
-    "text": "29.8 Convergence Issues\n\n\n\n\nHighly Autocorrelated Chain: Effective size is small, not many independent samples that are representative of the true posterior distribution.\n\nRun longer and thinning the chain\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSlow Convergence: Need wait longer to have the chain reached a stable mixing zone that are representative of the true posterior distribution.\n\nSet a longer burn-in or warm-up period",
-    "crumbs": [
-      "Statistical Models",
-      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
-    ]
-  },
-  {
-    "objectID": "model-bayes.html#interpreting-the-posterior",
-    "href": "model-bayes.html#interpreting-the-posterior",
-    "title": "29  Bayesian Linear Regression*",
-    "section": "\n29.3 Interpreting the Posterior",
-    "text": "29.3 Interpreting the Posterior\n\n# Posterior summary statistics\ntidy(bike_model, effects = c(\"fixed\", \"aux\"),\n     conf.int = TRUE, conf.level = 0.80)\n\n# A tibble: 4 × 5\n  term        estimate std.error conf.low conf.high\n  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;\n1 (Intercept)  -2194.     355.    -2648.    -1747. \n2 temp_feel       82.2      5.08     75.7      88.7\n3 sigma         1282.      40.6    1231.     1335. \n4 mean_PPD      3485.      80.7    3384.     3591. \n\n\n\nThe posterior relationship is\n\n\\[-2196 + 82.2 X\\]\n\nThe 80% credible interval for \\(\\beta_1\\) is \\((75.7, 88.5)\\).\nGiven the data, the probability that \\(\\beta_1\\) is between 75.7 and 88.5 is 80%., i.e., \\(P(\\beta_1 \\in(75.7, 88.5) \\mid \\by, \\bx) = 80\\%\\).",
-    "crumbs": [
-      "Statistical Models",
-      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
-    ]
-  },
-  {
-    "objectID": "model-bayes.html#posterior-samples",
-    "href": "model-bayes.html#posterior-samples",
-    "title": "29  Bayesian Linear Regression*",
-    "section": "\n29.3 Posterior Samples",
-    "text": "29.3 Posterior Samples\n\n# Store the 4 chains for each parameter in 1 data frame\nbike_model_df &lt;- as.data.frame(bike_model)\nnrow(bike_model_df)\n\n[1] 20000\n\nhead(bike_model_df)\n\n  (Intercept) temp_feel sigma\n1       -1993      77.7  1289\n2       -1818      75.9  1292\n3       -2003      78.3  1305\n4       -2515      87.4  1250\n5       -2519      88.0  1293\n6       -1666      74.5  1294\n\n\nHow to obtain \\(P(\\beta_1 &gt; 0 \\mid \\by, \\bx)\\)?\n\\(P(\\beta_1 &gt; 0 \\mid \\by, \\bx) \\approx \\frac{1}{20000}\\sum_{t=1}^{20000} \\mathbf{1}\\left(\\beta_1^{(t)} &gt; 0\\right)\\)\n\nsum(bike_model_df$temp_feel &gt; 0) / nrow(bike_model_df)\n\n[1] 1",
-    "crumbs": [
-      "Statistical Models",
-      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
-    ]
-  },
-  {
-    "objectID": "model-bayes.html#posterior-regression-lines",
-    "href": "model-bayes.html#posterior-regression-lines",
-    "title": "29  Bayesian Linear Regression*",
-    "section": "\n29.3 Posterior Regression Lines",
-    "text": "29.3 Posterior Regression Lines",
-    "crumbs": [
-      "Statistical Models",
-      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
-    ]
-  },
-  {
-    "objectID": "model-bayes.html#posterior-predictive-draws",
-    "href": "model-bayes.html#posterior-predictive-draws",
-    "title": "29  Bayesian Linear Regression*",
-    "section": "\n29.3 Posterior Predictive Draws",
-    "text": "29.3 Posterior Predictive Draws\nFor each posterior draw \\(\\{\\beta_0^{(t)}, \\beta_1^{(t)}, \\sigma^{(t)} \\}_{t = 1}^{20000}\\), we have the posterior predictive distribution \\[Y_i^{(t)} \\sim N\\left(\\beta_0^{(t)} + \\beta_1^{(t)}X_i, \\, (\\sigma^{(t)})^2\\right)\\]",
-    "crumbs": [
-      "Statistical Models",
-      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
-    ]
-  },
-  {
-    "objectID": "model-bayes.html#bayesian-interpretation-for-ridge-and-lasso",
-    "href": "model-bayes.html#bayesian-interpretation-for-ridge-and-lasso",
-    "title": "29  Bayesian Linear Regression*",
-    "section": "\n29.7 Bayesian Interpretation for Ridge and Lasso",
-    "text": "29.7 Bayesian Interpretation for Ridge and Lasso\n\nLasso and Ridge regression can be interpreted as a Bayesian regression model.\nThe same data-level likelihood \\[Y_i \\mid \\bbeta, \\sigma \\stackrel{ind}{\\sim}  N\\left(\\mu_i, \\sigma^2 \\right) \\quad \\text{with} \\quad \\mu_i = \\bx_i'\\bbeta\\]\nWe use prior distributions to regularize how parameters behave.\n\nThe two methods can assign the same prior distributions to \\(\\beta_0\\) and \\(\\sigma\\), but they use different priors on \\(\\{\\beta_j\\}_{j = 1}^p\\).2\n\nLasso: \\(\\beta_j \\stackrel{iid}{\\sim} \\text{Laplace}\\left(0, \\tau(\\lambda)\\right)\\)\nRidge: \\(\\beta_j \\stackrel{iid}{\\sim} N\\left(0, \\tau(\\lambda)\\right)\\)",
-    "crumbs": [
-      "Statistical Models",
-      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
-    ]
-  },
-  {
-    "objectID": "model-bayes.html#ridge-and-lasso-priors",
-    "href": "model-bayes.html#ridge-and-lasso-priors",
-    "title": "29  Bayesian Linear Regression*",
-    "section": "\n29.8 Ridge and Lasso Priors",
-    "text": "29.8 Ridge and Lasso Priors\n\n\nLasso\n\n\\[\\beta_j \\stackrel{iid}{\\sim} \\text{Laplace}\\left(0, \\tau(\\lambda)\\right)\\]\nLasso solution is the posterior mode of \\(\\bbeta\\)\n\\[\\bbeta^{(l)} = \\argmax_{\\bbeta} \\,\\,\\, \\pi(\\bbeta \\mid \\by, \\bx)\\]\n\n\n\n\n\n\n\n\n\n\nRidge\n\n\\[\\beta_j \\stackrel{iid}{\\sim} N\\left(0, \\tau(\\lambda)\\right)\\]\nRidge solution is the posterior mode/mean of \\(\\bbeta\\)\n\\[\\bbeta^{(r)} = \\argmax_{\\bbeta} \\,\\, \\, \\pi(\\bbeta \\mid \\by, \\bx)\\]",
-    "crumbs": [
-      "Statistical Models",
-      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
-    ]
-  },
-  {
-    "objectID": "model-bayes.html#resources",
-    "href": "model-bayes.html#resources",
-    "title": "29  Bayesian Linear Regression*",
-    "section": "\n29.3 Resources",
-    "text": "29.3 Resources\n\nBayes Rules! An Introduction to Applied Bayesian Modeling\nStatistical Rethinking\nA Student’s Guide to Bayesian Statistics\nBayesian Data Analysis",
-    "crumbs": [
-      "Statistical Models",
-      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
-    ]
-  },
-  {
-    "objectID": "model-bayes.html#footnotes",
-    "href": "model-bayes.html#footnotes",
-    "title": "29  Bayesian Linear Regression*",
-    "section": "",
-    "text": "RStan is the R interface to Stan.↩︎",
-    "crumbs": [
-      "Statistical Models",
-      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Bayesian Linear Regression*</span>"
-    ]
-  },
-  {
-    "objectID": "model-logistic.html#footnotes",
-    "href": "model-logistic.html#footnotes",
-    "title": "28  Logistic Regression",
-    "section": "",
-    "text": "R packages for ROC curves: ROCR and pROC, yardstick of Tidymodels↩︎",
-    "crumbs": [
-      "Statistical Models",
-      "<span class='chapter-number'>28</span>  <span class='chapter-title'>Logistic Regression</span>"
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
     ]
   },
   {
@@ -2383,17 +2328,6 @@
     "title": "Appendix B — Python Programming",
     "section": "\nB.4 Object Types",
     "text": "B.4 Object Types\nstr, float, int and bool.\n\ntype(5.0)\n\n&lt;class 'float'&gt;\n\ntype(5)\n\n&lt;class 'int'&gt;\n\ntype(\"I_love_data_science!\")\n\n&lt;class 'str'&gt;\n\ntype(1 &gt; 3)\n\n&lt;class 'bool'&gt;\n\ntype(5) is float\n\nFalse",
-    "crumbs": [
-      "Appendices",
-      "<span class='chapter-number'>B</span>  <span class='chapter-title'>Python Programming</span>"
-    ]
-  },
-  {
-    "objectID": "a-py_prog.html#data-structures",
-    "href": "a-py_prog.html#data-structures",
-    "title": "Appendix B — Python Programming",
-    "section": "\nB.5 Data Structures",
-    "text": "B.5 Data Structures\n\nB.5.1 Lists\n\nPython has numbers and strings, but no built-in vector structure.\nTo create a sequence type of structure, we can use a list that can save several elements in an single object.\nTo create a list in Python, we use [].\n\n\nlst_num = [0, 2, 4] \nlst_num\n\n[0, 2, 4]\n\ntype(lst_num)\n\n&lt;class 'list'&gt;\n\nlen(lst_num)\n\n3\n\n\nList elements can have different types!\n\nlst = ['data', 'math', 34, True]\nlst\n\n['data', 'math', 34, True]\n\n\n\nIndexing in Python always starts at 0!\n\n0: the 1st element\n\n\nlst\n\n['data', 'math', 34, True]\n\nlst[0]\n\n'data'\n\ntype(lst[0]) ## not a list\n\n&lt;class 'str'&gt;\n\n\n\n\n-1: the last element\n\n\nlst[-2]\n\n34\n\n\n\n\n[a:b]: the (a+1)-th to b-th elements\n\n\nlst[1:4]\n\n['math', 34, True]\n\ntype(lst[1:4]) ## a list\n\n&lt;class 'list'&gt;\n\n\n\n\n[a:]: elements from the (a+1)-th to the last\n\n\nlst[2:]\n\n[34, True]\n\n\n::: What does lst[0:1] return? Is it a list? :::\n\nLists are Mutable. Lists are changed in place!\n\n\nlst[1]\n\n'math'\n\nlst[1] = \"stats\"\nlst\n\n['data', 'stats', 34, True]\n\n\n\nlst[2:] = [False, 77]\nlst\n\n['data', 'stats', False, 77]\n\n\nIf we change any element value in a list, the list itself will be changed as well.",
     "crumbs": [
       "Appendices",
       "<span class='chapter-number'>B</span>  <span class='chapter-title'>Python Programming</span>"
@@ -2466,77 +2400,11 @@
     ]
   },
   {
-    "objectID": "a-r_prog.html",
-    "href": "a-r_prog.html",
-    "title": "Appendix A — R programming",
-    "section": "",
-    "text": "A.1 Arithmetic and Logical Operators\n2 + 3 / (5 * 4) ^ 2\n\n[1] 2.0075\n\n5 == 5.00\n\n[1] TRUE\n\n# 5 and 5L are of the same value too\n# 5 is of type double; 5L is integer\n5 == 5L\n\n[1] TRUE\n\ntypeof(5L)\n\n[1] \"integer\"\n\n!TRUE == FALSE\n\n[1] TRUE\nType coercion: When doing AND/OR comparisons, all nonzero values are treated as TRUE and 0 as FALSE.\n-5 | 0\n\n[1] TRUE\n\n1 & 1\n\n[1] TRUE\n\n2 | 0\n\n[1] TRUE",
-    "crumbs": [
-      "Appendices",
-      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
-    ]
-  },
-  {
-    "objectID": "a-r_prog.html#plotting",
-    "href": "a-r_prog.html#plotting",
-    "title": "Appendix A — R programming",
-    "section": "\nA.11 Plotting",
-    "text": "A.11 Plotting\n\nA.11.1 Scatter plot\n\n\n\nmtcars[1:15, 1:4]\n\n                    mpg cyl  disp  hp\nMazda RX4          21.0   6 160.0 110\nMazda RX4 Wag      21.0   6 160.0 110\nDatsun 710         22.8   4 108.0  93\nHornet 4 Drive     21.4   6 258.0 110\nHornet Sportabout  18.7   8 360.0 175\nValiant            18.1   6 225.0 105\nDuster 360         14.3   8 360.0 245\nMerc 240D          24.4   4 146.7  62\nMerc 230           22.8   4 140.8  95\nMerc 280           19.2   6 167.6 123\nMerc 280C          17.8   6 167.6 123\nMerc 450SE         16.4   8 275.8 180\nMerc 450SL         17.3   8 275.8 180\nMerc 450SLC        15.2   8 275.8 180\nCadillac Fleetwood 10.4   8 472.0 205\n\n\n\n\nplot(x = mtcars$mpg, y = mtcars$hp, \n     xlab  = \"Miles per gallon\", \n     ylab = \"Horsepower\", \n     main = \"Scatter plot\", \n     col = \"red\", \n     pch = 5, las = 1)\n\n\n\n\n\n\n\n\n\n\nA.11.2 Argument pch\n\nplot(x = 1:25, y = rep(1, 25), pch = 1:25, xlab = \"\", ylab = \"\", main = \"pch\", axes = FALSE)\naxis(1, at = 1:25, cex.axis = 0.5)\n\n\n\n\n\n\n\n\nThe default is pch = 1\n\nA.11.3 R Subplots\n\npar(mfrow = c(1, 2))\nplot(x = mtcars$mpg, y = mtcars$hp, xlab = \"mpg\")\nplot(x = mtcars$mpg, y = mtcars$weight, xlab = \"mpg\")\n\n\n\n\n\n\n\n\nA.11.4 Boxplot\n\npar(mar = c(4, 4, 0, 0))\nboxplot(mpg ~ cyl, \n        data = mtcars, \n        col = c(\"blue\", \"green\", \"red\"), \n        las = 1, \n        horizontal = TRUE,\n        xlab = \"Miles per gallon\", \n        ylab = \"Number of cylinders\")\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nA.11.5 Histogram\nhist() decides the class intervals/with based on breaks. If not provided, R chooses one.\n\nhist(mtcars$wt, \n     breaks = 20, \n     col = \"#003366\", \n     border = \"#FFCC00\", \n     xlab = \"weights\", \n     main = \"Histogram of weights\",\n     las = 1)\n\n\n\n\n\n\n\n\nBesides color names, you can also use hex number to specify colors. Pretty handy.\n\nA.11.6 Barplot\n\n(counts &lt;- table(mtcars$gear)) \n\n\n 3  4  5 \n15 12  5 \n\n\n\nmy_bar &lt;- barplot(counts, \n                  main = \"Car Distribution\", \n                  xlab = \"Number of Gears\", \n                  las = 1)\ntext(x = my_bar, y = counts - 0.8, \n     labels = counts, \n     cex = 0.8)\n\n\n\n\n\n\n\n\nA.11.7 Pie chart\n\nPie charts are used for categorical variables, especially when we want to know percentage of each category.\nThe first argument is the frequency table, and you can add labels to each category.\n\n\n(percent &lt;- round(counts / sum(counts) * 100, 2))\n\n\n    3     4     5 \n46.88 37.50 15.62 \n\n(labels &lt;- paste0(3:5, \" gears: \", percent, \"%\"))\n\n[1] \"3 gears: 46.88%\" \"4 gears: 37.5%\"  \"5 gears: 15.62%\"\n\n\n\npie(x = counts, labels = labels,\n    main = \"Pie Chart\", \n    col = 2:4, \n    radius = 1)\n\n\n\n\n\n\n\n\nA.11.8 2D imaging\n\nThe image() function displays the values in a matrix using color.\n\n\nmatrix(1:30, 6, 5)\n\n     [,1] [,2] [,3] [,4] [,5]\n[1,]    1    7   13   19   25\n[2,]    2    8   14   20   26\n[3,]    3    9   15   21   27\n[4,]    4   10   16   22   28\n[5,]    5   11   17   23   29\n[6,]    6   12   18   24   30\n\nimage(matrix(1:30, 6, 5))\n\n\n\n\n\n\n\n\nlibrary(fields)\n\nLoading required package: spam\n\n\nSpam version 2.10-0 (2023-10-23) is loaded.\nType 'help( Spam)' or 'demo( spam)' for a short introduction \nand overview of this package.\nHelp for individual functions is also obtained by adding the\nsuffix '.spam' to the function name, e.g. 'help( chol.spam)'.\n\n\n\nAttaching package: 'spam'\n\n\nThe following objects are masked from 'package:base':\n\n    backsolve, forwardsolve\n\n\nLoading required package: viridisLite\n\n\n\nTry help(fields) to get started.\n\nstr(volcano)\n\n num [1:87, 1:61] 100 101 102 103 104 105 105 106 107 108 ...\n\nimage.plot(volcano)\n\n\n\n\n\n\n\n\nx &lt;- 10*(1:nrow(volcano))\ny &lt;- 10*(1:ncol(volcano))\nimage(x, y, volcano, col = hcl.colors(100, \"terrain\"), axes = FALSE)\ncontour(x, y, volcano, levels = seq(90, 200, by = 5),\n        add = TRUE, col = \"brown\")\naxis(1, at = seq(100, 800, by = 100))\naxis(2, at = seq(100, 600, by = 100))\nbox()\ntitle(main = \"Maunga Whau Volcano\", font.main = 4)\n\n\n\n\n\n\n\n\nA.11.9 3D scatter plot\n\nlibrary(scatterplot3d)\nscatterplot3d(x = mtcars$wt, y = mtcars$disp, z = mtcars$mpg, \n              xlab = \"Weights\", ylab = \"Displacement\", zlab = \"Miles per gallon\", \n              main = \"3D Scatter Plot\",\n              pch = 16, color = \"steelblue\")\n\n\n\n\n\n\n\n\nA.11.10 Perspective plot\n\n# Exaggerate the relief\nz &lt;- 2 * volcano      \n# 10 meter spacing (S to N)\nx &lt;- 10 * (1:nrow(z))   \n# 10 meter spacing (E to W)\ny &lt;- 10 * (1:ncol(z))   \npar(bg = \"slategray\")\npersp(x, y, z, theta = 135, phi = 30, col = \"green3\", scale = FALSE,\n      ltheta = -120, shade = 0.75, border = NA, box = FALSE)",
-    "crumbs": [
-      "Appendices",
-      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
-    ]
-  },
-  {
-    "objectID": "a-r_prog.html#conditions",
-    "href": "a-r_prog.html#conditions",
-    "title": "Appendix A — R programming",
-    "section": "\nA.13 Conditions",
-    "text": "A.13 Conditions\n\n# The condition must evaluate to either TRUE or FALSE.\nif (condition) {\n  # code executed when condition is TRUE\n} else {\n  # code executed when condition is FALSE\n}\n\n\nif (c(TRUE, FALSE)) {}\n#&gt; Warning in if (c(TRUE, FALSE)) {: the condition has length &gt; 1 and only the\n#&gt; first element will be used\n#&gt; NULL\n\nif (NA) {}\n#&gt; Error in if (NA) {: missing value where TRUE/FALSE needed\n\n\nYou can use || (or) and && (and) to combine multiple logical expressions.\n\n\nif (cond1 || cond2) {\n  # code executed when condition is TRUE\n}\n\n\nThe basic If-else statement structure is that we write if then put a condition inside a pair of parenthesis, then use curly braces to wrap the code to be run when the condition is TRUE.\nIf we want to have the code to be run when the condition is FALSE, we add else and another pair of curly braces.\ncurly braces is not necessary if you just have one line of code to be run.\nThe condition must evaluate to either one TRUE or one FALSE.\nIf it’s a vector, you’ll get a warning message, and only the first element will be used.\nIf it’s an NA, you’ll get an error.\n\n\nif (this) {\n    # do that\n} else if (that) {\n    # do something else\n} else {\n    # \n}\n\n\nif (celsius &lt;= 0) {\n    \"freezing\"\n} else if (celsius &lt;= 10) {\n    \"cold\"\n} else if (celsius &lt;= 20) {\n   \"cool\"\n} else if (celsius &lt;= 30) {\n    \"warm\"\n} else {\n    \"hot\"\n}\n\n\nIf we want to have multiple conditions, we add the word else if.\nThe code below is an example of converting numerical data to categorical data, freezing, cold, warm and hot.\nIt’s not the best way to do conversion.\n\n\nIf you end up with a very long series of chained if-else statements, rewrite it!\n\n\n\n\n\nhttps://speakerdeck.com/jennybc/code-smells-and-feels\n\n\n\n\nIf you end up with a very long series of chained if-else statements, rewrite it! Don’t confuse readers and especially yourself.\nWe have a function called “get same data”.\nWhen you read the code in a linear fashion from top to bottom, you are falling down and down into conditions that were like a long time ago that you saw what you are actually checking.\nHere is another way to write the exactly the same function. ….. and now I am on the happy path. I get the data.\nSo if I open a file, and I know that something is gone wrong and checking all these things, I am much happier to be facing this than that!\nI think our brain cannot process too many layers. When we are trying to analyze so many layers, we just get lost.\n\n\n\n\n\nhttps://speakerdeck.com/jennybc/code-smells-and-feels\n\n\n\n\nSo there is no else, there is only if!\nBack, on the left, every if has an else.\nOn the right, we have no else. And this makes your code much more readable!",
-    "crumbs": [
-      "Appendices",
-      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
-    ]
-  },
-  {
-    "objectID": "a-r_prog.html#functions",
-    "href": "a-r_prog.html#functions",
-    "title": "Appendix A — R programming",
-    "section": "\nA.14 Functions",
-    "text": "A.14 Functions\n\nWrite a function whenever you’ve copied and pasted your code more than twice.\n\nThree key steps/components:\n\npick a name for the function.\nlist the inputs, or arguments, to the function inside function.\nplace the code you have developed in body of the function.\n\n\n\n\nfunction_name &lt;- function(arg1, arg2, ...) {\n    ## body\n    return(something)\n}\n\n\nadd_number &lt;- function(a, b) {\n    c &lt;- a + b\n    return(c)\n}\n\nn1 &lt;- 9\nn2 &lt;- 18\nadd_number(n1, n2)\n\n[1] 27",
-    "crumbs": [
-      "Appendices",
-      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
-    ]
-  },
-  {
     "objectID": "a-py_prog.html#plotting",
     "href": "a-py_prog.html#plotting",
     "title": "Appendix B — Python Programming",
     "section": "\nB.11 Plotting",
-    "text": "B.11 Plotting\nmatplotlib.markers\n\npch = np.array(['.', ',', 'o', 'v', '^', '&lt;', '&gt;', '1', '2', '3', '4', '8', 's', 'p', 'P', '*', 'h', 'H', '+', 'x', 'X', 'D', 'd', '|', '_'])\n#all types of maker\npch_len = pch.shape[0]\nx = np.array([i for i in range(1, pch_len+1)])\ny = np.ones(pch_len)\n\n\nplt.figure(0)\nfor i in range(0, pch_len):\n    plt.plot(x[i],y[i],pch[i])\n\n\n\n\n\n\n\n\nB.11.1 Scatterplot\n\nCodemtcars = pd.read_csv('./data/mtcars.csv')\nmtcars.iloc[0:15,0:4]\n\n     mpg  cyl   disp   hp\n0   21.0    6  160.0  110\n1   21.0    6  160.0  110\n2   22.8    4  108.0   93\n3   21.4    6  258.0  110\n4   18.7    8  360.0  175\n5   18.1    6  225.0  105\n6   14.3    8  360.0  245\n7   24.4    4  146.7   62\n8   22.8    4  140.8   95\n9   19.2    6  167.6  123\n10  17.8    6  167.6  123\n11  16.4    8  275.8  180\n12  17.3    8  275.8  180\n13  15.2    8  275.8  180\n14  10.4    8  472.0  205\n\n\n\nimport matplotlib.pyplot as plt\nplt.scatter(x = mtcars.mpg, y = mtcars.hp, color = \"r\")\nplt.xlabel(\"Miles per gallon\")\nplt.ylabel(\"Horsepower\")\nplt.title(\"Scatter plot\")\n\n\n\n\n\n\n\n\nB.11.2 Subplots\nThe command plt.scatter() is used for creating one single plot. If multiple subplots are wanted in one single call, one can use the format\n\nfig, (ax1, ax2) = plt.subplots(1, 2)\nax1.scatter(x, y)\nax2.plot(x, y)\n\n\nfig, (ax1, ax2) = plt.subplots(1, 2)\nax1.scatter(x = mtcars.mpg, y = mtcars.hp)\nax2.scatter(x = mtcars.hp, y = mtcars.disp)\n\n\n\n\n\n\n\n\nCheck Creating multiple subplots using plt.subplots for more details.\n\nB.11.3 Boxplot\n\nCodecyl_index = np.sort(np.unique(np.array(mtcars.cyl)))\ncyl_shape = cyl_index.shape[0]\ncyl_list = []\nfor i in range (0, cyl_shape):\n    cyl_list.append(np.array(mtcars[mtcars.cyl == cyl_index[i]].mpg))\n\n\n\nplt.boxplot(cyl_list, vert=False, tick_labels=[4, 6, 8])\n\n{'whiskers': [&lt;matplotlib.lines.Line2D object at 0x147694980&gt;, &lt;matplotlib.lines.Line2D object at 0x147694c50&gt;, &lt;matplotlib.lines.Line2D object at 0x147695c40&gt;, &lt;matplotlib.lines.Line2D object at 0x147695e20&gt;, &lt;matplotlib.lines.Line2D object at 0x147696e40&gt;, &lt;matplotlib.lines.Line2D object at 0x147697110&gt;], 'caps': [&lt;matplotlib.lines.Line2D object at 0x147694ec0&gt;, &lt;matplotlib.lines.Line2D object at 0x1476951c0&gt;, &lt;matplotlib.lines.Line2D object at 0x1476960c0&gt;, &lt;matplotlib.lines.Line2D object at 0x1476963c0&gt;, &lt;matplotlib.lines.Line2D object at 0x147697350&gt;, &lt;matplotlib.lines.Line2D object at 0x147697590&gt;], 'boxes': [&lt;matplotlib.lines.Line2D object at 0x147629580&gt;, &lt;matplotlib.lines.Line2D object at 0x147695910&gt;, &lt;matplotlib.lines.Line2D object at 0x147696b70&gt;], 'medians': [&lt;matplotlib.lines.Line2D object at 0x147695460&gt;, &lt;matplotlib.lines.Line2D object at 0x147696660&gt;, &lt;matplotlib.lines.Line2D object at 0x147697890&gt;], 'fliers': [&lt;matplotlib.lines.Line2D object at 0x1476956a0&gt;, &lt;matplotlib.lines.Line2D object at 0x147696930&gt;, &lt;matplotlib.lines.Line2D object at 0x147697b00&gt;], 'means': []}\n\nplt.xlabel(\"Miles per gallon\")\nplt.ylabel(\"Number of cylinders\")\n\n\n\n\n\n\n\n\nB.11.4 Histogram\n\nplt.hist(mtcars.wt, \n         bins = 19, \n         color=\"#003366\",\n         edgecolor=\"#FFCC00\")\nplt.xlabel(\"weights\")\nplt.title(\"Histogram of weights\")\n\n\n\n\n\n\n\n\nB.11.5 Barplot\n\ncount_py = mtcars.value_counts('gear')\ncount_py\n\ngear\n3    15\n4    12\n5     5\nName: count, dtype: int64\n\n\n\nplt.bar(count_py.index, count_py)\nplt.xlabel(\"Number of Gears\")\nplt.title(\"Car Distribution\")\n\n\n\n\n\n\n\n\nB.11.6 Pie chart\n\npercent = round(count_py / sum(count_py) * 100, 2)\ntexts = [str(percent.index[k]) + \" gear \" + str(percent.array[k]) + \"%\" for k in range(0,3)]\n\n\nplt.pie(count_py, labels = texts, colors = ['r', 'g', 'b'])\n\n([&lt;matplotlib.patches.Wedge object at 0x14778af90&gt;, &lt;matplotlib.patches.Wedge object at 0x1472e0fb0&gt;, &lt;matplotlib.patches.Wedge object at 0x166048200&gt;], [Text(0.10781885436251686, 1.0947031993394165, '3 gear 46.88%'), Text(-0.6111272563215624, -0.9146165735327998, '4 gear 37.5%'), Text(0.9701133907831904, -0.5185364105085978, '5 gear 15.62%')])\n\nplt.title(\"Pie Charts\")\n\n\n\n\n\n\n\n\nB.11.7 2D Imaging\nIn Python,\n\nmat_img = np.reshape(np.array(range(1,31)), [6,5], \"F\")\nmat_img\n\narray([[ 1,  7, 13, 19, 25],\n       [ 2,  8, 14, 20, 26],\n       [ 3,  9, 15, 21, 27],\n       [ 4, 10, 16, 22, 28],\n       [ 5, 11, 17, 23, 29],\n       [ 6, 12, 18, 24, 30]])\n\nplt.imshow(mat_img, cmap = 'Oranges')\n\n\n\n\n\n\n\n\nvolcano = pd.read_csv('./data/volcano.csv', index_col=0)\nx = 10*np.arange(1,volcano.shape[0]+1)\ny = 10*np.arange(1,volcano.shape[1]+1)\nX,Y = np. meshgrid(x,y)\nvt = volcano.transpose()\nprint(vt.shape)\n\n(61, 87)\n\nprint(X.shape)\n\n(61, 87)\n\nprint(Y.shape)\n\n(61, 87)\n\n\n\nfig, ax = plt.subplots()\nIM = ax.matshow(vt, alpha =1, cmap='terrain')\nCS = ax.contour(vt, levels=np.arange(90,200,5))\nax.clabel(CS, inline=True, fontsize=10)\nax.set_title('Maunga Whau Volcano')\n\n\n\n\n\n\n\n\nB.11.8 3D scatterplot\nIn Python,\n\nfig = plt.figure(figsize=(12, 12))\nax = fig.add_subplot(projection='3d')\n\nax.scatter(xs = mtcars.wt, ys = mtcars.disp, zs = mtcars.mpg)\nax.set_xlabel('Weights')\nax.set_ylabel(\"Displacement\")\nax.set_zlabel(\"Miles per gallon\")\nax.set_title(\"3D Scatter Plot\")\n\n\n\n\n\n\n\n\nB.11.9 Perspective plot\nIn Python,\n\nx = 10*np.arange(1,volcano.shape[0]+1)\ny = 10*np.arange(1,volcano.shape[1]+1)\nvt = volcano.transpose()\nZ = 10*vt\nX,Y = np. meshgrid(x,y)\n\nprint(Z.shape)\n\n(61, 87)\n\nprint(X.shape)\n\n(61, 87)\n\nprint(Y.shape)\n\n(61, 87)\n\n\n\nfig, ax = plt.subplots(subplot_kw={\"projection\": \"3d\"})\n# Plot the surface.\nax.plot_surface(X, Y, Z, cmap = 'Greens')",
-    "crumbs": [
-      "Appendices",
-      "<span class='chapter-number'>B</span>  <span class='chapter-title'>Python Programming</span>"
-    ]
-  },
-  {
-    "objectID": "a-py_prog.html#conditions",
-    "href": "a-py_prog.html#conditions",
-    "title": "Appendix B — Python Programming",
-    "section": "\nB.13 Conditions",
-    "text": "B.13 Conditions\n\nif condition:\n    # code executed when condition is true\nelse:\n    # code executed when condition is false\n\n\na = 5\nb = 20\nif a &gt; 4 or b &gt; 4:\n    print('a &gt; 4 or b &gt; 4')\n\na &gt; 4 or b &gt; 4\n\nif a &gt; 4 and b &gt; 4:\n    print('a &gt; 4 and b &gt; 4')\n\na &gt; 4 and b &gt; 4\n\n\n\nif (a &gt; 4) | (b &gt; 4):\n    print('a &gt; 4 or b &gt; 4')\n\na &gt; 4 or b &gt; 4\n\nif (a &gt; 4) & (b &gt; 4):\n    print('a &gt; 4 and b &gt; 4')\n\na &gt; 4 and b &gt; 4",
-    "crumbs": [
-      "Appendices",
-      "<span class='chapter-number'>B</span>  <span class='chapter-title'>Python Programming</span>"
-    ]
-  },
-  {
-    "objectID": "a-py_prog.html#functions",
-    "href": "a-py_prog.html#functions",
-    "title": "Appendix B — Python Programming",
-    "section": "\nB.15 Functions",
-    "text": "B.15 Functions\n\ndef function_name(arg1, arg2, ...):\n    ## body\n    return(something)\n\n\ndef add_number(a, b):\n    c = a + b\n    return c\n\nn1 = 9\nn2 = 18\nadd_number(n1, n2)\n\n27",
+    "text": "B.11 Plotting\nmatplotlib.markers\n\npch = np.array(['.', ',', 'o', 'v', '^', '&lt;', '&gt;', '1', '2', '3', '4', '8', 's', 'p', 'P', '*', 'h', 'H', '+', 'x', 'X', 'D', 'd', '|', '_'])\n#all types of maker\npch_len = pch.shape[0]\nx = np.array([i for i in range(1, pch_len+1)])\ny = np.ones(pch_len)\n\n\nplt.figure(0)\nfor i in range(0, pch_len):\n    plt.plot(x[i],y[i],pch[i])\n\n\n\n\n\n\n\n\nB.11.1 Scatterplot\n\nCodemtcars = pd.read_csv('./data/mtcars.csv')\nmtcars.iloc[0:15,0:4]\n\n     mpg  cyl   disp   hp\n0   21.0    6  160.0  110\n1   21.0    6  160.0  110\n2   22.8    4  108.0   93\n3   21.4    6  258.0  110\n4   18.7    8  360.0  175\n5   18.1    6  225.0  105\n6   14.3    8  360.0  245\n7   24.4    4  146.7   62\n8   22.8    4  140.8   95\n9   19.2    6  167.6  123\n10  17.8    6  167.6  123\n11  16.4    8  275.8  180\n12  17.3    8  275.8  180\n13  15.2    8  275.8  180\n14  10.4    8  472.0  205\n\n\n\nimport matplotlib.pyplot as plt\nplt.scatter(x = mtcars.mpg, y = mtcars.hp, color = \"r\")\nplt.xlabel(\"Miles per gallon\")\nplt.ylabel(\"Horsepower\")\nplt.title(\"Scatter plot\")\n\n\n\n\n\n\n\n\nB.11.2 Subplots\nThe command plt.scatter() is used for creating one single plot. If multiple subplots are wanted in one single call, one can use the format\n\nfig, (ax1, ax2) = plt.subplots(1, 2)\nax1.scatter(x, y)\nax2.plot(x, y)\n\n\nfig, (ax1, ax2) = plt.subplots(1, 2)\nax1.scatter(x = mtcars.mpg, y = mtcars.hp)\nax2.scatter(x = mtcars.hp, y = mtcars.disp)\n\n\n\n\n\n\n\n\nCheck Creating multiple subplots using plt.subplots for more details.\n\nB.11.3 Boxplot\n\nCodecyl_index = np.sort(np.unique(np.array(mtcars.cyl)))\ncyl_shape = cyl_index.shape[0]\ncyl_list = []\nfor i in range (0, cyl_shape):\n    cyl_list.append(np.array(mtcars[mtcars.cyl == cyl_index[i]].mpg))\n\n\n\nplt.boxplot(cyl_list, vert=False, tick_labels=[4, 6, 8])\n\n{'whiskers': [&lt;matplotlib.lines.Line2D object at 0x30c59c200&gt;, &lt;matplotlib.lines.Line2D object at 0x30c59c4d0&gt;, &lt;matplotlib.lines.Line2D object at 0x30c59d490&gt;, &lt;matplotlib.lines.Line2D object at 0x30c59d700&gt;, &lt;matplotlib.lines.Line2D object at 0x30c59e6f0&gt;, &lt;matplotlib.lines.Line2D object at 0x30c59e990&gt;], 'caps': [&lt;matplotlib.lines.Line2D object at 0x30c59c710&gt;, &lt;matplotlib.lines.Line2D object at 0x30c59c9e0&gt;, &lt;matplotlib.lines.Line2D object at 0x30c59d9a0&gt;, &lt;matplotlib.lines.Line2D object at 0x30c59dc70&gt;, &lt;matplotlib.lines.Line2D object at 0x30c59ec60&gt;, &lt;matplotlib.lines.Line2D object at 0x30c59ef30&gt;], 'boxes': [&lt;matplotlib.lines.Line2D object at 0x30c435d00&gt;, &lt;matplotlib.lines.Line2D object at 0x30c59d1f0&gt;, &lt;matplotlib.lines.Line2D object at 0x30c59e420&gt;], 'medians': [&lt;matplotlib.lines.Line2D object at 0x30c59cc80&gt;, &lt;matplotlib.lines.Line2D object at 0x30c59df10&gt;, &lt;matplotlib.lines.Line2D object at 0x30c59f230&gt;], 'fliers': [&lt;matplotlib.lines.Line2D object at 0x30c59cf80&gt;, &lt;matplotlib.lines.Line2D object at 0x30c59e1b0&gt;, &lt;matplotlib.lines.Line2D object at 0x30c59f4d0&gt;], 'means': []}\n\nplt.xlabel(\"Miles per gallon\")\nplt.ylabel(\"Number of cylinders\")\n\n\n\n\n\n\n\n\nB.11.4 Histogram\n\nplt.hist(mtcars.wt, \n         bins = 19, \n         color=\"#003366\",\n         edgecolor=\"#FFCC00\")\nplt.xlabel(\"weights\")\nplt.title(\"Histogram of weights\")\n\n\n\n\n\n\n\n\nB.11.5 Barplot\n\ncount_py = mtcars.value_counts('gear')\ncount_py\n\ngear\n3    15\n4    12\n5     5\nName: count, dtype: int64\n\n\n\nplt.bar(count_py.index, count_py)\nplt.xlabel(\"Number of Gears\")\nplt.title(\"Car Distribution\")\n\n\n\n\n\n\n\n\nB.11.6 Pie chart\n\npercent = round(count_py / sum(count_py) * 100, 2)\ntexts = [str(percent.index[k]) + \" gear \" + str(percent.array[k]) + \"%\" for k in range(0,3)]\n\n\nplt.pie(count_py, labels = texts, colors = ['r', 'g', 'b'])\n\n([&lt;matplotlib.patches.Wedge object at 0x30c5ccaa0&gt;, &lt;matplotlib.patches.Wedge object at 0x30c55d430&gt;, &lt;matplotlib.patches.Wedge object at 0x30c6f9820&gt;], [Text(0.10781885436251686, 1.0947031993394165, '3 gear 46.88%'), Text(-0.6111272563215624, -0.9146165735327998, '4 gear 37.5%'), Text(0.9701133907831904, -0.5185364105085978, '5 gear 15.62%')])\n\nplt.title(\"Pie Charts\")\n\n\n\n\n\n\n\n\nB.11.7 2D Imaging\nIn Python,\n\nmat_img = np.reshape(np.array(range(1,31)), [6,5], \"F\")\nmat_img\n\narray([[ 1,  7, 13, 19, 25],\n       [ 2,  8, 14, 20, 26],\n       [ 3,  9, 15, 21, 27],\n       [ 4, 10, 16, 22, 28],\n       [ 5, 11, 17, 23, 29],\n       [ 6, 12, 18, 24, 30]])\n\nplt.imshow(mat_img, cmap = 'Oranges')\n\n\n\n\n\n\n\n\nvolcano = pd.read_csv('./data/volcano.csv', index_col=0)\nx = 10*np.arange(1,volcano.shape[0]+1)\ny = 10*np.arange(1,volcano.shape[1]+1)\nX,Y = np. meshgrid(x,y)\nvt = volcano.transpose()\nprint(vt.shape)\n\n(61, 87)\n\nprint(X.shape)\n\n(61, 87)\n\nprint(Y.shape)\n\n(61, 87)\n\n\n\nfig, ax = plt.subplots()\nIM = ax.matshow(vt, alpha =1, cmap='terrain')\nCS = ax.contour(vt, levels=np.arange(90,200,5))\nax.clabel(CS, inline=True, fontsize=10)\nax.set_title('Maunga Whau Volcano')\n\n\n\n\n\n\n\n\nB.11.8 3D scatterplot\nIn Python,\n\nfig = plt.figure(figsize=(12, 12))\nax = fig.add_subplot(projection='3d')\n\nax.scatter(xs = mtcars.wt, ys = mtcars.disp, zs = mtcars.mpg)\nax.set_xlabel('Weights')\nax.set_ylabel(\"Displacement\")\nax.set_zlabel(\"Miles per gallon\")\nax.set_title(\"3D Scatter Plot\")\n\n\n\n\n\n\n\n\nB.11.9 Perspective plot\nIn Python,\n\nx = 10*np.arange(1,volcano.shape[0]+1)\ny = 10*np.arange(1,volcano.shape[1]+1)\nvt = volcano.transpose()\nZ = 10*vt\nX,Y = np. meshgrid(x,y)\n\nprint(Z.shape)\n\n(61, 87)\n\nprint(X.shape)\n\n(61, 87)\n\nprint(Y.shape)\n\n(61, 87)\n\n\n\nfig, ax = plt.subplots(subplot_kw={\"projection\": \"3d\"})\n# Plot the surface.\nax.plot_surface(X, Y, Z, cmap = 'Greens')",
     "crumbs": [
       "Appendices",
       "<span class='chapter-number'>B</span>  <span class='chapter-title'>Python Programming</span>"
@@ -2554,11 +2422,11 @@
     ]
   },
   {
-    "objectID": "a-py_prog.html#loops",
-    "href": "a-py_prog.html#loops",
+    "objectID": "a-py_prog.html#conditions",
+    "href": "a-py_prog.html#conditions",
     "title": "Appendix B — Python Programming",
-    "section": "\nB.16 Loops",
-    "text": "B.16 Loops\n\nB.16.1 for loops\n\nPython\nfor value in that:\n    # do this\n\n\nfor i in range(5):\n    print('for', i)\n\nfor 0\nfor 1\nfor 2\nfor 3\nfor 4\n\n\n\nfor i in ['My', '1st', 'for', 'loop']:\n    print(i)\n\nMy\n1st\nfor\nloop\n\n\n\nB.16.2 while loops\n\nwhile (condition):\n    # do this\n\n\ni = 1\nwhile(i &lt; 5):\n    print('while',i)\n    i = i + 1\n\nwhile 1\nwhile 2\nwhile 3\nwhile 4\n\n\n\nnp.random.seed(86)\ndef flip():\n    return np.random.choice(['T','H'], 1)\n    \nflips = 0\nnheads = 0\n\nwhile(nheads &lt; 3):\n    if flip() == \"H\":\n        nheads += 1\n    else:\n        nheads = 0\n    flips += 1\n    \nflips\n\n9",
+    "section": "\nB.13 Conditions",
+    "text": "B.13 Conditions\n\nif condition:\n    # code executed when condition is true\nelse:\n    # code executed when condition is false\n\n\na = 5\nb = 20\nif a &gt; 4 or b &gt; 4:\n    print('a &gt; 4 or b &gt; 4')\n\na &gt; 4 or b &gt; 4\n\nif a &gt; 4 and b &gt; 4:\n    print('a &gt; 4 and b &gt; 4')\n\na &gt; 4 and b &gt; 4\n\n\n\nif (a &gt; 4) | (b &gt; 4):\n    print('a &gt; 4 or b &gt; 4')\n\na &gt; 4 or b &gt; 4\n\nif (a &gt; 4) & (b &gt; 4):\n    print('a &gt; 4 and b &gt; 4')\n\na &gt; 4 and b &gt; 4",
     "crumbs": [
       "Appendices",
       "<span class='chapter-number'>B</span>  <span class='chapter-title'>Python Programming</span>"
@@ -2569,230 +2437,32 @@
     "href": "a-py_prog.html#multiple-conditions",
     "title": "Appendix B — Python Programming",
     "section": "\nB.14 Multiple conditions",
-    "text": "B.14 Multiple conditions\n\nif condition A:\n    # do that\nelif condition B:\n    # do something else\nelse:\n    # \n\n\nrd = np.random.randint(100)\nprint(rd)\n\n83\n\nif rd &lt;= 20:\n    print(\"rd &lt;= 20\")\nelif rd &gt; 20 and rd &lt;= 40:\n    print('rd &gt; 20 and rd &lt;= 40')\nelif rd &gt; 40 and rd &lt;= 60:\n    print('rd &gt; 40 and rd &lt;= 60')\nelif rd &gt; 60 and rd &lt;= 80:\n    print('rd &gt; 60 and rd &lt;= 80')\nelif rd &gt; 80 and rd &lt;= 100:\n    print('rd &gt; 80 and rd &lt;= 100')\n\nrd &gt; 80 and rd &lt;= 100",
+    "text": "B.14 Multiple conditions\n\nif condition A:\n    # do that\nelif condition B:\n    # do something else\nelse:\n    # \n\n\nrd = np.random.randint(100)\nprint(rd)\n\n16\n\nif rd &lt;= 20:\n    print(\"rd &lt;= 20\")\nelif rd &gt; 20 and rd &lt;= 40:\n    print('rd &gt; 20 and rd &lt;= 40')\nelif rd &gt; 40 and rd &lt;= 60:\n    print('rd &gt; 40 and rd &lt;= 60')\nelif rd &gt; 60 and rd &lt;= 80:\n    print('rd &gt; 60 and rd &lt;= 80')\nelif rd &gt; 80 and rd &lt;= 100:\n    print('rd &gt; 80 and rd &lt;= 100')\n\nrd &lt;= 20",
     "crumbs": [
       "Appendices",
       "<span class='chapter-number'>B</span>  <span class='chapter-title'>Python Programming</span>"
     ]
   },
   {
-    "objectID": "a-r_prog.html#special-objects",
-    "href": "a-r_prog.html#special-objects",
-    "title": "Appendix A — R programming",
-    "section": "\nA.10 Special Objects",
-    "text": "A.10 Special Objects",
+    "objectID": "a-py_prog.html#functions",
+    "href": "a-py_prog.html#functions",
+    "title": "Appendix B — Python Programming",
+    "section": "\nB.15 Functions",
+    "text": "B.15 Functions\n\ndef function_name(arg1, arg2, ...):\n    ## body\n    return(something)\n\n\ndef add_number(a, b):\n    c = a + b\n    return c\n\nn1 = 9\nn2 = 18\nadd_number(n1, n2)\n\n27",
     "crumbs": [
       "Appendices",
-      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
+      "<span class='chapter-number'>B</span>  <span class='chapter-title'>Python Programming</span>"
     ]
   },
   {
-    "objectID": "a-r_prog.html#math-functions",
-    "href": "a-r_prog.html#math-functions",
-    "title": "Appendix A — R programming",
-    "section": "\nA.2 Math Functions",
-    "text": "A.2 Math Functions\nMath functions in R are built-in.\n\nsqrt(144)\n\n[1] 12\n\nexp(1)\n\n[1] 2.718282\n\nsin(pi/2)\n\n[1] 1\n\nlog(32, base = 2)\n\n[1] 5\n\nabs(-7)\n\n[1] 7",
+    "objectID": "a-py_prog.html#loops",
+    "href": "a-py_prog.html#loops",
+    "title": "Appendix B — Python Programming",
+    "section": "\nB.16 Loops",
+    "text": "B.16 Loops\n\nB.16.1 for loops\n\nPython\nfor value in that:\n    # do this\n\n\nfor i in range(5):\n    print('for', i)\n\nfor 0\nfor 1\nfor 2\nfor 3\nfor 4\n\n\n\nfor i in ['My', '1st', 'for', 'loop']:\n    print(i)\n\nMy\n1st\nfor\nloop\n\n\n\nB.16.2 while loops\n\nwhile (condition):\n    # do this\n\n\ni = 1\nwhile(i &lt; 5):\n    print('while',i)\n    i = i + 1\n\nwhile 1\nwhile 2\nwhile 3\nwhile 4\n\n\n\nnp.random.seed(86)\ndef flip():\n    return np.random.choice(['T','H'], 1)\n    \nflips = 0\nnheads = 0\n\nwhile(nheads &lt; 3):\n    if flip() == \"H\":\n        nheads += 1\n    else:\n        nheads = 0\n    flips += 1\n    \nflips\n\n9",
     "crumbs": [
       "Appendices",
-      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
-    ]
-  },
-  {
-    "objectID": "a-r_prog.html#variables-and-assignment",
-    "href": "a-r_prog.html#variables-and-assignment",
-    "title": "Appendix A — R programming",
-    "section": "\nA.3 Variables and Assignment",
-    "text": "A.3 Variables and Assignment\nUse &lt;- to do assignment. Why\n\n## we create an object, value 5, \n## and call it x, which is a variable\nx &lt;- 5\nx\n\n[1] 5\n\n(x &lt;- x + 6)\n\n[1] 11\n\nx == 5\n\n[1] FALSE\n\nlog(x)\n\n[1] 2.397895",
-    "crumbs": [
-      "Appendices",
-      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
-    ]
-  },
-  {
-    "objectID": "a-r_prog.html#object-types",
-    "href": "a-r_prog.html#object-types",
-    "title": "Appendix A — R programming",
-    "section": "\nA.4 Object Types",
-    "text": "A.4 Object Types\ncharacter, double, integer and logical.\n\ntypeof(5)\n\n[1] \"double\"\n\n\n\ntypeof(5L)\n\n[1] \"integer\"\n\n\n\ntypeof(\"I_love_data_science!\")\n\n[1] \"character\"\n\n\n\ntypeof(1 &gt; 3)\n\n[1] \"logical\"\n\n\n\nis.double(5L)\n\n[1] FALSE",
-    "crumbs": [
-      "Appendices",
-      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
-    ]
-  },
-  {
-    "objectID": "a-r_prog.html#data-structure---vector",
-    "href": "a-r_prog.html#data-structure---vector",
-    "title": "Appendix A — R programming",
-    "section": "\nA.5 Data Structure - Vector",
-    "text": "A.5 Data Structure - Vector\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nVariable defined previously is a scalar value, or in fact a (atomic) vector of length one.\n\n\nA.5.1 (Atomic) Vector\n\nTo create a vector, use c(), short for concatenate or combine.\nAll elements of a vector must be of the same type.\n\n\n(dbl_vec &lt;- c(1, 2.5, 4.5)) \n\n[1] 1.0 2.5 4.5\n\n(int_vec &lt;- c(1L, 6L, 10L))\n\n[1]  1  6 10\n\n## TRUE and FALSE can be written as T and F\n(log_vec &lt;- c(TRUE, FALSE, F))  \n\n[1]  TRUE FALSE FALSE\n\n(chr_vec &lt;- c(\"pretty\", \"girl\"))\n\n[1] \"pretty\" \"girl\"  \n\n\n\n## check how many elements in a vector\nlength(dbl_vec) \n\n[1] 3\n\n## check a compact description of \n## any R data structure\nstr(dbl_vec) \n\n num [1:3] 1 2.5 4.5\n\n\n\nA.5.2 Sequence of Numbers\n\nUse : to create a sequence of integers.\nUse seq() to create a sequence of numbers of type double with more options. \n\n\n(vec &lt;- 1:5) \n\n[1] 1 2 3 4 5\n\ntypeof(vec)\n\n[1] \"integer\"\n\n# a sequence of numbers from 1 to 10 with increment 2\n(seq_vec &lt;- seq(from = 1, to = 10, by = 2))\n\n[1] 1 3 5 7 9\n\ntypeof(seq_vec)\n\n[1] \"double\"\n\n\n\n# a sequence of numbers from 1 to 10\n# with 12 elements\nseq(from = 1, to = 10, length.out = 12)\n\n [1]  1.000000  1.818182  2.636364  3.454545  4.272727  5.090909  5.909091\n [8]  6.727273  7.545455  8.363636  9.181818 10.000000\n\n\n\nA.5.3 Operations on Vectors\n\nWe can do any operations on vectors as we do on a scalar variable (vector of length 1).\n\n\n# Create two vectors\nv1 &lt;- c(3, 8)\nv2 &lt;- c(4, 100) \n\n## All operations happen element-wisely\n# Vector addition\nv1 + v2\n\n[1]   7 108\n\n# Vector subtraction\nv1 - v2\n\n[1]  -1 -92\n\n\n\n# Vector multiplication\nv1 * v2\n\n[1]  12 800\n\n# Vector division\nv1 / v2\n\n[1] 0.75 0.08\n\nsqrt(v2)\n\n[1]  2 10\n\n\n\nA.5.4 Recycling of Vectors\n\nIf we apply arithmetic operations to two vectors of unequal length, the elements of the shorter vector will be recycled to complete the operations.  \n\n\n\nv1 &lt;- c(3, 8, 4, 5)\n# The following 2 operations are the same\nv1 * 2\n\n[1]  6 16  8 10\n\nv1 * c(2, 2, 2, 2)\n\n[1]  6 16  8 10\n\nv3 &lt;- c(4, 11)\nv1 + v3  ## v3 becomes c(4, 11, 4, 11) when doing the operation\n\n[1]  7 19  8 16\n\n\n\nA.5.5 Subsetting Vectors\n\nTo extract element(s) in a vector, we use a pair of brackets [] with element indexing.\nThe indexing starts with 1.\n\n\n\n\nv1\n\n[1] 3 8 4 5\n\nv2\n\n[1]   4 100\n\n## The 3rd element\nv1[3] \n\n[1] 4\n\n\n\n\nv1[c(1, 3)]\n\n[1] 3 4\n\nv1[1:2]\n\n[1] 3 8\n\n## extract all except a few elements\n## put a negative sign before the vector of \n## indices\nv1[-c(2, 3)] \n\n[1] 3 5",
-    "crumbs": [
-      "Appendices",
-      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
-    ]
-  },
-  {
-    "objectID": "a-r_prog.html#data-structure---factor",
-    "href": "a-r_prog.html#data-structure---factor",
-    "title": "Appendix A — R programming",
-    "section": "\nA.6 Data Structure - Factor",
-    "text": "A.6 Data Structure - Factor\n\nA vector of type factor can be ordered in a meaningful way.\nCreate a factor by factor(). It is a type of integer, not character. 😲 🙄\n\n\n## Create a factor from a character vector using function factor()\n(fac &lt;- factor(c(\"med\", \"high\", \"low\")))\n\n[1] med  high low \nLevels: high low med\n\ntypeof(fac)  ## The type is integer.\n\n[1] \"integer\"\n\nstr(fac)  ## The integers show the level each element in vector fac belongs to.\n\n Factor w/ 3 levels \"high\",\"low\",\"med\": 3 1 2\n\n\n\norder_fac &lt;- factor(c(\"med\", \"high\", \"low\"),\n                    levels = c(\"low\", \"med\", \"high\"))\nstr(order_fac)\n\n Factor w/ 3 levels \"low\",\"med\",\"high\": 2 3 1\n\n\n\nlevels(fac) ## Each level represents an integer, ordered from the vector alphabetically.\n\n[1] \"high\" \"low\"  \"med\"",
-    "crumbs": [
-      "Appendices",
-      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
-    ]
-  },
-  {
-    "objectID": "a-r_prog.html#data-structure---list-generic-vectors",
-    "href": "a-r_prog.html#data-structure---list-generic-vectors",
-    "title": "Appendix A — R programming",
-    "section": "\nA.7 Data Structure - List (Generic Vectors)",
-    "text": "A.7 Data Structure - List (Generic Vectors)\n\n\n\n\n\n\n\n\n\nLists are different from (atomic) vectors: Elements can be of any type, including lists.\nConstruct a list by using list().\n\n\n\n\n## a list of 3 elements of different types\nx_lst &lt;- list(idx = 1:3, \n              \"a\", \n              c(TRUE, FALSE))\n\n\n\n$idx\n[1] 1 2 3\n\n[[2]]\n[1] \"a\"\n\n[[3]]\n[1]  TRUE FALSE\n\n\n\n\nstr(x_lst)\n\nList of 3\n $ idx: int [1:3] 1 2 3\n $    : chr \"a\"\n $    : logi [1:2] TRUE FALSE\n\nnames(x_lst)\n\n[1] \"idx\" \"\"    \"\"   \n\nlength(x_lst)\n\n[1] 3\n\n\n\n\n\nA.7.1 Subsetting a list\n\n\nReturn an  element  of a list\n\n## subset by name (a vector)\nx_lst$idx  \n\n[1] 1 2 3\n\n## subset by indexing (a vector)\nx_lst[[1]]  \n\n[1] 1 2 3\n\ntypeof(x_lst$idx)\n\n[1] \"integer\"\n\n\n\n\nReturn a  sub-list  of a list\n\n## subset by name (still a list)\nx_lst[\"idx\"]  \n\n$idx\n[1] 1 2 3\n\n## subset by indexing (still a list)\nx_lst[1]  \n\n$idx\n[1] 1 2 3\n\ntypeof(x_lst[\"idx\"])\n\n[1] \"list\"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nIf list x is a train carrying objects, then x[[5]] is the object in car 5; x[4:6] is a train of cars 4-6.\n— @RLangTip, https://twitter.com/RLangTip/status/268375867468681216",
-    "crumbs": [
-      "Appendices",
-      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
-    ]
-  },
-  {
-    "objectID": "a-r_prog.html#matrix",
-    "href": "a-r_prog.html#matrix",
-    "title": "Appendix A — R programming",
-    "section": "\nA.8 Matrix",
-    "text": "A.8 Matrix\n\nA matrix is a two-dimensional analog of a vector with attribute dim.\nUse command matrix() to create a matrix.\n\n\n## Create a 3 by 2 matrix called mat\n(mat &lt;- matrix(data = 1:6, nrow = 3, ncol = 2)) \n\n     [,1] [,2]\n[1,]    1    4\n[2,]    2    5\n[3,]    3    6\n\ndim(mat); nrow(mat); ncol(mat)\n\n[1] 3 2\n\n\n[1] 3\n\n\n[1] 2\n\n\n\n# elements are arranged by row\nmatrix(data = 1:6, \n       nrow = 3, \n       ncol = 2, \n       byrow = TRUE) #&lt;&lt;\n\n     [,1] [,2]\n[1,]    1    2\n[2,]    3    4\n[3,]    5    6\n\nattributes(mat)\n\n$dim\n[1] 3 2\n\n\n\nA.8.1 Row and Column Names\n\n\n\nmat\n\n     [,1] [,2]\n[1,]    1    4\n[2,]    2    5\n[3,]    3    6\n\n## assign row names and column names\nrownames(mat) &lt;- c(\"A\", \"B\", \"C\")\ncolnames(mat) &lt;- c(\"a\", \"b\")\nmat\n\n  a b\nA 1 4\nB 2 5\nC 3 6\n\n\n\n\nrownames(mat)\n\n[1] \"A\" \"B\" \"C\"\n\ncolnames(mat)\n\n[1] \"a\" \"b\"\n\nattributes(mat)\n\n$dim\n[1] 3 2\n\n$dimnames\n$dimnames[[1]]\n[1] \"A\" \"B\" \"C\"\n\n$dimnames[[2]]\n[1] \"a\" \"b\"\n\n\n\n\n\nA.8.2 Subsetting a Matrix\n\nUse the same indexing approach as vectors on rows and columns.\nUse comma , to separate row and column index.\n\nmat[2, 2] extracts the element of the second row and second column.\n\n\n\n\nmat\n\n  a b\nA 1 4\nB 2 5\nC 3 6\n\n## all rows and 2nd column\n## leave row index blank\n## specify 2 in coln index\nmat[, 2]\n\nA B C \n4 5 6 \n\n\n\n\n## 2nd row and all columns\nmat[2, ] \n\na b \n2 5 \n\n## The 1st and 3rd rows and the 1st column\nmat[c(1, 3), 1] \n\nA C \n1 3 \n\n\n\n\n\nA.8.3 Binding Matrices\n\ncbind() (binding matrices by adding columns)\nrbind() (binding matrices by adding rows)\nWhen matrices are combined by columns (rows), they should have the same number of rows (columns).\n\n\n\n\nmat\n\n  a b\nA 1 4\nB 2 5\nC 3 6\n\nmat_c &lt;- matrix(data = c(7,0,0,8,2,6), \n                nrow = 3, ncol = 2)\n## should have the same number of rows\ncbind(mat, mat_c)  \n\n  a b    \nA 1 4 7 8\nB 2 5 0 2\nC 3 6 0 6\n\n\n\n\nmat_r &lt;- matrix(data = 1:4, \n                nrow = 2, \n                ncol = 2)\n## should have the same number of columns\nrbind(mat, mat_r)  \n\n  a b\nA 1 4\nB 2 5\nC 3 6\n  1 3\n  2 4",
-    "crumbs": [
-      "Appendices",
-      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
-    ]
-  },
-  {
-    "objectID": "a-r_prog.html#subsetting-a-matrix",
-    "href": "a-r_prog.html#subsetting-a-matrix",
-    "title": "Appendix A — R programming",
-    "section": "\nA.9 Subsetting a Matrix",
-    "text": "A.9 Subsetting a Matrix\n\nUse the same indexing approach as vectors on rows and columns.\nUse comma , to separate row and column index.\n\nmat[2, 2] extracts the element of the second row and second column.\n\n\n\n\nmat\n\n  a b\nA 1 4\nB 2 5\nC 3 6\n\n## all rows and 2nd column\n## leave row index blank\n## specify 2 in coln index\nmat[, 2]\n\nA B C \n4 5 6 \n\n\n\n\n## 2nd row and all columns\nmat[2, ] \n\na b \n2 5 \n\n## The 1st and 3rd rows and the 1st column\nmat[c(1, 3), 1] \n\nA C \n1 3",
-    "crumbs": [
-      "Appendices",
-      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
-    ]
-  },
-  {
-    "objectID": "a-r_prog.html#binding-matrices",
-    "href": "a-r_prog.html#binding-matrices",
-    "title": "Appendix A — R programming",
-    "section": "\nA.10 Binding Matrices",
-    "text": "A.10 Binding Matrices\n\ncbind() (binding matrices by adding columns)\nrbind() (binding matrices by adding rows)\nWhen matrices are combined by columns (rows), they should have the same number of rows (columns).\n\n\n\n\nmat\n\n  a b\nA 1 4\nB 2 5\nC 3 6\n\nmat_c &lt;- matrix(data = c(7,0,0,8,2,6), \n                nrow = 3, ncol = 2)\n## should have the same number of rows\ncbind(mat, mat_c)  \n\n  a b    \nA 1 4 7 8\nB 2 5 0 2\nC 3 6 0 6\n\n\n\n\nmat_r &lt;- matrix(data = 1:4, \n                nrow = 2, \n                ncol = 2)\n## should have the same number of columns\nrbind(mat, mat_r)  \n\n  a b\nA 1 4\nB 2 5\nC 3 6\n  1 3\n  2 4",
-    "crumbs": [
-      "Appendices",
-      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
-    ]
-  },
-  {
-    "objectID": "a-r_prog.html#data-structure---data-frame-the-most-common-way-of-storing-datasets",
-    "href": "a-r_prog.html#data-structure---data-frame-the-most-common-way-of-storing-datasets",
-    "title": "Appendix A — R programming",
-    "section": "\nA.9 Data Structure - Data Frame: The Most Common Way of Storing Datasets",
-    "text": "A.9 Data Structure - Data Frame: The Most Common Way of Storing Datasets\n\nA data frame is of type list of equal-length vectors, having a 2-dimensional structure.\nMore general than matrix: Different columns can have different types.\nUse data.frame() that takes named vectors as input “element”.\n\n\n\n\n## data frame w/ an dbl column named age\n## and char column named gender.\n(df &lt;- data.frame(age = c(19, 21, 40), \n                  gen = c(\"m\",\"f\", \"m\")))\n\n  age gen\n1  19   m\n2  21   f\n3  40   m\n\n## a data frame has a list structure\nstr(df)  \n\n'data.frame':   3 obs. of  2 variables:\n $ age: num  19 21 40\n $ gen: chr  \"m\" \"f\" \"m\"\n\n\n\n\n## must set column names\n## or they are ugly and non-recognizable\ndata.frame(c(19,21,40), c(\"m\",\"f\",\"m\")) \n\n  c.19..21..40. c..m....f....m..\n1            19                m\n2            21                f\n3            40                m\n\n\n\n\n\nA.9.1 Properties of data frames\nData frame has properties of matrix and list.\n\n\n\nnames(df)  ## df as a list\n\n[1] \"age\" \"gen\"\n\ncolnames(df)  ## df as a matrix\n\n[1] \"age\" \"gen\"\n\nlength(df) ## df as a list\n\n[1] 2\n\nncol(df) ## df as a matrix\n\n[1] 2\n\ndim(df) ## df as a matrix\n\n[1] 3 2\n\n\n\n\n## rbind() and cbind() can be used on df\ndf_r &lt;- data.frame(age = 10, \n                   gen = \"f\")\nrbind(df, df_r)\n\n  age gen\n1  19   m\n2  21   f\n3  40   m\n4  10   f\n\ndf_c &lt;- \n    data.frame(col = c(\"red\",\"blue\",\"gray\"))\n(df_new &lt;- cbind(df, df_c))\n\n  age gen  col\n1  19   m  red\n2  21   f blue\n3  40   m gray\n\n\n\n\n\nA.9.2 Subsetting a data frame\nCan use either list or matrix subsetting methods.\n\n\n\ndf_new\n\n  age gen  col\n1  19   m  red\n2  21   f blue\n3  40   m gray\n\n## Subset rows\ndf_new[c(1, 3), ]\n\n  age gen  col\n1  19   m  red\n3  40   m gray\n\n## select the row where age == 21\ndf_new[df_new$age == 21, ]\n\n  age gen  col\n2  21   f blue\n\n\n\n\n## Subset columns\n## like a list\ndf_new$age\n\n[1] 19 21 40\n\ndf_new[c(\"age\", \"gen\")]\n\n  age gen\n1  19   m\n2  21   f\n3  40   m\n\n## like a matrix\ndf_new[, c(\"age\", \"gen\")]\n\n  age gen\n1  19   m\n2  21   f\n3  40   m\n\n\n\n\n\ndf_new[c(1, 3), ]\n\n  age gen  col\n1  19   m  red\n3  40   m gray\n\nstr(df[\"age\"])  ## a data frame with one column\n\n'data.frame':   3 obs. of  1 variable:\n $ age: num  19 21 40\n\nstr(df[, \"age\"])  ## becomes a vector by default\n\n num [1:3] 19 21 40",
-    "crumbs": [
-      "Appendices",
-      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
-    ]
-  },
-  {
-    "objectID": "a-r_prog.html#properties-of-data-frames",
-    "href": "a-r_prog.html#properties-of-data-frames",
-    "title": "Appendix A — R programming",
-    "section": "\nA.12 Properties of data frames",
-    "text": "A.12 Properties of data frames\nData frame has properties of matrix and list.\n\n\n\nnames(df)  ## df as a list\n\n[1] \"age\" \"gen\"\n\ncolnames(df)  ## df as a matrix\n\n[1] \"age\" \"gen\"\n\nlength(df) ## df as a list\n\n[1] 2\n\nncol(df) ## df as a matrix\n\n[1] 2\n\ndim(df) ## df as a matrix\n\n[1] 3 2\n\n\n\n\n## rbind() and cbind() can be used on df\ndf_r &lt;- data.frame(age = 10, \n                   gen = \"f\")\nrbind(df, df_r)\n\n  age gen\n1  19   m\n2  21   f\n3  40   m\n4  10   f\n\ndf_c &lt;- \n    data.frame(col = c(\"red\",\"blue\",\"gray\"))\n(df_new &lt;- cbind(df, df_c))\n\n  age gen  col\n1  19   m  red\n2  21   f blue\n3  40   m gray\n\n\n\n\n\nA.12.1 Subsetting a data frame\nCan use either list or matrix subsetting methods.\n\n\n\ndf_new\n\n  age gen  col\n1  19   m  red\n2  21   f blue\n3  40   m gray\n\n## Subset rows\ndf_new[c(1, 3), ]\n\n  age gen  col\n1  19   m  red\n3  40   m gray\n\n## select the row where age == 21\ndf_new[df_new$age == 21, ]\n\n  age gen  col\n2  21   f blue\n\n\n\n\n## Subset columns\n## like a list\ndf_new$age\n\n[1] 19 21 40\n\ndf_new[c(\"age\", \"gen\")]\n\n  age gen\n1  19   m\n2  21   f\n3  40   m\n\n## like a matrix\ndf_new[, c(\"age\", \"gen\")]\n\n  age gen\n1  19   m\n2  21   f\n3  40   m\n\n\n\n\n\ndf_new[c(1, 3), ]\n\n  age gen  col\n1  19   m  red\n3  40   m gray\n\nstr(df[\"age\"])  ## a data frame with one column\n\n'data.frame':   3 obs. of  1 variable:\n $ age: num  19 21 40\n\nstr(df[, \"age\"])  ## becomes a vector by default\n\n num [1:3] 19 21 40",
-    "crumbs": [
-      "Appendices",
-      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
-    ]
-  },
-  {
-    "objectID": "a-r_prog.html#boxplot",
-    "href": "a-r_prog.html#boxplot",
-    "title": "Appendix A — R programming",
-    "section": "\nA.12 Boxplot",
-    "text": "A.12 Boxplot\n\npar(mar = c(4, 4, 0, 0))\nboxplot(mpg ~ cyl, \n        data = mtcars, \n        col = c(\"blue\", \"green\", \"red\"), \n        las = 1, \n        horizontal = TRUE,\n        xlab = \"Miles per gallon\", \n        ylab = \"Number of cylinders\")\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nA.12.1 Histogram\nhist() decides the class intervals/with based on breaks. If not provided, R chooses one.\n\n\n\nhist(mtcars$wt, \n     breaks = 20, \n     col = \"#003366\", \n     border = \"#FFCC00\", \n     xlab = \"weights\", \n     main = \"Histogram of weights\",\n     las = 1)\n\n\n\nhist(mtcars$wt, \n     breaks = 20, \n     col = \"#003366\", \n     border = \"#FFCC00\", \n     xlab = \"weights\", \n     main = \"Histogram of weights\",\n     las = 1)\n\n\n\n\n\n\n\n\n\n\nBesides color names, you can also use hex number to specify colors. Pretty handy.\n\nA.12.2 Barplot\n\n(counts &lt;- table(mtcars$gear)) \n\n\n 3  4  5 \n15 12  5 \n\n\n\nmy_bar &lt;- barplot(counts, \n                  main = \"Car Distribution\", \n                  xlab = \"Number of Gears\", \n                  las = 1)\ntext(x = my_bar, y = counts - 0.8, \n     labels = counts, \n     cex = 0.8)\n\n\n\n\n\n\n\n\nA.12.3 Pie chart\n\nPie charts are used for categorical variables, especially when we want to know percentage of each category.\nThe first argument is the frequency table, and you can add labels to each category.\n\n\n(percent &lt;- round(counts / sum(counts) * 100, 2))\n\n\n    3     4     5 \n46.88 37.50 15.62 \n\n(labels &lt;- paste0(3:5, \" gears: \", percent, \"%\"))\n\n[1] \"3 gears: 46.88%\" \"4 gears: 37.5%\"  \"5 gears: 15.62%\"\n\n\n\npie(x = counts, labels = labels,\n    main = \"Pie Chart\", \n    col = 2:4, \n    radius = 1)",
-    "crumbs": [
-      "Appendices",
-      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
-    ]
-  },
-  {
-    "objectID": "a-r_prog.html#data-structure---matrix",
-    "href": "a-r_prog.html#data-structure---matrix",
-    "title": "Appendix A — R programming",
-    "section": "\nA.8 Data Structure - Matrix",
-    "text": "A.8 Data Structure - Matrix\n\nA matrix is a two-dimensional analog of a vector with attribute dim.\nUse command matrix() to create a matrix.\n\n\n## Create a 3 by 2 matrix called mat\n(mat &lt;- matrix(data = 1:6, nrow = 3, ncol = 2)) \n\n     [,1] [,2]\n[1,]    1    4\n[2,]    2    5\n[3,]    3    6\n\ndim(mat); nrow(mat); ncol(mat)\n\n[1] 3 2\n\n\n[1] 3\n\n\n[1] 2\n\n\n\n# elements are arranged by row\nmatrix(data = 1:6, \n       nrow = 3, \n       ncol = 2, \n       byrow = TRUE) #&lt;&lt;\n\n     [,1] [,2]\n[1,]    1    2\n[2,]    3    4\n[3,]    5    6\n\nattributes(mat)\n\n$dim\n[1] 3 2\n\n\n\nA.8.1 Row and Column Names\n\n\n\nmat\n\n     [,1] [,2]\n[1,]    1    4\n[2,]    2    5\n[3,]    3    6\n\n## assign row names and column names\nrownames(mat) &lt;- c(\"A\", \"B\", \"C\")\ncolnames(mat) &lt;- c(\"a\", \"b\")\nmat\n\n  a b\nA 1 4\nB 2 5\nC 3 6\n\n\n\n\nrownames(mat)\n\n[1] \"A\" \"B\" \"C\"\n\ncolnames(mat)\n\n[1] \"a\" \"b\"\n\nattributes(mat)\n\n$dim\n[1] 3 2\n\n$dimnames\n$dimnames[[1]]\n[1] \"A\" \"B\" \"C\"\n\n$dimnames[[2]]\n[1] \"a\" \"b\"\n\n\n\n\n\nA.8.2 Subsetting a Matrix\n\nUse the same indexing approach as vectors on rows and columns.\nUse comma , to separate row and column index.\n\nmat[2, 2] extracts the element of the second row and second column.\n\n\n\n\nmat\n\n  a b\nA 1 4\nB 2 5\nC 3 6\n\n## all rows and 2nd column\n## leave row index blank\n## specify 2 in coln index\nmat[, 2]\n\nA B C \n4 5 6 \n\n\n\n\n## 2nd row and all columns\nmat[2, ] \n\na b \n2 5 \n\n## The 1st and 3rd rows and the 1st column\nmat[c(1, 3), 1] \n\nA C \n1 3 \n\n\n\n\n\nA.8.3 Binding Matrices\n\ncbind() (binding matrices by adding columns)\nrbind() (binding matrices by adding rows)\nWhen matrices are combined by columns (rows), they should have the same number of rows (columns).\n\n\n\n\nmat\n\n  a b\nA 1 4\nB 2 5\nC 3 6\n\nmat_c &lt;- matrix(data = c(7,0,0,8,2,6), \n                nrow = 3, ncol = 2)\n## should have the same number of rows\ncbind(mat, mat_c)  \n\n  a b    \nA 1 4 7 8\nB 2 5 0 2\nC 3 6 0 6\n\n\n\n\nmat_r &lt;- matrix(data = 1:4, \n                nrow = 2, \n                ncol = 2)\n## should have the same number of columns\nrbind(mat, mat_r)  \n\n  a b\nA 1 4\nB 2 5\nC 3 6\n  1 3\n  2 4",
-    "crumbs": [
-      "Appendices",
-      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
-    ]
-  },
-  {
-    "objectID": "a-r_prog.html#data-structure---data-frame",
-    "href": "a-r_prog.html#data-structure---data-frame",
-    "title": "Appendix A — R programming",
-    "section": "\nA.9 Data Structure - Data Frame",
-    "text": "A.9 Data Structure - Data Frame\n\nA data frame is of type list of equal-length vectors, having a 2-dimensional structure.\nMore general than matrix: Different columns can have different types.\nUse data.frame() that takes named vectors as input “element”.\n\n\n\n\n## data frame w/ an dbl column named age\n## and char column named gender.\n(df &lt;- data.frame(age = c(19, 21, 40), \n                  gen = c(\"m\",\"f\", \"m\")))\n\n  age gen\n1  19   m\n2  21   f\n3  40   m\n\n## a data frame has a list structure\nstr(df)  \n\n'data.frame':   3 obs. of  2 variables:\n $ age: num  19 21 40\n $ gen: chr  \"m\" \"f\" \"m\"\n\n\n\n\n## must set column names\n## or they are ugly and non-recognizable\ndata.frame(c(19,21,40), c(\"m\",\"f\",\"m\")) \n\n  c.19..21..40. c..m....f....m..\n1            19                m\n2            21                f\n3            40                m\n\n\n\n\n\nA.9.1 Properties of data frames\nData frame has properties of matrix and list.\n\n\n\nnames(df)  ## df as a list\n\n[1] \"age\" \"gen\"\n\ncolnames(df)  ## df as a matrix\n\n[1] \"age\" \"gen\"\n\nlength(df) ## df as a list\n\n[1] 2\n\nncol(df) ## df as a matrix\n\n[1] 2\n\ndim(df) ## df as a matrix\n\n[1] 3 2\n\n\n\n\n## rbind() and cbind() can be used on df\ndf_r &lt;- data.frame(age = 10, \n                   gen = \"f\")\nrbind(df, df_r)\n\n  age gen\n1  19   m\n2  21   f\n3  40   m\n4  10   f\n\ndf_c &lt;- \n    data.frame(col = c(\"red\",\"blue\",\"gray\"))\n(df_new &lt;- cbind(df, df_c))\n\n  age gen  col\n1  19   m  red\n2  21   f blue\n3  40   m gray\n\n\n\n\n\nA.9.2 Subsetting a data frame\nCan use either list or matrix subsetting methods.\n\n\n\ndf_new\n\n  age gen  col\n1  19   m  red\n2  21   f blue\n3  40   m gray\n\n## Subset rows\ndf_new[c(1, 3), ]\n\n  age gen  col\n1  19   m  red\n3  40   m gray\n\n## select the row where age == 21\ndf_new[df_new$age == 21, ]\n\n  age gen  col\n2  21   f blue\n\n\n\n\n## Subset columns\n## like a list\ndf_new$age\n\n[1] 19 21 40\n\ndf_new[c(\"age\", \"gen\")]\n\n  age gen\n1  19   m\n2  21   f\n3  40   m\n\n## like a matrix\ndf_new[, c(\"age\", \"gen\")]\n\n  age gen\n1  19   m\n2  21   f\n3  40   m\n\n\n\n\n\ndf_new[c(1, 3), ]\n\n  age gen  col\n1  19   m  red\n3  40   m gray\n\nstr(df[\"age\"])  ## a data frame with one column\n\n'data.frame':   3 obs. of  1 variable:\n $ age: num  19 21 40\n\nstr(df[, \"age\"])  ## becomes a vector by default\n\n num [1:3] 19 21 40",
-    "crumbs": [
-      "Appendices",
-      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
-    ]
-  },
-  {
-    "objectID": "a-r_prog.html#data-structure---list",
-    "href": "a-r_prog.html#data-structure---list",
-    "title": "Appendix A — R programming",
-    "section": "\nA.7 Data Structure - List",
-    "text": "A.7 Data Structure - List\n\n\n\n\n\n\n\n\n\nLists are different from (atomic) vectors: Elements can be of any type, including lists. (Generic vectors)\nConstruct a list by using list().\n\n\n\n\n## a list of 3 elements of different types\nx_lst &lt;- list(idx = 1:3, \n              \"a\", \n              c(TRUE, FALSE))\n\n\n\n$idx\n[1] 1 2 3\n\n[[2]]\n[1] \"a\"\n\n[[3]]\n[1]  TRUE FALSE\n\n\n\n\nstr(x_lst)\n\nList of 3\n $ idx: int [1:3] 1 2 3\n $    : chr \"a\"\n $    : logi [1:2] TRUE FALSE\n\nnames(x_lst)\n\n[1] \"idx\" \"\"    \"\"   \n\nlength(x_lst)\n\n[1] 3\n\n\n\n\n\nA.7.1 Subsetting a list\n\n\nReturn an  element  of a list\n\n## subset by name (a vector)\nx_lst$idx  \n\n[1] 1 2 3\n\n## subset by indexing (a vector)\nx_lst[[1]]  \n\n[1] 1 2 3\n\ntypeof(x_lst$idx)\n\n[1] \"integer\"\n\n\n\n\nReturn a  sub-list  of a list\n\n## subset by name (still a list)\nx_lst[\"idx\"]  \n\n$idx\n[1] 1 2 3\n\n## subset by indexing (still a list)\nx_lst[1]  \n\n$idx\n[1] 1 2 3\n\ntypeof(x_lst[\"idx\"])\n\n[1] \"list\"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nIf list x is a train carrying objects, then x[[5]] is the object in car 5; x[4:6] is a train of cars 4-6.\n— @RLangTip, https://twitter.com/RLangTip/status/268375867468681216",
-    "crumbs": [
-      "Appendices",
-      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
-    ]
-  },
-  {
-    "objectID": "a-r_prog.html#d-imaging",
-    "href": "a-r_prog.html#d-imaging",
-    "title": "Appendix A — R programming",
-    "section": "\nA.12 2D imaging",
-    "text": "A.12 2D imaging\n\nThe image() function displays the values in a matrix using color.\n\n\nmatrix(1:30, 6, 5)\n\n     [,1] [,2] [,3] [,4] [,5]\n[1,]    1    7   13   19   25\n[2,]    2    8   14   20   26\n[3,]    3    9   15   21   27\n[4,]    4   10   16   22   28\n[5,]    5   11   17   23   29\n[6,]    6   12   18   24   30\n\nimage(matrix(1:30, 6, 5))\n\n\n\n\n\n\n\n\nlibrary(fields)\n\nLoading required package: spam\n\n\nSpam version 2.10-0 (2023-10-23) is loaded.\nType 'help( Spam)' or 'demo( spam)' for a short introduction \nand overview of this package.\nHelp for individual functions is also obtained by adding the\nsuffix '.spam' to the function name, e.g. 'help( chol.spam)'.\n\n\n\nAttaching package: 'spam'\n\n\nThe following objects are masked from 'package:base':\n\n    backsolve, forwardsolve\n\n\nLoading required package: viridisLite\n\n\n\nTry help(fields) to get started.\n\nstr(volcano)\n\n num [1:87, 1:61] 100 101 102 103 104 105 105 106 107 108 ...\n\nimage.plot(volcano)\n\n\n\n\n\n\n\n\nx &lt;- 10*(1:nrow(volcano))\ny &lt;- 10*(1:ncol(volcano))\nimage(x, y, volcano, col = hcl.colors(100, \"terrain\"), axes = FALSE)\ncontour(x, y, volcano, levels = seq(90, 200, by = 5),\n        add = TRUE, col = \"brown\")\naxis(1, at = seq(100, 800, by = 100))\naxis(2, at = seq(100, 600, by = 100))\nbox()\ntitle(main = \"Maunga Whau Volcano\", font.main = 4)",
-    "crumbs": [
-      "Appendices",
-      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
-    ]
-  },
-  {
-    "objectID": "a-r_prog.html#special-objects-1",
-    "href": "a-r_prog.html#special-objects-1",
-    "title": "Appendix A — R programming",
-    "section": "\nA.12 Special Objects",
-    "text": "A.12 Special Objects\n\nA.12.1 NA\n\nNA means Not Available, which is a logical constant of length 1 for a missing value indicator.\nEach type of vector has its own missing value. They all are reserved words.\nYou can always use NA and it will be converted to the correct type.\n\n\n\n\nNA            # logical\n\n[1] NA\n\nNA_integer_   # integer\n\n[1] NA\n\nNA_real_      # double\n\n[1] NA\n\nNA_character_ # character\n\n[1] NA\n\n\n\n\n\n## The NA in the vector x is NA_real_\nx &lt;- c(NA, 0, 1)\ntypeof(x)  \n\n[1] \"double\"\n\nis.na(x)\n\n[1]  TRUE FALSE FALSE\n\n\n\n\n\nA.12.2 NULL\n\n\nNULL represents the null object, an object representing nothing.\n\nNULL is a reserved word and can also be the product of importing data with unknown data type.\n\nNULL typically behaves like a vector of length 0.\n\n\n\n\ny &lt;- c(NA, NULL, \"\")\ny\n\n[1] NA \"\"\n\n## only first element is evaluated...\nis.null(y) \n\n[1] FALSE\n\n\n\n\n## a missing value is a value we don't know.\n## It is something.\nis.null(NA)\n\n[1] FALSE\n\nis.null(NULL)\n\n[1] TRUE\n\n# empty character is something, not nothing!\nis.null(\"\")\n\n[1] FALSE\n\n\n\n\n\nA.12.3 NaN, Inf, and -Inf\n\nIntegers have one special value: NA, while doubles have four: NA, NaN, Inf and -Inf.\nNaN means Not a Number.\nAll three special values NaN, Inf and -Inf can arise during division.\n\n\nc(-1, 0, 1) / 0\n\n[1] -Inf  NaN  Inf\n\n\n\nAvoid using ==. Use functions is.finite(), is.infinite(), and is.nan().\n\n\n\n\nis.finite(0)\n\n[1] TRUE\n\nis.nan(0/0)\n\n[1] TRUE\n\n\n\n\nis.infinite(7.8/1e-307)\n\n[1] FALSE\n\nis.infinite(7.8/1e-308)\n\n[1] TRUE\n\n\n\n\n\nA.12.4 Helper Functions\n\nNaN is a missing value too.\nThere should be something there, but it’s Not Available to us because of invalid operation.\n\n\n\n\n0\nInf\nNA\nNaN\n\n\n\nis.finite()\nv\n\n\n\n\n\nis.infinite()\n\nv\n\n\n\n\nis.na()\n\n\nv\nv\n\n\nis.nan()\n\n\n\nv\n\n\n\nA.12.5 NA, NULL, NaN comparison\n\n\n\nclass(NULL); class(NA); class(NaN)\n\n[1] \"NULL\"\n\n\n[1] \"logical\"\n\n\n[1] \"numeric\"\n\nNULL &gt; 5; NA &gt; 5; NaN &gt; 5\n\nlogical(0)\n\n\n[1] NA\n\n\n[1] NA\n\nlength(NULL); length(NA); length(NaN)\n\n[1] 0\n\n\n[1] 1\n\n\n[1] 1\n\n\n\n\n(vx &lt;- c(3, NULL, 5)); (vy &lt;- c(3, NA, 5)); (vz &lt;- c(3, NaN, 5))\n\n[1] 3 5\n\n\n[1]  3 NA  5\n\n\n[1]   3 NaN   5\n\nsum(vx)  # NULL isn't a problem cuz it doesn't exist\n\n[1] 8\n\nsum(vy)\n\n[1] NA\n\nsum(vy, na.rm = TRUE)\n\n[1] 8\n\nsum(vz)\n\n[1] NaN\n\nsum(vz, na.rm = TRUE)\n\n[1] 8",
-    "crumbs": [
-      "Appendices",
-      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
-    ]
-  },
-  {
-    "objectID": "a-r_prog.html#nan-inf-and--inf",
-    "href": "a-r_prog.html#nan-inf-and--inf",
-    "title": "Appendix A — R programming",
-    "section": "\nA.13 NaN, Inf, and -Inf",
-    "text": "A.13 NaN, Inf, and -Inf\n\nIntegers have one special value: NA, while doubles have four: NA, NaN, Inf and -Inf.\nNaN means Not a Number.\nAll three special values NaN, Inf and -Inf can arise during division.\n\n\nc(-1, 0, 1) / 0\n\n[1] -Inf  NaN  Inf\n\n\n\nAvoid using ==. Use functions is.finite(), is.infinite(), and is.nan().\n\n\n\n\nis.finite(0)\n\n[1] TRUE\n\nis.nan(0/0)\n\n[1] TRUE\n\n\n\n\nis.infinite(7.8/1e-307)\n\n[1] FALSE\n\nis.infinite(7.8/1e-308)\n\n[1] TRUE\n\n\n\n\n\nA.13.1 Helper Functions\n\nNaN is a missing value too.\nThere should be something there, but it’s Not Available to us because of invalid operation.\n\n\n\n\n0\nInf\nNA\nNaN\n\n\n\nis.finite()\nv\n\n\n\n\n\nis.infinite()\n\nv\n\n\n\n\nis.na()\n\n\nv\nv\n\n\nis.nan()\n\n\n\nv\n\n\n\nA.13.2 NA, NULL, NaN comparison\n\n\n\nclass(NULL); class(NA); class(NaN)\n\n[1] \"NULL\"\n\n\n[1] \"logical\"\n\n\n[1] \"numeric\"\n\nNULL &gt; 5; NA &gt; 5; NaN &gt; 5\n\nlogical(0)\n\n\n[1] NA\n\n\n[1] NA\n\nlength(NULL); length(NA); length(NaN)\n\n[1] 0\n\n\n[1] 1\n\n\n[1] 1\n\n\n\n\n(vx &lt;- c(3, NULL, 5)); (vy &lt;- c(3, NA, 5)); (vz &lt;- c(3, NaN, 5))\n\n[1] 3 5\n\n\n[1]  3 NA  5\n\n\n[1]   3 NaN   5\n\nsum(vx)  # NULL isn't a problem cuz it doesn't exist\n\n[1] 8\n\nsum(vy)\n\n[1] NA\n\nsum(vy, na.rm = TRUE)\n\n[1] 8\n\nsum(vz)\n\n[1] NaN\n\nsum(vz, na.rm = TRUE)\n\n[1] 8",
-    "crumbs": [
-      "Appendices",
-      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
-    ]
-  },
-  {
-    "objectID": "a-r_prog.html#loops",
-    "href": "a-r_prog.html#loops",
-    "title": "Appendix A — R programming",
-    "section": "\nA.15 Loops",
-    "text": "A.15 Loops\n\nA.15.1 for loops\n\n## Syntax\nfor (value in that) {\n    this\n}\n\n\nfor (i in 1:5) {\n    print(i)\n}\n\n[1] 1\n[1] 2\n[1] 3\n[1] 4\n[1] 5\n\n\n\nfor (x in c(\"My\", \"1st\", \"for\", \"loop\")) {\n    print(x)\n}\n\n[1] \"My\"\n[1] \"1st\"\n[1] \"for\"\n[1] \"loop\"\n\n\n\nA.15.2 while loops\n\nwhile (condition) {\n    # body\n}\n\n\nYou can rewrite any for loop as a while loop, but you can’t rewrite every while loop as a for loop.\n\n\nfor (i in seq_along(x)) {\n    # body\n}\n\n# Equivalent to\ni &lt;- 1\nwhile (i &lt;= length(x)) {\n    # body\n    i &lt;- i + 1 \n}\n\n\n\n\n\n\n\n\nWe find how many tries it takes to get 5 heads in a row:\n\n\n## a function that sample one from \"T\" or \"H\"\nflip &lt;- function() sample(c(\"T\", \"H\"), 1)\n\nflips &lt;- 0; nheads &lt;- 0\n\nwhile (nheads &lt; 5) {\n    if (flip() == \"H\") {\n        nheads &lt;- nheads + 1\n    } else {\n        nheads &lt;- 0\n    }\n    flips &lt;- flips + 1\n}\n\nflips\n\n[1] 85",
-    "crumbs": [
-      "Appendices",
-      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
+      "<span class='chapter-number'>B</span>  <span class='chapter-title'>Python Programming</span>"
     ]
   }
 ]
