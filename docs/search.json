@@ -1459,7 +1459,7 @@
     "href": "infer-nonpar.html#example-of-wilcoxon-signed-rank-test-example-6.9-of-smd",
     "title": "22  Nonparametric Tests",
     "section": "\n22.2 Example of Wilcoxon Signed-Rank Test (Example 6.9 of SMD)",
-    "text": "22.2 Example of Wilcoxon Signed-Rank Test (Example 6.9 of SMD)\nA city park department compared a new formulation of a fertilizer, brand A, to the previously used fertilizer, brand B, on each of 20 different softball fields. Each field was divided in half, with brand A randomly assigned to one half of the field and brand B to the other. Sixty pounds of fertilizer per acre were then applied to the fields. The effect of the fertilizer on the grass grown at each field was measured by the weight (in pounds) of grass clippings produced by mowing the grass at the fields over a 1-month period. Evaluate whether brand A tends to produce more grass than brand B.\n\n\n\n\n\n\n\n\n\n\n\nWe will perform the Wilcoxon signed-rank test using R. First we prepare the data set paired_data in R like this:\n\n\n   Field     a     b difference\n1      1 211.4 186.3       25.1\n2      2 204.4 205.7       -1.3\n3      3 202.0 184.4       17.6\n4      4 201.9 203.6       -1.7\n5      5 202.4 180.4       22.0\n6      6 202.0 202.0        0.0\n7      7 202.4 181.5       20.9\n8      8 207.1 186.7       20.4\n9      9 203.6 205.7       -2.1\n10    10 216.0 189.1       26.9\n11    11 208.9 183.6       25.3\n12    12 208.7 188.7       20.0\n13    13 213.8 188.6       25.2\n14    14 201.6 204.2       -2.6\n15    15 201.8 181.6       20.2\n16    16 200.3 208.7       -8.4\n17    17 201.8 181.5       20.3\n18    18 201.5 208.7       -7.2\n19    19 212.1 186.8       25.3\n20    20 203.4 182.9       20.5\n\n\n\n\nThe command wilcox.test() can perform the Wilcoxon signed-rank test. The arguments x and y are the paired data from Brand A and Brand B, respectively. By default, paired = FALSE. So we have to set paired = TRUE because we have matched pairs data. We set alternative = \"greater\" because we would like to know whether brand A (in x) tends to produce more grass than brand B (in y). Here mu is actually referred to median, not the mean.\nBy default, when \\(n &lt; 50\\) and the difference data have no zero values, the exact p-value and confidence interval are constructed, i.e., the first procedure before is used. When \\(n &gt; 50\\), wilcox.test() will compute the p-value and confidence interval based on normal approximation, like the second procedure shown before. When normal approximation is used, correct argument is be further specified to decide whether continuity correction is used.\n\n\n\n\n\n\nWarning\n\n\n\nThe x and y data should be consistent with alternative. If we put paired_data$b in the x argument, and paired_data$a in the y argument, then alternative = \"less\" should be set. The order matters.\n\n\nOur dataset consists of 20 observations, but it’s important to note that we have a tie in the sixth observation where brand A and brand B have the same measurements. If you do not specify exact=TRUE in the function, R will issue a warning and automatically use the normal approximation with continuity correction. The following two code snippets will produce the same result.\n\nwilcox.test(x = paired_data$a, y = paired_data$b, mu = 0, \n            alternative = \"greater\", paired = TRUE, conf.int = TRUE)\n\nWarning in wilcox.test.default(x = paired_data$a, y = paired_data$b, mu = 0, :\ncannot compute exact p-value with zeroes\n\n\nWarning in wilcox.test.default(x = paired_data$a, y = paired_data$b, mu = 0, :\ncannot compute exact confidence interval with zeroes\n\n\n\n    Wilcoxon signed rank test with continuity correction\n\ndata:  paired_data$a and paired_data$b\nV = 169, p-value = 0.001549\nalternative hypothesis: true location shift is greater than 0\n95 percent confidence interval:\n 9.049985      Inf\nsample estimates:\n(pseudo)median \n      12.12435 \n\n\n\nwilcox.test(x = paired_data$a, y = paired_data$b, mu = 0, \n            alternative = \"greater\", paired = TRUE, conf.int = TRUE,\n            exact = FALSE, correct = TRUE)\n\n\n    Wilcoxon signed rank test with continuity correction\n\ndata:  paired_data$a and paired_data$b\nV = 169, p-value = 0.001549\nalternative hypothesis: true location shift is greater than 0\n95 percent confidence interval:\n 9.049985      Inf\nsample estimates:\n(pseudo)median \n      12.12435 \n\n\nIf we remove the sixth observation, the exact p-value and confidence interval can be constructed. In the following examples, the first two code chunks will yield the same result, both utilizing the exact p-value. However, the third code chunk, with exact = FALSE, will use the normal approximation to calculate the p-value instead.\n\npaired_data &lt;- paired_data[-6, ]\nwilcox.test(x = paired_data$a, y = paired_data$b, mu = 0, \n            alternative = \"greater\", paired = TRUE, conf.int = TRUE)\n\n\n    Wilcoxon signed rank exact test\n\ndata:  paired_data$a and paired_data$b\nV = 169, p-value = 0.0008469\nalternative hypothesis: true location shift is greater than 0\n95 percent confidence interval:\n 9.05  Inf\nsample estimates:\n(pseudo)median \n        12.075 \n\n\n\nwilcox.test(x = paired_data$a, y = paired_data$b, mu = 0, \n            alternative = \"greater\", paired = TRUE, conf.int = TRUE,\n            exact = TRUE)\n\n\n    Wilcoxon signed rank exact test\n\ndata:  paired_data$a and paired_data$b\nV = 169, p-value = 0.0008469\nalternative hypothesis: true location shift is greater than 0\n95 percent confidence interval:\n 9.05  Inf\nsample estimates:\n(pseudo)median \n        12.075 \n\n\n\nwilcox.test(x = paired_data$a, y = paired_data$b, mu = 0, \n            alternative = \"greater\", paired = TRUE, conf.int = TRUE,\n            exact = FALSE)\n\n\n    Wilcoxon signed rank test with continuity correction\n\ndata:  paired_data$a and paired_data$b\nV = 169, p-value = 0.001549\nalternative hypothesis: true location shift is greater than 0\n95 percent confidence interval:\n 9.049985      Inf\nsample estimates:\n(pseudo)median \n      12.12435 \n\n\nAs the sample size increases, the exact p-value and confidence interval will become increasingly similar to those obtained using the normal approximation.",
+    "text": "22.2 Example of Wilcoxon Signed-Rank Test (Example 6.9 of SMD)\nA city park department compared a new formulation of a fertilizer, brand A, to the previously used fertilizer, brand B, on each of 20 different softball fields. Each field was divided in half, with brand A randomly assigned to one half of the field and brand B to the other. Sixty pounds of fertilizer per acre were then applied to the fields. The effect of the fertilizer on the grass grown at each field was measured by the weight (in pounds) of grass clippings produced by mowing the grass at the fields over a 1-month period. Evaluate whether brand A tends to produce more grass than brand B.\n\n\n\n\n\n\n\nWe will perform the Wilcoxon signed-rank test using R. First we prepare the data set paired_data in R like this:\n\n\n   Field     a     b difference\n1      1 211.4 186.3       25.1\n2      2 204.4 205.7       -1.3\n3      3 202.0 184.4       17.6\n4      4 201.9 203.6       -1.7\n5      5 202.4 180.4       22.0\n6      6 202.0 202.0        0.0\n7      7 202.4 181.5       20.9\n8      8 207.1 186.7       20.4\n9      9 203.6 205.7       -2.1\n10    10 216.0 189.1       26.9\n11    11 208.9 183.6       25.3\n12    12 208.7 188.7       20.0\n13    13 213.8 188.6       25.2\n14    14 201.6 204.2       -2.6\n15    15 201.8 181.6       20.2\n16    16 200.3 208.7       -8.4\n17    17 201.8 181.5       20.3\n18    18 201.5 208.7       -7.2\n19    19 212.1 186.8       25.3\n20    20 203.4 182.9       20.5\n\n\n\n\nThe command wilcox.test() can perform the Wilcoxon signed-rank test. The arguments x and y are the paired data from Brand A and Brand B, respectively. By default, paired = FALSE. So we have to set paired = TRUE because we have matched pairs data. We set alternative = \"greater\" because we would like to know whether brand A (in x) tends to produce more grass than brand B (in y). Here mu is actually referred to median, not the mean.\nBy default, when \\(n &lt; 50\\) and the difference data have no zero values, the exact p-value and confidence interval are constructed, i.e., the first procedure before is used. When \\(n &gt; 50\\), wilcox.test() will compute the p-value and confidence interval based on normal approximation, like the second procedure shown before. When normal approximation is used, correct argument is be further specified to decide whether continuity correction is used.\n\n\n\n\n\n\nWarning\n\n\n\nThe x and y data should be consistent with alternative. If we put paired_data$b in the x argument, and paired_data$a in the y argument, then alternative = \"less\" should be set. The order matters.\n\n\nOur dataset consists of 20 observations, but it’s important to note that we have a tie in the sixth observation where brand A and brand B have the same measurements. If you do not specify exact=TRUE in the function, R will issue a warning and automatically use the normal approximation with continuity correction. The following two code snippets will produce the same result.\n\nwilcox.test(x = paired_data$a, y = paired_data$b, mu = 0, \n            alternative = \"greater\", paired = TRUE, conf.int = TRUE)\n\nWarning in wilcox.test.default(x = paired_data$a, y = paired_data$b, mu = 0, :\ncannot compute exact p-value with zeroes\n\n\nWarning in wilcox.test.default(x = paired_data$a, y = paired_data$b, mu = 0, :\ncannot compute exact confidence interval with zeroes\n\n\n\n    Wilcoxon signed rank test with continuity correction\n\ndata:  paired_data$a and paired_data$b\nV = 169, p-value = 0.001549\nalternative hypothesis: true location shift is greater than 0\n95 percent confidence interval:\n 9.049985      Inf\nsample estimates:\n(pseudo)median \n      12.12435 \n\n\n\nwilcox.test(x = paired_data$a, y = paired_data$b, mu = 0, \n            alternative = \"greater\", paired = TRUE, conf.int = TRUE,\n            exact = FALSE, correct = TRUE)\n\n\n    Wilcoxon signed rank test with continuity correction\n\ndata:  paired_data$a and paired_data$b\nV = 169, p-value = 0.001549\nalternative hypothesis: true location shift is greater than 0\n95 percent confidence interval:\n 9.049985      Inf\nsample estimates:\n(pseudo)median \n      12.12435 \n\n\nIf we remove the sixth observation, the exact p-value and confidence interval can be constructed. In the following examples, the first two code chunks will yield the same result, both utilizing the exact p-value. However, the third code chunk, with exact = FALSE, will use the normal approximation to calculate the p-value instead.\n\npaired_data &lt;- paired_data[-6, ]\nwilcox.test(x = paired_data$a, y = paired_data$b, mu = 0, \n            alternative = \"greater\", paired = TRUE, conf.int = TRUE)\n\n\n    Wilcoxon signed rank exact test\n\ndata:  paired_data$a and paired_data$b\nV = 169, p-value = 0.0008469\nalternative hypothesis: true location shift is greater than 0\n95 percent confidence interval:\n 9.05  Inf\nsample estimates:\n(pseudo)median \n        12.075 \n\n\n\nwilcox.test(x = paired_data$a, y = paired_data$b, mu = 0, \n            alternative = \"greater\", paired = TRUE, conf.int = TRUE,\n            exact = TRUE)\n\n\n    Wilcoxon signed rank exact test\n\ndata:  paired_data$a and paired_data$b\nV = 169, p-value = 0.0008469\nalternative hypothesis: true location shift is greater than 0\n95 percent confidence interval:\n 9.05  Inf\nsample estimates:\n(pseudo)median \n        12.075 \n\n\n\nwilcox.test(x = paired_data$a, y = paired_data$b, mu = 0, \n            alternative = \"greater\", paired = TRUE, conf.int = TRUE,\n            exact = FALSE)\n\n\n    Wilcoxon signed rank test with continuity correction\n\ndata:  paired_data$a and paired_data$b\nV = 169, p-value = 0.001549\nalternative hypothesis: true location shift is greater than 0\n95 percent confidence interval:\n 9.049985      Inf\nsample estimates:\n(pseudo)median \n      12.12435 \n\n\nAs the sample size increases, the exact p-value and confidence interval will become increasingly similar to those obtained using the normal approximation.",
     "crumbs": [
       "Statistical Inference",
       "<span class='chapter-number'>22</span>  <span class='chapter-title'>Nonparametric Tests</span>"
@@ -2342,6 +2342,171 @@
     "crumbs": [
       "Statistical Models",
       "<span class='chapter-number'>28</span>  <span class='chapter-title'>Logistic Regression</span>"
+    ]
+  },
+  {
+    "objectID": "a-py_prog.html",
+    "href": "a-py_prog.html",
+    "title": "Appendix B — Python Programming",
+    "section": "",
+    "text": "B.1 Arithmetic and Logical Operators\n2 + 3 / (5 * 4) ** 2\n\n2.0075\n\n5 == 5.00\n\nTrue\n\n5 == int(5)\n\nTrue\n\ntype(int(5))\n\n&lt;class 'int'&gt;\n\nnot True == False\n\nTrue\nbool() converts nonzero numbers to True and zero to False\n-5 | 0\n\n-5\n\n1 & 1\n\n1\n\nbool(2) | bool(0)\n\nTrue",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>B</span>  <span class='chapter-title'>Python Programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-py_prog.html#math-functions",
+    "href": "a-py_prog.html#math-functions",
+    "title": "Appendix B — Python Programming",
+    "section": "\nB.2 Math Functions",
+    "text": "B.2 Math Functions\nNeed to import math library in Python.\n\nimport math\nmath.sqrt(144)\n\n12.0\n\nmath.exp(1)\n\n2.718281828459045\n\nmath.sin(math.pi/2)\n\n1.0\n\nmath.log(32, 2)\n\n5.0\n\nabs(-7)\n\n7\n\n\n\n# python comment",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>B</span>  <span class='chapter-title'>Python Programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-py_prog.html#variables-and-assignment",
+    "href": "a-py_prog.html#variables-and-assignment",
+    "title": "Appendix B — Python Programming",
+    "section": "\nB.3 Variables and Assignment",
+    "text": "B.3 Variables and Assignment\n\nx = 5\nx\n\n5\n\nx = x + 6\nx\n\n11\n\nx == 5\n\nFalse\n\nmath.log(x)\n\n2.3978952727983707",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>B</span>  <span class='chapter-title'>Python Programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-py_prog.html#object-types",
+    "href": "a-py_prog.html#object-types",
+    "title": "Appendix B — Python Programming",
+    "section": "\nB.4 Object Types",
+    "text": "B.4 Object Types\nstr, float, int and bool.\n\ntype(5.0)\n\n&lt;class 'float'&gt;\n\ntype(5)\n\n&lt;class 'int'&gt;\n\ntype(\"I_love_data_science!\")\n\n&lt;class 'str'&gt;\n\ntype(1 &gt; 3)\n\n&lt;class 'bool'&gt;\n\ntype(5) is float\n\nFalse\n\n\npython long (long integers, they can also be represented in octal and hexadecimal)",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>B</span>  <span class='chapter-title'>Python Programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-py_prog.html#data-structures",
+    "href": "a-py_prog.html#data-structures",
+    "title": "Appendix B — Python Programming",
+    "section": "\nB.5 Data Structures",
+    "text": "B.5 Data Structures\n\nB.5.1 Lists\n\nPython has numbers and strings, but no built-in vector structure.\nTo create a sequence type of structure, we can use a list that can save several elements in an single object.\nTo create a list in Python, we use [].\n\n\nlst_num = [0, 2, 4] \nlst_num\n\n[0, 2, 4]\n\ntype(lst_num)\n\n&lt;class 'list'&gt;\n\nlen(lst_num)\n\n3\n\n\nList elements can have different types!\n\nlst = ['data', 'math', 34, True]\nlst\n\n['data', 'math', 34, True]\n\n\n\nIndexing in Python always starts at 0!\n\n0: the 1st element\n\n\nlst\n\n['data', 'math', 34, True]\n\nlst[0]\n\n'data'\n\ntype(lst[0]) ## not a list\n\n&lt;class 'str'&gt;\n\n\n\n\n-1: the last element\n\n\nlst[-2]\n\n34\n\n\n\n\n[a:b]: the (a+1)-th to b-th elements\n\n\nlst[1:4]\n\n['math', 34, True]\n\ntype(lst[1:4]) ## a list\n\n&lt;class 'list'&gt;\n\n\n\n\n[a:]: elements from the (a+1)-th to the last\n\n\nlst[2:]\n\n[34, True]\n\n\n::: What does lst[0:1] return? Is it a list? :::\n\nLists are Mutable. Lists are changed in place!\n\n\nlst[1]\n\n'math'\n\nlst[1] = \"stats\"\nlst\n\n['data', 'stats', 34, True]\n\n\n\nlst[2:] = [False, 77]\nlst\n\n['data', 'stats', False, 77]\n\n\nIf we change any element value in a list, the list itself will be changed as well.",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>B</span>  <span class='chapter-title'>Python Programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-py_prog.html#data-structure---lists",
+    "href": "a-py_prog.html#data-structure---lists",
+    "title": "Appendix B — Python Programming",
+    "section": "\nB.5 Data Structure - Lists",
+    "text": "B.5 Data Structure - Lists\n\nB.5.1 Lists\n\nPython has numbers and strings, but no built-in vector structure.\nTo create a sequence type of structure, we can use a list that can save several elements in an single object.\nTo create a list in Python, we use [].\n\n\nlst_num = [0, 2, 4] \nlst_num\n\n[0, 2, 4]\n\ntype(lst_num)\n\n&lt;class 'list'&gt;\n\nlen(lst_num)\n\n3\n\n\nList elements can have different types!\n\nB.5.2 Subsetting lists\n\nlst = ['data', 'math', 34, True]\nlst\n\n['data', 'math', 34, True]\n\n\n\nIndexing in Python always starts at 0!\n\n0: the 1st element\n\n\nlst\n\n['data', 'math', 34, True]\n\nlst[0]\n\n'data'\n\ntype(lst[0]) ## not a list\n\n&lt;class 'str'&gt;\n\n\n\n\n-1: the last element\n\n\nlst[-2]\n\n34\n\n\n\n\n[a:b]: the (a+1)-th to b-th elements\n\n\nlst[1:4]\n\n['math', 34, True]\n\ntype(lst[1:4]) ## a list\n\n&lt;class 'list'&gt;\n\n\n\n\n[a:]: elements from the (a+1)-th to the last\n\n\nlst[2:]\n\n[34, True]\n\n\nWhat does lst[0:1] return? Is it a list?\n\nB.5.3 Lists are mutable\n\nLists are changed in place!\n\n\nlst[1]\n\n'math'\n\nlst[1] = \"stats\"\nlst\n\n['data', 'stats', 34, True]\n\n\n\nlst[2:] = [False, 77]\nlst\n\n['data', 'stats', False, 77]\n\n\nIf we change any element value in a list, the list itself will be changed as well.\n\nB.5.4 List operations and methods list.method()\n\nThis is a common syntax in Python. We start with a Python object of some type, then type dot followed by any method specifically for this particular data type or structure for operations.\n\n## Concatenation\nlst_num + lst\n\n[0, 2, 4, 'data', 'stats', False, 77]\n\n\n\n## Repetition\nlst_num * 3 \n\n[0, 2, 4, 0, 2, 4, 0, 2, 4]\n\n\n\n## Membership\n34 in lst\n\nFalse\n\n\n\n## Appends \"cat\" to lst\nlst.append(\"cat\")\nlst\n\n['data', 'stats', False, 77, 'cat']\n\n\n\n## Removes and returns last object from list\nlst.pop()\n\n'cat'\n\nlst\n\n['data', 'stats', False, 77]\n\n\n\n## Removes object from list\nlst.remove(\"stats\")\nlst\n\n['data', False, 77]\n\n\n\n## Reverses objects of list in place\nlst.reverse()\nlst\n\n[77, False, 'data']",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>B</span>  <span class='chapter-title'>Python Programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-py_prog.html#data-structure---tuples",
+    "href": "a-py_prog.html#data-structure---tuples",
+    "title": "Appendix B — Python Programming",
+    "section": "\nB.6 Data Structure - Tuples",
+    "text": "B.6 Data Structure - Tuples\n\nTuples work exactly like lists except they are immutable, i.e., they can’t be changed in place.\nTo create a tuple, we use ().\n\n\ntup = ('data', 'math', 34, True)\ntup\n\n('data', 'math', 34, True)\n\ntype(tup)\n\n&lt;class 'tuple'&gt;\n\nlen(tup)\n\n4\n\n\n\ntup[2:]\n\n(34, True)\n\ntup[-2]\n\n34\n\n\n\ntup[1] = \"stats\"  ## does not work!\n# TypeError: 'tuple' object does not support item assignment\n\n\ntup\n\n('data', 'math', 34, True)\n\n\n\nB.6.1 Tuples functions and methods\nLists have more methods than tuples because lists are more flexible.\n\n# Converts a list into tuple\ntuple(lst_num)\n\n(0, 2, 4)\n\n\n\n# number of occurance of \"data\"\ntup.count(\"data\")\n\n1\n\n\n\n# first index of \"data\"\ntup.index(\"data\")\n\n0",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>B</span>  <span class='chapter-title'>Python Programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-py_prog.html#data-structure---dictionaries",
+    "href": "a-py_prog.html#data-structure---dictionaries",
+    "title": "Appendix B — Python Programming",
+    "section": "\nB.7 Data Structure - Dictionaries",
+    "text": "B.7 Data Structure - Dictionaries\n\nA dictionary consists of key-value pairs.\nA dictionary is mutable, i.e., the values can be changed in place and more key-value pairs can be added.\nTo create a dictionary, we use {\"key name\": value}.\nThe value can be accessed by the key in the dictionary.\n\n\ndic = {'Name': 'Ivy', 'Age': 7, 'Class': 'First'}\n\n\ndic['Age']\n\n7\n\n\n\ndic['age']  ## does not work\n\n\ndic['Age'] = 9\ndic['Class'] = 'Third'\ndic\n\n{'Name': 'Ivy', 'Age': 9, 'Class': 'Third'}\n\n\n\nB.7.1 Properties of dictionaries\n\nPython will use the last assignment!\n\n\ndic1 = {'Name': 'Ivy', 'Age': 7, 'Name': 'Liya'}\ndic1['Name']\n\n'Liya'\n\n\n\nKeys are unique and immutable.\nA key can be a tuple, but CANNOT be a list.\n\n\n## The first key is a tuple!\ndic2 = {('First', 'Last'): 'Ivy Lee', 'Age': 7}\ndic2[('First', 'Last')]\n\n'Ivy Lee'\n\n\n\n## does not work\ndic2 = {['First', 'Last']: 'Ivy Lee', 'Age': 7}\ndic2[['First', 'Last']]\n\n\nB.7.2 Disctionary methods\n\ndic\n\n{'Name': 'Ivy', 'Age': 9, 'Class': 'Third'}\n\n\n\n## Returns list of dictionary dict's keys\ndic.keys()\n\ndict_keys(['Name', 'Age', 'Class'])\n\n\n\n## Returns list of dictionary dict's values\ndic.values()\n\ndict_values(['Ivy', 9, 'Third'])\n\n\n\n## Returns a list of dict's (key, value) tuple pairs\ndic.items()\n\ndict_items([('Name', 'Ivy'), ('Age', 9), ('Class', 'Third')])\n\n\n\n## Adds dictionary dic2's key-values pairs in to dic\ndic2 = {'Gender': 'female'}\ndic.update(dic2)\ndic\n\n{'Name': 'Ivy', 'Age': 9, 'Class': 'Third', 'Gender': 'female'}\n\n\n\n## Removes all elements of dictionary dict\ndic.clear()\ndic\n\n{}",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>B</span>  <span class='chapter-title'>Python Programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-py_prog.html#python-data-structures-for-data-science",
+    "href": "a-py_prog.html#python-data-structures-for-data-science",
+    "title": "Appendix B — Python Programming",
+    "section": "\nB.8 Python Data Structures for Data Science",
+    "text": "B.8 Python Data Structures for Data Science\n\nPython built-in data structures are not specifically for data science.\nTo use more data science friendly functions and structures, such as array or data frame, Python relies on packages NumPy and pandas.\n\n\nB.8.1 Installing NumPy and pandas\nIn your RStudio project, run\n\nlibrary(reticulate)\nvirtualenv_create(\"myenv\")\n\nGo to Tools &gt; Global Options &gt; Python &gt; Select &gt; Virtual Environments\n\n\n\n\nYou may need to restart R session. Do it, and in the new R session, run\n\nlibrary(reticulate)\npy_install(c(\"numpy\", \"pandas\", \"matplotlib\"))\n\nRun the following Python code, and make sure everything goes well.\n\nimport numpy as np\nimport pandas as pd\nv1 = np.array([3, 8])\nv1\ndf = pd.DataFrame({\"col\": ['red', 'blue', 'green']})\ndf",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>B</span>  <span class='chapter-title'>Python Programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-py_prog.html#pandas",
+    "href": "a-py_prog.html#pandas",
+    "title": "Appendix B — Python Programming",
+    "section": "\nB.9 Pandas",
+    "text": "B.9 Pandas\npandas is a Python library that provides data structures, manipulation and analysis tools for data science.\n\nimport numpy as np\nimport pandas as pd\n\n\nB.9.1 Pandas series from a list\n\n# import pandas as pd\na = [1, 7, 2]\ns = pd.Series(a)\nprint(s)\n\n0    1\n1    7\n2    2\ndtype: int64\n\n\n\nprint(s[0])\n\n1\n\n\n\n## index used as naming \ns = pd.Series(a, index = [\"x\", \"y\", \"z\"])\nprint(s)\n\nx    1\ny    7\nz    2\ndtype: int64\n\n\n\nprint(s[\"y\"])\n\n7\n\n\n\nB.9.2 Pandas series from a dictionary\n\ngrade = {\"math\": 99, \"stats\": 97, \"cs\": 66}\ns = pd.Series(grade)\nprint(s)\n\nmath     99\nstats    97\ncs       66\ndtype: int64\n\n\n\ngrade = {\"math\": 99, \"stats\": 97, \"cs\": 66}\n\n## index used as subsetting \ns = pd.Series(grade, index = [\"stats\", \"cs\"])\nprint(s)\n\nstats    97\ncs       66\ndtype: int64\n\n\n\nHow do we create a named vector in R?\n\n\ngrade &lt;- c(\"math\" = 99, \"stats\" = 97, \"cs\" = 66)\n\n\nB.9.3 Pandas data frame\n\n\nCreate a data frame from a dictionary\n\n\ndata = {\"math\": [99, 65, 87], \"stats\": [92, 48, 88], \"cs\": [50, 88, 94]}\n\ndf = pd.DataFrame(data)\nprint(df) \n\n   math  stats  cs\n0    99     92  50\n1    65     48  88\n2    87     88  94\n\n\n\nRow and column names\n\n\ndf.index = [\"s1\", \"s2\", \"s3\"]\ndf.columns = [\"Math\", \"Stat\", \"CS\"]\ndf\n\n    Math  Stat  CS\ns1    99    92  50\ns2    65    48  88\ns3    87    88  94\n\n\n\nB.9.4 Subsetting columns\n\nIn Python, [] returns Series, [[]] returns DataFrame!\nIn R, [] returns tibble/data frame, [[]] returns vector!\n\nBy Names\n\n## Series\ndf[\"Math\"]\n\ns1    99\ns2    65\ns3    87\nName: Math, dtype: int64\n\ntype(df[\"Math\"])\n\n&lt;class 'pandas.core.series.Series'&gt;\n\n\nBy Index\n\n# ## DataFrame\ndf[[\"Math\"]]\n\n    Math\ns1    99\ns2    65\ns3    87\n\ntype(df[[\"Math\"]])\n\n&lt;class 'pandas.core.frame.DataFrame'&gt;\n\n\n\ndf[[\"Math\", \"CS\"]]\n\n    Math  CS\ns1    99  50\ns2    65  88\ns3    87  94\n\n\n\nisinstance(df[[“Math”]], pd.DataFrame)\n\n\nB.9.5 Subsetting rows DataFrame.iloc\n\n\n\ninteger-location based indexing for selection by position\n\n\ndf \n\n    Math  Stat  CS\ns1    99    92  50\ns2    65    48  88\ns3    87    88  94\n\n\n\n## first row Series\ndf.iloc[0] \n\nMath    99\nStat    92\nCS      50\nName: s1, dtype: int64\n\n\n\n## first row DataFrame\ndf.iloc[[0]]\n\n    Math  Stat  CS\ns1    99    92  50\n\n\n\n## first 2 rows\ndf.iloc[[0, 1]]\n\n    Math  Stat  CS\ns1    99    92  50\ns2    65    48  88\n\n\n\n## 1st and 3rd row\ndf.iloc[[True, False, True]]\n\n    Math  Stat  CS\ns1    99    92  50\ns3    87    88  94\n\n\n\nB.9.6 Subsetting rows and columns DataFrame.iloc\n\n\ndf \n\n    Math  Stat  CS\ns1    99    92  50\ns2    65    48  88\ns3    87    88  94\n\n\n\n## (1, 3) row and (1, 3) col\ndf.iloc[[0, 2], [0, 2]]\n\n    Math  CS\ns1    99  50\ns3    87  94\n\n\n\n## all rows and 1st col\ndf.iloc[:, [True, False, False]]\n\n    Math\ns1    99\ns2    65\ns3    87\n\n\n\ndf.iloc[0:2, 1:3]\n\n    Stat  CS\ns1    92  50\ns2    48  88\n\n\n\nB.9.7 Subsetting rows and columns DataFrame.loc\n\nAccess a group of rows and columns by label(s)\n\ndf \n\n    Math  Stat  CS\ns1    99    92  50\ns2    65    48  88\ns3    87    88  94\n\n\n\ndf.loc['s1', \"CS\"]\n\n50\n\n\n\n## all rows and 1st col\ndf.loc['s1':'s3', [True, False, False]]\n\n    Math\ns1    99\ns2    65\ns3    87\n\n\n\ndf.loc['s2', ['Math', 'Stat']]\n\nMath    65\nStat    48\nName: s2, dtype: int64\n\n\n\nB.9.8 Obtaining a single cell value DataFrame.iat/ DataFrame.at\n\n\ndf \n\n    Math  Stat  CS\ns1    99    92  50\ns2    65    48  88\ns3    87    88  94\n\n\n\ndf.iat[1, 2]\n\n88\n\n\n\ndf.iloc[0].iat[1]\n\n92\n\n\n\ndf.at['s2', 'Stat']\n\n48\n\n\n\ndf.loc['s1'].at['Stat']\n\n92\n\n\n\nB.9.9 New columns DataFrame.insert and new rows pd.concat\n\n\ndf \n\n    Math  Stat  CS\ns1    99    92  50\ns2    65    48  88\ns3    87    88  94\n\n\n\ndf.insert(loc = 2, \n          column = \"Chem\", \n          value = [77, 89, 76])\ndf\n\n    Math  Stat  Chem  CS\ns1    99    92    77  50\ns2    65    48    89  88\ns3    87    88    76  94\n\n\n\ndf1 = pd.DataFrame({\n    \"Math\": 88, \n    \"Stat\": 99, \n    \"Chem\": 0, \n    \"CS\": 100\n    }, index = ['s4'])\n\n\npd.concat(objs = [df, df1])\n\n    Math  Stat  Chem   CS\ns1    99    92    77   50\ns2    65    48    89   88\ns3    87    88    76   94\ns4    88    99     0  100\n\n\n\n\npd.concat(objs = [df, df1], \n          ignore_index = True)",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>B</span>  <span class='chapter-title'>Python Programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-py_prog.html#numpy",
+    "href": "a-py_prog.html#numpy",
+    "title": "Appendix B — Python Programming",
+    "section": "\nB.10 NumPy",
+    "text": "B.10 NumPy\n\nB.10.1 NumPy for arrays/matrices\nNumPy is used to work with arrays/matrices.\n\nThe array object in NumPy is called ndarray.\nUse array() to create an array.\n\n\nrange(0, 5, 1) # a seq of number from 0 to 4 with increment of 1\n\nrange(0, 5)\n\nlist(range(0, 5, 1))\n\n[0, 1, 2, 3, 4]\n\n\n\nimport numpy as np\narr = np.array(range(0, 5, 1)) ## One-dim array \narr\n\narray([0, 1, 2, 3, 4])\n\ntype(arr)\n\n&lt;class 'numpy.ndarray'&gt;\n\n\n\nB.10.2 1D array (vector) and 2D array (matrix)\n\n\nnp.arange: Efficient way to create a one-dim array of sequence of numbers\n\n\nnp.arange(2, 5)\n\narray([2, 3, 4])\n\nnp.arange(6, 0, -1)\n\narray([6, 5, 4, 3, 2, 1])\n\n\n\n2D array\n\n\nnp.array([[1, 2, 3], [4, 5, 6]])\n\narray([[1, 2, 3],\n       [4, 5, 6]])\n\n\n\nnp.array([[[1, 2, 3], [4, 5, 6]], [[1, 2, 3], [4, 5, 6]]])\n\narray([[[1, 2, 3],\n        [4, 5, 6]],\n\n       [[1, 2, 3],\n        [4, 5, 6]]])\n\n\n\nB.10.3 np.reshape()\n\n\narr2 = np.arange(8).reshape(2, 4)\narr2\n\narray([[0, 1, 2, 3],\n       [4, 5, 6, 7]])\n\narr2.shape  \n\n(2, 4)\n\n\n\narr2.ndim\n\n2\n\n\n\narr2.size\n\n8\n\n\n\nB.10.4 Stacking arrays\n\na = np.array([1, 2, 3, 4]).reshape(2, 2)\nb = np.array([5, 6, 7, 8]).reshape(2, 2)\n\nnp.vstack((a, b))\n\narray([[1, 2],\n       [3, 4],\n       [5, 6],\n       [7, 8]])\n\n\n\nnp.hstack((a, b))\n\narray([[1, 2, 5, 6],\n       [3, 4, 7, 8]])",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>B</span>  <span class='chapter-title'>Python Programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-r_prog.html",
+    "href": "a-r_prog.html",
+    "title": "Appendix A — R programming",
+    "section": "",
+    "text": "A.1 Special Objects",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-r_prog.html#plotting",
+    "href": "a-r_prog.html#plotting",
+    "title": "Appendix A — R programming",
+    "section": "A.2 Plotting",
+    "text": "A.2 Plotting",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-r_prog.html#conditions",
+    "href": "a-r_prog.html#conditions",
+    "title": "Appendix A — R programming",
+    "section": "A.3 Conditions",
+    "text": "A.3 Conditions",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-r_prog.html#functions",
+    "href": "a-r_prog.html#functions",
+    "title": "Appendix A — R programming",
+    "section": "A.4 Functions",
+    "text": "A.4 Functions",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
     ]
   }
 ]

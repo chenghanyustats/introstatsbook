@@ -1,1 +1,934 @@
-# Python programming {#sec-py-prog}
+# Python Programming {#sec-py-prog}
+
+```{r}
+library(reticulate)
+```
+
+```{r}
+#| eval: false
+py_install("numpy")
+py_install("pandas")
+py_install("matplotlib")
+```
+
+
+```{python}
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+```
+
+
+## Arithmetic and Logical Operators
+
+```{python}
+#| echo: true
+2 + 3 / (5 * 4) ** 2
+5 == 5.00
+5 == int(5)
+type(int(5))
+not True == False
+```
+
+
+`bool()` converts nonzero numbers to `True` and zero to `False`
+
+
+```{python}
+#| echo: true
+-5 | 0
+1 & 1
+bool(2) | bool(0)
+```
+
+
+## Math Functions
+
+Need to import `math` library in Python.
+
+
+```{python}
+#| echo: true
+import math
+math.sqrt(144)
+math.exp(1)
+math.sin(math.pi/2)
+math.log(32, 2)
+abs(-7)
+```
+
+```{python}
+#| echo: true
+# python comment
+```
+
+## Variables and Assignment
+
+```{python}
+#| echo: true
+x = 5
+x
+x = x + 6
+x
+x == 5
+math.log(x)
+```
+
+## Object Types
+
+
+**`str`**, **`float`**, **`int`** and **`bool`**.
+
+
+```{python}
+#| echo: true
+type(5.0)
+type(5)
+type("I_love_data_science!")
+type(1 > 3)
+type(5) is float
+```
+
+python long (long integers, they can also be represented in octal and hexadecimal)
+
+
+
+## Data Structure - Lists
+
+### Lists
+
+- Python has *numbers* and *strings*, but no built-in vector structure.
+- To create a sequence type of structure, we can use a **list** that can save several elements in an single object. 
+- To create a list in Python, we use `[]`.
+
+```{python}
+#| label: py-lst
+#| echo: true
+lst_num = [0, 2, 4] 
+lst_num
+type(lst_num)
+len(lst_num)
+```
+
+List elements can have [*different types*]{style="color:green"}!
+
+
+### Subsetting lists
+
+
+```{python}
+#| label: py-lst1
+#| echo: true
+lst = ['data', 'math', 34, True]
+lst
+```
+
+- Indexing in Python **always starts at 0**!
+- `0`: the 1st element
+
+```{python}
+#| echo: true
+lst
+lst[0]
+type(lst[0]) ## not a list
+```
+
+- `-1`: the last element
+
+```{python}
+#| echo: true
+lst[-2]
+```
+
+- `[a:b]`: the (a+1)-th to b-th elements
+
+```{python}
+#| echo: true
+lst[1:4]
+type(lst[1:4]) ## a list
+```
+
+- `[a:]`: elements from the (a+1)-th to the last
+
+```{python}
+#| label: py-lst-subset2
+#| echo: true
+lst[2:]
+```
+
+
+What does `lst[0:1]` return? Is it a list?
+
+
+
+### Lists are mutable
+- Lists are **changed in place**!
+
+```{python}
+#| label: py-lst-mutable1
+#| echo: true
+
+lst[1]
+lst[1] = "stats"
+lst
+```
+
+```{python}
+#| label: py-lst-mutable2
+#| echo: true
+lst[2:] = [False, 77]
+lst
+```
+
+If we change any element value in a list, the list itself will be changed as well.
+
+### List operations and methods `list.method()`
+
+This is a common syntax in Python. We start with a Python object of some type, then type dot followed by any method specifically for this particular data type or structure for operations.
+
+```{python}
+#| label: py-lst-operation
+#| echo: true
+
+## Concatenation
+lst_num + lst
+```
+
+```{python}
+#| echo: true
+## Repetition
+lst_num * 3 
+```
+
+
+```{python}
+#| echo: true
+## Membership
+34 in lst
+```
+
+```{python}
+#| label: py-lst-method
+#| echo: true
+
+## Appends "cat" to lst
+lst.append("cat")
+lst
+```
+
+
+```{python}
+#| echo: true
+## Removes and returns last object from list
+lst.pop()
+lst
+```
+
+```{python}
+#| echo: true
+## Removes object from list
+lst.remove("stats")
+lst
+```
+
+
+```{python}
+#| echo: true
+## Reverses objects of list in place
+lst.reverse()
+lst
+```
+
+
+
+## Data Structure - Tuples
+
+- **Tuples** work exactly like lists except they are **immutable**, i.e., they can't be changed in place.
+
+- To create a tuple, we use `()`.
+
+```{python}
+#| label: py-tuple
+#| echo: true
+tup = ('data', 'math', 34, True)
+tup
+type(tup)
+len(tup)
+```
+
+```{python}
+#| label: py-tuple1
+#| echo: true
+tup[2:]
+tup[-2]
+```
+
+```{python}
+#| echo: true
+#| eval: false
+tup[1] = "stats"  ## does not work!
+# TypeError: 'tuple' object does not support item assignment
+```
+
+```{python}
+#| echo: true
+tup
+```
+
+### Tuples functions and methods
+
+Lists have more methods than tuples because lists are more flexible.
+
+```{python}
+#| echo: true
+
+# Converts a list into tuple
+tuple(lst_num)
+```
+
+```{python}
+#| echo: true
+
+# number of occurance of "data"
+tup.count("data")
+```
+
+```{python}
+#| echo: true
+
+# first index of "data"
+tup.index("data")
+```
+
+## Data Structure - Dictionaries
+
+- A **dictionary** consists of [*key-value pairs*]{style="color:green"}.
+
+- A dictionary is mutable, i.e., the values can be changed in place and more key-value pairs can be added.
+
+- To create a dictionary, we use `{"key name": value}`.
+
+- The value can be accessed by the key in the dictionary. 
+
+```{python}
+#| echo: true
+dic = {'Name': 'Ivy', 'Age': 7, 'Class': 'First'}
+```
+
+```{python}
+#| echo: true
+dic['Age']
+```
+
+```{python}
+#| echo: true
+#| eval: false
+dic['age']  ## does not work
+```
+
+
+```{python}
+#| echo: true
+dic['Age'] = 9
+dic['Class'] = 'Third'
+dic
+```
+
+### Properties of dictionaries
+
+- Python will use the last assignment!
+
+```{python}
+#| echo: true
+dic1 = {'Name': 'Ivy', 'Age': 7, 'Name': 'Liya'}
+dic1['Name']
+```
+
+- Keys are [*unique and immutable*]{style="color:green"}. 
+
+- A key can be a tuple, but CANNOT be a list.
+
+```{python}
+#| echo: true
+
+## The first key is a tuple!
+dic2 = {('First', 'Last'): 'Ivy Lee', 'Age': 7}
+dic2[('First', 'Last')]
+```
+
+
+```{python}
+#| echo: true
+#| eval: false
+
+## does not work
+dic2 = {['First', 'Last']: 'Ivy Lee', 'Age': 7}
+dic2[['First', 'Last']]
+```
+
+
+### Disctionary methods
+
+```{python}
+dic
+```
+
+```{python}
+#| echo: true
+
+## Returns list of dictionary dict's keys
+dic.keys()
+```
+
+
+```{python}
+#| echo: true
+
+## Returns list of dictionary dict's values
+dic.values()
+```
+
+
+```{python}
+#| echo: true
+
+## Returns a list of dict's (key, value) tuple pairs
+dic.items()
+```
+
+```{python}
+#| echo: true
+
+## Adds dictionary dic2's key-values pairs in to dic
+dic2 = {'Gender': 'female'}
+dic.update(dic2)
+dic
+```
+
+```{python}
+#| echo: true
+
+## Removes all elements of dictionary dict
+dic.clear()
+dic
+```
+
+
+## Python Data Structures for Data Science
+
+
+- Python built-in data structures are not specifically for data science.
+
+- To use more data science friendly functions and structures, such as array or data frame, Python relies on packages [`NumPy`](https://numpy.org/) and [`pandas`](https://pandas.pydata.org/).
+
+
+### Installing NumPy and pandas
+
+In your RStudio project, run
+```{r}
+#| echo: true
+#| eval: false
+library(reticulate)
+virtualenv_create("myenv")
+```
+
+
+Go to **Tools > Global Options > Python > Select > Virtual Environments**
+
+<!-- ```{r} -->
+<!-- #| out-width: "50%" -->
+<!-- knitr::include_graphics("./images/06-syntax/python-env.png") -->
+<!-- ``` -->
+
+
+
+You may need to restart R session. Do it, and in the new R session, run
+
+```{r}
+#| echo: true
+#| eval: false
+library(reticulate)
+py_install(c("numpy", "pandas", "matplotlib"))
+```
+
+Run the following Python code, and make sure everything goes well.
+
+```{python}
+#| echo: true
+#| eval: false
+import numpy as np
+import pandas as pd
+v1 = np.array([3, 8])
+v1
+df = pd.DataFrame({"col": ['red', 'blue', 'green']})
+df
+```
+
+
+## Pandas
+
+**pandas** is a Python library that provides data structures, manipulation and analysis tools for data science.
+
+
+```{python}
+#| echo: true
+#| eval: false
+import numpy as np
+import pandas as pd
+```
+
+
+### Pandas series from a list
+
+
+```{python}
+#| echo: true
+# import pandas as pd
+a = [1, 7, 2]
+s = pd.Series(a)
+print(s)
+```
+
+
+```{python}
+#| echo: true
+print(s[0])
+```
+
+
+
+```{python}
+#| echo: true
+
+## index used as naming 
+s = pd.Series(a, index = ["x", "y", "z"])
+print(s)
+```
+
+
+```{python}
+#| echo: true
+print(s["y"])
+```
+
+
+### Pandas series from a dictionary
+
+```{python}
+#| echo: true
+grade = {"math": 99, "stats": 97, "cs": 66}
+s = pd.Series(grade)
+print(s)
+```
+
+
+```{python}
+#| echo: true
+grade = {"math": 99, "stats": 97, "cs": 66}
+
+## index used as subsetting 
+s = pd.Series(grade, index = ["stats", "cs"])
+print(s)
+```
+
+
+
+::: {.question}
+How do we create a named vector in R?
+:::
+
+
+```{r}
+#| echo: true
+#| eval: false
+grade <- c("math" = 99, "stats" = 97, "cs" = 66)
+```
+
+### [Pandas data frame](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html)
+
+-  Create a data frame from a dictionary
+
+```{python}
+#| echo: true
+data = {"math": [99, 65, 87], "stats": [92, 48, 88], "cs": [50, 88, 94]}
+
+df = pd.DataFrame(data)
+print(df) 
+```
+
+
+- Row and column names
+
+```{python}
+#| echo: true
+df.index = ["s1", "s2", "s3"]
+df.columns = ["Math", "Stat", "CS"]
+df
+```
+
+
+### Subsetting columns
+
+- In Python, `[]` returns *Series*, `[[]]` returns *DataFrame*!
+- In R, `[]` returns *tibble/data frame*, `[[]]` returns *vector*!
+
+ 
+**By Names**
+ 
+```{python}
+#| echo: true
+
+## Series
+df["Math"]
+type(df["Math"])
+```
+
+
+**By Index**
+
+```{python}
+#| echo: true
+
+# ## DataFrame
+df[["Math"]]
+type(df[["Math"]])
+```
+
+```{python}
+#| echo: true
+#| 
+df[["Math", "CS"]]
+```
+
+
+::: notes
+isinstance(df[["Math"]], pd.DataFrame)
+:::
+
+
+### [Subsetting rows `DataFrame.iloc`](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.iloc.html)
+
+- **integer-location** based indexing for selection by position
+
+```{python}
+#| echo: true
+df 
+```
+
+```{python}
+#| echo: true
+
+## first row Series
+df.iloc[0] 
+```
+
+```{python}
+#| echo: true
+
+## first row DataFrame
+df.iloc[[0]]
+```
+
+```{python}
+#| echo: true
+
+## first 2 rows
+df.iloc[[0, 1]]
+```
+
+```{python}
+#| echo: true
+
+## 1st and 3rd row
+df.iloc[[True, False, True]]
+```
+
+
+### Subsetting rows and columns `DataFrame.iloc`
+
+```{python}
+#| echo: true
+df 
+```
+
+```{python}
+#| echo: true
+
+## (1, 3) row and (1, 3) col
+df.iloc[[0, 2], [0, 2]]
+```
+
+```{python}
+#| echo: true
+
+## all rows and 1st col
+df.iloc[:, [True, False, False]]
+```
+
+
+```{python}
+#| echo: true
+
+df.iloc[0:2, 1:3]
+```
+
+
+### Subsetting rows and columns `DataFrame.loc`
+
+Access a group of rows and columns by **label(s)**
+
+
+```{python}
+#| echo: true
+
+df 
+```
+
+```{python}
+#| echo: true
+
+df.loc['s1', "CS"]
+```
+
+```{python}
+#| echo: true
+
+## all rows and 1st col
+df.loc['s1':'s3', [True, False, False]]
+```
+
+
+```{python}
+#| echo: true
+
+df.loc['s2', ['Math', 'Stat']]
+```
+
+
+### Obtaining a single cell value `DataFrame.iat`/ `DataFrame.at`
+
+```{python}
+#| echo: true
+
+df 
+```
+
+```{python}
+#| echo: true
+
+df.iat[1, 2]
+```
+
+```{python}
+#| echo: true
+
+df.iloc[0].iat[1]
+```
+
+```{python}
+#| echo: true
+
+df.at['s2', 'Stat']
+```
+
+```{python}
+#| echo: true
+
+df.loc['s1'].at['Stat']
+```
+
+### New columns `DataFrame.insert` and new rows `pd.concat`
+
+
+```{python}
+#| echo: true
+
+df 
+```
+
+```{python}
+#| echo: true
+
+df.insert(loc = 2, 
+          column = "Chem", 
+          value = [77, 89, 76])
+df
+```
+
+
+```{python}
+#| echo: true
+df1 = pd.DataFrame({
+    "Math": 88, 
+    "Stat": 99, 
+    "Chem": 0, 
+    "CS": 100
+    }, index = ['s4'])
+```
+
+```{python}
+#| echo: true
+pd.concat(objs = [df, df1])
+```
+
+
+::: notes
+```{python}
+#| echo: true
+#| eval: false
+pd.concat(objs = [df, df1], 
+          ignore_index = True)
+```
+:::
+
+## NumPy
+
+
+### NumPy for arrays/matrices
+
+**NumPy** is used to work with arrays/matrices.
+
+- The array object in NumPy is called `ndarray`.
+
+- Use `array()` to create an array.
+
+```{python}
+#| echo: true
+range(0, 5, 1) # a seq of number from 0 to 4 with increment of 1
+list(range(0, 5, 1))
+```
+
+
+```{python}
+#| echo: true
+import numpy as np
+arr = np.array(range(0, 5, 1)) ## One-dim array 
+arr
+type(arr)
+```
+
+
+
+### 1D array (vector) and 2D array (matrix)
+
+- `np.arange`: Efficient way to create a one-dim array of sequence of numbers
+
+```{python}
+#| echo: true
+np.arange(2, 5)
+np.arange(6, 0, -1)
+```
+
+
+- 2D array
+
+```{python}
+#| echo: true
+np.array([[1, 2, 3], [4, 5, 6]])
+```
+
+
+```{python}
+#| echo: true
+np.array([[[1, 2, 3], [4, 5, 6]], [[1, 2, 3], [4, 5, 6]]])
+```
+
+
+
+### `np.reshape()`
+
+```{python}
+#| echo: true
+arr2 = np.arange(8).reshape(2, 4)
+arr2
+arr2.shape  
+```
+
+```{python}
+#| echo: true
+arr2.ndim
+```
+
+```{python}
+#| echo: true
+arr2.size
+```
+
+
+
+
+### Stacking arrays
+
+```{python}
+#| echo: true
+a = np.array([1, 2, 3, 4]).reshape(2, 2)
+b = np.array([5, 6, 7, 8]).reshape(2, 2)
+
+np.vstack((a, b))
+```
+
+```{python}
+#| echo: true
+
+np.hstack((a, b))
+```
+
+
+<!-- :::{.lab} -->
+
+<!-- <span style="color:blue"> **09-NumPy and pandas** </span> -->
+
+<!-- In **lab.qmd** `## Lab 9` section, create a Python pandas.DataFrame equivalent to the R tibble -->
+
+<!-- ```{r} -->
+<!-- #| echo: true -->
+<!-- tibble(x = 1:5, y = 5:1, z = LETTERS[1:5]) -->
+<!-- ``` -->
+
+
+<!-- ```{python} -->
+<!-- #| echo: true -->
+<!-- #| eval: false -->
+<!-- import numpy as np -->
+<!-- import pandas as pd -->
+<!-- import string as st -->
+<!-- list(st.ascii_uppercase) -->
+<!-- dic = {'__': np.arange(__, __),  -->
+<!--        '__': np.arange(__, __, __), -->
+<!--        '__': list(__.ascii_uppercase)[___]} -->
+<!-- pd._____________(dic) -->
+<!-- ``` -->
+
+<!-- ::: -->
+
+<!-- ## Lab Bonus! -->
+
+<!-- - Happy **Py**lentine's Day! ❤️ -->
+
+<!-- ```{python} -->
+<!-- #| eval: false -->
+<!-- lines = [] -->
+<!-- msg = "~Happy Valentine's Day!~" -->
+<!-- for y in range(15, -15, -1): -->
+<!--     line = "" -->
+<!--     for x in range(-30, 30): -->
+<!--         f = ((x * 0.05) ** 2 + (y * 0.1) ** 2 - 1) ** 3 - (x * 0.05) ** 2 * (y * 0.1) ** 3 -->
+<!--         line += msg[(x - y) % len(msg)] if f <= 0 else " " -->
+<!--     lines.append(line) -->
+
+<!-- print("\n".join(lines)) -->
+<!-- ``` -->
+
+<!-- ## Resources -->
+
+<!-- - [NumPy](https://numpy.org/doc/stable/user/index.html) -->
+<!-- - [pandas](https://pandas.pydata.org/docs/user_guide/index.html) -->
+
+
+## Plotting
+
+
+## Conditions
+
+
+## Functions
