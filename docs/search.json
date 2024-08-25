@@ -2470,7 +2470,7 @@
     "href": "a-r_prog.html",
     "title": "Appendix A — R programming",
     "section": "",
-    "text": "A.1 Special Objects",
+    "text": "A.1 Arithmetic and Logical Operators\n2 + 3 / (5 * 4) ^ 2\n\n[1] 2.0075\n\n5 == 5.00\n\n[1] TRUE\n\n# 5 and 5L are of the same value too\n# 5 is of type double; 5L is integer\n5 == 5L\n\n[1] TRUE\n\ntypeof(5L)\n\n[1] \"integer\"\n\n!TRUE == FALSE\n\n[1] TRUE\nType coercion: When doing AND/OR comparisons, all nonzero values are treated as TRUE and 0 as FALSE.\n-5 | 0\n\n[1] TRUE\n\n1 & 1\n\n[1] TRUE\n\n2 | 0\n\n[1] TRUE",
     "crumbs": [
       "Appendices",
       "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
@@ -2480,8 +2480,8 @@
     "objectID": "a-r_prog.html#plotting",
     "href": "a-r_prog.html#plotting",
     "title": "Appendix A — R programming",
-    "section": "A.2 Plotting",
-    "text": "A.2 Plotting",
+    "section": "\nA.11 Plotting",
+    "text": "A.11 Plotting\n\nA.11.1 Scatter plot\n\n\n\nmtcars[1:15, 1:4]\n\n                    mpg cyl  disp  hp\nMazda RX4          21.0   6 160.0 110\nMazda RX4 Wag      21.0   6 160.0 110\nDatsun 710         22.8   4 108.0  93\nHornet 4 Drive     21.4   6 258.0 110\nHornet Sportabout  18.7   8 360.0 175\nValiant            18.1   6 225.0 105\nDuster 360         14.3   8 360.0 245\nMerc 240D          24.4   4 146.7  62\nMerc 230           22.8   4 140.8  95\nMerc 280           19.2   6 167.6 123\nMerc 280C          17.8   6 167.6 123\nMerc 450SE         16.4   8 275.8 180\nMerc 450SL         17.3   8 275.8 180\nMerc 450SLC        15.2   8 275.8 180\nCadillac Fleetwood 10.4   8 472.0 205\n\n\n\n\nplot(x = mtcars$mpg, y = mtcars$hp, \n     xlab  = \"Miles per gallon\", \n     ylab = \"Horsepower\", \n     main = \"Scatter plot\", \n     col = \"red\", \n     pch = 5, las = 1)\n\n\n\n\n\n\n\n\n\n\nA.11.2 Argument pch\n\nplot(x = 1:25, y = rep(1, 25), pch = 1:25, xlab = \"\", ylab = \"\", main = \"pch\", axes = FALSE)\naxis(1, at = 1:25, cex.axis = 0.5)\n\n\n\n\n\n\n\n\nThe default is pch = 1\n\nA.11.3 R Subplots\n\npar(mfrow = c(1, 2))\nplot(x = mtcars$mpg, y = mtcars$hp, xlab = \"mpg\")\nplot(x = mtcars$mpg, y = mtcars$weight, xlab = \"mpg\")\n\n\n\n\n\n\n\n\nA.11.4 Boxplot\n\npar(mar = c(4, 4, 0, 0))\nboxplot(mpg ~ cyl, \n        data = mtcars, \n        col = c(\"blue\", \"green\", \"red\"), \n        las = 1, \n        horizontal = TRUE,\n        xlab = \"Miles per gallon\", \n        ylab = \"Number of cylinders\")\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nA.11.5 Histogram\nhist() decides the class intervals/with based on breaks. If not provided, R chooses one.\n\nhist(mtcars$wt, \n     breaks = 20, \n     col = \"#003366\", \n     border = \"#FFCC00\", \n     xlab = \"weights\", \n     main = \"Histogram of weights\",\n     las = 1)\n\n\n\n\n\n\n\n\nBesides color names, you can also use hex number to specify colors. Pretty handy.\n\nA.11.6 Barplot\n\n(counts &lt;- table(mtcars$gear)) \n\n\n 3  4  5 \n15 12  5 \n\n\n\nmy_bar &lt;- barplot(counts, \n                  main = \"Car Distribution\", \n                  xlab = \"Number of Gears\", \n                  las = 1)\ntext(x = my_bar, y = counts - 0.8, \n     labels = counts, \n     cex = 0.8)\n\n\n\n\n\n\n\n\nA.11.7 Pie chart\n\nPie charts are used for categorical variables, especially when we want to know percentage of each category.\nThe first argument is the frequency table, and you can add labels to each category.\n\n\n(percent &lt;- round(counts / sum(counts) * 100, 2))\n\n\n    3     4     5 \n46.88 37.50 15.62 \n\n(labels &lt;- paste0(3:5, \" gears: \", percent, \"%\"))\n\n[1] \"3 gears: 46.88%\" \"4 gears: 37.5%\"  \"5 gears: 15.62%\"\n\n\n\npie(x = counts, labels = labels,\n    main = \"Pie Chart\", \n    col = 2:4, \n    radius = 1)\n\n\n\n\n\n\n\n\nA.11.8 2D imaging\n\nThe image() function displays the values in a matrix using color.\n\n\nmatrix(1:30, 6, 5)\n\n     [,1] [,2] [,3] [,4] [,5]\n[1,]    1    7   13   19   25\n[2,]    2    8   14   20   26\n[3,]    3    9   15   21   27\n[4,]    4   10   16   22   28\n[5,]    5   11   17   23   29\n[6,]    6   12   18   24   30\n\nimage(matrix(1:30, 6, 5))\n\n\n\n\n\n\n\n\nlibrary(fields)\n\nLoading required package: spam\n\n\nSpam version 2.10-0 (2023-10-23) is loaded.\nType 'help( Spam)' or 'demo( spam)' for a short introduction \nand overview of this package.\nHelp for individual functions is also obtained by adding the\nsuffix '.spam' to the function name, e.g. 'help( chol.spam)'.\n\n\n\nAttaching package: 'spam'\n\n\nThe following objects are masked from 'package:base':\n\n    backsolve, forwardsolve\n\n\nLoading required package: viridisLite\n\n\n\nTry help(fields) to get started.\n\nstr(volcano)\n\n num [1:87, 1:61] 100 101 102 103 104 105 105 106 107 108 ...\n\nimage.plot(volcano)\n\n\n\n\n\n\n\n\nx &lt;- 10*(1:nrow(volcano))\ny &lt;- 10*(1:ncol(volcano))\nimage(x, y, volcano, col = hcl.colors(100, \"terrain\"), axes = FALSE)\ncontour(x, y, volcano, levels = seq(90, 200, by = 5),\n        add = TRUE, col = \"brown\")\naxis(1, at = seq(100, 800, by = 100))\naxis(2, at = seq(100, 600, by = 100))\nbox()\ntitle(main = \"Maunga Whau Volcano\", font.main = 4)\n\n\n\n\n\n\n\n\nA.11.9 3D scatter plot\n\nlibrary(scatterplot3d)\nscatterplot3d(x = mtcars$wt, y = mtcars$disp, z = mtcars$mpg, \n              xlab = \"Weights\", ylab = \"Displacement\", zlab = \"Miles per gallon\", \n              main = \"3D Scatter Plot\",\n              pch = 16, color = \"steelblue\")\n\n\n\n\n\n\n\n\nA.11.10 Perspective plot\n\n# Exaggerate the relief\nz &lt;- 2 * volcano      \n# 10 meter spacing (S to N)\nx &lt;- 10 * (1:nrow(z))   \n# 10 meter spacing (E to W)\ny &lt;- 10 * (1:ncol(z))   \npar(bg = \"slategray\")\npersp(x, y, z, theta = 135, phi = 30, col = \"green3\", scale = FALSE,\n      ltheta = -120, shade = 0.75, border = NA, box = FALSE)",
     "crumbs": [
       "Appendices",
       "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
@@ -2491,8 +2491,8 @@
     "objectID": "a-r_prog.html#conditions",
     "href": "a-r_prog.html#conditions",
     "title": "Appendix A — R programming",
-    "section": "A.3 Conditions",
-    "text": "A.3 Conditions",
+    "section": "\nA.13 Conditions",
+    "text": "A.13 Conditions\n\n# The condition must evaluate to either TRUE or FALSE.\nif (condition) {\n  # code executed when condition is TRUE\n} else {\n  # code executed when condition is FALSE\n}\n\n\nif (c(TRUE, FALSE)) {}\n#&gt; Warning in if (c(TRUE, FALSE)) {: the condition has length &gt; 1 and only the\n#&gt; first element will be used\n#&gt; NULL\n\nif (NA) {}\n#&gt; Error in if (NA) {: missing value where TRUE/FALSE needed\n\n\nYou can use || (or) and && (and) to combine multiple logical expressions.\n\n\nif (cond1 || cond2) {\n  # code executed when condition is TRUE\n}\n\n\nThe basic If-else statement structure is that we write if then put a condition inside a pair of parenthesis, then use curly braces to wrap the code to be run when the condition is TRUE.\nIf we want to have the code to be run when the condition is FALSE, we add else and another pair of curly braces.\ncurly braces is not necessary if you just have one line of code to be run.\nThe condition must evaluate to either one TRUE or one FALSE.\nIf it’s a vector, you’ll get a warning message, and only the first element will be used.\nIf it’s an NA, you’ll get an error.\n\n\nif (this) {\n    # do that\n} else if (that) {\n    # do something else\n} else {\n    # \n}\n\n\nif (celsius &lt;= 0) {\n    \"freezing\"\n} else if (celsius &lt;= 10) {\n    \"cold\"\n} else if (celsius &lt;= 20) {\n   \"cool\"\n} else if (celsius &lt;= 30) {\n    \"warm\"\n} else {\n    \"hot\"\n}\n\n\nIf we want to have multiple conditions, we add the word else if.\nThe code below is an example of converting numerical data to categorical data, freezing, cold, warm and hot.\nIt’s not the best way to do conversion.\n\n\nIf you end up with a very long series of chained if-else statements, rewrite it!\n\n\n\n\n\nhttps://speakerdeck.com/jennybc/code-smells-and-feels\n\n\n\n\nIf you end up with a very long series of chained if-else statements, rewrite it! Don’t confuse readers and especially yourself.\nWe have a function called “get same data”.\nWhen you read the code in a linear fashion from top to bottom, you are falling down and down into conditions that were like a long time ago that you saw what you are actually checking.\nHere is another way to write the exactly the same function. ….. and now I am on the happy path. I get the data.\nSo if I open a file, and I know that something is gone wrong and checking all these things, I am much happier to be facing this than that!\nI think our brain cannot process too many layers. When we are trying to analyze so many layers, we just get lost.\n\n\n\n\n\nhttps://speakerdeck.com/jennybc/code-smells-and-feels\n\n\n\n\nSo there is no else, there is only if!\nBack, on the left, every if has an else.\nOn the right, we have no else. And this makes your code much more readable!",
     "crumbs": [
       "Appendices",
       "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
@@ -2502,8 +2502,8 @@
     "objectID": "a-r_prog.html#functions",
     "href": "a-r_prog.html#functions",
     "title": "Appendix A — R programming",
-    "section": "A.4 Functions",
-    "text": "A.4 Functions",
+    "section": "\nA.14 Functions",
+    "text": "A.14 Functions\n\nWrite a function whenever you’ve copied and pasted your code more than twice.\n\nThree key steps/components:\n\npick a name for the function.\nlist the inputs, or arguments, to the function inside function.\nplace the code you have developed in body of the function.\n\n\n\n\nfunction_name &lt;- function(arg1, arg2, ...) {\n    ## body\n    return(something)\n}\n\n\nadd_number &lt;- function(a, b) {\n    c &lt;- a + b\n    return(c)\n}\n\nn1 &lt;- 9\nn2 &lt;- 18\nadd_number(n1, n2)\n\n[1] 27",
     "crumbs": [
       "Appendices",
       "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
@@ -2573,6 +2573,226 @@
     "crumbs": [
       "Appendices",
       "<span class='chapter-number'>B</span>  <span class='chapter-title'>Python Programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-r_prog.html#special-objects",
+    "href": "a-r_prog.html#special-objects",
+    "title": "Appendix A — R programming",
+    "section": "\nA.10 Special Objects",
+    "text": "A.10 Special Objects",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-r_prog.html#math-functions",
+    "href": "a-r_prog.html#math-functions",
+    "title": "Appendix A — R programming",
+    "section": "\nA.2 Math Functions",
+    "text": "A.2 Math Functions\nMath functions in R are built-in.\n\nsqrt(144)\n\n[1] 12\n\nexp(1)\n\n[1] 2.718282\n\nsin(pi/2)\n\n[1] 1\n\nlog(32, base = 2)\n\n[1] 5\n\nabs(-7)\n\n[1] 7",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-r_prog.html#variables-and-assignment",
+    "href": "a-r_prog.html#variables-and-assignment",
+    "title": "Appendix A — R programming",
+    "section": "\nA.3 Variables and Assignment",
+    "text": "A.3 Variables and Assignment\nUse &lt;- to do assignment. Why\n\n## we create an object, value 5, \n## and call it x, which is a variable\nx &lt;- 5\nx\n\n[1] 5\n\n(x &lt;- x + 6)\n\n[1] 11\n\nx == 5\n\n[1] FALSE\n\nlog(x)\n\n[1] 2.397895",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-r_prog.html#object-types",
+    "href": "a-r_prog.html#object-types",
+    "title": "Appendix A — R programming",
+    "section": "\nA.4 Object Types",
+    "text": "A.4 Object Types\ncharacter, double, integer and logical.\n\ntypeof(5)\n\n[1] \"double\"\n\n\n\ntypeof(5L)\n\n[1] \"integer\"\n\n\n\ntypeof(\"I_love_data_science!\")\n\n[1] \"character\"\n\n\n\ntypeof(1 &gt; 3)\n\n[1] \"logical\"\n\n\n\nis.double(5L)\n\n[1] FALSE",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-r_prog.html#data-structure---vector",
+    "href": "a-r_prog.html#data-structure---vector",
+    "title": "Appendix A — R programming",
+    "section": "\nA.5 Data Structure - Vector",
+    "text": "A.5 Data Structure - Vector\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nVariable defined previously is a scalar value, or in fact a (atomic) vector of length one.\n\n\nA.5.1 (Atomic) Vector\n\nTo create a vector, use c(), short for concatenate or combine.\nAll elements of a vector must be of the same type.\n\n\n(dbl_vec &lt;- c(1, 2.5, 4.5)) \n\n[1] 1.0 2.5 4.5\n\n(int_vec &lt;- c(1L, 6L, 10L))\n\n[1]  1  6 10\n\n## TRUE and FALSE can be written as T and F\n(log_vec &lt;- c(TRUE, FALSE, F))  \n\n[1]  TRUE FALSE FALSE\n\n(chr_vec &lt;- c(\"pretty\", \"girl\"))\n\n[1] \"pretty\" \"girl\"  \n\n\n\n## check how many elements in a vector\nlength(dbl_vec) \n\n[1] 3\n\n## check a compact description of \n## any R data structure\nstr(dbl_vec) \n\n num [1:3] 1 2.5 4.5\n\n\n\nA.5.2 Sequence of Numbers\n\nUse : to create a sequence of integers.\nUse seq() to create a sequence of numbers of type double with more options. \n\n\n(vec &lt;- 1:5) \n\n[1] 1 2 3 4 5\n\ntypeof(vec)\n\n[1] \"integer\"\n\n# a sequence of numbers from 1 to 10 with increment 2\n(seq_vec &lt;- seq(from = 1, to = 10, by = 2))\n\n[1] 1 3 5 7 9\n\ntypeof(seq_vec)\n\n[1] \"double\"\n\n\n\n# a sequence of numbers from 1 to 10\n# with 12 elements\nseq(from = 1, to = 10, length.out = 12)\n\n [1]  1.000000  1.818182  2.636364  3.454545  4.272727  5.090909  5.909091\n [8]  6.727273  7.545455  8.363636  9.181818 10.000000\n\n\n\nA.5.3 Operations on Vectors\n\nWe can do any operations on vectors as we do on a scalar variable (vector of length 1).\n\n\n# Create two vectors\nv1 &lt;- c(3, 8)\nv2 &lt;- c(4, 100) \n\n## All operations happen element-wisely\n# Vector addition\nv1 + v2\n\n[1]   7 108\n\n# Vector subtraction\nv1 - v2\n\n[1]  -1 -92\n\n\n\n# Vector multiplication\nv1 * v2\n\n[1]  12 800\n\n# Vector division\nv1 / v2\n\n[1] 0.75 0.08\n\nsqrt(v2)\n\n[1]  2 10\n\n\n\nA.5.4 Recycling of Vectors\n\nIf we apply arithmetic operations to two vectors of unequal length, the elements of the shorter vector will be recycled to complete the operations.  \n\n\n\nv1 &lt;- c(3, 8, 4, 5)\n# The following 2 operations are the same\nv1 * 2\n\n[1]  6 16  8 10\n\nv1 * c(2, 2, 2, 2)\n\n[1]  6 16  8 10\n\nv3 &lt;- c(4, 11)\nv1 + v3  ## v3 becomes c(4, 11, 4, 11) when doing the operation\n\n[1]  7 19  8 16\n\n\n\nA.5.5 Subsetting Vectors\n\nTo extract element(s) in a vector, we use a pair of brackets [] with element indexing.\nThe indexing starts with 1.\n\n\n\n\nv1\n\n[1] 3 8 4 5\n\nv2\n\n[1]   4 100\n\n## The 3rd element\nv1[3] \n\n[1] 4\n\n\n\n\nv1[c(1, 3)]\n\n[1] 3 4\n\nv1[1:2]\n\n[1] 3 8\n\n## extract all except a few elements\n## put a negative sign before the vector of \n## indices\nv1[-c(2, 3)] \n\n[1] 3 5",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-r_prog.html#data-structure---factor",
+    "href": "a-r_prog.html#data-structure---factor",
+    "title": "Appendix A — R programming",
+    "section": "\nA.6 Data Structure - Factor",
+    "text": "A.6 Data Structure - Factor\n\nA vector of type factor can be ordered in a meaningful way.\nCreate a factor by factor(). It is a type of integer, not character. 😲 🙄\n\n\n## Create a factor from a character vector using function factor()\n(fac &lt;- factor(c(\"med\", \"high\", \"low\")))\n\n[1] med  high low \nLevels: high low med\n\ntypeof(fac)  ## The type is integer.\n\n[1] \"integer\"\n\nstr(fac)  ## The integers show the level each element in vector fac belongs to.\n\n Factor w/ 3 levels \"high\",\"low\",\"med\": 3 1 2\n\n\n\norder_fac &lt;- factor(c(\"med\", \"high\", \"low\"),\n                    levels = c(\"low\", \"med\", \"high\"))\nstr(order_fac)\n\n Factor w/ 3 levels \"low\",\"med\",\"high\": 2 3 1\n\n\n\nlevels(fac) ## Each level represents an integer, ordered from the vector alphabetically.\n\n[1] \"high\" \"low\"  \"med\"",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-r_prog.html#data-structure---list-generic-vectors",
+    "href": "a-r_prog.html#data-structure---list-generic-vectors",
+    "title": "Appendix A — R programming",
+    "section": "\nA.7 Data Structure - List (Generic Vectors)",
+    "text": "A.7 Data Structure - List (Generic Vectors)\n\n\n\n\n\n\n\n\n\nLists are different from (atomic) vectors: Elements can be of any type, including lists.\nConstruct a list by using list().\n\n\n\n\n## a list of 3 elements of different types\nx_lst &lt;- list(idx = 1:3, \n              \"a\", \n              c(TRUE, FALSE))\n\n\n\n$idx\n[1] 1 2 3\n\n[[2]]\n[1] \"a\"\n\n[[3]]\n[1]  TRUE FALSE\n\n\n\n\nstr(x_lst)\n\nList of 3\n $ idx: int [1:3] 1 2 3\n $    : chr \"a\"\n $    : logi [1:2] TRUE FALSE\n\nnames(x_lst)\n\n[1] \"idx\" \"\"    \"\"   \n\nlength(x_lst)\n\n[1] 3\n\n\n\n\n\nA.7.1 Subsetting a list\n\n\nReturn an  element  of a list\n\n## subset by name (a vector)\nx_lst$idx  \n\n[1] 1 2 3\n\n## subset by indexing (a vector)\nx_lst[[1]]  \n\n[1] 1 2 3\n\ntypeof(x_lst$idx)\n\n[1] \"integer\"\n\n\n\n\nReturn a  sub-list  of a list\n\n## subset by name (still a list)\nx_lst[\"idx\"]  \n\n$idx\n[1] 1 2 3\n\n## subset by indexing (still a list)\nx_lst[1]  \n\n$idx\n[1] 1 2 3\n\ntypeof(x_lst[\"idx\"])\n\n[1] \"list\"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nIf list x is a train carrying objects, then x[[5]] is the object in car 5; x[4:6] is a train of cars 4-6.\n— @RLangTip, https://twitter.com/RLangTip/status/268375867468681216",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-r_prog.html#matrix",
+    "href": "a-r_prog.html#matrix",
+    "title": "Appendix A — R programming",
+    "section": "\nA.8 Matrix",
+    "text": "A.8 Matrix\n\nA matrix is a two-dimensional analog of a vector with attribute dim.\nUse command matrix() to create a matrix.\n\n\n## Create a 3 by 2 matrix called mat\n(mat &lt;- matrix(data = 1:6, nrow = 3, ncol = 2)) \n\n     [,1] [,2]\n[1,]    1    4\n[2,]    2    5\n[3,]    3    6\n\ndim(mat); nrow(mat); ncol(mat)\n\n[1] 3 2\n\n\n[1] 3\n\n\n[1] 2\n\n\n\n# elements are arranged by row\nmatrix(data = 1:6, \n       nrow = 3, \n       ncol = 2, \n       byrow = TRUE) #&lt;&lt;\n\n     [,1] [,2]\n[1,]    1    2\n[2,]    3    4\n[3,]    5    6\n\nattributes(mat)\n\n$dim\n[1] 3 2\n\n\n\nA.8.1 Row and Column Names\n\n\n\nmat\n\n     [,1] [,2]\n[1,]    1    4\n[2,]    2    5\n[3,]    3    6\n\n## assign row names and column names\nrownames(mat) &lt;- c(\"A\", \"B\", \"C\")\ncolnames(mat) &lt;- c(\"a\", \"b\")\nmat\n\n  a b\nA 1 4\nB 2 5\nC 3 6\n\n\n\n\nrownames(mat)\n\n[1] \"A\" \"B\" \"C\"\n\ncolnames(mat)\n\n[1] \"a\" \"b\"\n\nattributes(mat)\n\n$dim\n[1] 3 2\n\n$dimnames\n$dimnames[[1]]\n[1] \"A\" \"B\" \"C\"\n\n$dimnames[[2]]\n[1] \"a\" \"b\"\n\n\n\n\n\nA.8.2 Subsetting a Matrix\n\nUse the same indexing approach as vectors on rows and columns.\nUse comma , to separate row and column index.\n\nmat[2, 2] extracts the element of the second row and second column.\n\n\n\n\nmat\n\n  a b\nA 1 4\nB 2 5\nC 3 6\n\n## all rows and 2nd column\n## leave row index blank\n## specify 2 in coln index\nmat[, 2]\n\nA B C \n4 5 6 \n\n\n\n\n## 2nd row and all columns\nmat[2, ] \n\na b \n2 5 \n\n## The 1st and 3rd rows and the 1st column\nmat[c(1, 3), 1] \n\nA C \n1 3 \n\n\n\n\n\nA.8.3 Binding Matrices\n\ncbind() (binding matrices by adding columns)\nrbind() (binding matrices by adding rows)\nWhen matrices are combined by columns (rows), they should have the same number of rows (columns).\n\n\n\n\nmat\n\n  a b\nA 1 4\nB 2 5\nC 3 6\n\nmat_c &lt;- matrix(data = c(7,0,0,8,2,6), \n                nrow = 3, ncol = 2)\n## should have the same number of rows\ncbind(mat, mat_c)  \n\n  a b    \nA 1 4 7 8\nB 2 5 0 2\nC 3 6 0 6\n\n\n\n\nmat_r &lt;- matrix(data = 1:4, \n                nrow = 2, \n                ncol = 2)\n## should have the same number of columns\nrbind(mat, mat_r)  \n\n  a b\nA 1 4\nB 2 5\nC 3 6\n  1 3\n  2 4",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-r_prog.html#subsetting-a-matrix",
+    "href": "a-r_prog.html#subsetting-a-matrix",
+    "title": "Appendix A — R programming",
+    "section": "\nA.9 Subsetting a Matrix",
+    "text": "A.9 Subsetting a Matrix\n\nUse the same indexing approach as vectors on rows and columns.\nUse comma , to separate row and column index.\n\nmat[2, 2] extracts the element of the second row and second column.\n\n\n\n\nmat\n\n  a b\nA 1 4\nB 2 5\nC 3 6\n\n## all rows and 2nd column\n## leave row index blank\n## specify 2 in coln index\nmat[, 2]\n\nA B C \n4 5 6 \n\n\n\n\n## 2nd row and all columns\nmat[2, ] \n\na b \n2 5 \n\n## The 1st and 3rd rows and the 1st column\nmat[c(1, 3), 1] \n\nA C \n1 3",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-r_prog.html#binding-matrices",
+    "href": "a-r_prog.html#binding-matrices",
+    "title": "Appendix A — R programming",
+    "section": "\nA.10 Binding Matrices",
+    "text": "A.10 Binding Matrices\n\ncbind() (binding matrices by adding columns)\nrbind() (binding matrices by adding rows)\nWhen matrices are combined by columns (rows), they should have the same number of rows (columns).\n\n\n\n\nmat\n\n  a b\nA 1 4\nB 2 5\nC 3 6\n\nmat_c &lt;- matrix(data = c(7,0,0,8,2,6), \n                nrow = 3, ncol = 2)\n## should have the same number of rows\ncbind(mat, mat_c)  \n\n  a b    \nA 1 4 7 8\nB 2 5 0 2\nC 3 6 0 6\n\n\n\n\nmat_r &lt;- matrix(data = 1:4, \n                nrow = 2, \n                ncol = 2)\n## should have the same number of columns\nrbind(mat, mat_r)  \n\n  a b\nA 1 4\nB 2 5\nC 3 6\n  1 3\n  2 4",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-r_prog.html#data-structure---data-frame-the-most-common-way-of-storing-datasets",
+    "href": "a-r_prog.html#data-structure---data-frame-the-most-common-way-of-storing-datasets",
+    "title": "Appendix A — R programming",
+    "section": "\nA.9 Data Structure - Data Frame: The Most Common Way of Storing Datasets",
+    "text": "A.9 Data Structure - Data Frame: The Most Common Way of Storing Datasets\n\nA data frame is of type list of equal-length vectors, having a 2-dimensional structure.\nMore general than matrix: Different columns can have different types.\nUse data.frame() that takes named vectors as input “element”.\n\n\n\n\n## data frame w/ an dbl column named age\n## and char column named gender.\n(df &lt;- data.frame(age = c(19, 21, 40), \n                  gen = c(\"m\",\"f\", \"m\")))\n\n  age gen\n1  19   m\n2  21   f\n3  40   m\n\n## a data frame has a list structure\nstr(df)  \n\n'data.frame':   3 obs. of  2 variables:\n $ age: num  19 21 40\n $ gen: chr  \"m\" \"f\" \"m\"\n\n\n\n\n## must set column names\n## or they are ugly and non-recognizable\ndata.frame(c(19,21,40), c(\"m\",\"f\",\"m\")) \n\n  c.19..21..40. c..m....f....m..\n1            19                m\n2            21                f\n3            40                m\n\n\n\n\n\nA.9.1 Properties of data frames\nData frame has properties of matrix and list.\n\n\n\nnames(df)  ## df as a list\n\n[1] \"age\" \"gen\"\n\ncolnames(df)  ## df as a matrix\n\n[1] \"age\" \"gen\"\n\nlength(df) ## df as a list\n\n[1] 2\n\nncol(df) ## df as a matrix\n\n[1] 2\n\ndim(df) ## df as a matrix\n\n[1] 3 2\n\n\n\n\n## rbind() and cbind() can be used on df\ndf_r &lt;- data.frame(age = 10, \n                   gen = \"f\")\nrbind(df, df_r)\n\n  age gen\n1  19   m\n2  21   f\n3  40   m\n4  10   f\n\ndf_c &lt;- \n    data.frame(col = c(\"red\",\"blue\",\"gray\"))\n(df_new &lt;- cbind(df, df_c))\n\n  age gen  col\n1  19   m  red\n2  21   f blue\n3  40   m gray\n\n\n\n\n\nA.9.2 Subsetting a data frame\nCan use either list or matrix subsetting methods.\n\n\n\ndf_new\n\n  age gen  col\n1  19   m  red\n2  21   f blue\n3  40   m gray\n\n## Subset rows\ndf_new[c(1, 3), ]\n\n  age gen  col\n1  19   m  red\n3  40   m gray\n\n## select the row where age == 21\ndf_new[df_new$age == 21, ]\n\n  age gen  col\n2  21   f blue\n\n\n\n\n## Subset columns\n## like a list\ndf_new$age\n\n[1] 19 21 40\n\ndf_new[c(\"age\", \"gen\")]\n\n  age gen\n1  19   m\n2  21   f\n3  40   m\n\n## like a matrix\ndf_new[, c(\"age\", \"gen\")]\n\n  age gen\n1  19   m\n2  21   f\n3  40   m\n\n\n\n\n\ndf_new[c(1, 3), ]\n\n  age gen  col\n1  19   m  red\n3  40   m gray\n\nstr(df[\"age\"])  ## a data frame with one column\n\n'data.frame':   3 obs. of  1 variable:\n $ age: num  19 21 40\n\nstr(df[, \"age\"])  ## becomes a vector by default\n\n num [1:3] 19 21 40",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-r_prog.html#properties-of-data-frames",
+    "href": "a-r_prog.html#properties-of-data-frames",
+    "title": "Appendix A — R programming",
+    "section": "\nA.12 Properties of data frames",
+    "text": "A.12 Properties of data frames\nData frame has properties of matrix and list.\n\n\n\nnames(df)  ## df as a list\n\n[1] \"age\" \"gen\"\n\ncolnames(df)  ## df as a matrix\n\n[1] \"age\" \"gen\"\n\nlength(df) ## df as a list\n\n[1] 2\n\nncol(df) ## df as a matrix\n\n[1] 2\n\ndim(df) ## df as a matrix\n\n[1] 3 2\n\n\n\n\n## rbind() and cbind() can be used on df\ndf_r &lt;- data.frame(age = 10, \n                   gen = \"f\")\nrbind(df, df_r)\n\n  age gen\n1  19   m\n2  21   f\n3  40   m\n4  10   f\n\ndf_c &lt;- \n    data.frame(col = c(\"red\",\"blue\",\"gray\"))\n(df_new &lt;- cbind(df, df_c))\n\n  age gen  col\n1  19   m  red\n2  21   f blue\n3  40   m gray\n\n\n\n\n\nA.12.1 Subsetting a data frame\nCan use either list or matrix subsetting methods.\n\n\n\ndf_new\n\n  age gen  col\n1  19   m  red\n2  21   f blue\n3  40   m gray\n\n## Subset rows\ndf_new[c(1, 3), ]\n\n  age gen  col\n1  19   m  red\n3  40   m gray\n\n## select the row where age == 21\ndf_new[df_new$age == 21, ]\n\n  age gen  col\n2  21   f blue\n\n\n\n\n## Subset columns\n## like a list\ndf_new$age\n\n[1] 19 21 40\n\ndf_new[c(\"age\", \"gen\")]\n\n  age gen\n1  19   m\n2  21   f\n3  40   m\n\n## like a matrix\ndf_new[, c(\"age\", \"gen\")]\n\n  age gen\n1  19   m\n2  21   f\n3  40   m\n\n\n\n\n\ndf_new[c(1, 3), ]\n\n  age gen  col\n1  19   m  red\n3  40   m gray\n\nstr(df[\"age\"])  ## a data frame with one column\n\n'data.frame':   3 obs. of  1 variable:\n $ age: num  19 21 40\n\nstr(df[, \"age\"])  ## becomes a vector by default\n\n num [1:3] 19 21 40",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-r_prog.html#boxplot",
+    "href": "a-r_prog.html#boxplot",
+    "title": "Appendix A — R programming",
+    "section": "\nA.12 Boxplot",
+    "text": "A.12 Boxplot\n\npar(mar = c(4, 4, 0, 0))\nboxplot(mpg ~ cyl, \n        data = mtcars, \n        col = c(\"blue\", \"green\", \"red\"), \n        las = 1, \n        horizontal = TRUE,\n        xlab = \"Miles per gallon\", \n        ylab = \"Number of cylinders\")\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nA.12.1 Histogram\nhist() decides the class intervals/with based on breaks. If not provided, R chooses one.\n\n\n\nhist(mtcars$wt, \n     breaks = 20, \n     col = \"#003366\", \n     border = \"#FFCC00\", \n     xlab = \"weights\", \n     main = \"Histogram of weights\",\n     las = 1)\n\n\n\nhist(mtcars$wt, \n     breaks = 20, \n     col = \"#003366\", \n     border = \"#FFCC00\", \n     xlab = \"weights\", \n     main = \"Histogram of weights\",\n     las = 1)\n\n\n\n\n\n\n\n\n\n\nBesides color names, you can also use hex number to specify colors. Pretty handy.\n\nA.12.2 Barplot\n\n(counts &lt;- table(mtcars$gear)) \n\n\n 3  4  5 \n15 12  5 \n\n\n\nmy_bar &lt;- barplot(counts, \n                  main = \"Car Distribution\", \n                  xlab = \"Number of Gears\", \n                  las = 1)\ntext(x = my_bar, y = counts - 0.8, \n     labels = counts, \n     cex = 0.8)\n\n\n\n\n\n\n\n\nA.12.3 Pie chart\n\nPie charts are used for categorical variables, especially when we want to know percentage of each category.\nThe first argument is the frequency table, and you can add labels to each category.\n\n\n(percent &lt;- round(counts / sum(counts) * 100, 2))\n\n\n    3     4     5 \n46.88 37.50 15.62 \n\n(labels &lt;- paste0(3:5, \" gears: \", percent, \"%\"))\n\n[1] \"3 gears: 46.88%\" \"4 gears: 37.5%\"  \"5 gears: 15.62%\"\n\n\n\npie(x = counts, labels = labels,\n    main = \"Pie Chart\", \n    col = 2:4, \n    radius = 1)",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-r_prog.html#data-structure---matrix",
+    "href": "a-r_prog.html#data-structure---matrix",
+    "title": "Appendix A — R programming",
+    "section": "\nA.8 Data Structure - Matrix",
+    "text": "A.8 Data Structure - Matrix\n\nA matrix is a two-dimensional analog of a vector with attribute dim.\nUse command matrix() to create a matrix.\n\n\n## Create a 3 by 2 matrix called mat\n(mat &lt;- matrix(data = 1:6, nrow = 3, ncol = 2)) \n\n     [,1] [,2]\n[1,]    1    4\n[2,]    2    5\n[3,]    3    6\n\ndim(mat); nrow(mat); ncol(mat)\n\n[1] 3 2\n\n\n[1] 3\n\n\n[1] 2\n\n\n\n# elements are arranged by row\nmatrix(data = 1:6, \n       nrow = 3, \n       ncol = 2, \n       byrow = TRUE) #&lt;&lt;\n\n     [,1] [,2]\n[1,]    1    2\n[2,]    3    4\n[3,]    5    6\n\nattributes(mat)\n\n$dim\n[1] 3 2\n\n\n\nA.8.1 Row and Column Names\n\n\n\nmat\n\n     [,1] [,2]\n[1,]    1    4\n[2,]    2    5\n[3,]    3    6\n\n## assign row names and column names\nrownames(mat) &lt;- c(\"A\", \"B\", \"C\")\ncolnames(mat) &lt;- c(\"a\", \"b\")\nmat\n\n  a b\nA 1 4\nB 2 5\nC 3 6\n\n\n\n\nrownames(mat)\n\n[1] \"A\" \"B\" \"C\"\n\ncolnames(mat)\n\n[1] \"a\" \"b\"\n\nattributes(mat)\n\n$dim\n[1] 3 2\n\n$dimnames\n$dimnames[[1]]\n[1] \"A\" \"B\" \"C\"\n\n$dimnames[[2]]\n[1] \"a\" \"b\"\n\n\n\n\n\nA.8.2 Subsetting a Matrix\n\nUse the same indexing approach as vectors on rows and columns.\nUse comma , to separate row and column index.\n\nmat[2, 2] extracts the element of the second row and second column.\n\n\n\n\nmat\n\n  a b\nA 1 4\nB 2 5\nC 3 6\n\n## all rows and 2nd column\n## leave row index blank\n## specify 2 in coln index\nmat[, 2]\n\nA B C \n4 5 6 \n\n\n\n\n## 2nd row and all columns\nmat[2, ] \n\na b \n2 5 \n\n## The 1st and 3rd rows and the 1st column\nmat[c(1, 3), 1] \n\nA C \n1 3 \n\n\n\n\n\nA.8.3 Binding Matrices\n\ncbind() (binding matrices by adding columns)\nrbind() (binding matrices by adding rows)\nWhen matrices are combined by columns (rows), they should have the same number of rows (columns).\n\n\n\n\nmat\n\n  a b\nA 1 4\nB 2 5\nC 3 6\n\nmat_c &lt;- matrix(data = c(7,0,0,8,2,6), \n                nrow = 3, ncol = 2)\n## should have the same number of rows\ncbind(mat, mat_c)  \n\n  a b    \nA 1 4 7 8\nB 2 5 0 2\nC 3 6 0 6\n\n\n\n\nmat_r &lt;- matrix(data = 1:4, \n                nrow = 2, \n                ncol = 2)\n## should have the same number of columns\nrbind(mat, mat_r)  \n\n  a b\nA 1 4\nB 2 5\nC 3 6\n  1 3\n  2 4",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-r_prog.html#data-structure---data-frame",
+    "href": "a-r_prog.html#data-structure---data-frame",
+    "title": "Appendix A — R programming",
+    "section": "\nA.9 Data Structure - Data Frame",
+    "text": "A.9 Data Structure - Data Frame\n\nA data frame is of type list of equal-length vectors, having a 2-dimensional structure.\nMore general than matrix: Different columns can have different types.\nUse data.frame() that takes named vectors as input “element”.\n\n\n\n\n## data frame w/ an dbl column named age\n## and char column named gender.\n(df &lt;- data.frame(age = c(19, 21, 40), \n                  gen = c(\"m\",\"f\", \"m\")))\n\n  age gen\n1  19   m\n2  21   f\n3  40   m\n\n## a data frame has a list structure\nstr(df)  \n\n'data.frame':   3 obs. of  2 variables:\n $ age: num  19 21 40\n $ gen: chr  \"m\" \"f\" \"m\"\n\n\n\n\n## must set column names\n## or they are ugly and non-recognizable\ndata.frame(c(19,21,40), c(\"m\",\"f\",\"m\")) \n\n  c.19..21..40. c..m....f....m..\n1            19                m\n2            21                f\n3            40                m\n\n\n\n\n\nA.9.1 Properties of data frames\nData frame has properties of matrix and list.\n\n\n\nnames(df)  ## df as a list\n\n[1] \"age\" \"gen\"\n\ncolnames(df)  ## df as a matrix\n\n[1] \"age\" \"gen\"\n\nlength(df) ## df as a list\n\n[1] 2\n\nncol(df) ## df as a matrix\n\n[1] 2\n\ndim(df) ## df as a matrix\n\n[1] 3 2\n\n\n\n\n## rbind() and cbind() can be used on df\ndf_r &lt;- data.frame(age = 10, \n                   gen = \"f\")\nrbind(df, df_r)\n\n  age gen\n1  19   m\n2  21   f\n3  40   m\n4  10   f\n\ndf_c &lt;- \n    data.frame(col = c(\"red\",\"blue\",\"gray\"))\n(df_new &lt;- cbind(df, df_c))\n\n  age gen  col\n1  19   m  red\n2  21   f blue\n3  40   m gray\n\n\n\n\n\nA.9.2 Subsetting a data frame\nCan use either list or matrix subsetting methods.\n\n\n\ndf_new\n\n  age gen  col\n1  19   m  red\n2  21   f blue\n3  40   m gray\n\n## Subset rows\ndf_new[c(1, 3), ]\n\n  age gen  col\n1  19   m  red\n3  40   m gray\n\n## select the row where age == 21\ndf_new[df_new$age == 21, ]\n\n  age gen  col\n2  21   f blue\n\n\n\n\n## Subset columns\n## like a list\ndf_new$age\n\n[1] 19 21 40\n\ndf_new[c(\"age\", \"gen\")]\n\n  age gen\n1  19   m\n2  21   f\n3  40   m\n\n## like a matrix\ndf_new[, c(\"age\", \"gen\")]\n\n  age gen\n1  19   m\n2  21   f\n3  40   m\n\n\n\n\n\ndf_new[c(1, 3), ]\n\n  age gen  col\n1  19   m  red\n3  40   m gray\n\nstr(df[\"age\"])  ## a data frame with one column\n\n'data.frame':   3 obs. of  1 variable:\n $ age: num  19 21 40\n\nstr(df[, \"age\"])  ## becomes a vector by default\n\n num [1:3] 19 21 40",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-r_prog.html#data-structure---list",
+    "href": "a-r_prog.html#data-structure---list",
+    "title": "Appendix A — R programming",
+    "section": "\nA.7 Data Structure - List",
+    "text": "A.7 Data Structure - List\n\n\n\n\n\n\n\n\n\nLists are different from (atomic) vectors: Elements can be of any type, including lists. (Generic vectors)\nConstruct a list by using list().\n\n\n\n\n## a list of 3 elements of different types\nx_lst &lt;- list(idx = 1:3, \n              \"a\", \n              c(TRUE, FALSE))\n\n\n\n$idx\n[1] 1 2 3\n\n[[2]]\n[1] \"a\"\n\n[[3]]\n[1]  TRUE FALSE\n\n\n\n\nstr(x_lst)\n\nList of 3\n $ idx: int [1:3] 1 2 3\n $    : chr \"a\"\n $    : logi [1:2] TRUE FALSE\n\nnames(x_lst)\n\n[1] \"idx\" \"\"    \"\"   \n\nlength(x_lst)\n\n[1] 3\n\n\n\n\n\nA.7.1 Subsetting a list\n\n\nReturn an  element  of a list\n\n## subset by name (a vector)\nx_lst$idx  \n\n[1] 1 2 3\n\n## subset by indexing (a vector)\nx_lst[[1]]  \n\n[1] 1 2 3\n\ntypeof(x_lst$idx)\n\n[1] \"integer\"\n\n\n\n\nReturn a  sub-list  of a list\n\n## subset by name (still a list)\nx_lst[\"idx\"]  \n\n$idx\n[1] 1 2 3\n\n## subset by indexing (still a list)\nx_lst[1]  \n\n$idx\n[1] 1 2 3\n\ntypeof(x_lst[\"idx\"])\n\n[1] \"list\"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nIf list x is a train carrying objects, then x[[5]] is the object in car 5; x[4:6] is a train of cars 4-6.\n— @RLangTip, https://twitter.com/RLangTip/status/268375867468681216",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-r_prog.html#d-imaging",
+    "href": "a-r_prog.html#d-imaging",
+    "title": "Appendix A — R programming",
+    "section": "\nA.12 2D imaging",
+    "text": "A.12 2D imaging\n\nThe image() function displays the values in a matrix using color.\n\n\nmatrix(1:30, 6, 5)\n\n     [,1] [,2] [,3] [,4] [,5]\n[1,]    1    7   13   19   25\n[2,]    2    8   14   20   26\n[3,]    3    9   15   21   27\n[4,]    4   10   16   22   28\n[5,]    5   11   17   23   29\n[6,]    6   12   18   24   30\n\nimage(matrix(1:30, 6, 5))\n\n\n\n\n\n\n\n\nlibrary(fields)\n\nLoading required package: spam\n\n\nSpam version 2.10-0 (2023-10-23) is loaded.\nType 'help( Spam)' or 'demo( spam)' for a short introduction \nand overview of this package.\nHelp for individual functions is also obtained by adding the\nsuffix '.spam' to the function name, e.g. 'help( chol.spam)'.\n\n\n\nAttaching package: 'spam'\n\n\nThe following objects are masked from 'package:base':\n\n    backsolve, forwardsolve\n\n\nLoading required package: viridisLite\n\n\n\nTry help(fields) to get started.\n\nstr(volcano)\n\n num [1:87, 1:61] 100 101 102 103 104 105 105 106 107 108 ...\n\nimage.plot(volcano)\n\n\n\n\n\n\n\n\nx &lt;- 10*(1:nrow(volcano))\ny &lt;- 10*(1:ncol(volcano))\nimage(x, y, volcano, col = hcl.colors(100, \"terrain\"), axes = FALSE)\ncontour(x, y, volcano, levels = seq(90, 200, by = 5),\n        add = TRUE, col = \"brown\")\naxis(1, at = seq(100, 800, by = 100))\naxis(2, at = seq(100, 600, by = 100))\nbox()\ntitle(main = \"Maunga Whau Volcano\", font.main = 4)",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-r_prog.html#special-objects-1",
+    "href": "a-r_prog.html#special-objects-1",
+    "title": "Appendix A — R programming",
+    "section": "\nA.12 Special Objects",
+    "text": "A.12 Special Objects\n\nA.12.1 NA\n\nNA means Not Available, which is a logical constant of length 1 for a missing value indicator.\nEach type of vector has its own missing value. They all are reserved words.\nYou can always use NA and it will be converted to the correct type.\n\n\n\n\nNA            # logical\n\n[1] NA\n\nNA_integer_   # integer\n\n[1] NA\n\nNA_real_      # double\n\n[1] NA\n\nNA_character_ # character\n\n[1] NA\n\n\n\n\n\n## The NA in the vector x is NA_real_\nx &lt;- c(NA, 0, 1)\ntypeof(x)  \n\n[1] \"double\"\n\nis.na(x)\n\n[1]  TRUE FALSE FALSE\n\n\n\n\n\nA.12.2 NULL\n\n\nNULL represents the null object, an object representing nothing.\n\nNULL is a reserved word and can also be the product of importing data with unknown data type.\n\nNULL typically behaves like a vector of length 0.\n\n\n\n\ny &lt;- c(NA, NULL, \"\")\ny\n\n[1] NA \"\"\n\n## only first element is evaluated...\nis.null(y) \n\n[1] FALSE\n\n\n\n\n## a missing value is a value we don't know.\n## It is something.\nis.null(NA)\n\n[1] FALSE\n\nis.null(NULL)\n\n[1] TRUE\n\n# empty character is something, not nothing!\nis.null(\"\")\n\n[1] FALSE\n\n\n\n\n\nA.12.3 NaN, Inf, and -Inf\n\nIntegers have one special value: NA, while doubles have four: NA, NaN, Inf and -Inf.\nNaN means Not a Number.\nAll three special values NaN, Inf and -Inf can arise during division.\n\n\nc(-1, 0, 1) / 0\n\n[1] -Inf  NaN  Inf\n\n\n\nAvoid using ==. Use functions is.finite(), is.infinite(), and is.nan().\n\n\n\n\nis.finite(0)\n\n[1] TRUE\n\nis.nan(0/0)\n\n[1] TRUE\n\n\n\n\nis.infinite(7.8/1e-307)\n\n[1] FALSE\n\nis.infinite(7.8/1e-308)\n\n[1] TRUE\n\n\n\n\n\nA.12.4 Helper Functions\n\nNaN is a missing value too.\nThere should be something there, but it’s Not Available to us because of invalid operation.\n\n\n\n\n0\nInf\nNA\nNaN\n\n\n\nis.finite()\nv\n\n\n\n\n\nis.infinite()\n\nv\n\n\n\n\nis.na()\n\n\nv\nv\n\n\nis.nan()\n\n\n\nv\n\n\n\nA.12.5 NA, NULL, NaN comparison\n\n\n\nclass(NULL); class(NA); class(NaN)\n\n[1] \"NULL\"\n\n\n[1] \"logical\"\n\n\n[1] \"numeric\"\n\nNULL &gt; 5; NA &gt; 5; NaN &gt; 5\n\nlogical(0)\n\n\n[1] NA\n\n\n[1] NA\n\nlength(NULL); length(NA); length(NaN)\n\n[1] 0\n\n\n[1] 1\n\n\n[1] 1\n\n\n\n\n(vx &lt;- c(3, NULL, 5)); (vy &lt;- c(3, NA, 5)); (vz &lt;- c(3, NaN, 5))\n\n[1] 3 5\n\n\n[1]  3 NA  5\n\n\n[1]   3 NaN   5\n\nsum(vx)  # NULL isn't a problem cuz it doesn't exist\n\n[1] 8\n\nsum(vy)\n\n[1] NA\n\nsum(vy, na.rm = TRUE)\n\n[1] 8\n\nsum(vz)\n\n[1] NaN\n\nsum(vz, na.rm = TRUE)\n\n[1] 8",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-r_prog.html#nan-inf-and--inf",
+    "href": "a-r_prog.html#nan-inf-and--inf",
+    "title": "Appendix A — R programming",
+    "section": "\nA.13 NaN, Inf, and -Inf",
+    "text": "A.13 NaN, Inf, and -Inf\n\nIntegers have one special value: NA, while doubles have four: NA, NaN, Inf and -Inf.\nNaN means Not a Number.\nAll three special values NaN, Inf and -Inf can arise during division.\n\n\nc(-1, 0, 1) / 0\n\n[1] -Inf  NaN  Inf\n\n\n\nAvoid using ==. Use functions is.finite(), is.infinite(), and is.nan().\n\n\n\n\nis.finite(0)\n\n[1] TRUE\n\nis.nan(0/0)\n\n[1] TRUE\n\n\n\n\nis.infinite(7.8/1e-307)\n\n[1] FALSE\n\nis.infinite(7.8/1e-308)\n\n[1] TRUE\n\n\n\n\n\nA.13.1 Helper Functions\n\nNaN is a missing value too.\nThere should be something there, but it’s Not Available to us because of invalid operation.\n\n\n\n\n0\nInf\nNA\nNaN\n\n\n\nis.finite()\nv\n\n\n\n\n\nis.infinite()\n\nv\n\n\n\n\nis.na()\n\n\nv\nv\n\n\nis.nan()\n\n\n\nv\n\n\n\nA.13.2 NA, NULL, NaN comparison\n\n\n\nclass(NULL); class(NA); class(NaN)\n\n[1] \"NULL\"\n\n\n[1] \"logical\"\n\n\n[1] \"numeric\"\n\nNULL &gt; 5; NA &gt; 5; NaN &gt; 5\n\nlogical(0)\n\n\n[1] NA\n\n\n[1] NA\n\nlength(NULL); length(NA); length(NaN)\n\n[1] 0\n\n\n[1] 1\n\n\n[1] 1\n\n\n\n\n(vx &lt;- c(3, NULL, 5)); (vy &lt;- c(3, NA, 5)); (vz &lt;- c(3, NaN, 5))\n\n[1] 3 5\n\n\n[1]  3 NA  5\n\n\n[1]   3 NaN   5\n\nsum(vx)  # NULL isn't a problem cuz it doesn't exist\n\n[1] 8\n\nsum(vy)\n\n[1] NA\n\nsum(vy, na.rm = TRUE)\n\n[1] 8\n\nsum(vz)\n\n[1] NaN\n\nsum(vz, na.rm = TRUE)\n\n[1] 8",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
+    ]
+  },
+  {
+    "objectID": "a-r_prog.html#loops",
+    "href": "a-r_prog.html#loops",
+    "title": "Appendix A — R programming",
+    "section": "\nA.15 Loops",
+    "text": "A.15 Loops\n\nA.15.1 for loops\n\n## Syntax\nfor (value in that) {\n    this\n}\n\n\nfor (i in 1:5) {\n    print(i)\n}\n\n[1] 1\n[1] 2\n[1] 3\n[1] 4\n[1] 5\n\n\n\nfor (x in c(\"My\", \"1st\", \"for\", \"loop\")) {\n    print(x)\n}\n\n[1] \"My\"\n[1] \"1st\"\n[1] \"for\"\n[1] \"loop\"\n\n\n\nA.15.2 while loops\n\nwhile (condition) {\n    # body\n}\n\n\nYou can rewrite any for loop as a while loop, but you can’t rewrite every while loop as a for loop.\n\n\nfor (i in seq_along(x)) {\n    # body\n}\n\n# Equivalent to\ni &lt;- 1\nwhile (i &lt;= length(x)) {\n    # body\n    i &lt;- i + 1 \n}\n\n\n\n\n\n\n\n\nWe find how many tries it takes to get 5 heads in a row:\n\n\n## a function that sample one from \"T\" or \"H\"\nflip &lt;- function() sample(c(\"T\", \"H\"), 1)\n\nflips &lt;- 0; nheads &lt;- 0\n\nwhile (nheads &lt; 5) {\n    if (flip() == \"H\") {\n        nheads &lt;- nheads + 1\n    } else {\n        nheads &lt;- 0\n    }\n    flips &lt;- flips + 1\n}\n\nflips\n\n[1] 85",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>R programming</span>"
     ]
   }
 ]

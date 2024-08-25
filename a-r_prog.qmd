@@ -1,14 +1,1198 @@
 # R programming {#sec-r-prog}
 
+## Arithmetic and Logical Operators
+
+```{r}
+#| echo: true
+2 + 3 / (5 * 4) ^ 2
+5 == 5.00
+# 5 and 5L are of the same value too
+# 5 is of type double; 5L is integer
+5 == 5L
+typeof(5L)
+!TRUE == FALSE
+```
+
+
+**Type coercion**: When doing AND/OR comparisons, all nonzero values are treated as `TRUE` and 0 as `FALSE`.
+
+```{r}
+#| echo: true
+-5 | 0
+1 & 1
+2 | 0
+```
+
+
+## Math Functions
+
+Math functions in R are built-in.
+
+```{r}
+#| echo: true
+sqrt(144)
+exp(1)
+sin(pi/2)
+log(32, base = 2)
+abs(-7)
+```
+
+## Variables and Assignment
+
+Use `<-` to do **assignment**. [Why](https://colinfay.me/r-assignment/)
+
+```{r}
+#| echo: true
+## we create an object, value 5, 
+## and call it x, which is a variable
+x <- 5
+x
+(x <- x + 6)
+x == 5
+log(x)
+```
+
+## Object Types
+
+**`character`**, **`double`**, **`integer`** and **`logical`**.
+
+```{r}
+#| echo: true
+typeof(5)
+```
+
+```{r}
+#| echo: true
+typeof(5L)
+```
+
+```{r}
+#| echo: true
+typeof("I_love_data_science!")
+```
+
+```{r}
+#| echo: true
+typeof(1 > 3)
+```
+
+```{r}
+#| echo: true
+is.double(5L)
+```
+
+## Data Structure - Vector
+
+:::: {.columns}
+
+::: {.column width="50%"}
+```{r}
+#| echo: false
+knitr::include_graphics("https://raw.githubusercontent.com/hadley/adv-r/master/diagrams/vectors/summary-tree-atomic.png")
+```
+:::
+
+
+
+::: {.column width="50%"}
+```{r}
+#| echo: false
+knitr::include_graphics("https://raw.githubusercontent.com/hadley/adv-r/master/diagrams/vectors/summary-tree.png")
+```
+:::
+::::
+
+- Variable defined previously is a **scalar** value, or in fact a (atomic) **vector of length one**.
+
+
+### (Atomic) Vector
+
+- To create a vector, use `c()`, short for *concatenate* or *combine*.
+
+- **All** elements of a vector must be of the **same type**. 
+
+```{r}
+#| label: vector1
+#| echo: true
+(dbl_vec <- c(1, 2.5, 4.5)) 
+(int_vec <- c(1L, 6L, 10L))
+## TRUE and FALSE can be written as T and F
+(log_vec <- c(TRUE, FALSE, F))  
+(chr_vec <- c("pretty", "girl"))
+```
+
+```{r}
+#| label: vector2
+#| echo: true
+## check how many elements in a vector
+length(dbl_vec) 
+## check a compact description of 
+## any R data structure
+str(dbl_vec) 
+```
+
+### Sequence of Numbers
+
+- Use `:` to create a sequence of *integers*.
+
+- Use `seq()` to create a sequence of numbers of type `double` with more options.
+<!-- - Vectors created by `seq()` are  -->
+
+```{r}
+#| echo: true
+#| label: seq
+(vec <- 1:5) 
+typeof(vec)
+
+# a sequence of numbers from 1 to 10 with increment 2
+(seq_vec <- seq(from = 1, to = 10, by = 2))
+typeof(seq_vec)
+```
+
+```{r}
+#| echo: true
+# a sequence of numbers from 1 to 10
+# with 12 elements
+seq(from = 1, to = 10, length.out = 12)
+```
+
+
+### Operations on Vectors
+
+- We can do any operations on vectors as we do on a *scalar* variable (vector of length 1).
+
+```{r}
+#| echo: true
+#| label: vector-arithmetic1
+# Create two vectors
+v1 <- c(3, 8)
+v2 <- c(4, 100) 
+
+## All operations happen element-wisely
+# Vector addition
+v1 + v2
+# Vector subtraction
+v1 - v2
+```
+
+```{r}
+#| echo: true
+#| label: vector-arithmetic2
+# Vector multiplication
+v1 * v2
+# Vector division
+v1 / v2
+sqrt(v2)
+```
+
+### Recycling of Vectors
+- If we apply arithmetic operations to two vectors of **unequal** length, the elements of the shorter vector will be **recycled** to complete the operations.
+<!-- - Beware of recycling! -->
+<!-- - The concept of *recycling* helps us write more concise code. -->
+
+```{r}
+#| echo: true
+#| label: recycle
+v1 <- c(3, 8, 4, 5)
+# The following 2 operations are the same
+v1 * 2
+v1 * c(2, 2, 2, 2)
+v3 <- c(4, 11)
+v1 + v3  ## v3 becomes c(4, 11, 4, 11) when doing the operation
+```
+
+### Subsetting Vectors
+
+- To extract element(s) in a vector, we use a pair of brackets `[]` with element indexing.
+
+- The indexing **starts with 1**.
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+```{r}
+#| echo: true
+#| label: subsetting1
+v1
+v2
+## The 3rd element
+v1[3] 
+```
+:::
+
+
+::: {.column width="50%"}
+```{r}
+#| echo: true
+#| label: subsetting2
+v1[c(1, 3)]
+v1[1:2]
+## extract all except a few elements
+## put a negative sign before the vector of 
+## indices
+v1[-c(2, 3)] 
+```
+
+```{r, echo = FALSE, eval=FALSE}
+#| echo: false
+#| eval: false
+x <- c(1, 5, 2, 6)
+names(x) <- letters[1:4]
+x["c"]
+```
+:::
+::::
+
+
+
+## Data Structure - Factor
+
+- A vector of type `factor` can be *ordered in a meaningful way.* 
+
+- Create a factor by `factor()`. It is a type of **integer**, not **character**. `r emo::ji('astonished')`  `r emo::ji('roll_eyes')` 
+
+
+```{r}
+#| echo: true
+#| label: factor
+## Create a factor from a character vector using function factor()
+(fac <- factor(c("med", "high", "low")))
+typeof(fac)  ## The type is integer.
+str(fac)  ## The integers show the level each element in vector fac belongs to.
+```
+
+```{r}
+#| echo: true
+#| label: order_factor
+order_fac <- factor(c("med", "high", "low"),
+                    levels = c("low", "med", "high"))
+str(order_fac)
+```
+
+```{r}
+levels(fac) ## Each level represents an integer, ordered from the vector alphabetically.
+```
+
+## Data Structure - List
+
+```{r}
+#| out-width: 50%
+#| echo: false
+knitr::include_graphics("https://raw.githubusercontent.com/hadley/adv-r/master/diagrams/vectors/summary-tree.png")
+```
+
+
+- Lists are different from (atomic) vectors: Elements can be of **any type**, including lists. (Generic vectors)
+
+- Construct a list by using **`list()`**.
+
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+```{r}
+#| echo: true
+#| label: list1
+## a list of 3 elements of different types
+x_lst <- list(idx = 1:3, 
+              "a", 
+              c(TRUE, FALSE))
+```
+```{r, echo=FALSE}
+x_lst
+```
+:::
+
+::: {.column width="50%"}
+```{r}
+#| echo: true
+#| label: list2
+str(x_lst)
+names(x_lst)
+length(x_lst)
+```
+:::
+::::
+
+
+### Subsetting a list
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+<br>
+**Return an <span style="color:red"> element </span> of a list**
+
+```{r}
+#| echo: true
+#| label: list3
+## subset by name (a vector)
+x_lst$idx  
+## subset by indexing (a vector)
+x_lst[[1]]  
+typeof(x_lst$idx)
+```
+:::
+
+::: {.column width="50%"}
+::: {.fragment}
+<br>
+**Return a <span style="color:red"> sub-list </span> of a list**
+
+
+```{r}
+#| echo: true
+#| label: list4
+## subset by name (still a list)
+x_lst["idx"]  
+## subset by indexing (still a list)
+x_lst[1]  
+typeof(x_lst["idx"])
+```
+:::
+:::
+::::
+
+<!-- ::: notes -->
+<!-- - This is where we should pay more attention to. When we subset a list, it may return an element of the list, or it returns a sub-list of the list. -->
+<!-- - Let's see how it happens.  -->
+<!-- - This is our x_lst. We can subset a list by name or by indexing.  -->
+<!-- - Suppose we want the first element of the list, we can get it by its name using x_lst$idx. -->
+<!-- - We can also obtain it by using indexing like x_lst[[1]] because we want the first element. -->
+<!-- - Notice that the way we subset a list returns an integer vector, the real first element of the list, not a list.  -->
+<!-- - Let's see another case on the right. -->
+<!-- - We can also subset by name using single pair of brackets, and put the name inside the brackets. -->
+<!-- - Or we can subset by indexing, again using single pair of brackets. -->
+<!-- - And you see what happened? The way we subset a list here returns a sub-list, not the element itself.  -->
+<!-- - So please be careful when subsetting a list.  -->
+<!-- - If you want a vector, use these ways. If you want to keep it as a list, use these ways. -->
+<!-- ::: -->
+
+```{r}
+#| label: list_condiment
+#| echo: false
+knitr::include_graphics("./images/img-app/list_condiment.png")
+```
+
+> If list `x` is a train carrying objects, then `x[[5]]` is
+> the object in car 5; `x[4:6]` is a train of cars 4-6.
+>
+> --- \@RLangTip, <https://twitter.com/RLangTip/status/268375867468681216>
+
+```{r}
+#| echo: false
+knitr::include_graphics("https://raw.githubusercontent.com/hadley/adv-r/master/diagrams/subsetting/train.png")
+```
+
+```{r}
+#| echo: false
+knitr::include_graphics("https://raw.githubusercontent.com/hadley/adv-r/master/diagrams/subsetting/train-single.png")
+```
+
+
+## Data Structure - Matrix
+
+- A matrix is a *two-dimensional analog of a vector* with **attribute** `dim`.
+
+- Use command `matrix()` to create a matrix.
+
+```{r}
+#| label: matrix1
+#| tidy: false
+#| echo: true
+## Create a 3 by 2 matrix called mat
+(mat <- matrix(data = 1:6, nrow = 3, ncol = 2)) 
+dim(mat); nrow(mat); ncol(mat)
+```
+
+```{r matrix2, tidy=FALSE}
+# elements are arranged by row
+matrix(data = 1:6, 
+       nrow = 3, 
+       ncol = 2, 
+       byrow = TRUE) #<<
+attributes(mat)
+```
+
+
+
+### Row and Column Names
+:::: {.columns}
+
+::: {.column width="50%"}
+```{r}
+#| label: matrix3
+#| echo: true
+mat
+## assign row names and column names
+rownames(mat) <- c("A", "B", "C")
+colnames(mat) <- c("a", "b")
+mat
+```
+:::
+
+::: {.column width="50%"}
+```{r matrix4}
+#| label: matrix4
+#| echo: true
+rownames(mat)
+colnames(mat)
+attributes(mat)
+```
+:::
+::::
+
+
+
+### Subsetting a Matrix
+- Use the same indexing approach as vectors on rows and columns.
+- Use comma `,` to separate row and column index.
+- `mat[2, 2]` extracts the element of the second row and second column.
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+```{r}
+#| label: matrix-idx1
+#| echo: true
+mat
+## all rows and 2nd column
+## leave row index blank
+## specify 2 in coln index
+mat[, 2]
+```
+:::
+
+
+::: {.column width="50%"}
+```{r}
+#| label: matrix-idx2
+#| echo: true
+## 2nd row and all columns
+mat[2, ] 
+## The 1st and 3rd rows and the 1st column
+mat[c(1, 3), 1] 
+```
+:::
+::::
+
+### Binding Matrices
+
+- `cbind()` (binding matrices by adding columns)
+
+- `rbind()` (binding matrices by adding rows)
+  
+- When matrices are combined by columns (rows), they should have the same number of rows (columns).
+
+:::: {.columns}
+
+::: {.column width="50%"}
+```{r}
+#| label: matrix-cbind
+#| echo: true
+mat
+mat_c <- matrix(data = c(7,0,0,8,2,6), 
+                nrow = 3, ncol = 2)
+## should have the same number of rows
+cbind(mat, mat_c)  
+```
+:::
+
+::: {.column width="50%"}
+```{r}
+#| label: matrix-rbind
+#| echo: true
+mat_r <- matrix(data = 1:4, 
+                nrow = 2, 
+                ncol = 2)
+## should have the same number of columns
+rbind(mat, mat_r)  
+```
+:::
+::::
+
+
+
+
+## Data Structure - Data Frame
+
+- A data frame is of type **list** of *equal-length* vectors, having a *2-dimensional* structure.
+
+- More general than matrix: *Different columns can have different types*.
+
+- Use `data.frame()` that takes *named* vectors as input "element".
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+```{r}
+#| label: dataframe1
+#| echo: true
+## data frame w/ an dbl column named age
+## and char column named gender.
+(df <- data.frame(age = c(19, 21, 40), 
+                  gen = c("m","f", "m")))
+
+## a data frame has a list structure
+str(df)  
+```
+:::
+
+::: {.column width="50%"}
+
+```{r}
+#| label: dataframe2
+#| echo: true
+## must set column names
+## or they are ugly and non-recognizable
+data.frame(c(19,21,40), c("m","f","m")) 
+```
+:::
+::::
+
+
+### Properties of data frames
+
+Data frame has properties of matrix and list.
+
+
+
+:::: {.columns}
+
+::: {.column width="40%"}
+
+```{r}
+#| label: df-fcns
+#| echo: true
+names(df)  ## df as a list
+colnames(df)  ## df as a matrix
+length(df) ## df as a list
+ncol(df) ## df as a matrix
+dim(df) ## df as a matrix
+```
+:::
+
+
+::: {.column width="60%"}
+
+```{r}
+#| label: df-bind
+#| echo: true
+## rbind() and cbind() can be used on df
+df_r <- data.frame(age = 10, 
+                   gen = "f")
+rbind(df, df_r)
+df_c <- 
+    data.frame(col = c("red","blue","gray"))
+(df_new <- cbind(df, df_c))
+```
+
+:::
+::::
+
+
+### Subsetting a data frame
+
+Can use either list or matrix subsetting methods.
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+```{r}
+#| label: df-subset1
+#| echo: true
+df_new
+## Subset rows
+df_new[c(1, 3), ]
+## select the row where age == 21
+df_new[df_new$age == 21, ]
+```
+:::
+
+::: {.column width="50%"}
+```{r, echo=1:6, eval=1:6}
+#| label: df-subset2
+#| echo: true
+## Subset columns
+## like a list
+df_new$age
+df_new[c("age", "gen")] 
+## like a matrix
+df_new[, c("age", "gen")]
+```
+:::
+::::
+
+```{r}
+df_new[c(1, 3), ]
+str(df["age"])  ## a data frame with one column
+str(df[, "age"])  ## becomes a vector by default
+```
+
+
+
 
 ## Special Objects
 
 
 ## Plotting
 
+### Scatter plot
+
+:::: {.columns}
+
+::: {.column width="50%"}
+```{r}
+#| echo: true
+#| label: mtcars
+#| out-width: "38%"
+#| class-output: "my_class600"
+mtcars[1:15, 1:4]
+```
+:::
+
+
+::: {.column width="50%"}
+```{r}
+#| echo: true
+#| label: scatter
+plot(x = mtcars$mpg, y = mtcars$hp, 
+     xlab  = "Miles per gallon", 
+     ylab = "Horsepower", 
+     main = "Scatter plot", 
+     col = "red", 
+     pch = 5, las = 1)
+```
+:::
+::::
+
+### Argument pch 
+
+
+```{r}
+plot(x = 1:25, y = rep(1, 25), pch = 1:25, xlab = "", ylab = "", main = "pch", axes = FALSE)
+axis(1, at = 1:25, cex.axis = 0.5)
+```
+
+- The default is pch = 1
+
+### R Subplots
+
+```{r}
+#| echo: true
+
+par(mfrow = c(1, 2))
+plot(x = mtcars$mpg, y = mtcars$hp, xlab = "mpg")
+plot(x = mtcars$mpg, y = mtcars$weight, xlab = "mpg")
+```
+
+
+### Boxplot
+
+```{r}
+#| echo: true
+#| label: boxplot
+#| warning: false
+
+par(mar = c(4, 4, 0, 0))
+boxplot(mpg ~ cyl, 
+        data = mtcars, 
+        col = c("blue", "green", "red"), 
+        las = 1, 
+        horizontal = TRUE,
+        xlab = "Miles per gallon", 
+        ylab = "Number of cylinders")
+```
+
+<!-- ::: notes -->
+<!-- - Visualizing relationships between numerical and categorical data, we can check side-by-side boxplots. -->
+<!-- - For example, if we want to check the data variation of (miles per gallon) for each number of cylinder, we can use boxplot() function. -->
+<!-- - And inside the function, we use the formula mpg ~ cyl, and specify the dataset.  -->
+<!-- - That is basically it. The rest of arguments are decorating your plot. They are optional. -->
+<!-- ::: -->
+
+### Histogram
+
+ `hist()` decides the class intervals/with based on `breaks`. If not provided, R chooses one.
+
+```{r}
+#| echo: true
+#| label: hist
+#| warning: false
+hist(mtcars$wt, 
+     breaks = 20, 
+     col = "#003366", 
+     border = "#FFCC00", 
+     xlab = "weights", 
+     main = "Histogram of weights",
+     las = 1)
+```
+
+- Besides color names, you can also use hex number to specify colors. Pretty handy.
+
+
+### Barplot
+
+
+```{r}
+#| echo: true
+(counts <- table(mtcars$gear)) 
+```
+
+```{r barplot}
+#| echo: true
+#| label: barplot
+#| warning: false
+#| out-width: "60%"
+my_bar <- barplot(counts, 
+                  main = "Car Distribution", 
+                  xlab = "Number of Gears", 
+                  las = 1)
+text(x = my_bar, y = counts - 0.8, 
+     labels = counts, 
+     cex = 0.8)
+```
+
+
+
+### Pie chart
+
+- Pie charts are used for categorical variables, especially when we want to know percentage of each category.
+
+- The first argument is the frequency table, and you can add labels to each category.
+
+```{r}
+#| echo: true
+(percent <- round(counts / sum(counts) * 100, 2))
+(labels <- paste0(3:5, " gears: ", percent, "%"))
+```
+
+
+```{r}
+#| echo: true
+#| label: pie
+pie(x = counts, labels = labels,
+    main = "Pie Chart", 
+    col = 2:4, 
+    radius = 1)
+```
+
+
+### 2D imaging
+
+- The `image()` function displays the values in a matrix using color.
+
+```{r image, warning = FALSE}
+#| echo: true
+matrix(1:30, 6, 5)
+image(matrix(1:30, 6, 5))
+```
+
+
+```{r imageplot, warning = FALSE}
+#| echo: true
+library(fields)
+str(volcano)
+image.plot(volcano)
+```
+
+
+```{r}
+x <- 10*(1:nrow(volcano))
+y <- 10*(1:ncol(volcano))
+image(x, y, volcano, col = hcl.colors(100, "terrain"), axes = FALSE)
+contour(x, y, volcano, levels = seq(90, 200, by = 5),
+        add = TRUE, col = "brown")
+axis(1, at = seq(100, 800, by = 100))
+axis(2, at = seq(100, 600, by = 100))
+box()
+title(main = "Maunga Whau Volcano", font.main = 4)
+```
+
+
+### 3D scatter plot
+
+```{r 3dplot, warning = FALSE}
+#| echo: true
+library(scatterplot3d)
+scatterplot3d(x = mtcars$wt, y = mtcars$disp, z = mtcars$mpg, 
+              xlab = "Weights", ylab = "Displacement", zlab = "Miles per gallon", 
+              main = "3D Scatter Plot",
+              pch = 16, color = "steelblue")
+```
+
+
+
+### Perspective plot
+
+```{r persp, warning = FALSE}
+#| echo: true
+# Exaggerate the relief
+z <- 2 * volcano      
+# 10 meter spacing (S to N)
+x <- 10 * (1:nrow(z))   
+# 10 meter spacing (E to W)
+y <- 10 * (1:ncol(z))   
+par(bg = "slategray")
+persp(x, y, z, theta = 135, phi = 30, col = "green3", scale = FALSE,
+      ltheta = -120, shade = 0.75, border = NA, box = FALSE)
+```
+
+
+## Special Objects
+
+
+### NA
+
+- `NA` means **N**ot **A**vailable, which is a **logical constant** of length 1 for a missing value indicator.
+
+- Each type of vector has its own missing value. They all are [**reserved** words](https://stat.ethz.ch/R-manual/R-devel/library/base/html/Reserved.html).
+
+- You can always use `NA` and it will be converted to the correct type.
+
+:::: {.columns}
+::: {.column width="50%"}
+```{r}
+NA            # logical
+NA_integer_   # integer
+NA_real_      # double
+NA_character_ # character
+```
+:::
+
+::: {.column width="50%"}
+<!-- using the implicit coercion rules -->
+```{r}
+## The NA in the vector x is NA_real_
+x <- c(NA, 0, 1)
+typeof(x)  
+is.na(x)
+```
+:::
+::::
+
+
+### NULL 
+
+- `NULL` represents the null object, an object representing **nothing**.
+- `NULL` is a reserved word and can also be the product of importing data with unknown data type.
+- `NULL` typically behaves like **a vector of length 0**.
+
+:::: {.columns}
+::: {.column width="50%"}
+```{r}
+y <- c(NA, NULL, "")
+y
+## only first element is evaluated...
+is.null(y) 
+```
+:::
+
+
+::: {.column width="50%"}
+```{r}
+## a missing value is a value we don't know.
+## It is something.
+is.null(NA)
+is.null(NULL)
+# empty character is something, not nothing!
+is.null("")
+```
+:::
+::::
+
+
+### NaN, Inf, and -Inf
+
+- Integers have one special value: `NA`, while doubles have four: `NA`, `NaN`, `Inf` and `-Inf`.
+
+- `NaN` means **N**ot **a** **N**umber.
+
+- All three special values `NaN`, `Inf` and `-Inf` can arise during division.
+```{r}
+c(-1, 0, 1) / 0
+```
+
+- Avoid using `==`. Use functions `is.finite()`, `is.infinite()`, and `is.nan()`.
+
+:::: {.columns}
+::: {.column width="50%"}
+```{r}
+is.finite(0)
+is.nan(0/0)
+```
+:::
+
+
+::: {.column width="50%"}
+```{r}
+is.infinite(7.8/1e-307)
+is.infinite(7.8/1e-308)
+```
+:::
+::::
+
+
+### Helper Functions
+
+- `NaN` is a missing value too.
+
+- There should be something there, but it's **N**ot **A**vailable to us because of invalid operation.
+
+|                  |  0  | Inf | NA  | NaN |
+|------------------|-----|-----|-----|-----|
+| `is.finite()`    |  v  |     |     |     |
+| `is.infinite()`  |     |  v  |     |     |
+| `is.na()`        |     |     |  v  |  v  |
+| `is.nan()`       |     |     |     |  v  |
+
+
+### NA, NULL, NaN comparison
+
+:::: {.columns}
+::: {.column width="50%"}
+```{r}
+class(NULL); class(NA); class(NaN)
+NULL > 5; NA > 5; NaN > 5
+length(NULL); length(NA); length(NaN)
+```
+:::
+
+::: {.column width="50%"}
+```{r}
+(vx <- c(3, NULL, 5)); (vy <- c(3, NA, 5)); (vz <- c(3, NaN, 5))
+sum(vx)  # NULL isn't a problem cuz it doesn't exist
+sum(vy)
+sum(vy, na.rm = TRUE)
+sum(vz)
+sum(vz, na.rm = TRUE)
+```
+:::
+::::
+
+<!-- ??? -->
+<!-- - NaN is a numeric value because it comes from a numerical operation, although the operation is invalid or not defined. -->
+<!-- - When doing comparisons, NULL > 5 tells us, all right you are doing something logical, but it's nothing. -->
+<!-- - Is NA > 5? Is NaN > 5? Well, is something we don't know > 5? It again, returns something we don't know. -->
+<!-- - If a vector includes something we don't know, any operations based on the vector returns something we don't know. -->
+<!-- - We can set argument na.rm to be TRUE to remove missing values. -->
 
 ## Conditions
 
+```{r, eval=FALSE}
+# The condition must evaluate to either TRUE or FALSE.
+if (condition) {
+  # code executed when condition is TRUE
+} else {
+  # code executed when condition is FALSE
+}
+```
+
+```{r, eval=FALSE}
+if (c(TRUE, FALSE)) {}
+#> Warning in if (c(TRUE, FALSE)) {: the condition has length > 1 and only the
+#> first element will be used
+#> NULL
+
+if (NA) {}
+#> Error in if (NA) {: missing value where TRUE/FALSE needed
+```
+
+- You can use `||` (or) and `&&` (and) to combine multiple logical expressions.
+```{r, eval=FALSE}
+if (cond1 || cond2) {
+  # code executed when condition is TRUE
+}
+```
+
+
+- The basic If-else statement structure is that we write if then put a condition inside a pair of parenthesis, then use curly braces to wrap the code to be run when the condition is TRUE.
+
+- If we want to have the code to be run when the condition is FALSE, we add else and another pair of curly braces.
+
+- curly braces is not necessary if you just have one line of code to be run.
+
+- The condition must evaluate to either one TRUE or one FALSE.
+
+- If it's a vector, you'll get a warning message, and only the first element will be used.
+
+- If it's an NA, you'll get an error.
+
+
+<!-- ## Conditional Expressions - Multiple conditions -->
+```{r, eval=FALSE}
+if (this) {
+    # do that
+} else if (that) {
+    # do something else
+} else {
+    # 
+}
+```
+
+
+```{r, eval=FALSE}
+if (celsius <= 0) {
+    "freezing"
+} else if (celsius <= 10) {
+    "cold"
+} else if (celsius <= 20) {
+   "cool"
+} else if (celsius <= 30) {
+    "warm"
+} else {
+    "hot"
+}
+```
+
+
+- If we want to have multiple conditions, we add the word else if.
+
+- The code below is an example of converting numerical data to categorical data, freezing, cold, warm and hot.
+
+- It's not the best way to do conversion.
+
+<!-- ## Conditional Expressions - Multiple conditions -->
+- If you end up with a very long series of chained if-else statements, rewrite it! 
+```{r logical-operator, echo=FALSE, out.width="100%", fig.align='center', fig.cap = "https://speakerdeck.com/jennybc/code-smells-and-feels"}
+ knitr::include_graphics("./images/img-app/ifelse.png")
+```
+
+
+- If you end up with a very long series of chained if-else statements, rewrite it! Don't confuse readers and especially yourself. 
+- We have a function called "get same data". 
+- When you read the code in a linear fashion from top to bottom, you are falling down and down into conditions that were like a long time ago that you saw what you are actually checking.
+- Here is another way to write the exactly the same function. ..... and now I am on the happy path. I get the data.
+- So if I open a file, and I know that something is gone wrong and checking all these things, I am much happier to be facing this than that!
+- I think our brain cannot process too many layers. When we are trying to analyze so many layers, we just get lost. 
+
+<!-- ## Conditional Expressions - Multiple conditions -->
+```{r, echo=FALSE, out.width="100%", fig.align='center', fig.cap = "https://speakerdeck.com/jennybc/code-smells-and-feels"}
+ knitr::include_graphics("./images/img-app/yoda_ifelse.png")
+```
+
+- So there is no else, there is only if! 
+- Back, on the left, every if has an else.
+- On the right, we have no else. And this makes your code much more readable!
+
 
 ## Functions
+
+- Write a function whenever you've copied and pasted your code more than twice.
+
+- Three key steps/components:
+  + pick a **name** for the function. 
+  + list the inputs, or **arguments**, to the function inside function.
+  + place the code you have developed in **body** of the function.
+  
+  
+```{r}
+#| eval: false
+function_name <- function(arg1, arg2, ...) {
+    ## body
+    return(something)
+}
+```
+
+```{r}
+add_number <- function(a, b) {
+    c <- a + b
+    return(c)
+}
+
+n1 <- 9
+n2 <- 18
+add_number(n1, n2)
+```
+
+
+## Loops
+
+### for loops
+
+```{r, eval=FALSE}
+## Syntax
+for (value in that) {
+    this
+}
+```
+
+```{r}
+for (i in 1:5) {
+    print(i)
+}
+```
+
+```{r}
+for (x in c("My", "1st", "for", "loop")) {
+    print(x)
+}
+```
+
+
+
+
+### while loops
+
+```{r, eval=FALSE}
+while (condition) {
+    # body
+}
+```
+
+- You can rewrite any `for` loop as a `while` loop, but you can't rewrite every `while` loop as a `for` loop.
+
+```{r, eval=FALSE}
+for (i in seq_along(x)) {
+    # body
+}
+
+# Equivalent to
+i <- 1
+while (i <= length(x)) {
+    # body
+    i <- i + 1 
+}
+```
+
+
+<!-- - While loop. Again, we have a () {} structure -->
+<!-- - Sometimes you don't know how long the input sequence should run for because the length of looping depends on some condition.  -->
+<!-- - Under this situation, you can't do iteration using for loop.  -->
+<!-- - And in this case, while loop should be used. -->
+<!-- - A while loop is also more general than a for loop, because you can rewrite any for loop as a while loop, but you can't rewrite every while loop as a for loop. -->
+<!-- - seq_along(x) same as 1:length(x) -->
+
+- We find how many tries it takes to get 5 heads in a row:
+
+```{r}
+## a function that sample one from "T" or "H"
+flip <- function() sample(c("T", "H"), 1)
+
+flips <- 0; nheads <- 0
+
+while (nheads < 5) {
+    if (flip() == "H") {
+        nheads <- nheads + 1
+    } else {
+        nheads <- 0
+    }
+    flips <- flips + 1
+}
+
+flips
+```
+
+<!-- ??? -->
+<!-- - set a variable flips to count the number of times we flip a coin. -->
+<!-- - nheads counts how many times heads shows up in a row. -->
+<!-- - Count how many times we flip a coin randomly in order to get 5 heads in a row. -->
+<!-- - every time the statement is run, add one to flips. -->
+
 

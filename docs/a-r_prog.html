@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.4.555">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
 <meta name="description" content="A comprehensive introductory statistical data science book.">
-
 <title>Introduction to Statistics - Appendix A — R programming</title>
 <style>
 code{white-space: pre-wrap;}
@@ -21,8 +18,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
-
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
@@ -43,8 +73,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -70,12 +99,7 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script>
-
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
+}</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
 const typesetMath = (el) => {
   if (window.MathJax) {
     // MathJax Typeset
@@ -100,17 +124,12 @@ const typesetMath = (el) => {
 window.Quarto = {
   typesetMath
 };
-</script>
-
-<link rel="stylesheet" href="custom.css">
+</script><link rel="stylesheet" href="custom.css">
 </head>
-
 <body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
@@ -121,13 +140,9 @@ window.Quarto = {
         <i class="bi bi-search"></i>
       </button>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Introduction to Statistics</a> 
         <div class="sidebar-tools-main tools-wide">
@@ -136,26 +151,26 @@ window.Quarto = {
     <div class="dropdown">
       <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Share"><i class="bi bi-share"></i></a>
       <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
-          <li>
-            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
+<li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=%7Curl%7C">
               <i class="bi bi-bi-twitter pe-1"></i>
             Twitter
             </a>
           </li>
           <li>
-            <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=|url|">
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=%7Curl%7C">
               <i class="bi bi-bi-facebook pe-1"></i>
             Facebook
             </a>
           </li>
           <li>
-            <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=|url|">
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=%7Curl%7C">
               <i class="bi bi-bi-linkedin pe-1"></i>
             LinkedIn
             </a>
           </li>
       </ul>
-    </div>
+</div>
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
     </div>
@@ -167,7 +182,7 @@ window.Quarto = {
         </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Welcome</span></a>
@@ -181,8 +196,8 @@ window.Quarto = {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./intro-stats.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Science of Data and Data Science</span></span></a>
@@ -201,7 +216,7 @@ window.Quarto = {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./datasummary.html" class="sidebar-item-text sidebar-link">
@@ -210,8 +225,8 @@ window.Quarto = {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./data-graphics.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Visualization</span></span></a>
@@ -224,7 +239,7 @@ window.Quarto = {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./prob.html" class="sidebar-item-text sidebar-link">
@@ -233,8 +248,8 @@ window.Quarto = {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prob-define.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Definition of Probability</span></span></a>
@@ -277,7 +292,7 @@ window.Quarto = {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./infer.html" class="sidebar-item-text sidebar-link">
@@ -286,8 +301,8 @@ window.Quarto = {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./infer-ci.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Point and Interval Estimation</span></span></a>
@@ -348,7 +363,7 @@ window.Quarto = {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./model.html" class="sidebar-item-text sidebar-link">
@@ -357,8 +372,8 @@ window.Quarto = {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-anova.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></span></a>
@@ -407,7 +422,7 @@ window.Quarto = {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <span class="sidebar-item-text sidebar-link text-start">
  <span class="menu-text">References</span></span>
@@ -420,8 +435,8 @@ window.Quarto = {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./a-r_prog.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">R programming</span></span></a>
@@ -434,29 +449,90 @@ window.Quarto = {
   </div>
 </li>
       </ul>
-  </li>
+</li>
     </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#special-objects" id="toc-special-objects" class="nav-link active" data-scroll-target="#special-objects"><span class="header-section-number">A.1</span> Special Objects</a></li>
-  <li><a href="#plotting" id="toc-plotting" class="nav-link" data-scroll-target="#plotting"><span class="header-section-number">A.2</span> Plotting</a></li>
-  <li><a href="#conditions" id="toc-conditions" class="nav-link" data-scroll-target="#conditions"><span class="header-section-number">A.3</span> Conditions</a></li>
-  <li><a href="#functions" id="toc-functions" class="nav-link" data-scroll-target="#functions"><span class="header-section-number">A.4</span> Functions</a></li>
+<li><a href="#arithmetic-and-logical-operators" id="toc-arithmetic-and-logical-operators" class="nav-link active" data-scroll-target="#arithmetic-and-logical-operators"><span class="header-section-number">A.1</span> Arithmetic and Logical Operators</a></li>
+  <li><a href="#math-functions" id="toc-math-functions" class="nav-link" data-scroll-target="#math-functions"><span class="header-section-number">A.2</span> Math Functions</a></li>
+  <li><a href="#variables-and-assignment" id="toc-variables-and-assignment" class="nav-link" data-scroll-target="#variables-and-assignment"><span class="header-section-number">A.3</span> Variables and Assignment</a></li>
+  <li><a href="#object-types" id="toc-object-types" class="nav-link" data-scroll-target="#object-types"><span class="header-section-number">A.4</span> Object Types</a></li>
+  <li>
+<a href="#data-structure---vector" id="toc-data-structure---vector" class="nav-link" data-scroll-target="#data-structure---vector"><span class="header-section-number">A.5</span> Data Structure - Vector</a>
+  <ul class="collapse">
+<li><a href="#atomic-vector" id="toc-atomic-vector" class="nav-link" data-scroll-target="#atomic-vector"><span class="header-section-number">A.5.1</span> (Atomic) Vector</a></li>
+  <li><a href="#sequence-of-numbers" id="toc-sequence-of-numbers" class="nav-link" data-scroll-target="#sequence-of-numbers"><span class="header-section-number">A.5.2</span> Sequence of Numbers</a></li>
+  <li><a href="#operations-on-vectors" id="toc-operations-on-vectors" class="nav-link" data-scroll-target="#operations-on-vectors"><span class="header-section-number">A.5.3</span> Operations on Vectors</a></li>
+  <li><a href="#recycling-of-vectors" id="toc-recycling-of-vectors" class="nav-link" data-scroll-target="#recycling-of-vectors"><span class="header-section-number">A.5.4</span> Recycling of Vectors</a></li>
+  <li><a href="#subsetting-vectors" id="toc-subsetting-vectors" class="nav-link" data-scroll-target="#subsetting-vectors"><span class="header-section-number">A.5.5</span> Subsetting Vectors</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/a-r_prog.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+</li>
+  <li><a href="#data-structure---factor" id="toc-data-structure---factor" class="nav-link" data-scroll-target="#data-structure---factor"><span class="header-section-number">A.6</span> Data Structure - Factor</a></li>
+  <li>
+<a href="#data-structure---list" id="toc-data-structure---list" class="nav-link" data-scroll-target="#data-structure---list"><span class="header-section-number">A.7</span> Data Structure - List</a>
+  <ul class="collapse">
+<li><a href="#subsetting-a-list" id="toc-subsetting-a-list" class="nav-link" data-scroll-target="#subsetting-a-list"><span class="header-section-number">A.7.1</span> Subsetting a list</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#data-structure---matrix" id="toc-data-structure---matrix" class="nav-link" data-scroll-target="#data-structure---matrix"><span class="header-section-number">A.8</span> Data Structure - Matrix</a>
+  <ul class="collapse">
+<li><a href="#row-and-column-names" id="toc-row-and-column-names" class="nav-link" data-scroll-target="#row-and-column-names"><span class="header-section-number">A.8.1</span> Row and Column Names</a></li>
+  <li><a href="#subsetting-a-matrix" id="toc-subsetting-a-matrix" class="nav-link" data-scroll-target="#subsetting-a-matrix"><span class="header-section-number">A.8.2</span> Subsetting a Matrix</a></li>
+  <li><a href="#binding-matrices" id="toc-binding-matrices" class="nav-link" data-scroll-target="#binding-matrices"><span class="header-section-number">A.8.3</span> Binding Matrices</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#data-structure---data-frame" id="toc-data-structure---data-frame" class="nav-link" data-scroll-target="#data-structure---data-frame"><span class="header-section-number">A.9</span> Data Structure - Data Frame</a>
+  <ul class="collapse">
+<li><a href="#properties-of-data-frames" id="toc-properties-of-data-frames" class="nav-link" data-scroll-target="#properties-of-data-frames"><span class="header-section-number">A.9.1</span> Properties of data frames</a></li>
+  <li><a href="#subsetting-a-data-frame" id="toc-subsetting-a-data-frame" class="nav-link" data-scroll-target="#subsetting-a-data-frame"><span class="header-section-number">A.9.2</span> Subsetting a data frame</a></li>
+  </ul>
+</li>
+  <li><a href="#special-objects" id="toc-special-objects" class="nav-link" data-scroll-target="#special-objects"><span class="header-section-number">A.10</span> Special Objects</a></li>
+  <li>
+<a href="#plotting" id="toc-plotting" class="nav-link" data-scroll-target="#plotting"><span class="header-section-number">A.11</span> Plotting</a>
+  <ul class="collapse">
+<li><a href="#scatter-plot" id="toc-scatter-plot" class="nav-link" data-scroll-target="#scatter-plot"><span class="header-section-number">A.11.1</span> Scatter plot</a></li>
+  <li><a href="#argument-pch" id="toc-argument-pch" class="nav-link" data-scroll-target="#argument-pch"><span class="header-section-number">A.11.2</span> Argument pch</a></li>
+  <li><a href="#r-subplots" id="toc-r-subplots" class="nav-link" data-scroll-target="#r-subplots"><span class="header-section-number">A.11.3</span> R Subplots</a></li>
+  <li><a href="#boxplot" id="toc-boxplot" class="nav-link" data-scroll-target="#boxplot"><span class="header-section-number">A.11.4</span> Boxplot</a></li>
+  <li><a href="#histogram" id="toc-histogram" class="nav-link" data-scroll-target="#histogram"><span class="header-section-number">A.11.5</span> Histogram</a></li>
+  <li><a href="#barplot" id="toc-barplot" class="nav-link" data-scroll-target="#barplot"><span class="header-section-number">A.11.6</span> Barplot</a></li>
+  <li><a href="#pie-chart" id="toc-pie-chart" class="nav-link" data-scroll-target="#pie-chart"><span class="header-section-number">A.11.7</span> Pie chart</a></li>
+  <li><a href="#d-imaging" id="toc-d-imaging" class="nav-link" data-scroll-target="#d-imaging"><span class="header-section-number">A.11.8</span> 2D imaging</a></li>
+  <li><a href="#d-scatter-plot" id="toc-d-scatter-plot" class="nav-link" data-scroll-target="#d-scatter-plot"><span class="header-section-number">A.11.9</span> 3D scatter plot</a></li>
+  <li><a href="#perspective-plot" id="toc-perspective-plot" class="nav-link" data-scroll-target="#perspective-plot"><span class="header-section-number">A.11.10</span> Perspective plot</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#special-objects-1" id="toc-special-objects-1" class="nav-link" data-scroll-target="#special-objects-1"><span class="header-section-number">A.12</span> Special Objects</a>
+  <ul class="collapse">
+<li><a href="#na" id="toc-na" class="nav-link" data-scroll-target="#na"><span class="header-section-number">A.12.1</span> NA</a></li>
+  <li><a href="#null" id="toc-null" class="nav-link" data-scroll-target="#null"><span class="header-section-number">A.12.2</span> NULL</a></li>
+  <li><a href="#nan-inf-and--inf" id="toc-nan-inf-and--inf" class="nav-link" data-scroll-target="#nan-inf-and--inf"><span class="header-section-number">A.12.3</span> NaN, Inf, and -Inf</a></li>
+  <li><a href="#helper-functions" id="toc-helper-functions" class="nav-link" data-scroll-target="#helper-functions"><span class="header-section-number">A.12.4</span> Helper Functions</a></li>
+  <li><a href="#na-null-nan-comparison" id="toc-na-null-nan-comparison" class="nav-link" data-scroll-target="#na-null-nan-comparison"><span class="header-section-number">A.12.5</span> NA, NULL, NaN comparison</a></li>
+  </ul>
+</li>
+  <li><a href="#conditions" id="toc-conditions" class="nav-link" data-scroll-target="#conditions"><span class="header-section-number">A.13</span> Conditions</a></li>
+  <li><a href="#functions" id="toc-functions" class="nav-link" data-scroll-target="#functions"><span class="header-section-number">A.14</span> Functions</a></li>
+  <li>
+<a href="#loops" id="toc-loops" class="nav-link" data-scroll-target="#loops"><span class="header-section-number">A.15</span> Loops</a>
+  <ul class="collapse">
+<li><a href="#for-loops" id="toc-for-loops" class="nav-link" data-scroll-target="#for-loops"><span class="header-section-number">A.15.1</span> for loops</a></li>
+  <li><a href="#while-loops" id="toc-while-loops" class="nav-link" data-scroll-target="#while-loops"><span class="header-section-number">A.15.2</span> while loops</a></li>
+  </ul>
+</li>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/a-r_prog.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./a-r_prog.html">Appendices</a></li><li class="breadcrumb-item"><a href="./a-r_prog.html"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">R programming</span></a></li></ol></nav>
-<div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./a-r_prog.html">Appendices</a></li><li class="breadcrumb-item"><a href="./a-r_prog.html"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">R programming</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title"><span id="sec-r-prog" class="quarto-section-identifier">Appendix A — R programming</span></h1>
 </div>
 
@@ -471,26 +547,1609 @@ window.Quarto = {
   
 
 
-</header>
+</header><section id="arithmetic-and-logical-operators" class="level2" data-number="A.1"><h2 data-number="A.1" class="anchored" data-anchor-id="arithmetic-and-logical-operators">
+<span class="header-section-number">A.1</span> Arithmetic and Logical Operators</h2>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fl">2</span> <span class="op">+</span> <span class="fl">3</span> <span class="op">/</span> <span class="op">(</span><span class="fl">5</span> <span class="op">*</span> <span class="fl">4</span><span class="op">)</span> <span class="op">^</span> <span class="fl">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.0075</code></pre>
+</div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fl">5</span> <span class="op">==</span> <span class="fl">5.00</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 5 and 5L are of the same value too</span></span>
+<span><span class="co"># 5 is of type double; 5L is integer</span></span>
+<span><span class="fl">5</span> <span class="op">==</span> <span class="fl">5L</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/typeof.html">typeof</a></span><span class="op">(</span><span class="fl">5L</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "integer"</code></pre>
+</div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">!</span><span class="cn">TRUE</span> <span class="op">==</span> <span class="cn">FALSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+<p><strong>Type coercion</strong>: When doing AND/OR comparisons, all nonzero values are treated as <code>TRUE</code> and 0 as <code>FALSE</code>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">-</span><span class="fl">5</span> <span class="op">|</span> <span class="fl">0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fl">1</span> <span class="op">&amp;</span> <span class="fl">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fl">2</span> <span class="op">|</span> <span class="fl">0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+</section><section id="math-functions" class="level2" data-number="A.2"><h2 data-number="A.2" class="anchored" data-anchor-id="math-functions">
+<span class="header-section-number">A.2</span> Math Functions</h2>
+<p>Math functions in R are built-in.</p>
+<div class="cell">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">144</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 12</code></pre>
+</div>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.718282</code></pre>
+</div>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html">sin</a></span><span class="op">(</span><span class="va">pi</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="fl">32</span>, base <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5</code></pre>
+</div>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="op">-</span><span class="fl">7</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 7</code></pre>
+</div>
+</div>
+</section><section id="variables-and-assignment" class="level2" data-number="A.3"><h2 data-number="A.3" class="anchored" data-anchor-id="variables-and-assignment">
+<span class="header-section-number">A.3</span> Variables and Assignment</h2>
+<p>Use <code>&lt;-</code> to do <strong>assignment</strong>. <a href="https://colinfay.me/r-assignment/">Why</a></p>
+<div class="cell">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## we create an object, value 5, </span></span>
+<span><span class="co">## and call it x, which is a variable</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">5</span></span>
+<span><span class="va">x</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5</code></pre>
+</div>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">+</span> <span class="fl">6</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 11</code></pre>
+</div>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">==</span> <span class="fl">5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE</code></pre>
+</div>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.397895</code></pre>
+</div>
+</div>
+</section><section id="object-types" class="level2" data-number="A.4"><h2 data-number="A.4" class="anchored" data-anchor-id="object-types">
+<span class="header-section-number">A.4</span> Object Types</h2>
+<p><strong><code>character</code></strong>, <strong><code>double</code></strong>, <strong><code>integer</code></strong> and <strong><code>logical</code></strong>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/typeof.html">typeof</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "double"</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/typeof.html">typeof</a></span><span class="op">(</span><span class="fl">5L</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "integer"</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/typeof.html">typeof</a></span><span class="op">(</span><span class="st">"I_love_data_science!"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "character"</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/typeof.html">typeof</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">&gt;</span> <span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "logical"</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/double.html">is.double</a></span><span class="op">(</span><span class="fl">5L</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE</code></pre>
+</div>
+</div>
+</section><section id="data-structure---vector" class="level2" data-number="A.5"><h2 data-number="A.5" class="anchored" data-anchor-id="data-structure---vector">
+<span class="header-section-number">A.5</span> Data Structure - Vector</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="https://raw.githubusercontent.com/hadley/adv-r/master/diagrams/vectors/summary-tree-atomic.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="https://raw.githubusercontent.com/hadley/adv-r/master/diagrams/vectors/summary-tree.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>Variable defined previously is a <strong>scalar</strong> value, or in fact a (atomic) <strong>vector of length one</strong>.</li>
+</ul>
+<section id="atomic-vector" class="level3" data-number="A.5.1"><h3 data-number="A.5.1" class="anchored" data-anchor-id="atomic-vector">
+<span class="header-section-number">A.5.1</span> (Atomic) Vector</h3>
+<ul>
+<li><p>To create a vector, use <code><a href="https://rdrr.io/r/base/c.html">c()</a></code>, short for <em>concatenate</em> or <em>combine</em>.</p></li>
+<li><p><strong>All</strong> elements of a vector must be of the <strong>same type</strong>.</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">dbl_vec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2.5</span>, <span class="fl">4.5</span><span class="op">)</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.0 2.5 4.5</code></pre>
+</div>
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">int_vec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1L</span>, <span class="fl">6L</span>, <span class="fl">10L</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  1  6 10</code></pre>
+</div>
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## TRUE and FALSE can be written as T and F</span></span>
+<span><span class="op">(</span><span class="va">log_vec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">F</span><span class="op">)</span><span class="op">)</span>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  TRUE FALSE FALSE</code></pre>
+</div>
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">chr_vec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"pretty"</span>, <span class="st">"girl"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "pretty" "girl"  </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## check how many elements in a vector</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">dbl_vec</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3</code></pre>
+</div>
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## check a compact description of </span></span>
+<span><span class="co">## any R data structure</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">dbl_vec</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> num [1:3] 1 2.5 4.5</code></pre>
+</div>
+</div>
+</section><section id="sequence-of-numbers" class="level3" data-number="A.5.2"><h3 data-number="A.5.2" class="anchored" data-anchor-id="sequence-of-numbers">
+<span class="header-section-number">A.5.2</span> Sequence of Numbers</h3>
+<ul>
+<li><p>Use <code>:</code> to create a sequence of <em>integers</em>.</p></li>
+<li><p>Use <code><a href="https://rdrr.io/r/base/seq.html">seq()</a></code> to create a sequence of numbers of type <code>double</code> with more options. <!-- - Vectors created by `seq()` are  --></p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">vec</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1 2 3 4 5</code></pre>
+</div>
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/typeof.html">typeof</a></span><span class="op">(</span><span class="va">vec</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "integer"</code></pre>
+</div>
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># a sequence of numbers from 1 to 10 with increment 2</span></span>
+<span><span class="op">(</span><span class="va">seq_vec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">1</span>, to <span class="op">=</span> <span class="fl">10</span>, by <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1 3 5 7 9</code></pre>
+</div>
+<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/typeof.html">typeof</a></span><span class="op">(</span><span class="va">seq_vec</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "double"</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># a sequence of numbers from 1 to 10</span></span>
+<span><span class="co"># with 12 elements</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">1</span>, to <span class="op">=</span> <span class="fl">10</span>, length.out <span class="op">=</span> <span class="fl">12</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1]  1.000000  1.818182  2.636364  3.454545  4.272727  5.090909  5.909091
+ [8]  6.727273  7.545455  8.363636  9.181818 10.000000</code></pre>
+</div>
+</div>
+</section><section id="operations-on-vectors" class="level3" data-number="A.5.3"><h3 data-number="A.5.3" class="anchored" data-anchor-id="operations-on-vectors">
+<span class="header-section-number">A.5.3</span> Operations on Vectors</h3>
+<ul>
+<li>We can do any operations on vectors as we do on a <em>scalar</em> variable (vector of length 1).</li>
+</ul>
+<div class="cell">
+<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Create two vectors</span></span>
+<span><span class="va">v1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">8</span><span class="op">)</span></span>
+<span><span class="va">v2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">100</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="co">## All operations happen element-wisely</span></span>
+<span><span class="co"># Vector addition</span></span>
+<span><span class="va">v1</span> <span class="op">+</span> <span class="va">v2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]   7 108</code></pre>
+</div>
+<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Vector subtraction</span></span>
+<span><span class="va">v1</span> <span class="op">-</span> <span class="va">v2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  -1 -92</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Vector multiplication</span></span>
+<span><span class="va">v1</span> <span class="op">*</span> <span class="va">v2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  12 800</code></pre>
+</div>
+<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Vector division</span></span>
+<span><span class="va">v1</span> <span class="op">/</span> <span class="va">v2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.75 0.08</code></pre>
+</div>
+<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">v2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  2 10</code></pre>
+</div>
+</div>
+</section><section id="recycling-of-vectors" class="level3" data-number="A.5.4"><h3 data-number="A.5.4" class="anchored" data-anchor-id="recycling-of-vectors">
+<span class="header-section-number">A.5.4</span> Recycling of Vectors</h3>
+<ul>
+<li>If we apply arithmetic operations to two vectors of <strong>unequal</strong> length, the elements of the shorter vector will be <strong>recycled</strong> to complete the operations. <!-- - Beware of recycling! --> <!-- - The concept of *recycling* helps us write more concise code. -->
+</li>
+</ul>
+<div class="cell">
+<div class="sourceCode" id="cb77"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">v1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">8</span>, <span class="fl">4</span>, <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="co"># The following 2 operations are the same</span></span>
+<span><span class="va">v1</span> <span class="op">*</span> <span class="fl">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  6 16  8 10</code></pre>
+</div>
+<div class="sourceCode" id="cb79"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">v1</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  6 16  8 10</code></pre>
+</div>
+<div class="sourceCode" id="cb81"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">v3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">11</span><span class="op">)</span></span>
+<span><span class="va">v1</span> <span class="op">+</span> <span class="va">v3</span>  <span class="co">## v3 becomes c(4, 11, 4, 11) when doing the operation</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  7 19  8 16</code></pre>
+</div>
+</div>
+</section><section id="subsetting-vectors" class="level3" data-number="A.5.5"><h3 data-number="A.5.5" class="anchored" data-anchor-id="subsetting-vectors">
+<span class="header-section-number">A.5.5</span> Subsetting Vectors</h3>
+<ul>
+<li><p>To extract element(s) in a vector, we use a pair of brackets <code>[]</code> with element indexing.</p></li>
+<li><p>The indexing <strong>starts with 1</strong>.</p></li>
+</ul>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode" id="cb83"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">v1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3 8 4 5</code></pre>
+</div>
+<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">v2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]   4 100</code></pre>
+</div>
+<div class="sourceCode" id="cb87"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## The 3rd element</span></span>
+<span><span class="va">v1</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode" id="cb89"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">v1</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3 4</code></pre>
+</div>
+<div class="sourceCode" id="cb91"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">v1</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3 8</code></pre>
+</div>
+<div class="sourceCode" id="cb93"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## extract all except a few elements</span></span>
+<span><span class="co">## put a negative sign before the vector of </span></span>
+<span><span class="co">## indices</span></span>
+<span><span class="va">v1</span><span class="op">[</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span><span class="op">]</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3 5</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section></section><section id="data-structure---factor" class="level2" data-number="A.6"><h2 data-number="A.6" class="anchored" data-anchor-id="data-structure---factor">
+<span class="header-section-number">A.6</span> Data Structure - Factor</h2>
+<ul>
+<li><p>A vector of type <code>factor</code> can be <em>ordered in a meaningful way.</em></p></li>
+<li><p>Create a factor by <code><a href="https://rdrr.io/r/base/factor.html">factor()</a></code>. It is a type of <strong>integer</strong>, not <strong>character</strong>. 😲 🙄</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode" id="cb95"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## Create a factor from a character vector using function factor()</span></span>
+<span><span class="op">(</span><span class="va">fac</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"med"</span>, <span class="st">"high"</span>, <span class="st">"low"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] med  high low 
+Levels: high low med</code></pre>
+</div>
+<div class="sourceCode" id="cb97"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/typeof.html">typeof</a></span><span class="op">(</span><span class="va">fac</span><span class="op">)</span>  <span class="co">## The type is integer.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "integer"</code></pre>
+</div>
+<div class="sourceCode" id="cb99"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">fac</span><span class="op">)</span>  <span class="co">## The integers show the level each element in vector fac belongs to.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Factor w/ 3 levels "high","low","med": 3 1 2</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb101"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">order_fac</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"med"</span>, <span class="st">"high"</span>, <span class="st">"low"</span><span class="op">)</span>,</span>
+<span>                    levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"low"</span>, <span class="st">"med"</span>, <span class="st">"high"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">order_fac</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Factor w/ 3 levels "low","med","high": 2 3 1</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb103"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="va">fac</span><span class="op">)</span> <span class="co">## Each level represents an integer, ordered from the vector alphabetically.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "high" "low"  "med" </code></pre>
+</div>
+</div>
+</section><section id="data-structure---list" class="level2" data-number="A.7"><h2 data-number="A.7" class="anchored" data-anchor-id="data-structure---list">
+<span class="header-section-number">A.7</span> Data Structure - List</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="https://raw.githubusercontent.com/hadley/adv-r/master/diagrams/vectors/summary-tree.png" class="img-fluid figure-img" style="width:50.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><p>Lists are different from (atomic) vectors: Elements can be of <strong>any type</strong>, including lists. (Generic vectors)</p></li>
+<li><p>Construct a list by using <strong><code><a href="https://rdrr.io/r/base/list.html">list()</a></code></strong>.</p></li>
+</ul>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode" id="cb105"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## a list of 3 elements of different types</span></span>
+<span><span class="va">x_lst</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>idx <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, </span>
+<span>              <span class="st">"a"</span>, </span>
+<span>              <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>$idx
+[1] 1 2 3
+
+[[2]]
+[1] "a"
+
+[[3]]
+[1]  TRUE FALSE</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode" id="cb107"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">x_lst</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>List of 3
+ $ idx: int [1:3] 1 2 3
+ $    : chr "a"
+ $    : logi [1:2] TRUE FALSE</code></pre>
+</div>
+<div class="sourceCode" id="cb109"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">x_lst</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "idx" ""    ""   </code></pre>
+</div>
+<div class="sourceCode" id="cb111"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x_lst</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3</code></pre>
+</div>
+</div>
+</div>
+</div>
+<section id="subsetting-a-list" class="level3" data-number="A.7.1"><h3 data-number="A.7.1" class="anchored" data-anchor-id="subsetting-a-list">
+<span class="header-section-number">A.7.1</span> Subsetting a list</h3>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><br><strong>Return an <span style="color:red"> element </span> of a list</strong></p>
+<div class="cell">
+<div class="sourceCode" id="cb113"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## subset by name (a vector)</span></span>
+<span><span class="va">x_lst</span><span class="op">$</span><span class="va">idx</span>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1 2 3</code></pre>
+</div>
+<div class="sourceCode" id="cb115"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## subset by indexing (a vector)</span></span>
+<span><span class="va">x_lst</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1 2 3</code></pre>
+</div>
+<div class="sourceCode" id="cb117"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/typeof.html">typeof</a></span><span class="op">(</span><span class="va">x_lst</span><span class="op">$</span><span class="va">idx</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "integer"</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="fragment">
+<p><br><strong>Return a <span style="color:red"> sub-list </span> of a list</strong></p>
+<div class="cell">
+<div class="sourceCode" id="cb119"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## subset by name (still a list)</span></span>
+<span><span class="va">x_lst</span><span class="op">[</span><span class="st">"idx"</span><span class="op">]</span>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$idx
+[1] 1 2 3</code></pre>
+</div>
+<div class="sourceCode" id="cb121"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## subset by indexing (still a list)</span></span>
+<span><span class="va">x_lst</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$idx
+[1] 1 2 3</code></pre>
+</div>
+<div class="sourceCode" id="cb123"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/typeof.html">typeof</a></span><span class="op">(</span><span class="va">x_lst</span><span class="op">[</span><span class="st">"idx"</span><span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "list"</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- ::: notes -->
+<!-- - This is where we should pay more attention to. When we subset a list, it may return an element of the list, or it returns a sub-list of the list. -->
+<!-- - Let's see how it happens.  -->
+<!-- - This is our x_lst. We can subset a list by name or by indexing.  -->
+<!-- - Suppose we want the first element of the list, we can get it by its name using x_lst$idx. -->
+<!-- - We can also obtain it by using indexing like x_lst[[1]] because we want the first element. -->
+<!-- - Notice that the way we subset a list returns an integer vector, the real first element of the list, not a list.  -->
+<!-- - Let's see another case on the right. -->
+<!-- - We can also subset by name using single pair of brackets, and put the name inside the brackets. -->
+<!-- - Or we can subset by indexing, again using single pair of brackets. -->
+<!-- - And you see what happened? The way we subset a list here returns a sub-list, not the element itself.  -->
+<!-- - So please be careful when subsetting a list.  -->
+<!-- - If you want a vector, use these ways. If you want to keep it as a list, use these ways. -->
+<!-- ::: -->
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="./images/img-app/list_condiment.png" class="img-fluid figure-img" width="851"></p>
+</figure>
+</div>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>If list <code>x</code> is a train carrying objects, then <code>x[[5]]</code> is the object in car 5; <code>x[4:6]</code> is a train of cars 4-6.</p>
+<p>— @RLangTip, <a href="https://twitter.com/RLangTip/status/268375867468681216" class="uri">https://twitter.com/RLangTip/status/268375867468681216</a></p>
+</blockquote>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="https://raw.githubusercontent.com/hadley/adv-r/master/diagrams/subsetting/train.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="https://raw.githubusercontent.com/hadley/adv-r/master/diagrams/subsetting/train-single.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section></section><section id="data-structure---matrix" class="level2" data-number="A.8"><h2 data-number="A.8" class="anchored" data-anchor-id="data-structure---matrix">
+<span class="header-section-number">A.8</span> Data Structure - Matrix</h2>
+<ul>
+<li><p>A matrix is a <em>two-dimensional analog of a vector</em> with <strong>attribute</strong> <code>dim</code>.</p></li>
+<li><p>Use command <code><a href="https://rdrr.io/r/base/matrix.html">matrix()</a></code> to create a matrix.</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode" id="cb125"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## Create a 3 by 2 matrix called mat</span></span>
+<span><span class="op">(</span><span class="va">mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, nrow <span class="op">=</span> <span class="fl">3</span>, ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2]
+[1,]    1    4
+[2,]    2    5
+[3,]    3    6</code></pre>
+</div>
+<div class="sourceCode" id="cb127"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">mat</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">mat</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">mat</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3 2</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb131"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># elements are arranged by row</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, </span>
+<span>       nrow <span class="op">=</span> <span class="fl">3</span>, </span>
+<span>       ncol <span class="op">=</span> <span class="fl">2</span>, </span>
+<span>       byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co">#&lt;&lt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2]
+[1,]    1    2
+[2,]    3    4
+[3,]    5    6</code></pre>
+</div>
+<div class="sourceCode" id="cb133"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/attributes.html">attributes</a></span><span class="op">(</span><span class="va">mat</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$dim
+[1] 3 2</code></pre>
+</div>
+</div>
+<section id="row-and-column-names" class="level3" data-number="A.8.1"><h3 data-number="A.8.1" class="anchored" data-anchor-id="row-and-column-names">
+<span class="header-section-number">A.8.1</span> Row and Column Names</h3>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode" id="cb135"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mat</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2]
+[1,]    1    4
+[2,]    2    5
+[3,]    3    6</code></pre>
+</div>
+<div class="sourceCode" id="cb137"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## assign row names and column names</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">mat</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">mat</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span><span class="op">)</span></span>
+<span><span class="va">mat</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  a b
+A 1 4
+B 2 5
+C 3 6</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode" id="cb139"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">mat</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "A" "B" "C"</code></pre>
+</div>
+<div class="sourceCode" id="cb141"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">mat</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "a" "b"</code></pre>
+</div>
+<div class="sourceCode" id="cb143"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/attributes.html">attributes</a></span><span class="op">(</span><span class="va">mat</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$dim
+[1] 3 2
+
+$dimnames
+$dimnames[[1]]
+[1] "A" "B" "C"
+
+$dimnames[[2]]
+[1] "a" "b"</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section><section id="subsetting-a-matrix" class="level3" data-number="A.8.2"><h3 data-number="A.8.2" class="anchored" data-anchor-id="subsetting-a-matrix">
+<span class="header-section-number">A.8.2</span> Subsetting a Matrix</h3>
+<ul>
+<li>Use the same indexing approach as vectors on rows and columns.</li>
+<li>Use comma <code>,</code> to separate row and column index.</li>
+<li>
+<code>mat[2, 2]</code> extracts the element of the second row and second column.</li>
+</ul>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode" id="cb145"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mat</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  a b
+A 1 4
+B 2 5
+C 3 6</code></pre>
+</div>
+<div class="sourceCode" id="cb147"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## all rows and 2nd column</span></span>
+<span><span class="co">## leave row index blank</span></span>
+<span><span class="co">## specify 2 in coln index</span></span>
+<span><span class="va">mat</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>A B C 
+4 5 6 </code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode" id="cb149"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## 2nd row and all columns</span></span>
+<span><span class="va">mat</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>a b 
+2 5 </code></pre>
+</div>
+<div class="sourceCode" id="cb151"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## The 1st and 3rd rows and the 1st column</span></span>
+<span><span class="va">mat</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>, <span class="fl">1</span><span class="op">]</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>A C 
+1 3 </code></pre>
+</div>
+</div>
+</div>
+</div>
+</section><section id="binding-matrices" class="level3" data-number="A.8.3"><h3 data-number="A.8.3" class="anchored" data-anchor-id="binding-matrices">
+<span class="header-section-number">A.8.3</span> Binding Matrices</h3>
+<ul>
+<li><p><code><a href="https://www.math.uzh.ch/pages/spam/reference/cbind.html">cbind()</a></code> (binding matrices by adding columns)</p></li>
+<li><p><code><a href="https://www.math.uzh.ch/pages/spam/reference/cbind.html">rbind()</a></code> (binding matrices by adding rows)</p></li>
+<li><p>When matrices are combined by columns (rows), they should have the same number of rows (columns).</p></li>
+</ul>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode" id="cb153"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mat</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  a b
+A 1 4
+B 2 5
+C 3 6</code></pre>
+</div>
+<div class="sourceCode" id="cb155"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mat_c</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">7</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">8</span>,<span class="fl">2</span>,<span class="fl">6</span><span class="op">)</span>, </span>
+<span>                nrow <span class="op">=</span> <span class="fl">3</span>, ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="co">## should have the same number of rows</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">mat</span>, <span class="va">mat_c</span><span class="op">)</span>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  a b    
+A 1 4 7 8
+B 2 5 0 2
+C 3 6 0 6</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode" id="cb157"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mat_r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, </span>
+<span>                nrow <span class="op">=</span> <span class="fl">2</span>, </span>
+<span>                ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="co">## should have the same number of columns</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">mat</span>, <span class="va">mat_r</span><span class="op">)</span>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  a b
+A 1 4
+B 2 5
+C 3 6
+  1 3
+  2 4</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section></section><section id="data-structure---data-frame" class="level2" data-number="A.9"><h2 data-number="A.9" class="anchored" data-anchor-id="data-structure---data-frame">
+<span class="header-section-number">A.9</span> Data Structure - Data Frame</h2>
+<ul>
+<li><p>A data frame is of type <strong>list</strong> of <em>equal-length</em> vectors, having a <em>2-dimensional</em> structure.</p></li>
+<li><p>More general than matrix: <em>Different columns can have different types</em>.</p></li>
+<li><p>Use <code><a href="https://rdrr.io/r/base/data.frame.html">data.frame()</a></code> that takes <em>named</em> vectors as input “element”.</p></li>
+</ul>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode" id="cb159"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## data frame w/ an dbl column named age</span></span>
+<span><span class="co">## and char column named gender.</span></span>
+<span><span class="op">(</span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">19</span>, <span class="fl">21</span>, <span class="fl">40</span><span class="op">)</span>, </span>
+<span>                  gen <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"m"</span>,<span class="st">"f"</span>, <span class="st">"m"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  age gen
+1  19   m
+2  21   f
+3  40   m</code></pre>
+</div>
+<div class="sourceCode" id="cb161"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## a data frame has a list structure</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   3 obs. of  2 variables:
+ $ age: num  19 21 40
+ $ gen: chr  "m" "f" "m"</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode" id="cb163"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## must set column names</span></span>
+<span><span class="co">## or they are ugly and non-recognizable</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">19</span>,<span class="fl">21</span>,<span class="fl">40</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"m"</span>,<span class="st">"f"</span>,<span class="st">"m"</span><span class="op">)</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  c.19..21..40. c..m....f....m..
+1            19                m
+2            21                f
+3            40                m</code></pre>
+</div>
+</div>
+</div>
+</div>
+<section id="properties-of-data-frames" class="level3" data-number="A.9.1"><h3 data-number="A.9.1" class="anchored" data-anchor-id="properties-of-data-frames">
+<span class="header-section-number">A.9.1</span> Properties of data frames</h3>
+<p>Data frame has properties of matrix and list.</p>
+<div class="columns">
+<div class="column" style="width:40%;">
+<div class="cell">
+<div class="sourceCode" id="cb165"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>  <span class="co">## df as a list</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "age" "gen"</code></pre>
+</div>
+<div class="sourceCode" id="cb167"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>  <span class="co">## df as a matrix</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "age" "gen"</code></pre>
+</div>
+<div class="sourceCode" id="cb169"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="co">## df as a list</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2</code></pre>
+</div>
+<div class="sourceCode" id="cb171"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="co">## df as a matrix</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2</code></pre>
+</div>
+<div class="sourceCode" id="cb173"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="co">## df as a matrix</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3 2</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:60%;">
+<div class="cell">
+<div class="sourceCode" id="cb175"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## rbind() and cbind() can be used on df</span></span>
+<span><span class="va">df_r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>age <span class="op">=</span> <span class="fl">10</span>, </span>
+<span>                   gen <span class="op">=</span> <span class="st">"f"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">df_r</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  age gen
+1  19   m
+2  21   f
+3  40   m
+4  10   f</code></pre>
+</div>
+<div class="sourceCode" id="cb177"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df_c</span> <span class="op">&lt;-</span> </span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"red"</span>,<span class="st">"blue"</span>,<span class="st">"gray"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">(</span><span class="va">df_new</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">df_c</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  age gen  col
+1  19   m  red
+2  21   f blue
+3  40   m gray</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section><section id="subsetting-a-data-frame" class="level3" data-number="A.9.2"><h3 data-number="A.9.2" class="anchored" data-anchor-id="subsetting-a-data-frame">
+<span class="header-section-number">A.9.2</span> Subsetting a data frame</h3>
+<p>Can use either list or matrix subsetting methods.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode" id="cb179"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df_new</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  age gen  col
+1  19   m  red
+2  21   f blue
+3  40   m gray</code></pre>
+</div>
+<div class="sourceCode" id="cb181"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## Subset rows</span></span>
+<span><span class="va">df_new</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>, <span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  age gen  col
+1  19   m  red
+3  40   m gray</code></pre>
+</div>
+<div class="sourceCode" id="cb183"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## select the row where age == 21</span></span>
+<span><span class="va">df_new</span><span class="op">[</span><span class="va">df_new</span><span class="op">$</span><span class="va">age</span> <span class="op">==</span> <span class="fl">21</span>, <span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  age gen  col
+2  21   f blue</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode" id="cb185"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## Subset columns</span></span>
+<span><span class="co">## like a list</span></span>
+<span><span class="va">df_new</span><span class="op">$</span><span class="va">age</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 19 21 40</code></pre>
+</div>
+<div class="sourceCode" id="cb187"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df_new</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"age"</span>, <span class="st">"gen"</span><span class="op">)</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  age gen
+1  19   m
+2  21   f
+3  40   m</code></pre>
+</div>
+<div class="sourceCode" id="cb189"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## like a matrix</span></span>
+<span><span class="va">df_new</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"age"</span>, <span class="st">"gen"</span><span class="op">)</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  age gen
+1  19   m
+2  21   f
+3  40   m</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb191"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df_new</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>, <span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  age gen  col
+1  19   m  red
+3  40   m gray</code></pre>
+</div>
+<div class="sourceCode" id="cb193"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">df</span><span class="op">[</span><span class="st">"age"</span><span class="op">]</span><span class="op">)</span>  <span class="co">## a data frame with one column</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   3 obs. of  1 variable:
+ $ age: num  19 21 40</code></pre>
+</div>
+<div class="sourceCode" id="cb195"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">df</span><span class="op">[</span>, <span class="st">"age"</span><span class="op">]</span><span class="op">)</span>  <span class="co">## becomes a vector by default</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> num [1:3] 19 21 40</code></pre>
+</div>
+</div>
+</section></section><section id="special-objects" class="level2" data-number="A.10"><h2 data-number="A.10" class="anchored" data-anchor-id="special-objects">
+<span class="header-section-number">A.10</span> Special Objects</h2>
+</section><section id="plotting" class="level2" data-number="A.11"><h2 data-number="A.11" class="anchored" data-anchor-id="plotting">
+<span class="header-section-number">A.11</span> Plotting</h2>
+<section id="scatter-plot" class="level3" data-number="A.11.1"><h3 data-number="A.11.1" class="anchored" data-anchor-id="scatter-plot">
+<span class="header-section-number">A.11.1</span> Scatter plot</h3>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode" id="cb197"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mtcars</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">15</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre class="my_class600"><code>                    mpg cyl  disp  hp
+Mazda RX4          21.0   6 160.0 110
+Mazda RX4 Wag      21.0   6 160.0 110
+Datsun 710         22.8   4 108.0  93
+Hornet 4 Drive     21.4   6 258.0 110
+Hornet Sportabout  18.7   8 360.0 175
+Valiant            18.1   6 225.0 105
+Duster 360         14.3   8 360.0 245
+Merc 240D          24.4   4 146.7  62
+Merc 230           22.8   4 140.8  95
+Merc 280           19.2   6 167.6 123
+Merc 280C          17.8   6 167.6 123
+Merc 450SE         16.4   8 275.8 180
+Merc 450SL         17.3   8 275.8 180
+Merc 450SLC        15.2   8 275.8 180
+Cadillac Fleetwood 10.4   8 472.0 205</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode" id="cb199"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">mtcars</span><span class="op">$</span><span class="va">mpg</span>, y <span class="op">=</span> <span class="va">mtcars</span><span class="op">$</span><span class="va">hp</span>, </span>
+<span>     xlab  <span class="op">=</span> <span class="st">"Miles per gallon"</span>, </span>
+<span>     ylab <span class="op">=</span> <span class="st">"Horsepower"</span>, </span>
+<span>     main <span class="op">=</span> <span class="st">"Scatter plot"</span>, </span>
+<span>     col <span class="op">=</span> <span class="st">"red"</span>, </span>
+<span>     pch <span class="op">=</span> <span class="fl">5</span>, las <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="a-r_prog_files/figure-html/scatter-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section id="argument-pch" class="level3" data-number="A.11.2"><h3 data-number="A.11.2" class="anchored" data-anchor-id="argument-pch">
+<span class="header-section-number">A.11.2</span> Argument pch</h3>
+<div class="cell">
+<div class="sourceCode" id="cb200"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">25</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">25</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">25</span>, xlab <span class="op">=</span> <span class="st">""</span>, ylab <span class="op">=</span> <span class="st">""</span>, main <span class="op">=</span> <span class="st">"pch"</span>, axes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/axis.html">axis</a></span><span class="op">(</span><span class="fl">1</span>, at <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">25</span>, cex.axis <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="a-r_prog_files/figure-html/unnamed-chunk-49-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>The default is pch = 1</li>
+</ul></section><section id="r-subplots" class="level3" data-number="A.11.3"><h3 data-number="A.11.3" class="anchored" data-anchor-id="r-subplots">
+<span class="header-section-number">A.11.3</span> R Subplots</h3>
+<div class="cell">
+<div class="sourceCode" id="cb201"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">mtcars</span><span class="op">$</span><span class="va">mpg</span>, y <span class="op">=</span> <span class="va">mtcars</span><span class="op">$</span><span class="va">hp</span>, xlab <span class="op">=</span> <span class="st">"mpg"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">mtcars</span><span class="op">$</span><span class="va">mpg</span>, y <span class="op">=</span> <span class="va">mtcars</span><span class="op">$</span><span class="va">weight</span>, xlab <span class="op">=</span> <span class="st">"mpg"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="a-r_prog_files/figure-html/unnamed-chunk-50-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="boxplot" class="level3" data-number="A.11.4"><h3 data-number="A.11.4" class="anchored" data-anchor-id="boxplot">
+<span class="header-section-number">A.11.4</span> Boxplot</h3>
+<div class="cell">
+<div class="sourceCode" id="cb202"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/boxplot.html">boxplot</a></span><span class="op">(</span><span class="va">mpg</span> <span class="op">~</span> <span class="va">cyl</span>, </span>
+<span>        data <span class="op">=</span> <span class="va">mtcars</span>, </span>
+<span>        col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"blue"</span>, <span class="st">"green"</span>, <span class="st">"red"</span><span class="op">)</span>, </span>
+<span>        las <span class="op">=</span> <span class="fl">1</span>, </span>
+<span>        horizontal <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>        xlab <span class="op">=</span> <span class="st">"Miles per gallon"</span>, </span>
+<span>        ylab <span class="op">=</span> <span class="st">"Number of cylinders"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="a-r_prog_files/figure-html/boxplot-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<!-- ::: notes -->
+<!-- - Visualizing relationships between numerical and categorical data, we can check side-by-side boxplots. -->
+<!-- - For example, if we want to check the data variation of (miles per gallon) for each number of cylinder, we can use boxplot() function. -->
+<!-- - And inside the function, we use the formula mpg ~ cyl, and specify the dataset.  -->
+<!-- - That is basically it. The rest of arguments are decorating your plot. They are optional. -->
+<!-- ::: -->
+</section><section id="histogram" class="level3" data-number="A.11.5"><h3 data-number="A.11.5" class="anchored" data-anchor-id="histogram">
+<span class="header-section-number">A.11.5</span> Histogram</h3>
+<p><code><a href="https://rdrr.io/r/graphics/hist.html">hist()</a></code> decides the class intervals/with based on <code>breaks</code>. If not provided, R chooses one.</p>
+<div class="cell">
+<div class="sourceCode" id="cb203"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">$</span><span class="va">wt</span>, </span>
+<span>     breaks <span class="op">=</span> <span class="fl">20</span>, </span>
+<span>     col <span class="op">=</span> <span class="st">"#003366"</span>, </span>
+<span>     border <span class="op">=</span> <span class="st">"#FFCC00"</span>, </span>
+<span>     xlab <span class="op">=</span> <span class="st">"weights"</span>, </span>
+<span>     main <span class="op">=</span> <span class="st">"Histogram of weights"</span>,</span>
+<span>     las <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="a-r_prog_files/figure-html/hist-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Besides color names, you can also use hex number to specify colors. Pretty handy.</li>
+</ul></section><section id="barplot" class="level3" data-number="A.11.6"><h3 data-number="A.11.6" class="anchored" data-anchor-id="barplot">
+<span class="header-section-number">A.11.6</span> Barplot</h3>
+<div class="cell">
+<div class="sourceCode" id="cb204"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">$</span><span class="va">gear</span><span class="op">)</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ 3  4  5 
+15 12  5 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb206"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_bar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html">barplot</a></span><span class="op">(</span><span class="va">counts</span>, </span>
+<span>                  main <span class="op">=</span> <span class="st">"Car Distribution"</span>, </span>
+<span>                  xlab <span class="op">=</span> <span class="st">"Number of Gears"</span>, </span>
+<span>                  las <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/text.html">text</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">my_bar</span>, y <span class="op">=</span> <span class="va">counts</span> <span class="op">-</span> <span class="fl">0.8</span>, </span>
+<span>     labels <span class="op">=</span> <span class="va">counts</span>, </span>
+<span>     cex <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="a-r_prog_files/figure-html/barplot-1.png" class="img-fluid figure-img" style="width:60.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="pie-chart" class="level3" data-number="A.11.7"><h3 data-number="A.11.7" class="anchored" data-anchor-id="pie-chart">
+<span class="header-section-number">A.11.7</span> Pie chart</h3>
+<ul>
+<li><p>Pie charts are used for categorical variables, especially when we want to know percentage of each category.</p></li>
+<li><p>The first argument is the frequency table, and you can add labels to each category.</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode" id="cb207"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">percent</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">counts</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">counts</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    3     4     5 
+46.88 37.50 15.62 </code></pre>
+</div>
+<div class="sourceCode" id="cb209"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="fl">3</span><span class="op">:</span><span class="fl">5</span>, <span class="st">" gears: "</span>, <span class="va">percent</span>, <span class="st">"%"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "3 gears: 46.88%" "4 gears: 37.5%"  "5 gears: 15.62%"</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb211"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/pie.html">pie</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">counts</span>, labels <span class="op">=</span> <span class="va">labels</span>,</span>
+<span>    main <span class="op">=</span> <span class="st">"Pie Chart"</span>, </span>
+<span>    col <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">4</span>, </span>
+<span>    radius <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="a-r_prog_files/figure-html/pie-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="d-imaging" class="level3" data-number="A.11.8"><h3 data-number="A.11.8" class="anchored" data-anchor-id="d-imaging">
+<span class="header-section-number">A.11.8</span> 2D imaging</h3>
+<ul>
+<li>The <code><a href="https://www.math.uzh.ch/pages/spam/reference/image.html">image()</a></code> function displays the values in a matrix using color.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode" id="cb212"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">30</span>, <span class="fl">6</span>, <span class="fl">5</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3] [,4] [,5]
+[1,]    1    7   13   19   25
+[2,]    2    8   14   20   26
+[3,]    3    9   15   21   27
+[4,]    4   10   16   22   28
+[5,]    5   11   17   23   29
+[6,]    6   12   18   24   30</code></pre>
+</div>
+<div class="sourceCode" id="cb214"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/image.html">image</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">30</span>, <span class="fl">6</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="a-r_prog_files/figure-html/image-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb215"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dnychka/fieldsRPackage">fields</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: spam</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Spam version 2.10-0 (2023-10-23) is loaded.
+Type 'help( Spam)' or 'demo( spam)' for a short introduction 
+and overview of this package.
+Help for individual functions is also obtained by adding the
+suffix '.spam' to the function name, e.g. 'help( chol.spam)'.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'spam'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    backsolve, forwardsolve</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: viridisLite</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Try help(fields) to get started.</code></pre>
+</div>
+<div class="sourceCode" id="cb222"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">volcano</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> num [1:87, 1:61] 100 101 102 103 104 105 105 106 107 108 ...</code></pre>
+</div>
+<div class="sourceCode" id="cb224"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/fields/man/image.plot.html">image.plot</a></span><span class="op">(</span><span class="va">volcano</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="a-r_prog_files/figure-html/imageplot-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb225"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">10</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">volcano</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fl">10</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">volcano</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://www.math.uzh.ch/pages/spam/reference/image.html">image</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">volcano</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html">hcl.colors</a></span><span class="op">(</span><span class="fl">100</span>, <span class="st">"terrain"</span><span class="op">)</span>, axes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/contour.html">contour</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">volcano</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">90</span>, <span class="fl">200</span>, by <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>,</span>
+<span>        add <span class="op">=</span> <span class="cn">TRUE</span>, col <span class="op">=</span> <span class="st">"brown"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/axis.html">axis</a></span><span class="op">(</span><span class="fl">1</span>, at <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">800</span>, by <span class="op">=</span> <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/axis.html">axis</a></span><span class="op">(</span><span class="fl">2</span>, at <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">600</span>, by <span class="op">=</span> <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/box.html">box</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html">title</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Maunga Whau Volcano"</span>, font.main <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="a-r_prog_files/figure-html/unnamed-chunk-56-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="d-scatter-plot" class="level3" data-number="A.11.9"><h3 data-number="A.11.9" class="anchored" data-anchor-id="d-scatter-plot">
+<span class="header-section-number">A.11.9</span> 3D scatter plot</h3>
+<div class="cell">
+<div class="sourceCode" id="cb226"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">scatterplot3d</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/scatterplot3d/man/scatterplot3d.html">scatterplot3d</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">mtcars</span><span class="op">$</span><span class="va">wt</span>, y <span class="op">=</span> <span class="va">mtcars</span><span class="op">$</span><span class="va">disp</span>, z <span class="op">=</span> <span class="va">mtcars</span><span class="op">$</span><span class="va">mpg</span>, </span>
+<span>              xlab <span class="op">=</span> <span class="st">"Weights"</span>, ylab <span class="op">=</span> <span class="st">"Displacement"</span>, zlab <span class="op">=</span> <span class="st">"Miles per gallon"</span>, </span>
+<span>              main <span class="op">=</span> <span class="st">"3D Scatter Plot"</span>,</span>
+<span>              pch <span class="op">=</span> <span class="fl">16</span>, color <span class="op">=</span> <span class="st">"steelblue"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="a-r_prog_files/figure-html/3dplot-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="perspective-plot" class="level3" data-number="A.11.10"><h3 data-number="A.11.10" class="anchored" data-anchor-id="perspective-plot">
+<span class="header-section-number">A.11.10</span> Perspective plot</h3>
+<div class="cell">
+<div class="sourceCode" id="cb227"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Exaggerate the relief</span></span>
+<span><span class="va">z</span> <span class="op">&lt;-</span> <span class="fl">2</span> <span class="op">*</span> <span class="va">volcano</span>      </span>
+<span><span class="co"># 10 meter spacing (S to N)</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">10</span> <span class="op">*</span> <span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span><span class="op">)</span>   </span>
+<span><span class="co"># 10 meter spacing (E to W)</span></span>
+<span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fl">10</span> <span class="op">*</span> <span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span><span class="op">)</span>   </span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>bg <span class="op">=</span> <span class="st">"slategray"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/persp.html">persp</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">z</span>, theta <span class="op">=</span> <span class="fl">135</span>, phi <span class="op">=</span> <span class="fl">30</span>, col <span class="op">=</span> <span class="st">"green3"</span>, scale <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>      ltheta <span class="op">=</span> <span class="op">-</span><span class="fl">120</span>, shade <span class="op">=</span> <span class="fl">0.75</span>, border <span class="op">=</span> <span class="cn">NA</span>, box <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="a-r_prog_files/figure-html/persp-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section></section><section id="special-objects-1" class="level2" data-number="A.12"><h2 data-number="A.12" class="anchored" data-anchor-id="special-objects-1">
+<span class="header-section-number">A.12</span> Special Objects</h2>
+<section id="na" class="level3" data-number="A.12.1"><h3 data-number="A.12.1" class="anchored" data-anchor-id="na">
+<span class="header-section-number">A.12.1</span> NA</h3>
+<ul>
+<li><p><code>NA</code> means <strong>N</strong>ot <strong>A</strong>vailable, which is a <strong>logical constant</strong> of length 1 for a missing value indicator.</p></li>
+<li><p>Each type of vector has its own missing value. They all are <a href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/Reserved.html"><strong>reserved</strong> words</a>.</p></li>
+<li><p>You can always use <code>NA</code> and it will be converted to the correct type.</p></li>
+</ul>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode" id="cb228"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="cn">NA</span>            <span class="co"># logical</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] NA</code></pre>
+</div>
+<div class="sourceCode" id="cb230"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="cn">NA_integer_</span>   <span class="co"># integer</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] NA</code></pre>
+</div>
+<div class="sourceCode" id="cb232"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="cn">NA_real_</span>      <span class="co"># double</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] NA</code></pre>
+</div>
+<div class="sourceCode" id="cb234"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="cn">NA_character_</span> <span class="co"># character</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] NA</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<!-- using the implicit coercion rules -->
+<div class="cell">
+<div class="sourceCode" id="cb236"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## The NA in the vector x is NA_real_</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/typeof.html">typeof</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "double"</code></pre>
+</div>
+<div class="sourceCode" id="cb238"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  TRUE FALSE FALSE</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section><section id="null" class="level3" data-number="A.12.2"><h3 data-number="A.12.2" class="anchored" data-anchor-id="null">
+<span class="header-section-number">A.12.2</span> NULL</h3>
+<ul>
+<li>
+<code>NULL</code> represents the null object, an object representing <strong>nothing</strong>.</li>
+<li>
+<code>NULL</code> is a reserved word and can also be the product of importing data with unknown data type.</li>
+<li>
+<code>NULL</code> typically behaves like <strong>a vector of length 0</strong>.</li>
+</ul>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode" id="cb240"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="cn">NULL</span>, <span class="st">""</span><span class="op">)</span></span>
+<span><span class="va">y</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] NA ""</code></pre>
+</div>
+<div class="sourceCode" id="cb242"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## only first element is evaluated...</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode" id="cb244"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## a missing value is a value we don't know.</span></span>
+<span><span class="co">## It is something.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE</code></pre>
+</div>
+<div class="sourceCode" id="cb246"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="sourceCode" id="cb248"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># empty character is something, not nothing!</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="st">""</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section><section id="nan-inf-and--inf" class="level3" data-number="A.12.3"><h3 data-number="A.12.3" class="anchored" data-anchor-id="nan-inf-and--inf">
+<span class="header-section-number">A.12.3</span> NaN, Inf, and -Inf</h3>
+<ul>
+<li><p>Integers have one special value: <code>NA</code>, while doubles have four: <code>NA</code>, <code>NaN</code>, <code>Inf</code> and <code>-Inf</code>.</p></li>
+<li><p><code>NaN</code> means <strong>N</strong>ot <strong>a</strong> <strong>N</strong>umber.</p></li>
+<li><p>All three special values <code>NaN</code>, <code>Inf</code> and <code>-Inf</code> can arise during division.</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode" id="cb250"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span> <span class="op">/</span> <span class="fl">0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -Inf  NaN  Inf</code></pre>
+</div>
+</div>
+<ul>
+<li>Avoid using <code>==</code>. Use functions <code><a href="https://rdrr.io/r/base/is.finite.html">is.finite()</a></code>, <code><a href="https://rdrr.io/r/base/is.finite.html">is.infinite()</a></code>, and <code><a href="https://rdrr.io/r/base/is.finite.html">is.nan()</a></code>.</li>
+</ul>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode" id="cb252"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/is.finite.html">is.finite</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="sourceCode" id="cb254"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/is.finite.html">is.nan</a></span><span class="op">(</span><span class="fl">0</span><span class="op">/</span><span class="fl">0</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode" id="cb256"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/is.finite.html">is.infinite</a></span><span class="op">(</span><span class="fl">7.8</span><span class="op">/</span><span class="fl">1e-307</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE</code></pre>
+</div>
+<div class="sourceCode" id="cb258"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/is.finite.html">is.infinite</a></span><span class="op">(</span><span class="fl">7.8</span><span class="op">/</span><span class="fl">1e-308</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section><section id="helper-functions" class="level3" data-number="A.12.4"><h3 data-number="A.12.4" class="anchored" data-anchor-id="helper-functions">
+<span class="header-section-number">A.12.4</span> Helper Functions</h3>
+<ul>
+<li><p><code>NaN</code> is a missing value too.</p></li>
+<li><p>There should be something there, but it’s <strong>N</strong>ot <strong>A</strong>vailable to us because of invalid operation.</p></li>
+</ul>
+<table class="caption-top table">
+<thead><tr class="header">
+<th></th>
+<th>0</th>
+<th>Inf</th>
+<th>NA</th>
+<th>NaN</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code><a href="https://rdrr.io/r/base/is.finite.html">is.finite()</a></code></td>
+<td>v</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code><a href="https://rdrr.io/r/base/is.finite.html">is.infinite()</a></code></td>
+<td></td>
+<td>v</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code><a href="https://rdrr.io/r/base/NA.html">is.na()</a></code></td>
+<td></td>
+<td></td>
+<td>v</td>
+<td>v</td>
+</tr>
+<tr class="even">
+<td><code><a href="https://rdrr.io/r/base/is.finite.html">is.nan()</a></code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>v</td>
+</tr>
+</tbody>
+</table></section><section id="na-null-nan-comparison" class="level3" data-number="A.12.5"><h3 data-number="A.12.5" class="anchored" data-anchor-id="na-null-nan-comparison">
+<span class="header-section-number">A.12.5</span> NA, NULL, NaN comparison</h3>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode" id="cb260"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="cn">NaN</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "NULL"</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "logical"</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "numeric"</code></pre>
+</div>
+<div class="sourceCode" id="cb264"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="cn">NULL</span> <span class="op">&gt;</span> <span class="fl">5</span>; <span class="cn">NA</span> <span class="op">&gt;</span> <span class="fl">5</span>; <span class="cn">NaN</span> <span class="op">&gt;</span> <span class="fl">5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>logical(0)</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] NA</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] NA</code></pre>
+</div>
+<div class="sourceCode" id="cb268"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="cn">NaN</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode" id="cb272"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">vx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="cn">NULL</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span>; <span class="op">(</span><span class="va">vy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="cn">NA</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span>; <span class="op">(</span><span class="va">vz</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="cn">NaN</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3 5</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  3 NA  5</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]   3 NaN   5</code></pre>
+</div>
+<div class="sourceCode" id="cb276"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">vx</span><span class="op">)</span>  <span class="co"># NULL isn't a problem cuz it doesn't exist</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 8</code></pre>
+</div>
+<div class="sourceCode" id="cb278"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">vy</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] NA</code></pre>
+</div>
+<div class="sourceCode" id="cb280"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">vy</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 8</code></pre>
+</div>
+<div class="sourceCode" id="cb282"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">vz</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] NaN</code></pre>
+</div>
+<div class="sourceCode" id="cb284"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">vz</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 8</code></pre>
+</div>
+</div>
+</div>
+</div>
+<!-- ??? -->
+<!-- - NaN is a numeric value because it comes from a numerical operation, although the operation is invalid or not defined. -->
+<!-- - When doing comparisons, NULL > 5 tells us, all right you are doing something logical, but it's nothing. -->
+<!-- - Is NA > 5? Is NaN > 5? Well, is something we don't know > 5? It again, returns something we don't know. -->
+<!-- - If a vector includes something we don't know, any operations based on the vector returns something we don't know. -->
+<!-- - We can set argument na.rm to be TRUE to remove missing values. -->
+</section></section><section id="conditions" class="level2" data-number="A.13"><h2 data-number="A.13" class="anchored" data-anchor-id="conditions">
+<span class="header-section-number">A.13</span> Conditions</h2>
+<div class="cell">
+<div class="sourceCode" id="cb286"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># The condition must evaluate to either TRUE or FALSE.</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="va">condition</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co"># code executed when condition is TRUE</span></span>
+<span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>  <span class="co"># code executed when condition is FALSE</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb287"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span><span class="op">}</span></span>
+<span><span class="co">#&gt; Warning in if (c(TRUE, FALSE)) {: the condition has length &gt; 1 and only the</span></span>
+<span><span class="co">#&gt; first element will be used</span></span>
+<span><span class="co">#&gt; NULL</span></span>
+<span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="cn">NA</span><span class="op">)</span> <span class="op">{</span><span class="op">}</span></span>
+<span><span class="co">#&gt; Error in if (NA) {: missing value where TRUE/FALSE needed</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>You can use <code>||</code> (or) and <code>&amp;&amp;</code> (and) to combine multiple logical expressions.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode" id="cb288"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="va">cond1</span> <span class="op">||</span> <span class="va">cond2</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co"># code executed when condition is TRUE</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li><p>The basic If-else statement structure is that we write if then put a condition inside a pair of parenthesis, then use curly braces to wrap the code to be run when the condition is TRUE.</p></li>
+<li><p>If we want to have the code to be run when the condition is FALSE, we add else and another pair of curly braces.</p></li>
+<li><p>curly braces is not necessary if you just have one line of code to be run.</p></li>
+<li><p>The condition must evaluate to either one TRUE or one FALSE.</p></li>
+<li><p>If it’s a vector, you’ll get a warning message, and only the first element will be used.</p></li>
+<li><p>If it’s an NA, you’ll get an error.</p></li>
+</ul>
+<!-- ## Conditional Expressions - Multiple conditions --><div class="cell">
+<div class="sourceCode" id="cb289"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="va">this</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="co"># do that</span></span>
+<span><span class="op">}</span> <span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span><span class="va">that</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="co"># do something else</span></span>
+<span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>    <span class="co"># </span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb290"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="va">celsius</span> <span class="op">&lt;=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="st">"freezing"</span></span>
+<span><span class="op">}</span> <span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span><span class="va">celsius</span> <span class="op">&lt;=</span> <span class="fl">10</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="st">"cold"</span></span>
+<span><span class="op">}</span> <span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span><span class="va">celsius</span> <span class="op">&lt;=</span> <span class="fl">20</span><span class="op">)</span> <span class="op">{</span></span>
+<span>   <span class="st">"cool"</span></span>
+<span><span class="op">}</span> <span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span><span class="va">celsius</span> <span class="op">&lt;=</span> <span class="fl">30</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="st">"warm"</span></span>
+<span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>    <span class="st">"hot"</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li><p>If we want to have multiple conditions, we add the word else if.</p></li>
+<li><p>The code below is an example of converting numerical data to categorical data, freezing, cold, warm and hot.</p></li>
+<li><p>It’s not the best way to do conversion.</p></li>
+</ul>
+<!-- ## Conditional Expressions - Multiple conditions --><ul>
+<li>If you end up with a very long series of chained if-else statements, rewrite it!</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="./images/img-app/ifelse.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>https://speakerdeck.com/jennybc/code-smells-and-feels</figcaption></figure>
+</div>
+</div>
+</div>
+<ul>
+<li>If you end up with a very long series of chained if-else statements, rewrite it! Don’t confuse readers and especially yourself.</li>
+<li>We have a function called “get same data”.</li>
+<li>When you read the code in a linear fashion from top to bottom, you are falling down and down into conditions that were like a long time ago that you saw what you are actually checking.</li>
+<li>Here is another way to write the exactly the same function. ….. and now I am on the happy path. I get the data.</li>
+<li>So if I open a file, and I know that something is gone wrong and checking all these things, I am much happier to be facing this than that!</li>
+<li>I think our brain cannot process too many layers. When we are trying to analyze so many layers, we just get lost.</li>
+</ul>
+<!-- ## Conditional Expressions - Multiple conditions --><div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="./images/img-app/yoda_ifelse.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>https://speakerdeck.com/jennybc/code-smells-and-feels</figcaption></figure>
+</div>
+</div>
+</div>
+<ul>
+<li>So there is no else, there is only if!</li>
+<li>Back, on the left, every if has an else.</li>
+<li>On the right, we have no else. And this makes your code much more readable!</li>
+</ul></section><section id="functions" class="level2" data-number="A.14"><h2 data-number="A.14" class="anchored" data-anchor-id="functions">
+<span class="header-section-number">A.14</span> Functions</h2>
+<ul>
+<li><p>Write a function whenever you’ve copied and pasted your code more than twice.</p></li>
+<li>
+<p>Three key steps/components:</p>
+<ul>
+<li>pick a <strong>name</strong> for the function.</li>
+<li>list the inputs, or <strong>arguments</strong>, to the function inside function.</li>
+<li>place the code you have developed in <strong>body</strong> of the function.</li>
+</ul>
+</li>
+</ul>
+<div class="cell">
+<div class="sourceCode" id="cb291"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">function_name</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">arg1</span>, <span class="va">arg2</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="co">## body</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">something</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb292"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">add_number</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">c</span> <span class="op">&lt;-</span> <span class="va">a</span> <span class="op">+</span> <span class="va">b</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">c</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">n1</span> <span class="op">&lt;-</span> <span class="fl">9</span></span>
+<span><span class="va">n2</span> <span class="op">&lt;-</span> <span class="fl">18</span></span>
+<span><span class="fu">add_number</span><span class="op">(</span><span class="va">n1</span>, <span class="va">n2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 27</code></pre>
+</div>
+</div>
+</section><section id="loops" class="level2" data-number="A.15"><h2 data-number="A.15" class="anchored" data-anchor-id="loops">
+<span class="header-section-number">A.15</span> Loops</h2>
+<section id="for-loops" class="level3" data-number="A.15.1"><h3 data-number="A.15.1" class="anchored" data-anchor-id="for-loops">
+<span class="header-section-number">A.15.1</span> for loops</h3>
+<div class="cell">
+<div class="sourceCode" id="cb294"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## Syntax</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">value</span> <span class="kw">in</span> <span class="va">that</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">this</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb295"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://www.math.uzh.ch/pages/spam/reference/print.html">print</a></span><span class="op">(</span><span class="va">i</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1
+[1] 2
+[1] 3
+[1] 4
+[1] 5</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb297"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw">for</span> <span class="op">(</span><span class="va">x</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"My"</span>, <span class="st">"1st"</span>, <span class="st">"for"</span>, <span class="st">"loop"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://www.math.uzh.ch/pages/spam/reference/print.html">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "My"
+[1] "1st"
+[1] "for"
+[1] "loop"</code></pre>
+</div>
+</div>
+</section><section id="while-loops" class="level3" data-number="A.15.2"><h3 data-number="A.15.2" class="anchored" data-anchor-id="while-loops">
+<span class="header-section-number">A.15.2</span> while loops</h3>
+<div class="cell">
+<div class="sourceCode" id="cb299"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw">while</span> <span class="op">(</span><span class="va">condition</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="co"># body</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>You can rewrite any <code>for</code> loop as a <code>while</code> loop, but you can’t rewrite every <code>while</code> loop as a <code>for</code> loop.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode" id="cb300"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_along</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="co"># body</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># Equivalent to</span></span>
+<span><span class="va">i</span> <span class="op">&lt;-</span> <span class="fl">1</span></span>
+<span><span class="kw">while</span> <span class="op">(</span><span class="va">i</span> <span class="op">&lt;=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="co"># body</span></span>
+<span>    <span class="va">i</span> <span class="op">&lt;-</span> <span class="va">i</span> <span class="op">+</span> <span class="fl">1</span> </span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<!-- - While loop. Again, we have a () {} structure -->
+<!-- - Sometimes you don't know how long the input sequence should run for because the length of looping depends on some condition.  -->
+<!-- - Under this situation, you can't do iteration using for loop.  -->
+<!-- - And in this case, while loop should be used. -->
+<!-- - A while loop is also more general than a for loop, because you can rewrite any for loop as a while loop, but you can't rewrite every while loop as a for loop. -->
+<!-- - seq_along(x) same as 1:length(x) -->
+<ul>
+<li>We find how many tries it takes to get 5 heads in a row:</li>
+</ul>
+<div class="cell">
+<div class="sourceCode" id="cb301"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## a function that sample one from "T" or "H"</span></span>
+<span><span class="va">flip</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"T"</span>, <span class="st">"H"</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">flips</span> <span class="op">&lt;-</span> <span class="fl">0</span>; <span class="va">nheads</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span></span>
+<span><span class="kw">while</span> <span class="op">(</span><span class="va">nheads</span> <span class="op">&lt;</span> <span class="fl">5</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="fu">flip</span><span class="op">(</span><span class="op">)</span> <span class="op">==</span> <span class="st">"H"</span><span class="op">)</span> <span class="op">{</span></span>
+<span>        <span class="va">nheads</span> <span class="op">&lt;-</span> <span class="va">nheads</span> <span class="op">+</span> <span class="fl">1</span></span>
+<span>    <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>        <span class="va">nheads</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span>    <span class="op">}</span></span>
+<span>    <span class="va">flips</span> <span class="op">&lt;-</span> <span class="va">flips</span> <span class="op">+</span> <span class="fl">1</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">flips</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 85</code></pre>
+</div>
+</div>
+<!-- ??? -->
+<!-- - set a variable flips to count the number of times we flip a coin. -->
+<!-- - nheads counts how many times heads shows up in a row. -->
+<!-- - Count how many times we flip a coin randomly in order to get 5 heads in a row. -->
+<!-- - every time the statement is run, add one to flips. -->
 
 
-<section id="special-objects" class="level2" data-number="A.1">
-<h2 data-number="A.1" class="anchored" data-anchor-id="special-objects"><span class="header-section-number">A.1</span> Special Objects</h2>
-</section>
-<section id="plotting" class="level2" data-number="A.2">
-<h2 data-number="A.2" class="anchored" data-anchor-id="plotting"><span class="header-section-number">A.2</span> Plotting</h2>
-</section>
-<section id="conditions" class="level2" data-number="A.3">
-<h2 data-number="A.3" class="anchored" data-anchor-id="conditions"><span class="header-section-number">A.3</span> Conditions</h2>
-</section>
-<section id="functions" class="level2" data-number="A.4">
-<h2 data-number="A.4" class="anchored" data-anchor-id="functions"><span class="header-section-number">A.4</span> Functions</h2>
-
-
-</section>
-
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -1042,9 +2701,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./references.html" class="pagination-link" aria-label="References">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">References</span>
       </a>          
@@ -1056,8 +2713,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<footer class="footer">
-  <div class="nav-footer">
+<footer class="footer"><div class="nav-footer">
     <div class="nav-footer-left">
 <p>Copyright 2024, Dr.&nbsp;Cheng-Han Yu</p>
 </div>   
@@ -1066,18 +2722,16 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/a-r_prog.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
-    <li class="nav-item compact">
+<li class="nav-item compact">
     <a class="nav-link active" href="https://github.com/chenghanyustats/introstatsbook" aria-current="page">
       <i class="bi bi-github" role="img">
 </i> 
     </a>
   </li>  
 </ul>
-    </div>
+</div>
   </div>
 </footer>
-
-
 
 
 </body></html>
