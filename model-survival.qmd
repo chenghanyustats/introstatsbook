@@ -9,15 +9,22 @@ library(tidyverse)
 
 <span style="color:blue"> **Is the Cluster of Deaths *Significantly* High?** </span>
 
-:::{layout-ncol=2}
-- A town in Wisconsin has 5000 people who reach their 16th birthday, and 25 of them die before their 17th birthday.
+Let's start this chapter with a (made-up) story.
+
+::::{.columns}
+:::{.column width="69%"}
+- Suppose a town in Wisconsin has 5000 people who reach their 16th birthday, and 25 of them die before their 17th birthday.
 - Many residents claim that the number is too high and suspect air pollution as a cause.
 - Others suggest that the number of deaths vary from year to year, so it is no cause for concern.
+:::
 
+
+:::{.column width="29%"}
 ```{r, echo=FALSE, out.width="100%", fig.align='center'}
 knitr::include_graphics("./images/img-model/pollution.jpeg")
 ```
 :::
+::::
 
 :::{.callout-note icon=false}
 ## How do we objectively address this issue?
@@ -26,10 +33,13 @@ knitr::include_graphics("./images/img-model/pollution.jpeg")
 
 ## Life Table
 
-- A **period life table** describes mortality and longevity data for a *hypothetical* cohort.
-- The data is computed with the assumption that **the conditions affecting mortality in a particular year remain the same throughout the lives of everyone in the hypothetical cohort.**
+- A **period (current) life table** describes mortality and longevity data for a *hypothetical* cohort (generation).
+
+- The data is computed with the assumption that **the conditions affecting mortality in a particular basis year (such as 2018) remain the same throughout the lives of everyone in the hypothetical cohort.**
+
   + For example, a 1-year-old toddler and an elderly 70-year-old live their entire life in a world with **the same constant death rates** that were present in a given year.
-- An example of a life table is shown in @fig-life-table.
+  
+
 
 ::::{.columns}
 :::{.column width="49%"}
@@ -48,7 +58,9 @@ knitr::include_graphics("./images/img-model/elderly.jpeg")
 :::
 ::::
 
-<br>
+An example of a life table is shown in @fig-life-table. The entire report can be downloaded at [CDC Publications and Information Products](https://www.cdc.gov/nchs/data/nvsr/nvsr69/nvsr69-12-508.pdf).
+
+The death rates for the various age groups that were in effect in the year 2018 continue to remain in effect during the entire lives of the 100,000 hypothetical people assumed to be present at age 0. That is, we pretend that a population of 100,000 people is born in the year 2018, and they each live their entire lives in a word with the same constant death rates that were present in the year 2018.
 
 ```{r, echo=FALSE, out.width="100%", fig.align='center'}
 knitr::include_graphics("./images/img-model/life_table.png")
@@ -60,9 +72,7 @@ knitr::include_graphics("./images/img-model/life_table.png")
 knitr::include_graphics("./images/img-model/life_table1.png")
 ```
 
-- The entire report can be downloaded at [CDC Publications and Information Products](https://www.cdc.gov/nchs/data/nvsr/nvsr69/nvsr69-12-508.pdf).
-- Mortality experiences are different for various gender and race groups, so it is common to have tables for specific groups.
-  - For example, @fig-female-life below is a table for females in the United States.
+Note that mortality experiences are different for various gender and race groups, so it is common to have tables for specific groups. For example, @fig-female-life below is a table for females in the United States.
 
 ```{r, echo=FALSE, out.width="100%", fig.align='center'}
 #| label: fig-female-life
@@ -87,7 +97,7 @@ knitr::include_graphics("./images/img-model/life_table_year_hypo.png")
 knitr::include_graphics("./images/img-model/life_table_age.png")
 ```
 
-- The probabilities of dying **during the age interval** are listed in the 1st column of the life table.
+- The probabilities of dying *during the age interval* are listed in the 1st column of the life table.
 - For example, in @fig-prob-dying, there is a 0.000367 probability of someone dying between their 1st birthday and their 2nd birthday.
 
 ```{r, echo=FALSE, out.width="100%", fig.align='center'}
@@ -96,7 +106,7 @@ knitr::include_graphics("./images/img-model/life_table_age.png")
 knitr::include_graphics("./images/img-model/life_table_prob.png")
 ```
 
-- The number of people alive at the **beginning** of the age interval is listed in column 2.
+- The number of people alive at the *beginning* of the age interval is listed in column 2.
 - As @fig-alive-beginning displays, among the 100,000 hypothetical people who were born, 99,435 of them are alive on their 1st birthday.
 
 ```{r, echo=FALSE, out.width="100%", fig.align='center'}
@@ -106,7 +116,7 @@ knitr::include_graphics("./images/img-model/life_table_survive.png")
 ```
 
 
-- The number of people who died **during** the age interval is listed in column 3.
+- The number of people who died *during* the age interval is listed in column 3.
 
 :::{.callout-note icon=false}
 ## How is this column related to the previous two columns?
@@ -119,7 +129,9 @@ knitr::include_graphics("./images/img-model/life_table_death.png")
 ```
 
 - The total number of years lived **during** the age interval by those who were alive at the beginning of the age interval is listed in the fourth column.
+
 - For example, the 100,000 people who were present at age 0 lived a total of 99,505 years (@fig-years-lived).
+
 - If none of those people had died, this entry would have been 100,000 years.
 
 ```{r, echo=FALSE, out.width="100%", fig.align='center'}
@@ -128,7 +140,7 @@ knitr::include_graphics("./images/img-model/life_table_death.png")
 knitr::include_graphics("./images/img-model/life_table_year_lived.png")
 ```
 
-- The sixth column is similar to the fifth, but lists the total number of years lived **during the age interval and all of the following age intervals** as well.
+- The sixth column is similar to the fifth, but lists the total number of years lived *during the age interval and all of the following age intervals* as well.
 
 ```{r, echo=FALSE, out.width="100%", fig.align='center'}
 #| label: fig-total-years-lived
@@ -152,7 +164,7 @@ knitr::include_graphics("./images/img-model/life_table_life_time.png")
 
 <span style="color:blue"> **Example: Probability of Dying** </span>
 
-- Use @fig-life-table to find the probability of a person dying between age of 15 and 20.
+We can use @fig-life-table to find the probability of a person dying between age of 15 and 20.
 
 $$\begin{align*} Pr(\text{die in } [15, 20)) &= Pr([15, 16) \cup [16, 17) \cup \cdots \cup [19, 20)) \\ &= Pr([15, 16) + Pr([16, 17)) + \cdots + Pr([19, 20)) \\ &= 0.000214 + 0.000253 + 0.000292 + 0.000329 + 0.000365 = 0.001453 \end{align*}$$
 
@@ -165,23 +177,21 @@ $$Pr(\text{die in } [15, 20)) = 1-Pr(\text{survive in } [15, 20)) = 1 - 0.99854 
 <span style="color:blue"> **Social Security** </span>
 
 ::::{.columns}
-:::{.column width="49%"}
-- There were 3,600,000 births in the U.S. in 2020. 
-- If the age for receiving full Social Security payment is 67, how many of those born in 2020 are expected to be alive on their 67th birthday? Check the [report](https://www.cdc.gov/nchs/data/nvsr/nvsr69/nvsr69-12-508.pdf)!
+:::{.column width="69%"}
+There were 3,600,000 births in the U.S. in 2020. If the age for receiving full Social Security payment is 67, how many of those born in 2020 are expected to be alive on their 67th birthday? Check the [report](https://www.cdc.gov/nchs/data/nvsr/nvsr69/nvsr69-12-508.pdf)!
 :::
 
 :::{.column width="2%"}
 :::
 
-:::{.column width="49%"}
+:::{.column width="29%"}
 ```{r, echo=FALSE, out.width="100%", fig.align='center'}
 knitr::include_graphics("./images/img-model/money.jpeg")
 ```
 :::
 ::::
 
-- Among 100,000 people born, we expect 81,637 of them will survive to their 67th birthday.
-- Therefore, we expect that $3,600,000 \times 0.81637 = 2,938,932$ people born in 2020 will receive their full Social Security payment.
+Among 100,000 people born, we expect 81,637 of them will survive to their 67th birthday. Therefore, we expect that $3,600,000 \times 0.81637 = 2,938,932$ people born in 2020 will receive their full Social Security payment.
 
 --------------------------------------------------------------------
 
@@ -189,9 +199,7 @@ knitr::include_graphics("./images/img-model/money.jpeg")
 
 ::::{.columns}
 :::{.column width="68%"}
-- For one city, there are 5000 people who reach their 16th birthday.
-- 25 of them die before their 17th birthday.
-- Do we have sufficient evidence to conclude that this number of deaths is *significantly* high?
+Back to our opening story. For one city, there are 5000 people who reach their 16th birthday. 25 of them die before their 17th birthday. Do we have sufficient evidence to conclude that this number of deaths is *significantly* high?
 :::
 
 :::{.column width="2%"}
@@ -204,12 +212,16 @@ knitr::include_graphics("./images/img-model/death.jpeg")
 :::
 ::::
 
-- The probability of dying for the age interval of 16-17 is 0.000405.
-- This is a $H_1$ claim. 
-<span style="color:blue"> $\small \begin{align} &H_0: \pi = 0.000405 \\ &H_1: \pi > 0.000405\end{align}$ </span>
+- According to the life table, the probability of dying for the age interval of 16-17 is 0.000405.
+
+- This is a $H_1$ claim. We are going to test <span style="color:blue"> $\small \begin{align} &H_0: \pi = 0.000405 \\ &H_1: \pi > 0.000405\end{align}$ </span>
+
 - $\hat{\pi} = 25/5000 = 0.005$.
+
 - $z = \frac{0.005 - 0.000405}{\sqrt{\frac{(0.000405)(0.999595)}{5000}}} = 16.15$
+
 - $P$-value $\approx 0$.
+
 - There is sufficient evidence to conclude that the proportion of deaths is *significantly* higher than the proportion that is usually expected for this age interval.
 
 ## Kaplan-Meier Survival Analysis
@@ -218,9 +230,9 @@ knitr::include_graphics("./images/img-model/death.jpeg")
 
 ::::{.columns}
 :::{.column width="69%"}
-- The life table method is based on **fixed** time intervals.
+- The life table method is based on *fixed* time intervals.
 - The **Kaplan-Meier method** 
-  + is based on intervals that **vary** according to *the times of survival to some particular terminating event*.
+  + is based on intervals that *vary* according to *the times of survival to some particular terminating event*.
   + is used to describe the *probability of surviving for a specific period of time*.
 - <span style="color:green"> What is the probability of surviving for 5 more years after cancer chemotherapy? </span>
 :::
@@ -281,11 +293,18 @@ knitr::include_graphics("./images/img-model/iphone.jpeg")
 <soan style="color:blue"> **Censored Data** </span>
 
 - Survival times are **censored data** if the subjects 
+
   + survive **past the end of the study**
+  
   + are **dropped from the study** for reasons not related to the terminating event being studied.
-```{r, echo=FALSE, out.width="66%", fig.cap='Illustration of censored data (https://unc.live/3K1ph8f)', fig.align='center'}
+  
+- We have censored data for subject A and C. Subject A dropped from the study in June before the study ends in December. Subject C is still alive at the end of study.
+
+
+
+```{r, echo=FALSE, out.width="80%", fig.cap='Illustration of censored data (https://unc.live/3K1ph8f)', fig.align='center'}
 #| label: fig-censored-data
-knitr::include_graphics("./images/img-model/censor.png")
+knitr::include_graphics("./images/img-model/censored.png")
 ```
 
 -------------------------------------------------------------------
@@ -300,21 +319,28 @@ knitr::include_graphics("./images/img-model/censor.png")
 | 7      | 1 | 2 |  1 | 1/2 = 0.5  | 0.25  |
 | 21      | 1 | 1 | 0  | 0  | 0  |
 
-:::: {.columns}
-::: {.column width="49%"} 
+<!-- :::: {.columns} -->
+<!-- ::: {.column width="49%"}  -->
 - "Surviving" means the patient has NOT resumed smoking.
+
 - As shown in @fig-survival-medication, the Subject 1 disliked the medication and dropped out of the study on day one.
+
 - The table above also provides information regarding the study.
+
   - 2nd row: Subject 2 resumed smoking 3 days after the start of the program. 
-  - 3rd row: $0.5 = (3/4)(2/3)$
-  - 4th row: $0.25 = (3/4)(2/3)(1/2)$
-  - 5th row: $0 = (3/4)(2/3)(1/2)(0)$
-:::
+  
+  - 3rd row: Cumulative Proportion is $0.5 = (3/4)(2/3)$
+  
+  - 4th row: Cumulative Proportion is $0.25 = (3/4)(2/3)(1/2)$
+  
+  - 5th row: Cumulative Proportion is $0 = (3/4)(2/3)(1/2)(0)$
+  
+<!-- ::: -->
 
-:::{.column width="2%"}
-:::
+<!-- :::{.column width="2%"} -->
+<!-- ::: -->
 
-::: {.column width="49%"}
+<!-- ::: {.column width="49%"} -->
 ```{r med, echo = FALSE, out.width="100%", fig.align='center'}
 #| label: fig-survival-medication
 #| fig-cap: Survival time for five subjects receiving the medication treatment
@@ -334,8 +360,8 @@ ggplot(med, aes(Subject, Days)) +
           legend.position = "bottom") + 
     ggtitle("Medication Treatment Survival Time")
 ```
-:::
-::::
+<!-- ::: -->
+<!-- :::: -->
 
 ------------------------------------------------------------------------
 
@@ -354,20 +380,20 @@ ggplot(med, aes(Subject, Days)) +
 | 24      | 0 |  |   |   |  |
 | 28      | 0 |  |   |   |  |
 
-::::{.columns}
-:::{.column width="49%"}
+<!-- ::::{.columns} -->
+<!-- :::{.column width="49%"} -->
 :::{.callout-note icon=false}
 ## Why is the cumulative proportion on Day 8 0.686?
 $$0.686 = (9/10)(8/9)(6/7)$$
 
 - On Day 5 a patient dropped out, so we don't know whether he resumed smoking on Day 8 or not.
 :::
-:::
+<!-- ::: -->
 
-:::{.column width="2%"}
-:::
+<!-- :::{.column width="2%"} -->
+<!-- ::: -->
 
-:::{.column width="49%"}
+<!-- :::{.column width="49%"} -->
 ```{r counsel, echo = FALSE, out.width="100%"}
 #| label: fig-counseling-survival
 #| fig-cap: Survival time for ten subjects receiving the counseling treatment
@@ -396,8 +422,8 @@ ggplot(counsel, aes(Subject, Days)) +
           legend.position = "bottom") +
     ggtitle("Counseling Treatment Survival Time")
 ```
-:::
-::::
+<!-- ::: -->
+<!-- :::: -->
 
 ------------------------------------------------------------------------
 
@@ -406,6 +432,9 @@ ggplot(counsel, aes(Subject, Days)) +
 :::{.callout-note icon=false}
 ## Which treatment is better for quitting smoking?
 :::
+It is often more insightful to create graphs that facilitate the understanding of survival data. The **Kaplan-Meier cumulative survival curves** shown below are constructed using survival times and the cumulative proportions of patients who remained non-smokers.
+
+These curves indicate that the proportion of survivors (patients who had not resumed smoking) is generally higher for those in the counseling program compared to those in the medication program, suggesting that the counseling program yielded better results. However, it is also evident that neither program achieved very high survival rates, indicating that neither approach was particularly effective in helping patients successfully quit smoking.
 
 ```{r, echo=FALSE, out.width="70%", fig.align='center'}
 #| label: fig-kaplan-meier-plot
@@ -423,7 +452,7 @@ plot(survfit(Surv(Days, status) ~ trt, data = smoke_data),
      xlim = c(0, 30),
      col = scales::alpha(c(3, 2), 0.6), lwd = 5, las = 1,
      main = "Kaplan-Meier Plot")
-legend("topright", c("Medication", "Counseling"), col = c(3, 2), lwd = 5, 
+legend("topright", c("Counseling", "Medication"), col = c(3, 2), lwd = 5, 
        bty = "n")
 ```
 

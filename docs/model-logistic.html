@@ -412,7 +412,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-bayes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression*</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -482,12 +482,11 @@ window.Quarto = {
   
 
 
-</header><section id="regression-vs.-classification" class="level2" data-number="28.1"><h2 data-number="28.1" class="anchored" data-anchor-id="regression-vs.-classification">
+</header><p>We already finished the discussion of linear regression. There are a lot of different regression models and regression problems that can be discussed. If you want to learn more about regression, take regression analysis or machine learning courses. In this chapter, we will be switching to the topic of classification which is another huge and popular topic. Specifically, we talk about <strong>logistic regression</strong>. There are many other classification methods out there, for example K-nearest neighbors, generalized additive models, trees, random forests, boosting, support vector machines, etc. Each method has it own advantages and disadvantages, and no one method dominates all. If you are interested in classification and want to learn more about classification methods, take a statistical machine learning course.</p>
+<section id="regression-vs.-classification" class="level2" data-number="28.1"><h2 data-number="28.1" class="anchored" data-anchor-id="regression-vs.-classification">
 <span class="header-section-number">28.1</span> Regression vs.&nbsp;Classification</h2>
-<ul>
-<li>Linear regression assumes that the response <span class="math inline">\(Y\)</span> is <em>numerical</em>.</li>
-<li>In many situations, <span class="math inline">\(Y\)</span> is <strong>categorical</strong>.</li>
-</ul>
+<p>Linear regression assumes that the response <span class="math inline">\(Y\)</span> is <em>numerical</em> (quantitative). In many situations, however, the response we would like to infer or predict on is <strong>categorical</strong> (qualitative), eye color, car brand, true vs.&nbsp;fake news for example.</p>
+<p>A process of predicting categorical response is known as <strong>classification</strong>. There are many classification tools, or <strong>classifiers</strong> used to predict a categorical response. For instance, logistic regression is a classifier.</p>
 <div class="columns">
 <div class="column" style="width:49%;">
 <p><strong>Normal vs.&nbsp;COVID vs.&nbsp;Smoker’s Lungs</strong></p>
@@ -513,11 +512,11 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<ul>
-<li>The process of predicting a categorical response is known as <strong>classification</strong>.</li>
-</ul>
 <hr>
 <p><span style="color:blue"> <strong>Regression Function <span class="math inline">\(f(x)\)</span> vs.&nbsp;Classifier <span class="math inline">\(C(x)\)</span></strong> </span></p>
+<p>Like regression, we have our predictor inputs <span class="math inline">\(X_1, \dots, X_p\)</span>, through a classifier <span class="math inline">\(C(x)\)</span> that takes all the predictors and then generate a predicted value of <span class="math inline">\(y\)</span>, which is categorical. For example, we collect a person’s nationality, race, hair color, build a classifier, then predict his eye color.</p>
+<p>Here, the classifier <span class="math inline">\(C(x)\)</span> in classification problem is analogous to the regression function <span class="math inline">\(f(x) = \beta_0 + \beta_1X_1 + \cdots + \beta_pX_p\)</span> in the regression problem. The classifier <span class="math inline">\(C(x)\)</span> is used to predict a categorical variable <span class="math inline">\(y\)</span> and regression function <span class="math inline">\(f(x)\)</span> is used to predict the value of a numerical variable <span class="math inline">\(y\)</span>.</p>
+<p>In machine learning, it usually separates regression and classification apart, one for numerical response, the other for categorical response. But the term regression in general means any relationship between response variables and predictors, including both numerical and categorical responses. So the definition of regression in machine learning is a little bit narrow scoped. A regression model in general can deal with either numerical response or the regression problem in machine learning, or categorical response or the classification problem. That’s why we can use a logistic <em>regression</em> to do <em>classification</em> problems.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -571,14 +570,12 @@ Figure&nbsp;28.2: Boxplot of Default vs.&nbsp;Balance
 </div>
 <hr>
 <p><span style="color:blue"> <strong>Why Not Linear Regression?</strong> </span></p>
+<p>Before we jump into logistic regression, one question is, why not just fit a linear regression model? That is, we define 0 as not default and 1 as default, and treat 0 and 1 as numerical values, and run a linear regression model, like</p>
+<p><span class="math inline">\(Y = \beta_0 + \beta_1X + \epsilon\)</span>, <span class="math inline">\(\, X =\)</span> credit card balance, and</p>
 <p><span class="math display">\[Y =\begin{cases}
     0  &amp; \quad \text{if not default}\\
     1  &amp; \quad \text{if default}
      \end{cases}\]</span></p>
-<ul>
-<li>
-<span class="math inline">\(Y = \beta_0 + \beta_1X + \epsilon\)</span>, <span class="math inline">\(\, X =\)</span> credit card balance</li>
-</ul>
 <div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -592,11 +589,8 @@ What is the problem with this dummy variable approach?
 
 </div>
 </div>
-<ul>
-<li>
-<span class="math inline">\(\hat{Y} = b_0 + b_1X\)</span> estimates <span class="math inline">\(P(Y = 1 \mid X) = P(default = yes \mid balance)\)</span>
-</li>
-</ul>
+<p>In fact, the predicted valued of <span class="math inline">\(Y\)</span>, <span class="math inline">\(\hat{Y} = b_0 + b_1X\)</span>, estimates <span class="math inline">\(P(Y = 1 \mid X) = P(default \mid balance)\)</span> which is actually what we want. So what’s the issue of linear regression? Look at the figure below. You can see that this is not like usual scatter plot when <span class="math inline">\(y\)</span> is numerical, this scatter plot is pretty strange that <span class="math inline">\(y\)</span> is either 0 or 1, the red and green points. This blue line is our linear regression line. Any point on the line is the estimated probability of default given a value of <span class="math inline">\(X\)</span>. Do you see any issues of using linear regression to fit this type of data?</p>
+<!-- -  estimates $P(Y = 1 \mid X) = P(default = yes \mid balance)$ -->
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-simple-regression" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
@@ -609,16 +603,15 @@ Figure&nbsp;28.3: Graphical illustration of why a simple linear regression model
 </div>
 </div>
 </div>
-<ul>
-<li>
-<strong>Some estimates might be outside <span class="math inline">\([0, 1]\)</span></strong>, which doesn’t make sense given that <span class="math inline">\(Y\)</span> is a probability.</li>
-</ul>
+<!-- - **Some estimates might be outside $[0, 1]$**, which doesn't make sense given that $Y$ is a probability. -->
+<p>First, probability is always between 0 and 1, but some estimates here are outside the <span class="math inline">\([0, 1]\)</span> interval. For example, when the credit card balance is below 500, the estimated probability of default is negative, which is not allowed mathematically.</p>
+<p>Also, we assume the probability of default is linearly increasing with credit card balance, which is generally not true in reality.</p>
+<p>In addition, the dummy variable approach <span class="math inline">\((Y = 0, 1)\)</span> cannot be easily extended to <span class="math inline">\(Y\)</span> with more than two categories. If we have 3 categories with nominal level of measurements, like car brand and eye color, coding the categories with 1, 2, 3 forces them to be ordered, the forces them to have the same difference. It does not make sense.</p>
+<p>As a result, we need to use a model that is appropriate for categorical responses, like logistic regression.</p>
 <hr>
 <p><span style="color:blue"> <strong>Why Logistic Regression?</strong> </span></p>
-<ul>
-<li>We first predict the <strong>probability</strong> of each category of <span class="math inline">\(Y\)</span>.</li>
-<li>Then, we predict the probability of <code>default</code> using an <span style="color:blue"><strong>S-shaped</strong> curve</span>.</li>
-</ul>
+<p>Some classification methods, logistic regression for example, first predict the <strong>probability</strong> of each category of <span class="math inline">\(Y\)</span>. Then, the logistic regression predicts the probability of <code>default</code> using an <span style="color:blue"><strong>S-shaped</strong> curve</span>.</p>
+<p>You can see the estimated probability curve is always between 0 and 1 and higher balance leads to higher chance of default. If our cut-off or threshold probability is 0.5, <span class="math inline">\(y\)</span> will be labeled as default when the balance is over about 2000 dollars. Our goal is to learn how to generate this predicted probability curve using logistic regression.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-logistic-reg" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
@@ -634,9 +627,7 @@ Figure&nbsp;28.4: Graphical illustration of why a logistic regression model work
 </section><section id="introduction-to-logistic-regression" class="level2" data-number="28.2"><h2 data-number="28.2" class="anchored" data-anchor-id="introduction-to-logistic-regression">
 <span class="header-section-number">28.2</span> Introduction to Logistic Regression</h2>
 <p><span style="color:blue"> <strong>Binary Responses</strong> </span></p>
-<ul>
-<li>Treat each outcome, default <span class="math inline">\((y = 1)\)</span> and not default <span class="math inline">\((y = 0)\)</span>, as success and failure arising from separate <strong>Bernoulli</strong> trials.</li>
-</ul>
+<p>The story starts with the binary response. The idea is that we treat each default <span class="math inline">\((y = 1)\)</span> and not default <span class="math inline">\((y = 0)\)</span>, as success and failure arising from separate <strong>Bernoulli</strong> trials.</p>
 <div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -678,10 +669,9 @@ In the default credit card example,
 <div class="columns">
 <div class="column" style="width:49%;">
 <ul>
-<li>Two outcomes: Default <span class="math inline">\((y = 1)\)</span> and Not Default <span class="math inline">\((y = 0)\)</span>
-</li>
-<li>The probability of success, <span class="math inline">\(\pi\)</span>, <em>changes with</em> the value of predictor, <span class="math inline">\(X\)</span>!</li>
-<li>With a different value of <span class="math inline">\(x_i\)</span>, each Bernoulli trial outcome, <span class="math inline">\(y_i\)</span>, has a <em>different</em> probability of success, <span class="math inline">\(\pi_i\)</span>.</li>
+<li><p>Two outcomes: Default <span class="math inline">\((y = 1)\)</span> and Not Default <span class="math inline">\((y = 0)\)</span></p></li>
+<li><p>The probability of success, <span class="math inline">\(\pi\)</span>, <em>changes with</em> the value of predictor, <span class="math inline">\(X\)</span>!</p></li>
+<li><p>With a different value of <span class="math inline">\(x_i\)</span>, each Bernoulli trial outcome, <span class="math inline">\(y_i\)</span>, has a <em>different</em> probability of success, <span class="math inline">\(\pi_i\)</span>.</p></li>
 </ul>
 </div><div class="column" style="width:2%;">
 
@@ -701,32 +691,25 @@ In the default credit card example,
 <li>
 <span class="math inline">\(X =\)</span> <code>balance</code>. <span class="math inline">\(x_1 = 2000\)</span> has a larger <span class="math inline">\(\pi_1 = \pi(2000)\)</span> than <span class="math inline">\(\pi_2 = \pi(500)\)</span> with <span class="math inline">\(x_2 = 500\)</span> because credit cards with a higher balance are more likely to default.</li>
 </ul>
+<p>The idea of nonconstant probability in logistic regression is similar to the idea of different mean response value in linear regression. In linear regression, the mean response level is linearly affected by the predictor’s value, <span class="math inline">\(E(Y \mid X) = \beta_0 + \beta_1X\)</span>. In logistic regression, <span class="math inline">\(\pi(x) = P(Y = 1 \mid X = x)\)</span> is a function of <span class="math inline">\(X\)</span>. In our example, the higher value of <span class="math inline">\(X\)</span>, the higher value of <span class="math inline">\(\pi\)</span>, although their relationship is not linear. The fact that the regressor <span class="math inline">\(X\)</span> affects the mean response level or the probability of the response belonging to some category is the reason why we use regression. Through the relationship between the response and regressors, knowing <span class="math inline">\(X\)</span> better helps us know the value of <span class="math inline">\(Y\)</span>.</p>
+<p>Because of this Bernoulli assumption, the logistic regression is also called <strong>binomial</strong> regression.</p>
 <hr>
 <p><span style="color:blue"> <strong>Logistic Regression</strong> </span></p>
-<ul>
-<li>
-<strong>Logistic regression</strong> models a <strong>binary</strong> response <span class="math inline">\((Y)\)</span> using predictors <span class="math inline">\(X_1, \dots, X_k\)</span>.
+<p>Now it’s time to see what the logistic regression is. <strong>Logistic regression</strong> models a <strong>binary</strong> response <span class="math inline">\((Y)\)</span> using predictors <span class="math inline">\(X_1, \dots, X_k\)</span>.</p>
 <ul>
 <li>
 <span class="math inline">\(k = 1\)</span>: simple logistic regression</li>
 <li>
 <span class="math inline">\(k &gt; 1\)</span>: multiple logistic regression</li>
 </ul>
-</li>
-<li>Instead of predicting <span class="math inline">\(y_i\)</span> directly, we use the predictors to model its <em>probability</em> of success, <span class="math inline">\(\pi_i\)</span>.</li>
-</ul>
-<center>
-<strong>But how?</strong>
-</center>
-<p><br></p>
-<p><span style="color:red"> <strong><em>Logit function <span class="math inline">\(\eta = logit(\pi) = \ln\left(\frac{\pi}{1-\pi}\right)\)</span></em></strong> </span></p>
-<ul>
-<li><strong>Transform <span class="math inline">\(\pi \in (0, 1)\)</span> into another variable <span class="math inline">\(\eta \in (-\infty, \infty)\)</span>. Then fit a linear regression on <span class="math inline">\(\eta\)</span>.</strong></li>
-<li>
-<strong>Logit function:</strong> For <span class="math inline">\(0 &lt; \pi &lt; 1\)</span>
-</li>
-</ul>
-<p><span class="math display">\[\eta = logit(\pi) = \ln\left(\frac{\pi}{1-\pi}\right)\]</span></p>
+<p>But remember, we are not predicting <span class="math inline">\(Y\)</span> directly. Instead, our goal is to use predictors <span class="math inline">\(X_1, \dots, X_k\)</span> to estimate the probability of success <span class="math inline">\(\pi\)</span> of the Bernoulli variable <span class="math inline">\(Y\)</span>. And if <span class="math inline">\(\pi &gt; threshold\)</span>, say 0.5, <span class="math inline">\(\hat{Y} = 1\)</span>, if <span class="math inline">\(\pi &lt; threshold\)</span>, <span class="math inline">\(\hat{Y} = 0\)</span>. <strong>But how?</strong></p>
+<p>Now that it’s not good to use <span class="math inline">\(y = 0, 1\)</span> in the regression, and predicting a probability having value between 0 and 1 sounds difficult. How about this. we transform <span class="math inline">\(\pi \in (0, 1)\)</span> into another variable say <span class="math inline">\(\eta \in (-\infty, \infty)\)</span> living on the whole real line. So that we can reasonably fit a linear regression on <span class="math inline">\(\eta\)</span> because the linear predictor could be any value.</p>
+<p>In the logistic regression, we use the <strong>logit function</strong>:</p>
+<p><span style="color:red"> <strong><em><span class="math inline">\(\eta = logit(\pi) = \ln\left(\frac{\pi}{1-\pi}\right)\)</span></em></strong> </span></p>
+<p>which is in fact the log odds. This transformation is monotone. The higher <span class="math inline">\(\pi\)</span> is, the larger <span class="math inline">\(\eta\)</span> is. When <span class="math inline">\(\pi\)</span> approaches to zero, <span class="math inline">\(\eta\)</span> approaches to <span class="math inline">\(-\infty\)</span>, and when <span class="math inline">\(\pi\)</span> approaches to 1, <span class="math inline">\(\eta\)</span> approaches to <span class="math inline">\(\infty\)</span>.</p>
+<!-- - **Transform $\pi \in (0, 1)$ into another variable $\eta \in (-\infty, \infty)$. Then fit a linear regression on $\eta$.** -->
+<!-- - **Logit function:** For $0 < \pi < 1$ -->
+<!-- $$\eta = logit(\pi) = \ln\left(\frac{\pi}{1-\pi}\right)$$ -->
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-logit-function" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
@@ -739,15 +722,12 @@ Figure&nbsp;28.5: Graphical illustration of the logit function
 </div>
 </div>
 </div>
-<p><span style="color:red"> <strong><em>Logistic Function <span class="math inline">\(\pi = logistic(\eta) = \frac{\exp(\eta)}{1+\exp(\eta)}\)</span></em></strong> </span></p>
-<ul>
-<li>The <em>logit</em> function <span class="math inline">\(\eta = logit(\pi) = \ln\left(\frac{\pi}{1-\pi}\right)\)</span> takes a value <span class="math inline">\(\pi \in (0, 1)\)</span> and maps it to a value <span class="math inline">\(\eta \in (-\infty, \infty)\)</span>.</li>
-<li>
-<strong>Logistic function</strong>: <span class="math display">\[\pi = logistic(\eta) = \frac{\exp(\eta)}{1+\exp(\eta)} = \frac{1}{1+\exp(-\eta)} \in (0, 1)\]</span>
-</li>
-<li>The <em>logistic</em> function takes a value <span class="math inline">\(\eta \in (-\infty, \infty)\)</span> and maps it to a value <span class="math inline">\(\pi \in (0, 1)\)</span>.</li>
-<li>So once <span class="math inline">\(\eta\)</span> is estimated by the linear regression, we use the logistic function to transform <span class="math inline">\(\eta\)</span> back to the probability.</li>
-</ul>
+<p>Then we can assume <span class="math inline">\(\eta\)</span> is a <em>linear</em> function of <span class="math inline">\(x\)</span>:</p>
+<p><span class="math display">\[\eta(x) =\ln \left( \frac{\pi(x)}{1 - \pi(x)} \right)= \beta_0 + \beta_1x\]</span> By doing so, we connect <span class="math inline">\(x\)</span> and <span class="math inline">\(\pi\)</span> (and <span class="math inline">\(\eta\)</span>) together, and we can learn how <span class="math inline">\(x\)</span> affect <span class="math inline">\(\pi\)</span> (and <span class="math inline">\(\eta\)</span>) through the coefficients <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>.</p>
+<p>Well, the question is, if we obtain the <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> estimates, and therefore obtain <span class="math inline">\(\eta\)</span> estimated value, how do we obtain <span class="math inline">\(\pi(x)\)</span>, our real interest? We can consider transform <span class="math inline">\(\eta\)</span> back to <span class="math inline">\(\pi\)</span> using the inverse function of the logit function, which is the <strong>logistic</strong> function.</p>
+<!-- <span style="color:red"> ***Logistic Function $\pi = logistic(\eta) = \frac{\exp(\eta)}{1+\exp(\eta)}$*** </span> -->
+<p>So the <em>logit</em> function <span class="math inline">\(\eta = logit(\pi) = \ln\left(\frac{\pi}{1-\pi}\right)\)</span> takes a value <span class="math inline">\(\pi \in (0, 1)\)</span> and maps it to a value <span class="math inline">\(\eta \in (-\infty, \infty)\)</span>. But the logistic function denoted as <span style="color:red"> <span class="math display">\[\pi = logistic(\eta) = \frac{\exp(\eta)}{1+\exp(\eta)} = \frac{1}{1+\exp(-\eta)} \in (0, 1)\]</span> </span> takes a value <span class="math inline">\(\eta \in (-\infty, \infty)\)</span> and maps it to a value <span class="math inline">\(\pi \in (0, 1)\)</span>.</p>
+<p>So once <span class="math inline">\(\eta\)</span> is estimated by the linear predictor, we use the logistic function to transform <span class="math inline">\(\eta\)</span> back to the probability. The figure below shows a logistic function. This logistic function is a function of <span class="math inline">\(x\)</span>, and it describes the probability <span class="math inline">\(\pi\)</span>. This S-shaped curve is what we want to estimate given the data, and we use this curve to do classification on <span class="math inline">\(y\)</span>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-logistic-function" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
@@ -762,21 +742,19 @@ Figure&nbsp;28.6: Graphical illustration of the logistic function
 </div>
 </section><section id="simple-logistic-regression-model" class="level2" data-number="28.3"><h2 data-number="28.3" class="anchored" data-anchor-id="simple-logistic-regression-model">
 <span class="header-section-number">28.3</span> Simple Logistic Regression Model</h2>
-<ul>
-<li>For <span class="math inline">\(i = 1, \dots, n\)</span> and with one predictor <span class="math inline">\(X\)</span>: <span class="math display">\[(Y_i \mid X = x_i) \stackrel{indep}{\sim} \text{Bernoulli}(\pi(x_i))\]</span> <span class="math display">\[\text{logit}(\pi_i) = \ln \left( \frac{\pi(x_i)}{1 - \pi(x_i)} \right) = \eta_i = \beta_0+\beta_1 x_{i}\]</span>
-</li>
-</ul>
-<p><span class="math display">\[\small \pi_i = \frac{\exp(\beta_0+\beta_1 x_{i})}{1+\exp(\beta_0+\beta_1 x_{i})} = \frac{\exp(\eta_i)}{1 + \exp(\eta_i)}\]</span></p>
-<p><span class="math display">\[\small \hat{\pi}_i = \frac{\exp(\hat{\beta}_0+\hat{\beta}_1 x_{i} )}{1+\exp(\hat{\beta}_0+\hat{\beta}_1 x_{i})}\]</span></p>
+<p>To sum up, here shows a simple logistic regression model: For <span class="math inline">\(i = 1, \dots, n\)</span> and with one predictor <span class="math inline">\(X\)</span>,</p>
+<p><span class="math display">\[(Y_i \mid X = x_i) \stackrel{indep}{\sim} \text{Bernoulli}(\pi(x_i))\]</span> <span class="math display">\[\text{logit}(\pi_i) = \ln \left( \frac{\pi(x_i)}{1 - \pi(x_i)} \right) = \eta_i = \beta_0+\beta_1 x_{i}\]</span></p>
+<p>Each <span class="math inline">\(Y_i\)</span> is a Bernoulli variable with the probability of success <span class="math inline">\(\pi_i(x_i)\)</span> which depends on its corresponding regressor <span class="math inline">\(x_i\)</span> value. The nonlinear relationship between <span class="math inline">\(\pi_i(x_i)\)</span> and <span class="math inline">\(x_i\)</span> is described through a linear relationship on its logit transformation. Put it another way, we have <span class="math display">\[\small \pi_i = \frac{\exp(\beta_0+\beta_1 x_{i})}{1+\exp(\beta_0+\beta_1 x_{i})} = \frac{\exp(\eta_i)}{1 + \exp(\eta_i)}\]</span></p>
+<p>Once we get the estimates <span class="math inline">\(\hat{\beta}_0\)</span> and <span class="math inline">\(\hat{\beta}_1\)</span>, we can simply plug them into the logistic function to get the estimated probability <span class="math inline">\(\hat{\pi}_i\)</span>.</p>
+<p><span class="math display">\[\small \hat{\pi}_i = \frac{\exp(\hat{\beta}_0+\hat{\beta}_1 x_{i} )}{1+\exp(\hat{\beta}_0+\hat{\beta}_1 x_{i})}\]</span> If we consider a sequence of possible values of <span class="math inline">\(x_i\)</span>, and their estimated probability <span class="math inline">\(\hat{\pi}_i\)</span>, the collection of <span class="math inline">\(\{ x_i \}\)</span> and <span class="math inline">\(\{ \hat{\pi}_i \}\)</span> will give us the S-shaped probability curve.</p>
 <hr>
 <p><span style="color:blue"> <strong>Probability Curve</strong> </span></p>
 <div class="columns">
 <div class="column" style="width:49%;">
 <ul>
-<li>The relationship between <span class="math inline">\(\pi(x)\)</span> and <span class="math inline">\(x\)</span> is not linear! <span class="math display">\[\pi(x) = \frac{\exp(\beta_0+\beta_1 x)}{1+\exp(\beta_0+\beta_1 x)}\]</span>
-</li>
-<li>The amount that <span class="math inline">\(\pi(x)\)</span> changes due to a one-unit change in <span class="math inline">\(x\)</span> depends on the current value of <span class="math inline">\(x\)</span>.</li>
-<li>Regardless of the value of <span class="math inline">\(x\)</span>, if <span class="math inline">\(\beta_1 &gt; 0\)</span>, increasing <span class="math inline">\(x\)</span> will increase <span class="math inline">\(\pi(x)\)</span>.</li>
+<li><p>The relationship between <span class="math inline">\(\pi(x)\)</span> and <span class="math inline">\(x\)</span> is not linear! <span class="math display">\[\pi(x) = \frac{\exp(\beta_0+\beta_1 x)}{1+\exp(\beta_0+\beta_1 x)}\]</span></p></li>
+<li><p>Because of the S-shaped curve, the amount that <span class="math inline">\(\pi(x)\)</span> changes due to a one-unit change in <span class="math inline">\(x\)</span> depends on the current value of <span class="math inline">\(x\)</span>. <span class="math inline">\(\pi(x = 2000)\)</span> would change much larger than <span class="math inline">\(\pi(x = 1000)\)</span> with one-unit change in <span class="math inline">\(x\)</span>.</p></li>
+<li><p>Regardless of the value of <span class="math inline">\(x\)</span>, if <span class="math inline">\(\beta_1 &gt; 0\)</span>, increasing <span class="math inline">\(x\)</span> will increase <span class="math inline">\(\pi(x)\)</span> because the slope of the S-shape curve is positive.</p></li>
 </ul>
 </div><div class="column" style="width:2%;">
 
@@ -794,11 +772,13 @@ Figure&nbsp;28.6: Graphical illustration of the logistic function
 <hr>
 <p><span style="color:blue"> <strong>Interpretation of Coefficients</strong> </span></p>
 <ul>
-<li>The ratio <span class="math inline">\(\frac{\pi}{1-\pi} \in (0, \infty)\)</span> is called the <strong>odds</strong> of some event.</li>
-<li>Example: If 1 in 5 people will default, the odds is 1/4 since <span class="math inline">\(\pi = 0.2\)</span> implies an odds of <span class="math inline">\(0.2/(1−0.2) = 1/4\)</span>.</li>
+<li><p>The ratio <span class="math inline">\(\frac{\pi}{1-\pi} \in (0, \infty)\)</span> is called the <strong>odds</strong> of having <span class="math inline">\(y=1\)</span>.</p></li>
+<li><p>Example: If 1 in 5 people will default, the odds is 1/4 since <span class="math inline">\(\pi = 0.2\)</span> implies an odds of <span class="math inline">\(0.2/(1−0.2) = 1/4\)</span>.</p></li>
 </ul>
 <p><span class="math display">\[\ln \left( \frac{\pi(x)}{1 - \pi(x)} \right)= \beta_0 + \beta_1x\]</span></p>
-<p>-Increasing <span class="math inline">\(x\)</span> by one unit changes the <strong>log-odds</strong> by <span class="math inline">\(\beta_1\)</span>, or it multiplies the odds by <span class="math inline">\(e^{\beta_1}\)</span>.</p>
+<ul>
+<li>Increasing <span class="math inline">\(x\)</span> by one unit changes the <strong>log-odds</strong> by <span class="math inline">\(\beta_1\)</span>, or it multiplies the odds by <span class="math inline">\(e^{\beta_1}\)</span>.</li>
+</ul>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -810,10 +790,8 @@ Note
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li>
-<span class="math inline">\(\beta_1\)</span> does <em>not</em> correspond to the change in <span class="math inline">\(\pi(x)\)</span> associated with a one-unit increase in <span class="math inline">\(x\)</span>.</li>
-<li>
-<span class="math inline">\(\beta_1\)</span> is the change in <strong>log odds</strong> associated with one-unit increase in <span class="math inline">\(x\)</span>.</li>
+<li><p><span class="math inline">\(\beta_1\)</span> does <em>not</em> correspond to the change in <span class="math inline">\(\pi(x)\)</span> associated with a one-unit increase in <span class="math inline">\(x\)</span>.</p></li>
+<li><p><span class="math inline">\(\beta_1\)</span> is the change in <strong>log odds</strong> associated with one-unit increase in <span class="math inline">\(x\)</span>.</p></li>
 </ul>
 </div>
 </div>
@@ -821,13 +799,13 @@ Note
 <span class="header-section-number">28.4</span> Logistic Regression in R</h2>
 <div class="columns">
 <div class="column" style="width:49%;">
+<p>We use the <code>body</code> data to demonstrate the implementation of logistic regression. The response variable is <code>GENDER</code>, and the predictor is <code>HEIGHT</code>. We would like to use logistic regression to predict whether a person is male or female using the height information of that person.</p>
+<p>In the data,</p>
 <ul>
-<li>
-<code>GENDER = 1</code> if male</li>
-<li>
-<code>GENDER = 0</code> if female</li>
-<li>Use HEIGHT (centimeter, 1 cm = 0.3937 in) to predict/classify GENDER: whether the person is male or female.</li>
+<li><p><code>GENDER = 1</code> if male</p></li>
+<li><p><code>GENDER = 0</code> if female</p></li>
 </ul>
+<p>The unit of <code>HEIGHT</code> is centimeter (cm) (1 cm = 0.3937 in).</p>
 </div><div class="column" style="width:2%;">
 
 </div><div class="column" style="width:49%;">
@@ -842,7 +820,7 @@ Note
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">body</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.table</a></span><span class="op">(</span><span class="st">"./data/01 - Body Data.txt"</span>, header <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">body</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.table</a></span><span class="op">(</span><span class="st">"./data/body.txt"</span>, header <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">body</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  AGE GENDER PULSE SYSTOLIC DIASTOLIC HDL LDL WHITE  RED PLATE WEIGHT HEIGHT
@@ -861,10 +839,12 @@ Note
 6 112.0     31.4 31.1</code></pre>
 </div>
 </div>
+<p>Again, we are not using gender to predict someone’s height, which is usually done by linear regression. Instead, our response variable is a binary categorical variable, and we are doing classification with a numeric predictor.</p>
 <hr>
 <p><span style="color:blue"> <strong>Data Summary</strong> </span></p>
-<div class="columns">
-<div class="column" style="width:49%;">
+<p>A basic data summary by gender tells us that height plays a role in distinguish male from female, so using height to classify gender would be helpful.</p>
+<!-- ::::{.columns} -->
+<!-- :::{.column width="49%"} -->
 <div class="cell">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">body</span><span class="op">$</span><span class="va">GENDER</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -883,9 +863,10 @@ Note
   134.5   156.5   162.2   161.7   166.8   181.4 </code></pre>
 </div>
 </div>
-</div><div class="column" style="width:2%;">
-
-</div><div class="column" style="width:49%;">
+<!-- ::: -->
+<!-- :::{.column width="2%"} -->
+<!-- ::: -->
+<!-- :::{.column width="49%"} -->
 <div class="cell">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/boxplot.html">boxplot</a></span><span class="op">(</span><span class="va">body</span><span class="op">$</span><span class="va">HEIGHT</span> <span class="op">~</span> <span class="va">body</span><span class="op">$</span><span class="va">GENDER</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -895,10 +876,12 @@ Note
 </div>
 </div>
 </div>
-</div>
-</div>
+<!-- ::: -->
+<!-- :::: -->
 <hr>
 <p><span style="color:blue"> <strong>Model Fitting</strong> </span></p>
+<p>We use the function <code><a href="https://rdrr.io/r/stats/glm.html">glm()</a></code> in R to fit a logistic regression model. “glm” means <strong>g</strong>eneralized <strong>l</strong>inear <strong>m</strong>odel (GLM). Linear regression is a linear model, and it is a normal model because the response variable is normally distributed given <span class="math inline">\(x\)</span>. The models for non-normal response variables generalizes the linear regression model, and hence belong to GLM. The logistic regression whose response is Bernoulli or binomial distributed is a GLM. There are other GLMs such as Poisson regression and gamma regression. They are often discussed in the second course of Linear Models or a separate Generalized Linear Models course.</p>
+<p>In the function, we use the same formula syntax as <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>, and one additional job we need to do is specify the family of the GLM. <code>family = "binomial"</code> should be used because the logistic regression is a binomial regression.</p>
 <div class="cell" data-highlight.output="[10,11,12]" data-output.lines="-1">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">logit_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span><span class="va">GENDER</span> <span class="op">~</span> <span class="va">HEIGHT</span>, data <span class="op">=</span> <span class="va">body</span>, family <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span></span>
 <span><span class="op">(</span><span class="va">summ_logit_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">logit_fit</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -932,20 +915,20 @@ Number of Fisher Scoring iterations: 5</code></pre>
 HEIGHT        0.2417325 0.02758399  8.763507 1.892674e-18</code></pre>
 </div>
 </div>
-<ul>
-<li><span class="math inline">\(\hat{\eta} = \ln \left( \frac{\hat{\pi}}{1 - \hat{\pi}}\right) = -40.55 + 0.24 \times \text{HEIGHT}\)</span></li>
-<li><span class="math inline">\(\hat{\eta}(x) = \hat{\beta}_0 + \hat{\beta}_1x\)</span></li>
-<li><span class="math inline">\(\hat{\eta}(x+1) = \hat{\beta}_0 + \hat{\beta}_1(x+1)\)</span></li>
-<li><span class="math inline">\(\hat{\eta}(x+1) - \hat{\eta}(x) = \hat{\beta}_1 = \ln(\text{odds}_{x+1}) - \ln(\text{odds}_{x}) = \ln \left( \frac{\text{odds}_{x+1}}{\text{odds}_{x}} \right)\)</span></li>
-<li>A one centimeter increase in <code>HEIGHT</code> increases the <em>log odds</em> of being male by 0.24 units.</li>
-<li>The <strong>odds ratio</strong>, <span class="math inline">\(\widehat{OR} = \frac{\text{odds}_{x+1}}{\text{odds}_{x}} = e^{\hat{\beta}_1} = e^{0.24} = 1.273\)</span>.</li>
-<li>The odds of being male increases by 27.3% with an additional one centimeter of <code>HEIGHT</code>.</li>
-</ul>
+<p>Based on the fitted result, we learn that <span class="math display">\[\hat{\eta}(x) = \ln \left( \frac{\hat{\pi}(x)}{1 - \hat{\pi}(x)}\right) = \ln (\text{odds}_{x}) =  \hat{\beta}_0 + \hat{\beta}_1x = -40.55 + 0.24 \times \text{HEIGHT}\]</span></p>
+<!-- - $\hat{\eta}(x) = \hat{\beta}_0 + \hat{\beta}_1x$ -->
+<p>Since <span class="math inline">\(\hat{\eta}(x+1) = \hat{\beta}_0 + \hat{\beta}_1(x+1)\)</span>, <span class="math inline">\(\hat{\eta}(x+1) - \hat{\eta}(x) = \hat{\beta}_1 = \ln(\text{odds}_{x+1}) - \ln(\text{odds}_{x}) = \ln \left( \frac{\text{odds}_{x+1}}{\text{odds}_{x}} \right)\)</span></p>
+<p>A one centimeter increase in <code>HEIGHT</code> increases the <em>log odds</em> of being male by 0.24 units.</p>
+<p>The <strong>odds ratio</strong>, <span class="math inline">\(\widehat{OR} = \frac{\text{odds}_{x+1}}{\text{odds}_{x}} = e^{\hat{\beta}_1} = e^{0.24} = 1.273\)</span>. Therefore, the odds of being male increases by 27.3% with an additional one centimeter of <code>HEIGHT</code>.</p>
 <hr>
 <p><span style="color:blue"> <strong>Prediction</strong> </span></p>
-<p><span style="color:red"> <strong><em>Pr(GENDER = 1) When HEIGHT is 170 cm</em></strong> </span></p>
+<p>Knowing how the predictor affects the chance of response belonging to some category is one goal. But in classification, we usually focus more on prediction. For example, we may want to know <em>Pr(GENDER = 1) when <code>HEIGHT</code> is 170 cm</em>.</p>
+<!-- <span style="color:red"> ***Pr(GENDER = 1) When HEIGHT is 170 cm*** </span> -->
 <!-- $$\log\left(\frac{\hat{\pi}}{1-\hat{\pi}}\right) = -40.55+0.24 \times 170$$ -->
+<p>Once we obtain the coefficient estimates and the predictor value, we just need to plug them into the logistic function to obtain the probability we want.</p>
 <p><span class="math display">\[ \hat{\pi}(x = 170) = \frac{\exp(\hat{\beta}_0+\hat{\beta}_1 x)}{1+\exp(\hat{\beta}_0+\hat{\beta}_1 x)} = \frac{\exp(-40.55+0.24 \times 170)}{1+\exp(-40.55+0.24 \times 170)} = 0.633 = 63.3\%\]</span></p>
+<p>Through the formula, we learn that from our model, when a person is 170cm tall, the probability that this person is male is about 63/3%.</p>
+<p><code>predict(logit_fit, type = "response")</code> gives us a vector of <span class="math inline">\(\hat{\pi}(x_i)\)</span> of all responses in the data. When <code>type = "link"</code>, <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> gives us <span class="math inline">\(\hat{\eta}(x_i)\)</span> because in literature, <span class="math inline">\(\eta(x) = \ln \left( \frac{\hat{\pi}(x)}{1 - \hat{\pi}(x)}\right)\)</span> is called the <strong>link function</strong>. To predict a specific probability at some <span class="math inline">\(x\)</span> value, we use <code>newdata = data.frame(HEIGHT = 170)</code>. Remember the variable name should be exactly the same as the name in the original data set.</p>
 <div class="cell">
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pi_hat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">logit_fit</span>, type <span class="op">=</span> <span class="st">"response"</span><span class="op">)</span></span>
 <span><span class="va">eta_hat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">logit_fit</span>, type <span class="op">=</span> <span class="st">"link"</span><span class="op">)</span>  <span class="co">## default gives us b0 + b1*x</span></span>
@@ -976,6 +959,7 @@ What is the probability of being male when the <code>HEIGHT</code> is 160 cm? Wh
 0.1334399 0.6333105 0.9509103 </code></pre>
 </div>
 </div>
+<p>The blue S-shaped curve is the estimated probability curve. It can be plotted using <code>pi_hat</code>.</p>
 <div class="columns">
 <div class="column" style="width:60%;">
 <div class="cell">
@@ -996,7 +980,10 @@ What is the probability of being male when the <code>HEIGHT</code> is 160 cm? Wh
 </div>
 </section><section id="evaluation-metrics" class="level2" data-number="28.5"><h2 data-number="28.5" class="anchored" data-anchor-id="evaluation-metrics">
 <span class="header-section-number">28.5</span> Evaluation Metrics</h2>
-<p><span style="color:blue"> <strong>Sensitivity and Specificity</strong> </span></p>
+<!-- <span style="color:blue"> **Sensitivity and Specificity** </span> -->
+<p>Having probabilities is just a intermediate step. Most of the time our final goal is to classify our response, doing a binary decision. Given a predicted probability, we may correctly classify the label, or mis-classify the label. To know whether or not our model does a good job on classification, we need some evaluation metrics.</p>
+<p>First, we can use a tool called a <strong>confusion matrix</strong> to display all possible outcomes in a binary classification scenario. In this context, let’s designate 0 as Negative and 1 as Positive, regardless of what these values represent. If the actual truth is 0 and we classify the response as 0, this outcome is a True Negative (TN), meaning we made a correct decision. However, if we classify the response as 1 instead, we commit an error, resulting in a False Positive (FP). In this case, the true condition is Negative, but our model incorrectly predicts it as Positive.</p>
+<p>Similarly, if the truth is 1 and we correctly predict it as 1, the classification is accurate and is called a True Positive (TP). However, if we incorrectly label a response as Negative when it is actually Positive, we make a False Negative (FN).</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 27%">
@@ -1005,37 +992,32 @@ What is the probability of being male when the <code>HEIGHT</code> is 160 cm? Wh
 </colgroup>
 <thead><tr class="header">
 <th></th>
-<th>1</th>
 <th>0</th>
+<th>1</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td><strong>Labeled 1</strong></td>
-<td><strong>True Positive (TP)</strong></td>
-<td><strong>False Positive (FP)</strong></td>
+<td><strong>Labeled 0</strong></td>
+<td><strong>True Negative (TN)</strong></td>
+<td><strong>False Negative (FN)</strong></td>
 </tr>
 <tr class="even">
-<td><strong>Labeled 0</strong></td>
-<td><strong>False Negative (FN)</strong></td>
-<td><strong>True Negative (TN)</strong></td>
+<td><strong>Labeled 1</strong></td>
+<td><strong>False Positive (FP)</strong></td>
+<td><strong>True Positive (TP)</strong></td>
 </tr>
 </tbody>
 </table>
+<p>A good classifier accurately identifies a high number of TNs and TPs while minimizing FNs and FPs. Commonly used performance measures include Sensitivity (True Positive Rate), Specificity (True Negative Rate), and Accuracy.</p>
 <ul>
-<li>
-<strong>Sensitivity (True Positive Rate)</strong> <span class="math inline">\(= P( \text{Labeled 1} \mid \text{1}) = \frac{TP}{TP+FN}\)</span>
-</li>
-<li>
-<strong>Specificity (True Negative Rate)</strong> <span class="math inline">\(= P( \text{Labeled 0} \mid \text{0}) = \frac{TN}{FP+TN}\)</span>
-</li>
-<li>
-<strong>Accuracy</strong> <span class="math inline">\(= \frac{TP + TN}{TP+FN+FP+TN}\)</span> <!-- - **F1 score** $= \frac{2TP}{2TP+FP+FN}$ -->
-</li>
-<li>More on <a href="https://en.wikipedia.org/wiki/Sensitivity_and_specificity">Wiki page</a>
-</li>
+<li><p><strong>Sensitivity (True Positive Rate, TPR)</strong> <span class="math inline">\(= P( \text{Labeled 1} \mid \text{1}) = \frac{TP}{TP+FN}\)</span> measures the classifier’s ability to correctly identify positive cases or make correct discoveries when the actual responses are truly Positive. It reflects how well the model detects actual positives.</p></li>
+<li><p><strong>Specificity (True Negative Rate, TNR)</strong> <span class="math inline">\(= P( \text{Labeled 0} \mid \text{0}) = \frac{TN}{FP+TN}\)</span> measures the percentage of correctly labeled negatives among the actual negative responses. It indicates how effectively the model avoids false alarms by accurately identifying negatives.</p></li>
+<li><p><strong>Accuracy</strong> <span class="math inline">\(= \frac{TP + TN}{TP+FN+FP+TN}\)</span> considers both negatives and positives, measuring the overall proportion of correct classifications across the entire dataset. It provides a general assessment of the classifier’s performance by accounting for the total number of correct predictions out of all predictions made. <!-- - **F1 score** $= \frac{2TP}{2TP+FP+FN}$ --></p></li>
+<li><p>More on <a href="https://en.wikipedia.org/wiki/Sensitivity_and_specificity">Wiki page</a></p></li>
 </ul>
 <hr>
-<p><span style="color:blue"> <strong>Confusion Matrix</strong> </span></p>
+<p><span style="color:blue"> <strong>Example: Confusion Matrix</strong> </span></p>
+<p>To produce a confusion matrix, we need two things: the true response labels, and the classification from the model. In the example, the true labels are just <code>body$GENDER</code> data. For the classification result, we need to make a binary decision from the estimated probabilities obtained from the model. Here we use 0.5 as the threshold. If <span class="math inline">\(\hat{\pi}(x) &gt; 0.5\)</span>, then we label the response as 1, and 0 otherwise. We then can simply use <code><a href="https://rdrr.io/r/base/table.html">table()</a></code> function to generate a confusion matrix.</p>
 <div class="cell">
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">prob</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">logit_fit</span>, type <span class="op">=</span> <span class="st">"response"</span><span class="op">)</span></span>
 <span></span>
@@ -1054,23 +1036,17 @@ gender_predict   0   1
              1  29 124</code></pre>
 </div>
 </div>
-<hr>
-<p><span style="color:blue"> <strong>Receiver Operating Characteristic (ROC) Curve</strong> </span></p>
-<ul>
-<li>
-<strong>Receiver operating characteristic (ROC) curve</strong>
-<ul>
-<li>Plots True Positive Rate (Sensitivity) vs.&nbsp;False Positive Rate (1 - Specificity)</li>
-</ul>
-</li>
-<li>R packages for ROC curves: <a href="http://ipa-tys.github.io/ROCR/">ROCR</a> and <a href="https://web.expasy.org/pROC/">pROC</a>, <a href="https://yardstick.tidymodels.org/">yardstick of Tidymodels</a>
-</li>
-</ul>
-<div class="cell" data-layout-align="center">
+<p>The true positive rate is 124/(124+29) = 0.81, and the true negative rate is 118/(118+29) = 0.803. The overall accuracy is (124 + 118) /(124 + 29 + 29 + 118) = 0.807. <!-- -------------------------------------------------------------------- --></p>
+<!-- <span style="color:blue"> **Receiver Operating Characteristic (ROC) Curve** </span> -->
+<p>A commonly used visualization tool for assessing the classification performance is the <strong>receiver operating characteristic (ROC) curve</strong>. <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> This curve plots True Positive Rate (Sensitivity) vs.&nbsp;False Positive Rate (1 - Specificity). The confusion matrix provides the classification result for a single threshold, typically 0.5 in many cases. However, by adjusting the threshold, we can obtain different classification outcomes. For example, if <span class="math inline">\(\hat{\pi}(x) = 0.57\)</span>, and the cutoff is set at 0.5, <span class="math inline">\(\hat{y} = 1\)</span> (Positive). However, if we increase the cutoff to 0.6, <span class="math inline">\(\hat{y} = 0\)</span> (Negative). The ROC curve helps visualize how the classifier’s performance changes across various thresholds, allowing us to evaluate its overall effectiveness.</p>
+<p>The ROC curve effectively illustrates how sensitivity and specificity change across every possible cutoff value between 0 and 1. When the cutoff is small, it becomes more likely that <span class="math inline">\(\hat{\pi}(x) &gt; cutoff\)</span>, resulting in more Positives and fewer Negatives. As a result, sensitivity increases (TP <span class="math inline">\(\uparrow\)</span> and FN <span class="math inline">\(\downarrow\)</span>) while specificity decreases (TN <span class="math inline">\(\downarrow\)</span> and FP <span class="math inline">\(\uparrow\)</span>), causing 1 - specificity to rise. Conversely, when the cutoff is large, it is more likely that <span class="math inline">\(\hat{\pi}(x) &lt; cutoff\)</span>, resulting in fewer Positives and more Negatives. This leads to a decrease in sensitivity (TP <span class="math inline">\(\downarrow\)</span> and FN <span class="math inline">\(\uparrow\)</span>) and an increase in specificity (TN <span class="math inline">\(\uparrow\)</span> and FP <span class="math inline">\(\downarrow\)</span>), so 1 - specificity is lower.</p>
+<p>This dynamic explains why the two endpoints of the ROC curve are positioned at the top-right and bottom-left corners of the graph. The top-right corner represents a scenario with high sensitivity and low specificity (low cutoff), while the bottom-left corner represents high specificity and low sensitivity (high cutoff).</p>
+<p>The ideal classification result occurs when TPR is 1 and FPR is 0, corresponding to the top-left point of the ROC plot. A superior ROC curve would closely resemble a right-angle shape (red-dashed), with the “knee” of the curve near this perfect point. Building on this concept, a commonly used performance measure derived from the ROC curve is the <strong>Area Under the Curve</strong> (AUC). The AUC quantifies the overall ability of the model to distinguish between classes. The larger the AUC, the better the classification performance, with a value of 1 representing perfect classification and a value of 0.5 indicating no better than random chance (black-dashed).</p>
+<div class="cell">
 <div class="cell-output-display">
-<div id="fig-roc-curve" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<div id="fig-roc-curve" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-roc-curve-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="model-logistic_files/figure-html/fig-roc-curve-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%">
+<img src="model-logistic_files/figure-html/fig-roc-curve-1.png" class="img-fluid figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-roc-curve-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;28.7: ROC curve for Gender ~ Height
@@ -1092,7 +1068,10 @@ Figure&nbsp;28.7: ROC curve for Gender ~ Height
 </ol>
 
 
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
+<ol>
+<li id="fn1"><p>R packages for ROC curves: <a href="http://ipa-tys.github.io/ROCR/">ROCR</a> and <a href="https://web.expasy.org/pROC/">pROC</a>, <a href="https://yardstick.tidymodels.org/">yardstick of Tidymodels</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -1650,8 +1629,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./model-bayes.html" class="pagination-link" aria-label="Bayesian Linear Regression">
-        <span class="nav-page-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./model-bayes.html" class="pagination-link" aria-label="Bayesian Linear Regression*">
+        <span class="nav-page-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression*</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

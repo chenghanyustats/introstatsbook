@@ -378,7 +378,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model-bayes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression*</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -446,19 +446,16 @@ window.Quarto = {
 
 
 </header><p><span style="color:blue"> <strong>Is the Cluster of Deaths <em>Significantly</em> High?</strong> </span></p>
-<div>
-
-</div>
-<div class="quarto-layout-panel" data-layout-ncol="2">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<p>Let’s start this chapter with a (made-up) story.</p>
+<div class="columns">
+<div class="column" style="width:69%;">
 <ul>
-<li>A town in Wisconsin has 5000 people who reach their 16th birthday, and 25 of them die before their 17th birthday.</li>
+<li>Suppose a town in Wisconsin has 5000 people who reach their 16th birthday, and 25 of them die before their 17th birthday.</li>
 <li>Many residents claim that the number is too high and suspect air pollution as a cause.</li>
 <li>Others suggest that the number of deaths vary from year to year, so it is no cause for concern.</li>
 </ul>
-</div>
-<div class="cell quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+</div><div class="column" style="width:29%;">
+<div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="./images/img-model/pollution.jpeg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
@@ -486,13 +483,13 @@ How do we objectively address this issue?
 <section id="life-table" class="level2" data-number="30.1"><h2 data-number="30.1" class="anchored" data-anchor-id="life-table">
 <span class="header-section-number">30.1</span> Life Table</h2>
 <ul>
-<li>A <strong>period life table</strong> describes mortality and longevity data for a <em>hypothetical</em> cohort.</li>
-<li>The data is computed with the assumption that <strong>the conditions affecting mortality in a particular year remain the same throughout the lives of everyone in the hypothetical cohort.</strong>
+<li><p>A <strong>period (current) life table</strong> describes mortality and longevity data for a <em>hypothetical</em> cohort (generation).</p></li>
+<li>
+<p>The data is computed with the assumption that <strong>the conditions affecting mortality in a particular basis year (such as 2018) remain the same throughout the lives of everyone in the hypothetical cohort.</strong></p>
 <ul>
 <li>For example, a 1-year-old toddler and an elderly 70-year-old live their entire life in a world with <strong>the same constant death rates</strong> that were present in a given year.</li>
 </ul>
 </li>
-<li>An example of a life table is shown in <a href="#fig-life-table" class="quarto-xref">Figure&nbsp;<span>30.1</span></a>.</li>
 </ul>
 <div class="columns">
 <div class="column" style="width:49%;">
@@ -517,7 +514,8 @@ How do we objectively address this issue?
 </div>
 </div>
 </div>
-<p><br></p>
+<p>An example of a life table is shown in <a href="#fig-life-table" class="quarto-xref">Figure&nbsp;<span>30.1</span></a>. The entire report can be downloaded at <a href="https://www.cdc.gov/nchs/data/nvsr/nvsr69/nvsr69-12-508.pdf">CDC Publications and Information Products</a>.</p>
+<p>The death rates for the various age groups that were in effect in the year 2018 continue to remain in effect during the entire lives of the 100,000 hypothetical people assumed to be present at age 0. That is, we pretend that a population of 100,000 people is born in the year 2018, and they each live their entire lives in a word with the same constant death rates that were present in the year 2018.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -538,14 +536,7 @@ Figure&nbsp;30.1: Life table for total population in the United States in 2018
 </div>
 </div>
 </div>
-<ul>
-<li>The entire report can be downloaded at <a href="https://www.cdc.gov/nchs/data/nvsr/nvsr69/nvsr69-12-508.pdf">CDC Publications and Information Products</a>.</li>
-<li>Mortality experiences are different for various gender and race groups, so it is common to have tables for specific groups.
-<ul>
-<li>For example, <a href="#fig-female-life" class="quarto-xref">Figure&nbsp;<span>30.2</span></a> below is a table for females in the United States.</li>
-</ul>
-</li>
-</ul>
+<p>Note that mortality experiences are different for various gender and race groups, so it is common to have tables for specific groups. For example, <a href="#fig-female-life" class="quarto-xref">Figure&nbsp;<span>30.2</span></a> below is a table for females in the United States.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-female-life" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
@@ -590,7 +581,7 @@ Figure&nbsp;30.4: The first column lists the age intervals of the individuals
 </div>
 </div>
 <ul>
-<li>The probabilities of dying <strong>during the age interval</strong> are listed in the 1st column of the life table.</li>
+<li>The probabilities of dying <em>during the age interval</em> are listed in the 1st column of the life table.</li>
 <li>For example, in <a href="#fig-prob-dying" class="quarto-xref">Figure&nbsp;<span>30.5</span></a>, there is a 0.000367 probability of someone dying between their 1st birthday and their 2nd birthday.</li>
 </ul>
 <div class="cell" data-layout-align="center">
@@ -606,7 +597,7 @@ Figure&nbsp;30.5: The second column lists the probability of dying between two a
 </div>
 </div>
 <ul>
-<li>The number of people alive at the <strong>beginning</strong> of the age interval is listed in column 2.</li>
+<li>The number of people alive at the <em>beginning</em> of the age interval is listed in column 2.</li>
 <li>As <a href="#fig-alive-beginning" class="quarto-xref">Figure&nbsp;<span>30.6</span></a> displays, among the 100,000 hypothetical people who were born, 99,435 of them are alive on their 1st birthday.</li>
 </ul>
 <div class="cell" data-layout-align="center">
@@ -622,7 +613,7 @@ Figure&nbsp;30.6: The third column lists the number of individuals alive at the 
 </div>
 </div>
 <ul>
-<li>The number of people who died <strong>during</strong> the age interval is listed in column 3.</li>
+<li>The number of people who died <em>during</em> the age interval is listed in column 3.</li>
 </ul>
 <div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -650,9 +641,9 @@ Figure&nbsp;30.7: The fourth column lists the number of individuals who die duri
 </div>
 </div>
 <ul>
-<li>The total number of years lived <strong>during</strong> the age interval by those who were alive at the beginning of the age interval is listed in the fourth column.</li>
-<li>For example, the 100,000 people who were present at age 0 lived a total of 99,505 years (<a href="#fig-years-lived" class="quarto-xref">Figure&nbsp;<span>30.8</span></a>).</li>
-<li>If none of those people had died, this entry would have been 100,000 years.</li>
+<li><p>The total number of years lived <strong>during</strong> the age interval by those who were alive at the beginning of the age interval is listed in the fourth column.</p></li>
+<li><p>For example, the 100,000 people who were present at age 0 lived a total of 99,505 years (<a href="#fig-years-lived" class="quarto-xref">Figure&nbsp;<span>30.8</span></a>).</p></li>
+<li><p>If none of those people had died, this entry would have been 100,000 years.</p></li>
 </ul>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -667,7 +658,7 @@ Figure&nbsp;30.8: The fifth column lists the total number of person-years lived 
 </div>
 </div>
 <ul>
-<li>The sixth column is similar to the fifth, but lists the total number of years lived <strong>during the age interval and all of the following age intervals</strong> as well.</li>
+<li>The sixth column is similar to the fifth, but lists the total number of years lived <em>during the age interval and all of the following age intervals</em> as well.</li>
 </ul>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -711,9 +702,7 @@ Figure&nbsp;30.10: The final column lists the expectation of life at a given age
 </div>
 <hr>
 <p><span style="color:blue"> <strong>Example: Probability of Dying</strong> </span></p>
-<ul>
-<li>Use <a href="#fig-life-table" class="quarto-xref">Figure&nbsp;<span>30.1</span></a> to find the probability of a person dying between age of 15 and 20.</li>
-</ul>
+<p>We can use <a href="#fig-life-table" class="quarto-xref">Figure&nbsp;<span>30.1</span></a> to find the probability of a person dying between age of 15 and 20.</p>
 <p><span class="math display">\[\begin{align*} Pr(\text{die in } [15, 20)) &amp;= Pr([15, 16) \cup [16, 17) \cup \cdots \cup [19, 20)) \\ &amp;= Pr([15, 16) + Pr([16, 17)) + \cdots + Pr([19, 20)) \\ &amp;= 0.000214 + 0.000253 + 0.000292 + 0.000329 + 0.000365 = 0.001453 \end{align*}\]</span></p>
 <p><span class="math display">\[\begin{align*} Pr(\text{surviving between 15th and 20th birthdays}) &amp;= \frac{\text{Number of people alive on their 20th birthday}}{\text{Number of people alive on their 15th birthday}} \\ &amp;= \frac{99,151}{99,296} \\ &amp;= 0.99854 \end{align*}\]</span></p>
 <p><span class="math display">\[Pr(\text{die in } [15, 20)) = 1-Pr(\text{survive in } [15, 20)) = 1 - 0.99854 = 0.00146\]</span></p>
@@ -721,14 +710,11 @@ Figure&nbsp;30.10: The final column lists the expectation of life at a given age
 <span class="header-section-number">30.2</span> Applications of Life Tables</h2>
 <p><span style="color:blue"> <strong>Social Security</strong> </span></p>
 <div class="columns">
-<div class="column" style="width:49%;">
-<ul>
-<li>There were 3,600,000 births in the U.S. in 2020.</li>
-<li>If the age for receiving full Social Security payment is 67, how many of those born in 2020 are expected to be alive on their 67th birthday? Check the <a href="https://www.cdc.gov/nchs/data/nvsr/nvsr69/nvsr69-12-508.pdf">report</a>!</li>
-</ul>
+<div class="column" style="width:69%;">
+<p>There were 3,600,000 births in the U.S. in 2020. If the age for receiving full Social Security payment is 67, how many of those born in 2020 are expected to be alive on their 67th birthday? Check the <a href="https://www.cdc.gov/nchs/data/nvsr/nvsr69/nvsr69-12-508.pdf">report</a>!</p>
 </div><div class="column" style="width:2%;">
 
-</div><div class="column" style="width:49%;">
+</div><div class="column" style="width:29%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -739,19 +725,12 @@ Figure&nbsp;30.10: The final column lists the expectation of life at a given age
 </div>
 </div>
 </div>
-<ul>
-<li>Among 100,000 people born, we expect 81,637 of them will survive to their 67th birthday.</li>
-<li>Therefore, we expect that <span class="math inline">\(3,600,000 \times 0.81637 = 2,938,932\)</span> people born in 2020 will receive their full Social Security payment.</li>
-</ul>
+<p>Among 100,000 people born, we expect 81,637 of them will survive to their 67th birthday. Therefore, we expect that <span class="math inline">\(3,600,000 \times 0.81637 = 2,938,932\)</span> people born in 2020 will receive their full Social Security payment.</p>
 <hr>
 <p><span style="color:blue"> <strong>Hypothesis Testing</strong> </span></p>
 <div class="columns">
 <div class="column" style="width:68%;">
-<ul>
-<li>For one city, there are 5000 people who reach their 16th birthday.</li>
-<li>25 of them die before their 17th birthday.</li>
-<li>Do we have sufficient evidence to conclude that this number of deaths is <em>significantly</em> high?</li>
-</ul>
+<p>Back to our opening story. For one city, there are 5000 people who reach their 16th birthday. 25 of them die before their 17th birthday. Do we have sufficient evidence to conclude that this number of deaths is <em>significantly</em> high?</p>
 </div><div class="column" style="width:2%;">
 
 </div><div class="column" style="width:30%;">
@@ -766,25 +745,22 @@ Figure&nbsp;30.10: The final column lists the expectation of life at a given age
 </div>
 </div>
 <ul>
-<li>The probability of dying for the age interval of 16-17 is 0.000405.</li>
-<li>This is a <span class="math inline">\(H_1\)</span> claim. <span style="color:blue"> <span class="math inline">\(\small \begin{align} &amp;H_0: \pi = 0.000405 \\ &amp;H_1: \pi &gt; 0.000405\end{align}\)</span> </span>
-</li>
-<li>
-<span class="math inline">\(\hat{\pi} = 25/5000 = 0.005\)</span>.</li>
-<li><span class="math inline">\(z = \frac{0.005 - 0.000405}{\sqrt{\frac{(0.000405)(0.999595)}{5000}}} = 16.15\)</span></li>
-<li>
-<span class="math inline">\(P\)</span>-value <span class="math inline">\(\approx 0\)</span>.</li>
-<li>There is sufficient evidence to conclude that the proportion of deaths is <em>significantly</em> higher than the proportion that is usually expected for this age interval.</li>
+<li><p>According to the life table, the probability of dying for the age interval of 16-17 is 0.000405.</p></li>
+<li><p>This is a <span class="math inline">\(H_1\)</span> claim. We are going to test <span style="color:blue"> <span class="math inline">\(\small \begin{align} &amp;H_0: \pi = 0.000405 \\ &amp;H_1: \pi &gt; 0.000405\end{align}\)</span> </span></p></li>
+<li><p><span class="math inline">\(\hat{\pi} = 25/5000 = 0.005\)</span>.</p></li>
+<li><p><span class="math inline">\(z = \frac{0.005 - 0.000405}{\sqrt{\frac{(0.000405)(0.999595)}{5000}}} = 16.15\)</span></p></li>
+<li><p><span class="math inline">\(P\)</span>-value <span class="math inline">\(\approx 0\)</span>.</p></li>
+<li><p>There is sufficient evidence to conclude that the proportion of deaths is <em>significantly</em> higher than the proportion that is usually expected for this age interval.</p></li>
 </ul></section><section id="kaplan-meier-survival-analysis" class="level2" data-number="30.3"><h2 data-number="30.3" class="anchored" data-anchor-id="kaplan-meier-survival-analysis">
 <span class="header-section-number">30.3</span> Kaplan-Meier Survival Analysis</h2>
 <p><span style="color:blue"> <strong>Survival Analysis</strong> </span></p>
 <div class="columns">
 <div class="column" style="width:69%;">
 <ul>
-<li>The life table method is based on <strong>fixed</strong> time intervals.</li>
+<li>The life table method is based on <em>fixed</em> time intervals.</li>
 <li>The <strong>Kaplan-Meier method</strong>
 <ul>
-<li>is based on intervals that <strong>vary</strong> according to <em>the times of survival to some particular terminating event</em>.</li>
+<li>is based on intervals that <em>vary</em> according to <em>the times of survival to some particular terminating event</em>.</li>
 <li>is used to describe the <em>probability of surviving for a specific period of time</em>.</li>
 </ul>
 </li>
@@ -871,19 +847,20 @@ Note
 <hr>
 <p><soan style="color:blue"><strong>Censored Data</strong> </soan></p>
 <ul>
-<li>Survival times are <strong>censored data</strong> if the subjects
+<li>
+<p>Survival times are <strong>censored data</strong> if the subjects</p>
 <ul>
-<li>survive <strong>past the end of the study</strong>
-</li>
-<li>are <strong>dropped from the study</strong> for reasons not related to the terminating event being studied.</li>
+<li><p>survive <strong>past the end of the study</strong></p></li>
+<li><p>are <strong>dropped from the study</strong> for reasons not related to the terminating event being studied.</p></li>
 </ul>
 </li>
+<li><p>We have censored data for subject A and C. Subject A dropped from the study in June before the study ends in December. Subject C is still alive at the end of study.</p></li>
 </ul>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-censored-data" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-censored-data-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="./images/img-model/censor.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:66.0%">
+<img src="./images/img-model/censored.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-censored-data-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;30.12: Illustration of censored data (https://unc.live/3K1ph8f)
@@ -953,27 +930,20 @@ Figure&nbsp;30.12: Illustration of censored data (https://unc.live/3K1ph8f)
 </tr>
 </tbody>
 </table>
-<div class="columns">
-<div class="column" style="width:49%;">
+<!-- :::: {.columns} --><!-- ::: {.column width="49%"}  --><ul>
+<li><p>“Surviving” means the patient has NOT resumed smoking.</p></li>
+<li><p>As shown in <a href="#fig-survival-medication" class="quarto-xref">Figure&nbsp;<span>30.13</span></a>, the Subject 1 disliked the medication and dropped out of the study on day one.</p></li>
+<li>
+<p>The table above also provides information regarding the study.</p>
 <ul>
-<li>“Surviving” means the patient has NOT resumed smoking.</li>
-<li>As shown in <a href="#fig-survival-medication" class="quarto-xref">Figure&nbsp;<span>30.13</span></a>, the Subject 1 disliked the medication and dropped out of the study on day one.</li>
-<li>The table above also provides information regarding the study.
-<ul>
-<li>2nd row: Subject 2 resumed smoking 3 days after the start of the program.</li>
-<li>3rd row: <span class="math inline">\(0.5 = (3/4)(2/3)\)</span>
-</li>
-<li>4th row: <span class="math inline">\(0.25 = (3/4)(2/3)(1/2)\)</span>
-</li>
-<li>5th row: <span class="math inline">\(0 = (3/4)(2/3)(1/2)(0)\)</span>
-</li>
+<li><p>2nd row: Subject 2 resumed smoking 3 days after the start of the program.</p></li>
+<li><p>3rd row: Cumulative Proportion is <span class="math inline">\(0.5 = (3/4)(2/3)\)</span></p></li>
+<li><p>4th row: Cumulative Proportion is <span class="math inline">\(0.25 = (3/4)(2/3)(1/2)\)</span></p></li>
+<li><p>5th row: Cumulative Proportion is <span class="math inline">\(0 = (3/4)(2/3)(1/2)(0)\)</span></p></li>
 </ul>
 </li>
 </ul>
-</div><div class="column" style="width:2%;">
-
-</div><div class="column" style="width:49%;">
-<div class="cell" data-layout-align="center">
+<!-- ::: --><!-- :::{.column width="2%"} --><!-- ::: --><!-- ::: {.column width="49%"} --><div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-survival-medication" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-survival-medication-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -985,8 +955,8 @@ Figure&nbsp;30.13: Survival time for five subjects receiving the medication trea
 </div>
 </div>
 </div>
-</div>
-</div>
+<!-- ::: -->
+<!-- :::: -->
 <hr>
 <p><span style="color:blue"> <strong>Example: Counseling Treatment for Quitting Smoking</strong> </span></p>
 <table class="caption-top table">
@@ -1089,9 +1059,7 @@ Figure&nbsp;30.13: Survival time for five subjects receiving the medication trea
 </tr>
 </tbody>
 </table>
-<div class="columns">
-<div class="column" style="width:49%;">
-<div class="callout callout-style-default callout-note no-icon callout-titled">
+<!-- ::::{.columns} --><!-- :::{.column width="49%"} --><div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -1107,9 +1075,10 @@ Why is the cumulative proportion on Day 8 0.686?
 </ul>
 </div>
 </div>
-</div><div class="column" style="width:2%;">
-
-</div><div class="column" style="width:49%;">
+<!-- ::: -->
+<!-- :::{.column width="2%"} -->
+<!-- ::: -->
+<!-- :::{.column width="49%"} -->
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-counseling-survival" class="quarto-figure quarto-figure-center quarto-float anchored">
@@ -1122,8 +1091,8 @@ Figure&nbsp;30.14: Survival time for ten subjects receiving the counseling treat
 </div>
 </div>
 </div>
-</div>
-</div>
+<!-- ::: -->
+<!-- :::: -->
 <hr>
 <p><span style="color:blue"> <strong>Kaplan-Meier Analysis</strong> </span></p>
 <div class="callout callout-style-default callout-note no-icon callout-titled">
@@ -1139,6 +1108,8 @@ Which treatment is better for quitting smoking?
 
 </div>
 </div>
+<p>It is often more insightful to create graphs that facilitate the understanding of survival data. The <strong>Kaplan-Meier cumulative survival curves</strong> shown below are constructed using survival times and the cumulative proportions of patients who remained non-smokers.</p>
+<p>These curves indicate that the proportion of survivors (patients who had not resumed smoking) is generally higher for those in the counseling program compared to those in the medication program, suggesting that the counseling program yielded better results. However, it is also evident that neither program achieved very high survival rates, indicating that neither approach was particularly effective in helping patients successfully quit smoking.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-kaplan-meier-plot" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
@@ -1706,8 +1677,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./model-bayes.html" class="pagination-link" aria-label="Bayesian Linear Regression">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression</span></span>
+      <a href="./model-bayes.html" class="pagination-link" aria-label="Bayesian Linear Regression*">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Bayesian Linear Regression*</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

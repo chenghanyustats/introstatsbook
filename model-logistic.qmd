@@ -8,10 +8,16 @@ library(performance)
 library(ggplot2)
 ```
 
+
+We already finished the discussion of linear regression. There are a lot of different regression models and regression problems that can be discussed. If you want to learn more about regression, take regression analysis or machine learning courses. In this chapter, we will be switching to the topic of classification which is another huge and popular topic. Specifically, we talk about **logistic regression**. There are many other classification methods out there, for example K-nearest neighbors, generalized additive models, trees, random forests, boosting, support vector machines, etc. Each method has it own advantages and disadvantages, and no one method dominates all. If you are interested in classification and want to learn more about classification methods, take a statistical machine learning course.
+
+
+
 ## Regression vs. Classification
 
-- Linear regression assumes that the response $Y$ is *numerical*.
-- In many situations, $Y$ is **categorical**.
+Linear regression assumes that the response $Y$ is *numerical* (quantitative). In many situations, however, the response we would like to infer or predict on is **categorical** (qualitative), eye color, car brand, true vs. fake news for example. 
+
+A process of predicting categorical response is known as **classification**. There are many classification tools, or **classifiers** used to predict a categorical response. For instance, logistic regression is a classifier.
 
 ::::{.columns}
 :::{.column width="49%"}
@@ -33,12 +39,19 @@ knitr::include_graphics("./images/img-model/fake_news.jpeg")
 ```
 :::
 ::::
-
-- The process of predicting a categorical response is known as **classification**.   
+ 
 
 --------------------------------------------------------------------
 
 <span style="color:blue"> **Regression Function $f(x)$ vs. Classifier $C(x)$** </span>
+
+Like regression, we have our predictor inputs $X_1, \dots, X_p$, through a classifier $C(x)$ that takes all the predictors and then generate a predicted value of $y$, which is categorical. For example, we collect a person's nationality, race, hair color, build a classifier, then predict his eye color.
+
+Here, the classifier $C(x)$ in classification problem is analogous to the regression function $f(x) = \beta_0 + \beta_1X_1 + \cdots + \beta_pX_p$ in the regression problem. The classifier $C(x)$ is used to predict a categorical variable $y$ and regression function $f(x)$ is used to predict the value of a numerical variable $y$. 
+
+In machine learning, it usually separates regression and classification apart, one for numerical response, the other for categorical response. But the term regression in general means any relationship between response variables and predictors, including both numerical and categorical responses. So the definition of regression in machine learning is a little bit narrow scoped. A regression model in general can deal with either numerical response or the regression problem in machine learning, or categorical response or the classification problem. That's why we can use a logistic *regression* to do *classification* problems.
+
+
 
 ```{r echo=FALSE, out.width="100%"}
 knitr::include_graphics("./images/img-model/regression.png")
@@ -84,18 +97,23 @@ knitr::include_graphics("./images/img-model/credit_card.jpeg")
 
 <span style="color:blue"> **Why Not Linear Regression?** </span>
 
+
+Before we jump into logistic regression, one question is, why not just fit a linear regression model? That is, we define 0 as not default and 1 as default, and treat 0 and 1 as numerical values, and run a linear regression model, like
+
+$Y = \beta_0 + \beta_1X + \epsilon$, $\, X =$ credit card balance, and 
+
 $$Y =\begin{cases}
     0  & \quad \text{if not default}\\
     1  & \quad \text{if default}
      \end{cases}$$
-     
-- $Y = \beta_0 + \beta_1X + \epsilon$, $\, X =$ credit card balance 
 
 :::{.callout-note icon=false}
 ## What is the problem with this dummy variable approach?
 :::
 
-- $\hat{Y} = b_0 + b_1X$ estimates $P(Y = 1 \mid X) = P(default = yes \mid balance)$
+In fact, the predicted valued of $Y$, $\hat{Y} = b_0 + b_1X$, estimates $P(Y = 1 \mid X) = P(default \mid balance)$ which is actually what we want. So what's the issue of linear regression? Look at the figure below. You can see that this is not like usual scatter plot when $y$ is numerical, this scatter plot is pretty strange that $y$ is either 0 or 1, the red and green points. This blue line is our linear regression line. Any point on the line is the estimated probability of default given a value of $X$. Do you see any issues of using linear regression to fit this type of data?
+
+<!-- -  estimates $P(Y = 1 \mid X) = P(default = yes \mid balance)$ -->
 
 
 ```{r lm_default, echo = FALSE, out.width="72%", fig.align='center', warning=FALSE, message=FALSE}
@@ -110,14 +128,23 @@ Default_tbl %>%
     ylab("default") +
     labs(title = "Simple Linear Regression: Default vs. Balance")
 ```
-- **Some estimates might be outside $[0, 1]$**, which doesn't make sense given that $Y$ is a probability.
+<!-- - **Some estimates might be outside $[0, 1]$**, which doesn't make sense given that $Y$ is a probability. -->
+
+First, probability is always between 0 and 1, but some estimates here are outside the $[0, 1]$ interval. For example, when the credit card balance is below 500, the estimated probability of default is negative, which is not allowed mathematically. 
+
+Also, we assume the probability of default is linearly increasing with credit card balance, which is generally not true in reality. 
+
+In addition, the dummy variable approach $(Y = 0, 1)$ cannot be easily extended to $Y$ with more than two categories. If we have 3 categories with nominal level of measurements, like car brand and eye color, coding the categories with 1, 2, 3 forces them to be ordered, the forces them to have the same difference. It does not make sense.
+
+As a result, we need to use a model that is appropriate for categorical responses, like logistic regression.
 
 ------------------------------------------------------------------
 
 <span style="color:blue"> **Why Logistic Regression?** </span>
 
-- We first predict the **probability** of each category of $Y$.
-- Then, we predict the probability of `default` using an <span style="color:blue">**S-shaped** curve</span>.
+Some classification methods, logistic regression for example, first predict the **probability** of each category of $Y$. Then, the logistic regression predicts the probability of `default` using an <span style="color:blue">**S-shaped** curve</span>.
+
+You can see the estimated probability curve is always between 0 and 1 and higher balance leads to higher chance of default. If our cut-off or threshold probability is 0.5, $y$ will be labeled as default when the balance is over about 2000 dollars. Our goal is to learn how to generate this predicted probability curve using logistic regression.
 
 ```{r glm_default, echo=FALSE, out.width="65%", warning=FALSE, message=FALSE, fig.align='center'}
 #| label: fig-logistic-reg
@@ -132,11 +159,14 @@ Default_tbl %>%
     labs(title = "Simple Logistic Regression: Default vs. Balance")
 ```
 
+
+
+
 ## Introduction to Logistic Regression 
 
 <span style="color:blue"> **Binary Responses** </span>
 
-- Treat each outcome, default $(y = 1)$ and not default $(y = 0)$, as success and failure arising from separate **Bernoulli** trials.
+The story starts with the binary response. The idea is that we treat each  default $(y = 1)$ and not default $(y = 0)$, as success and failure arising from separate **Bernoulli** trials.
 
 :::{.callout-note icon=false}
 ## What is a Bernoulli trial?
@@ -151,13 +181,18 @@ Default_tbl %>%
 - Do we have constant probability? $P(y_1 = 1) = P(y_2 = 1) = \cdots = P(y_n = 1) = \pi?$
 :::
 
+
+
 <span style="color:red"> ***Nonconstant Probability***
 
 :::{.columns}
 :::{.column width="49%"}
+
 - Two outcomes: Default $(y = 1)$ and Not Default $(y = 0)$
+
 - The probability of success, $\pi$, *changes with* the value of predictor, $X$!
 - With a different value of $x_i$, each Bernoulli trial outcome, $y_i$, has a *different* probability of success, $\pi_i$.
+
 :::
 
 :::{.column width="2%"}
@@ -174,28 +209,33 @@ $$ y_i \mid x_i \stackrel{indep}{\sim} \text{Bernoulli}(\pi(x_i)) = binomial(m=1
 
 - $X =$ `balance`. $x_1 = 2000$ has a larger $\pi_1 = \pi(2000)$ than $\pi_2 = \pi(500)$ with $x_2 = 500$ because credit cards with a higher balance are more likely to default.
 
+The idea of nonconstant probability in logistic regression is similar to the idea of different mean response value in linear regression. In linear regression, the mean response level is linearly affected by the predictor's value, $E(Y \mid X) = \beta_0 + \beta_1X$. In logistic regression, $\pi(x) = P(Y = 1 \mid X = x)$ is a function of $X$. In our example, the higher value of $X$, the higher value of $\pi$, although their relationship is not linear. The fact that the regressor $X$ affects the mean response level or the probability of the response belonging to some category is the reason why we use regression. Through the relationship between the response and regressors, knowing $X$ better helps us know the value of $Y$.
+
+Because of this Bernoulli assumption, the logistic regression is also called **binomial** regression.
+
 ------------------------------------------------------------------
 
 <span style="color:blue"> **Logistic Regression** </span>
 
-- **Logistic regression** models a **binary** response $(Y)$ using predictors $X_1, \dots, X_k$.
+Now it's time to see what the logistic regression is. **Logistic regression** models a **binary** response $(Y)$ using predictors $X_1, \dots, X_k$.
+
   + $k = 1$: simple logistic regression
   + $k > 1$: multiple logistic regression
-- Instead of predicting $y_i$ directly, we use the predictors to model its *probability* of success, $\pi_i$.
+  
+But remember, we are not predicting $Y$ directly. Instead, our goal is to use predictors $X_1, \dots, X_k$ to estimate the probability of success $\pi$ of the Bernoulli variable $Y$. And if $\pi > threshold$, say 0.5, $\hat{Y} = 1$, if $\pi < threshold$, $\hat{Y} = 0$. **But how?**
 
+Now that it's not good to use $y = 0, 1$ in the regression, and predicting a probability having value between 0 and 1 sounds difficult. How about this. we transform $\pi \in (0, 1)$ into another variable say $\eta \in (-\infty, \infty)$ living on the whole real line. So that we can reasonably fit a linear regression on $\eta$ because the linear predictor could be any value.
 
-<center>
-**But how?**
-</center>
+In the logistic regression, we use the **logit function**: 
 
-<br>
+<span style="color:red"> ***$\eta = logit(\pi) = \ln\left(\frac{\pi}{1-\pi}\right)$*** </span> 
 
-<span style="color:red"> ***Logit function $\eta = logit(\pi) = \ln\left(\frac{\pi}{1-\pi}\right)$*** </span>
+which is in fact the log odds. This transformation is monotone. The higher $\pi$ is, the larger $\eta$ is. When $\pi$ approaches to zero, $\eta$ approaches to $-\infty$, and when $\pi$ approaches to 1, $\eta$ approaches to $\infty$.
 
-- **Transform $\pi \in (0, 1)$ into another variable $\eta \in (-\infty, \infty)$. Then fit a linear regression on $\eta$.**
-- **Logit function:** For $0 < \pi < 1$
+<!-- - **Transform $\pi \in (0, 1)$ into another variable $\eta \in (-\infty, \infty)$. Then fit a linear regression on $\eta$.** -->
+<!-- - **Logit function:** For $0 < \pi < 1$ -->
 
-$$\eta = logit(\pi) = \ln\left(\frac{\pi}{1-\pi}\right)$$
+<!-- $$\eta = logit(\pi) = \ln\left(\frac{\pi}{1-\pi}\right)$$ -->
 
 ```{r echo=FALSE, out.width="72%", cache=TRUE, fig.align='center'}
 #| label: fig-logit-function
@@ -212,13 +252,24 @@ ggplot(d, aes(x = p, y = logit_p)) +
     theme_bw()
 ```
 
-<span style="color:red"> ***Logistic Function $\pi = logistic(\eta) = \frac{\exp(\eta)}{1+\exp(\eta)}$*** </span>
 
-- The *logit* function $\eta = logit(\pi) = \ln\left(\frac{\pi}{1-\pi}\right)$ takes a value $\pi \in (0, 1)$ and maps it to a value $\eta \in (-\infty, \infty)$.
-- **Logistic function**:
-$$\pi = logistic(\eta) = \frac{\exp(\eta)}{1+\exp(\eta)} = \frac{1}{1+\exp(-\eta)} \in (0, 1)$$
-- The *logistic* function takes a value $\eta \in (-\infty, \infty)$ and maps it to a value $\pi \in (0, 1)$.
-- So once $\eta$ is estimated by the linear regression, we use the logistic function to transform $\eta$ back to the probability.
+Then we can assume $\eta$ is a *linear* function of $x$:
+
+$$\eta(x) =\ln \left( \frac{\pi(x)}{1 - \pi(x)} \right)= \beta_0 + \beta_1x$$
+By doing so, we connect $x$ and $\pi$ (and $\eta$) together, and we can learn how $x$ affect $\pi$ (and $\eta$) through the coefficients $\beta_0$ and $\beta_1$.
+ 
+Well, the question is, if we obtain the $\beta_0$ and $\beta_1$ estimates, and therefore obtain $\eta$ estimated value, how do we obtain $\pi(x)$, our real interest? We can consider transform $\eta$ back to $\pi$ using the inverse function of the logit function, which is the **logistic** function.
+
+
+
+
+<!-- <span style="color:red"> ***Logistic Function $\pi = logistic(\eta) = \frac{\exp(\eta)}{1+\exp(\eta)}$*** </span> -->
+
+So the *logit* function $\eta = logit(\pi) = \ln\left(\frac{\pi}{1-\pi}\right)$ takes a value $\pi \in (0, 1)$ and maps it to a value $\eta \in (-\infty, \infty)$. But the logistic function denoted as <span style="color:red">
+$$\pi = logistic(\eta) = \frac{\exp(\eta)}{1+\exp(\eta)} = \frac{1}{1+\exp(-\eta)} \in (0, 1)$$ </span> takes a value $\eta \in (-\infty, \infty)$ and maps it to a value $\pi \in (0, 1)$.
+
+
+So once $\eta$ is estimated by the linear predictor, we use the logistic function to transform $\eta$ back to the probability. The figure below shows a logistic function. This logistic function is a function of $x$, and it describes the probability $\pi$. This S-shaped curve is what we want to estimate given the data, and we use this curve to do classification on $y$. 
 
 
 ```{r echo=FALSE, out.width="72%", cache=TRUE, fig.align='center'}
@@ -239,14 +290,20 @@ ggplot(d, aes(x = eta, y = logistic)) +
 
 ## Simple Logistic Regression Model
 
-- For $i = 1, \dots, n$ and with one predictor $X$:
+To sum up, here shows a simple logistic regression model: For $i = 1, \dots, n$ and with one predictor $X$,
+
   $$(Y_i \mid X = x_i) \stackrel{indep}{\sim} \text{Bernoulli}(\pi(x_i))$$
   $$\text{logit}(\pi_i) = \ln \left( \frac{\pi(x_i)}{1 - \pi(x_i)} \right) = \eta_i = \beta_0+\beta_1 x_{i}$$
 
-
+Each $Y_i$ is a Bernoulli variable with the probability of success $\pi_i(x_i)$ which depends on its corresponding regressor $x_i$ value. The nonlinear relationship between $\pi_i(x_i)$ and $x_i$ is described through a linear relationship on its logit transformation. Put it another way, we have 
 $$\small \pi_i = \frac{\exp(\beta_0+\beta_1 x_{i})}{1+\exp(\beta_0+\beta_1 x_{i})} = \frac{\exp(\eta_i)}{1 + \exp(\eta_i)}$$
 
+Once we get the estimates $\hat{\beta}_0$ and $\hat{\beta}_1$, we can simply plug them into the logistic function to get the estimated probability $\hat{\pi}_i$. 
+
 $$\small \hat{\pi}_i = \frac{\exp(\hat{\beta}_0+\hat{\beta}_1 x_{i} )}{1+\exp(\hat{\beta}_0+\hat{\beta}_1 x_{i})}$$
+If we consider a sequence of possible values of $x_i$, and their estimated probability $\hat{\pi}_i$, the collection of $\{ x_i \}$ and $\{ \hat{\pi}_i \}$ will give us the S-shaped probability curve.
+
+
 
 --------------------------------------------------------------------
 
@@ -256,8 +313,9 @@ $$\small \hat{\pi}_i = \frac{\exp(\hat{\beta}_0+\hat{\beta}_1 x_{i} )}{1+\exp(\h
 :::{.column width="49%"}
 - The relationship between $\pi(x)$ and $x$ is not linear!
 $$\pi(x) = \frac{\exp(\beta_0+\beta_1 x)}{1+\exp(\beta_0+\beta_1 x)}$$
-- The amount that $\pi(x)$ changes due to a one-unit change in $x$ depends on the current value of $x$.
-- Regardless of the value of $x$, if $\beta_1 > 0$, increasing $x$ will increase $\pi(x)$.
+- Because of the S-shaped curve, the amount that $\pi(x)$ changes due to a one-unit change in $x$ depends on the current value of $x$. $\pi(x = 2000)$ would change much larger than $\pi(x = 1000)$ with one-unit change in $x$.
+
+- Regardless of the value of $x$, if $\beta_1 > 0$, increasing $x$ will increase $\pi(x)$ because the slope of the S-shape curve is positive.
 :::
 
 :::{.column width="2%"}
@@ -274,27 +332,37 @@ $$\pi(x) = \frac{\exp(\beta_0+\beta_1 x)}{1+\exp(\beta_0+\beta_1 x)}$$
 
 <span style="color:blue"> **Interpretation of Coefficients** </span>
 
-- The ratio $\frac{\pi}{1-\pi} \in (0, \infty)$ is called the **odds** of some event.
+- The ratio $\frac{\pi}{1-\pi} \in (0, \infty)$ is called the **odds** of having $y=1$.
+
 - Example: If 1 in 5 people will default, the odds is 1/4 since $\pi = 0.2$ implies an odds of $0.2/(1−0.2) = 1/4$.
 
 $$\ln \left( \frac{\pi(x)}{1 - \pi(x)} \right)= \beta_0 + \beta_1x$$
 
--Increasing $x$ by one unit changes the **log-odds** by $\beta_1$, or it multiplies the odds by $e^{\beta_1}$.
+- Increasing $x$ by one unit changes the **log-odds** by $\beta_1$, or it multiplies the odds by $e^{\beta_1}$.
 
 
 :::{.callout-note}
-- $\beta_1$ does *not* correspond to the change in $\pi(x)$ associated with a one-unit
-increase in $x$.
+- $\beta_1$ does *not* correspond to the change in $\pi(x)$ associated with a one-unit increase in $x$.
+
 - $\beta_1$ is the change in **log odds** associated with one-unit increase in $x$.
 :::
 
 ## Logistic Regression in R
 
+
 ::::{.columns}
 :::{.column width="49%"}
+
+We use the `body` data to demonstrate the implementation of logistic regression. The response variable is `GENDER`, and the predictor is `HEIGHT`. We would like to use logistic regression to predict whether a person is male or female using the height information of that person. 
+
+In the data, 
+
 - `GENDER = 1` if male
+
 - `GENDER = 0` if female
-- Use HEIGHT (centimeter, 1 cm = 0.3937 in) to predict/classify GENDER: whether the person is male or female.
+
+The unit of `HEIGHT` is centimeter (cm) (1 cm = 0.3937 in).
+
 :::
 
 :::{.column width="2%"}
@@ -308,37 +376,49 @@ knitr::include_graphics("./images/img-model/height.jpeg")
 ::::
 
 ```{r}
-body <- read.table("./data/01 - Body Data.txt", header = TRUE)
+body <- read.table("./data/body.txt", header = TRUE)
 head(body)
 ```
+
+
+Again, we are not using gender to predict someone's height, which is usually done by linear regression. Instead, our response variable is a binary categorical variable, and we are doing classification with a numeric predictor.
+
 
 -------------------------------------------------------------------
 
 <span style="color:blue"> **Data Summary** </span>
 
-::::{.columns}
-:::{.column width="49%"}
+A basic data summary by gender tells us that height plays a role in distinguish male from female, so using height to classify gender would be helpful.
+
+
+<!-- ::::{.columns} -->
+<!-- :::{.column width="49%"} -->
 ```{r}
 table(body$GENDER)
 summary(body[body$GENDER == 1, ]$HEIGHT)
 summary(body[body$GENDER == 0, ]$HEIGHT)
 ```
-:::
+<!-- ::: -->
 
-:::{.column width="2%"}
-:::
+<!-- :::{.column width="2%"} -->
+<!-- ::: -->
 
-:::{.column width="49%"}
+<!-- :::{.column width="49%"} -->
 ```{r, echo=2, out.width="100%"}
 par(mar = c(4, 4, 0, 0))
 boxplot(body$HEIGHT ~ body$GENDER)
 ```
-:::
-::::
+<!-- ::: -->
+<!-- :::: -->
 
 ---------------------------------------------------------------------
 
 <span style="color:blue"> **Model Fitting** </span>
+
+We use the function `glm()` in R to fit a logistic regression model. "glm" means **g**eneralized **l**inear **m**odel (GLM). Linear regression is a linear model, and it is a normal model because the response variable is normally distributed given $x$. The models for non-normal response variables generalizes the linear regression model, and hence belong to GLM. The logistic regression whose response is Bernoulli or binomial distributed is a GLM. There are other GLMs such as Poisson regression and gamma regression. They are often discussed in the second course of Linear Models or a separate Generalized Linear Models course.
+
+In the function, we use the same formula syntax as `lm()`, and one additional job we need to do is specify the family of the GLM. `family = "binomial"` should be used because the logistic regression is a binomial regression.
+
 
 ```{r, highlight.output = 10:12, output.lines = -1}
 logit_fit <- glm(GENDER ~ HEIGHT, data = body, family = "binomial")
@@ -351,23 +431,36 @@ logit_fit <- glm(GENDER ~ HEIGHT, data = body, family = "binomial")
 summ_logit_fit$coefficients
 ```
 
-- $\hat{\eta} = \ln \left( \frac{\hat{\pi}}{1 - \hat{\pi}}\right) = -40.55 + 0.24 \times \text{HEIGHT}$
-- $\hat{\eta}(x) = \hat{\beta}_0 + \hat{\beta}_1x$
-- $\hat{\eta}(x+1) = \hat{\beta}_0 + \hat{\beta}_1(x+1)$
-- $\hat{\eta}(x+1) - \hat{\eta}(x) = \hat{\beta}_1 = \ln(\text{odds}_{x+1}) - \ln(\text{odds}_{x}) = \ln \left( \frac{\text{odds}_{x+1}}{\text{odds}_{x}} \right)$
-- A one centimeter increase in `HEIGHT` increases the *log odds* of being male by 0.24 units.
-- The **odds ratio**, $\widehat{OR} = \frac{\text{odds}_{x+1}}{\text{odds}_{x}} = e^{\hat{\beta}_1} = e^{0.24} = 1.273$.
-- The odds of being male increases by 27.3% with an additional one centimeter of `HEIGHT`.
+Based on the fitted result, we learn that
+$$\hat{\eta}(x) = \ln \left( \frac{\hat{\pi}(x)}{1 - \hat{\pi}(x)}\right) = \ln (\text{odds}_{x}) =  \hat{\beta}_0 + \hat{\beta}_1x = -40.55 + 0.24 \times \text{HEIGHT}$$
+
+
+<!-- - $\hat{\eta}(x) = \hat{\beta}_0 + \hat{\beta}_1x$ -->
+Since $\hat{\eta}(x+1) = \hat{\beta}_0 + \hat{\beta}_1(x+1)$, $\hat{\eta}(x+1) - \hat{\eta}(x) = \hat{\beta}_1 = \ln(\text{odds}_{x+1}) - \ln(\text{odds}_{x}) = \ln \left( \frac{\text{odds}_{x+1}}{\text{odds}_{x}} \right)$
+
+A one centimeter increase in `HEIGHT` increases the *log odds* of being male by 0.24 units.
+
+The **odds ratio**, $\widehat{OR} = \frac{\text{odds}_{x+1}}{\text{odds}_{x}} = e^{\hat{\beta}_1} = e^{0.24} = 1.273$. Therefore, the odds of being male increases by 27.3% with an additional one centimeter of `HEIGHT`.
 
 ------------------------------------------------------------------------
 
 <span style="color:blue"> **Prediction** </span>
 
-<span style="color:red"> ***Pr(GENDER = 1) When HEIGHT is 170 cm*** </span>
+Knowing how the predictor affects the chance of response belonging to some category is one goal. But in classification, we usually focus more on prediction. For example, we may want to know *Pr(GENDER = 1) when `HEIGHT` is 170 cm*.
+
+<!-- <span style="color:red"> ***Pr(GENDER = 1) When HEIGHT is 170 cm*** </span> -->
+
+
 
 <!-- $$\log\left(\frac{\hat{\pi}}{1-\hat{\pi}}\right) = -40.55+0.24 \times 170$$ -->
 
+Once we obtain the coefficient estimates and the predictor value, we just need to plug them into the logistic function to obtain the probability we want.
+
 $$ \hat{\pi}(x = 170) = \frac{\exp(\hat{\beta}_0+\hat{\beta}_1 x)}{1+\exp(\hat{\beta}_0+\hat{\beta}_1 x)} = \frac{\exp(-40.55+0.24 \times 170)}{1+\exp(-40.55+0.24 \times 170)} = 0.633 = 63.3\%$$
+
+Through the formula, we learn that from our model, when a person is 170cm tall, the probability that this person is male is about 63/3\%.
+
+`predict(logit_fit, type = "response")` gives us a vector of $\hat{\pi}(x_i)$ of all responses in the data. When `type = "link"`, `predict()` gives us $\hat{\eta}(x_i)$ because in literature, $\eta(x) = \ln \left( \frac{\hat{\pi}(x)}{1 - \hat{\pi}(x)}\right)$ is called the **link function**. To predict a specific probability at some $x$ value, we use `newdata = data.frame(HEIGHT = 170)`. Remember the variable name should be exactly the same as the name in the original data set.
 
 ```{r, echo=TRUE}
 pi_hat <- predict(logit_fit, type = "response")
@@ -384,6 +477,8 @@ predict(logit_fit, newdata = data.frame(HEIGHT = 170), type = "response")
 ```{r}
 predict(logit_fit, newdata = data.frame(HEIGHT = c(160, 170, 180)), type = "response")
 ```
+
+The blue S-shaped curve is the estimated probability curve. It can be plotted using `pi_hat`.
 
 ::::{.columns}
 :::{.column width="60%"}
@@ -417,24 +512,43 @@ points(c(160, 170, 180), pi_new, pch = c(15, 16, 17), cex = 2,
 
 ## Evaluation Metrics
 
-<span style="color:blue"> **Sensitivity and Specificity** </span>
+<!-- <span style="color:blue"> **Sensitivity and Specificity** </span> -->
+
+Having probabilities is just a intermediate step. Most of the time our final goal is to classify our response, doing a binary decision. Given a predicted probability, we may correctly classify the label, or mis-classify the label. To know whether or not our model does a good job on classification, we need some evaluation metrics.
+
+First, we can use a tool called a **confusion matrix** to display all possible outcomes in a binary classification scenario. In this context, let's designate 0 as Negative and 1 as Positive, regardless of what these values represent. If the actual truth is 0 and we classify the response as 0, this outcome is a True Negative (TN), meaning we made a correct decision. However, if we classify the response as 1 instead, we commit an error, resulting in a False Positive (FP). In this case, the true condition is Negative, but our model incorrectly predicts it as Positive.
+
+Similarly, if the truth is 1 and we correctly predict it as 1, the classification is accurate and is called a True Positive (TP). However, if we incorrectly label a response as Negative when it is actually Positive, we make a False Negative (FN).
 
 
-|                        | 1               | 0             |
+
+|                        | 0               | 1             |
 |------------------------|-------------------------------|-------------------------------|
-| **Labeled 1**     | **True Positive  (TP)**           | **False Positive (FP)**|
-| **Labeled 0** | **False Negative (FN)**| **True Negative  (TN)** 
+| **Labeled 0**     |  **True Negative  (TN)**          | **False Negative (FN)** |
+| **Labeled 1** | **False Positive (FP)**|  **True Positive  (TP)**
 
 
-- **Sensitivity (True Positive Rate)** $= P( \text{Labeled 1} \mid \text{1}) = \frac{TP}{TP+FN}$
-- **Specificity (True Negative Rate)** $= P( \text{Labeled 0} \mid \text{0}) = \frac{TN}{FP+TN}$ 
+
+A good classifier accurately identifies a high number of TNs and TPs while minimizing FNs and FPs. Commonly used performance measures include Sensitivity (True Positive Rate), Specificity (True Negative Rate), and Accuracy.
+
+
+- **Sensitivity (True Positive Rate, TPR)** $= P( \text{Labeled 1} \mid \text{1}) = \frac{TP}{TP+FN}$
+  measures the classifier's ability to correctly identify positive cases or make correct discoveries when the actual responses are truly Positive. It reflects how well the model detects actual positives.
+
+- **Specificity (True Negative Rate, TNR)** $= P( \text{Labeled 0} \mid \text{0}) = \frac{TN}{FP+TN}$ 
+  measures the percentage of correctly labeled negatives among the actual negative responses. It indicates how effectively the model avoids false alarms by accurately identifying negatives.
+
 - **Accuracy** $= \frac{TP + TN}{TP+FN+FP+TN}$
+  considers both negatives and positives, measuring the overall proportion of correct classifications across the entire dataset. It provides a general assessment of the classifier's performance by accounting for the total number of correct predictions out of all predictions made.
 <!-- - **F1 score** $= \frac{2TP}{2TP+FP+FN}$ -->
 - More on [Wiki page](https://en.wikipedia.org/wiki/Sensitivity_and_specificity)
 
 -------------------------------------------------------------------
 
-<span style="color:blue"> **Confusion Matrix** </span>
+<span style="color:blue"> **Example: Confusion Matrix** </span>
+
+To produce a confusion matrix, we need two things: the true response labels, and the classification from the model. In the example, the true labels are just `body$GENDER` data. For the classification result, we need to make a binary decision from the estimated probabilities obtained from the model. Here we use 0.5 as the threshold. If $\hat{\pi}(x) > 0.5$, then we label the response as 1, and 0 otherwise. We then can simply use `table()` function to generate a confusion matrix.
+
 
 ```{r confusion, echo=TRUE, eval=TRUE}
 prob <- predict(logit_fit, type = "response")
@@ -449,17 +563,27 @@ gender_predict <- (prob > 0.5) * 1
 table(gender_predict, gender_true)
 ```
 
---------------------------------------------------------------------
+The true positive rate is 124/(124+29) = `r round(124/(124+29), 3)`, and the true negative rate is 118/(118+29) = `r round(118/(118+29), 3)`. The overall accuracy is (124 + 118) /(124 + 29 + 29 + 118) = `r round((124 + 118) /(124 + 29 + 29 + 118), 3)`.
+<!-- -------------------------------------------------------------------- -->
 
-<span style="color:blue"> **Receiver Operating Characteristic (ROC) Curve** </span>
+<!-- <span style="color:blue"> **Receiver Operating Characteristic (ROC) Curve** </span> -->
 
-- **Receiver operating characteristic (ROC) curve** 
-  + Plots True Positive Rate (Sensitivity) vs. False Positive Rate (1 - Specificity)
-- R packages for ROC curves: [ROCR](http://ipa-tys.github.io/ROCR/) and [pROC](https://web.expasy.org/pROC/), [yardstick of Tidymodels](https://yardstick.tidymodels.org/)
+A commonly used visualization tool for assessing the classification performance is the **receiver operating characteristic (ROC) curve**. [^1] This curve plots True Positive Rate (Sensitivity) vs. False Positive Rate (1 - Specificity). The confusion matrix provides the classification result for a single threshold, typically 0.5 in many cases. However, by adjusting the threshold, we can obtain different classification outcomes. For example, if $\hat{\pi}(x) = 0.57$, and the cutoff is set at 0.5, $\hat{y} = 1$ (Positive). However, if we increase the cutoff to 0.6, $\hat{y} = 0$ (Negative). The ROC curve helps visualize how the classifier's performance changes across various thresholds, allowing us to evaluate its overall effectiveness.
 
-```{r, echo=FALSE, out.width="60%", warning=FALSE, message=FALSE, fig.align='center'}
+The ROC curve effectively illustrates how sensitivity and specificity change across every possible cutoff value between 0 and 1. When the cutoff is small, it becomes more likely that $\hat{\pi}(x) > cutoff$, resulting in more Positives and fewer Negatives. As a result, sensitivity increases (TP $\uparrow$ and FN $\downarrow$) while specificity decreases (TN $\downarrow$ and FP $\uparrow$), causing 1 - specificity to rise. Conversely, when the cutoff is large, it is more likely that $\hat{\pi}(x) < cutoff$, resulting in fewer Positives and more Negatives. This leads to a decrease in sensitivity (TP $\downarrow$ and FN $\uparrow$) and an increase in specificity (TN $\uparrow$ and FP $\downarrow$), so 1 - specificity is lower. 
+
+This dynamic explains why the two endpoints of the ROC curve are positioned at the top-right and bottom-left corners of the graph. The top-right corner represents a scenario with high sensitivity and low specificity (low cutoff), while the bottom-left corner represents high specificity and low sensitivity (high cutoff).
+
+
+The ideal classification result occurs when TPR is 1 and FPR is 0, corresponding to the top-left point of the ROC plot. A superior ROC curve would closely resemble a right-angle shape (red-dashed), with the "knee" of the curve near this perfect point. Building on this concept, a commonly used performance measure derived from the ROC curve is the **Area Under the Curve** (AUC). The AUC quantifies the overall ability of the model to distinguish between classes. The larger the AUC, the better the classification performance, with a value of 1 representing perfect classification and a value of 0.5 indicating no better than random chance (black-dashed).
+
+[^1]: R packages for ROC curves: [ROCR](http://ipa-tys.github.io/ROCR/) and [pROC](https://web.expasy.org/pROC/), [yardstick of Tidymodels](https://yardstick.tidymodels.org/)
+
+```{r, echo=FALSE}
 #| label: fig-roc-curve
 #| fig-cap: ROC curve for Gender ~ Height
+#| out-width: 100%
+#| message: false
 library(ROCR)
 # create an object of class prediction 
 pred <- ROCR::prediction(
@@ -471,10 +595,20 @@ roc <- ROCR::performance(
     prediction.obj = pred, 
     measure = "tpr",
     x.measure = "fpr")
-par(mar = c(3, 3, 0, 3))
-plot(roc, colorize = TRUE)
+par(mar = c(4, 4, 0, 2))
+plot(roc, colorize = TRUE, xlab = "False Positive Rate (FPR) (1 - specificity)", 
+     ylab = "True Positive Rate (TPR) Sensitivity")
+text(0.5, 0.5, "AUC = 0.887", cex = 2)
+segments(0, 0, 0, 1, lty = 2, col = 2)
+segments(0, 1, 1, 1, lty = 2, col = 2)
+segments(0, 0, 1, 1, lty = 2)
 ```
 
+```{r}
+#| echo: false
+auc_ROCR <- performance(pred, measure = "auc")
+auc_ROCR <- auc_ROCR@y.values[[1]]
+```
 
 ## Exercises
 
