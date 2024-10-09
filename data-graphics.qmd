@@ -44,8 +44,13 @@ Below is an concrete example of a categorical variable **color** that has three 
 The relative frequency of "red" tells us that color red appears 16% of the time in the data that has totally $8+26+16 = 50$ objects.
 
 
-<span style="color:blue"> **Categorical Frequency Table in R** </span>
- 
+<!-- ### <span style="color:blue"> **Categorical Frequency Table and Graphics in R** </span> -->
+
+
+::: {.panel-tabset}
+
+## R
+
 Below is the `loan50` data set from the `openintro` package in R. The data set has 50 subjects with 18 variables. We construct a categorical frequency table using the variable `homeownership`.
 
 ```{r}
@@ -86,9 +91,10 @@ rel_freq <- freq / sum(freq)
 cbind(freq, rel_freq)
 ```
 
-------------------------------------------------------------------------
 
-<span style="color:blue"> **Visualizing a Frequency Table** </span>
+<!-- ------------------------------------------------------------------------ -->
+
+<!-- <span style="color:blue"> **Visualizing a Frequency Table** </span> -->
 
 <span style="color:red"> ***Bar Chart*** </span>
 
@@ -110,6 +116,107 @@ par(mar = c(0, 0, 1, 0))
 pie(x = table(x), main = "Pie Chart")
 ```
 
+
+## Python
+
+Here we demo how create a categorical frequency table in Python. `loan50` data are not in any Python package. It has been saved as a `loan50.csv` file. The extension "csv" stands for "comma-separated values" which is a common text file format that stores data in a table structure.
+
+
+
+```{python}
+#| echo: true
+import pandas as pd
+```
+
+To import the `loan50.csv` data into our working session, in Python we can use [`pd.read_csv()`](https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html), and provide the information about where we save the data file, or the *file path*, so that Python knows where he can read it. The file path needs to be a string with quote. In my example, the file path starts with a dot, which means *"current working directory"*, whatever it is. The file `loan50.csv` is saved in the data folder under the current working directory.
+
+```{python}
+#| echo: true
+loan50 = pd.read_csv("./data/loan50.csv")
+loan50.info()
+```
+
+The `x` that saves the 'homeownership' column is a pd.Series.
+```{python}
+#| echo: true
+# Extract the 'homeownership' column
+x = loan50['homeownership']
+x
+```
+
+In Python, we use [`.value_counts()`](https://pandas.pydata.org/docs/reference/api/pandas.Series.value_counts.html) to obtain the frequency table of a pd.Series.
+
+```{python}
+#| echo: true
+freq = x.value_counts()
+freq
+```
+
+
+```{python}
+#| echo: true
+# Calculate relative frequency
+rel_freq = freq / freq.sum()
+rel_freq
+```
+
+I save the final frequency table as a pd.DataFrame.
+
+```{python}
+#| echo: true
+freq_table = pd.DataFrame({'Frequency': freq, 'Relative Frequency': rel_freq})
+freq_table
+```
+
+
+<span style="color:red"> ***Bar Chart*** </span>
+
+There are several packages used for plotting in Python. We use [matplotlib](https://matplotlib.org/) for demonstration in the book. Check @sec-py-prog for detailed discussion of plotting using the package. We first import the module pyplot of matplotlib as plt for plotting.
+
+<!-- [seaborn package](https://seaborn.pydata.org/) -->
+
+```{python}
+#| echo: true
+import matplotlib.pyplot as plt
+```
+
+
+The function [`plt.figure()`](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.figure.html) is used to create a new figure with some pre-specified settings. For example, here we set the figure size having width 5 inches and height 4 inches. The we use [`plt.bar()`](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.bar.html) to generate a bar plot, where argument `x` shows the categories, and `height` shows their number of frequencies. Then we add the figure's title and axis labels, and show the plot.
+
+
+
+```{python}
+#| echo: true
+# Bar chart for homeownership
+plt.figure(figsize=(5, 4))
+plt.bar(x = freq.index, height = freq.values)
+plt.title('Bar Chart')
+plt.xlabel('Homeownership')
+plt.ylabel('Frequency')
+plt.show()
+```
+
+
+
+<span style="color:red"> ***Pie Chart*** </span>
+
+The function `plt.pie()` is used to make a pie chart.
+
+```{python}
+#| echo: true
+# Pie chart for homeownership
+plt.figure(figsize=(5, 4))
+plt.pie(x=freq.values, labels=freq.index)
+plt.title('Pie Chart')
+plt.show()
+```
+
+```{python}
+#| include: false
+# autopct='%1.1f%%'
+```
+
+:::
 
 ## Frequency Distribution for Numerical Variables
 
@@ -172,11 +279,27 @@ We use `interest rate` variable in the `loan 50` data set for demonstrating freq
 
 ::::{.columns}
 :::{.column width="78%"}
+
+::: {.panel-tabset}
+
+## R
 ```{r}
 #| echo: true
 int_rate <- round(loan50$interest_rate, 1)
 int_rate
 ```
+
+## Python
+
+```{python}
+#| echo: true
+# Round the interest rates to one decimal place
+int_rate = loan50['interest_rate'].round(1)
+int_rate
+```
+
+:::
+
 :::
 
 :::{.column width="2%"}
@@ -200,11 +323,12 @@ knitr::include_graphics("./images/img-data/int_rate.jpeg")
 <!-- ::::{.columns} -->
 <!-- :::{.column width="50%"} -->
 
-A frequency distribution of the interest rate data is created using R and shown below.
 
 ::: {.panel-tabset}
 
-## Frequency Distribution
+## Frequency Distribution by R
+A frequency distribution of the interest rate data is created using R and shown below.
+
 ```{r}
 k <- 9
 class_width <- 2.5
@@ -213,7 +337,7 @@ lower_limit <- 5
 class_boundary <- lower_limit + 0:k * class_width
 class_int <- paste(paste0(class_boundary[1:k], "%"),
                    paste0(class_boundary[2:(k+1)], "%"), 
-                   sep = "-")
+                   sep = " - ")
 
 freq_info <- hist(int_rate, 
                   breaks = class_boundary, 
@@ -224,29 +348,94 @@ freq_dist <- data.frame("Class" = as.character(1:k),
                         "Rel_Freq" = round(freq_info$counts / length(int_rate), 2))
 print(freq_dist, row.names = FALSE)
 ```
-## Code
+## R Code
 ```{r}
 #| echo: true
 #| eval: false
+
+# Define class intervals for histogram
 k <- 9
 class_width <- 2.5
 lower_limit <- 5
-
+# Calculate class boundaries
 class_boundary <- lower_limit + 0:k * class_width
+
+# Create class intervals as strings for display
 class_int <- paste(paste0(class_boundary[1:k], "%"),
                    paste0(class_boundary[2:(k+1)], "%"), 
-                   sep = "-")
+                   sep = " - ")
 
+# Calculate frequency distribution without plotting
 freq_info <- hist(int_rate, 
                   breaks = class_boundary, 
                   plot = FALSE)
+
+# Create a data frame for frequency distribution
 freq_dist <- data.frame(
   "Class" = as.character(1:k), 
   "Class_Intvl" = class_int, 
   "Freq" = freq_info$counts, 
   "Rel_Freq" = round(freq_info$counts / length(int_rate), 2))
+
 print(freq_dist, row.names = FALSE)
 ```
+
+## Frequency Distribution by Python
+A frequency distribution of the interest rate data is created using Python and shown below.
+
+```{python}
+import numpy as np
+# Define class intervals for histogram
+k = 9
+class_width = 2.5
+lower_limit = 5
+# Calculate class boundaries
+class_boundary = lower_limit + np.arange(0, k+1) * class_width
+
+# Create class intervals as strings for display
+class_int = [f"{class_boundary[i]}% - {class_boundary[i+1]}%" for i in range(k)]
+
+# Calculate frequency distribution without plotting
+freq_info, bin_edges = np.histogram(int_rate, bins=class_boundary)
+
+# Create a DataFrame for frequency distribution
+freq_dist = pd.DataFrame({
+    "Class": [str(i+1) for i in range(k)],
+    "Class_Intvl": class_int,
+    "Freq": freq_info,
+    "Rel_Freq": (freq_info / len(int_rate)).round(2)
+})
+
+freq_dist
+```
+## Python Code
+```{python}
+#| echo: true
+#| eval: false
+import numpy as np
+# Define class intervals for histogram
+k = 9
+class_width = 2.5
+lower_limit = 5
+# Calculate class boundaries
+class_boundary = lower_limit + np.arange(0, k+1) * class_width
+
+# Create class intervals as strings for display
+class_int = [f"{class_boundary[i]}% - {class_boundary[i+1]}%" for i in range(k)]
+
+# Calculate frequency distribution without plotting
+freq_info, bin_edges = np.histogram(int_rate, bins=class_boundary)
+
+# Create a DataFrame for frequency distribution
+freq_dist = pd.DataFrame({
+    "Class": [str(i+1) for i in range(k)],
+    "Class_Intvl": class_int,
+    "Freq": freq_info,
+    "Rel_Freq": (freq_info / len(int_rate)).round(2)
+})
+freq_dist
+```
+
 :::
 
 <!-- ::: -->
@@ -255,12 +444,24 @@ print(freq_dist, row.names = FALSE)
 
 First, all class widths are the same with the length 2.5\%. Here, the number of classes $k = 9$. $k$ should not be too big or too small, and choosing $k$ is subjective and depends on the research need. Too big $k$ put too many different values together in the same class, and some important features may be masked. On the other hand, when $k$ is too small, there may be many classes having one or few data points only, and general pattern of data becomes unclear. A simple rule is to choose $k$ between 5 and 30, then tune the value a little bit to get the best presentation result. Or the number of classes $k$ can be calculated from a suggested class width $\approx \frac{\text{max} - \text{min}}{k}$.
 
+::: {.panel-tabset}
+
+## R
 
 ```{r}
 #| echo: true
 # min and max value
 range(int_rate)
 ```
+
+## Python
+```{python}
+#| echo: true
+# min and max value
+(int_rate.min(), int_rate.max())
+```
+
+:::
 
 The *lower* limit of the 1st class *should not be greater* than the *minimum* value of the data. Otherwise we are gonna miss some data values because the values are out of the any intervals, and the counts are incorrect. The lower limit of the 1st class is 5%, which is less than the minimum value of 5.3%. The *upper* limit of the last class *should not be smaller* than the *maximum* value of the data. The upper limit of the last class is 27.5%, which is greater than the maximum value of 26.3%. The idea is the class intervals should cover all the data values, so that when we classify or count them, we don't miss any value in the table.
   
@@ -286,6 +487,12 @@ R decides the number of classes for us when we visualize the frequency distribut
 
 To visualize a frequency distribution of numerical data, we use a **histogram**. Each bar or column in the plot stands for one class or **bin** in the frequency distribution, and the height shows the frequency of a column. Unlike bar charts, all the bins in the histogram are connected each other with no gaps.
 
+
+
+::: {.panel-tabset}
+
+## R
+
 In R, we use the command `hist()` to make a histogram. The only required argument is `x` at which we put our data. If we don't specify how the data are divided into classes, R does it for us. The histogram below is the histogram of the interest rate data using the default **class breaks**, the boundary values separating class intervals.
 
 <!-- The breaks or number of classes R chooses for us may or may not satisfy us. nclass.Sturges(x) nclass.scott(x) nclass.FD(x) -->
@@ -295,21 +502,11 @@ In R, we use the command `hist()` to make a histogram. The only required argumen
 <!-- </center> -->
 
 ```{r}
+#| echo: true
 hist(x = int_rate, 
      xlab = "Interest Rate (%)",
      main = "Hist. of Int. Rate (Defualt)")
 ```
-<!-- ::: -->
-
-<!-- :::{.column width="2%"} -->
-<!-- ::: -->
-
-<!-- :::{.column width="49%"} -->
-
-<!-- <center> -->
-<!-- **Use customized breaks** -->
-<!-- </center> -->
-
 
 If we don't like the default one, we can specify customized breaks in the argument `breaks`. The `class_boundary` object saves the class boundaries used in the previous frequency distribution. The histogram corresponding the frequency distribution is shown below. Note that when our customized breaks are used, we can see the count in the 7.5%-10% interval is more than the count in the 5%-7.5% interval. This information cannot be obtained when the default breaks are used.
 
@@ -322,11 +519,43 @@ hist(x = int_rate,
      xlab = "Interest Rate (%)",
      main = "Hist. of Int. Rate (Ours)")
 ```
+
+Sometimes specifying all the lower and upper limits might be tedious. The argument `breaks` allows a single number too, giving the number of classes $k$ for the histogram, `breaks = 10` for example. Sometimes the histogram won't have the number of classes exactly the same as the number specified in `breaks`. It's just an approximated one.
+
+## Python
+
+In Python, we use the command [`plt.hist()`](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.hist.html) to make a histogram. The only required argument is `x` at which we put our data. If we don't specify how the data are divided into classes, Python does it for us. The histogram below is the histogram of the interest rate data using the default **class breaks**, the boundary values separating class intervals.
+
+
+```{python}
+#| echo: true
+plt.hist(x = int_rate)
+plt.xlabel('Interest Rate (%)')
+plt.title('Hist. of Int. Rate (Defualt)')
+plt.show()
+```
+
+
+If we don't like the default one, we can specify customized breaks in the argument `bins`. The `class_boundary` object saves the class boundaries used in the previous frequency distribution. The histogram corresponding the frequency distribution is shown below.
+
+```{python}
+#| echo: true
+class_boundary
+plt.hist(int_rate, bins=class_boundary)
+plt.xlabel('Interest Rate (%)')
+plt.title('Hist. of Int. Rate (Ours)')
+plt.show()
+```
+
+:::
+
+
+
 <!-- ::: -->
 <!-- :::: -->
 
 
-Sometimes specifying all the lower and upper limits might be tedious. The argument `breaks` allows a single number too, giving the number of classes $k$ for the histogram, `breaks = 10` for example. Sometimes the histogram won't have the number of classes exactly the same as the number specified in `breaks`. It's just an approximated one.
+
 
 <span style="color:red"> ***Skewness*** </span>
 
@@ -395,13 +624,36 @@ knitr::include_graphics("./images/img-data/skew.png")
 
 A **scatterplot** provides a case-by-case view of data for two numerical variables. $X$ axis represents one variable and $Y$ axis stands for the other. The data value $(x, y)$ pair is plotted as a point in the $X$-$Y$ a Cartesian coordinate plane, where $x$ is the value of one variable, and $y$ is the value of the other for a case. Below is a scatterplot of Loan Amount vs. Total Income from the `loan 50` data.
 
+
+::: {.panel-tabset}
+
+## R
 To create a scatter plot in R, we use the command `plot()` and put the two variables' data in the `x` and `y` arguments. Their length should be identical.
 
 ```{r}
+#| echo: true
 plot(x = loan50$total_income, y = loan50$loan_amount,
      xlab = "Total Income", ylab = "Loan Amount",
+     main = "Loan Amount vs Total Income",
      pch = 16, col = 4)
 ```
+
+## Python
+
+To create a scatter plot in Python, we use the command [`plt.scatter`](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.scatter.html) and put the two variables' data in the `x` and `y` arguments. Their length should be identical.
+
+
+```{python}
+#| echo: true
+plt.scatter(x = loan50['total_income'], y = loan50['loan_amount'], 
+            color='blue', marker='o')
+plt.xlabel('Total Income')
+plt.ylabel('Loan Amount')
+plt.title('Loan Amount vs Total Income')
+plt.show()
+```
+
+:::
 
 
 More details about scatterplot and statistical methods for 2 numerical variables are discussed in @sec-model-reg.
