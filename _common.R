@@ -45,6 +45,7 @@ suppressWarnings(suppressPackageStartupMessages({
     library(plotrix)
     library(diagram)
     library(kableExtra)
+    library(reticulate)
 }))
 
 

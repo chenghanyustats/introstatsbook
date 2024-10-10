@@ -1,0 +1,512 @@
+?chisq.test
+12*0.454
+3*0.454
+?chisq.test
+obs <- c(205, 26, 25, 19)
+pi_0 <- c(0.72, 0.07, 0.12, 0.09)
+## Use chisq.test() function
+chisq.test(x = obs, p = pi_0)
+ch <- chisq.test(x = obs, p = pi_0)
+ch$statistic
+ch$observed
+prop.test(x = 520, n = 1000, p = 0.5, alternative = "greater",
+correct = FALSE)
+chisq.test(x = c(520, 480), p = c(0.5, 0.5))
+42*55/105
+#| echo: true
+(contingency_table <- matrix(c(18, 23, 22, 20, 10, 12), nrow = 2, ncol = 3))
+## Using chisq.test() function
+ind_test <- chisq.test(x = contingency_table)
+ind_test$expected
+ind_test$parameter
+ind_test$data.name
+ind_test$stdres
+par(mfrow = c(2, 1), mar = c(2.5, 2.5, 1.5, 0), mgp = c(1.1, 0.5, 0), las = 1)
+y1 <- rnorm(50, 6, 0.05)
+y2 <- rnorm(50, 5.6, 0.05)
+y3 <- rnorm(50, 5.2, 0.05)
+hist(y1)
+hist(y1, xlim = c(2, 9))
+hist(c(y1,y2,y3), xlim = c(2, 9))
+hist(c(y1,y2,y3), xlim = c(2, 9), breaks = 50)
+x <- seq(2, 9, length=1000)
+#create a vector of values that shows the height of the probability distribution
+#for each value in x
+y1 <- dnorm(x, 6, 0.05)
+y2 <- dnorm(x, 5.6, 0.05)
+y3 <- dnorm(x, 5.2, 0.05)
+#plot x and y as a scatterplot with connected lines (type = "l") and add
+#an x-axis with custom labels
+plot(x,c(y1, y2, y3), type = "l", lwd = 2, axes = FALSE, xlab = "", ylab = "")
+plot(rep(x,3), c(y1, y2, y3), type = "l", lwd = 2, axes = FALSE, xlab = "", ylab = "")
+y1_l <- dnorm(x, 6, 0.05)
+y2_l <- dnorm(x, 5.6, 0.05)
+y3_l <- dnorm(x, 5.2, 0.05)
+plot(rep(x,3), c(y1_l, y2_l, y3_l), type = "l", lwd = 2, axes = FALSE, xlab = "", ylab = "")
+y1_l <- dnorm(x, 6, 1)
+y2_l <- dnorm(x, 5.6, 1)
+y3_l <- dnorm(x, 5.2, 1)
+plot(rep(x,3), c(y1_l, y2_l, y3_l), type = "l", lwd = 2, axes = FALSE, xlab = "", ylab = "")
+?points
+plot(rep(x,3), c(dy1, dy2, dy3), type = "l", lwd = 2, axes = FALSE, xlab = "", ylab = "")
+#for each value in x
+dy1 <- dnorm(x, 6, 0.05)
+dy2 <- dnorm(x, 5.6, 0.05)
+dy3 <- dnorm(x, 5.2, 0.05)
+#an x-axis with custom labels
+plot(rep(x,3), c(dy1, dy2, dy3), type = "l", lwd = 2, axes = FALSE, xlab = "", ylab = "")
+points(c(y1, y2, y3), y = rep(0, 150))
+y1 <- rnorm(50, 6, 0.05)
+y2 <- rnorm(50, 5.6, 0.05)
+y3 <- rnorm(50, 5.2, 0.05)
+plot(rep(x,3), c(dy1, dy2, dy3), type = "l", lwd = 2, axes = FALSE, xlab = "", ylab = "")
+points(c(y1, y2, y3), y = rep(0, 150))
+plot(rep(x,3), c(dy1, dy2, dy3), type = "l", lwd = 2, axes = FALSE, xlab = "", ylab = "")
+points(c(y1, y2, y3), y = rep(0, 150), pch = 19, col = 2, cex = 0.2)
+plot(rep(x,3), c(dy1, dy2, dy3), type = "l", lwd = 2, axes = FALSE, xlab = "", ylab = "")
+points(c(y1, y2, y3), y = rep(0, 150), pch = 1, col = 2, cex = 0.2)
+?jitter
+plot(rep(x,3), c(dy1, dy2, dy3), type = "l", lwd = 2, axes = FALSE, xlab = "", ylab = "")
+points(c(y1, y2, y3), y = jitter(rep(0, 150)), pch = 1, col = 2, cex = 0.2)
+#an x-axis with custom labels
+plot(rep(x,3), c(dy1, dy2, dy3), type = "l", lwd = 2, axes = FALSE, xlab = "", ylab = "")
+points(c(y1, y2, y3), y = jitter(rep(0, 150)), pch = 1, col = 2, cex = 0.5)
+#plot x and y as a scatterplot with connected lines (type = "l") and add
+#an x-axis with custom labels
+plot(x, dy1, type = "l", lwd = 2, axes = FALSE, xlab = "", ylab = "", col = 1)
+lines(x, dy2, col = 2)
+lines(x, dy3, col = 4)
+plot(x, dy1, type = "l", lwd = 2, axes = FALSE, xlab = "", ylab = "", col = 1)
+lines(x, dy2, col = 2, lwd = 2)
+lines(x, dy3, col = 4, lwd = 2)
+abline(h = 0, col = "grey")
+abline(h = 0, col = "grey", lwd = 2)
+points(c(y1, y2, y3), y = jitter(rep(0, 150)), pch = 1, col = c(2,3,4), cex = 0.5)
+points(c(y1, y2, y3), y = jitter(rep(0, 150)),
+pch = 1, col = c(rep(2, 50), rep(3, 50), rep(4, 50)), cex = 0.5)
+plot(rep(x,3), c(dy1,dy2,dy3), type = "l", lwd = 2,
+axes = FALSE, xlab = "", ylab = "",
+col = c(rep(1, 50), rep(2, 50), rep(4, 50)))
+abline(h = 0, col = "grey", lwd = 2)
+points(c(y1, y2, y3), y = jitter(rep(0, 150)),
+pch = 1, col = c(rep(1, 50), rep(2, 50), rep(4, 50)))
+plot(rep(x,3), c(dy1,dy2,dy3), type = "l", lwd = 2,
+axes = FALSE, xlab = "", ylab = "",
+col = c(rep(1, 50), rep(2, 50), rep(4, 50)))
+abline(h = 0, col = "grey", lwd = 2)
+points(c(y1, y2, y3), y = jitter(rep(0, 150), factor = 2),
+pch = 1, col = c(rep(1, 50), rep(2, 50), rep(4, 50)))
+plot(rep(x,3), c(dy1,dy2,dy3), type = "l", lwd = 2,
+axes = FALSE, xlab = "", ylab = "",
+col = c(rep(1, 50), rep(2, 50), rep(4, 50)))
+abline(h = 0, col = "grey", lwd = 2)
+points(c(y1, y2, y3), y = jitter(rep(0, 150), factor = 2),
+pch = 1, col = c(rep(1, 50), rep(2, 50), rep(4, 50)), cex = 0.5)
+plot(rep(x,3), c(dy1,dy2,dy3), type = "l", lwd = 2,
+axes = FALSE, xlab = "", ylab = "",
+col = c(rep(1, 50), rep(2, 50), rep(4, 50)))
+abline(h = 0, col = "grey", lwd = 2)
+points(c(y1, y2, y3), y = jitter(rep(0, 150), factor = 5),
+pch = 1, col = c(rep(1, 50), rep(2, 50), rep(4, 50)), cex = 0.5)
+?plot
+plot(x, dy1, type = "l", lwd = 2,
+axes = FALSE, xlab = "", ylab = "",
+col = 1)
+lines(x, dy2, col = 2, lwd = 2)
+\lines(x, dy3, col = 4, lwd = 2)
+plot(x, dy1, type = "l", lwd = 2,
+axes = FALSE, xlab = "", ylab = "",
+col = 1)
+lines(x, dy2, col = 2, lwd = 2)
+lines(x, dy3, col = 4, lwd = 2)
+abline(h = 0, col = "grey", lwd = 2)
+points(c(y1, y2, y3), y = jitter(rep(0, 150), factor = 5),
+pch = 1, col = c(rep(1, 50), rep(2, 50), rep(4, 50)), cex = 0.5)
+dy1_l <- dnorm(x, 6, 1)
+dy2_l <- dnorm(x, 5.6, 1)
+dy3_l <- dnorm(x, 5.2, 1)
+plot(x, dy1_l, type = "l", lwd = 2,
+axes = FALSE, xlab = "", ylab = "",
+col = 1)
+lines(x, dy2_l, col = 2, lwd = 2)
+lines(x, dy3_l, col = 4, lwd = 2)
+abline(h = 0, col = "grey", lwd = 2)
+points(c(y1_l, y2_l, y3_l), y = jitter(rep(0, 150), factor = 5),
+pch = 1, col = c(rep(1, 50), rep(2, 50), rep(4, 50)), cex = 0.5)
+y1_l <- rnorm(50, sd = 1.0) + 6
+y2_l <- rnorm(50, sd = 1.0) + 5.6
+y3_l <- rnorm(50, sd = 1.0) + 5.2
+dy1_l <- dnorm(x, 6, 1)
+dy2_l <- dnorm(x, 5.6, 1)
+dy3_l <- dnorm(x, 5.2, 1)
+plot(x, dy1_l, type = "l", lwd = 2,
+axes = FALSE, xlab = "", ylab = "",
+col = 1)
+lines(x, dy2_l, col = 2, lwd = 2)
+lines(x, dy3_l, col = 4, lwd = 2)
+abline(h = 0, col = "grey", lwd = 2)
+points(c(y1_l, y2_l, y3_l), y = jitter(rep(0, 150), factor = 5),
+pch = 1, col = c(rep(1, 50), rep(2, 50), rep(4, 50)), cex = 0.5)
+dy1_l <- dnorm(x, 6, 1)
+dy2_l <- dnorm(x, 5.6, 1)
+dy3_l <- dnorm(x, 5.2, 1)
+plot(x, dy1_l, type = "l", lwd = 2,
+axes = FALSE, xlab = "", ylab = "",
+col = 1)
+lines(x, dy2_l, col = 2, lwd = 2)
+lines(x, dy3_l, col = 4, lwd = 2)
+abline(h = 0, col = "grey", lwd = 2)
+points(c(y1_l, y2_l, y3_l), y = jitter(rep(0, 150), factor = 1),
+pch = 1, col = c(rep(1, 50), rep(2, 50), rep(4, 50)), cex = 0.5)
+dy1_l <- dnorm(x, 6, 1)
+dy2_l <- dnorm(x, 5.6, 1)
+dy3_l <- dnorm(x, 5.2, 1)
+plot(x, dy1_l, type = "l", lwd = 2,
+axes = FALSE, xlab = "", ylab = "",
+col = 1)
+lines(x, dy2_l, col = 2, lwd = 2)
+lines(x, dy3_l, col = 4, lwd = 2)
+abline(h = 0, col = "grey", lwd = 2)
+points(c(y1_l, y2_l, y3_l), y = jitter(rep(0, 150), factor = 0.5),
+pch = 1, col = c(rep(1, 50), rep(2, 50), rep(4, 50)), cex = 1)
+par(mfrow = c(2, 1), mar = c(1.5, 0, 1.5, 0), mgp = c(1.1, 0.5, 0), las = 1)
+x <- seq(2, 9, length=1000)
+#create a vector of values that shows the height of the probability distribution
+#for each value in x
+dy1 <- dnorm(x, 6, 0.05)
+dy2 <- dnorm(x, 5.6, 0.05)
+dy3 <- dnorm(x, 5.2, 0.05)
+#plot x and y as a scatterplot with connected lines (type = "l") and add
+#an x-axis with custom labels
+plot(x, dy1, type = "l", lwd = 2,
+axes = FALSE, xlab = "", ylab = "",
+col = 1)
+lines(x, dy2, col = 2, lwd = 2)
+lines(x, dy3, col = 4, lwd = 2)
+abline(h = 0, col = "grey", lwd = 2)
+points(c(y1, y2, y3), y = jitter(rep(0, 150), factor = 5),
+pch = 1, col = c(rep(1, 50), rep(2, 50), rep(4, 50)), cex = 0.5)
+dy1_l <- dnorm(x, 6, 1)
+dy2_l <- dnorm(x, 5.6, 1)
+dy3_l <- dnorm(x, 5.2, 1)
+plot(x, dy1_l, type = "l", lwd = 2,
+axes = FALSE, xlab = "", ylab = "",
+col = 1)
+lines(x, dy2_l, col = 2, lwd = 2)
+lines(x, dy3_l, col = 4, lwd = 2)
+abline(h = 0, col = "grey", lwd = 2)
+points(c(y1_l, y2_l, y3_l), y = jitter(rep(0, 150), factor = 0.5),
+pch = 1, col = c(rep(1, 50), rep(2, 50), rep(4, 50)), cex = 1)
+dy1_a <- dnorm(x, 5.6, 1)
+dy2_a <- dnorm(x, 5.6, 1)
+dy3_a <- dnorm(x, 5.6, 1)
+plot(x, dy1_a, type = "l", lwd = 2,
+axes = FALSE, xlab = "", ylab = "",
+col = 1, main = "Three samples are the same normal population")
+dy1_a <- dnorm(x, 5.6, 1)
+dy2_a <- dnorm(x, 5.6, 1)
+dy3_a <- dnorm(x, 5.6, 1)
+y1_a <- rnorm(50, sd = 1.0) + 5.6
+y2_a <- rnorm(50, sd = 1.0) + 5.6
+y3_a <- rnorm(50, sd = 1.0) + 5.6
+plot(x, dy1_a, type = "l", lwd = 2,
+axes = FALSE, xlab = "", ylab = "",
+col = 1, main = "Three samples are the same normal population")
+# lines(x, dy2_a, col = 2, lwd = 2)
+# lines(x, dy3_a, col = 4, lwd = 2)
+abline(h = 0, col = "grey", lwd = 2)
+points(c(y1_a, y2_a, y3_a), y = jitter(rep(0, 150), factor = 0.5),
+pch = 1, col = c(rep(1, 50), rep(2, 50), rep(4, 50)), cex = 1)
+x <- seq(2, 9, length=1000)
+#create a vector of values that shows the height of the probability distribution
+#for each value in x
+dy1 <- dnorm(x, 6, 0.05)
+dy2 <- dnorm(x, 5.6, 0.05)
+dy3 <- dnorm(x, 5.2, 0.05)
+#plot x and y as a scatterplot with connected lines (type = "l") and add
+#an x-axis with custom labels
+plot(x, dy1, type = "l", lwd = 2,
+axes = FALSE, xlab = "", ylab = "",
+col = 1, main = "Normal population w/ small variance (within samples)")
+lines(x, dy2, col = 2, lwd = 2)
+lines(x, dy3, col = 4, lwd = 2)
+abline(h = 0, col = "grey", lwd = 2)
+points(c(y1, y2, y3), y = jitter(rep(0, 150), factor = 5),
+pch = 19, col = c(rep(1, 50), rep(2, 50), rep(4, 50)), cex = 0.5)
+dy1_l <- dnorm(x, 6, 1)
+dy2_l <- dnorm(x, 5.6, 1)
+dy3_l <- dnorm(x, 5.2, 1)
+plot(x, dy1_l, type = "l", lwd = 2,
+axes = FALSE, xlab = "", ylab = "",
+col = 1, main = "Normal population w/ large variance (within samples)")
+lines(x, dy2_l, col = 2, lwd = 2)
+lines(x, dy3_l, col = 4, lwd = 2)
+abline(h = 0, col = "grey", lwd = 2)
+points(c(y1_l, y2_l, y3_l), y = jitter(rep(0, 150), factor = 0.5),
+pch = 19, col = c(rep(1, 50), rep(2, 50), rep(4, 50)), cex = 1)
+par(mfrow = c(2, 1), mar = c(2.5, 2.5, 1.5, 0), mgp = c(1.1, 0.5, 0), las = 1)
+y1_l <- rnorm(50, sd = 1.0) + 6
+y2_l <- rnorm(50, sd = 1.0) + 5.6
+y3_l <- rnorm(50, sd = 1.0) + 5.2
+large_var_data <- data.frame(y = c(y1_l, y2_l, y3_l), sample = rep(c(1,2,3), each = 50))
+boxplot(y ~ sample, large_var_data, ylim = c(2, 9),
+main = "Data 2: Large Variance Within Samples", cex.main = 0.89,
+col = "lightblue", horizontal = TRUE)
+points(x=c(6, 5.6, 5.2), y = c(1, 2,3), col = "red", pch = 16)
+y1_l <- rnorm(50, sd = 1.0) + 8
+y2_l <- rnorm(50, sd = 1.0) + 5.5
+y3_l <- rnorm(50, sd = 1.0) + 3
+large_var_data <- data.frame(y = c(y1_l, y2_l, y3_l), sample = rep(c(1,2,3), each = 50))
+boxplot(y ~ sample, large_var_data, ylim = c(2, 9),
+main = "Data 2: Large Variance Within Samples", cex.main = 0.89,
+col = "lightblue", horizontal = TRUE)
+points(x=c(6, 5.6, 5.2), y = c(1, 2,3), col = "red", pch = 16)
+lm(y ~ food, data = data_anova)
+install.package("onewaytests")
+install.packages(onewaytests)
+install.packages("onewaytests")
+?shapiro.test
+install.packages("nortest")
+library(nortest)
+?ad.test
+ks.test()
+?ks.test
+?lm
+?oneway.test
+?cor
+mtcars
+par(mar = c(2, 2, 0, 0), mgp = c(1, 0.2, 0))
+x <- runif(100, 0, 10)
+y_linear <- 5 + 2 * x + rnorm(100, sd = 1)
+y_quad <- log(x) + rnorm(100, sd = 0.3)
+plot(x, y_quad, pch = 16, col = 4, xlab = "X", ylab = "Y", xaxt='n', yaxt = "n")
+lines(sort(x), log(sort(x)), col = 2, lwd = 3)
+legend("bottomright", c("data points", "f(X)"), col = c(4, 2), lwd = c(NA, 3), pch = c(16, NA), bty = "n")
+source("~/.active-rstudio-document", echo=TRUE)
+?confint
+?predict
+library(openintro)
+str(loan50)
+summary(loan50$homeownership)
+freq <- table(x)
+rel_freq <- freq / sum(freq)
+cbind(freq, rel_freq)
+(x <- loan50$homeownership)
+table(x)
+freq <- table(x)
+rel_freq <- freq / sum(freq)
+cbind(freq, rel_freq)
+freq <- table(x)
+rel_freq <- freq / sum(freq)
+rbind(freq, rel_freq)
+table(c(2.3, 4.5, 4.6, 4.8, 2.8, 5.9))
+table(loan50$interest_rate)
+range(int_rate)/9
+int_rate <- round(loan50$interest_rate, 1)
+range(int_rate)/9
+diff(range(int_rate))/9
+?hist
+hist(x = int_rate,
+breaks = 10,
+xlab = "Interest Rate (%)",
+main = "Hist. of Int. Rate (Ours)")
+hist(x = int_rate,
+breaks = 8,
+xlab = "Interest Rate (%)",
+main = "Hist. of Int. Rate (Ours)")
+plot(1:4, 1:5)
+?mean
+x <- c(0:10, 50)
+xm <- mean(x)
+c(xm, mean(x, trim = 0.10))
+xm
+x
+22/7
+par(mar = c(4, 0, 0, 0))
+par(mfrow = c(1, 1))
+round.to <- 1
+binned <- round.to * round(int_rate / round.to)
+tab <- table(binned)
+cex <- 1
+xlim <- c(0.9 * min(int_rate), 1.05 * max(int_rate))
+plot(0,
+type = "n",
+xlab = "Interest Rate, Rounded to Nearest Percent",
+ylab = "",
+axes = FALSE,
+xlim = xlim,
+ylim = c(-1, 1.5 * max(tab)))
+for (i in 1:length(tab)) {
+points(rep(as.numeric(names(tab[i])), tab[i]),
+1.5 * (1:tab[i]) - 0.4,
+pch = 19,
+col = 4,
+cex = 2 * cex)
+}
+abline(h = 0)
+openintro::AxisInPercent(1, pretty(c(0, int_rate)))
+M <- mean(int_rate)
+polygon(M + c(-1, 1, 0) * 1,
+c(-1.2, -1.2, -0.1),
+border = "red",
+col = 2)
+?sort
+mean(12, 43)
+average(12, 42)
+?mode
+mode(x)
+storage.mode(x)
+par(mfrow = c(1, 3), mar = c(0.3, 0, 2, 0))
+p <- seq(0, 1, length = 100)
+a <- 2; b <- 5
+max_d <- max(dbeta(p, a, b))
+plot(p, dbeta(p, a, b), type = 'l', axes = FALSE, xlab = "", ylab = "", lwd = 3, ylim = c(0, max_d + 0.2)) +
+title(main = "Right-Skewed") +
+abline(v = (a - 1) / (a + b - 2), lty = 1, col = 1) +
+abline(v = (a - 1/3) / (a + b - 2/3), lty = 2, col = 2) +
+abline(v = a /(a + b), lty = 3, col = 4) +
+text(x = (a - 1) / (a + b - 2)*0.7, y = max_d + 0.2,
+labels = "Mode", col = 1) +
+text(x = (a - 1/3) / (a + b - 2/3), y = max_d+0.08,
+labels = "Median", col = 2) +
+text(x = a /(a + b)*1.3, y = max_d-0.2,
+labels = "Mean", col = 4)
+axis(1, labels = FALSE, tick = TRUE)
+x <- seq(-4, 4, length = 1000)
+plot(x, dnorm(x), type = "l", ylim = c(0, 0.45),
+main = "Symmetric", axes = FALSE, xlab = "",
+ylab = "", lwd = 3)
+abline(v = 0, lty = 2)
+text(1.2, dnorm(0) + 0.02, "Mean = Median = Mode")
+axis(1, labels = FALSE, tick = TRUE)
+p <- seq(0, 1, length = 100)
+a <- 2; b <- 5
+max_d <- max(dbeta(p, a, b))
+plot(p, dbeta(p, a, b), type = 'l', axes = FALSE, xlab = "", ylab = "", lwd = 3, ylim = c(0, max_d + 0.2)) +
+title(main = "Right-Skewed") +
+abline(v = (a - 1) / (a + b - 2), lty = 1, col = 1) +
+abline(v = (a - 1/3) / (a + b - 2/3), lty = 2, col = 2) +
+abline(v = a /(a + b), lty = 3, col = 4) +
+text(x = (a - 1) / (a + b - 2)*0.7, y = max_d + 0.2,
+labels = "Mode", col = 1) +
+text(x = (a - 1/3) / (a + b - 2/3), y = max_d+0.08,
+labels = "Median", col = 2) +
+text(x = a /(a + b)*1.3, y = max_d-0.2,
+labels = "Mean", col = 4)
+plot(p, dbeta(p, a, b), type = 'l', axes = FALSE, xlab = "", ylab = "", lwd = 3, ylim = c(0, max_d + 0.2))
+title(main = "Right-Skewed") +
+abline(v = (a - 1) / (a + b - 2), lty = 1, col = 1) +
+abline(v = (a - 1/3) / (a + b - 2/3), lty = 2, col = 2) +
+abline(v = a /(a + b), lty = 3, col = 4) +
+text(x = (a - 1) / (a + b - 2)*0.7, y = max_d + 0.2,
+labels = "Mode", col = 1) +
+text(x = (a - 1/3) / (a + b - 2/3), y = max_d+0.08,
+labels = "Median", col = 2) +
+text(x = a /(a + b)*1.3, y = max_d-0.2,
+labels = "Mean", col = 4)
+plot(p, dbeta(p, a, b), type = 'l', axes = FALSE, xlab = "", ylab = "", lwd = 3, ylim = c(0, max_d + 0.2)) +
+title(main = "Right-Skewed") +
+abline(v = (a - 1) / (a + b - 2), lty = 1, col = 1) +
+abline(v = (a - 1/3) / (a + b - 2/3), lty = 2, col = 2) +
+abline(v = a /(a + b), lty = 3, col = 4)
+plot(p, dbeta(p, a, b), type = 'l', axes = FALSE, xlab = "", ylab = "", lwd = 3, ylim = c(0, max_d + 0.2)) +
+title(main = "Right-Skewed")
+?title
+plot(p, dbeta(p, a, b), type = 'l', axes = FALSE, xlab = "", ylab = "", lwd = 3, ylim = c(0, max_d + 0.2)) +
+title(main = "Right-Skewed")
+?quantile
+x <- rnorm(10)
+sum((x - mean(x))^2)/10
+x <- rnorm(10); sum((x - mean(x))^2)/10
+x <- rnorm(10); sum((x - mean(x))^2)/10
+x <- rnorm(10); sum((x - mean(x))^2)/10
+x
+x <- rnorm(10)
+sum((x - mean(x))^2)/10
+x <- rnorm(100)
+sum((x - mean(x))^2)/10
+sum((x - mean(x))^2)/100
+x <- rnorm(50); sum((x - mean(x))^2)/50
+x <- rnorm(50); sum((x - mean(x))^2)/50
+x <- rnorm(50); sum((x - mean(x))^2)/50
+x <- rnorm(50); sum((x - mean(x))^2)/50
+x <- rnorm(50); sum((x - mean(x))^2)/50
+x <- rnorm(50); sum((x - mean(x))^2)/50
+x <- rnorm(50); sum((x - mean(x))^2)/50
+?boxplot
+boxplot(int_rate, ylab = "Interest Rate (%)")
+b <- boxplot(int_rate, ylab = "Interest Rate (%)")
+b$stats
+sort(int_rate, decreasing = TRUE)[1:5]
+sort(int_rate)[1:5]
+Q3 <- quantile(int_rate, probs = 0.75,
+names = FALSE)
+Q1 <- quantile(int_rate, probs = 0.25,
+names = FALSE)
+IQR <- Q3 - Q1
+Q1 - 1.5 * IQR
+Q3 + 1.5 * IQR
+Q1
+Q3
+b$conf
+b$out
+b$group
+b$names
+boxplot
+14.1 + 1.5 * (14.1 - 8)
+13.75 + 1.5 * (13.75 - 8)
+int_rate
+sort(int_rate)
+quantile(int_rate, probs = 0.75)
+?quantile
+Q1
+Q1 - 1.5 * IQR
+b$conf
+b$group
+b$names
+reticulate::repl_python()
+reticulate::repl_python()
+x <- 1:10
+y <- c(3, 5, 9)
+data(mtcars)
+data(mtcars)
+data(mtcars)
+source("~/.active-rstudio-document")
+source("~/.active-rstudio-document")
+source("~/.active-rstudio-document", echo=TRUE)
+ggplot(mpg, aes(x = displ, y = hwy,
+colour = class)) +
+geom_point()
+?abs
+?pi
+(df <- data.frame(age = c(19, 21, 40), gender = c("m", "f", "m")))
+typeof(df)
+?knitr::purl()
+knitr::purl("./intro-stats.qmd", "../introstatsbook_code/01_intro-stats.R")
+knitr::purl("./intro-data.qmd", "../introstatsbook_code/02_intro-data.R")
+knitr::purl("./intro-r.qmd", "../introstatsbook_code/03_intro-r.R")
+knitr::purl("./data-graphics.qmd", "../introstatsbook_code/04_data-graphics.R")
+knitr::purl("./data-numerics.qmd", "../introstatsbook_code/05_data-numerics.R")
+knitr::purl("./prob-define.qmd", "../introstatsbook_code/06_prob-define.R")
+knitr::purl("./prob-rule.qmd", "../introstatsbook_code/07_prob-rule.R")
+knitr::purl("./prob-rv.qmd", "../introstatsbook_code/07_prob-rv.R")
+repl_python()
+class_boundary <- lower_limit + 0:k * class_width
+k <- 9
+class_width <- 2.5
+lower_limit <- 5
+# Calculate class boundaries
+class_boundary <- lower_limit + 0:k * class_width
+class_boundary
+class_int <- paste(paste0(class_boundary[1:k], "%"),
+paste0(class_boundary[2:(k+1)], "%"),
+sep = " - ")
+class_int
+repl_python()
+# install.packages("devtools")
+devtools::install_github("hadley/emo")
+install.packages("devtools")
+# install.packages("devtools")
+devtools::install_github("EmilHvitfeldt/emoji")
+# install.packages("devtools")
+devtools::install_github("hadley/emo")

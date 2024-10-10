@@ -265,11 +265,14 @@ Well I believe you've seen how tedious calculating a binomial probability is! It
 <!-- Never do this by hand. We can compute them using R! -->
 <!-- ::: -->
 
--------------------------------------------------------------
+<!-- ------------------------------------------------------------- -->
 
-<span style="color:blue"> **Computation in R**
+<!-- <span style="color:blue"> **Computation in R** -->
 
-In practice, we are not gonna calculate probabilities of binomial or other commonly used probability distributions. Instead, we use computing software. In R we can use `dpqr` familty functions to calculate probabilities or generate values from the distributions. In general, for some distribution, short for `dist`, R has the following functions
+::: {.panel-tabset}
+
+## R
+In practice, we are not gonna calculate probabilities of binomial or other commonly used probability distributions. Instead, we use computing software. In R we can use `dpqr` family functions to calculate probabilities or generate values from the distributions. In general, for some distribution, short for `dist`, R has the following functions
 
 - **d**`dist(x, ...)`: calculate density value $f(x)$ or probability value $P(X = x)$. 
 - **p**`dist(q, ...)`: calculate $P(X \le q)$.
@@ -354,6 +357,97 @@ Since $n = 15$ and $\pi = 0.2$, the mean is $(15)(0.2) = 3$. For the binomial di
 
 [^1]: It is a little misleading. The `'h'` type here is just a notation for this bar-like plotting type, not really the histogram we discussed in @sec-data-graphics. To draw a histogram, we use the function `hist()`.
 
+
+## Python
+
+In practice, we are not gonna calculate probabilities of binomial or other commonly used probability distributions. Instead, we use computing software. In Python we can use the methods in the `scipy.stats.binom` module to calculate probabilities or generate values from the distributions. In general, for some distribution, short for dist, Python has the following functions
+
+- `dist.pmf(k, ...)`: calculate probability value $P(X = k)$. 
+    + `pmf` means **p**robability **m**ass **f**unction.
+
+- `dist.pdf(x, ...)`: calculate probability density $f(x)$. 
+    + `pdf` means **p**robability **d**ensity **f**unction.
+    
+- `dist.cdf(k, ...)`: calculate $P(X \le k)$. 
+    + `cdf` means **c**umulative **d**istribution **f**unction.
+
+- `dist.sf(k, ...)`: calculate $P(X > k)$. 
+    + `sf` means **s**urvival **f**unction.
+
+- `dist.ppf(q, ...)`: obtain quantile of probability $q$. 
+    + `ppf` means **p**ercent **p**oint **f**unction.
+
+- `dist.rvs(n, ...)`: generate $n$ random numbers. 
+    + `rvs` means **r**andom **v**ariable**s**.
+
+
+When we use these functions, the dist is replaced with the shortened name of the distribution we consider. For example, we use [`binom.pmf(k, ...)`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.binom.html) to do the calculation for the binomial distribution.
+
+
+For the binomial distribution, we use `binom.pmf(k, n, p)` to compute 
+$P(X = k)$, where `n` is the number of trials and `p` is the probability of success. Besides `k`, we need to provide the values of `n` and `p` because remember that they are the parameters of the binomial distribution. Without them, we cannot have a specific binomial distribution, and its probability cannot be calculated.
+
+To obtain $P(X = 6)$ where $X \sim binomial(n=15, \pi=0.2)$, in Python, we do 
+
+
+```{python}
+#| echo: true
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import binom
+```
+
+```{python}
+#| echo: true
+# Binomial distribution calculations
+# 1. P(X = 6)
+binom.pmf(k=6, n=15, p=0.2)
+```
+
+
+To answer the second question $P(X \ge 6)$, we can use the function **`binom.cdf(k, n, p)`** that calculates $P(X \le k)$ for $X \sim bionomial(n = \texttt{n}, \pi = \texttt{p})$. Notice that $P(X >= 6) = 1 - P(X <= 5)$, so in Python, we can do 
+
+
+```{python}
+#| echo: true
+# 2. P(X >= 6) = 1 - P(X <= 5)
+1 - binom.cdf(k=5, n=15, p=0.2)
+```
+
+
+The function `binom.cdf(q, n, p)` calculates the probability $P(X \le k)$ which is the left or **lower tail** part of the distribution. We can use `binom.sf(q, n, p)` to calculate $P(X > q)$ which is the right or **upper tail** part of the distribution. Since $P(X \ge 6) = P(X > 5)$, in Python we can do 
+
+```{python}
+#| echo: true
+# Alternatively, using the upper tail probability
+binom.sf(5, n=15, p=0.2)
+```
+
+Notice that we use `k=5` instead of `k=6` because we want $P(X > 5)$. The probability value is the same as the value before.
+
+
+Below is an example of how to generate the binomial probability distribution as a graph. We use the stem plot [plt.stem()](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.stem.html). 
+
+```{python}
+#| label: binom-plot-py
+#| fig-align: center
+np.arange(0, 16)
+plt.stem(np.arange(0, 16), binom.pmf(np.arange(0, 16), n=15, p=0.2), 
+         basefmt=" ")
+plt.xlabel("x")
+plt.ylabel("P(X = x)")
+plt.title("Binomial(15, 0.2)")
+plt.show()
+```
+
+Here a sequence of integers 0 to 15 are created and put in the x-axis. `np.arange(0, 16)` is a way to generate a sequence of numbers from 0 to 15. Again 0 is included but 16 is not. Then `binom.pmf(np.arange(0, 16), n=15, p=0.2)` is used to create probabilities of $binomial(15, 0.2)$ for each integer.
+
+Since $n = 15$ and $\pi = 0.2$, the mean is $(15)(0.2) = 3$. For the binomial distribution, it means that the number of success is more likely to be happened around $x = 3$. It is very uncommon to see that more than 10 drivers have alcohol level above the legal limit.
+
+
+:::
+
+
 ## Poisson Distribution
 
 <span style="color:blue"> **Poisson Random Variables** </span>
@@ -436,24 +530,27 @@ knitr::include_graphics("./images/img-prob/baby.jpeg")
 $\small P(X > 10) = 1 - P(X \le 10) = 1 - (p(1) + p(2) + \dots + p(10))$.
 
 
-Did you see how tedious it is to calculate the Poisson probabilities even using a calculator? I know you are waiting for R implementation!
+Did you see how tedious it is to calculate the Poisson probabilities even using a calculator? I know you are waiting for R/Python implementation!
 
----------------------------------------------------------------
+<!-- --------------------------------------------------------------- -->
 
-<span style="color:blue"> **Computation in R** </span>
+<!-- <span style="color:blue"> **Computation in R** </span> -->
 
 <!-- - R Shiny app is at [Poisson Calculator](http://sctc.mscs.mu.edu:3838/sample-apps/Calculator/) -->
 <!-- P(X <= 10) = 0.392 -->
+::: {.panel-tabset}
+
+## R
 
 Instead of using `dbinom()` and `pbinom()`, for Poisson distribution, we replace `binom` with `pois`, and use `dpois(x, lambda)` and `ppois(q, lambda)` to calculate the probabilities.
 
-With `lambda` being the mean of Poisson distribution, and $X\sim Poisson(\lambda)$, we
+With `lambda` being the mean of Poisson distribution, and $X\sim Poisson(\lambda)$, we use
 
-  + use **`dpois(x, lambda)`** to compute $P(X = x \mid \lambda)$
+  + **`dpois(x, lambda)`** to compute $P(X = x \mid \lambda)$
   
-  + use **`ppois(q, lambda)`** to compute $P(X \le q \mid \lambda)$
+  + **`ppois(q, lambda)`** to compute $P(X \le q \mid \lambda)$
   
-  + use **`ppois(q, lambda, lower.tail = FALSE)`** to compute $P(X > q \mid \lambda)$
+  + **`ppois(q, lambda, lower.tail = FALSE)`** to compute $P(X > q \mid \lambda)$
   
   
 ```{r}
@@ -513,10 +610,67 @@ plot(0:24, dpois(0:24, lambda = lam), type = 'h',
 
 Be careful that the Poisson $X$ has no upper limit; the graph is *truncated* at $x = 24$. Strictly speaking, the graph does not accurately display the $Poisson(11.5)$ distribution. Since the mean is 11.5, we know that it is very unlikely to have a very large $x$, that is $P(X = x)$ is very close to zero for $x > 25$. As the binomial distribution, the number of occurrences is more likely to be around its mean number 11.5, and the chance is decaying as the number is away from the mean.
 
+## Python
+
+
+Instead of using `binom.pnf()` and `binom.cdf()`, for Poisson distribution, we replace `binom` with `poisson`, and use [`poisson.pmf(k, mu)`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.poisson.html) and `poisson.cdf(k, mu)` to calculate the probabilities.
+
+With `lambda` being the mean of Poisson distribution, and $X\sim Poisson(\lambda)$, we use
+
+  + **`poisson.pmf(k, mu = lambda)`** to compute $P(X = k \mid \lambda)$
+  
+  + **`poisson.cdf(k, mu = lambda)`** to compute $P(X \le k \mid \lambda)$
+  
+  + **`poisson.sf(k, mu = lambda)`** to compute $P(X > k \mid \lambda)$
+  
+```{python}
+#| echo: true
+from scipy.stats import poisson
+```
+
+ 
+```{python}
+#| label: pois-1-py
+# 1. Calculate lambda
+lam = 4200 / 365
+lam
+
+## 2. P(X = 10)
+poisson.pmf(k=10, mu=lam)
+```
+
+```{python}
+#| label: pois-2-py
+
+## 3.
+## P(X > 10) = 1 - P(X <= 10)
+1 - poisson.cdf(10, mu=lam)
+
+## P(X > 10)
+poisson.sf(10, mu=lam)
+```
+
+
+Below is an example of how to generate the Poisson probability distribution as a graph.
+
+```{python}
+#| label: pois-plot-py
+#| echo: true
+plt.stem(np.arange(0, 25), poisson.pmf(np.arange(0, 25), mu=lam), 
+         basefmt=" ")
+plt.xlabel("x")
+plt.ylabel("P(X = x)")
+plt.title("Poisson(11.5)")
+plt.show()
+```
+
+Be careful that the Poisson $X$ has no upper limit; the graph is *truncated* at $x = 24$. Strictly speaking, the graph does not accurately display the $Poisson(11.5)$ distribution. Since the mean is 11.5, we know that it is very unlikely to have a very large $x$, that is $P(X = x)$ is very close to zero for $x > 25$. As the binomial distribution, the number of occurrences is more likely to be around its mean number 11.5, and the chance is decaying as the number is away from the mean.
 
 <!-- :::{.callout-note} -->
 <!-- - $X$ has no upper limit; the graph is *truncated* at $x = 24$.  -->
 <!-- ::: -->
+:::
+
 
 
 ## Relationship between Binomial and Poisson*

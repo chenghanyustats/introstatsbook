@@ -700,9 +700,16 @@ Figure&nbsp;10.2: Binomial Distribution Example <span class="math inline">\(X \s
 <!-- :::{.callout-tip} -->
 <!-- Never do this by hand. We can compute them using R! -->
 <!-- ::: -->
-<hr>
-<p><span style="color:blue"> <strong>Computation in R</strong></span></p>
-<p>In practice, we are not gonna calculate probabilities of binomial or other commonly used probability distributions. Instead, we use computing software. In R we can use <code>dpqr</code> familty functions to calculate probabilities or generate values from the distributions. In general, for some distribution, short for <code>dist</code>, R has the following functions</p>
+<!-- ------------------------------------------------------------- -->
+<!-- <span style="color:blue"> **Computation in R** -->
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<p>In practice, we are not gonna calculate probabilities of binomial or other commonly used probability distributions. Instead, we use computing software. In R we can use <code>dpqr</code> family functions to calculate probabilities or generate values from the distributions. In general, for some distribution, short for <code>dist</code>, R has the following functions</p>
 <ul>
 <li>
 <strong>d</strong><code>dist(x, ...)</code>: calculate density value <span class="math inline">\(f(x)\)</span> or probability value <span class="math inline">\(P(X = x)\)</span>.</li>
@@ -777,6 +784,110 @@ Figure&nbsp;10.2: Binomial Distribution Example <span class="math inline">\(X \s
 </div>
 <p>Here a sequence of integers 0 to 15 are created and put in the x-axis. Then <code>dbinom(0:15, size = 15, prob = 0.2)</code> is used to create probabilities of <span class="math inline">\(binomial(15, 0.2)\)</span> for each integer. The vertical bar geometry comes from the argument <code>type = 'h'</code> standing for “<strong>h</strong>istogram”.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <p>Since <span class="math inline">\(n = 15\)</span> and <span class="math inline">\(\pi = 0.2\)</span>, the mean is <span class="math inline">\((15)(0.2) = 3\)</span>. For the binomial distribution, it means that the number of success is more likely to be happened around <span class="math inline">\(x = 3\)</span>. It is very uncommon to see that more than 10 drivers have alcohol level above the legal limit.</p>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<p>In practice, we are not gonna calculate probabilities of binomial or other commonly used probability distributions. Instead, we use computing software. In Python we can use the methods in the <code>scipy.stats.binom</code> module to calculate probabilities or generate values from the distributions. In general, for some distribution, short for dist, Python has the following functions</p>
+<ul>
+<li>
+<code>dist.pmf(k, ...)</code>: calculate probability value <span class="math inline">\(P(X = k)\)</span>.
+<ul>
+<li>
+<code>pmf</code> means <strong>p</strong>robability <strong>m</strong>ass <strong>f</strong>unction.</li>
+</ul>
+</li>
+<li>
+<code>dist.pdf(x, ...)</code>: calculate probability density <span class="math inline">\(f(x)\)</span>.
+<ul>
+<li>
+<code>pdf</code> means <strong>p</strong>robability <strong>d</strong>ensity <strong>f</strong>unction.</li>
+</ul>
+</li>
+<li>
+<code>dist.cdf(k, ...)</code>: calculate <span class="math inline">\(P(X \le k)\)</span>.
+<ul>
+<li>
+<code>cdf</code> means <strong>c</strong>umulative <strong>d</strong>istribution <strong>f</strong>unction.</li>
+</ul>
+</li>
+<li>
+<code>dist.sf(k, ...)</code>: calculate <span class="math inline">\(P(X &gt; k)\)</span>.
+<ul>
+<li>
+<code>sf</code> means <strong>s</strong>urvival <strong>f</strong>unction.</li>
+</ul>
+</li>
+<li>
+<code>dist.ppf(q, ...)</code>: obtain quantile of probability <span class="math inline">\(q\)</span>.
+<ul>
+<li>
+<code>ppf</code> means <strong>p</strong>ercent <strong>p</strong>oint <strong>f</strong>unction.</li>
+</ul>
+</li>
+<li>
+<code>dist.rvs(n, ...)</code>: generate <span class="math inline">\(n\)</span> random numbers.
+<ul>
+<li>
+<code>rvs</code> means <strong>r</strong>andom <strong>v</strong>ariable<strong>s</strong>.</li>
+</ul>
+</li>
+</ul>
+<p>When we use these functions, the dist is replaced with the shortened name of the distribution we consider. For example, we use <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.binom.html"><code>binom.pmf(k, ...)</code></a> to do the calculation for the binomial distribution.</p>
+<p>For the binomial distribution, we use <code>binom.pmf(k, n, p)</code> to compute <span class="math inline">\(P(X = k)\)</span>, where <code>n</code> is the number of trials and <code>p</code> is the probability of success. Besides <code>k</code>, we need to provide the values of <code>n</code> and <code>p</code> because remember that they are the parameters of the binomial distribution. Without them, we cannot have a specific binomial distribution, and its probability cannot be calculated.</p>
+<p>To obtain <span class="math inline">\(P(X = 6)\)</span> where <span class="math inline">\(X \sim binomial(n=15, \pi=0.2)\)</span>, in Python, we do</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> binom</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Binomial distribution calculations</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. P(X = 6)</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>binom.pmf(k<span class="op">=</span><span class="dv">6</span>, n<span class="op">=</span><span class="dv">15</span>, p<span class="op">=</span><span class="fl">0.2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.04299262263296005</code></pre>
+</div>
+</div>
+<p>To answer the second question <span class="math inline">\(P(X \ge 6)\)</span>, we can use the function <strong><code>binom.cdf(k, n, p)</code></strong> that calculates <span class="math inline">\(P(X \le k)\)</span> for <span class="math inline">\(X \sim bionomial(n = \texttt{n}, \pi = \texttt{p})\)</span>. Notice that <span class="math inline">\(P(X &gt;= 6) = 1 - P(X &lt;= 5)\)</span>, so in Python, we can do</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. P(X &gt;= 6) = 1 - P(X &lt;= 5)</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="op">-</span> binom.cdf(k<span class="op">=</span><span class="dv">5</span>, n<span class="op">=</span><span class="dv">15</span>, p<span class="op">=</span><span class="fl">0.2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.06105142961766408</code></pre>
+</div>
+</div>
+<p>The function <code>binom.cdf(q, n, p)</code> calculates the probability <span class="math inline">\(P(X \le k)\)</span> which is the left or <strong>lower tail</strong> part of the distribution. We can use <code>binom.sf(q, n, p)</code> to calculate <span class="math inline">\(P(X &gt; q)\)</span> which is the right or <strong>upper tail</strong> part of the distribution. Since <span class="math inline">\(P(X \ge 6) = P(X &gt; 5)\)</span>, in Python we can do</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Alternatively, using the upper tail probability</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>binom.sf(<span class="dv">5</span>, n<span class="op">=</span><span class="dv">15</span>, p<span class="op">=</span><span class="fl">0.2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.061051429617664056</code></pre>
+</div>
+</div>
+<p>Notice that we use <code>k=5</code> instead of <code>k=6</code> because we want <span class="math inline">\(P(X &gt; 5)\)</span>. The probability value is the same as the value before.</p>
+<p>Below is an example of how to generate the binomial probability distribution as a graph. We use the stem plot <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.stem.html">plt.stem()</a>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>np.arange(<span class="dv">0</span>, <span class="dv">16</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15])</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>plt.stem(np.arange(<span class="dv">0</span>, <span class="dv">16</span>), binom.pmf(np.arange(<span class="dv">0</span>, <span class="dv">16</span>), n<span class="op">=</span><span class="dv">15</span>, p<span class="op">=</span><span class="fl">0.2</span>), </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>         basefmt<span class="op">=</span><span class="st">" "</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"x"</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"P(X = x)"</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Binomial(15, 0.2)"</span>)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="prob-disc_files/figure-html/binom-plot-py-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Here a sequence of integers 0 to 15 are created and put in the x-axis. <code>np.arange(0, 16)</code> is a way to generate a sequence of numbers from 0 to 15. Again 0 is included but 16 is not. Then <code>binom.pmf(np.arange(0, 16), n=15, p=0.2)</code> is used to create probabilities of <span class="math inline">\(binomial(15, 0.2)\)</span> for each integer.</p>
+<p>Since <span class="math inline">\(n = 15\)</span> and <span class="math inline">\(\pi = 0.2\)</span>, the mean is <span class="math inline">\((15)(0.2) = 3\)</span>. For the binomial distribution, it means that the number of success is more likely to be happened around <span class="math inline">\(x = 3\)</span>. It is very uncommon to see that more than 10 drivers have alcohol level above the legal limit.</p>
+</div>
+</div>
+</div>
 </section><section id="poisson-distribution" class="level2" data-number="10.3"><h2 data-number="10.3" class="anchored" data-anchor-id="poisson-distribution">
 <span class="header-section-number">10.3</span> Poisson Distribution</h2>
 <p><span style="color:blue"> <strong>Poisson Random Variables</strong> </span></p>
@@ -842,38 +953,45 @@ What are the differences between Binomial and Poisson distributions?
 <li><p><span class="math inline">\(\small P(X = 10 \mid \lambda = 11.5) = \frac{\lambda^x e^{-\lambda}}{x!} = \frac{11.5^{10} e^{-11.5}}{10!} = 0.113.\)</span></p></li>
 <li><p><span class="math inline">\(\small P(X &gt; 10) = p(11) + p(12) + \dots + p(20) + \dots\)</span> (No end!) <span class="math inline">\(\small P(X &gt; 10) = 1 - P(X \le 10) = 1 - (p(1) + p(2) + \dots + p(10))\)</span>.</p></li>
 </ol>
-<p>Did you see how tedious it is to calculate the Poisson probabilities even using a calculator? I know you are waiting for R implementation!</p>
-<hr>
-<p><span style="color:blue"> <strong>Computation in R</strong> </span></p>
+<p>Did you see how tedious it is to calculate the Poisson probabilities even using a calculator? I know you are waiting for R/Python implementation!</p>
+<!-- --------------------------------------------------------------- -->
+<!-- <span style="color:blue"> **Computation in R** </span> -->
 <!-- - R Shiny app is at [Poisson Calculator](http://sctc.mscs.mu.edu:3838/sample-apps/Calculator/) -->
 <!-- P(X <= 10) = 0.392 -->
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
 <p>Instead of using <code><a href="https://rdrr.io/r/stats/Binomial.html">dbinom()</a></code> and <code><a href="https://rdrr.io/r/stats/Binomial.html">pbinom()</a></code>, for Poisson distribution, we replace <code>binom</code> with <code>pois</code>, and use <code>dpois(x, lambda)</code> and <code>ppois(q, lambda)</code> to calculate the probabilities.</p>
-<p>With <code>lambda</code> being the mean of Poisson distribution, and <span class="math inline">\(X\sim Poisson(\lambda)\)</span>, we</p>
+<p>With <code>lambda</code> being the mean of Poisson distribution, and <span class="math inline">\(X\sim Poisson(\lambda)\)</span>, we use</p>
 <ul>
-<li><p>use <strong><code>dpois(x, lambda)</code></strong> to compute <span class="math inline">\(P(X = x \mid \lambda)\)</span></p></li>
-<li><p>use <strong><code>ppois(q, lambda)</code></strong> to compute <span class="math inline">\(P(X \le q \mid \lambda)\)</span></p></li>
-<li><p>use <strong><code>ppois(q, lambda, lower.tail = FALSE)</code></strong> to compute <span class="math inline">\(P(X &gt; q \mid \lambda)\)</span></p></li>
+<li><p><strong><code>dpois(x, lambda)</code></strong> to compute <span class="math inline">\(P(X = x \mid \lambda)\)</span></p></li>
+<li><p><strong><code>ppois(q, lambda)</code></strong> to compute <span class="math inline">\(P(X \le q \mid \lambda)\)</span></p></li>
+<li><p><strong><code>ppois(q, lambda, lower.tail = FALSE)</code></strong> to compute <span class="math inline">\(P(X &gt; q \mid \lambda)\)</span></p></li>
 </ul>
 <div class="cell">
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 1.</span></span>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 1.</span></span>
 <span><span class="op">(</span><span class="va">lam</span> <span class="op">&lt;-</span> <span class="fl">4200</span> <span class="op">/</span> <span class="fl">365</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 11.50685</code></pre>
 </div>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## 2. P(X = 10)</span></span>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## 2. P(X = 10)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/Poisson.html">dpois</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">10</span>, lambda <span class="op">=</span> <span class="va">lam</span><span class="op">)</span>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.112834</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## 3.</span></span>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## 3.</span></span>
 <span><span class="co">## P(X &gt; 10) = 1 - P(X &lt;= 10)</span></span>
 <span><span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Poisson.html">ppois</a></span><span class="op">(</span>q <span class="op">=</span> <span class="fl">10</span>, lambda <span class="op">=</span> <span class="va">lam</span><span class="op">)</span>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.5990436</code></pre>
 </div>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## P(X &gt; 10)</span></span>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## P(X &gt; 10)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/Poisson.html">ppois</a></span><span class="op">(</span>q <span class="op">=</span> <span class="fl">10</span>, lambda <span class="op">=</span> <span class="va">lam</span>, </span>
 <span>      lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -902,7 +1020,7 @@ What are the differences between Binomial and Poisson distributions?
 <!-- :::: -->
 <p>Below is an example of how to generate the Poisson probability distribution as a graph.</p>
 <div class="cell">
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">24</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Poisson.html">dpois</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">24</span>, lambda <span class="op">=</span> <span class="va">lam</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">'h'</span>, </span>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">24</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Poisson.html">dpois</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">24</span>, lambda <span class="op">=</span> <span class="va">lam</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">'h'</span>, </span>
 <span>     lwd <span class="op">=</span> <span class="fl">5</span>, ylab <span class="op">=</span> <span class="st">"P(X = x)"</span>, xlab <span class="op">=</span> <span class="st">"x"</span>, </span>
 <span>     main <span class="op">=</span> <span class="st">"Poisson(11.5)"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -913,9 +1031,66 @@ What are the differences between Binomial and Poisson distributions?
 </div>
 </div>
 <p>Be careful that the Poisson <span class="math inline">\(X\)</span> has no upper limit; the graph is <em>truncated</em> at <span class="math inline">\(x = 24\)</span>. Strictly speaking, the graph does not accurately display the <span class="math inline">\(Poisson(11.5)\)</span> distribution. Since the mean is 11.5, we know that it is very unlikely to have a very large <span class="math inline">\(x\)</span>, that is <span class="math inline">\(P(X = x)\)</span> is very close to zero for <span class="math inline">\(x &gt; 25\)</span>. As the binomial distribution, the number of occurrences is more likely to be around its mean number 11.5, and the chance is decaying as the number is away from the mean.</p>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<p>Instead of using <code>binom.pnf()</code> and <code>binom.cdf()</code>, for Poisson distribution, we replace <code>binom</code> with <code>poisson</code>, and use <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.poisson.html"><code>poisson.pmf(k, mu)</code></a> and <code>poisson.cdf(k, mu)</code> to calculate the probabilities.</p>
+<p>With <code>lambda</code> being the mean of Poisson distribution, and <span class="math inline">\(X\sim Poisson(\lambda)\)</span>, we use</p>
+<ul>
+<li><p><strong><code>poisson.pmf(k, mu = lambda)</code></strong> to compute <span class="math inline">\(P(X = k \mid \lambda)\)</span></p></li>
+<li><p><strong><code>poisson.cdf(k, mu = lambda)</code></strong> to compute <span class="math inline">\(P(X \le k \mid \lambda)\)</span></p></li>
+<li><p><strong><code>poisson.sf(k, mu = lambda)</code></strong> to compute <span class="math inline">\(P(X &gt; k \mid \lambda)\)</span></p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> poisson</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Calculate lambda</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>lam <span class="op">=</span> <span class="dv">4200</span> <span class="op">/</span> <span class="dv">365</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>lam</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>11.506849315068493</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co">## 2. P(X = 10)</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>poisson.pmf(k<span class="op">=</span><span class="dv">10</span>, mu<span class="op">=</span>lam)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.1128340209466802</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co">## 3.</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="co">## P(X &gt; 10) = 1 - P(X &lt;= 10)</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="op">-</span> poisson.cdf(<span class="dv">10</span>, mu<span class="op">=</span>lam)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.5990435715682069</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co">## P(X &gt; 10)</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>poisson.sf(<span class="dv">10</span>, mu<span class="op">=</span>lam)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.5990435715682069</code></pre>
+</div>
+</div>
+<p>Below is an example of how to generate the Poisson probability distribution as a graph.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>plt.stem(np.arange(<span class="dv">0</span>, <span class="dv">25</span>), poisson.pmf(np.arange(<span class="dv">0</span>, <span class="dv">25</span>), mu<span class="op">=</span>lam), </span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>         basefmt<span class="op">=</span><span class="st">" "</span>)</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"x"</span>)</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"P(X = x)"</span>)</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Poisson(11.5)"</span>)</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="prob-disc_files/figure-html/pois-plot-py-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Be careful that the Poisson <span class="math inline">\(X\)</span> has no upper limit; the graph is <em>truncated</em> at <span class="math inline">\(x = 24\)</span>. Strictly speaking, the graph does not accurately display the <span class="math inline">\(Poisson(11.5)\)</span> distribution. Since the mean is 11.5, we know that it is very unlikely to have a very large <span class="math inline">\(x\)</span>, that is <span class="math inline">\(P(X = x)\)</span> is very close to zero for <span class="math inline">\(x &gt; 25\)</span>. As the binomial distribution, the number of occurrences is more likely to be around its mean number 11.5, and the chance is decaying as the number is away from the mean.</p>
 <!-- :::{.callout-note} -->
 <!-- - $X$ has no upper limit; the graph is *truncated* at $x = 24$.  -->
 <!-- ::: -->
+</div>
+</div>
+</div>
 </section><section id="relationship-between-binomial-and-poisson" class="level2" data-number="10.4"><h2 data-number="10.4" class="anchored" data-anchor-id="relationship-between-binomial-and-poisson">
 <span class="header-section-number">10.4</span> Relationship between Binomial and Poisson*</h2>
 <p>Actually binomial and Poisson distributions are somewhat related. Let’s consider the following example.</p>
@@ -946,13 +1121,13 @@ What are the differences between Binomial and Poisson distributions?
 <div class="cell">
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="prob-disc_files/figure-html/poisson_approx_1-1.png" class="img-fluid figure-img" width="480"></p>
+<figure class="figure"><p><img src="prob-disc_files/figure-html/poisson_approx_1-3.png" class="img-fluid figure-img" width="480"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="prob-disc_files/figure-html/poisson_approx_1-2.png" class="img-fluid figure-img" width="480"></p>
+<figure class="figure"><p><img src="prob-disc_files/figure-html/poisson_approx_1-4.png" class="img-fluid figure-img" width="480"></p>
 </figure>
 </div>
 </div>
@@ -1572,7 +1747,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
 <li class="nav-item compact">
-    <a class="nav-link active" href="https://github.com/chenghanyustats/introstatsbook" aria-current="page">
+    <a class="nav-link" href="https://github.com/chenghanyustats/introstatsbook">
       <i class="bi bi-github" role="img">
 </i> 
     </a>

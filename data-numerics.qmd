@@ -58,7 +58,10 @@ For the interest rate example, the sample mean interest rate is
 $$\overline{x} = \frac{10.9\% + 9.9\% + \cdots + 6.1\%}{50} = 11.56\%$$
 <!-- </center> -->
 
-<span style="color:red"> ***Calculate Mean in R*** </span>
+::: {.panel-tabset}
+
+## R
+<!-- <span style="color:red"> ***Calculate Mean in R*** </span> -->
 
 In R, we simply put the interest rate vector `int_rate` in the function `mean()` to calculate the arithmetic mean. If the data contain missing values, but we still want to compute the arithmetic mean with the missing values removed, we can set the argument `na.rm = TRUE` in the `mean()` function.
 
@@ -71,6 +74,41 @@ int_rate <- round(loan50$interest_rate, 1)
 #| echo: true
 mean(int_rate)
 ```
+
+
+## Python
+
+```{python}
+#| echo: true
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+```
+
+```{python}
+loan50 = pd.read_csv("./data/loan50.csv")
+int_rate = loan50['interest_rate'].round(1)
+```
+
+```{python}
+#| echo: true
+np.mean(int_rate)
+```
+
+:::{.callout-note}
+There are other Python modules that offer functions for computing arithmetic mean and other statistical functions, for example, Python [statistics](https://docs.python.org/3/library/statistics.html) module, and [scipy.stats](https://docs.scipy.org/doc/scipy/reference/stats.html#summary-statistics) module.
+
+We can do the following to compute the mean.
+
+```{python}
+#| echo: true
+import statistics as stats
+stats.mean(int_rate)
+```
+:::
+
+:::
+
 
 <span style="color:red"> ***Balancing Point*** </span>
 
@@ -143,7 +181,13 @@ The **median** is the *middle value* when data values are *sorted* (from smalles
    + <span style="color:blue"> The median is $\frac{8 + 10}{2} = 9$ </span>. The number 8 or 10 cannot be the median because neither is in the exact middle of the sorted data. Their average value 9 is the middle value because three values are smaller (0, 2, 8) and three larger (10, 12, 14) than the value 9.
 
 
-<span style="color:red"> ***Calculate Median in R*** </span>
+<!-- <span style="color:red"> ***Calculate Median in R*** </span> -->
+
+
+
+::: {.panel-tabset}
+
+## R
 
 In R we can obtain the median using the definition as follows. We first sort the data using `sort()`. By default, the `sort()` function sorts a data vector in an increasing order. Set `decreasing = TRUE` in the function if we want the sort to be increasing. When median is calculated, increasing or decreasing order does not matter. The sorted interest rate data is the `sort_rate`. There are 50 data values, and the median is the average of the 25th value and 26th value, which is 9.9%.
 
@@ -156,6 +200,7 @@ length(int_rate)  ## Check sample size is odd or even
 (sort_rate[25] + sort_rate[26]) / 2  ## Verify the answer
 ```
 
+
 :::{.callout-warning}
 ## Warning
 Be sure to sort the data first if computing the median using the definition. Using un-sorted data leads to a wrong answer! The value below is not the median because 
@@ -165,6 +210,7 @@ Be sure to sort the data first if computing the median using the definition. Usi
 (int_rate[25] + int_rate[26]) / 2
 ```
 :::
+
 
 A more convenient way of computing the median is using the command `median()` just as we use `mean()` for arithmetic mean. We don't need to sort the data because R does everything for us.
 
@@ -176,13 +222,61 @@ median(int_rate)
 ```
 
 
+
+## Python
+
+
+In Python we can obtain the median using the definition as follows. We first sort the data using [`np.sort()`](https://numpy.org/doc/stable/reference/generated/numpy.sort.html). The `sort()` function sorts a data vector in an increasing order. When median is calculated, increasing or decreasing order does not matter. The sorted interest rate data is the `sort_rate`. There are 50 data values, and the median is the average of the 25th value and 26th value, which is 9.9%.
+
+
+```{python}
+#| echo: true
+## Compute the median using definition
+sort_rate = np.sort(int_rate)  ## sort data
+sort_rate
+len(int_rate)  ## Check sample size is odd or even
+(sort_rate[24] + sort_rate[25]) / 2  ## Verify the answer
+```
+
+Notice that we use the index 24 and 25 because again Python indexing starts with 1!
+
+
+:::{.callout-warning}
+## Warning
+Be sure to sort the data first if computing the median using the definition. Using un-sorted data leads to a wrong answer! The value below is not the median because 
+
+```{python}
+#| echo: true
+(int_rate[24] + int_rate[25]) / 2
+```
+:::
+
+
+A more convenient way of computing the median is using the command `median()` just as we use `mean()` for arithmetic mean. We don't need to sort the data because Python does everything for us.
+
+```{python}
+#| echo: true
+## Compute the median using command median()
+np.median(int_rate)
+stats.median(int_rate)
+```
+:::
+
+
+
+
+
 ------------------------------------------------------------
 
 <span style="color:blue"> **Mode** </span>
 
 The **mode** is the value that occurs *most frequently*. For continuous numerical data, it is common for there not to be any observations that share the same value, i.e., every data value happened just once. With the definition, mode works better for categorical data. A more practical definition is a bit less specific that a mode is represented by a **prominent peak** in the distribution.
 
-<span style="color:red"> ***Calculate Mode in R*** </span>
+<!-- <span style="color:red"> ***Calculate Mode in R*** </span> -->
+
+::: {.panel-tabset} 
+
+## R
 
 There is a `mode()` function in R, but unfortunately it is not used to compute the mode of data. We can still get the mode using its definition. We can first create a count table of the data, then the data value having the most counts will be our mode. After sorting the frequency table, the number that happens most frequently will be the first element, which is 9.9%. It occurs six times in the data.
 
@@ -203,14 +297,33 @@ There is a `mode()` function in R, but unfortunately it is not used to compute t
 sort(table_data, decreasing = TRUE)
 ```
 
+## Python
+
+In Python, the statistics module has the function `mode()` that find the value shown the most of the time in the data.
+
+```{python}
+#| echo: true
+stats.mode(int_rate)
+```
+
+:::
+
+
+
+
 
 ## Comparison of Mean, Median and Mode
 The mode is applicable for both categorical and numerical data, while the median and mean work for numerical data only. What is the average of male and female? It is also possible to have more than one mode because two data values, either categorical or numerical, can occurs the same number of times in the data. However, by definition, there can only be one median and one mean.
 
 The mean is more sensitive to extreme values or outliers. In other words, if the data contain one or few values that are very far away from the rest of the data values, the mean will move towards those extreme values, and therefore be away from the rest of the data too. Thank about the seesaw or lever example. If a data point is at very end of the bar, the pivot must be closer to that point to make lever balanced.
 
-The median and mode are more **robust** than the mean, meaning that these measures of center are more resistant to the addition of extreme values to the data. An example in R is shown below. The `data_extreme` is the interest rate data with the first value replaced with 90.0 which is extremely higher than all other values. The original interest data has the mean 11.56, but the `data_extreme` has the higher mean 13.14. The median and the mode, however, stay the same even though a large value 90.0 is in the data.
+The median and mode are more **robust** than the mean, meaning that these measures of center are more resistant to the addition of extreme values to the data. An example is shown below. The `data_extreme` is the interest rate data with the first value replaced with 90.0 which is extremely higher than all other values. The original interest data has the mean 11.56, but the `data_extreme` has the higher mean 13.14. The median and the mode, however, stay the same even though a large value 90.0 is in the data.
 
+
+
+::: {.panel-tabset} 
+
+## R
 ```{r}
 #| echo: !expr c(3)
 data_extreme <- int_rate; data_extreme[1] <- 90 ## replace the first 3 values with 3 large values
@@ -224,6 +337,26 @@ mean(data_extreme)  ## Large mean! Original mean is 11.56
 median(data_extreme)  ## Median does not change!
 names(sort(table(data_extreme), decreasing = TRUE))[1] ## Mode does not change either!
 ```
+
+
+## Python
+
+```{python}
+#| echo: true
+data_extreme = int_rate.copy()
+data_extreme.iloc[0] = 90  # Replace the first value with a large value
+data_extreme
+```
+
+```{python}
+#| echo: true
+stats.mean(data_extreme)
+stats.median(data_extreme)
+stats.mode(data_extreme)
+```
+
+:::
+
 
 Below is a figure that shows the differences in where the mean, median, and mode lie for skewed distributions vs. symmetric distributions. 
 
@@ -353,6 +486,12 @@ Previously we use the range of two percentiles to determine the degree of variat
 
 The **first quartile (Q1)** is the <span style="color:red">25-th</span> percentile of the data. **Second quartile (Q2)** is the <span style="color:red">50-th</span> percentile which in fact is the median of the data. **Third Quartile (Q3)** is the <span style="color:red">75-th</span> percentile of the data. The **interquartile Range (IQR)** is Q3 - Q1.
 
+
+
+::: {.panel-tabset} 
+
+## R
+
 To find the IQR, in R we can follow its definition, or get it directly using the `IQR()` function.
 
 <!-- ::::{.columns} -->
@@ -387,6 +526,41 @@ A useful way of quickly getting some important numerical measures is to use the 
 #| echo: true
 summary(int_rate)
 ```
+
+## Python
+
+To find the IQR, in Python we can follow its definition using [`np.quantile()`](https://numpy.org/doc/2.0/reference/generated/numpy.quantile.html) that computes percentiles at any given probability.
+
+
+```{python}
+#| echo: true
+np.quantile(a = int_rate, q = [0.25, 0.5, 0.75])
+## IQR by definition
+np.quantile(a = int_rate, q = 0.75) - np.quantile(a = int_rate, q = 0.25)
+```
+
+
+There is no built-in Python function for calculating IQR directly. But we can use the [`iqr()`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.iqr.html) function the `scipy.stats` module.
+
+```{python}
+#| echo: true
+
+from scipy.stats import iqr
+iqr(x = int_rate)
+```
+
+
+To obtain a quick summary of data, pandas provides the [`describe()`](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.describe.html) method for descriptive statistics of Series and DataFrame.
+
+```{python}
+#| echo: true
+int_rate.describe()
+```
+
+:::
+
+
+
 
 
 
@@ -439,7 +613,12 @@ axis(2, at=c(0.5, 0.2), labels = c("population", "sample"), las = 1)
 ```
 
 
-<span style="color:red"> ***Compute Variance and SD in R*** </span>
+<!-- <span style="color:red"> ***Compute Variance and SD in R*** </span> -->
+
+
+::: {.panel-tabset}
+
+## R
 
 In R, we use `var()` for computing variance and `sd()` for standard deviation.
 
@@ -449,6 +628,29 @@ var(int_rate)
 sqrt(var(int_rate))
 sd(int_rate)
 ```
+
+
+
+## Python
+
+In Python, we can use [`np.var()`](https://numpy.org/doc/stable/reference/generated/numpy.var.html) for computing variance and [`np.std()`](https://numpy.org/doc/stable/reference/generated/numpy.std.html) for standard deviation. 
+
+Be careful that by default the denominator is $n$, not $n-1$. It can be adjusted by the argument `ddof`. The denominator is $n-$ddof when the functions calculate variance and stadard deviation.
+
+```{python}
+#| echo: true
+np.var(int_rate, ddof=1)  # ddof=1 for sample variance
+np.sqrt(np.var(int_rate, ddof=1))
+np.std(int_rate, ddof=1)
+```
+
+:::
+
+
+
+
+
+
 
 
 ## Visualizing Data Variation
@@ -544,7 +746,11 @@ for (i in 2:nco) {
 ```
 
 
-<span style="color:red"> ***Boxplot in R*** </span>
+::: {.panel-tabset}
+
+<!-- <span style="color:red"> ***Boxplot in R*** </span> -->
+
+## R
 
 In R we use `boxplot()` to generate a boxplot. 
 
@@ -578,14 +784,42 @@ Q3 + 1.5 * IQR
 <!-- :::: -->
 
 
+
+## Python
+
+In Python, we use [`plt.boxplot`](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.boxplot.html) to generate a boxplot. 
+
+```{python}
+#| echo: true
+plt.boxplot(int_rate)
+plt.ylabel("Interest Rate (%)")
+plt.show()
+```
+
+```{python}
+#| echo: true
+np.sort(int_rate)[-5:] ## top 5
+np.sort(int_rate)[:5] ## bottom 5
+Q3 = np.quantile(a = int_rate, q = 0.75)
+Q1 = np.quantile(a = int_rate, q = 0.25)
+IQR = Q3 - Q1
+Q1 - 1.5 * IQR
+Q3 + 1.5 * IQR
+```
+
+:::
+
+
+
 :::{.callout-note}
-The R boxplot is a little different from the one in @fig-boxplot.
+The R/Python boxplot is a little different from the one in @fig-boxplot.
 
 - The end of upper whisker is the *largest data value* that is below Q3 + 1.5 IQR if there are some outliers greater than Q3 + 1.5 IQR. The end of lower whisker is the *smallest data value* that is below Q1 - 1.5 IQR if there are some outliers smaller than Q1 - 1.5 IQR.
 
-- Q1 and Q3 used in the boxplot generated from R may be different from the Q1 and Q3 computed by the `quantile()` function. We don't quite need to worry about their difference because they are pretty close although different. 
+- Q1 and Q3 used in the boxplot generated from R may be different from the Q1 and Q3 computed by the `quantile()` function. They are pretty close although different. We don't quite need to worry about their difference at this moment. 
 <!-- In fact, there are several different algorithms for computing quantiles.  -->
 :::
+
 
 
 ## Exercises
