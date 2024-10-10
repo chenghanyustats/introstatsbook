@@ -509,27 +509,54 @@ Without peeking at the bag, how do we approximate the probability of getting a r
 </div>
 </div>
 <p>The idea of Monte Carlo simulation is that we repeat the experiment (drawing a ball) a large number of times, then obtain the relative frequency of red ball to approximate the probability of getting a red ball.</p>
-<p>Let me first create a R vector <code>bag_balls</code> that saves the information about the color of ball in the bag. It’s there, but let’s just don’t see it at this moment. In R, to randomly sample an element of a vector, we can use the function <code><a href="https://rdrr.io/r/base/sample.html">sample()</a></code>. For example, the following code shows how to randomly draw a ball from that bag:</p>
+<p>Let me first create a vector <code>bag_balls</code> that saves the information about the color of ball in the bag. It’s there, but let’s just don’t see it at this moment.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<p>In R, to randomly sample an element of a vector, we can use the function <code><a href="https://rdrr.io/r/base/sample.html">sample()</a></code>. For example, the following code shows how to randomly draw a ball from that bag:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bag_balls</span>, size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "red"</code></pre>
 </div>
 </div>
-<p>It produces one random outcome. This time we get a red ball. We can (put the red ball back in to the bag) draw a ball again by running the code:</p>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<p>In Python, to randomly sample an element of a vector, we can use the function <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.choice.html"><code>np.random.choice()</code></a>. For example, the following code shows how to randomly draw a ball from that bag:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bag_balls</span>, size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>np.random.choice(bag_balls, size<span class="op">=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>array(['red'], dtype='&lt;U4')</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>It produces one random outcome. This time we get a red ball. We can (put the red ball back in to the bag) draw a ball again by running the code:</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bag_balls</span>, size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "blue"</code></pre>
 </div>
 </div>
 <p>This time we get a blue ball. To do a Monte Carlo simulation, we can use the <code><a href="https://rdrr.io/r/base/lapply.html">replicate()</a></code> function, which allows us to repeat the same job a number of times</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mc_sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">replicate</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">100</span>, expr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="va">bag_balls</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mc_sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">replicate</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">100</span>, expr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="va">bag_balls</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The argument <code>n</code> is an integer indicating the number of replications. The argument <code>expr</code> is the <em>expr</em>ession (usually a function call) to evaluate repeatedly. Here I repeatedly draw a ball 100 times. The object <code>mc_sim</code> contains 100 colors collected from the bag of colored balls.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">mc_sim</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">mc_sim</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> chr [1:100] "blue" "blue" "blue" "blue" "blue" "blue" "red" "blue" "red" ...</code></pre>
 </div>
@@ -550,10 +577,51 @@ blue  red
 0.58 0.42 </code></pre>
 </div>
 </div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>np.random.choice(bag_balls, size<span class="op">=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>array(['blue'], dtype='&lt;U4')</code></pre>
+</div>
+</div>
+<p>This time we get a blue ball. To do a Monte Carlo simulation, we repeatedly draw one ball from the bag using a <a href="https://docs.python.org/3/tutorial/datastructures.html#list-comprehensions">for loop within a list</a>, so that the every draw is saved in a list.</p>
+<p>In the code, <code>range(100)</code> creates a sequence of 100 integers from 0 to 99. Then for each integer, we call it <code>i</code>, we do the sampling <code>np.random.choice(bag_balls)</code>. Every sampling result is wrapped up in a list <code>[]</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>mc_sim <span class="op">=</span> [np.random.choice(bag_balls) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">100</span>)]</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>mc_sim[<span class="dv">0</span>:<span class="dv">10</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>['blue', 'red', 'blue', 'blue', 'red', 'red', 'red', 'red', 'red', 'blue']</code></pre>
+</div>
+</div>
+<p>How do we get the relative frequency of category? We can first turn a list into a pd.Series so that we can use the method <code>value_count()</code> to generate the frequency table or frequency distribution:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>freq_table <span class="op">=</span> pd.Series(mc_sim).value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To get the relative frequency, just divided by the total number of repetitions.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>freq_table <span class="op">/</span> <span class="dv">100</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>blue    0.63
+red     0.37
+Name: count, dtype: float64</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 <p>So if there are 5 balls in the bag, how many red balls in the bag? Well I would guess there are 2 red balls and 3 blue balls in the bag because the chance of getting a red ball is about 40%. We just demo a Monte Carlo simulation for categorical data.</p>
 <p>It is important to know that Monte Carlo works better when the number of repetitions is large. When we repeatedly sample the value only few times, we may unluckily not be able see the entire picture of the target distribution, and get stuck in some part of the distribution. As a result, the Monte Carlo method cannot faithfully show the whole picture, leading to a biased approximation. In our example, notice that the first 6 random draws are all blue. If we just stop there, we may make a conclusion that the balls in the bag only have one color blue because we “never” see any other colors in our experiment. In this case, 6 samples are too small, and the “true color” has not shown. Again, generally it needs sufficiently large Monte Carlo samples to uncover the target distribution. When we repeatedly draw a ball 10,000 times, we have</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mc_sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">replicate</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10000</span>, expr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="va">bag_balls</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mc_sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">replicate</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10000</span>, expr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="va">bag_balls</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">mc_sim</span><span class="op">)</span><span class="op">/</span><span class="fl">10000</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>mc_sim
@@ -561,21 +629,42 @@ blue  red
 0.6032 0.3968 </code></pre>
 </div>
 </div>
+</div>
+<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>mc_sim <span class="op">=</span> [np.random.choice(bag_balls) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10000</span>)]</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>pd.Series(mc_sim).value_counts() <span class="op">/</span> <span class="dv">10000</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>blue    0.5962
+red     0.4038
+Name: count, dtype: float64</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 <p>Note that the relative frequency of red ball is now so close to the true probability 0.4. Now we are more sure that exactly two red balls in the bag!</p>
 </section><section id="random-number-generation" class="level2" data-number="12.2"><h2 data-number="12.2" class="anchored" data-anchor-id="random-number-generation">
 <span class="header-section-number">12.2</span> Random Number Generation</h2>
 <p>When we do sampling using a computer, we use a so-called <strong>random number generator</strong> to generate a random outcome, and sampling results vary from sample to sample. This is why this time you get red, next time you get blue, and you don’t know you will get a blue or red next time you do the random sampling.</p>
-<p>Interestingly, a computer cannot generate a <em>pure</em> random outcome, and a <strong>pseudorandom number generator</strong> is usually used to generate a sequence of numbers whose properties approximate the properties of sequences of truly random numbers. Because of this, we can actually control random generation results using a <strong>random seed</strong>. To ensure the results are exactly the same every time you do sampling, In R we set the random seed to a specific number using the function <code><a href="https://rdrr.io/r/base/Random.html">set.seed()</a></code>.</p>
-<p>For example, if you set the seed at 2024, then every time you do random sampling, you always get the same sampling result.</p>
+<p>Interestingly, a computer cannot generate a <em>pure</em> random outcome, and a <strong>pseudorandom number generator</strong> is usually used to generate a sequence of numbers whose properties approximate the properties of sequences of truly random numbers. Because of this, we can actually control random generation results using a <strong>random seed</strong>. For example, if you set the seed at 2024, then every time you do random sampling, you always get the same sampling result.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
+<p>To ensure the results are exactly the same every time you do sampling, in R we set the random seed to a specific number using the function <code><a href="https://rdrr.io/r/base/Random.html">set.seed()</a></code>.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2024</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2024</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bag_balls</span>, size <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "red"  "red"  "blue"</code></pre>
 </div>
 </div>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## same result!</span></span>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## same result!</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2024</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bag_balls</span>, size <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -585,20 +674,20 @@ blue  red
 <p>Here we draw three balls at random. Because the two random seeds are identical, the two “random” sampling results are identical too.</p>
 <p>The <code><a href="https://rdrr.io/r/base/sample.html">sample()</a></code> function can actually draw lots of balls. But be careful about the with and without replacement issue. The default setting is draw without replacement. So when we try to draw 6 balls at once, it renders an error, saying cannot take a sample larger than the population when <code>replace = FALSE</code>.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="va">bag_balls</span>, <span class="fl">6</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="va">bag_balls</span>, <span class="fl">6</span><span class="op">)</span></span>
 <span><span class="co"># Error in sample.int(length(x), size, replace, prob): </span></span>
 <span><span class="co"># cannot take a sample larger than the population when 'replace = FALSE'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Basically we only 5 balls, without replacement, once a ball is drawn, the ball is out of bag, and only 4 balls remain in the bag. So without replacement, we can at most draw 5 balls, which is the “entire population”. If we wanna draw more than 5 times from the same bag, we got to specify <code>replace = TRUE</code> in the <code><a href="https://rdrr.io/r/base/sample.html">sample()</a></code> function.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="va">bag_balls</span>, <span class="fl">6</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="va">bag_balls</span>, <span class="fl">6</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "blue" "red"  "blue" "red"  "red"  "red" </code></pre>
 </div>
 </div>
 <p>W can actually do the Monte Carlo simulation using just the <code><a href="https://rdrr.io/r/base/sample.html">sample()</a></code> function like <code>sample(balls, size = B, replace = TRUE)</code>. This means that we return the ball back to the bag after drawing it, and we repeatedly draw a ball continually B times basically under the same conditions.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mc_sim_rep</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bag_balls</span>, size <span class="op">=</span> <span class="fl">100</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mc_sim_rep</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bag_balls</span>, size <span class="op">=</span> <span class="fl">100</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">mc_sim_rep</span><span class="op">)</span> <span class="op">/</span> <span class="fl">100</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>mc_sim_rep
@@ -608,7 +697,7 @@ blue  red
 </div>
 <p>Not surprisingly, we get results very similar to those previously obtained using the <code><a href="https://rdrr.io/r/base/lapply.html">replicate()</a></code> function. Moreover, if we use the same random seed on <code><a href="https://rdrr.io/r/base/sample.html">sample()</a></code> and <code><a href="https://rdrr.io/r/base/lapply.html">replicate()</a></code>, their sampling results will be the same:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2025</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2025</span><span class="op">)</span></span>
 <span><span class="va">mc1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">replicate</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">100</span>, expr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="va">bag_balls</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">mc1</span><span class="op">)</span><span class="op">/</span><span class="fl">100</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -616,7 +705,7 @@ blue  red
 blue  red 
 0.62 0.38 </code></pre>
 </div>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2025</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2025</span><span class="op">)</span></span>
 <span><span class="va">mc2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bag_balls</span>, size <span class="op">=</span> <span class="fl">100</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">mc2</span><span class="op">)</span> <span class="op">/</span> <span class="fl">100</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -625,8 +714,82 @@ blue  red
 0.62 0.38 </code></pre>
 </div>
 </div>
+</div>
+<div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
+<p>To ensure the results are exactly the same every time you do sampling, in R we set the random seed to a specific number using the function <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.seed.html"><code>np.random.seed()</code></a>.</p>
+<p>Note that by default <code>np.random.choice()</code> does sampling with replacement. We need to set <code>replace=False</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sampling three balls without replacement</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">2024</span>)</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>np.random.choice(bag_balls, size<span class="op">=</span><span class="dv">3</span>, replace<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>array(['red', 'blue', 'blue'], dtype='&lt;U4')</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co">## same result!</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">2024</span>)</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>np.random.choice(bag_balls, size<span class="op">=</span><span class="dv">3</span>, replace<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>array(['red', 'blue', 'blue'], dtype='&lt;U4')</code></pre>
+</div>
+</div>
+<p>Here we draw three balls at random. Because the two random seeds are identical, the two “random” sampling results are identical too.</p>
+<p>The <code>np.random.choice()</code> function can actually draw lots of balls. We only 5 balls, without replacement, once a ball is drawn, the ball is out of bag, and only 4 balls remain in the bag. So without replacement, we can at most draw 5 balls, which is the “entire population”. If we wanna draw more than 5 times from the same bag, we got to specify <code>replace</code> should be <code>True</code> (by default) in the <code>np.random.choice()</code> function.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sampling six balls with replacement</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>np.random.choice(bag_balls, size<span class="op">=</span><span class="dv">6</span>, replace<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>array(['blue', 'blue', 'red', 'red', 'blue', 'blue'], dtype='&lt;U4')</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Another Monte Carlo simulation with replacement</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">1000</span>)</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>mc_sim_rep <span class="op">=</span> np.random.choice(bag_balls, size<span class="op">=</span><span class="dv">100</span>, replace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>pd.Series(mc_sim_rep).value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>blue    63
+red     37
+Name: count, dtype: int64</code></pre>
+</div>
+</div>
+<p>Not surprisingly, we get results very similar to those previously obtained using the for loop within a list. Moreover, if we use the same random seed on <code>np.random.choice()</code>, their sampling results will be the same:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare two methods</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">2025</span>)</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>mc1 <span class="op">=</span> [np.random.choice(bag_balls) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">100</span>)]</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>pd.Series(mc1).value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>blue    58
+red     42
+Name: count, dtype: int64</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">2025</span>)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>mc2 <span class="op">=</span> np.random.choice(bag_balls, size<span class="op">=</span><span class="dv">100</span>, replace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>pd.Series(mc2).value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>blue    58
+red     42
+Name: count, dtype: int64</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- # %% -->
+<!-- # Standard normal random sampling -->
+<!-- normal_samples = np.random.randn(5) -->
+<!-- print(f"Standard normal samples: {normal_samples}") -->
 </section><section id="random-number-generation-from-probability-distributions" class="level2" data-number="12.3"><h2 data-number="12.3" class="anchored" data-anchor-id="random-number-generation-from-probability-distributions">
 <span class="header-section-number">12.3</span> Random Number Generation from Probability Distributions</h2>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
 <p>Remember from the previous two chapters that we learn the <strong><code>dpqr</code></strong> family of functions for calculating probabilities, densities, and generating values from a probability distribution. To generate random values, we use <strong><code>r</code></strong><code>dist(n, ...)</code>. <span class="math inline">\(n\)</span> is the number of observations we would like to generate. The <code>...</code> denotes the required parameter values for the distribution being drawn from. For example,</p>
 <ul>
 <li><p><code>rbinom(n, size, prob)</code> generates <span class="math inline">\(n\)</span> observations from the binomial distribution with the number of trials specified in <code>size</code> and the probability of success specified in <code>prob</code>.</p></li>
@@ -634,10 +797,46 @@ blue  red
 <li><p><code>rnorm(n, mean = 0, sd = 1)</code> generates <span class="math inline">\(n\)</span> observations from the normal distribution with mean and standard deviation specified in <code>mean</code> and <code>sd</code>. By default, the mean is zero, and the variance is one. So <code>rnorm(5)</code> draws five numbers from the standard normal distribution.</p></li>
 </ul>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## the default mean = 0 and sd = 1 (standard normal)</span></span>
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## the default mean = 0 and sd = 1 (standard normal)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1]  0.9827211 -0.4088745 -0.6692258  1.3189027 -1.0853244</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
+<p>To generate random values, in Python we can use <code>dist.rvs(..., size)</code> from the <code>scipy.stats</code> module. <code>size</code> is the number of observations we would like to generate. The <code>...</code> denotes the required parameter values for the distribution being drawn from. For example,</p>
+<ul>
+<li>
+<code>norm.rvs(loc, scale, size)</code> generates <code>size</code> observations from the normal distribution with mean and standard deviation specified in <code>loc</code> and <code>scale</code>. By default, the mean is zero, and the variance is one. So <code>norm.rvs(size=5)</code> draws five numbers from the standard normal distribution. Note that the word <code>size</code> cannot be skipped because it is the third argument. If we write <code>norm.rvs(5)</code>, the function will draw a number from a normal distribution with mean 5 and variance 1 <span class="math inline">\(N(5, 1)\)</span>.</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> norm</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>norm.rvs(size<span class="op">=</span><span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>array([-1.20602816,  1.30241414, -0.5761093 ,  1.07786143, -0.64792117])</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>NumPy offers <code>np.random.randn()</code> to sample from the <em>standard normal</em> distribution.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>np.random.randn(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>array([-0.06048719, -1.09012056,  1.47339158, -1.9039995 ,  1.81507773])</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 <p>All the 100 red points below are random draws from the standard normal distribution. You can see that most of the points are around the mean because the density around the mean is higher. Also, we can see when we draw normal samples, it is very difficult to get a sample with a very extreme value because its corresponding density value is quite small. Therefore, we tend to underestimate the population variance if we use the sample data to estimate it. And that’s one of the reason why we divided by <span class="math inline">\(n - 1\)</span> in the sample variance formula to sort of correct this underestimation.</p>
@@ -653,36 +852,36 @@ blue  red
 <p>When the sample size is just 20, you can see the sample data does not look very normal. When <span class="math inline">\(n = 200\)</span>, the sample start looking like a normal distribution. When <span class="math inline">\(n = 5000\)</span>, the sample is very representative of its population which follows standard normal distribution.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist">
-<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">n = 20</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">n = 200</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">n = 5000</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-6-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-1" role="tab" aria-controls="tabset-6-1" aria-selected="true">n = 20</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-2" role="tab" aria-controls="tabset-6-2" aria-selected="false">n = 200</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-3" role="tab" aria-controls="tabset-6-3" aria-selected="false">n = 5000</a></li>
 </ul>
 <div class="tab-content">
-<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div id="tabset-6-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-6-1-tab">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="prob-sampling_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<figure class="figure"><p><img src="prob-sampling_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
-<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div id="tabset-6-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-2-tab">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="prob-sampling_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<figure class="figure"><p><img src="prob-sampling_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
-<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<div id="tabset-6-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-3-tab">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="prob-sampling_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<figure class="figure"><p><img src="prob-sampling_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -833,7 +1032,7 @@ Figure&nbsp;12.2: Sampling distribution of sample means (Biostatistics for the B
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="prob-sampling_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<figure class="figure"><p><img src="prob-sampling_files/figure-html/unnamed-chunk-47-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -970,28 +1169,65 @@ Figure&nbsp;12.5: Sampling distribution is more normal-like.
 P(900 &lt; \overline{X} &lt; 960) &amp;= P\left( \frac{900-930}{130/\sqrt{20}} &lt; \frac{\overline{X}-930}{130/\sqrt{20}} &lt; \frac{960-930}{130/\sqrt{20}}\right)=P(-1.03 &lt; Z &lt; 1.03)\\
 &amp;=P(Z &lt; 1.03) - P(Z &lt; -1.03)
   \end{align}\]</span></p>
-<p>Finally we just need to find <span class="math inline">\(P(Z &lt; 1.03)\)</span> and <span class="math inline">\(P(Z &lt; -1.03)\)</span> using R:</p>
+<p>Finally we just need to find <span class="math inline">\(P(Z &lt; 1.03)\)</span> and <span class="math inline">\(P(Z &lt; -1.03)\)</span> using R/Python.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-7-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-1" role="tab" aria-controls="tabset-7-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-7-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-2" role="tab" aria-controls="tabset-7-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-7-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-7-1-tab">
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="fl">960</span><span class="op">-</span><span class="fl">930</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fl">130</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">z1</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">960</span><span class="op">-</span><span class="fl">930</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fl">130</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1.032031</code></pre>
 </div>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="fl">900</span><span class="op">-</span><span class="fl">930</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fl">130</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">z2</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">900</span><span class="op">-</span><span class="fl">930</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fl">130</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] -1.032031</code></pre>
 </div>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="fl">1.032031</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1.032031</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="va">z1</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="va">z2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.6979424</code></pre>
+<pre><code>[1] 0.6979426</code></pre>
 </div>
 </div>
 <p>If we don’t do standardization, remember to use values in the original scale, and specify the mean and standard deviation. Keep in mind the standard deviation is <span class="math inline">\(\sigma_{\overline{X}} = 130/\sqrt{20}\)</span>, not <span class="math inline">\(130\)</span>.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## P(Xbar &lt; 960) - P(Xbar &lt; 900)</span></span>
+<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## P(Xbar &lt; 960) - P(Xbar &lt; 900)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="fl">960</span>, mean <span class="op">=</span> <span class="fl">930</span>, sd <span class="op">=</span> <span class="fl">130</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span><span class="op">)</span> <span class="op">-</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="fl">900</span>, mean <span class="op">=</span> <span class="fl">930</span>, sd <span class="op">=</span> <span class="fl">130</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.6979426</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-7-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-7-2-tab">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Z-scores and probabilities</span></span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>z1 <span class="op">=</span> (<span class="dv">960</span><span class="op">-</span><span class="dv">930</span>)<span class="op">/</span>(<span class="dv">130</span><span class="op">/</span>np.sqrt(<span class="dv">20</span>))</span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>z1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1.0320313742306721</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>z2 <span class="op">=</span> (<span class="dv">900</span><span class="op">-</span><span class="dv">930</span>)<span class="op">/</span>(<span class="dv">130</span><span class="op">/</span>np.sqrt(<span class="dv">20</span>))</span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>z2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>-1.0320313742306721</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>norm.cdf(z1) <span class="op">-</span> norm.cdf(z2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.6979425798488381</code></pre>
+</div>
+</div>
+<p>If we don’t do standardization, remember to use values in the original scale, and specify the mean and standard deviation. Keep in mind the standard deviation is <span class="math inline">\(\sigma_{\overline{X}} = 130/\sqrt{20}\)</span>, not <span class="math inline">\(130\)</span>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Direct probability calculation</span></span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>norm.cdf(<span class="dv">960</span>, loc<span class="op">=</span><span class="dv">930</span>, scale<span class="op">=</span><span class="dv">130</span><span class="op">/</span>np.sqrt(<span class="dv">20</span>)) <span class="op">-</span> norm.cdf(<span class="dv">900</span>, loc<span class="op">=</span><span class="dv">930</span>, scale<span class="op">=</span><span class="dv">130</span><span class="op">/</span>np.sqrt(<span class="dv">20</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.6979425798488381</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <p>The probability that the mean psychomotor retardation score of a random sample of 20 patients is between 900 and 960 is about 70%.</p>

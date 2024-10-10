@@ -44,7 +44,20 @@ bag_balls <- rep(c("red", "blue"),
                  times = c(2, 3))
 ```
 
-Let me first create a R vector `bag_balls` that saves the information about the color of ball in the bag. It's there, but let's just don't see it at this moment. In R, to randomly sample an element of a vector, we can use the function `sample()`. For example, the following code shows how to randomly draw a ball from that bag:
+
+```{python}
+#| echo: false
+#| label: bag-balls-py
+bag_balls = ["red"] * 2 + ["blue"] * 3
+```
+
+Let me first create a vector `bag_balls` that saves the information about the color of ball in the bag. It's there, but let's just don't see it at this moment.
+
+::: {.panel-tabset}
+
+## R
+
+In R, to randomly sample an element of a vector, we can use the function `sample()`. For example, the following code shows how to randomly draw a ball from that bag:
 
 ```{r}
 #| echo: !expr c(2)
@@ -52,7 +65,32 @@ set.seed(2024)
 sample(x = bag_balls, size = 1)
 ```
 
+## Python
+
+In Python, to randomly sample an element of a vector, we can use the function [`np.random.choice()`](https://numpy.org/doc/stable/reference/random/generated/numpy.random.choice.html). For example, the following code shows how to randomly draw a ball from that bag:
+
+```{python}
+import numpy as np
+```
+
+```{python}
+np.random.seed(2024)
+```
+
+```{python}
+#| echo: true
+np.random.choice(bag_balls, size=1)
+```
+:::
+
+
+
+
 It produces one random outcome. This time we get a red ball. We can (put the red ball back in to the bag) draw a ball again by running the code:
+
+::: {.panel-tabset}
+
+## R
 
 ```{r}
 #| echo: !expr c(2)
@@ -88,9 +126,61 @@ To get the relative frequency, just divided by the total number of repetitions.
 freq_table / 100
 ```
 
+## Python
+
+
+```{python}
+np.random.seed(2025)
+```
+
+```{python}
+#| echo: true
+np.random.choice(bag_balls, size=1)
+```
+
+This time we get a blue ball. To do a Monte Carlo simulation, we repeatedly draw one ball from the bag using a [for loop within a list](https://docs.python.org/3/tutorial/datastructures.html#list-comprehensions), so that the every draw is saved in a list.
+
+```{python}
+np.random.seed(1000)
+```
+
+In the code, `range(100)` creates a sequence of 100 integers from 0 to 99. Then for each integer, we call it `i`, we do the sampling `np.random.choice(bag_balls)`. Every sampling result is wrapped up in a list `[]`.
+
+```{python}
+#| label:  mc-sim-balls-py
+#| echo: true
+mc_sim = [np.random.choice(bag_balls) for i in range(100)]
+mc_sim[0:10]
+```
+
+How do we get the relative frequency of category? We can first turn a list into a pd.Series so that we can use the method `value_count()` to generate the frequency table or frequency distribution:
+
+
+```{python}
+#| echo: true
+import pandas as pd
+freq_table = pd.Series(mc_sim).value_counts()
+```
+
+To get the relative frequency, just divided by the total number of repetitions.
+
+```{python}
+#| echo: true
+freq_table / 100
+```
+:::
+
+
+
 So if there are 5 balls in the bag, how many red balls in the bag? Well I would guess there are 2 red balls and 3 blue balls in the bag because the chance of getting a red ball is about 40\%. We just demo a Monte Carlo simulation for categorical data.
 
 It is important to know that Monte Carlo works better when the number of repetitions is large. When we repeatedly sample the value only few times, we may unluckily not be able see the entire picture of the target distribution, and get stuck in some part of the distribution. As a result, the Monte Carlo method cannot faithfully show the whole picture, leading to a biased approximation. In our example, notice that the first 6 random draws are all blue. If we just stop there, we may make a conclusion that the balls in the bag only have one color blue because we "never" see any other colors in our experiment. In this case, 6 samples are too small, and the "true color" has not shown. Again, generally it needs sufficiently large Monte Carlo samples to uncover the target distribution. When we repeatedly draw a ball 10,000 times, we have 
+
+
+::: {.panel-tabset}
+
+## R
+
 
 ```{r}
 #| echo: !expr c(-1)
@@ -98,6 +188,21 @@ set.seed(1000)
 mc_sim <- replicate(n = 10000, expr = sample(bag_balls, 1))
 table(mc_sim)/10000
 ```
+
+## Python
+
+```{python}
+np.random.seed(1000)
+```
+
+```{python}
+#| echo: true
+mc_sim = [np.random.choice(bag_balls) for i in range(10000)]
+pd.Series(mc_sim).value_counts() / 10000
+```
+
+:::
+
 
 Note that the relative frequency of red ball is now so close to the true probability 0.4. Now we are more sure that exactly two red balls in the bag!
 
@@ -107,9 +212,15 @@ Note that the relative frequency of red ball is now so close to the true probabi
 
 When we do sampling using a computer, we use a so-called **random number generator** to generate a random outcome, and sampling results vary from sample to sample. This is why this time you get red, next time you get blue, and you don't know you will get a blue or red next time you do the random sampling.
 
-Interestingly, a computer cannot generate a *pure* random outcome, and a **pseudorandom number generator** is usually used to generate a sequence of numbers whose properties approximate the properties of sequences of truly random numbers. Because of this, we can actually control random generation results using a **random seed**. To ensure the results are exactly the same every time you do sampling, In R we set the random seed to a specific number using the function `set.seed()`.
+Interestingly, a computer cannot generate a *pure* random outcome, and a **pseudorandom number generator** is usually used to generate a sequence of numbers whose properties approximate the properties of sequences of truly random numbers. Because of this, we can actually control random generation results using a **random seed**. For example, if you set the seed at 2024, then every time you do random sampling, you always get the same sampling result.
 
-For example, if you set the seed at 2024, then every time you do random sampling, you always get the same sampling result.
+
+
+::: {.panel-tabset}
+
+## R
+
+To ensure the results are exactly the same every time you do sampling, in R we set the random seed to a specific number using the function `set.seed()`.
 
 ```{r}
 #| echo: true
@@ -123,6 +234,8 @@ sample(x = bag_balls, size = 3)
 set.seed(2024)
 sample(x = bag_balls, size = 3)
 ```
+
+
 
 Here we draw three balls at random. Because the two random seeds are identical, the two "random" sampling results are identical too.
 
@@ -159,7 +272,6 @@ Not surprisingly, we get results very similar to those previously obtained using
 
 ```{r}
 #| echo: true
-
 set.seed(2025)
 mc1 <- replicate(n = 100, expr = sample(bag_balls, 1))
 table(mc1)/100
@@ -168,8 +280,77 @@ mc2 <- sample(x = bag_balls, size = 100, replace = TRUE)
 table(mc2) / 100
 ```
 
+
+## Python
+
+To ensure the results are exactly the same every time you do sampling, in R we set the random seed to a specific number using the function [`np.random.seed()`](https://numpy.org/doc/stable/reference/random/generated/numpy.random.seed.html).
+
+Note that by default `np.random.choice()` does sampling with replacement. We need to set `replace=False`.
+
+```{python}
+#| echo: true
+# Sampling three balls without replacement
+np.random.seed(2024)
+np.random.choice(bag_balls, size=3, replace=False)
+```
+
+```{python}
+#| echo: true
+## same result!
+np.random.seed(2024)
+np.random.choice(bag_balls, size=3, replace=False)
+```
+
+
+
+Here we draw three balls at random. Because the two random seeds are identical, the two "random" sampling results are identical too.
+
+The `np.random.choice()` function can actually draw lots of balls. We only 5 balls, without replacement, once a ball is drawn, the ball is out of bag, and only 4 balls remain in the bag. So without replacement, we can at most draw 5 balls, which is the "entire population". If we wanna draw more than 5 times from the same bag, we got to specify `replace` should be `True` (by default) in the `np.random.choice()` function. 
+
+
+```{python}
+#| echo: true
+# Sampling six balls with replacement
+np.random.choice(bag_balls, size=6, replace=True)
+```
+
+```{python}
+#| echo: true
+# Another Monte Carlo simulation with replacement
+np.random.seed(1000)
+mc_sim_rep = np.random.choice(bag_balls, size=100, replace=True)
+pd.Series(mc_sim_rep).value_counts()
+```
+
+Not surprisingly, we get results very similar to those previously obtained using the for loop within a list. Moreover, if we use the same random seed on `np.random.choice()`, their sampling results will be the same:
+
+```{python}
+#| echo: true
+# Compare two methods
+np.random.seed(2025)
+mc1 = [np.random.choice(bag_balls) for i in range(100)]
+pd.Series(mc1).value_counts()
+
+np.random.seed(2025)
+mc2 = np.random.choice(bag_balls, size=100, replace=True)
+pd.Series(mc2).value_counts()
+```
+
+:::
+
+
+
+<!-- # %% -->
+<!-- # Standard normal random sampling -->
+<!-- normal_samples = np.random.randn(5) -->
+<!-- print(f"Standard normal samples: {normal_samples}") -->
+
 ## Random Number Generation from Probability Distributions
 
+
+::: {.panel-tabset}
+
+## R
 Remember from the previous two chapters that we learn the **`dpqr`** family of functions for calculating probabilities, densities, and generating values from a probability distribution. To generate random values, we use **`r`**`dist(n, ...)`. $n$ is the number of observations we would like to generate. The `...` denotes the required parameter values for the distribution being drawn from. For example, 
 
 - `rbinom(n, size, prob)` generates $n$ observations from the binomial distribution with the number of trials specified in `size` and the probability of success specified in `prob`.
@@ -183,6 +364,35 @@ Remember from the previous two chapters that we learn the **`dpqr`** family of f
 ## the default mean = 0 and sd = 1 (standard normal)
 rnorm(5)
 ```
+
+
+## Python
+
+To generate random values, in Python we can use `dist.rvs(..., size)` from the `scipy.stats` module. `size` is the number of observations we would like to generate. The `...` denotes the required parameter values for the distribution being drawn from. For example, 
+
+- `norm.rvs(loc, scale, size)` generates `size` observations from the normal distribution with mean and standard deviation specified in `loc` and `scale`. By default, the mean is zero, and the variance is one. So `norm.rvs(size=5)` draws five numbers from the standard normal distribution. Note that the word `size` cannot be skipped because it is the third argument. If we write `norm.rvs(5)`, the function will draw a number from a normal distribution with mean 5 and variance 1 $N(5, 1)$.
+
+```{python}
+#| echo: true
+from scipy.stats import norm
+norm.rvs(size=5)
+```
+
+
+:::{.callout-note}
+NumPy offers `np.random.randn()` to sample from the *standard normal* distribution.
+```{python}
+#| echo: true
+np.random.randn(5)
+```
+:::
+
+
+:::
+
+
+
+
 
 All the 100 red points below are random draws from the standard normal distribution. You can see that most of the points are around the mean because the density around the mean is higher. Also, we can see when we draw normal samples, it is very difficult to get a sample with a very extreme value because its corresponding density value is quite small. Therefore, we tend to underestimate the population variance if we use the sample data to estimate it. And that's one of the reason why we divided by $n - 1$ in the sample variance formula to sort of correct this underestimation.
 
@@ -597,13 +807,16 @@ P(900 < \overline{X} < 960) &= P\left( \frac{900-930}{130/\sqrt{20}} < \frac{\ov
   \end{align}$$
 
 
-Finally we just need to find $P(Z < 1.03)$ and $P(Z < -1.03)$ using R:
+Finally we just need to find $P(Z < 1.03)$ and $P(Z < -1.03)$ using R/Python.
 
+::: {.panel-tabset}
+
+## R
 ```{r}
 #| echo: true
-(960-930)/(130/sqrt(20))
-(900-930)/(130/sqrt(20))
-pnorm(1.032031) - pnorm(-1.032031)
+(z1 <- (960-930)/(130/sqrt(20)))
+(z2 <- (900-930)/(130/sqrt(20)))
+pnorm(z1) - pnorm(z2)
 ```
 
 If we don't do standardization, remember to use values in the original scale, and specify the mean and standard deviation. Keep in mind the standard deviation is $\sigma_{\overline{X}} = 130/\sqrt{20}$, not $130$.
@@ -615,6 +828,36 @@ If we don't do standardization, remember to use values in the original scale, an
 pnorm(960, mean = 930, sd = 130/sqrt(20)) - 
   pnorm(900, mean = 930, sd = 130/sqrt(20))
 ```
+
+
+
+## Python
+
+```{python}
+#| echo: true
+# Z-scores and probabilities
+z1 = (960-930)/(130/np.sqrt(20))
+z1
+z2 = (900-930)/(130/np.sqrt(20))
+z2
+norm.cdf(z1) - norm.cdf(z2)
+```
+
+
+If we don't do standardization, remember to use values in the original scale, and specify the mean and standard deviation. Keep in mind the standard deviation is $\sigma_{\overline{X}} = 130/\sqrt{20}$, not $130$.
+
+```{python}
+#| echo: true
+# Direct probability calculation
+norm.cdf(960, loc=930, scale=130/np.sqrt(20)) - norm.cdf(900, loc=930, scale=130/np.sqrt(20))
+```
+
+
+:::
+
+
+
+
 
 
 The probability that the mean psychomotor retardation score of a random sample of 20 patients is between 900 and 960 is about 70%.
