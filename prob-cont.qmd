@@ -398,7 +398,11 @@ par(mfrow = c(1, 1), las = 1, mar = c(2.5, 0, 0, 0), mgp = c(0, 1, 0))
 normTail(m = 1100, s = 200, L = 1300, col = 4, cex.axis = 1.3)
 ```
 
-<span style="color:red"> ***Calculation in R*** </span>
+
+::: {.panel-tabset}
+<!-- <span style="color:red"> ***Calculation in R*** </span> -->
+
+## R
 
 With **`mean`** and **`sd`** representing the mean and standard deviation of a normal distribution, we use
 
@@ -411,6 +415,30 @@ With **`mean`** and **`sd`** representing the mean and standard deviation of a n
 pnorm(1, mean = 0, sd = 1)
 pnorm(1300, mean = 1100, sd = 200)
 ```
+
+## Python
+With **`loc`** and **`scale`** representing the mean and standard deviation of a normal distribution, we use
+
+  + **`norm.cdf(x, loc, scale)`** to compute $P(X \le x)$
+  
+  + **`norm.sf(x, loc, scale)`** to compute $P(X > x)$
+  
+  
+```{python}
+#| echo: true
+from scipy.stats import norm, binom
+```
+
+
+```{python}
+#| echo: true
+norm.cdf(x=1, loc=0, scale=1)
+norm.cdf(1300, loc=1100, scale=200)
+```
+
+:::
+
+
 
 Notice that the z-score 1 in standard normal is equivalent to 1300 in $N(1100, 200^2)$. The shaded area represents the 84.1% of SAT test takers who had z-score below 1.
 
@@ -507,13 +535,15 @@ The next step, which is not necessary, is to find the z-score. Using z-scores he
 
 At this point, we obtain the target probability once we get $P(Z \le 0.45)$. The last step is to use `pnorm()` function to get it done. 
 
+::::: {.panel-tabset}
+
+## R 
 - <span style="color:red"> Step 4: Find the area using `pnorm()` </span>
 
 ```{r}
 #| echo: true
 1 - pnorm(0.45)
 ```
-
 
 
 
@@ -530,7 +560,6 @@ By default, `pnorm()` uses the standard normal distribution assuming `mean = 0` 
 #| echo: true
 1 - pnorm(0.45)
 ```
-
 :::
 
 :::{.callout-note}
@@ -547,6 +576,44 @@ By default, `lower.tail = TRUE`, and `pnorm(q, ...)` finds a probability $P(X < 
 :::
 
 
+## Python
+
+- <span style="color:red"> Step 4: Find the area using `norm.cdf()` </span>
+
+```{python}
+#| echo: true
+1 - norm.cdf(0.45)
+```
+
+
+:::{.callout-note}
+When we use Python `norm.cdf()` to compute normal probabilities, standardization is not a must. However, if we don't use z-scores, we must specify the mean and SD of the original distribution of $X$, like `norm.cdf(x, loc= mu, scale=sigma)`. Otherwise, Python does not know which normal distribution we are considering. For example,
+
+```{python}
+#| echo: true
+1 - norm.cdf(1190, loc=1100, scale=200)
+```
+
+By default, `norm.cdf()` uses the standard normal distribution assuming `loc=0` and `scale=1`. So if we use z-scores to compute probabilities, we don't need to specify the value of mean and standard deviation, and our code is shorter:
+```{python}
+#| echo: true
+1 - norm.cdf(0.45)
+```
+:::
+
+:::{.callout-note}
+Any probability can be computed using the *"less than"* form (*lower* or *left* tail). In the previous example, we use $P(X \ge 1190) = 1 - P(X < 1190)$ expression, and we find $P(X < 1190)$ that has the *"less than"* form. 
+
+This step is not necessary too, and we can directly compute $P(X \ge 1190)$ using `norm.sf()`. For example,
+
+```{python}
+#| echo: true
+norm.sf(1190, loc=1100, scale=200)
+```
+:::
+
+:::::
+
 ------------------------------------------------------------------------
 
 <span style="color:blue"> **Normal Percentiles in R** </span>
@@ -561,10 +628,24 @@ quantile of the underlying distribution.
 
 To get the $100p$-th percentile (or the $p$ quantile denoted as $q$ ) of a normal distribution, given probability $p$, we use 
 
+
+::: {.panel-tabset}
+
+## R
   + **`qnorm(p, mean, sd)`** to get a value of $X$, $q$, such that $P(X \le q) = p$ 
   
   + **`qnorm(p, mean, sd, lower.tail = FALSE)`** to get $q$ such that $P(X \ge q) = p$
   
+  
+## Python
+
+  + [**`norm.ppf(p, loc, scale)`**](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.html#scipy.stats.norm) to get a value of $X$, $x$, such that $P(X \le x) = p$ 
+  
+  + **`norm.isf(p, loc, scale)`** to get $x$ such that $P(X \ge x) = p$. `isf` is short for **i**nverse **s**urvival **f**unction.
+  
+:::
+
+
 <span style="color:red"> ***SAT and ACT Example*** </span>
 
 Back to our SAT example. What is the 95th percentile for SAT scores?
@@ -598,6 +679,10 @@ text(1428.971, 0.00005, "q", col = "red", cex = 3)
 
 Like we do in finding probabilities, we can first do the standardization for finding quantiles although it is not necessary. So we use `qnorm()` to find the z-score $z^*$, or the value of a standard normal variable that is the 95th percentile, i.e., $P(Z < z^*) = 0.95$.
 
+::: {.panel-tabset}
+
+## R
+
 - <span style="color:red"> Step 3: Find $z$-score s.t. $P(Z < z^*) = 0.95$ using `qnorm()`</span>: 
 
 ```{r}
@@ -624,8 +709,46 @@ Note that we can directly find the 95th percentile of SAT without standardizatio
 qnorm(p = 0.95, mean = 1100, sd = 200)
 ```
 
+
+## Python
+
+- <span style="color:red"> Step 3: Find $z$-score s.t. $P(Z < z^*) = 0.95$ using `norm.ppf()`</span>: 
+
+```{python}
+#| echo: true
+z_95 = norm.ppf(0.95)
+z_95
+```
+
+Now, since we are interested in the 95th percentile of SAT, not the z-score, we need to transform the 95th percentile of $N(0, 1)$ back to the 95th percentile of $N(1100, 200^2)$, the original SAT distribution.
+
+- <span style="color:red"> Step 4: Find the $x$ of the original scale </span>
+  + <span style="color:blue"> $z_{0.95} = \frac{x-\mu}{\sigma}$. So $x = \mu + z_{0.95}\sigma = 1100+(1.645)\times200 = 1429$. </span>
+  
+```{python}
+#| echo: true
+x_95 = 1100 + z_95 * 200
+x_95
+```
+
+Therefore, the 95th percentile for SAT scores is 1429.
+
+Note that we can directly find the 95th percentile of SAT without standardization. We just need to remember to stay in the original SAT distribution by explicitly specifying `loc=1100` and `scale=200` in the `norm.ppf()` function, as we do for `norm.cdf()`.
+
+```{python}
+#| echo: true
+norm.ppf(0.95, loc=1100, scale=200)
+```
+
+:::
+
+
+
 ## Finding Probabilties
 
+::: {.panel-tabset}
+
+## R
 
 `r emoji('point_right')` To find a probability, if you are a beginner, it is always good to **draw and label the normal curve and shade the area of interest**. Below is a summary of how we can use `pnorm()` to compute various kinds of probabilities.
 
@@ -654,13 +777,49 @@ $$\small \begin{align} P(X < a \text{ or } X > b) &= P(Z < z_a \text{ or } Z > z
 
   + `pnorm(z_a) + pnorm(z_b, lower.tail = FALSE)`
   + `pnorm(z_a) + 1 - pnorm(z_b)`
-  + `pnorm(a, mean = mu, sd = sigma) + pnorm(b, lower.tail = FALSE)`
+  + `pnorm(a, mean = mu, sd = sigma) + pnorm(b, mean = mu, sd = sigma, lower.tail = FALSE)`
   + `pnorm(a, mean = mu, sd = sigma) + 1 - pnorm(b, mean = mu, sd = sigma)`
 
 <!-- :::{.callout-note icon=false} -->
 <!-- - Any probability can be computed using the *"less than"* form (*lower* or *left* tail). -->
 <!-- - If the calculation involves the "greater than" form, add `lower.tail = FALSE` in `pnorm()`. -->
 <!-- ::: -->
+
+
+## Python
+
+`r emoji('point_right')` To find a probability, if you are a beginner, it is always good to **draw and label the normal curve and shade the area of interest**. Below is a summary of how we can use `norm.cdf()` and `norm.sf()` to compute various kinds of probabilities.
+
+- `r emoji('point_right')` **Less than**
+  + $\small P(X < x) = P(Z < z)$
+  + `norm.cdf(z)`
+  + `norm.cdf(x, loc=mu, scale=sigma)`
+- `r emoji('point_right')` **Greater than**
+  + $\small P(X > x) = P(Z > z) = 1 - P(Z \le z)$
+  + `1 - norm.cdf(z)`
+  + `1 - norm.cdf(x, loc=mu, scale=sigma)`
+  + `norm.sf(x, loc=mu, scale=sigma)`
+
+<!-- :::{.callout-note icon=false} -->
+<!-- - Standardization is not a must. -->
+<!-- - If we don't standardize, we must specify the mean and SD of the original distribution of $X$, like `pnorm(x, mean = mu, sd = sigma)`. -->
+<!-- ::: -->
+
+- `r emoji('point_right')` **Between two numbers**
+  + $\small P(a < X < b) = P(z_a < Z < z_b) = P(Z < z_b) - P(Z < z_a)$
+  + `norm.cdf(z_b) - pnorm.cdf(z_a)`
+  + `norm.cdf(b, loc=mu, scale=sigma) - norm.cdf(a, loc=mu, scale=sigma)`
+
+- `r emoji('point_right')` **Outside of two numbers** $(a < b)$
+$$\small \begin{align} P(X < a \text{ or } X > b) &= P(Z < z_a \text{ or } Z > z_b) \\ &= P(Z < z_a) + P(Z > z_b) \\ &= P(Z < z_a) + 1 - P(Z < z_b) \end{align}$$
+
+  + `norm.cdf(z_a) + norm.sf(z_b)`
+  + `norm.cdf(z_a) + 1 - norm.cdf(z_b)`
+  + `norm.cdf(a, loc=mu, scale=sigma) + norm.sf(b, loc=mu, scale=sigma)`
+  + `norm.cdf(a, loc=mu, scale=sigma) + 1 - norm.cdf(b, loc=mu, scale=sigma)`
+  
+:::
+
 
 ## Checking Normality
 
@@ -683,9 +842,12 @@ If the data are *right-skewed*, the points on the QQ plot will be *convex-shaped
 
 <!-- - If the data are normally distributed, the points on the QQ plot will lie close to a **straight line**. -->
 
------------------------------------------------------------------
+<!-- ----------------------------------------------------------------- -->
 
-<span style="color:blue"> **QQ plot in R** </span>
+::: {.panel-tabset}
+<!-- <span style="color:blue"> **QQ plot in R** </span> -->
+
+## R
 
 To generate a QQ-plot for checking normality in R, we can use `qqnorm()` and `qqline()`, where the first argument in the functions is the sample data we would like to check. @fig-qqplot shows QQ plots at the bottom for normal and right-skewed data samples. Since the data `normal_sample` actually come from a normal distribution, its histogram looks like normal, and its QQ plot look like a perfect straight line. On the other hand, on the right hand side we have a right skewed data set `right_skewed_sample`. Clearly, its QQ plot is a upward curve, and definitely not linear, indicating that the sample data are not normally distributed.
 
@@ -705,6 +867,92 @@ hist(right_skewed_sample, col = 6, main = "Right-skewed data", breaks = 20, bord
 qqnorm(right_skewed_sample, main = "Right-skewed data", col = 6)
 qqline(right_skewed_sample)
 ```
+
+## Python
+
+To generate a QQ-plot for checking normality in R, we can use [`stats.probplot()`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.probplot.html), where the first argument in the functions is the sample data we would like to check. @fig-qqplot-py shows QQ plots at the bottom for normal and right-skewed data samples. Since the data `normal_sample` actually come from a normal distribution, its histogram looks like normal, and its QQ plot look like a perfect straight line. On the other hand, on the right hand side we have a right skewed data set `right_skewed_sample`. Clearly, its QQ plot is a upward curve, and definitely not linear, indicating that the sample data are not normally distributed.
+
+```{python}
+#| echo: true
+#| eval: false
+import numpy as np
+import scipy.stats as stats
+import matplotlib.pyplot as plt
+
+# First plot: Histogram of normal data
+nor_hist = axs[0, 0].hist(normal_sample, bins=20, color='blue', edgecolor='white')
+axs[0, 0].set_title("Normal data")
+axs[0, 0].set_xlabel("Value")
+axs[0, 0].set_ylabel("Frequency")
+
+# Second plot: QQ plot for normal data
+nor_qq = stats.probplot(normal_sample, dist="norm", plot=axs[1, 0])
+axs[1, 0].set_title("Normal data (QQ Plot)")
+
+# Third plot: Histogram of right-skewed data
+skew_hist = axs[0, 1].hist(right_skewed_sample, bins=20, color='magenta', edgecolor='white');
+axs[0, 1].set_title("Right-skewed data")
+axs[0, 1].set_xlabel("Value")
+axs[0, 1].set_ylabel("Frequency")
+
+# Fourth plot: QQ plot for right-skewed data
+skew_qq = stats.probplot(right_skewed_sample, dist="norm", plot=axs[1, 1])
+axs[1, 1].get_lines()[0].set_markerfacecolor('magenta')
+axs[1, 1].set_title("Right-skewed data (QQ Plot)")
+
+# Display the plots
+plt.show()
+```
+
+```{python}
+#| label: fig-qqplot-py
+#| fig-cap: QQ plots for normal and right-skewed data samples
+#| echo: false
+import numpy as np
+import scipy.stats as stats
+import matplotlib.pyplot as plt
+
+# Set up 2x2 plotting grid and adjust margins
+fig, axs = plt.subplots(2, 2, figsize=(10, 8))
+plt.subplots_adjust(hspace=0.5, wspace=0.3)
+
+# Generate samples
+normal_sample = np.random.normal(0, 1, 1000)
+right_skewed_sample = np.random.gamma(2, 1/2, 1000)
+
+# First plot: Histogram of normal data
+_junk = axs[0, 0].hist(normal_sample, bins=20, color='blue', edgecolor='white');
+axs[0, 0].set_title("Normal data")
+axs[0, 0].set_xlabel("Value")
+axs[0, 0].set_ylabel("Frequency")
+
+# Second plot: QQ plot for normal data
+_junk = stats.probplot(normal_sample, dist="norm", plot=axs[1, 0])
+axs[1, 0].set_title("Normal data (QQ Plot)")
+
+# Third plot: Histogram of right-skewed data
+_junk = axs[0, 1].hist(right_skewed_sample, bins=20, color='magenta', edgecolor='white');
+axs[0, 1].set_title("Right-skewed data")
+axs[0, 1].set_xlabel("Value")
+axs[0, 1].set_ylabel("Frequency")
+
+# Fourth plot: QQ plot for right-skewed data
+_junk = stats.probplot(right_skewed_sample, dist="norm", plot=axs[1, 1])
+axs[1, 1].get_lines()[0].set_markerfacecolor('magenta')
+axs[1, 1].set_title("Right-skewed data (QQ Plot)")
+
+# Display the plots
+plt.show()
+```
+
+
+:::{.callout-note}
+The code involves doing [subplots](https://matplotlib.org/stable/gallery/subplots_axes_and_figures/subplots_demo.html) in one single figure, and it makes the code a bit complex and long. No need to worry that much. 
+:::
+
+:::
+
+
 
 
 ### Normality test
@@ -770,6 +1018,10 @@ By doing so, $P_{Binomial}(X = k) \approx$ integral of normal from $k-0.5$ to $k
 
 A large drug company has 100 potential new prescription drugs under clinical test. About 20% of all drugs that reach this stage are eventually licensed for sale. What is the probability that at least 15 of the 100 drugs are eventually licensed?
 
+
+::: {.panel-tabset}
+
+## R
 ```{r}
 #| echo: true
 #| label: normal_approximation_to_binommial
@@ -788,6 +1040,28 @@ p <- 0.2  # probability of being licensed for sale
 1 - pnorm(q = 15, mean = n * p, sd = sqrt(n * p * (1 - p)))
 ```
 
+## Python
+
+```{python}
+#| echo: true
+#| label: normal_approximation_to_binommial-py
+
+n = 100  # number of trials
+p = 0.2  # probability of success
+
+from scipy.stats import norm, binom
+
+# 1. Exact Binomial Probability P(X >= 15) = 1 - P(X < 15)
+1 - binom.cdf(14, n, p)
+
+# 2. Normal approximation with continuity correction
+1 - norm.cdf(14.5, loc=n * p, scale=np.sqrt(n * p * (1 - p)))
+
+# 3. Normal approximation without continuity correction
+1 - norm.cdf(15, loc=n * p, scale=np.sqrt(n * p * (1 - p)))
+```
+
+:::
 
 
 
