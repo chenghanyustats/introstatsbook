@@ -201,9 +201,13 @@ In this section we learn to create a bootstrap confidence interval using a real 
 
 How much do you think it costs to rent a typical one bedroom apartment in Manhattan NYC? Well if you have no idea, at least we can say we are 100% confident that the average one-bedroom rent in Manhattan is between 0 to one million dollars. It’s not helping though. Let's have some data, and get an idea of the rent in Manhattan NYC. The data `manhattan.csv` consider 20 one-bedroom apartments that were randomly selected on Craigslist Manhattan from apartments listed as “by owner”.
 
+
+::: {.panel-tabset}
+
+## R
 ```{r}
 #| echo: true
-manhattan <- readr::read_csv("./data/manhattan.csv")
+manhattan <- read.csv("./data/manhattan.csv")
 manhattan$rent
 range(manhattan)
 ```
@@ -213,6 +217,33 @@ The minimum rent is \$1470 and the rent can be as high as near \$4200. [^1]
 ```{r}
 hist(manhattan$rent)
 ```
+
+## Python
+
+```{python}
+#| echo: true
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+```
+
+```{python}
+#| echo: true
+manhattan = pd.read_csv("./data/manhattan.csv")
+manhattan['rent']
+manhattan.min()
+manhattan.max()
+```
+
+The minimum rent is \$1470 and the rent can be as high as near \$4200. [^1] 
+
+```{python}
+plt.hist(manhattan['rent'])
+plt.show()
+```
+
+:::
+
 
 
 
@@ -250,9 +281,14 @@ The question is what’s our bootstrap population look like that we can sample f
 
 ------------------------------------------------------------------------
 
-<span style="color:blue"> **Bootstrapping using R** </span>
+<span style="color:blue"> **Bootstrapping using R/Python** </span>
 
-The good news is that there are several R packages out there to help us do bootstrapping without the need to write long lines of code. Here we use the `boot()` function in the `boot` package for demonstration. Before calling boot, we still need to write a function that returns the statistic(s) that you would like to bootstrap. The first argument passed to the function should be your dataset. The second argument can be an index vector of the observations in your dataset to use or a frequency or weight vector that informs the sampling probabilities. For example, if our statistic is sample mean, we can create a function `mean_fcn()` as follows.
+
+::: {.panel-tabset}
+
+## R
+
+There are several R packages out there to help us do bootstrapping without the need to write long lines of code. Here we use the `boot()` function in the `boot` package for demonstration. Before calling boot, we still need to write a function that returns the statistic(s) that you would like to bootstrap. The first argument passed to the function should be your dataset. The second argument can be an index vector of the observations in your dataset to use or a frequency or weight vector that informs the sampling probabilities. For example, if our statistic is sample mean, we can create a function `mean_fcn()` as follows.
 
 ```{r}
 #| echo: true
@@ -311,6 +347,85 @@ We don't need to worry too much about which interval we should use at this momen
 
 Check [UCLA tutorial](https://stats.oarc.ucla.edu/r/faq/how-can-i-generate-bootstrap-statistics-in-r/) for more details about implementing bootstrapping using the `boot` package.
 
+
+## Python
+
+In Python we use the function [`bootstrap()`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.bootstrap.html#scipy.stats.bootstrap) in the `scipy.stats` module to do bootstrapping without the need to write long lines of code.
+
+```{python}
+#| echo: true
+from scipy.stats import bootstrap
+```
+
+The first argument passed to the function should be our data. Note that # the samples must be in a sequence. A way to create such sequence, as suggested in the documentation, is creating a tuple like `data = (manhattan['rent'].values,)`. 
+
+The second argument is the statistic for which the confidence interval is to be calculated. It is a callable or function. We use `np.mean` function to construct the bootstrapped confidence interval for the mean.
+
+`n_resamples` is the number of resamples performed to form the bootstrap distribution of the statistic. 
+
+There are three methods to be considered: 'percentile', 'basic', 'bca'. 
+
+We set the random number generator with the random seed 2024.
+
+
+The boostrapping result is saved in the object `boot_mean`. `boot_mean.bootstrap_distribution` saves the 10000 bootstrap sample means. 
+
+```{python}
+#| echo: true
+rng = np.random.default_rng(2024)
+# samples must be in a sequence
+data = (manhattan['rent'].values,)
+boot_mean = bootstrap(data=data, statistic=np.mean, 
+                n_resamples=10000, method='percentile', 
+                random_state=rng)
+boot_mean
+```
+
+
+The bias, the difference between the mean of bootstrap sample means and the original sample mean, can be calculated: 
+
+```{python}
+#| echo: true
+## bias
+np.mean(boot_mean.bootstrap_distribution) - np.mean(manhattan['rent'])
+```
+This is an estimate of the difference between the original sample mean and the population mean. 
+
+
+The `boot_mean.standard_error` is derived from `np.std(boot_mean.bootstrap_distribution)` that estimates the variance of the sample mean.
+
+```{python}
+#| echo: true
+## standard error
+boot_mean.standard_error
+np.std(boot_mean.bootstrap_distribution, ddof=1)
+```
+
+
+To show the bootstrap sampling distribution of sample mean (one-bedroom rent in Manhattan), we can simply use `plt.hist()` command:
+
+
+```{python}
+#| echo: true
+plt.hist(boot_mean.bootstrap_distribution)
+```
+
+
+The confidence interval results is saved in `boot_mean.confidence_interval`. By default, the confidence level is 95\%.
+
+
+```{python}
+#| echo: true
+# Display the 95% confidence interval
+boot_mean.confidence_interval
+```
+
+:::
+
+
+
+
+
 ::::: {.panel-tabset}
 
 ## Algorithm 
@@ -334,7 +449,7 @@ Check [UCLA tutorial](https://stats.oarc.ucla.edu/r/faq/how-can-i-generate-boots
 
 :::
 
-## Simulation Result
+## R Simulation Result
 ```{r ref.label = "boot-algo"}
 #| purl: false
 #| echo: false
@@ -342,7 +457,7 @@ Check [UCLA tutorial](https://stats.oarc.ucla.edu/r/faq/how-can-i-generate-boots
 #| cache: false
 ```
 
-## Code
+## R Code
 
 ```{r}
 #| eval: false
@@ -359,6 +474,32 @@ boot_mean <- boot(data = manhattan$rent, statistic = mean_fcn, R = 10000)
 boot_mean
 boot.ci(boot.out = boot_mean)
 ```
+
+## Python Simulation Result
+```{python ref.label = "boot-algo-py"}
+#| purl: false
+#| echo: false
+#| warning: false
+#| cache: false
+```
+
+## Python Code
+
+```{python}
+#| eval: false
+#| label: boot-algo-py
+#| echo: true
+
+
+rng = np.random.default_rng(2024)
+boot_mean = bootstrap((manhattan['rent'].values,), np.mean,
+                       n_resamples=10000, method='percentile',
+                       random_state=rng)
+boot_mean
+boot_mean.confidence_interval
+```
+
+
 :::::
 
 

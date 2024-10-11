@@ -648,8 +648,15 @@ Figure&nbsp;15.4: Source: Bootstrapping (statistics) Wiki.
 <span class="header-section-number">15.2</span> Bootstrap Confidence Interval</h2>
 <p>In this section we learn to create a bootstrap confidence interval using a real data set. This example is borrowed from <a href="https://www2.stat.duke.edu/courses/Spring18/Sta199/">STA 199 by Dr.&nbsp;Çetinkaya-Rundel</a>.</p>
 <p>How much do you think it costs to rent a typical one bedroom apartment in Manhattan NYC? Well if you have no idea, at least we can say we are 100% confident that the average one-bedroom rent in Manhattan is between 0 to one million dollars. It’s not helping though. Let’s have some data, and get an idea of the rent in Manhattan NYC. The data <code>manhattan.csv</code> consider 20 one-bedroom apartments that were randomly selected on Craigslist Manhattan from apartments listed as “by owner”.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">manhattan</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"./data/manhattan.csv"</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">manhattan</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"./data/manhattan.csv"</span><span class="op">)</span></span>
 <span><span class="va">manhattan</span><span class="op">$</span><span class="va">rent</span></span>
 <span><span class="co">#  [1] 3850 3800 2350 3200 2150 3267 2495 2349 3950 1795 2145 2300 1775 2000 2175</span></span>
 <span><span class="co"># [16] 2350 2550 4195 1470 2350</span></span>
@@ -662,6 +669,56 @@ Figure&nbsp;15.4: Source: Bootstrapping (statistics) Wiki.
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="infer-bt_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="576"></p>
 </figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>manhattan <span class="op">=</span> pd.read_csv(<span class="st">"./data/manhattan.csv"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>manhattan[<span class="st">'rent'</span>]</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 0     3850</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 1     3800</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 2     2350</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 3     3200</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 4     2150</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 5     3267</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 6     2495</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 7     2349</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 8     3950</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 9     1795</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 10    2145</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 11    2300</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 12    1775</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 13    2000</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 14    2175</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 15    2350</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co"># 16    2550</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co"># 17    4195</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 18    1470</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co"># 19    2350</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Name: rent, dtype: int64</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>manhattan.<span class="bu">min</span>()</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="co"># rent    1470</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="co"># dtype: int64</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>manhattan.<span class="bu">max</span>()</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="co"># rent    4195</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="co"># dtype: int64</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The minimum rent is $1470 and the rent can be as high as near $4200. <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="infer-bt_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -691,10 +748,17 @@ Figure&nbsp;15.4: Source: Bootstrapping (statistics) Wiki.
 </div>
 <p>The question is what’s our bootstrap population look like that we can sample from? Well the idea is that we assume that there are probably more apartments like the ones in our observed sample in the population as well. So here, basically the bootstrap artificial population is made from our sample data, and the population is like so many replicates of our given sample. Again, this is an artificial population, not the real population. If I had the real population, no inference or estimation is needed. We know the truth. Right?</p>
 <hr>
-<p><span style="color:blue"> <strong>Bootstrapping using R</strong> </span></p>
-<p>The good news is that there are several R packages out there to help us do bootstrapping without the need to write long lines of code. Here we use the <code><a href="https://rdrr.io/pkg/boot/man/boot.html">boot()</a></code> function in the <code>boot</code> package for demonstration. Before calling boot, we still need to write a function that returns the statistic(s) that you would like to bootstrap. The first argument passed to the function should be your dataset. The second argument can be an index vector of the observations in your dataset to use or a frequency or weight vector that informs the sampling probabilities. For example, if our statistic is sample mean, we can create a function <code>mean_fcn()</code> as follows.</p>
+<p><span style="color:blue"> <strong>Bootstrapping using R/Python</strong> </span></p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<p>There are several R packages out there to help us do bootstrapping without the need to write long lines of code. Here we use the <code><a href="https://rdrr.io/pkg/boot/man/boot.html">boot()</a></code> function in the <code>boot</code> package for demonstration. Before calling boot, we still need to write a function that returns the statistic(s) that you would like to bootstrap. The first argument passed to the function should be your dataset. The second argument can be an index vector of the observations in your dataset to use or a frequency or weight vector that informs the sampling probabilities. For example, if our statistic is sample mean, we can create a function <code>mean_fcn()</code> as follows.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mean_fcn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">index</span><span class="op">)</span> <span class="op">{</span></span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mean_fcn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">index</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="va">data_ind</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="va">index</span><span class="op">]</span></span>
 <span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">data_ind</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -702,13 +766,13 @@ Figure&nbsp;15.4: Source: Bootstrapping (statistics) Wiki.
 <p>The function compute the mean of resampled data. The <code>index</code> argument is for resampling our data. It tells us which data points in the original <code>data</code> will be chosen to create a bootstrap sample. We don’t need to generate the index vector ourselves, and the <code><a href="https://rdrr.io/pkg/boot/man/boot.html">boot()</a></code> function will use the function like <code><a href="https://rdrr.io/r/base/sample.html">sample()</a></code> to generate it for us.</p>
 <p>We can now use the <code><a href="https://rdrr.io/pkg/boot/man/boot.html">boot()</a></code> command, providing our dataset name, our function, and the number of bootstrap samples to be drawn.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2024</span><span class="op">)</span></span>
 <span><span class="va">boot_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/boot/man/boot.html">boot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">manhattan</span><span class="op">$</span><span class="va">rent</span>, statistic <span class="op">=</span> <span class="va">mean_fcn</span>, R <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The three required arguments of <code><a href="https://rdrr.io/pkg/boot/man/boot.html">boot()</a></code> are <code>data</code>, <code>statistic</code>, and <code>R</code>. We specify the <code>data</code> as a vector, matrix or data frame. Here <code>manhattan$rent</code> is a vector. The argument <code>statistic</code> is a function which when applied to data returns a vector containing the statistic(s) of interest. This is what <code>mean_fcn</code> is doing. The argument <code>R</code> is the number of bootstrap replicates. We generate 10000 bootstrap samples, and 10000 corresponding bootstrap sample means. The boostrapping result is saved in the object <code>boot_mean</code> which is a list. <code>boot_mean$t0</code> saves the sample mean from the original data, and <code>boot_mean$t</code> saves the 10000 bootstrap sample means. The <code>bias</code> shown in the printed output comes from <code>mean(boot_mean$t) - boot$t0</code>, i.e., the difference between the mean of bootstrap sample means and the original sample mean. This is an estimate of the difference between the original sample mean and the population mean. The <code>std. error</code> is derived from <code>sd(boot_mean$t)</code> that estimates the variance of the sample mean.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">boot_mean</span></span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">boot_mean</span></span>
 <span><span class="co"># </span></span>
 <span><span class="co"># ORDINARY NONPARAMETRIC BOOTSTRAP</span></span>
 <span><span class="co"># </span></span>
@@ -722,26 +786,26 @@ Figure&nbsp;15.4: Source: Bootstrapping (statistics) Wiki.
 <span><span class="co"># t1*     2626   -1.76         175</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">boot_mean</span><span class="op">$</span><span class="va">t</span><span class="op">)</span> <span class="op">-</span> <span class="va">boot_mean</span><span class="op">$</span><span class="va">t0</span></span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">boot_mean</span><span class="op">$</span><span class="va">t</span><span class="op">)</span> <span class="op">-</span> <span class="va">boot_mean</span><span class="op">$</span><span class="va">t0</span></span>
 <span><span class="co"># [1] -1.76</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">boot_mean</span><span class="op">$</span><span class="va">t</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">boot_mean</span><span class="op">$</span><span class="va">t</span><span class="op">)</span></span>
 <span><span class="co"># [1] 175</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>To show the bootstrap sampling distribution of sample mean (one-bedroom rent in Manhattan), we can simply use <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> command:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">boot_mean</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">boot_mean</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="infer-bt_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="576"></p>
+<figure class="figure"><p><img src="infer-bt_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="576"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>Using the <code>boot.ci</code> command, we can generate several types of confidence intervals from our bootstrap samples. By default, the function provides four different 95% confidence intervals.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/boot/man/boot.ci.html">boot.ci</a></span><span class="op">(</span>boot.out <span class="op">=</span> <span class="va">boot_mean</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/boot/man/boot.ci.html">boot.ci</a></span><span class="op">(</span>boot.out <span class="op">=</span> <span class="va">boot_mean</span><span class="op">)</span></span>
 <span><span class="co"># BOOTSTRAP CONFIDENCE INTERVAL CALCULATIONS</span></span>
 <span><span class="co"># Based on 10000 bootstrap replicates</span></span>
 <span><span class="co"># </span></span>
@@ -758,14 +822,72 @@ Figure&nbsp;15.4: Source: Bootstrapping (statistics) Wiki.
 </div>
 <p>We don’t need to worry too much about which interval we should use at this moment. When the bootstrap distribution is symmetric and looks like Gaussian, those intervals are pretty similar. Second, those intervals are not exact but approximate by its nature. They vary every time we run a new bootstrapping (unless we use the same random seed). We accept this random variation. The point is, this range of plausible values gives us a general idea of how much the mean one-bedroom rent is.</p>
 <p>Check <a href="https://stats.oarc.ucla.edu/r/faq/how-can-i-generate-bootstrap-statistics-in-r/">UCLA tutorial</a> for more details about implementing bootstrapping using the <code>boot</code> package.</p>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<p>In Python we use the function <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.bootstrap.html#scipy.stats.bootstrap"><code>bootstrap()</code></a> in the <code>scipy.stats</code> module to do bootstrapping without the need to write long lines of code.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> bootstrap</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The first argument passed to the function should be our data. Note that # the samples must be in a sequence. A way to create such sequence, as suggested in the documentation, is creating a tuple like <code>data = (manhattan['rent'].values,)</code>.</p>
+<p>The second argument is the statistic for which the confidence interval is to be calculated. It is a callable or function. We use <code>np.mean</code> function to construct the bootstrapped confidence interval for the mean.</p>
+<p><code>n_resamples</code> is the number of resamples performed to form the bootstrap distribution of the statistic.</p>
+<p>There are three methods to be considered: ‘percentile’, ‘basic’, ‘bca’.</p>
+<p>We set the random number generator with the random seed 2024.</p>
+<p>The boostrapping result is saved in the object <code>boot_mean</code>. <code>boot_mean.bootstrap_distribution</code> saves the 10000 bootstrap sample means.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">2024</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># samples must be in a sequence</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> (manhattan[<span class="st">'rent'</span>].values,)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>boot_mean <span class="op">=</span> bootstrap(data<span class="op">=</span>data, statistic<span class="op">=</span>np.mean, </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>                n_resamples<span class="op">=</span><span class="dv">10000</span>, method<span class="op">=</span><span class="st">'percentile'</span>, </span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>                random_state<span class="op">=</span>rng)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>boot_mean</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co"># BootstrapResult(confidence_interval=ConfidenceInterval(low=2303.3475, high=2974.3762499999993), bootstrap_distribution=array([2678.05, 2336.  , 2974.35, ..., 2426.75, 2393.15, 2400.75]), standard_error=172.1321792859602)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The bias, the difference between the mean of bootstrap sample means and the original sample mean, can be calculated:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">## bias</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>np.mean(boot_mean.bootstrap_distribution) <span class="op">-</span> np.mean(manhattan[<span class="st">'rent'</span>])</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 0.6565749999999753</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This is an estimate of the difference between the original sample mean and the population mean.</p>
+<p>The <code>boot_mean.standard_error</code> is derived from <code>np.std(boot_mean.bootstrap_distribution)</code> that estimates the variance of the sample mean.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">## standard error</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>boot_mean.standard_error</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 172.1321792859602</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>np.std(boot_mean.bootstrap_distribution, ddof<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 172.1321792859602</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To show the bootstrap sampling distribution of sample mean (one-bedroom rent in Manhattan), we can simply use <code>plt.hist()</code> command:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>plt.hist(boot_mean.bootstrap_distribution)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="infer-bt_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The confidence interval results is saved in <code>boot_mean.confidence_interval</code>. By default, the confidence level is 95%.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the 95% confidence interval</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>boot_mean.confidence_interval</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ConfidenceInterval(low=2303.3475, high=2974.3762499999993)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist">
-<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">Algorithm</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Simulation Result</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Code</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">Algorithm</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">R Simulation Result</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-3" role="tab" aria-controls="tabset-3-3" aria-selected="false">R Code</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-4" role="tab" aria-controls="tabset-3-4" aria-selected="false">Python Simulation Result</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-5" role="tab" aria-controls="tabset-3-5" aria-selected="false">Python Code</a></li>
 </ul>
 <div class="tab-content">
-<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
 <div class="instructions">
 <p><strong>Bootstrapped confidence interval</strong></p>
 <ol type="1">
@@ -796,7 +918,7 @@ Figure&nbsp;15.4: Source: Bootstrapping (statistics) Wiki.
 </ol>
 </div>
 </div>
-<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
 <div class="cell" data-layout-align="center">
 <pre><code># 
 # ORDINARY NONPARAMETRIC BOOTSTRAP
@@ -824,9 +946,9 @@ Figure&nbsp;15.4: Source: Bootstrapping (statistics) Wiki.
 # Calculations and Intervals on Original Scale</code></pre>
 </div>
 </div>
-<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<div id="tabset-3-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-3-tab">
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mean_fcn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">index</span><span class="op">)</span> <span class="op">{</span></span>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mean_fcn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">index</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="va">data_ind</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="va">index</span><span class="op">]</span></span>
 <span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">data_ind</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
@@ -835,6 +957,23 @@ Figure&nbsp;15.4: Source: Bootstrapping (statistics) Wiki.
 <span><span class="va">boot_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/boot/man/boot.html">boot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">manhattan</span><span class="op">$</span><span class="va">rent</span>, statistic <span class="op">=</span> <span class="va">mean_fcn</span>, R <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span></span>
 <span><span class="va">boot_mean</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/boot/man/boot.ci.html">boot.ci</a></span><span class="op">(</span>boot.out <span class="op">=</span> <span class="va">boot_mean</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-3-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-4-tab">
+<div class="cell" data-layout-align="center">
+<pre><code># BootstrapResult(confidence_interval=ConfidenceInterval(low=2303.3475, high=2974.3762499999993), bootstrap_distribution=array([2678.05, 2336.  , 2974.35, ..., 2426.75, 2393.15, 2400.75]), standard_error=172.1321792859602)
+# ConfidenceInterval(low=2303.3475, high=2974.3762499999993)</code></pre>
+</div>
+</div>
+<div id="tabset-3-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-5-tab">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">2024</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>boot_mean <span class="op">=</span> bootstrap((manhattan[<span class="st">'rent'</span>].values,), np.mean,</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>                       n_resamples<span class="op">=</span><span class="dv">10000</span>, method<span class="op">=</span><span class="st">'percentile'</span>,</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>                       random_state<span class="op">=</span>rng)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>boot_mean</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>boot_mean.confidence_interval</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
@@ -869,6 +1008,7 @@ Note
 </section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
 <ol>
 <li id="fn1"><p>The housing market in the U.S. has been going crazy, and the rent this year of course is much higher than the rent shown in this data set.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>The housing market in the U.S. has been going crazy, and the rent this year of course is much higher than the rent shown in this data set.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
