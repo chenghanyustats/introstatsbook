@@ -1,5 +1,15 @@
 # Law of Large Numbers and Central Limit Theorem {#sec-prob-llnclt}
 
+```{r}
+#| echo: false
+source("./_common.R")
+```
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+```
+
 {{< include macros.qmd >}}
 
 
@@ -65,7 +75,7 @@ The marvelous part is that when the sample size is large, such randomness or the
 3. Plot $\overline{x}_n$ (y-axis) vs. $n$ (x-axis).
 :::
 
-## Simulation Result
+## R Simulation Result
 
 ```{r ref.label = "lln"}
 #| purl: false
@@ -75,7 +85,7 @@ The marvelous part is that when the sample size is large, such randomness or the
 ```
 
 
-## Code
+## R Code
 ```{r}
 #| eval: false
 #| label: lln
@@ -86,10 +96,10 @@ sd <- 5
 nn <- 1000
 
 ## Algorithm
-## [1]
+# [1] Generate normal distribution samples
 set.seed(1000)
 x <- rnorm(nn, mean = mu, sd = sd)
-## [2]
+# [2] Calculate cumulative mean
 x_bar <- cumsum(x) / seq_len(nn)
 
 ## Plotting
@@ -98,6 +108,48 @@ plot(x_bar, type = "l",
      xlab = "sample size (n)", 
      ylab = "sample mean", las = 1)
 abline(h = 3, col = "red", lwd = 2, lty = 2)
+```
+
+## Python Simulation Result
+
+```{python ref.label = "lln-py"}
+#| purl: false
+#| echo: false
+#| warning: false
+#| cache: true
+```
+
+
+## Python Code
+```{python}
+#| eval: false
+#| label: lln-py
+#| echo: true
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Parameters
+mu = 3
+sd = 5
+nn = 1000
+
+## Algorithm
+# [1] Generate normal distribution samples
+np.random.seed(1000)
+x = np.random.normal(mu, sd, nn)
+# [2] Calculate cumulative mean
+x_bar = np.cumsum(x) / np.arange(1, nn + 1)
+
+# Plotting
+plt.figure(figsize=(8, 6))
+plt.plot(x_bar, label="Sample Mean")
+plt.axhline(y=mu, color='red', linestyle='--', linewidth=2, label="True Mean (mu=3)")
+plt.title("Law of Large Numbers w/ mu = 3")
+plt.xlabel("Sample size (n)")
+plt.ylabel("Sample mean")
+plt.legend()
+plt.show()
 ```
 
 :::::
@@ -272,7 +324,7 @@ To show the distribution of $\overline{X}$ looks like Gaussian when $n$ is large
 
 :::
 
-## Simulation Result
+## R Simulation Result
 ```{r ref.label = "clt"}
 #| purl: false
 #| echo: false
@@ -280,7 +332,7 @@ To show the distribution of $\overline{X}$ looks like Gaussian when $n$ is large
 #| cache: true
 ```
 
-## Code
+## R Code
 
 ```{r}
 #| eval: false
@@ -289,11 +341,13 @@ To show the distribution of $\overline{X}$ looks like Gaussian when $n$ is large
 
 n_vec <- c(2, 8, 100)
 M <- 10000
+lambda_par <- 1
+
 for (k in n_vec) {
     ## [1]
     x_sam <- matrix(0, nrow = k, ncol = M)
     for (m in seq_len(M)) {
-        x_sam[, m] <- rpois(k, lambda = 1)
+        x_sam[, m] <- rpois(k, lambda = lambda_par)
     }
     ## [2]
     x_bar_sam <- apply(x_sam, 2, mean)
@@ -302,6 +356,50 @@ for (k in n_vec) {
     hist(x_bar_sam, main = paste("size =", k))
 }
 ```
+
+## Python Simulation Result
+```{python ref.label = "clt-py"}
+#| purl: false
+#| echo: false
+#| warning: false
+#| cache: true
+```
+
+## Python Code
+
+The `np.random.poisson` function is used to generate Poisson-distributed random samples. The shape `(k, M)` ensures that you generate k samples for each of the M simulations.
+
+The `np.mean(x_sam, axis=0)` computes the mean of the k samples for each of the M simulations.
+
+`f"Sample size = {k}"` uses a feature in Python called [f-strings (formatted string literals)](https://docs.python.org/3/tutorial/inputoutput.html#tut-f-strings). The `f` before the opening quote marks indicates that this is a formatted string. It tells Python that the string may contain placeholders (expressions) inside curly braces `{}` that should be evaluated. Anything inside the curly braces `{}` is treated as an expression, and its value will be evaluated and inserted into the string. In this case, k is a variable, so its value will be converted to a string and placed inside the output.
+
+```{python}
+#| eval: false
+#| label: clt-py
+#| echo: true
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+n_vec = [2, 8, 100]  # Vector of sample sizes
+M = 10000            # Number of simulations
+lambda_par = 1       # Poisson parameter
+
+for k in n_vec:
+    # [1] Generate Poisson samples of size k, repeated M times
+    x_sam = np.random.poisson(lambda_par, (k, M))
+    
+    # [2] Compute the sample means for each column m = 1, ..., M
+    x_bar_sam = np.mean(x_sam, axis=0)
+    
+    # [3] Plot histogram of sample means
+    plt.hist(x_bar_sam)
+    plt.title(f"Size = {k}")
+    plt.show()
+
+```
+
+
 :::::
 
 
@@ -330,11 +428,26 @@ Then $P(\overline{X} > 400000) = P\left(\frac{\overline{X} - 382000}{150000/\sqr
 
 Therefore using R we get the probability
 
+::: {.panel-tabset}
+
+## R
 ```{r}
+#| echo: true
 pnorm(1.2, lower.tail = FALSE)
 pnorm(400000, mean = 382000, 
       sd = 150000/sqrt(100), lower.tail = FALSE)
 ```
+
+## Python
+
+```{python}
+#| echo: true
+from scipy.stats import norm
+norm.sf(1.2)
+norm.sf(400000, loc=382000, scale=150000/np.sqrt(100))
+```
+
+:::
 
 
 ## Further Readings and References
