@@ -2,19 +2,24 @@
 
 ```{r}
 #| echo: false
-#| warning: false
-#| message: false
-#| label: packages
-library(emoji)
-library(knitr)
-# library(kableExtra)
-library(openintro)
+source("./_common.R")
 ```
 
-```{r}
-#| echo: false
-knitr::opts_chunk$set(echo = FALSE, fig.align = "center")
-```
+<!-- # ```{r} -->
+<!-- # #| echo: false -->
+<!-- # #| warning: false -->
+<!-- # #| message: false -->
+<!-- # #| label: packages -->
+<!-- # library(emoji) -->
+<!-- # library(knitr) -->
+<!-- # # library(kableExtra) -->
+<!-- # library(openintro) -->
+<!-- # ``` -->
+
+<!-- # ```{r} -->
+<!-- # #| echo: false -->
+<!-- # knitr::opts_chunk$set(echo = FALSE, fig.align = "center") -->
+<!-- # ``` -->
 
 <!-- ## Foundations for Inference -->
 
@@ -587,8 +592,12 @@ We construct the confidence interval step by step using the procedure.
 
 <!-- <span style="color:red"> ***Computation in R*** </span> -->
 
-Below is a demonstration of how to find the 95% CI for SBP using R.
+Below is a demonstration of how to find the 95% CI for SBP using R/Python
 
+
+::: {.panel-tabset}
+
+## R
 ```{r ci_normal, echo=TRUE, tidy=FALSE}
 ## save all information we have
 alpha <- 0.05
@@ -606,6 +615,43 @@ sig <- 5
 ## 95% CI for mu when sigma is known
 x_bar + c(-1, 1) * m_z  
 ```
+
+
+## Python
+
+```{python}
+#| echo: true
+import numpy as np
+from scipy.stats import norm
+import matplotlib.pyplot as plt
+
+# Given values
+alpha = 0.05
+n = 16
+x_bar = 121.5
+sig = 5  # Population standard deviation
+
+# z-critical value
+cri_z = norm.ppf(1 - alpha / 2)
+cri_z
+
+cri_z = norm.isf(alpha / 2) ## also works
+cri_z
+
+# Margin of error
+m_z = cri_z * (sig / np.sqrt(n))
+m_z
+
+# 95% Confidence Interval for mu
+x_bar + np.array([-1, 1]) * m_z
+```
+
+:::
+
+
+
+
+
 
 :::{.callout-note icon=false}
 ## Construct a 99% CI for the mean SBP. Do you expect it to have a wider or narrower interval than the 95% CI? Why?
@@ -690,7 +736,7 @@ The procedure of generating 100 confidence intervals for $\mu$ when $\sigma$ is 
 3. For each $m = 1, 2, \dots, 100$, compute the corresponding confidence interval $$\left(\overline{x}^m - z_{\alpha/2} \frac{\sigma}{\sqrt{n}}, \overline{x}^m + z_{\alpha/2}\frac{\sigma}{\sqrt{n}}\right)$$
 :::
 
-## Simulation Result
+## R Simulation Result
 ```{r ref.label = "ci-mean-known-sig"}
 #| purl: false
 #| echo: false
@@ -699,7 +745,7 @@ The procedure of generating 100 confidence intervals for $\mu$ when $\sigma$ is 
 #| cache: true
 ```
 
-## Code
+## R Code
 
 ```{r}
 #| eval: false
@@ -709,14 +755,14 @@ par(mar = c(3.5, 3.5, 0, 0), mgp = c(2.5, 1, 0))
 mu <- 120; sig <- 5 
 al <- 0.05; M <- 100; n <- 16
 
-set.seed(2023)
+set.seed(2024)
 x_rep <- replicate(M, rnorm(n, mu, sig))
 xbar_rep <- apply(x_rep, 2, mean)
 E <- qnorm(p = 1 - al / 2) * sig / sqrt(n)
 ci_lwr <- xbar_rep - E
 ci_upr <- xbar_rep + E
 
-plot(NULL, xlim = range(c(ci_lwr, ci_upr)), ylim = c(0, 100), 
+plot(NULL, xlim = range(c(ci_lwr, ci_upr)), ylim = c(0, M), 
      xlab = "95% CI", ylab = "Sample", las = 1)
 mu_out <- (mu < ci_lwr | mu > ci_upr)
 segments(x0 = ci_lwr, y0 = 1:M, x1 = ci_upr, col = "navy", lwd = 2)
@@ -724,6 +770,48 @@ segments(x0 = ci_lwr[mu_out], y0 = (1:M)[mu_out], x1 = ci_upr[mu_out],
          col = 2, lwd = 2)
 abline(v = mu, col = "#FFCC00", lwd = 2)
 ```
+
+
+## Python Simulation Result
+```{python ref.label = "ci-mean-known-sig-py"}
+#| purl: false
+#| echo: false
+#| warning: false
+#| out-width: "100%"
+#| cache: true
+```
+
+## Python Code
+
+```{python}
+#| eval: false
+#| label: ci-mean-known-sig-py
+#| echo: true
+
+mu = 120
+sig = 5
+al = 0.05
+M = 100
+n = 16
+
+np.random.seed(2024)
+x_rep = np.random.normal(loc=mu, scale=sig, size=(M, n))
+xbar_rep = np.mean(x_rep, axis=1)
+E = norm.ppf(1 - alpha / 2) * sig / np.sqrt(n)
+ci_lwr = xbar_rep - E
+ci_upr = xbar_rep + E
+
+for i in range(M):
+    col = 'red' if mu < ci_lwr[i] or mu > ci_upr[i] else 'navy'
+    plt.plot([ci_lwr[i], ci_upr[i]], [i, i], color=col, lw=1.5)
+plt.xlim([min(ci_lwr), max(ci_upr)])
+plt.ylim([0, M])
+plt.xlabel("95% CI")
+plt.ylabel("Sample")
+plt.axvline(mu, color="#FFCC00", lw=2)
+plt.show()
+```
+
 :::::
 
 
@@ -929,7 +1017,11 @@ Given the same confidence level $1-\alpha$, $t_{\alpha/2, n-1} > z_{\alpha/2}$, 
 <!-- - We are more "uncertain" when doing inference about $\mu$ because don't have information about $\sigma$ and replacing it with $s$ adds additional uncertainty. -->
 <!-- ::: -->
 
-<span style="color:red"> ***Computation in R*** </span>
+<!-- <span style="color:red"> ***Computation in R*** </span> -->
+
+::: {.panel-tabset}
+
+## R
 
 Back to the systolic blood pressure (SBP) example. We have $n=16$ and $\overline{x} = 121.5$. Estimate the mean SBP with a 95% confidence interval with *unknown $\sigma$ and $s = 5$.* The code for the $t$ interval is pretty similar to the $z$ interval. The main difference is that we are gonna use `qt()` to find a quantile or critical value from the Student's t distribution. In the function, the first argument is still the given probability, then we must specify the degrees of freedom, otherwise R cannot determine which $t$-distribution is being considered, and will render an error message.
 
@@ -949,6 +1041,35 @@ s <- 5  ## sigma is unknown and s = 5
 ## 95% CI for mu when sigma is unknown
 x_bar + c(-1, 1) * m_t  
 ```
+
+## Python
+
+Back to the systolic blood pressure (SBP) example. We have $n=16$ and $\overline{x} = 121.5$. Estimate the mean SBP with a 95% confidence interval with *unknown $\sigma$ and $s = 5$.* The code for the $t$ interval is pretty similar to the $z$ interval. The main difference is that we are gonna use `t.ppf()` (or `t.isf()`) to find a quantile or critical value from the Student's t distribution. In the function, the first argument is still the given probability, then we must specify the degrees of freedom, otherwise Python cannot determine which $t$-distribution is being considered, and will render an error message.
+
+```{python}
+#| echo: true
+
+alpha = 0.05
+n = 16
+x_bar = 121.5
+s = 5  # Sample standard deviation (sigma unknown)
+
+from scipy.stats import t
+## t-critical value
+cri_t = t.ppf(1 - alpha/2, df=n-1)
+cri_t
+
+## margin of error
+m_t = cri_t * (s / np.sqrt(n))
+m_t
+
+## 95% CI for mu when sigma is unknown
+x_bar + np.array([-1, 1]) * m_t  
+```
+
+:::
+
+
 
 $z_{0.025} = 1.96 < t_{0.025, 15} = 2.13$. The interval is wider with $s = 5$.
 
