@@ -617,9 +617,26 @@ Figure&nbsp;18.2: Illustration of <span class="math inline">\(\alpha/2\)</span> 
 <div class="columns">
 <div class="column" style="width:80%;">
 <p>Listed below are heights (cm) for the simple random sample of 16 female supermodels.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">heights</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">178</span>, <span class="fl">177</span>, <span class="fl">176</span>, <span class="fl">174</span>, <span class="fl">175</span>, <span class="fl">178</span>, <span class="fl">175</span>, <span class="fl">178</span>, </span>
 <span>             <span class="fl">178</span>, <span class="fl">177</span>, <span class="fl">180</span>, <span class="fl">176</span>, <span class="fl">180</span>, <span class="fl">178</span>, <span class="fl">180</span>, <span class="fl">176</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>heights <span class="op">=</span> np.array([<span class="dv">178</span>, <span class="dv">177</span>, <span class="dv">176</span>, <span class="dv">174</span>, <span class="dv">175</span>, <span class="dv">178</span>, <span class="dv">175</span>, <span class="dv">178</span>, </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>             <span class="dv">178</span>, <span class="dv">177</span>, <span class="dv">180</span>, <span class="dv">176</span>, <span class="dv">180</span>, <span class="dv">178</span>, <span class="dv">180</span>, <span class="dv">176</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
 </div>
 <p>The supermodels’ heights are normally distributed. Please construct a <span class="math inline">\(95\%\)</span> confidence interval for population standard deviation <span class="math inline">\(\sigma\)</span>.</p>
 </div><div class="column" style="width:20%;">
@@ -642,10 +659,16 @@ Figure&nbsp;18.2: Illustration of <span class="math inline">\(\alpha/2\)</span> 
 </ul>
 <p>Note that we want the interval for <span class="math inline">\(\sigma\)</span>, not <span class="math inline">\(\sigma^2\)</span>, we take a square root of the lower and upper bound of the interval for <span class="math inline">\(\sigma^2\)</span>. The <span class="math inline">\(95\%\)</span> CI for <span class="math inline">\(\sigma\)</span> is <span class="math inline">\(\small \left( \sqrt{\frac{(n-1)s^2}{\chi^2_{\frac{\alpha}{2}, \, n-1}}}, \sqrt{\frac{(n-1)s^2}{\chi^2_{1-\frac{\alpha}{2}, \, n-1}}} \right) = \left( \sqrt{\frac{(16-1)(3.4)}{27.49}}, \sqrt{\frac{(16-1)(3.4)}{6.26}}\right) = (1.36, 2.85)\)</span></p>
 <p>We are 95% confident that the height of supermodels has standard deviation between 1.36 and 2.85.</p>
-<p><span style="color:red"> <strong><em>Confidence Interval Computation in R</em></strong> </span></p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
 <p>We use <code><a href="https://rdrr.io/r/stats/Chisquare.html">qchisq()</a></code> to get the <span class="math inline">\(\chi^2\)</span> critical values. The probability <span class="math inline">\(p\)</span> and the degrees of freedom <code>df</code> need to be specified. You should be able to understand the rest part of the code. Enjoy it.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## set values</span></span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## set values</span></span>
 <span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">16</span></span>
 <span><span class="va">s2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html">var</a></span><span class="op">(</span><span class="va">heights</span><span class="op">)</span></span>
 <span><span class="va">alpha</span> <span class="op">&lt;-</span> <span class="fl">0.05</span></span>
@@ -663,9 +686,45 @@ Figure&nbsp;18.2: Illustration of <span class="math inline">\(\alpha/2\)</span> 
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1.362104</code></pre>
 </div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">ci_sig_upper</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">ci_sig2_upper</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">ci_sig_upper</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">ci_sig2_upper</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2.853802</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> chi2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We use <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.chi2.html"><code>chi2</code></a> family in <code>scipy.stats</code> to get the <span class="math inline">\(\chi^2\)</span> critical values. The probability <span class="math inline">\(p\)</span> and the degrees of freedom <code>df</code> need to be specified. You should be able to understand the rest part of the code. Enjoy it.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set values</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">16</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>s2 <span class="op">=</span> np.var(heights, ddof<span class="op">=</span><span class="dv">1</span>)  <span class="co"># sample variance</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>alpha <span class="op">=</span> <span class="fl">0.05</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Chi-square critical values</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>chi2_right <span class="op">=</span> chi2.isf(alpha<span class="op">/</span><span class="dv">2</span>, df<span class="op">=</span>n<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>chi2_left <span class="op">=</span> chi2.ppf(alpha<span class="op">/</span><span class="dv">2</span>, df<span class="op">=</span>n<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Confidence interval for variance (sigma^2)</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>ci_sig2_lower <span class="op">=</span> (n <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> s2 <span class="op">/</span> chi2_right</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>ci_sig2_upper <span class="op">=</span> (n <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> s2 <span class="op">/</span> chi2_left</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Confidence interval for standard deviation (sigma)</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>ci_sig_lower <span class="op">=</span> np.sqrt(ci_sig2_lower)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>ci_sig_lower</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1.3621044553698662</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>ci_sig_upper <span class="op">=</span> np.sqrt(ci_sig2_upper)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>ci_sig_upper</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2.8538016067984957</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <p><span style="color:red"> <strong><em>Testing</em></strong> </span></p>
@@ -697,7 +756,7 @@ Figure&nbsp;18.2: Illustration of <span class="math inline">\(\alpha/2\)</span> 
 <!-- :::{.column width="50%"} --><!-- <br>  --><div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="infer-var_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<figure class="figure"><p><img src="infer-var_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -882,7 +941,7 @@ Note
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="infer-var_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<figure class="figure"><p><img src="infer-var_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -912,7 +971,7 @@ Note
 <!-- :::{.column width="50%"} --><div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="infer-var_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<figure class="figure"><p><img src="infer-var_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -920,12 +979,19 @@ Note
 <!-- ::: -->
 <!-- :::: -->
 <p>We are 95% confident that the ratio <span class="math inline">\(\sigma_1^2 / \sigma_2^2\)</span> is between 0.127 and 2.04. Because one is included in this interval, meaning that <span class="math inline">\(\sigma^2_1 = \sigma^2_2\)</span>, it leads to the same conclusion as the F test.</p>
-<p><span style="color:red"> <strong><em>Implementing F-test in R</em></strong> </span></p>
+<!-- <span style="color:red"> ***Implementing F-test in R*** </span> -->
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
 <p>We use <code><a href="https://rdrr.io/r/stats/Fdist.html">qf()</a></code> to find the <span class="math inline">\(F\)</span> critical values. <!-- - **`qf(p = alpha, df1 = n1 - 1, df2 = n2 - 1, lower.tail = FALSE)`** to find $F_{\alpha, \, n_1-1, \, n_2-1}$. --></p>
 <!-- ::::{.columns} -->
 <!-- :::{.column width="49%"} -->
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## set values</span></span>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## set values</span></span>
 <span><span class="va">n1</span> <span class="op">&lt;-</span> <span class="fl">10</span>; <span class="va">n2</span> <span class="op">&lt;-</span> <span class="fl">10</span></span>
 <span><span class="va">s1</span> <span class="op">&lt;-</span> <span class="fl">0.5</span>; <span class="va">s2</span> <span class="op">&lt;-</span> <span class="fl">0.7</span></span>
 <span><span class="va">alpha</span> <span class="op">&lt;-</span> <span class="fl">0.05</span></span>
@@ -939,7 +1005,7 @@ Note
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.1267275</code></pre>
 </div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## upper bound</span></span>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## upper bound</span></span>
 <span><span class="op">(</span><span class="va">s1</span> <span class="op">^</span> <span class="fl">2</span> <span class="op">/</span> <span class="va">s2</span> <span class="op">^</span> <span class="fl">2</span><span class="op">)</span> <span class="op">/</span> <span class="va">f_small</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2.054079</code></pre>
@@ -950,7 +1016,7 @@ Note
 <!-- ::: -->
 <!-- :::{.column width="49%"} -->
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## Testing sigma_1 = sigma_2</span></span>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## Testing sigma_1 = sigma_2</span></span>
 <span><span class="op">(</span><span class="va">test_stats</span> <span class="op">&lt;-</span> <span class="va">s1</span> <span class="op">^</span> <span class="fl">2</span> <span class="op">/</span> <span class="va">s2</span> <span class="op">^</span> <span class="fl">2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.5102041</code></pre>
@@ -958,6 +1024,44 @@ Note
 </div>
 <!-- ::: -->
 <!-- :::: -->
+</div>
+<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+<p>We use <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.f.html"><code>f.ppf()</code></a> and <code>f.isf()</code> in <code>scipy.stats</code> to find the <span class="math inline">\(F\)</span> critical values.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> f</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Set values</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>n1 <span class="op">=</span> <span class="dv">10</span><span class="op">;</span> n2 <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>s1 <span class="op">=</span> <span class="fl">0.5</span><span class="op">;</span> s2 <span class="op">=</span> <span class="fl">0.7</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>alpha <span class="op">=</span> <span class="fl">0.05</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="co"># F-distribution critical values</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>f_small <span class="op">=</span> f.ppf(alpha<span class="op">/</span><span class="dv">2</span>, dfn<span class="op">=</span>n1<span class="op">-</span><span class="dv">1</span>, dfd<span class="op">=</span>n2<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>f_big <span class="op">=</span> f.isf(alpha<span class="op">/</span><span class="dv">2</span>, dfn<span class="op">=</span>n1<span class="op">-</span><span class="dv">1</span>, dfd<span class="op">=</span>n2<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Confidence interval for the ratio of variances (sigma_1^2 / sigma_2^2)</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="co"># lower bound</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>(s1<span class="op">**</span><span class="dv">2</span><span class="op">/</span>s2<span class="op">**</span><span class="dv">2</span>)<span class="op">/</span>f_big</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.126727476884926</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># upper bound</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>(s1<span class="op">**</span><span class="dv">2</span><span class="op">/</span>s2<span class="op">**</span><span class="dv">2</span>)<span class="op">/</span>f_small</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2.054078652185193</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># F-test statistic</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>test_stats <span class="op">=</span> (s1<span class="op">**</span><span class="dv">2</span>)<span class="op">/</span>(s2<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>test_stats</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.5102040816326532</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1004,9 +1108,17 @@ Note
 <p>There are other tests for testing the homogeneity of variances, but the BFL test performs better when data are from a <strong>non-normal</strong> distribution. It corrects for the skewness of distribution by using deviations from group <em>medians</em>. The BFL test is more <strong>robust</strong>. It is less likely to incorrectly declare that the assumption of equal variances has been violated.</p>
 <hr>
 <p><span style="color:blue"> <strong>Example: Automobile Additives (Example 7.8 in SMD)</strong> </span></p>
-<p>Three different additives that are marketed for increasing the miles per gallon (mpg) for automobiles. The percentage increase in mpg was recorded for a 250-mile test drive for each additive for 10 randomly assigned cars. Is there a difference between the three additives with respect to their variability? The data are saved in R data frame <code>data_additive</code>.</p>
+<p>Three different additives that are marketed for increasing the miles per gallon (mpg) for automobiles. The percentage increase in mpg was recorded for a 250-mile test drive for each additive for 10 randomly assigned cars. Is there a difference between the three additives with respect to their variability?</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
+<p>The data are saved in R data frame <code>data_additive</code>.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_additive</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_additive</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   mpg_increase additive
 1           4.2        1
@@ -1046,6 +1158,55 @@ Note
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="infer-var_files/figure-html/additive-boxplot-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960"></p>
 </figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
+<p>The data are saved in Python pd.DataFrame <code>data_additive</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>    mpg_increase additive
+0            4.2        1
+1            2.9        1
+2            0.2        1
+3           25.7        1
+4            6.3        1
+5            7.2        1
+6            2.3        1
+7            9.9        1
+8            5.3        1
+9            6.5        1
+10           0.2        2
+11          11.3        2
+12           0.3        2
+13          17.1        2
+14          51.0        2
+15          10.1        2
+16           0.3        2
+17           0.6        2
+18           7.9        2
+19           7.2        2
+20           7.2        3
+21           6.4        3
+22           9.9        3
+23           3.5        3
+24          10.6        3
+25          10.8        3
+26          10.6        3
+27           8.4        3
+28           6.0        3
+29          11.9        3</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="infer-var_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -1101,11 +1262,18 @@ Note
 <li><p><strong>Step5-c</strong>: Since <span class="math inline">\(L_{test}  = 1.872 &lt; F_{\alpha, \, t-1, \, N-t} = 3.35\)</span>, we do not reject <span class="math inline">\(H_0\)</span>.</p></li>
 <li><p><strong>Step6</strong>: There is insufficient evidence to support the claim that there is a difference in the population variances of the percentage increase in mpg for the three additives.</p></li>
 </ul>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
 <p>Once you understand the idea and the process of doing the test, in practice, we use R function <code><a href="https://rdrr.io/pkg/car/man/leveneTest.html">leveneTest()</a></code> in the <code>car</code> (<a href="https://www.john-fox.ca/Companion/index.html">Companion to Applied Regression</a>) package to help us perform the test.</p>
 <!-- ## Example 7.8 BFL Test in R -->
 <!-- - The test statistic is $\color{blue}{L_{test} = \frac{\sum_{i=1}^tn_i(\overline{z}_{i\cdot} - \overline{z}_{\cdot\cdot})^2 / (t - 1)}{\sum_{i=1}^t \sum_{j = 1}^{n_i}(z_{ij} - \overline{z}_{i\cdot})^2 / (N-t)}}$, where $\overline{z}_{i\cdot}$ is the mean of the $z_{ij}$s from the group $i$, $\overline{z}_{\cdot\cdot}$ is the mean of all $z_{ij}$s, and $N = \sum_{i=1}^tn_i$. -->
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-forge.r-project.org/projects/car/">car</a></span><span class="op">)</span> <span class="co"># Load the package car ()</span></span>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-forge.r-project.org/projects/car/">car</a></span><span class="op">)</span> <span class="co"># Load the package car</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/car/man/leveneTest.html">leveneTest</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">data_additive</span><span class="op">$</span><span class="va">mpg_increase</span>, </span>
 <span>           group <span class="op">=</span> <span class="va">data_additive</span><span class="op">$</span><span class="va">additive</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1118,6 +1286,24 @@ group  2  1.8268 0.1803
 <p>In the function, we put the response variable data in <code>y</code>, and the factor defining groups in <code>group</code>. By default, it will use sample medians to perform the test. The p-value is greater than 0.05 and it leads to the same conclusion that there is insufficient evidence to say there is a difference in the population variances of the percentage increase in mpg for the three additives.</p>
 <!-- Yes. Just one line of code after you install the `car` R package. -->
 <!-- - Check Table 7.5 in the textbook if you really want to obtain the test statistic by hand. -->
+</div>
+<div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
+<p>Once you understand the idea and the process of doing the test, in practice, we use Python function <code>levene()</code> in <code>scipy.stats</code> to help us perform the test.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> levene</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Levene's test</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>levene(</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    data_additive[data_additive[<span class="st">'additive'</span>] <span class="op">==</span> <span class="dv">1</span>][<span class="st">'mpg_increase'</span>],</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    data_additive[data_additive[<span class="st">'additive'</span>] <span class="op">==</span> <span class="dv">2</span>][<span class="st">'mpg_increase'</span>],</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    data_additive[data_additive[<span class="st">'additive'</span>] <span class="op">==</span> <span class="dv">3</span>][<span class="st">'mpg_increase'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>LeveneResult(statistic=1.82684271595955, pvalue=0.18025794484918528)</code></pre>
+</div>
+</div>
+<p>In the function, each sample data can only be one-dimensional. By default, it will use sample medians to perform the test. The p-value is greater than 0.05 and it leads to the same conclusion that there is insufficient evidence to say there is a difference in the population variances of the percentage increase in mpg for the three additives.</p>
+</div>
+</div>
+</div>
 </section><section id="exercises" class="level2" data-number="18.4"><h2 data-number="18.4" class="anchored" data-anchor-id="exercises">
 <span class="header-section-number">18.4</span> Exercises</h2>
 <ol type="1">
@@ -1731,7 +1917,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
 <li class="nav-item compact">
-    <a class="nav-link active" href="https://github.com/chenghanyustats/introstatsbook" aria-current="page">
+    <a class="nav-link" href="https://github.com/chenghanyustats/introstatsbook">
       <i class="bi bi-github" role="img">
 </i> 
     </a>

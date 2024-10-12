@@ -253,11 +253,25 @@ Be careful that the interval for $\sigma^2$ *cannot* be expressed as $(S^2 - m, 
 :::{.column width="80%"}
 Listed below are heights (cm) for the simple random sample of 16 female supermodels.
 
+::: {.panel-tabset}
+
+## R
 ```{r}
 #| echo: true
 heights <- c(178, 177, 176, 174, 175, 178, 175, 178, 
              178, 177, 180, 176, 180, 178, 180, 176)
 ```
+
+
+## Python
+```{python}
+#| echo: true
+import numpy as np
+heights = np.array([178, 177, 176, 174, 175, 178, 175, 178, 
+             178, 177, 180, 176, 180, 178, 180, 176])
+```
+
+:::
 
 The supermodels' heights are normally distributed. Please construct a $95\%$ confidence interval for population standard deviation $\sigma$.
 :::
@@ -279,8 +293,10 @@ Note that we want the interval for $\sigma$, not $\sigma^2$, we take a square ro
 
 We are 95% confident that the height of supermodels has standard deviation between 1.36 and 2.85.
 
+::: {.panel-tabset}
 
-<span style="color:red"> ***Confidence Interval Computation in R*** </span>
+<!-- <span style="color:red"> ***Confidence Interval Computation in R*** </span> -->
+## R
 
 We use `qchisq()` to get the $\chi^2$ critical values. The probability $p$ and the degrees of freedom `df` need to be specified. You should be able to understand the rest part of the code. Enjoy it.
 
@@ -305,6 +321,46 @@ ci_sig2_upper <- (n - 1) * s2 / chi2_left
 (ci_sig_lower <- sqrt(ci_sig2_lower))
 (ci_sig_upper <- sqrt(ci_sig2_upper))
 ```
+
+
+## Python
+
+```{python}
+#| echo: true
+import numpy as np
+from scipy.stats import chi2
+```
+
+We use [`chi2`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.chi2.html) family in `scipy.stats` to get the $\chi^2$ critical values. The probability $p$ and the degrees of freedom `df` need to be specified. You should be able to understand the rest part of the code. Enjoy it.
+
+```{python}
+#| echo: true
+# Set values
+n = 16
+s2 = np.var(heights, ddof=1)  # sample variance
+alpha = 0.05
+
+# Chi-square critical values
+chi2_right = chi2.isf(alpha/2, df=n-1)
+chi2_left = chi2.ppf(alpha/2, df=n-1)
+
+# Confidence interval for variance (sigma^2)
+ci_sig2_lower = (n - 1) * s2 / chi2_right
+ci_sig2_upper = (n - 1) * s2 / chi2_left
+
+# Confidence interval for standard deviation (sigma)
+ci_sig_lower = np.sqrt(ci_sig2_lower)
+ci_sig_lower
+ci_sig_upper = np.sqrt(ci_sig2_upper)
+ci_sig_upper
+```
+
+:::
+
+
+
+
+
 
 <span style="color:red"> ***Testing*** </span>
 
@@ -712,7 +768,11 @@ text(2.5, 0.2, expression(F[paste(9, ",", 9)]), cex = 2)
 
 We are 95% confident that the ratio $\sigma_1^2 / \sigma_2^2$ is between 0.127 and 2.04. Because one is included in this interval, meaning that $\sigma^2_1 = \sigma^2_2$, it leads to the same conclusion as the F test.
 
-<span style="color:red"> ***Implementing F-test in R*** </span>
+<!-- <span style="color:red"> ***Implementing F-test in R*** </span> -->
+
+::: {.panel-tabset}
+
+## R
 
 We use `qf()` to find the $F$ critical values. 
 <!-- - **`qf(p = alpha, df1 = n1 - 1, df2 = n2 - 1, lower.tail = FALSE)`** to find $F_{\alpha, \, n_1-1, \, n_2-1}$. -->
@@ -752,6 +812,41 @@ f_big <- qf(p = alpha / 2, df1 = n1 - 1, df2 = n2 - 1, lower.tail = FALSE)
 ```
 <!-- ::: -->
 <!-- :::: -->
+
+
+## python
+
+We use [`f.ppf()`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.f.html) and `f.isf()` in `scipy.stats` to find the $F$ critical values. 
+
+
+```{python}
+#| echo: true
+from scipy.stats import f
+
+# Set values
+n1 = 10; n2 = 10
+s1 = 0.5; s2 = 0.7
+alpha = 0.05
+
+# F-distribution critical values
+f_small = f.ppf(alpha/2, dfn=n1-1, dfd=n2-1)
+f_big = f.isf(alpha/2, dfn=n1-1, dfd=n2-1)
+
+# Confidence interval for the ratio of variances (sigma_1^2 / sigma_2^2)
+# lower bound
+(s1**2/s2**2)/f_big
+# upper bound
+(s1**2/s2**2)/f_small
+```
+
+```{python}
+#| echo: true
+# F-test statistic
+test_stats = (s1**2)/(s2**2)
+test_stats
+```
+:::
+
 
 
 
@@ -801,7 +896,13 @@ There are other tests for testing the homogeneity of variances, but the BFL test
 
 <span style="color:blue"> **Example: Automobile Additives (Example 7.8 in SMD)** </span>
 
-Three different additives that are marketed for increasing the miles per gallon (mpg) for automobiles. The percentage increase in mpg was recorded for a 250-mile test drive for each additive for 10 randomly assigned cars. Is there a difference between the three additives with respect to their variability? The data are saved in R data frame `data_additive`.
+Three different additives that are marketed for increasing the miles per gallon (mpg) for automobiles. The percentage increase in mpg was recorded for a 250-mile test drive for each additive for 10 randomly assigned cars. Is there a difference between the three additives with respect to their variability? 
+
+
+:::{.panel-tabset}
+
+## R
+The data are saved in R data frame `data_additive`.
 
 ```{r}
 par(mar = c(2,6,1,1))
@@ -828,6 +929,41 @@ boxplot(mpg_increase~additive, data = data_additive, axes = FALSE, ylab = "",
 axis(1)
 axis(2, las = 2, at = 1:3, labels = paste("Additive", 1:3))
 ```
+
+
+## Python
+
+The data are saved in Python pd.DataFrame `data_additive`.
+
+```{python}
+import pandas as pd
+# Data
+y1 = [4.2, 2.9, 0.2, 25.7, 6.3, 7.2, 2.3, 9.9, 5.3, 6.5]
+y2 = [0.2, 11.3, 0.3, 17.1, 51, 10.1, 0.3, 0.6, 7.9, 7.2]
+y3 = [7.2, 6.4, 9.9, 3.5, 10.6, 10.8, 10.6, 8.4, 6.0, 11.9]
+
+# Creating a DataFrame
+data_additive = pd.DataFrame({
+    "mpg_increase": y1 + y2 + y3,
+    "additive": pd.Categorical([1] * 10 + [2] * 10 + [3] * 10)
+})
+```
+
+```{python}
+data_additive
+```
+
+```{python}
+import matplotlib.pyplot as plt
+data_additive.boxplot(column="mpg_increase", by="additive", vert=False, grid=False)
+plt.title("Boxplots for three additives")
+plt.suptitle("")
+plt.xlabel("mpg_increase")
+plt.ylabel("Additive")
+plt.show()
+```
+
+:::
 
 The boxplot suggests that Additive 2 has larger variation than the other two in terms of the percentage increase in mpg. We will use the BFL test to decide whether or not their variation difference is just a random sampling consequences or it is statistically significant.
 
@@ -898,9 +1034,12 @@ The procedure of BLT test is shown step by step as follows.
 
 - **Step6**: There is insufficient evidence to support the claim that there is a difference in the population variances of the percentage increase in mpg for the three additives.
 
+
+::: {.panel-tabset}
+
+## R
+
 Once you understand the idea and the process of doing the test, in practice, we use R function `leveneTest()` in the `car` ([Companion to Applied Regression](https://www.john-fox.ca/Companion/index.html)) package to help us perform the test.
-
-
 
 <!-- ## Example 7.8 BFL Test in R -->
 <!-- - The test statistic is $\color{blue}{L_{test} = \frac{\sum_{i=1}^tn_i(\overline{z}_{i\cdot} - \overline{z}_{\cdot\cdot})^2 / (t - 1)}{\sum_{i=1}^t \sum_{j = 1}^{n_i}(z_{ij} - \overline{z}_{i\cdot})^2 / (N-t)}}$, where $\overline{z}_{i\cdot}$ is the mean of the $z_{ij}$s from the group $i$, $\overline{z}_{\cdot\cdot}$ is the mean of all $z_{ij}$s, and $N = \sum_{i=1}^tn_i$. -->
@@ -908,7 +1047,7 @@ Once you understand the idea and the process of doing the test, in practice, we 
 ```{r}
 #| echo: true
 #| message: false
-library(car) # Load the package car ()
+library(car) # Load the package car
 leveneTest(y = data_additive$mpg_increase, 
            group = data_additive$additive)
 ```
@@ -919,9 +1058,23 @@ In the function, we put the response variable data in `y`, and the factor defini
 
 <!-- - Check Table 7.5 in the textbook if you really want to obtain the test statistic by hand. -->
 
+## Python
+
+Once you understand the idea and the process of doing the test, in practice, we use Python function `levene()` in `scipy.stats` to help us perform the test.
 
 
+```{python}
+#| echo: true
+from scipy.stats import levene
+# Levene's test
+levene(
+    data_additive[data_additive['additive'] == 1]['mpg_increase'],
+    data_additive[data_additive['additive'] == 2]['mpg_increase'],
+    data_additive[data_additive['additive'] == 3]['mpg_increase'])
+```
 
+In the function, each sample data can only be one-dimensional. By default, it will use sample medians to perform the test. The p-value is greater than 0.05 and it leads to the same conclusion that there is insufficient evidence to say there is a difference in the population variances of the percentage increase in mpg for the three additives.
+:::
 
 ## Exercises
 
