@@ -321,10 +321,13 @@ The 95% CI for $\mu_d = \mu_1 - \mu_2$ is $$\begin{align}\overline{d} \pm t_{\al
 
 We are 95% confident that the *mean difference* in blood pressure is between 4.57 and 22.43. Since the interval *does NOT include 0*, it leads to the same conclusion as rejection of $H_0$.
 
----------------------------------------------------------------------
+<!-- --------------------------------------------------------------------- -->
 
-<span style="color:blue"> **Two-Sample Paired $t$-Test in R** </span>
+::: {.panel-tabset}
 
+<!-- <span style="color:blue"> **Two-Sample Paired $t$-Test in R** </span> -->
+
+## R
 Below is the same data as in the previous hypertension example. We load the R data `pair_data.RDS` into the R session using the `load()` function.
 <!-- - These figures illustrate how to perform the hypothesis testing for paired data in R. -->
 
@@ -396,6 +399,84 @@ Note that we get the same test statistic and p-value, as well as the test conclu
 <!-- :::{.callout-note} -->
 <!-- - Be careful about the one-sided CI listed in the table above! **We should use the two-sided CI!**  -->
 <!-- ::: -->
+
+
+## Python
+```{python}
+#| echo: true
+import numpy as np
+from scipy.stats import ttest_rel, t, norm
+import pandas as pd
+```
+
+Below is the same data as in the previous hypertension example. We load the csv file `pair_data.csv` into the Python session using the `pd.read_csv()` function.
+
+
+```{python}
+#| echo: true
+pair_data = pd.read_csv('./data/pair_data.csv')
+pair_data
+```
+
+
+
+
+```{python}
+#| echo: true
+# Create the difference data 'd'
+d = pair_data['before'] - pair_data['after']
+d
+# Sample mean of 'd'
+d_bar = np.mean(d)
+d_bar
+
+# Sample standard deviation of 'd'
+s_d = np.std(d, ddof=1)
+s_d
+
+# T-test statistic
+t_test = d_bar / (s_d / np.sqrt(len(d)))
+t_test
+
+# T critical value (one-tailed, 95% confidence level)
+t.ppf(0.95, df=len(d)-1)
+
+# P-value
+t.sf(t_test, df=len(d)-1)
+```
+
+
+Below is an example of how to calculate the confidence interval for the change in blood pressure.
+
+```{python}
+#| echo: true
+# 95% confidence interval for the mean difference
+d_bar + pd.Series([-1, 1]) * t.ppf(0.975, df=len(d)-1) * (s_d / np.sqrt(len(d)))
+```
+
+We can see that performing these calculations in Python leads us to the same conclusions we previously made. 
+
+In fact, the Python function [`ttest_rel()`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ttest_rel.html) from the `scipy.stats` module does two sample paired t-test for us. The word `rel` means "related" because it calculates the t-test on TWO RELATED samples. To do the two sample paired $t$ test, we provides the two samples in the first two arguments `a` and `b`. The `alternative` argument is either "two.sided", "less" or "greater". We have $H_1: \mu_1 > \mu_2$ or $\mu_d > 0$, so we use "greater". The function only tests whether or not the mean difference is zero.
+
+
+```{python}
+#| echo: true
+# T-test using scipy's built-in function
+ttest_rel_res = ttest_rel(a=pair_data['before'], b=pair_data['after'], 
+                          alternative='greater')
+
+ttest_rel_res.statistic
+ttest_rel_res.df
+ttest_rel_res.pvalue
+ttest_rel_res.confidence_interval
+```
+
+Note that we get the same test statistic and p-value, as well as the test conclusion. The function does not print the confidence interval out though.
+:::
+
+
+
+
 
 ## Inference About Two Means: Independent Samples
 
@@ -581,6 +662,11 @@ We are 95% confident that the difference in the mean forces is between -20.02 an
 
 <span style="color:red"> ***Two-Sample t-Test in R*** </span>
 
+::: {.panel-tabset}
+<!-- <span style="color:red"> ***Two-Sample t-Test in R*** </span> -->
+
+## R
+
 ```{r}
 #| echo: true
 
@@ -600,8 +686,32 @@ qt(p = 0.05, df = df)
 pt(q = t_test, df = df)
 ```
 
+## Python
 
 
+```{python}
+#| echo: true
+# Prepare needed variables
+n1 = 33; x1_bar = 25.2; s1 = 8.6
+n2 = 12; x2_bar = 33.9; s2 = 17.4
+A = s1**2 / n1; B = s2**2 / n2
+df = (A + B)**2 / (A**2/(n1-1) + B**2/(n2-1))
+
+# Round down to the nearest integer
+df = np.floor(df)
+df
+
+# T-test statistic
+t_test = (x1_bar - x2_bar) / np.sqrt(s1**2/n1 + s2**2/n2)
+
+# T critical value
+t.ppf(0.05, df=df)
+
+# P-value
+t.cdf(t_test, df=df)
+```
+
+:::
 
 ----------------------------------------------------------------------
 
@@ -724,8 +834,12 @@ The 95% CI for $\mu_1 - \mu_2$ is $$\begin{align}(\overline{x}_1 - \overline{x}_
 
 We are 95% confident that the difference in the mean weight loss is between -2.672 and -1.528. Since the interval does not include 0, it leads to the same conclusion as rejection of $H_0$.
 
-<span style="color:red"> ***Two-Sample Pooled t-Test in R*** </span>
 
+
+<span style="color:red"> ***Two-Sample Pooled t-Test*** </span>
+
+::: {.panel-tabset}
+## R
 ```{r}
 #| echo: true
 
@@ -748,6 +862,36 @@ qt(p = 0.05, df = df)
 ## p_value
 pt(q = t_test, df = df)
 ```
+
+
+## Python
+```{python}
+#| echo: true
+# Prepare values
+n1 = 10; x1_bar = 2.1; s1 = 0.5
+n2 = 10; x2_bar = 4.2; s2 = 0.7
+
+# Pooled sample standard deviation
+sp = np.sqrt(((n1 - 1) * s1**2 + (n2 - 1) * s2**2) / (n1 + n2 - 2))
+
+# Degrees of freedom
+df = n1 + n2 - 2
+
+# T-test statistic
+t_test = (x1_bar - x2_bar) / (sp * np.sqrt(1/n1 + 1/n2))
+t_test
+
+# T critical value
+t.ppf(0.05, df=df)
+
+# P-value
+t.cdf(t_test, df=df)
+```
+
+
+
+
+:::
 
 
 

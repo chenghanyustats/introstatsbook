@@ -885,8 +885,14 @@ Figure&nbsp;17.1: Illustration of right-tailed test for blood pressure example
 </div>
 <p>The 95% CI for <span class="math inline">\(\mu_d = \mu_1 - \mu_2\)</span> is <span class="math display">\[\begin{align}\overline{d} \pm t_{\alpha/2, df} \frac{s_d}{\sqrt{n}} &amp;= 13.5 \pm t_{0.025, 9}\frac{12.48}{\sqrt{10}}\\ &amp;= 13.5 \pm 8.927 \\ &amp;= (4.573, 22.427).\end{align}\]</span></p>
 <p>We are 95% confident that the <em>mean difference</em> in blood pressure is between 4.57 and 22.43. Since the interval <em>does NOT include 0</em>, it leads to the same conclusion as rejection of <span class="math inline">\(H_0\)</span>.</p>
-<hr>
-<p><span style="color:blue"> <strong>Two-Sample Paired <span class="math inline">\(t\)</span>-Test in R</strong> </span></p>
+<!-- --------------------------------------------------------------------- -->
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <p>Below is the same data as in the previous hypertension example. We load the R data <code>pair_data.RDS</code> into the R session using the <code><a href="https://rdrr.io/r/base/load.html">load()</a></code> function. <!-- - These figures illustrate how to perform the hypothesis testing for paired data in R. --></p>
 <!-- ::::{.columns} -->
 <!-- :::{.column width="49.5%"} -->
@@ -980,6 +986,115 @@ mean difference
 <!-- :::{.callout-note} -->
 <!-- - Be careful about the one-sided CI listed in the table above! **We should use the two-sided CI!**  -->
 <!-- ::: -->
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> ttest_rel, t, norm</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Below is the same data as in the previous hypertension example. We load the csv file <code>pair_data.csv</code> into the Python session using the <code>pd.read_csv()</code> function.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>pair_data <span class="op">=</span> pd.read_csv(<span class="st">'./data/pair_data.csv'</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>pair_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   before  after
+0     143    124
+1     153    129
+2     142    131
+3     139    145
+4     172    152
+5     176    150
+6     155    125
+7     149    142
+8     140    145
+9     169    160</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the difference data 'd'</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> pair_data[<span class="st">'before'</span>] <span class="op">-</span> pair_data[<span class="st">'after'</span>]</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>d</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0    19
+1    24
+2    11
+3    -6
+4    20
+5    26
+6    30
+7     7
+8    -5
+9     9
+dtype: int64</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample mean of 'd'</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>d_bar <span class="op">=</span> np.mean(d)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>d_bar</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>13.5</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample standard deviation of 'd'</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>s_d <span class="op">=</span> np.std(d, ddof<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>s_d</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>12.48332220738267</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># T-test statistic</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>t_test <span class="op">=</span> d_bar <span class="op">/</span> (s_d <span class="op">/</span> np.sqrt(<span class="bu">len</span>(d)))</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>t_test</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>3.4198226804580676</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># T critical value (one-tailed, 95% confidence level)</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>t.ppf(<span class="fl">0.95</span>, df<span class="op">=</span><span class="bu">len</span>(d)<span class="op">-</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1.8331129326536335</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># P-value</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>t.sf(t_test, df<span class="op">=</span><span class="bu">len</span>(d)<span class="op">-</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.0038150362846879134</code></pre>
+</div>
+</div>
+<p>Below is an example of how to calculate the confidence interval for the change in blood pressure.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 95% confidence interval for the mean difference</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>d_bar <span class="op">+</span> pd.Series([<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>]) <span class="op">*</span> t.ppf(<span class="fl">0.975</span>, df<span class="op">=</span><span class="bu">len</span>(d)<span class="op">-</span><span class="dv">1</span>) <span class="op">*</span> (s_d <span class="op">/</span> np.sqrt(<span class="bu">len</span>(d)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0     4.569969
+1    22.430031
+dtype: float64</code></pre>
+</div>
+</div>
+<p>We can see that performing these calculations in Python leads us to the same conclusions we previously made.</p>
+<p>In fact, the Python function <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ttest_rel.html"><code>ttest_rel()</code></a> from the <code>scipy.stats</code> module does two sample paired t-test for us. The word <code>rel</code> means “related” because it calculates the t-test on TWO RELATED samples. To do the two sample paired <span class="math inline">\(t\)</span> test, we provides the two samples in the first two arguments <code>a</code> and <code>b</code>. The <code>alternative</code> argument is either “two.sided”, “less” or “greater”. We have <span class="math inline">\(H_1: \mu_1 &gt; \mu_2\)</span> or <span class="math inline">\(\mu_d &gt; 0\)</span>, so we use “greater”. The function only tests whether or not the mean difference is zero.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># T-test using scipy's built-in function</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>ttest_rel_res <span class="op">=</span> ttest_rel(a<span class="op">=</span>pair_data[<span class="st">'before'</span>], b<span class="op">=</span>pair_data[<span class="st">'after'</span>], </span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>                          alternative<span class="op">=</span><span class="st">'greater'</span>)</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>ttest_rel_res.statistic</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>3.419822680458067</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>ttest_rel_res.df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>9</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>ttest_rel_res.pvalue</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.0038150362846879134</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>ttest_rel_res.confidence_interval</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;bound method TtestResult.confidence_interval of TtestResult(statistic=3.419822680458067, pvalue=0.0038150362846879134, df=9)&gt;</code></pre>
+</div>
+</div>
+<p>Note that we get the same test statistic and p-value, as well as the test conclusion. The function does not print the confidence interval out though.</p>
+</div>
+</div>
+</div>
 </section><section id="inference-about-two-means-independent-samples" class="level2" data-number="17.3"><h2 data-number="17.3" class="anchored" data-anchor-id="inference-about-two-means-independent-samples">
 <span class="header-section-number">17.3</span> Inference About Two Means: Independent Samples</h2>
 <p><span style="color:blue"> <strong>Compare Population Means: Independent Samples</strong> </span></p>
@@ -994,7 +1109,7 @@ mean difference
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="infer-twomean_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<figure class="figure"><p><img src="infer-twomean_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1161,8 +1276,15 @@ Note
 <p><span class="math display">\[\begin{align}(\overline{x}_1 - \overline{x}_2) \pm t_{\alpha/2, df} \sqrt{\frac{\color{red}{s_1^2}}{n_1} + \frac{\color{red}{s_2^2}}{n_2}} &amp;= (25.2 - 33.9) \pm t_{0.025,13}\sqrt{\frac{8.6^2}{33} + \frac{17.4^2}{12}}\\&amp;= -8.7 \pm 11.32 = (-20.02, 2.62).\end{align}\]</span></p>
 <p>We are 95% confident that the difference in the mean forces is between -20.02 and 2.62. Since the interval includes 0, it leads to the same conclusion as failing to reject <span class="math inline">\(H_0\)</span>.</p>
 <p><span style="color:red"> <strong><em>Two-Sample t-Test in R</em></strong> </span></p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## Prepare needed variables </span></span>
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## Prepare needed variables </span></span>
 <span><span class="va">n1</span> <span class="op">=</span> <span class="fl">33</span>; <span class="va">x1_bar</span> <span class="op">=</span> <span class="fl">25.2</span>; <span class="va">s1</span> <span class="op">=</span> <span class="fl">8.6</span></span>
 <span><span class="va">n2</span> <span class="op">=</span> <span class="fl">12</span>; <span class="va">x2_bar</span> <span class="op">=</span> <span class="fl">33.9</span>; <span class="va">s2</span> <span class="op">=</span> <span class="fl">17.4</span></span>
 <span><span class="va">A</span> <span class="op">&lt;-</span> <span class="va">s1</span><span class="op">^</span><span class="fl">2</span> <span class="op">/</span> <span class="va">n1</span>; <span class="va">B</span> <span class="op">&lt;-</span> <span class="va">s2</span><span class="op">^</span><span class="fl">2</span> <span class="op">/</span> <span class="va">n2</span></span>
@@ -1173,20 +1295,52 @@ Note
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 13</code></pre>
 </div>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## t_test</span></span>
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## t_test</span></span>
 <span><span class="op">(</span><span class="va">t_test</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">x1_bar</span> <span class="op">-</span> <span class="va">x2_bar</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">s1</span><span class="op">^</span><span class="fl">2</span><span class="op">/</span><span class="va">n1</span> <span class="op">+</span> <span class="va">s2</span><span class="op">^</span><span class="fl">2</span><span class="op">/</span><span class="va">n2</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] -1.659894</code></pre>
 </div>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## t_cv</span></span>
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## t_cv</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">qt</a></span><span class="op">(</span>p <span class="op">=</span> <span class="fl">0.05</span>, df <span class="op">=</span> <span class="va">df</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] -1.770933</code></pre>
 </div>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## p_value</span></span>
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## p_value</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">pt</a></span><span class="op">(</span>q <span class="op">=</span> <span class="va">t_test</span>, df <span class="op">=</span> <span class="va">df</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.06042575</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Prepare needed variables</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>n1 <span class="op">=</span> <span class="dv">33</span><span class="op">;</span> x1_bar <span class="op">=</span> <span class="fl">25.2</span><span class="op">;</span> s1 <span class="op">=</span> <span class="fl">8.6</span></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>n2 <span class="op">=</span> <span class="dv">12</span><span class="op">;</span> x2_bar <span class="op">=</span> <span class="fl">33.9</span><span class="op">;</span> s2 <span class="op">=</span> <span class="fl">17.4</span></span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> s1<span class="op">**</span><span class="dv">2</span> <span class="op">/</span> n1<span class="op">;</span> B <span class="op">=</span> s2<span class="op">**</span><span class="dv">2</span> <span class="op">/</span> n2</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> (A <span class="op">+</span> B)<span class="op">**</span><span class="dv">2</span> <span class="op">/</span> (A<span class="op">**</span><span class="dv">2</span><span class="op">/</span>(n1<span class="op">-</span><span class="dv">1</span>) <span class="op">+</span> B<span class="op">**</span><span class="dv">2</span><span class="op">/</span>(n2<span class="op">-</span><span class="dv">1</span>))</span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Round down to the nearest integer</span></span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> np.floor(df)</span>
+<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>13.0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># T-test statistic</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>t_test <span class="op">=</span> (x1_bar <span class="op">-</span> x2_bar) <span class="op">/</span> np.sqrt(s1<span class="op">**</span><span class="dv">2</span><span class="op">/</span>n1 <span class="op">+</span> s2<span class="op">**</span><span class="dv">2</span><span class="op">/</span>n2)</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a><span class="co"># T critical value</span></span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>t.ppf(<span class="fl">0.05</span>, df<span class="op">=</span>df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>-1.7709333959867992</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co"># P-value</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>t.cdf(t_test, df<span class="op">=</span>df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.060425745501011804</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <hr>
@@ -1298,9 +1452,16 @@ Note
 </ul>
 <p>The 95% CI for <span class="math inline">\(\mu_1 - \mu_2\)</span> is <span class="math display">\[\begin{align}(\overline{x}_1 - \overline{x}_2) \pm t_{\alpha/2, df} {\color{red}{s_p}}\sqrt{\frac{1}{n_1} + \frac{1}{n_2}} &amp;= (2.1 - 4.2) \pm t_{0.025, 18} (0.6083)\sqrt{\frac{1}{10} + \frac{1}{10}}\\ &amp;= -2.1 \pm 0.572 = (-2.672, -1.528) \end{align}\]</span></p>
 <p>We are 95% confident that the difference in the mean weight loss is between -2.672 and -1.528. Since the interval does not include 0, it leads to the same conclusion as rejection of <span class="math inline">\(H_0\)</span>.</p>
-<p><span style="color:red"> <strong><em>Two-Sample Pooled t-Test in R</em></strong> </span></p>
+<p><span style="color:red"> <strong><em>Two-Sample Pooled t-Test</em></strong> </span></p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## Prepare values</span></span>
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## Prepare values</span></span>
 <span><span class="va">n1</span> <span class="op">=</span> <span class="fl">10</span>; <span class="va">x1_bar</span> <span class="op">=</span> <span class="fl">2.1</span>; <span class="va">s1</span> <span class="op">=</span> <span class="fl">0.5</span></span>
 <span><span class="va">n2</span> <span class="op">=</span> <span class="fl">10</span>; <span class="va">x2_bar</span> <span class="op">=</span> <span class="fl">4.2</span>; <span class="va">s2</span> <span class="op">=</span> <span class="fl">0.7</span></span>
 <span></span>
@@ -1315,15 +1476,48 @@ Note
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] -7.719754</code></pre>
 </div>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## t_cv</span></span>
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## t_cv</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">qt</a></span><span class="op">(</span>p <span class="op">=</span> <span class="fl">0.05</span>, df <span class="op">=</span> <span class="va">df</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] -1.734064</code></pre>
 </div>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## p_value</span></span>
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## p_value</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">pt</a></span><span class="op">(</span>q <span class="op">=</span> <span class="va">t_test</span>, df <span class="op">=</span> <span class="va">df</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2.028505e-07</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Prepare values</span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>n1 <span class="op">=</span> <span class="dv">10</span><span class="op">;</span> x1_bar <span class="op">=</span> <span class="fl">2.1</span><span class="op">;</span> s1 <span class="op">=</span> <span class="fl">0.5</span></span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>n2 <span class="op">=</span> <span class="dv">10</span><span class="op">;</span> x2_bar <span class="op">=</span> <span class="fl">4.2</span><span class="op">;</span> s2 <span class="op">=</span> <span class="fl">0.7</span></span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Pooled sample standard deviation</span></span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a>sp <span class="op">=</span> np.sqrt(((n1 <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> s1<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> (n2 <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> s2<span class="op">**</span><span class="dv">2</span>) <span class="op">/</span> (n1 <span class="op">+</span> n2 <span class="op">-</span> <span class="dv">2</span>))</span>
+<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-8"><a href="#cb64-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Degrees of freedom</span></span>
+<span id="cb64-9"><a href="#cb64-9" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> n1 <span class="op">+</span> n2 <span class="op">-</span> <span class="dv">2</span></span>
+<span id="cb64-10"><a href="#cb64-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-11"><a href="#cb64-11" aria-hidden="true" tabindex="-1"></a><span class="co"># T-test statistic</span></span>
+<span id="cb64-12"><a href="#cb64-12" aria-hidden="true" tabindex="-1"></a>t_test <span class="op">=</span> (x1_bar <span class="op">-</span> x2_bar) <span class="op">/</span> (sp <span class="op">*</span> np.sqrt(<span class="dv">1</span><span class="op">/</span>n1 <span class="op">+</span> <span class="dv">1</span><span class="op">/</span>n2))</span>
+<span id="cb64-13"><a href="#cb64-13" aria-hidden="true" tabindex="-1"></a>t_test</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>-7.719753531984983</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="co"># T critical value</span></span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>t.ppf(<span class="fl">0.05</span>, df<span class="op">=</span>df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>-1.734063606617536</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co"># P-value</span></span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>t.cdf(t_test, df<span class="op">=</span>df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2.0285052120014635e-07</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <section id="sample-size-formula" class="level3" data-number="17.3.1"><h3 data-number="17.3.1" class="anchored" data-anchor-id="sample-size-formula">
@@ -1968,7 +2162,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
 <li class="nav-item compact">
-    <a class="nav-link active" href="https://github.com/chenghanyustats/introstatsbook" aria-current="page">
+    <a class="nav-link" href="https://github.com/chenghanyustats/introstatsbook">
       <i class="bi bi-github" role="img">
 </i> 
     </a>
