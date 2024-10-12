@@ -687,16 +687,21 @@ knitr::include_graphics("./images/img-infer/yoda.jpeg")
 We have a $H_1$ claim and we reject $H_0$, so we conclude that <span style="color:blue"> **There is sufficient evidence to support the claim that the new treatment is effective**. </span>
 
 
-------------------------------------------------------------------
+<!-- ------------------------------------------------------------------ -->
 
-<span style="color:blue"> **Example Calculation in R** </span>
+<!-- <span style="color:blue"> **Example Calculation in R** </span> -->
+
+::: {.panel-tabset}
+
+
+## R
 
 Below is a demonstration of how to work through the blood pressure example using R.
 
 ```{r}
 #| echo: true
 ## create objects for any information we have
-alpha <- 0.05; mu_0 <- 150; 
+alpha <- 0.05; mu_0 <- 150
 x_bar <- 147.2; s <- 5.5; n <- 25
 
 ## Test statistic
@@ -709,7 +714,39 @@ x_bar <- 147.2; s <- 5.5; n <- 25
 
 The critical value is $-t_{\alpha, n-1}$, or the quantile such that $P(T_{n-1} < -t_{\alpha, n-1}) = \alpha$. Therefore, we use `qt()` to get the $t$ value. Notice that the p-value is a probability that the Student's t variable with degrees of freedom $n-1$ is smaller (more extreme) than the test statistic. In R, we use `pt()` to get the probability. Without specifying the `lower.tail` argument in the function, by default, both `qt()` and `pt()` function focuses on the lower tail or left tail, which is what we need in this left-tail test.
 
+## Python
 
+
+Below is a demonstration of how to work through the blood pressure example using Python.
+
+```{python}
+#| echo: true
+import numpy as np
+from scipy.stats import t
+```
+
+```{python}
+#| echo: true
+## create objects to be used
+alpha = 0.05; mu_0 = 150
+x_bar = 147.2; s = 5.5; n = 25
+
+## Calculate the t-test statistic
+t_test = (x_bar - mu_0) / (s / np.sqrt(n))
+t_test
+
+## Calculate the critical t value
+t_crit = t.ppf(alpha, df=n-1)
+t_crit
+
+## Calculate the p-value
+p_val = t.cdf(t_test, df=n-1)
+p_val
+```
+
+The critical value is $-t_{\alpha, n-1}$, or the quantile such that $P(T_{n-1} < -t_{\alpha, n-1}) = \alpha$. Therefore, we use `t.ppf()` to get the $t$ value. Notice that the p-value is a probability that the Student's t variable with degrees of freedom $n-1$ is smaller (more extreme) than the test statistic. In Python, we use `t.cdf()` to get the probability. Both `t.ppf()` and `t.cdf()` function focuses on the lower tail or left tail, which is what we need in this left-tail test.
+
+:::
 
 
 ## Example: Two-tailed z-test {#sec-ex-two-tailed}
@@ -812,8 +849,12 @@ text(0,-0.02, 0,
 <span style="color:blue"> **There is *insufficient* evidence to support the claim that this week the mean price of milk is different from the price last week**. </span>
 
 
---------------------------------------------------------------------
-<span style="color:blue"> **Calculation in R** </span>
+<!-- -------------------------------------------------------------------- -->
+<!-- <span style="color:blue"> **Calculation in R** </span> -->
+
+::: {.panel-tabset}
+
+## R
 
 Below is an example of how to perform the two-tailed $z$-test in R.
 
@@ -830,6 +871,38 @@ x_bar <- 2.8; sigma <- 0.1; n <- 25
 ## p-value
 (p_val <- 2 * pnorm(z_test, lower.tail = FALSE)) 
 ```
+
+## Python
+
+Below is an example of how to perform the two-tailed $z$-test in Python.
+```{python}
+#| echo: true
+## create objects to be used
+alpha = 0.05; mu_0 = 2.78
+x_bar = 2.8; sigma = 0.1; n = 25
+```
+
+```{python}
+#| echo: true
+## Calculate the z-test statistic
+z_test = (x_bar - mu_0) / (sigma / np.sqrt(n))
+z_test
+
+from scipy.stats import norm
+## Calculate the critical z value
+# z_crit = norm.isf(alpha/2)
+z_crit = norm.ppf(1 - alpha/2)
+z_crit
+
+## Calculate the p-value
+p_val = 2 * norm.sf(z_test)
+p_val
+```
+
+:::
+
+
+
 
 ## Testing Summary
 
@@ -986,11 +1059,26 @@ $\begin{align*}
 &= P(Z < -0.355) = 0.361
 \end{align*}$
 
+
+::: {.panel-tabset}
+
+## R
 ```{r}
 #| echo: true
 pnorm(-0.355)
 pnorm(54.94, mean = 56, sd = 18/sqrt(36))
 ```
+
+## Python
+```{python}
+#| echo: true
+norm.cdf(-0.355)
+norm.cdf(54.94, loc=56, scale=18/np.sqrt(36))
+```
+
+:::
+
+
 
 Therefore, Power $= P(\text{Reject } H_0 \mid \mu = 56) = 1 - P(\text{Do not reject } H_0 \mid \mu = 56) = 1 - \beta = 0.639$
 
