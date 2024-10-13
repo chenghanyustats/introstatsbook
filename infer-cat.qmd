@@ -202,9 +202,10 @@ Under $H_0$, $\chi^2_{test} = \frac{(205 - 198)^2}{198} + \frac{(26 - 19.25)^2}{
 
 With $\alpha = 0.05$, $\chi^2_{0.05, 3} = 7.81$. Because $5.89 < 7.81$, we fail to reject $H_0$ in favor of $H_1$. Therefore, we do not have convincing evidence of racial bias in the juror selection process.
 
+::: {.panel-tabset}
 
-
-<span style="color:red"> ***Goodness-of-Fit Test in R*** </span>
+## R
+<!-- <span style="color:red"> ***Goodness-of-Fit Test in R*** </span> -->
 
 Below is an example of how to perform a goodness-of-fit test in R. Because the goodness-of-fit test is a chi-squared test, we use the function `chisq.test()`. The argument `x` is the observed count vector of length $k$, and the argument `p` is the hypothesized proportion distribution which is a vector of probabilities of the same length as `x`. The function does not provide the critical value, but it gives us the $p$-value. Since the $p$-value is greater than $0.05$, we do not reject $H_0$.
 
@@ -234,12 +235,14 @@ when we use $\pi$ for the proportion of the first category and $1-\pi$ for the s
 Suppose $n = 1000$, $O_1 = 520$, $O_2 = 480$, $\pi_1^0 = \pi_2^0 = 0.5$. Our chi-squared test is
 
 ```{r}
+#| echo: true
 chisq.test(x = c(520, 480), p = c(0.5, 0.5))
 ```
 
 In the language of the one-sample proportion test, we have $n = 1000$, $y = 520$, $\pi^0 = 0.5$. $(y = O_1 = 520, n-y = O_2 = 480)$
 
 ```{r}
+#| echo: true
 prop.test(x = 520, n = 1000, p = 0.5, alternative = "two.sided", 
           correct = FALSE)
 ```
@@ -248,7 +251,88 @@ prop.test(x = 520, n = 1000, p = 0.5, alternative = "two.sided",
 Do you see the two tests are equivalent? They have the same test statistic, degrees of freedom as well as $p$-value. Both lead to the same conclusion. 
 :::
 
+## Python
 
+Below is an example of how to perform a goodness-of-fit test in Python. Because the goodness-of-fit test is a chi-squared test, we use the function [`chisquare()`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.chisquare.html) in `scipy.stats`. The argument `f_obs` is the observed count vector of length $k$, and the argument `f_exp` is the hypothesized or expected number of observations if the proportion distribution follows the hypothesized or expected proportions. The function does not provide the critical value, but it gives us the $p$-value. Since the $p$-value is greater than $0.05$, we do not reject $H_0$.
+
+
+```{python}
+#| echo: true
+from scipy.stats import chisquare
+```
+
+```{python}
+#| echo: true
+# Observed frequencies
+obs = [205, 26, 25, 19]
+
+# Expected proportions
+pi_0 = [0.72, 0.07, 0.12, 0.09]
+
+# Convert expected proportions to expected frequencies
+expected = [p * sum(obs) for p in pi_0]
+
+# Chi-square goodness-of-fit test
+chisquare(f_obs=obs, f_exp=expected)
+```
+
+:::{.callout-note}
+The chi-squared test can be used in two-sided one-sample proportion test. Suppose we are doing the following test
+
+$$\begin{align} &H_0: \pi_1 = 0.5,  \pi_2 = 0.5 \\ &H_1: \pi_i \ne 0.5 \text{ for some } i \end{align}$$
+
+Because there are only two categories, we automatically know the value of $\pi_2$ when we know the value of $\pi_1$ as $\pi_2 = 1 - \pi_1$. So the hypothesis can be reduced to 
+
+$$\begin{align} &H_0: \pi_1 = 0.5 \\ &H_1: \pi_1 \ne 0.5 \end{align}$$ or even
+
+$$\begin{align} &H_0: \pi = 0.5 \\ &H_1: \pi \ne 0.5 \end{align}$$
+when we use $\pi$ for the proportion of the first category and $1-\pi$ for the second. We just transform a chi-squared test setting into a two-sided one-sample proportion test setting!
+
+Suppose $n = 1000$, $O_1 = 520$, $O_2 = 480$, $\pi_1^0 = \pi_2^0 = 0.5$. Our chi-squared test is
+
+```{python}
+#| echo: true
+# Observed frequencies
+obs = [520, 480]
+
+# Expected proportions
+expected = [0.5, 0.5]
+
+# Convert expected proportions to expected frequencies
+expected_freq = [p * sum(obs) for p in expected]
+
+# Chi-square test
+chisq_test_res = chisquare(f_obs=obs, f_exp=expected_freq)
+chisq_test_res
+```
+
+In the language of the one-sample proportion test, we have $n = 1000$, $y = 520$, $\pi^0 = 0.5$. $(y = O_1 = 520, n-y = O_2 = 480)$
+
+```{python}
+#| echo: true
+
+from statsmodels.stats.proportion import proportions_ztest, proportion_confint
+
+z_test_stat, pval = proportions_ztest(count=520, nobs=1000, value=0.5, 
+                  alternative='two-sided')
+pval                 
+proportion_confint(count=520, nobs=1000, alpha=0.05, method='normal')
+```
+
+
+Do you see the two tests are equivalent? If you look at the proportion test output carefully, you'll find that the square of the $z$ statistic is equal to the chi-squared statistic with degrees of freedom one, i.e., $z_{test}^2 = \chi^2_{1, test}$, and the $z$ test here is equivalent to the chi-squared test for two-sided tests. 
+
+```{python}
+#| echo: true
+z_test_stat
+z_test_stat ** 2
+chisq_test_res.statistic
+```
+
+Both lead to the same conclusion. 
+:::
+
+:::
 
 ## Test of Independence
 
@@ -348,9 +432,15 @@ The test statistic is $$\small \chi^2_{test} = \frac{(18 - 19.52)^2}{19.52} + \f
 
 The critical value is $\chi^2_{\alpha, df} =\chi^2_{0.05, (2-1)(3-1)} = 5.991$. Since $\chi_{test}^2 < \chi^2_{\alpha, df}$, we do not reject $H_0$. Therefore we fail to conclude that the opinion of the President's job performance depends on gender.
 
-<span style="color:red"> ***Test of Independence in R*** </span>
 
-Calculating all the expected counts is tedious, especially when the variables have many categories. In practice we never calculate them by hand, and use computing software to do so. Below is an example of how to perform the test of independence using R. Since the test of independence is a chi-squared test, we still use the `chisq.test()` function. This time we need to prepare the contingency table as a matrix, and put the matrix in the `x` argument in the function. That's it! R does everything for us. If we save the result as an object like `ind_test` which is a R list, we can get access to information related to the test, such as the expected counts `ind_test$expected`.
+Calculating all the expected counts is tedious, especially when the variables have many categories. In practice we never calculate them by hand, and use computing software to do so.
+
+::: {.panel-tabset}
+
+## R
+
+<!-- <span style="color:red"> ***Test of Independence in R*** </span> -->
+Below is an example of how to perform the test of independence using R. Since the test of independence is a chi-squared test, we still use the `chisq.test()` function. This time we need to prepare the contingency table as a matrix, and put the matrix in the `x` argument in the function. That's it! R does everything for us. If we save the result as an object like `ind_test` which is a R list, we can get access to information related to the test, such as the expected counts `ind_test$expected`.
 
 ```{r}
 #| echo: true
@@ -365,6 +455,38 @@ ind_test$expected
 ## critical value
 qchisq(0.05, df = (2 - 1) * (3 - 1), lower.tail = FALSE)  
 ```
+
+## Python
+
+Below is an example of how to perform the test of independence using Python. The function we use is [`chi2_contingency()`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.chi2_contingency.html) in `scipy.stats` since the test of independence relies on a contingency table. We first prepare the contingency table as a matrix, and put the matrix in the `observed` argument in the function. That's it! Python does everything for us. If we save the result as an object like `ind_test`, we can get access to information related to the test, such as the expected counts `ind_test.expected_freq`.
+
+
+```{python}
+#| echo: true
+
+import numpy as np
+from scipy.stats import chi2_contingency, chi2
+
+contingency_table = np.array([[18, 22, 10], [23, 20, 12]])
+contingency_table
+
+# Chi-square test of independence
+ind_test = chi2_contingency(observed=contingency_table)
+ind_test.statistic
+ind_test.pvalue
+ind_test.dof
+ind_test.expected_freq
+
+# Critical value for chi-square distribution
+chi2.ppf(0.95, df=(2-1)*(3-1))
+```
+
+
+
+:::
+
+
+
 
 
 
