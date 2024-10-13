@@ -705,14 +705,19 @@ window.Quarto = {
 <li>Estimate the proportion of all voters that voted for <strong>R</strong> using a 95% confidence interval.</li>
 </ul>
 <p><span class="math display">\[\hat{\pi} \pm z_{\alpha/2}\sqrt{\frac{\hat{\pi}(1-\hat{\pi})}{n}} = 0.52 \pm z_{0.025}\sqrt{\frac{0.52(1-0.52)}{1000}} = (0.49, 0.55).\]</span></p>
-<p><span style="color:red"> <strong><em>Computation in R</em></strong> </span></p>
-<!-- Below is a demonstration of how to perform a binomial test in R.  -->
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <p>To perform the one-sample proportion <span class="math inline">\(z\)</span> test in R, we use the function <code><a href="https://rdrr.io/r/stats/prop.test.html">prop.test()</a></code>. The argument <code>correct</code> tells us whether or not we want to do continuity correction. Our method here does not do continuity correction. It does not matter much when our method assumption is satisfied.</p>
 <p>To obtain the confidence interval, we should set <code>alternative = "two.sided"</code> because the interval is two sided. Be careful. The interval we learn is the Wald interval. However, the interval from the <code><a href="https://rdrr.io/r/stats/prop.test.html">prop.test()</a></code> output is not the Wald interval, but the so-called <strong>Wilson interval</strong>. There are lots of variants of confidence intervals for binomial proportions, and one can use the <code>BinomCI()</code> function in the <code>DescTools</code> package to obtain them.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## one proportion test using normal approximation</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/prop.test.html">prop.test</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">520</span>, n <span class="op">=</span> <span class="fl">1000</span>, p <span class="op">=</span> <span class="fl">0.5</span>, alternative <span class="op">=</span> <span class="st">"greater"</span>, </span>
-<span>          correct <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="op">(</span><span class="va">prop_test_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/prop.test.html">prop.test</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">520</span>, n <span class="op">=</span> <span class="fl">1000</span>, p <span class="op">=</span> <span class="fl">0.5</span>, alternative <span class="op">=</span> <span class="st">"greater"</span>, </span>
+<span>          correct <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     1-sample proportions test without continuity correction
@@ -773,12 +778,12 @@ Note
 <div class="callout-body-container callout-body">
 <p>If you look at the proportion test output carefully, you’ll find that the test statistic is a chi-squared test statistic, not the <span class="math inline">\(z\)</span> test statistic. In fact, the square of the <span class="math inline">\(z\)</span> statistic is equal to the chi-squared statistic with degrees of freedom one, i.e., <span class="math inline">\(z_{test}^2 = \chi^2_{1, test}\)</span>, and the <span class="math inline">\(z\)</span> test here is equivalent to the chi-squared test discussed in the next chapter (<a href="infer-cat.html" class="quarto-xref"><span>Chapter 20</span></a>) for two-sided tests.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">z_test</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">0.52</span> <span class="op">-</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="op">(</span><span class="fl">0.5</span><span class="op">)</span><span class="op">*</span><span class="fl">0.5</span> <span class="op">/</span> <span class="fl">1000</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">z_test</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">0.52</span> <span class="op">-</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="op">(</span><span class="fl">0.52</span><span class="op">)</span><span class="op">*</span><span class="fl">0.48</span> <span class="op">/</span> <span class="fl">1000</span><span class="op">)</span></span>
 <span><span class="va">z_test</span> <span class="op">^</span> <span class="fl">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 1.6</code></pre>
+<pre><code>[1] 1.602564</code></pre>
 </div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">prop_ci</span><span class="op">$</span><span class="va">statistic</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">prop_test_res</span><span class="op">$</span><span class="va">statistic</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>X-squared 
       1.6 </code></pre>
@@ -798,8 +803,6 @@ Note
 <div class="callout-body-container callout-body">
 <p>The method we learn here uses normal approximation to binomial variables. One can also perform the <a href="https://en.wikipedia.org/wiki/Binomial_test"><strong>exact binomial test</strong></a> that directly uses binomial probabilities to calculate the <span class="math inline">\(p\)</span>-value and do the testing. As its name suggests, it is what we should use for binomial inference because it is <em>exact</em>. If the requirement of the normal approximation method we learn is not met, the exact binomial test should be used. When the sample size is large, and the expected proportion is not extreme being close to 0 or 1, the normal approximation method and the exact binomial test have pretty similar inference results.</p>
 <p>We can use <code><a href="https://rdrr.io/r/stats/binom.test.html">binom.test()</a></code> function to perform the exact binomial test. The <a href="https://yury-zablotski.netlify.app/post/exact-binomial-test/">page</a> discusses the relationship between the exact binomial test and other methods.</p>
-</div>
-</div>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## exact binom test</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/binom.test.html">binom.test</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">520</span>, n <span class="op">=</span> <span class="fl">1000</span>, p <span class="op">=</span> <span class="fl">0.5</span>, alternative <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -825,7 +828,131 @@ attr(,"conf.level")
 [1] 0.95</code></pre>
 </div>
 </div>
+</div>
+</div>
 <!-- https://bookdown.org/mpfoley1973/statistics/exact-binomial-test.html -->
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<p>It needs a bit extra work to perform the one-sample proportion <span class="math inline">\(z\)</span> test in Python because unfortunately <code>scipy.stats</code> does not provide any function for the test. Unless you want to calculate and do the test step by step, we can use the function <a href="https://www.statsmodels.org/dev/generated/statsmodels.stats.proportion.proportions_ztest.html"><code>proportions_ztest()</code></a> provided in the package <a href="https://www.statsmodels.org/stable/index.html"><code>statsmodels</code></a>. In RStudio, with the R <code>reticulate</code> package, we can install the Python package in our R session using the command <code>py_install("statsmodels")</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.stats.proportion <span class="im">import</span> proportions_ztest, proportion_confint</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The argument <code>value</code> in <code>proportions_ztest()</code> is the value of the null hypothesis equal to the proportion.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># One proportion z-test using normal approximation</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>z_prop_stat, pval <span class="op">=</span> proportions_ztest(count<span class="op">=</span><span class="dv">520</span>, nobs<span class="op">=</span><span class="dv">1000</span>, value<span class="op">=</span><span class="fl">0.5</span>, alternative<span class="op">=</span><span class="st">'larger'</span>)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>z_prop_stat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1.2659242088545843</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>pval</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.1027701091113093</code></pre>
+</div>
+</div>
+<p>The first returned value is the test statistic for the z-test, and the second is the p-value. Note that when we specify the alternative, we use the word ‘larger’, not ‘greater’ that is used in the functions provided by <code>scipy.stats</code>, <code>ttest_rel()</code> for example.</p>
+<p>To obtain the confidence interval, we use <code>proportion_confint()</code>. The method is set to be ‘normal’ because we are doing normal approximation. The interval we learn is the Wald interval.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>prop_ci <span class="op">=</span> proportion_confint(count<span class="op">=</span><span class="dv">520</span>, nobs<span class="op">=</span><span class="dv">1000</span>, alpha<span class="op">=</span><span class="fl">0.05</span>, method<span class="op">=</span><span class="st">'normal'</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>prop_ci</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(0.48903505011072596, 0.5509649498892741)</code></pre>
+</div>
+</div>
+<p>There are lots of variants of confidence intervals for binomial proportions that can be specified through the method argument</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># normal : asymptotic normal approximation</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co"># agresti_coull : Agresti-Coull interval</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co"># beta : Clopper-Pearson interval based on Beta distribution</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="co"># wilson : Wilson Score interval</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="co"># jeffreys : Jeffreys Bayesian Interval</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a><span class="co"># binom_test : Numerical inversion of binom_test</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>For example,</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>ci_wilson <span class="op">=</span> proportion_confint(count<span class="op">=</span><span class="dv">520</span>, nobs<span class="op">=</span><span class="dv">1000</span>, alpha<span class="op">=</span><span class="fl">0.05</span>, method<span class="op">=</span><span class="st">'wilson'</span>)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>ci_wilson</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(0.4890177246575191, 0.5508292050030589)</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Doing inference with normal approximation to binomial variables is more complicated than what we discuss here. The main reason is that we use a continuous normal distribution to approximate a discrete binomial distribution. Check the <a href="https://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval">Wiki page</a> if you don’t believe it. No worries at this moment unless you want to be a statistician doing research in this field!</p>
+</div>
+</div>
+<!-- :::{.callout-note} -->
+<!-- ```{python} -->
+<!-- #| echo: true -->
+<!-- z_test52 = (0.52 - 0.5) / np.sqrt(0.52 * 0.48 / 1000) -->
+<!-- z_test52 -->
+<!-- z_prop_stat -->
+<!-- ``` -->
+<!-- ::: -->
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The method we learn here uses normal approximation to binomial variables. One can also perform the <a href="https://en.wikipedia.org/wiki/Binomial_test"><strong>exact binomial test</strong></a> that directly uses binomial probabilities to calculate the <span class="math inline">\(p\)</span>-value and do the testing. As its name suggests, it is what we should use for binomial inference because it is <em>exact</em>. If the requirement of the normal approximation method we learn is not met, the exact binomial test should be used. When the sample size is large, and the expected proportion is not extreme being close to 0 or 1, the normal approximation method and the exact binomial test have pretty similar inference results.</p>
+<p>We can use <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.binomtest.html"><code>binomtest()</code></a> function in <code>scipy.stats</code> to perform the exact binomial test. The <a href="https://yury-zablotski.netlify.app/post/exact-binomial-test/">page</a> discusses the relationship between the exact binomial test and other methods. Note that when confidence interval is calculated, the alternative shoud be two-sided.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> binomtest</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>binom_test_res <span class="op">=</span> binomtest(k<span class="op">=</span><span class="dv">520</span>, n<span class="op">=</span><span class="dv">1000</span>, p<span class="op">=</span><span class="fl">0.5</span>, alternative<span class="op">=</span><span class="st">'greater'</span>)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>binom_test_res.statistic</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.52</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>binom_test_res.pvalue</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.10872414660207055</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>binom_test_ci <span class="op">=</span> binomtest(k<span class="op">=</span><span class="dv">520</span>, n<span class="op">=</span><span class="dv">1000</span>, p<span class="op">=</span><span class="fl">0.5</span>, alternative<span class="op">=</span><span class="st">'two-sided'</span>)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>binom_test_ci.proportion_ci(confidence_level<span class="op">=</span><span class="fl">0.95</span>, method<span class="op">=</span><span class="st">'exact'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>ConfidenceInterval(low=0.4885148824521465, high=0.551367057305466)</code></pre>
+</div>
+</div>
+<p>Also be careful that the <code>proportion_confint()</code> from <code>statsmodels</code> can generate the confidence interval of a binomial test with <code>method='binom_test'</code>. However, its result is not the same as the one shown before.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># from statsmodels</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.stats.proportion <span class="im">import</span> binom_test</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>binom_test(count<span class="op">=</span><span class="dv">520</span>, nobs<span class="op">=</span><span class="dv">1000</span>, prop<span class="op">=</span><span class="fl">0.5</span>, alternative<span class="op">=</span><span class="st">'larger'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.10872414660207055</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>ci_binom <span class="op">=</span> proportion_confint(count<span class="op">=</span><span class="dv">520</span>, nobs<span class="op">=</span><span class="dv">1000</span>, alpha<span class="op">=</span><span class="fl">0.05</span>, method<span class="op">=</span><span class="st">'binom_test'</span>)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>ci_binom</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(0.48899690054625045, 0.5510150259185691)</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 </section><section id="inference-for-two-proportions" class="level2" data-number="19.3"><h2 data-number="19.3" class="anchored" data-anchor-id="inference-for-two-proportions">
 <span class="header-section-number">19.3</span> Inference for Two Proportions</h2>
 <p>Many times we want to compare two population proportions, say <span class="math inline">\(\pi_1\)</span> and <span class="math inline">\(\pi_2\)</span>. We could assume there are two independent binomial experiments with the same possible outcomes. For example, we could have male and female voters, and every voter in each group has an opinion about president’s performance whose outcome is either Approve or Not approve. Let the number of male voters approving the performance is <span class="math inline">\(Y_1\)</span> and the number of female voters approving the performance is <span class="math inline">\(Y_2\)</span>. We can assume <span class="math inline">\(Y_1\)</span> and <span class="math inline">\(Y_2\)</span> both follow binomial distribution but with their own parameters, <span class="math inline">\(n_1\)</span> and <span class="math inline">\(\pi_1\)</span> for <span class="math inline">\(Y_1\)</span>, and <span class="math inline">\(n_2\)</span> and <span class="math inline">\(\pi_2\)</span> for <span class="math inline">\(Y_2\)</span>. Political analysts may want to know whether or not the male presidential approval rate <span class="math inline">\(\pi_1\)</span> is higher than the female approval rate <span class="math inline">\(\pi_2\)</span>.</p>
@@ -992,11 +1119,17 @@ attr(,"conf.level")
 <p><span class="math display">\[\hat{\pi}_1 - \hat{\pi}_2 \pm z_{0.05/2}\sqrt{\frac{\hat{\pi}_1(1-\hat{\pi}_1)}{n_1}+\frac{\hat{\pi}_2(1-\hat{\pi}_2)}{n_2}}\]</span> <!-- - $z_{0.05/2} = 1.96$ --> The 95% confidence interval is <span class="math display">\[0.75 - 0.65 \pm 1.96\sqrt{\frac{(0.75)(1-0.75)}{125} + \frac{(0.65)(1-0.65)}{175}}\\
 = (0.002, 0.210)\]</span></p>
 <p>Because 0 is not included in this interval, we reach the same conclusion as the hypothesis testing.</p>
-<p><span style="color:red"> <strong><em>Implementation in R</em></strong> </span></p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
 <p>Below is a demonstration of how to make inferences about two proportions in R. We still use <code><a href="https://rdrr.io/r/stats/prop.test.html">prop.test()</a></code> function, but here we provide the number of successes and the number of trials in the arguments <code>x</code> and <code>n</code> respectively as a vector whose first element is for the first group and second element for the second group. Please be consistent with the order and don’t mess up.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/prop.test.html">prop.test</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">94</span>, <span class="fl">113</span><span class="op">)</span>, n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">125</span>, <span class="fl">175</span><span class="op">)</span>, </span>
-<span>          alternative <span class="op">=</span> <span class="st">"greater"</span>, correct <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">prop_test2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/prop.test.html">prop.test</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">94</span>, <span class="fl">113</span><span class="op">)</span>, n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">125</span>, <span class="fl">175</span><span class="op">)</span>, </span>
+<span>          alternative <span class="op">=</span> <span class="st">"greater"</span>, correct <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     2-sample test for equality of proportions without continuity correction
@@ -1010,7 +1143,7 @@ sample estimates:
    prop 1    prop 2 
 0.7520000 0.6457143 </code></pre>
 </div>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">prop_ci2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/prop.test.html">prop.test</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">94</span>, <span class="fl">113</span><span class="op">)</span>, n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">125</span>, <span class="fl">175</span><span class="op">)</span>, </span>
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">prop_ci2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/prop.test.html">prop.test</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">94</span>, <span class="fl">113</span><span class="op">)</span>, n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">125</span>, <span class="fl">175</span><span class="op">)</span>, </span>
 <span>                     alternative <span class="op">=</span> <span class="st">"two.sided"</span>, correct <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">prop_ci2</span><span class="op">$</span><span class="va">conf.int</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1031,7 +1164,7 @@ Note
 <div class="callout-body-container callout-body">
 <p>The two sample proportion <span class="math inline">\(z\)</span> test is equivalent to the chi-squared test introduced in the next chapter (<a href="infer-cat.html" class="quarto-xref"><span>Chapter 20</span></a>) that considers more than two possible outcomes.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pi_bar</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">94</span> <span class="op">+</span> <span class="fl">113</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fl">125</span> <span class="op">+</span> <span class="fl">175</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pi_bar</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">94</span> <span class="op">+</span> <span class="fl">113</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fl">125</span> <span class="op">+</span> <span class="fl">175</span><span class="op">)</span></span>
 <span><span class="va">pi_1_hat</span> <span class="op">&lt;-</span> <span class="fl">94</span><span class="op">/</span><span class="fl">125</span></span>
 <span><span class="va">pi_2_hat</span> <span class="op">&lt;-</span> <span class="fl">113</span><span class="op">/</span><span class="fl">175</span></span>
 <span><span class="va">z_test2</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">pi_1_hat</span> <span class="op">-</span> <span class="va">pi_2_hat</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">pi_bar</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="va">pi_bar</span><span class="op">)</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="fl">125</span><span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">175</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
@@ -1039,10 +1172,78 @@ Note
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 3.850932</code></pre>
 </div>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">prop_ci2</span><span class="op">$</span><span class="va">statistic</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">prop_test2</span><span class="op">$</span><span class="va">statistic</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>X-squared 
  3.850932 </code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<p>Below is a demonstration of how to make inferences about two proportions in Python. We still use <code>proportions_ztest()</code> function, but here we provide the number of successes and the number of trials in the arguments <code>count</code> and <code>nobs</code> respectively as an array whose first element is for the first group and second element for the second group. Please be consistent with the order and don’t mess up.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Two proportion Z-test</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="co"># One-tailed test</span></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>z_test_stat, p_val <span class="op">=</span> proportions_ztest(count<span class="op">=</span>np.array([<span class="dv">94</span>, <span class="dv">113</span>]), </span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>                                       nobs<span class="op">=</span>np.array([<span class="dv">125</span>, <span class="dv">175</span>]), </span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>                                       alternative<span class="op">=</span><span class="st">'larger'</span>)</span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>z_test_stat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1.9623790859613837</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>p_val</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.024859182908509945</code></pre>
+</div>
+</div>
+<p>However, if we use <code>proportion_confint()</code> for calculating the confidence interval for the mean difference of two proportions, the results do not match what the formula show. <code>proportion_confint()</code> actually calculate two CIs, one for each proportion.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>ci_low, ci_upp <span class="op">=</span> proportion_confint(count<span class="op">=</span>np.array([<span class="dv">94</span>, <span class="dv">113</span>]), </span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>                                    nobs<span class="op">=</span>np.array([<span class="dv">125</span>, <span class="dv">175</span>]), </span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>                                    alpha<span class="op">=</span><span class="fl">0.05</span>, </span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>                                    method<span class="op">=</span><span class="st">'normal'</span>)</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>ci_low</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>array([0.67629443, 0.57485022])</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>ci_upp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>array([0.82770557, 0.71657835])</code></pre>
+</div>
+</div>
+<p>We are actually comparing proportions of two independent binomial samples. In Python, <a href="https://www.statsmodels.org/dev/generated/statsmodels.stats.proportion.test_proportions_2indep.html"><code>test_proportions_2indep()</code></a> and <a href="https://www.statsmodels.org/dev/generated/statsmodels.stats.proportion.confint_proportions_2indep.html"><code>confint_proportions_2indep()</code></a> help us test whether the two proportions are equal or one is greater than the other, and provide CI for the proportion difference.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.stats.proportion <span class="im">import</span> test_proportions_2indep</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>test_prop_2ind_res <span class="op">=</span> test_proportions_2indep(</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>    count1<span class="op">=</span><span class="dv">94</span>, nobs1<span class="op">=</span><span class="dv">125</span>, count2<span class="op">=</span><span class="dv">113</span>, nobs2<span class="op">=</span><span class="dv">175</span>,</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>    compare<span class="op">=</span><span class="st">'diff'</span>, alternative<span class="op">=</span><span class="st">'larger'</span>, correction<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>    method<span class="op">=</span><span class="st">'score'</span>)</span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>test_prop_2ind_res.statistic</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1.9623790859613837</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>test_prop_2ind_res.pvalue</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.024859182908509945</code></pre>
+</div>
+</div>
+<p>We see that there are several arguments that controls how the test should be performed. The option <code>correction=False</code> and <code>method='score'</code> matches the results obtained from the formula. We don’t need to worry too much which method we should use at this moment. Although different options give us different test statistics and p-value, the difference is small, and the conclusion usually remain the same.</p>
+<p>Our confidence interval is a Wald interval, and <code>method='wald'</code>. It does not matter whether correction is true or false. Again, there are several difference methods for calculating confidence intervals. Their difference is not large, and the conclusion stays the same most of the time.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.stats.proportion <span class="im">import</span> confint_proportions_2indep</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>confint_proportions_2indep(count1<span class="op">=</span><span class="dv">94</span>, nobs1<span class="op">=</span><span class="dv">125</span>, count2<span class="op">=</span><span class="dv">113</span>, nobs2<span class="op">=</span><span class="dv">175</span>,</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>                           compare<span class="op">=</span><span class="st">'diff'</span>, method<span class="op">=</span><span class="st">'wald'</span>, correction<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(0.002588800743036121, 0.2099826278283925)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>confint_proportions_2indep(count1<span class="op">=</span><span class="dv">94</span>, nobs1<span class="op">=</span><span class="dv">125</span>, count2<span class="op">=</span><span class="dv">113</span>, nobs2<span class="op">=</span><span class="dv">175</span>,</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>                           compare<span class="op">=</span><span class="st">'diff'</span>, method<span class="op">=</span><span class="st">'wald'</span>, correction<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(0.002588800743036121, 0.2099826278283925)</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -1633,7 +1834,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
 <li class="nav-item compact">
-    <a class="nav-link active" href="https://github.com/chenghanyustats/introstatsbook" aria-current="page">
+    <a class="nav-link" href="https://github.com/chenghanyustats/introstatsbook">
       <i class="bi bi-github" role="img">
 </i> 
     </a>

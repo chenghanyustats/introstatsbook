@@ -231,10 +231,13 @@ First we check the assumption:
 
 $$\hat{\pi} \pm z_{\alpha/2}\sqrt{\frac{\hat{\pi}(1-\hat{\pi})}{n}} = 0.52 \pm z_{0.025}\sqrt{\frac{0.52(1-0.52)}{1000}} = (0.49, 0.55).$$
 
-<span style="color:red"> ***Computation in R*** </span>
+
+::: {.panel-tabset}
+<!-- <span style="color:red"> ***Computation in R*** </span> -->
 
 <!-- Below is a demonstration of how to perform a binomial test in R.  -->
 
+## R
 To perform the one-sample proportion $z$ test in R, we use the function `prop.test()`. The argument `correct` tells us whether or not we want to do continuity correction. Our method here does not do continuity correction. It does not matter much when our method assumption is satisfied.
 
 To obtain the confidence interval, we should set `alternative = "two.sided"` because the interval is two sided. Be careful. The interval we learn is the Wald interval. However, the interval from the `prop.test()` output is not the Wald interval, but the so-called **Wilson interval**. There are lots of variants of confidence intervals for binomial proportions, and one can use the `BinomCI()` function in the `DescTools` package to obtain them.
@@ -245,8 +248,8 @@ To obtain the confidence interval, we should set `alternative = "two.sided"` bec
 #| echo: true
 
 ## one proportion test using normal approximation
-prop.test(x = 520, n = 1000, p = 0.5, alternative = "greater", 
-          correct = FALSE)
+(prop_test_res <- prop.test(x = 520, n = 1000, p = 0.5, alternative = "greater", 
+          correct = FALSE))
 
 # Use alternative = "two.sided" to get CI
 prop_ci <- prop.test(x = 520, n = 1000, p = 0.5, 
@@ -269,9 +272,9 @@ If you look at the proportion test output carefully, you'll find that the test s
 
 ```{r}
 #| echo: true
-z_test <- (0.52 - 0.5) / sqrt((0.5)*0.5 / 1000)
+z_test <- (0.52 - 0.5) / sqrt((0.52)*0.48 / 1000)
 z_test ^ 2
-prop_ci$statistic
+prop_test_res$statistic
 ```
 
 :::
@@ -282,10 +285,10 @@ prop_ci$statistic
 The method we learn here uses normal approximation to binomial variables. One can also perform the [**exact binomial test**](https://en.wikipedia.org/wiki/Binomial_test) that directly uses binomial probabilities to calculate the $p$-value and do the testing. As its name suggests, it is what we should use for binomial inference because it is *exact*. If the requirement of the normal approximation method we learn is not met, the exact binomial test should be used. When the sample size is large, and the expected proportion is not extreme being close to 0 or 1, the normal approximation method and the exact binomial test have pretty similar inference results.
 
 We can use `binom.test()` function to perform the exact binomial test. The [page](https://yury-zablotski.netlify.app/post/exact-binomial-test/) discusses the relationship between the exact binomial test and other methods.
-:::
 
 ```{r}
 #| echo: true
+
 ## exact binom test
 binom.test(x = 520, n = 1000, p = 0.5, alternative = "greater")
 
@@ -293,10 +296,139 @@ binom.test(x = 520, n = 1000, p = 0.5, alternative = "greater")
 bi <- binom.test(x = 520, n = 1000, p = 0.5, alternative = "two.sided")
 bi$conf.int
 ```
-
+:::
 
 <!-- https://bookdown.org/mpfoley1973/statistics/exact-binomial-test.html -->
 
+## Python
+It needs a bit extra work to perform the one-sample proportion $z$ test in Python because unfortunately `scipy.stats` does not provide any function for the test. Unless you want to calculate and do the test step by step, we can use the function [`proportions_ztest()`](https://www.statsmodels.org/dev/generated/statsmodels.stats.proportion.proportions_ztest.html) provided in the package [`statsmodels`](https://www.statsmodels.org/stable/index.html). In RStudio, with the R `reticulate` package, we can install the Python package in our R session using the command `py_install("statsmodels")`.
+
+
+
+```{python}
+#| echo: true
+import numpy as np
+import statsmodels.api as sm
+from statsmodels.stats.proportion import proportions_ztest, proportion_confint
+```
+
+
+The argument `value` in `proportions_ztest()` is the value of the null hypothesis equal to the proportion.
+
+```{python}
+#| echo: true
+# One proportion z-test using normal approximation
+z_prop_stat, pval = proportions_ztest(count=520, nobs=1000, value=0.5, alternative='larger')
+z_prop_stat
+pval
+```
+
+The first returned value is the test statistic for the z-test, and the second is the p-value. Note that when we specify the alternative, we use the word 'larger', not 'greater' that is used in the functions provided by `scipy.stats`, `ttest_rel()` for example.
+
+
+
+To obtain the confidence interval, we use `proportion_confint()`. The method is set to be 'normal' because we are doing normal approximation. The interval we learn is the Wald interval.
+
+```{python}
+#| echo: true
+prop_ci = proportion_confint(count=520, nobs=1000, alpha=0.05, method='normal')
+prop_ci
+```
+
+
+There are lots of variants of confidence intervals for binomial proportions that can be specified through the method argument
+
+```{python}
+#| echo: true
+# normal : asymptotic normal approximation
+# 
+# agresti_coull : Agresti-Coull interval
+# 
+# beta : Clopper-Pearson interval based on Beta distribution
+# 
+# wilson : Wilson Score interval
+# 
+# jeffreys : Jeffreys Bayesian Interval
+# 
+# binom_test : Numerical inversion of binom_test
+```
+
+For example,
+
+```{python}
+#| echo: true
+ci_wilson = proportion_confint(count=520, nobs=1000, alpha=0.05, method='wilson')
+ci_wilson
+```
+
+```{python}
+#| echo: false
+#| eval: false
+ci_binom = proportion_confint(count=520, nobs=1000, alpha=0.05, method='binom_test')
+ci_binom
+```
+
+```{python}
+#| echo: false
+#| eval: false
+ci_agresti = proportion_confint(count=520, nobs=1000, alpha=0.05, method='agresti_coull')
+ci_agresti
+```
+
+
+:::{.callout-warning}
+Doing inference with normal approximation to binomial variables is more complicated than what we discuss here. The main reason is that we use a continuous normal distribution to approximate a discrete binomial distribution. Check the [Wiki page](https://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval) if you don't believe it. No worries at this moment unless you want to be a statistician doing research in this field!
+:::
+
+
+
+<!-- :::{.callout-note} -->
+
+
+<!-- ```{python} -->
+<!-- #| echo: true -->
+<!-- z_test52 = (0.52 - 0.5) / np.sqrt(0.52 * 0.48 / 1000) -->
+<!-- z_test52 -->
+<!-- z_prop_stat -->
+<!-- ``` -->
+<!-- ::: -->
+
+
+:::{.callout-note}
+The method we learn here uses normal approximation to binomial variables. One can also perform the [**exact binomial test**](https://en.wikipedia.org/wiki/Binomial_test) that directly uses binomial probabilities to calculate the $p$-value and do the testing. As its name suggests, it is what we should use for binomial inference because it is *exact*. If the requirement of the normal approximation method we learn is not met, the exact binomial test should be used. When the sample size is large, and the expected proportion is not extreme being close to 0 or 1, the normal approximation method and the exact binomial test have pretty similar inference results.
+
+We can use [`binomtest()`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.binomtest.html) function in `scipy.stats` to perform the exact binomial test. The [page](https://yury-zablotski.netlify.app/post/exact-binomial-test/) discusses the relationship between the exact binomial test and other methods. Note that when confidence interval is calculated, the alternative shoud be two-sided.
+
+```{python}
+#| echo: true
+#| eval: true
+
+from scipy.stats import binomtest
+
+binom_test_res = binomtest(k=520, n=1000, p=0.5, alternative='greater')
+binom_test_res.statistic
+binom_test_res.pvalue
+binom_test_ci = binomtest(k=520, n=1000, p=0.5, alternative='two-sided')
+binom_test_ci.proportion_ci(confidence_level=0.95, method='exact')
+```
+
+
+Also be careful that the `proportion_confint()` from `statsmodels` can generate the confidence interval of a binomial test with `method='binom_test'`. However, its result is not the same as the one shown before.
+
+```{python}
+#| echo: true
+#| eval: true
+# from statsmodels
+from statsmodels.stats.proportion import binom_test
+binom_test(count=520, nobs=1000, prop=0.5, alternative='larger')
+
+ci_binom = proportion_confint(count=520, nobs=1000, alpha=0.05, method='binom_test')
+ci_binom
+```
+
+:::
+
+:::
 
 
 ## Inference for Two Proportions
@@ -455,15 +587,22 @@ $$0.75 - 0.65 \pm 1.96\sqrt{\frac{(0.75)(1-0.75)}{125} + \frac{(0.65)(1-0.65)}{1
 
 Because 0 is not included in this interval, we reach the same conclusion as the hypothesis testing.
 
-<span style="color:red"> ***Implementation in R*** </span>
+
+
+::: {.panel-tabset}
+
+<!-- <span style="color:red"> ***Implementation in R*** </span> -->
+
+## R
 
 Below is a demonstration of how to make inferences about two proportions in R. We still use `prop.test()` function, but here we provide the number of successes and the number of trials in the arguments `x` and `n` respectively as a vector whose first element is for the first group and second element for the second group. Please be consistent with the order and don't mess up. 
 
 ```{r}
 #| echo: true
 
-prop.test(x = c(94, 113), n = c(125, 175), 
-          alternative = "greater", correct = FALSE)
+(prop_test2 <- prop.test(x = c(94, 113), n = c(125, 175), 
+          alternative = "greater", correct = FALSE))
+
 prop_ci2 <- prop.test(x = c(94, 113), n = c(125, 175), 
                      alternative = "two.sided", correct = FALSE)
 prop_ci2$conf.int
@@ -480,10 +619,122 @@ pi_1_hat <- 94/125
 pi_2_hat <- 113/175
 z_test2 <- (pi_1_hat - pi_2_hat) / (sqrt(pi_bar*(1-pi_bar)*(1/125+1/175)))
 z_test2 ^ 2
-prop_ci2$statistic
+prop_test2$statistic
+```
+:::
+
+## Python
+
+Below is a demonstration of how to make inferences about two proportions in Python. We still use `proportions_ztest()` function, but here we provide the number of successes and the number of trials in the arguments `count` and `nobs` respectively as an array whose first element is for the first group and second element for the second group. Please be consistent with the order and don't mess up. 
+
+```{python}
+#| echo: true
+# Two proportion Z-test
+# One-tailed test
+z_test_stat, p_val = proportions_ztest(count=np.array([94, 113]), 
+                                       nobs=np.array([125, 175]), 
+                                       alternative='larger')
+
+z_test_stat
+p_val
 ```
 
+
+However, if we use `proportion_confint()` for calculating the confidence interval for the mean difference of two proportions, the results do not match what the formula show. `proportion_confint()` actually calculate two CIs, one for each proportion.
+
+```{python}
+#| echo: true
+ci_low, ci_upp = proportion_confint(count=np.array([94, 113]), 
+                                    nobs=np.array([125, 175]), 
+                                    alpha=0.05, 
+                                    method='normal')
+ci_low
+ci_upp
+```
+
+
+We are actually comparing proportions of two independent binomial samples. In Python,
+[`test_proportions_2indep()`](https://www.statsmodels.org/dev/generated/statsmodels.stats.proportion.test_proportions_2indep.html) and [`confint_proportions_2indep()`](https://www.statsmodels.org/dev/generated/statsmodels.stats.proportion.confint_proportions_2indep.html) help us test whether the two proportions are equal or one is greater than the other, and provide CI for the proportion difference.
+
+```{python}
+#| echo: true
+from statsmodels.stats.proportion import test_proportions_2indep
+test_prop_2ind_res = test_proportions_2indep(
+    count1=94, nobs1=125, count2=113, nobs2=175,
+    compare='diff', alternative='larger', correction=False,
+    method='score')
+test_prop_2ind_res.statistic
+test_prop_2ind_res.pvalue
+```
+
+
+We see that there are several arguments that controls how the test should be performed. The option `correction=False` and `method='score'` matches the results obtained from the formula. We don't need to worry too much which method we should use at this moment. Although different options give us different test statistics and p-value, the difference is small, and the conclusion usually remain the same.
+
+```{python}
+#| echo: false
+#| eval: false
+test_proportions_2indep(count1=94, nobs1=125, count2=113, nobs2=175,
+                        compare='diff', alternative='larger', correction=True,
+                        method='wald')
+
+test_proportions_2indep(count1=94, nobs1=125, count2=113, nobs2=175,
+                        compare='diff', alternative='larger', correction=True,
+                        method='agresti-caffo')
+                        
+test_proportions_2indep(count1=94, nobs1=125, count2=113, nobs2=175,
+                        compare='diff', alternative='larger', correction=True,
+                        method='score')
+                        
+test_proportions_2indep(count1=94, nobs1=125, count2=113, nobs2=175,
+                        compare='diff', alternative='larger', correction=False,
+                        method='wald')
+ 
+test_proportions_2indep(count1=94, nobs1=125, count2=113, nobs2=175,
+                        compare='diff', alternative='larger', correction=False,
+                        method='agresti-caffo')
+```
+
+
+Our confidence interval is a Wald interval, and `method='wald'`. It does not matter whether correction is true or false. Again, there are several difference methods for calculating confidence intervals. Their difference is not large, and the conclusion stays the same most of the time.
+
+```{python}
+#| echo: true
+from statsmodels.stats.proportion import confint_proportions_2indep
+confint_proportions_2indep(count1=94, nobs1=125, count2=113, nobs2=175,
+                           compare='diff', method='wald', correction=True)
+confint_proportions_2indep(count1=94, nobs1=125, count2=113, nobs2=175,
+                           compare='diff', method='wald', correction=False)
+```
+
+```{python}
+#| echo: false
+#| eval: false
+from statsmodels.stats.proportion import confint_proportions_2indep
+
+confint_proportions_2indep(count1=94, nobs1=125, count2=113, nobs2=175,
+                           compare='diff', method='newcomb', correction=True)
+
+
+                           
+confint_proportions_2indep(count1=94, nobs1=125, count2=113, nobs2=175,
+                           compare='diff', method='agresti-caffo', correction=True)
+                           
+# confint_proportions_2indep(count1=94, nobs1=125, count2=113, nobs2=175,
+#                            compare='diff', method='score') ## render error
+
+confint_proportions_2indep(count1=94, nobs1=125, count2=113, nobs2=175,
+                           compare='diff', method='newcomb', correction=False)
+
+
+                           
+confint_proportions_2indep(count1=94, nobs1=125, count2=113, nobs2=175,
+                           compare='diff', method='agresti-caffo', correction=False)
+
+confint_proportions_2indep(count1=94, nobs1=125, count2=113, nobs2=175,
+                           compare='diff', method='score', correction=False)
+```
 :::
+
 
 
 
