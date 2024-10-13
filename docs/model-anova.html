@@ -833,6 +833,13 @@ For which data do you feel more confident in saying the population means <span c
 </div>
 <p>A sample of 5 is taken from each type of food and the amount of isoflavones is measured. Is there a sufficient evidence to conclude that the mean isoflavone levels vary among these food items at <span class="math inline">\(\alpha = 0.05\)</span>?</p>
 <hr>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <p>We are going to learn to generate a ANOVA table using R.</p>
 <p><span style="color:blue"> <strong>Data</strong> </span></p>
 <p>In order to use the R built-in function for ANOVA, we get to make sure the data matrix is in the right format. The original data set we get may be something like object <code>data</code> below, where each column represents the five isoflavones measurements of a food type. It is not a <em>“wrong”</em> data format, but just not what we need for doing ANOVA. The data frame <code>data_anova</code> is the data format needed for ANOVA. There are two columns, our response variable isoflavones measurement labelled <code>y</code>, and the factor or categorical variable that may affect the response value, which is food type labelled <code>food</code>. With this format, there will be totally <span class="math inline">\(N=15\)</span> observations and rows. Please transform any data into this kind of data format before you do ANOVA.</p>
@@ -892,6 +899,63 @@ Figure&nbsp;24.5: Boxplot of the Isoflavone Content in 3 Types of Food
 </div>
 </div>
 </div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<p>We are going to learn to generate a ANOVA table using Python.</p>
+<p><span style="color:blue"> <strong>Data</strong> </span></p>
+<div class="columns">
+<div class="column" style="width:49%;">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>array([[ 3, 19, 25],
+       [17, 10, 15],
+       [12,  9, 12],
+       [10,  7,  9],
+       [ 4,  5,  8]])</code></pre>
+</div>
+</div>
+<!-- :::{.callout-note icon=false} -->
+<!-- ## So tell me what is the value of $y_{23}$! -->
+<!-- ::: -->
+</div><div class="column" style="width:2%;">
+
+</div><div class="column" style="width:49%;">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>data_anova</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     y     food
+0    3  cereals
+1   17  cereals
+2   12  cereals
+3   10  cereals
+4    4  cereals
+5   19   energy
+6   10   energy
+7    9   energy
+8    7   energy
+9    5   energy
+10  25   veggie
+11  15   veggie
+12  12   veggie
+13   9   veggie
+14   8   veggie</code></pre>
+</div>
+</div>
+</div>
+</div>
+<p>The boxplot kind of gives us the isoflavones distribution by food type. It is hard to say whether the food type affects isoflavone level or not, and we need ANOVA to help us make the conclusion.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-anova_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 <hr>
 <p><span style="color:blue"> <strong>Test Assumptions</strong> </span></p>
 <p>Before implementing any statistical method, always check its method assumptions.</p>
@@ -910,7 +974,7 @@ Figure&nbsp;24.5: Boxplot of the Isoflavone Content in 3 Types of Food
 <div class="cell-output-display">
 <div id="fig-qqplots" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-qqplots-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="model-anova_files/figure-html/fig-qqplots-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+<img src="model-anova_files/figure-html/fig-qqplots-3.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-qqplots-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;24.6: QQ plots for each type of food
@@ -931,11 +995,18 @@ Figure&nbsp;24.6: QQ plots for each type of food
 </div>
 </div>
 </div>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
 <p>In R, we can do all the calculations and generate an ANOVA table using just one line of code. We first use the popular function <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> to implement ANOVA. The first argument is <code>formula</code> that has the form <code>response ~ factor</code> where <code>response</code> is the numeric response vector, and <code>factor</code> is the categorical factor vector. In our data <code>data_anova</code>, <code>y</code> is our response, and <code>food</code> is our factor. Note that if we just write <code>y</code> and <code>food</code> in the formula, R will render an error because R does not recognize <code>y</code> and <code>food</code> because they are not an R object but a column name of data <code>data_anova</code>. Therefore, we need to tell R where <code>y</code> and <code>food</code> are from by specifying the data set they are referred. If you want to specify the data name, you can get access to the response and factor vector by extracting them using <code>data_anova$y</code> and <code>data_anova$food</code>.</p>
 <p>The word <code>lm</code> stands for <strong>linear model</strong>, and ANOVA is a linear model. If you just run <code>lm(formula = data_anova$y ~ data_anova$food)</code>, it will show the linear model output related to ANOVA. We don’t need it at this moment, and we will discuss more about linear model in Regression <a href="model-reg.html" class="quarto-xref"><span>Chapter 27</span></a>.</p>
 <p>To obtain the ANOVA table, we apply the function <code><a href="https://rdrr.io/r/stats/anova.html">anova()</a></code> to the <code>lm</code> object. In the output, <code>food</code> is the source of variation between samples. <code>Residuals</code> is for the source of variation within samples. <code>F value</code> is the <span class="math inline">\(F\)</span> test statistic value, not the critical value. <code>Pr(&gt;F)</code> is the <span class="math inline">\(p\)</span>-value. Since <span class="math inline">\(p\)</span>-value &gt; 0.05, we do not reject <span class="math inline">\(H_0\)</span>. The evidence is not sufficient to reject the equality of population means.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">y</span> <span class="op">~</span> <span class="va">food</span>, data <span class="op">=</span> <span class="va">data_anova</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">y</span> <span class="op">~</span> <span class="va">food</span>, data <span class="op">=</span> <span class="va">data_anova</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Variance Table
 
@@ -944,7 +1015,7 @@ Response: y
 food       2   60.4  30.200  0.8282 0.4603
 Residuals 12  437.6  36.467               </code></pre>
 </div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">data_anova</span><span class="op">$</span><span class="va">y</span> <span class="op">~</span> <span class="va">data_anova</span><span class="op">$</span><span class="va">food</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">data_anova</span><span class="op">$</span><span class="va">y</span> <span class="op">~</span> <span class="va">data_anova</span><span class="op">$</span><span class="va">food</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Variance Table
 
@@ -966,13 +1037,55 @@ Note
 <div class="callout-body-container callout-body">
 <p>There is another way to generate the ANOVA table in R. We use <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> and <code><a href="https://rdrr.io/r/stats/aov.html">aov()</a></code> functions.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/aov.html">aov</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">food</span>, data <span class="op">=</span> <span class="va">data_anova</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/aov.html">aov</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">food</span>, data <span class="op">=</span> <span class="va">data_anova</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>            Df Sum Sq Mean Sq F value Pr(&gt;F)
 food         2   60.4   30.20   0.828   0.46
 Residuals   12  437.6   36.47               </code></pre>
 </div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># oneway.test(y ~ food, data = data_anova, var.equal = TRUE)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># oneway.test(y ~ food, data = data_anova, var.equal = TRUE)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<p>In Python, we can do all the calculations and generate an ANOVA table using simple code. We first use the function <a href="https://www.statsmodels.org/stable/generated/statsmodels.formula.api.ols.html"><code>formula.ols()</code></a> in <code>statsmodels.api</code> to create a linear model from a formula and dataframe. <code>ols</code> means ordinary least squares which is a method for a linear method. We will discuss it in <a href="model-reg.html" class="quarto-xref"><span>Chapter 27</span></a>. The first argument is <code>formula</code> that has the form <code>response ~ factor</code> where <code>response</code> is the numeric response vector, and <code>factor</code> is the categorical factor vector. In our data <code>data_anova</code>, <code>y</code> is our response, and <code>food</code> is our factor. Note that the formula has to be a string.</p>
+<p>Then, we need to tell Python where <code>y</code> and <code>food</code> are from by specifying the data set they are referred in the argument <code>data</code>.</p>
+<p>The code <code>sm.formula.ols(formula='y ~ food', data=data_anova)</code> only creates a model, but it is not actually fit by our data. We need to add <code>.fit()</code> to complete the modeling fitting using the ols approach.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels <span class="im">import</span> stats</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> sm.formula.ols(formula<span class="op">=</span><span class="st">'y ~ food'</span>, data<span class="op">=</span>data_anova).fit()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To obtain the ANOVA table, we apply the function <code>anova_lm()</code> to the fitted model. In the output, <code>food</code> is the source of variation between samples. <code>Residual</code> is for the source of variation within samples. <code>F</code> is the <span class="math inline">\(F\)</span> test statistic value, not the critical value. <code>PR(&gt;F)</code> is the <span class="math inline">\(p\)</span>-value. Since <span class="math inline">\(p\)</span>-value &gt; 0.05, we do not reject <span class="math inline">\(H_0\)</span>. The evidence is not sufficient to reject the equality of population means.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>sm.stats.anova_lm(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            df  sum_sq    mean_sq         F   PR(&gt;F)
+food       2.0    60.4  30.200000  0.828154  0.46035
+Residual  12.0   437.6  36.466667       NaN      NaN</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The function <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.f_oneway.html"><code>f_oneway()</code></a> in <code>scipy.stats</code> provides a fast way to do the ANOVA without outputting the ANOVA table. It just provides the F test statistic and p-value.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> stats</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>stats.f_oneway(data[:, <span class="dv">0</span>], data[:, <span class="dv">1</span>], data[:, <span class="dv">2</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>F_onewayResult(statistic=0.8281535648994516, pvalue=0.46034965646255643)</code></pre>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -988,7 +1101,7 @@ Residuals   12  437.6   36.47               </code></pre>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="model-anova_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="1248"></p>
+<figure class="figure"><p><img src="model-anova_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="1248"></p>
 </figure>
 </div>
 </div>
@@ -997,7 +1110,7 @@ Residuals   12  437.6   36.47               </code></pre>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="model-anova_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="1248"></p>
+<figure class="figure"><p><img src="model-anova_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="1248"></p>
 </figure>
 </div>
 </div>
@@ -1015,6 +1128,13 @@ Residuals   12  437.6   36.47               </code></pre>
 </div>
 <!-- ![](./figures/table8-16.png){height=400px width=900px} -->
 <!-- ## Example 8.4 Cont'd: Check the Data -->
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
 <p>The origin data set <code>data_oxygen</code> is saved as</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output cell-output-stdout">
@@ -1034,19 +1154,16 @@ Residuals   12  437.6   36.47               </code></pre>
 <!-- ## Example 8.4 Cont'd: Test for Equal Variances -->
 <p>First we learn that the homogeneity of variance assumption is violated by checking the boxplot.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/boxplot.html">boxplot</a></span><span class="op">(</span><span class="va">data_oxygen</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="model-anova_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<figure class="figure"><p><img src="model-anova_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>This is also verified by the Levene’s test using the function <code><a href="https://rdrr.io/pkg/car/man/leveneTest.html">car::leveneTest()</a></code>. The Levene’s test <span class="math inline">\(p\)</span>-value is 0.02, so we reject the <span class="math inline">\(H_0\)</span>: Equality of variance.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-forge.r-project.org/projects/car/">car</a></span><span class="op">)</span></span>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-forge.r-project.org/projects/car/">car</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/car/man/leveneTest.html">leveneTest</a></span><span class="op">(</span><span class="va">oxygen</span> <span class="op">~</span> <span class="va">km</span>, data <span class="op">=</span> <span class="va">data_oxygen_tidy</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in leveneTest.default(y = y, group = group, ...): group coerced to
@@ -1105,6 +1222,47 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 38     31 20
 39     31 20
 40     33 20</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+<p>The origin data set <code>data_oxygen</code> is saved as</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>   1KM  5KM  10KM  20KM
+0    1    4    20    37
+1    5    8    26    30
+2    2    2    24    26
+3    1    3    11    24
+4    2    8    28    41
+5    2    5    20    25
+6    4    6    19    36
+7    3    4    19    31
+8    0    3    21    31
+9    2    3    24    33</code></pre>
+</div>
+</div>
+<p>First we learn that the homogeneity of variance assumption is violated by checking the boxplot.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-anova_files/figure-html/unnamed-chunk-43-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This is also verified by the Levene’s test using the function <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.levene.html"><code>levene()</code></a> in <code>scipy .stats</code>. The Levene’s test <span class="math inline">\(p\)</span>-value is 0.02, so we reject the <span class="math inline">\(H_0\)</span>: Equality of variance.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Levene's test for homogeneity of variances</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>stats.levene(data_oxygen[<span class="st">'1KM'</span>], </span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>             data_oxygen[<span class="st">'5KM'</span>], </span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>             data_oxygen[<span class="st">'10KM'</span>],</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>             data_oxygen[<span class="st">'20KM'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>LeveneResult(statistic=3.700319780721791, pvalue=0.020291806138675962)</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <p>To get some understanding of how we should transform our data to make the variances equal, let’s calculate <span class="math inline">\(\frac{s_i^2}{\bar{y}_i}\)</span> for <span class="math inline">\(i = 1, 2, 3, 4\)</span>.</p>
@@ -1205,8 +1363,15 @@ Figure&nbsp;24.7: Illustration of ANOVA model structure. Figure 16.7 of Applied 
 <!-- # ``` -->
 <!-- </div> -->
 <p>To get the sample mean for each group, we can grab each column data, and calculate its average. For example, <span class="math inline">\(\bar{y}_{1\cdot} = 2.2\)</span>.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html">colMeans</a></span><span class="op">(</span><span class="va">data_oxygen</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html">colMeans</a></span><span class="op">(</span><span class="va">data_oxygen</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> 1KM  5KM 10KM 20KM 
  2.2  4.6 21.2 31.4 </code></pre>
@@ -1214,7 +1379,7 @@ Figure&nbsp;24.7: Illustration of ANOVA model structure. Figure 16.7 of Applied 
 </div>
 <p>The fitted value can also be obtained from the fitted result by the fitted linear model from <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>. <code>oxygen_fit$fitted.values</code> gives us fitted values for all observations. Note that the first 10 observations all have the same fitted value 2.2 because they are all from the first group (1 km). Similarly for other groups.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># data_oxygen_tidy</span></span>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># data_oxygen_tidy</span></span>
 <span><span class="co">## fit a linear model to get fitted values and residuals</span></span>
 <span><span class="va">oxygen_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">oxygen</span> <span class="op">~</span> <span class="va">km</span>, data <span class="op">=</span> <span class="va">data_oxygen_tidy</span><span class="op">)</span></span>
 <span><span class="va">oxygen_fit</span><span class="op">$</span><span class="va">fitted.values</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1229,7 +1394,7 @@ Figure&nbsp;24.7: Illustration of ANOVA model structure. Figure 16.7 of Applied 
 </div>
 <p>We can organize the fitted values, saving them as a data frame like the original data <code>data_oxygen</code>.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fitted_val</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="va">oxygen_fit</span><span class="op">$</span><span class="va">fitted.values</span>, <span class="fl">10</span>, <span class="fl">4</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fitted_val</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="va">oxygen_fit</span><span class="op">$</span><span class="va">fitted.values</span>, <span class="fl">10</span>, <span class="fl">4</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## use the same column name as the original data</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">fitted_val</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span>, <span class="fl">10</span>, <span class="fl">20</span><span class="op">)</span>, <span class="st">"KM"</span><span class="op">)</span></span>
@@ -1253,7 +1418,7 @@ Figure&nbsp;24.7: Illustration of ANOVA model structure. Figure 16.7 of Applied 
 <hr>
 <p>Now let’s check the residuals <span class="math inline">\(e_{ij} = y_{ij} - \bar{y}_{i\cdot}\)</span>. We can obtain the residuals using its definition</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_oxygen_tidy</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="va">oxygen_fit</span><span class="op">$</span><span class="va">fitted.values</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_oxygen_tidy</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="va">oxygen_fit</span><span class="op">$</span><span class="va">fitted.values</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    1     2     3     4     5     6     7     8     9    10    11    12    13 
  -1.2   2.8  -0.2  -1.2  -0.2  -0.2   1.8   0.8  -2.2  -0.2  -0.6   3.4  -2.6 
@@ -1267,7 +1432,7 @@ Figure&nbsp;24.7: Illustration of ANOVA model structure. Figure 16.7 of Applied 
 </div>
 <p>or we can simply grab them from the fitted result:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">oxygen_fit</span><span class="op">$</span><span class="va">residuals</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">oxygen_fit</span><span class="op">$</span><span class="va">residuals</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    1     2     3     4     5     6     7     8     9    10    11    12    13 
  -1.2   2.8  -0.2  -1.2  -0.2  -0.2   1.8   0.8  -2.2  -0.2  -0.6   3.4  -2.6 
@@ -1285,13 +1450,14 @@ Figure&nbsp;24.7: Illustration of ANOVA model structure. Figure 16.7 of Applied 
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="model-anova_files/figure-html/unnamed-chunk-41-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<figure class="figure"><p><img src="model-anova_files/figure-html/unnamed-chunk-52-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>The Shapiro test and Anderson-Darling test give us a different conclusion. We could either transform the data to make it look more normal, or collect more data points to gain more information about how the data are distributed.</p>
 <div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/shapiro.test.html">shapiro.test</a></span><span class="op">(</span><span class="va">oxygen_fit</span><span class="op">$</span><span class="va">residuals</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Shapiro-Wilk normality test
@@ -1299,6 +1465,7 @@ Figure&nbsp;24.7: Illustration of ANOVA model structure. Figure 16.7 of Applied 
 data:  oxygen_fit$residuals
 W = 0.95469, p-value = 0.1101</code></pre>
 </div>
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ad.test</span><span class="op">(</span><span class="va">oxygen_fit</span><span class="op">$</span><span class="va">residuals</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Anderson-Darling normality test
@@ -1311,12 +1478,12 @@ A = 0.87454, p-value = 0.02271</code></pre>
 <p><strong>Residual plots</strong> is another good way to check the model assumptions, especially whether or not the homogeneity of variance is hold. A residual plot is a scatterplot of <span class="math inline">\(e_{ij}\)</span> (y-axis) versus <span class="math inline">\(\hat{y}_{ij}\)</span> (x-axis).</p>
 <!-- - Scatterplot of $\hat{y}_{ij}$ versus $e_{ij}$ -->
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">oxygen_fit</span><span class="op">$</span><span class="va">fitted.values</span>, y <span class="op">=</span> <span class="va">oxygen_fit</span><span class="op">$</span><span class="va">residuals</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">oxygen_fit</span><span class="op">$</span><span class="va">fitted.values</span>, y <span class="op">=</span> <span class="va">oxygen_fit</span><span class="op">$</span><span class="va">residuals</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="model-anova_files/figure-html/unnamed-chunk-44-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<figure class="figure"><p><img src="model-anova_files/figure-html/unnamed-chunk-55-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1325,12 +1492,12 @@ A = 0.87454, p-value = 0.02271</code></pre>
 <!-- ## Correct Analysis Based on Transformed Data -->
 <p>Since the model assumptions are violated, we transform our data to correct unequal variances. As we learned in the previous section, we use the transformation <span class="math inline">\(Y_T = \sqrt{Y + 0.375}\)</span>. The transformed data set is called <code>data_oxygen_tidy_trans</code>.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_oxygen_tidy_trans</span> <span class="op">&lt;-</span> <span class="va">data_oxygen_tidy</span></span>
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_oxygen_tidy_trans</span> <span class="op">&lt;-</span> <span class="va">data_oxygen_tidy</span></span>
 <span><span class="va">data_oxygen_tidy_trans</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">data_oxygen_tidy</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="fl">0.375</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We then fit ANOVA model on the transformed data.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">oxygen_fit_trans</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">oxygen</span> <span class="op">~</span> <span class="va">km</span>, data <span class="op">=</span> <span class="va">data_oxygen_tidy_trans</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">oxygen_fit_trans</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">oxygen</span> <span class="op">~</span> <span class="va">km</span>, data <span class="op">=</span> <span class="va">data_oxygen_tidy_trans</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="va">oxygen_fit_trans</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Variance Table
@@ -1347,7 +1514,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="model-anova_files/figure-html/unnamed-chunk-47-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="1104"></p>
+<figure class="figure"><p><img src="model-anova_files/figure-html/unnamed-chunk-58-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="1104"></p>
 </figure>
 </div>
 </div>
@@ -1371,7 +1538,7 @@ A = 0.33815, p-value = 0.4855</code></pre>
 <p>From the qqplot and the testing results we can see that the transformed data are more like a normal distribution. There is no significant pattern in the residual plot, showing that unequal variances have been corrected.</p>
 <p>This result is more convincing than the one using the original data that violates the ANOVA model assumptions. Although the two models both reject the null hypothesis, the numerical results obtained from the transformed data interpret the relationship between the response and the factors more accurately.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="va">oxygen_fit</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="va">oxygen_fit</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Variance Table
 
@@ -1384,6 +1551,238 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
 <!-- ## Checking Asumptions Based on Transformed Data -->
+</div>
+<div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the mean for each group</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>group_means <span class="op">=</span> data_oxygen.mean()</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>group_means</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1KM      2.2
+5KM      4.6
+10KM    21.2
+20KM    31.4
+dtype: float64</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>data_oxygen_tidy <span class="op">=</span> pd.read_csv(<span class="st">"./data/data_oxygen_tidy.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The fitted value can also be obtained from the fitted result by the fitted linear model from <code>formula.ols()</code>. <code>oxygen_fit.fittedvalues</code> gives us fitted values for all observations. Note that the first 10 observations all have the same fitted value 2.2 because they are all from the first group (1 km). Similarly for other groups.</p>
+<p>In the formula, since the variable <code>km</code> is in fact categorical, we need to add <code><a href="https://rdrr.io/r/stats/zC.html">C()</a></code> to turn its type from integer to string.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>oxygen_fit <span class="op">=</span> sm.formula.ols(formula<span class="op">=</span><span class="st">'oxygen ~ C(km)'</span>, data<span class="op">=</span>data_oxygen_tidy).fit()</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>oxygen_fit.fittedvalues</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0      2.2
+1      2.2
+2      2.2
+3      2.2
+4      2.2
+5      2.2
+6      2.2
+7      2.2
+8      2.2
+9      2.2
+10     4.6
+11     4.6
+12     4.6
+13     4.6
+14     4.6
+15     4.6
+16     4.6
+17     4.6
+18     4.6
+19     4.6
+20    21.2
+21    21.2
+22    21.2
+23    21.2
+24    21.2
+25    21.2
+26    21.2
+27    21.2
+28    21.2
+29    21.2
+30    31.4
+31    31.4
+32    31.4
+33    31.4
+34    31.4
+35    31.4
+36    31.4
+37    31.4
+38    31.4
+39    31.4
+dtype: float64</code></pre>
+</div>
+</div>
+<p>We can organize the fitted values, saving them as a data frame like the original data <code>data_oxygen</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>fitted_val <span class="op">=</span> np.reshape(oxygen_fit.fittedvalues.values, (<span class="dv">10</span>, <span class="dv">4</span>), order<span class="op">=</span><span class="st">'F'</span>)</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>pd.DataFrame(fitted_val, columns<span class="op">=</span>[<span class="st">'1KM'</span>, <span class="st">'5KM'</span>, <span class="st">'10KM'</span>, <span class="st">'20KM'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   1KM  5KM  10KM  20KM
+0  2.2  4.6  21.2  31.4
+1  2.2  4.6  21.2  31.4
+2  2.2  4.6  21.2  31.4
+3  2.2  4.6  21.2  31.4
+4  2.2  4.6  21.2  31.4
+5  2.2  4.6  21.2  31.4
+6  2.2  4.6  21.2  31.4
+7  2.2  4.6  21.2  31.4
+8  2.2  4.6  21.2  31.4
+9  2.2  4.6  21.2  31.4</code></pre>
+</div>
+</div>
+<hr>
+<p>Now let’s check the residuals <span class="math inline">\(e_{ij} = y_{ij} - \bar{y}_{i\cdot}\)</span>. We can obtain the residuals using its definition</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>data_oxygen_tidy[<span class="st">'oxygen'</span>].values <span class="op">-</span> oxygen_fit.fittedvalues.values</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>array([ -1.2,   2.8,  -0.2,  -1.2,  -0.2,  -0.2,   1.8,   0.8,  -2.2,
+        -0.2,  -0.6,   3.4,  -2.6,  -1.6,   3.4,   0.4,   1.4,  -0.6,
+        -1.6,  -1.6,  -1.2,   4.8,   2.8, -10.2,   6.8,  -1.2,  -2.2,
+        -2.2,  -0.2,   2.8,   5.6,  -1.4,  -5.4,  -7.4,   9.6,  -6.4,
+         4.6,  -0.4,  -0.4,   1.6])</code></pre>
+</div>
+</div>
+<p>or we can simply grab them from the fitted result:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>oxygen_fit.resid</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0     -1.2
+1      2.8
+2     -0.2
+3     -1.2
+4     -0.2
+5     -0.2
+6      1.8
+7      0.8
+8     -2.2
+9     -0.2
+10    -0.6
+11     3.4
+12    -2.6
+13    -1.6
+14     3.4
+15     0.4
+16     1.4
+17    -0.6
+18    -1.6
+19    -1.6
+20    -1.2
+21     4.8
+22     2.8
+23   -10.2
+24     6.8
+25    -1.2
+26    -2.2
+27    -2.2
+28    -0.2
+29     2.8
+30     5.6
+31    -1.4
+32    -5.4
+33    -7.4
+34     9.6
+35    -6.4
+36     4.6
+37    -0.4
+38    -0.4
+39     1.6
+dtype: float64</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-anova_files/figure-html/unnamed-chunk-67-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.shapiro.html">Shapiro</a> test and <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.anderson.html">Anderson-Darling</a> test give us a different conclusion. We could either transform the data to make it look more normal, or collect more data points to gain more information about how the data are distributed.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Shapiro-Wilk test for normality</span></span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>stats.shapiro(oxygen_fit.resid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>ShapiroResult(statistic=0.9546933369577799, pvalue=0.11005075717451401)</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Anderson-Darling test for normality</span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>stats.anderson(oxygen_fit.resid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>AndersonResult(statistic=0.8745376678064076, critical_values=array([0.531, 0.605, 0.726, 0.847, 1.007]), significance_level=array([15. , 10. ,  5. ,  2.5,  1. ]), fit_result=  params: FitParams(loc=6.661338147750939e-15, scale=3.7072347839851933)
+ success: True
+ message: '`anderson` successfully fit the distribution to the data.')</code></pre>
+</div>
+</div>
+<p><strong>Residual plots</strong> is another good way to check the model assumptions, especially whether or not the homogeneity of variance is hold. A residual plot is a scatterplot of <span class="math inline">\(e_{ij}\)</span> (y-axis) versus <span class="math inline">\(\hat{y}_{ij}\)</span> (x-axis).</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(oxygen_fit.fittedvalues, oxygen_fit.resid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-anova_files/figure-html/unnamed-chunk-71-3.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>If the homogeneity of variance holds, the residual points should be scattered around value 0 with the same degree of spreadness. Due to the cone shape, we see that the residual variance is increasing with the fitted values or kilometers, a sign of non-constant variances. We can conclude that <span class="math inline">\(Var(\epsilon_{ij})\)</span> is not constant. We can further say that this variance is a function of <span class="math inline">\(\bar{y}_{i\cdot}\)</span>.</p>
+<!-- ## Correct Analysis Based on Transformed Data -->
+<p>Since the model assumptions are violated, we transform our data to correct unequal variances. As we learned in the previous section, we use the transformation <span class="math inline">\(Y_T = \sqrt{Y + 0.375}\)</span>. The transformed data set is called <code>data_oxygen_tidy_trans</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>data_oxygen_tidy_trans <span class="op">=</span> data_oxygen_tidy.copy()</span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply the transformation to the first column (oxygen)</span></span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>data_oxygen_tidy_trans[<span class="st">'oxygen'</span>] <span class="op">=</span> np.sqrt(data_oxygen_tidy[<span class="st">'oxygen'</span>] <span class="op">+</span> <span class="fl">0.375</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We then fit ANOVA model on the transformed data.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>oxygen_fit_trans <span class="op">=</span> sm.formula.ols(formula<span class="op">=</span><span class="st">'oxygen ~ C(km)'</span>,</span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>                                  data<span class="op">=</span>data_oxygen_tidy_trans).fit()</span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>sm.stats.anova_lm(oxygen_fit_trans)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            df      sum_sq    mean_sq           F        PR(&gt;F)
+C(km)      3.0  113.095273  37.698424  153.303333  1.478071e-20
+Residual  36.0    8.852666   0.245907         NaN           NaN</code></pre>
+</div>
+</div>
+<p>We can check the model assumptions on the transformed data too to make sure that fitting ANOVA to the data makes sense.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-anova_files/figure-html/unnamed-chunk-74-5.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="1152"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>ShapiroResult(statistic=0.9732395195196447, pvalue=0.4529490122256537)</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>AndersonResult(statistic=0.3381544911538725, critical_values=array([0.531, 0.605, 0.726, 0.847, 1.007]), significance_level=array([15. , 10. ,  5. ,  2.5,  1. ]), fit_result=  params: FitParams(loc=9.769962616701378e-16, scale=0.4764361953451715)
+ success: True
+ message: '`anderson` successfully fit the distribution to the data.')</code></pre>
+</div>
+</div>
+<p>From the qqplot and the testing results we can see that the transformed data are more like a normal distribution. There is no significant pattern in the residual plot, showing that unequal variances have been corrected.</p>
+<p>This result is more convincing than the one using the original data that violates the ANOVA model assumptions. Although the two models both reject the null hypothesis, the numerical results obtained from the transformed data interpret the relationship between the response and the factors more accurately.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>oxygen_fit <span class="op">=</span> sm.formula.ols(<span class="st">'oxygen ~ C(km)'</span>, data<span class="op">=</span>data_oxygen_tidy).fit()</span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>sm.stats.anova_lm(oxygen_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            df  sum_sq      mean_sq           F        PR(&gt;F)
+C(km)      3.0  5793.1  1931.033333  129.696269  2.353012e-19
+Residual  36.0   536.0    14.888889         NaN           NaN</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </section></section><section id="nonparametric-approach-kruskal-wallis-test" class="level2" data-number="24.6"><h2 data-number="24.6" class="anchored" data-anchor-id="nonparametric-approach-kruskal-wallis-test">
 <span class="header-section-number">24.6</span> Nonparametric Approach: Kruskal-Wallis Test</h2>
 <p>In ANOVA, the sample from each factor level is from a normal population. What if the distribution is <strong>non-normal</strong>? One solution is to use the <strong>Kruskal-Wallis test</strong>, which can be viewed as a generalization of the Wilcoxon rank sum test (Mann-Whitney U test). Suppose we have <span class="math inline">\(k\)</span> samples from <span class="math inline">\(k\)</span> populations. We like to test the hypothesis that the <span class="math inline">\(k\)</span> samples were drawn from populations with the same <strong>median</strong>:</p>
@@ -1400,11 +1799,18 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </ul>
 <p>There is <strong>no</strong> requirement that the populations have a normal distribution or any other particular distribution.</p>
 <p>The testing details are skipped here, but let’s see how we can perform this test to answer our question when the normality assumption of ANOVA is not satisfied.</p>
-<hr>
-<p><span style="color:blue"> <strong>Example: <code>airquality</code> data</strong> </span></p>
+<!-- ---------------------------------------------------------------------- -->
+<!-- <span style="color:blue">  **Example: `airquality` data** </span> -->
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
 <p>We use the R built-in data set <code>airquality</code> for illustration. The data collected daily air quality measurements in New York, May to September 1973.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">airquality</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">airquality</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>'data.frame':   153 obs. of  6 variables:
  $ Ozone  : int  41 36 12 18 NA 28 23 19 8 NA ...
@@ -1414,7 +1820,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
  $ Month  : int  5 5 5 5 5 5 5 5 5 5 ...
  $ Day    : int  1 2 3 4 5 6 7 8 9 10 ...</code></pre>
 </div>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">airquality</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb76"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">airquality</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Ozone Solar.R Wind Temp Month Day
 1    41     190  7.4   67     5   1
@@ -1424,13 +1830,13 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 5    NA      NA 14.3   56     5   5
 6    28      NA 14.9   66     5   6</code></pre>
 </div>
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## remove observations with missing values using complete.cases()</span></span>
+<div class="sourceCode" id="cb78"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## remove observations with missing values using complete.cases()</span></span>
 <span><span class="va">air_data</span> <span class="op">&lt;-</span> <span class="va">airquality</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/stats/complete.cases.html">complete.cases</a></span><span class="op">(</span><span class="va">airquality</span><span class="op">)</span>, <span class="op">]</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Our goal is to test at .05 significance level if the monthly ozone densities in New York have the same median from May to September 1973.</p>
 <p>First let’s check the normality assumption. We can use <code><a href="https://rdrr.io/r/stats/qqnorm.html">qqnorm()</a></code>, but here the function <code><a href="https://rdrr.io/pkg/car/man/qqPlot.html">qqPlot()</a></code> from the <code>car</code> package is used. The blue shaded area shows the 95% confidence interval for straight line that indicates normality. Since there are not many observations in each group May to September, it may be hard to see whether normality is satisfied for every group.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-forge.r-project.org/projects/car/">car</a></span><span class="op">)</span></span>
+<div class="sourceCode" id="cb79"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-forge.r-project.org/projects/car/">car</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mgp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2.5</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu">car</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/car/man/qqPlot.html">qqPlot</a></span><span class="op">(</span><span class="va">Ozone</span> <span class="op">~</span> <span class="va">Month</span>, data <span class="op">=</span> <span class="va">air_data</span>, layout<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1442,11 +1848,46 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
 <!-- kruskal.test(Ozone ~ Month, data = airquality)  -->
+</div>
+<div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
+<p>We use the R built-in data set <code>airquality</code> for illustration. The data collected daily air quality measurements in New York, May to September 1973. We use <code>dropna()</code> to remove observations with missing values.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load air quality data</span></span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>airquality <span class="op">=</span> pd.read_csv(<span class="st">"./data/airquality.csv"</span>)</span>
+<span id="cb80-3"><a href="#cb80-3" aria-hidden="true" tabindex="-1"></a>air_data <span class="op">=</span> airquality.dropna()</span>
+<span id="cb80-4"><a href="#cb80-4" aria-hidden="true" tabindex="-1"></a>air_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     Ozone  Solar.R  Wind  Temp  Month  Day
+0     41.0    190.0   7.4    67      5    1
+1     36.0    118.0   8.0    72      5    2
+2     12.0    149.0  12.6    74      5    3
+3     18.0    313.0  11.5    62      5    4
+6     23.0    299.0   8.6    65      5    7
+..     ...      ...   ...   ...    ...  ...
+147   14.0     20.0  16.6    63      9   25
+148   30.0    193.0   6.9    70      9   26
+150   14.0    191.0  14.3    75      9   28
+151   18.0    131.0   8.0    76      9   29
+152   20.0    223.0  11.5    68      9   30
+
+[111 rows x 6 columns]</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 <p>What we can do is to use a more formal testing procedure to decide whether are not the normality is satisfied. There are several methods for normality test out there such as <strong>Kolmogorov-Smirnov (K-S) test</strong>, <strong>Shapiro-Wilk’s test</strong>, and <strong>Anderson-Darling test</strong>.</p>
 <p>The K-S test can be used to compare a sample against any reference distribution, not just the normal distribution. However, the K-S test is more focused on the central part of the distribution and might miss deviations in the tails. It is generally less powerful for detecting deviations from normality compared to other tests like the Shapiro-Wilk or Anderson-Darling tests.</p>
 <p>The Shapiro-Wilk test is specifically designed to assess the normality of a distribution. It is generally more powerful than the K-S and Anderson-Darling tests for detecting departures from normality, especially in small to moderately sized samples. The Anderson-Darling test is a modification of the K-S test and gives more weight to the tails of the distribution.</p>
 <!-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3693611/ -->
 <p>When we do the normality test, the null hypothesis of these tests is that <em>“sample distribution IS normal”</em>. If the test is significant, the distribution is non-normal.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-6-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-1" role="tab" aria-controls="tabset-6-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-2" role="tab" aria-controls="tabset-6-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-6-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-6-1-tab">
 <p>To perform Shapiro-Wilk test, we use <code><a href="https://rdrr.io/r/stats/shapiro.test.html">shapiro.test()</a></code> function in R. Note that May and Semptember are not normal.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output cell-output-stdout">
@@ -1466,7 +1907,7 @@ W = 0.78373, p-value = 4.325e-05</code></pre>
 </div>
 <p>To perform Anderson-Darling test, we use <code><a href="https://rdrr.io/pkg/nortest/man/ad.test.html">ad.test()</a></code> function in the R package <code>nortest</code>.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">nortest</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb84"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">nortest</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/nortest/man/ad.test.html">ad.test</a></span><span class="op">(</span><span class="va">air_data</span><span class="op">[</span><span class="va">air_data</span><span class="op">$</span><span class="va">Month</span> <span class="op">==</span> <span class="fl">5</span>, <span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -1475,7 +1916,7 @@ W = 0.78373, p-value = 4.325e-05</code></pre>
 data:  air_data[air_data$Month == 5, 1]
 A = 1.7452, p-value = 0.0001286</code></pre>
 </div>
-<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/nortest/man/ad.test.html">ad.test</a></span><span class="op">(</span><span class="va">air_data</span><span class="op">[</span><span class="va">air_data</span><span class="op">$</span><span class="va">Month</span> <span class="op">==</span> <span class="fl">9</span>, <span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb86"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/nortest/man/ad.test.html">ad.test</a></span><span class="op">(</span><span class="va">air_data</span><span class="op">[</span><span class="va">air_data</span><span class="op">$</span><span class="va">Month</span> <span class="op">==</span> <span class="fl">9</span>, <span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Anderson-Darling normality test
@@ -1513,7 +1954,7 @@ alternative hypothesis: two-sided</code></pre>
 </div>
 <p>We just conform that not all sub-samples are normally distributed, and using the Kruskal-Wallis test could be making more sense. It is super easy to perform the Kruskal-Wallis test. Just one line of code with the formula as <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> in the <code><a href="https://rdrr.io/r/stats/kruskal.test.html">kruskal.test()</a></code> function. <!-- - Just one line of code in R to do Kruskal-Wallis test! --></p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/kruskal.test.html">kruskal.test</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">Ozone</span> <span class="op">~</span> <span class="va">Month</span>, data <span class="op">=</span> <span class="va">air_data</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb92"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/kruskal.test.html">kruskal.test</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">Ozone</span> <span class="op">~</span> <span class="va">Month</span>, data <span class="op">=</span> <span class="va">air_data</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Kruskal-Wallis rank sum test
@@ -1523,6 +1964,78 @@ Kruskal-Wallis chi-squared = 26.309, df = 4, p-value = 2.742e-05</code></pre>
 </div>
 </div>
 <p>It’s an (approximate) <span class="math inline">\(\chi^2\)</span> test with degrees of freedom <span class="math inline">\(k-1\)</span>. Here, we have <span class="math inline">\(k=5\)</span> months. Since <span class="math inline">\(p\)</span>-value is approaching to 0, we reject <span class="math inline">\(H_0\)</span>. We conclude that there is sufficient evidence to reject the claim that the 5 monthly ozone densities in New York have the same median.</p>
+</div>
+<div id="tabset-6-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-2-tab">
+<p>To perform Shapiro-Wilk test, we use <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.shapiro.html"><code>shapiro()</code></a> function in <code>scipy.stats</code>. Note that May and Semptember are not normal.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a>stats.shapiro(x<span class="op">=</span>air_data[air_data[<span class="st">'Month'</span>] <span class="op">==</span> <span class="dv">5</span>][<span class="st">'Ozone'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>ShapiroResult(statistic=0.7127260508018644, pvalue=1.4905276180225703e-05)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a>stats.shapiro(x<span class="op">=</span>air_data[air_data[<span class="st">'Month'</span>] <span class="op">==</span> <span class="dv">9</span>][<span class="st">'Ozone'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>ShapiroResult(statistic=0.7837314830546598, pvalue=4.325436491991434e-05)</code></pre>
+</div>
+</div>
+<p>To perform Anderson-Darling test, we use <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.anderson.html"><code>anderson()</code></a> function in <code>scipy.stats</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a>stats.anderson(x<span class="op">=</span>air_data[air_data[<span class="st">'Month'</span>] <span class="op">==</span> <span class="dv">5</span>][<span class="st">'Ozone'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>AndersonResult(statistic=1.7451940221773548, critical_values=array([0.513, 0.584, 0.701, 0.817, 0.972]), significance_level=array([15. , 10. ,  5. ,  2.5,  1. ]), fit_result=  params: FitParams(loc=24.125, scale=22.88594119427528)
+ success: True
+ message: '`anderson` successfully fit the distribution to the data.')</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a>stats.anderson(x<span class="op">=</span>air_data[air_data[<span class="st">'Month'</span>] <span class="op">==</span> <span class="dv">9</span>][<span class="st">'Ozone'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>AndersonResult(statistic=2.4087626260322885, critical_values=array([0.52 , 0.592, 0.71 , 0.828, 0.985]), significance_level=array([15. , 10. ,  5. ,  2.5,  1. ]), fit_result=  params: FitParams(loc=31.448275862068964, scale=24.141822346436413)
+ success: True
+ message: '`anderson` successfully fit the distribution to the data.')</code></pre>
+</div>
+</div>
+<p>For the K-S test, we use <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.kstest.html"><code>kstest()</code></a> function <code>scipy.stats</code>. We need to add “norm” in the function, so that it knows you are comparing your data with the normal distribution.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a>stats.kstest(rvs<span class="op">=</span>air_data[air_data[<span class="st">'Month'</span>] <span class="op">==</span> <span class="dv">5</span>][<span class="st">'Ozone'</span>], cdf<span class="op">=</span><span class="st">'norm'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>KstestResult(statistic=0.9583016620915003, pvalue=1.5271435453275413e-33, statistic_location=4.0, statistic_sign=-1)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a>stats.kstest(rvs<span class="op">=</span>air_data[air_data[<span class="st">'Month'</span>] <span class="op">==</span> <span class="dv">9</span>][<span class="st">'Ozone'</span>], cdf<span class="op">=</span><span class="st">'norm'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>KstestResult(statistic=0.9999999999987201, pvalue=0.0, statistic_location=7.0, statistic_sign=-1)</code></pre>
+</div>
+</div>
+<p>We just conform that not all sub-samples are normally distributed, and using the Kruskal-Wallis test could be making more sense. We use <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.kruskal.html"><code>kruskal()</code></a> in <code>scipy.stats</code> to perform such test. <!-- - Just one line of code in R to do Kruskal-Wallis test! --></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb106"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Kruskal-Wallis test for Ozone levels across different months</span></span>
+<span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a>stats.kruskal(air_data[air_data[<span class="st">'Month'</span>] <span class="op">==</span> <span class="dv">5</span>][<span class="st">'Ozone'</span>],</span>
+<span id="cb106-3"><a href="#cb106-3" aria-hidden="true" tabindex="-1"></a>              air_data[air_data[<span class="st">'Month'</span>] <span class="op">==</span> <span class="dv">6</span>][<span class="st">'Ozone'</span>],</span>
+<span id="cb106-4"><a href="#cb106-4" aria-hidden="true" tabindex="-1"></a>              air_data[air_data[<span class="st">'Month'</span>] <span class="op">==</span> <span class="dv">7</span>][<span class="st">'Ozone'</span>],</span>
+<span id="cb106-5"><a href="#cb106-5" aria-hidden="true" tabindex="-1"></a>              air_data[air_data[<span class="st">'Month'</span>] <span class="op">==</span> <span class="dv">8</span>][<span class="st">'Ozone'</span>],</span>
+<span id="cb106-6"><a href="#cb106-6" aria-hidden="true" tabindex="-1"></a>              air_data[air_data[<span class="st">'Month'</span>] <span class="op">==</span> <span class="dv">9</span>][<span class="st">'Ozone'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>KruskalResult(statistic=26.308626792507006, pvalue=2.741846175019204e-05)</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A more concise way to write the code is</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb108"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Kruskal-Wallis test for Ozone levels across different months</span></span>
+<span id="cb108-2"><a href="#cb108-2" aria-hidden="true" tabindex="-1"></a>stats.kruskal(<span class="op">*</span>[air_data[air_data[<span class="st">'Month'</span>]<span class="op">==</span>m][<span class="st">'Ozone'</span>] <span class="cf">for</span> m <span class="kw">in</span> <span class="bu">sorted</span>(air_data[<span class="st">'Month'</span>].unique())])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+<p>It’s an (approximate) <span class="math inline">\(\chi^2\)</span> test with degrees of freedom <span class="math inline">\(k-1\)</span>. Here, we have <span class="math inline">\(k=5\)</span> months. Since <span class="math inline">\(p\)</span>-value is approaching to 0, we reject <span class="math inline">\(H_0\)</span>. We conclude that there is sufficient evidence to reject the claim that the 5 monthly ozone densities in New York have the same median.</p>
+</div>
+</div>
+</div>
 <!-- ## Pairwise Comparison -->
 <!-- ## Two-Way ANOVA* -->
 <!-- To be added. -->
@@ -2106,7 +2619,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
 <li class="nav-item compact">
-    <a class="nav-link active" href="https://github.com/chenghanyustats/introstatsbook" aria-current="page">
+    <a class="nav-link" href="https://github.com/chenghanyustats/introstatsbook">
       <i class="bi bi-github" role="img">
 </i> 
     </a>

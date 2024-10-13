@@ -468,6 +468,10 @@ A sample of 5 is taken from each type of food and the amount of isoflavones is m
 
 ---------------------------------------------------------------
 
+::::: {.panel-tabset}
+
+## R
+
 We are going to learn to generate a ANOVA table using R.
 
 <span style="color:blue"> **Data** </span>
@@ -508,6 +512,7 @@ data_anova
 :::
 ::::
 
+
 The boxplot kind of gives us the isoflavones distribution by food type. It is hard to say whether the food type affects isoflavone level or not, and we need ANOVA to help us make the conclusion.
 
 ```{r}
@@ -521,6 +526,67 @@ axis(1, las = 1, at = 1:3,
      labels = c("Cereals", "Energy Bars", "Veggie Burger"))
 ```
 
+
+## Python
+
+We are going to learn to generate a ANOVA table using Python.
+
+<span style="color:blue"> **Data** </span>
+
+```{python}
+# Load the dataset
+import pandas as pd
+import numpy as np
+data = np.array([3, 17, 12, 10, 4, 19, 10, 9, 7, 5, 25, 15, 12, 9, 8])
+data = data.reshape(5, 3, order='F')
+```
+```{python}
+# Load the dataset
+import pandas as pd
+data_anova = pd.read_csv("./data/data_anova.csv")
+```
+
+::::{.columns}
+:::{.column width="49%"}
+
+```{python}
+#| echo: true
+data
+```
+
+<!-- :::{.callout-note icon=false} -->
+<!-- ## So tell me what is the value of $y_{23}$! -->
+<!-- ::: -->
+:::
+
+:::{.column width="2%"}
+:::
+
+:::{.column width="49%"}
+```{python}
+#| echo: true
+data_anova
+```
+:::
+::::
+
+
+
+
+The boxplot kind of gives us the isoflavones distribution by food type. It is hard to say whether the food type affects isoflavone level or not, and we need ANOVA to help us make the conclusion.
+
+```{python}
+import matplotlib.pyplot as plt
+data_anova.boxplot(column="y", by="food", grid=False)
+plt.title("Boxplots of isoflavones")
+plt.suptitle("")
+plt.xlabel("Food")
+plt.ylabel("y")
+plt.show()
+```
+
+
+:::::
 ---------------------------------------------------------------
 
 <span style="color:blue"> **Test Assumptions** </span>
@@ -579,6 +645,11 @@ We could follow the regular six-step testing procedure, but generating the ANOVA
 knitr::include_graphics("./images/img-model/anova_table_k.png")
 ```
 
+
+:::: {.panel-tabset}
+
+## R
+
 In R, we can do all the calculations and generate an ANOVA table using just one line of code. We first use the popular function `lm()` to implement ANOVA. The first argument is `formula` that has the form `response ~ factor` where `response` is the numeric response vector, and `factor` is the categorical factor vector. In our data `data_anova`, `y` is our response, and `food` is our factor. Note that if we just write `y` and `food` in the formula, R will render an error because R does not recognize `y` and `food` because they are not an R object but a column name of data `data_anova`. Therefore, we need to tell R where `y` and `food` are from by specifying the data set they are referred. If you want to specify the data name, you can get access to the response and factor vector by extracting them using `data_anova$y` and `data_anova$food`.
 
 
@@ -586,18 +657,11 @@ The word `lm` stands for **linear model**, and ANOVA is a linear model. If you j
 
 To obtain the ANOVA table, we apply the function `anova()` to the `lm` object. In the output, `food` is the source of variation between samples. `Residuals` is for the source of variation within samples. `F value` is the $F$ test statistic value, not the critical value. `Pr(>F)` is the $p$-value. Since $p$-value > 0.05, we do not reject $H_0$. The evidence is not sufficient to reject the equality of population means.
 
-
-
 ```{r}
 #| echo: true
 anova(lm(formula = y ~ food, data = data_anova))
 anova(lm(formula = data_anova$y ~ data_anova$food))
 ```
-
-
-
-
-
 
 :::{.callout-note}
 
@@ -610,6 +674,46 @@ summary(aov(y ~ food, data = data_anova))
 # oneway.test(y ~ food, data = data_anova, var.equal = TRUE)
 ```
 :::
+
+## Python
+
+
+In Python, we can do all the calculations and generate an ANOVA table using simple code. We first use the function [`formula.ols()`](https://www.statsmodels.org/stable/generated/statsmodels.formula.api.ols.html) in `statsmodels.api` to create a linear model from a formula and dataframe. `ols` means ordinary least squares which is a method for a linear method. We will discuss it in @sec-model-reg. The first argument is `formula` that has the form `response ~ factor` where `response` is the numeric response vector, and `factor` is the categorical factor vector. In our data `data_anova`, `y` is our response, and `food` is our factor. Note that the formula has to be a string. 
+
+Then, we need to tell Python where `y` and `food` are from by specifying the data set they are referred in the argument `data`.
+
+The code `sm.formula.ols(formula='y ~ food', data=data_anova)` only creates a model, but it is not actually fit by our data. We need to add `.fit()` to complete the modeling fitting using the ols approach.
+
+```{python}
+#| echo: true
+import statsmodels.api as sm
+from statsmodels import stats
+model = sm.formula.ols(formula='y ~ food', data=data_anova).fit()
+```
+
+To obtain the ANOVA table, we apply the function `anova_lm()` to the fitted model. In the output, `food` is the source of variation between samples. `Residual` is for the source of variation within samples. `F` is the $F$ test statistic value, not the critical value. `PR(>F)` is the $p$-value. Since $p$-value > 0.05, we do not reject $H_0$. The evidence is not sufficient to reject the equality of population means.
+
+
+```{python}
+#| echo: true
+sm.stats.anova_lm(model)
+```
+
+
+:::{.callout-note}
+
+The function [`f_oneway()`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.f_oneway.html) in `scipy.stats` provides a fast way to do the ANOVA without outputting the ANOVA table. It just provides the F test statistic and p-value.
+
+```{python}
+#| echo: true
+from scipy import stats
+stats.f_oneway(data[:, 0], data[:, 1], data[:, 2])
+```
+:::
+
+::::
+
+
 
 
 ## Unequal Variances
@@ -665,6 +769,10 @@ knitr::include_graphics("./images/img-model/table8-16.png")
 
 <!-- ## Example 8.4 Cont'd: Check the Data -->
 
+::: {.panel-tabset}
+
+## R
+
 The origin data set `data_oxygen` is saved as
 
 ```{r, fig.height=6, fig.width=10}
@@ -677,10 +785,12 @@ data_oxygen
 
 <!-- ## Example 8.4 Cont'd: Test for Equal Variances -->
 
+
+
 First we learn that the homogeneity of variance assumption is violated by checking the boxplot.
 
 ```{r}
-#| echo: true
+#| echo: false
 #| eval: false
 boxplot(data_oxygen)
 ```
@@ -716,6 +826,42 @@ data_oxygen_tidy
 ```
 
 
+## Python
+
+The origin data set `data_oxygen` is saved as
+
+```{python}
+data_oxygen = pd.read_csv("./data/data_oxygen.csv")
+data_oxygen
+```
+
+
+First we learn that the homogeneity of variance assumption is violated by checking the boxplot.
+
+
+```{python}
+#| echo: false
+#| eval: true
+# Boxplot for the oxygen data
+import seaborn as sns
+sns.boxplot(data=data_oxygen)
+plt.show()
+```
+
+
+This is also verified by the Levene's test using the function [`levene()`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.levene.html) in `scipy .stats`. The Levene’s test $p$-value is 0.02, so we reject the $H_0$: Equality of variance.
+
+
+```{python}
+#| echo: true
+# Levene's test for homogeneity of variances
+stats.levene(data_oxygen['1KM'], 
+             data_oxygen['5KM'], 
+             data_oxygen['10KM'],
+             data_oxygen['20KM'])
+```
+
+:::
 
 To get some understanding of how we should transform our data to make the variances equal, let’s calculate $\frac{s_i^2}{\bar{y}_i}$ for $i = 1, 2, 3, 4$.
 
@@ -838,6 +984,10 @@ Let's go back to the oxygen level example. The original data look like
 
 To get the sample mean for each group, we can grab each column data, and calculate its average. For example, $\bar{y}_{1\cdot} = 2.2$.
 
+::: {.panel-tabset}
+
+## R
+
 ```{r}
 #| echo: true
 colMeans(data_oxygen)
@@ -904,6 +1054,7 @@ qqPlot(oxygen_fit$residuals, pch = 19, id = FALSE, ylab = "residuals",
 The Shapiro test and Anderson-Darling test give us a different conclusion. We could either transform the data to make it look more normal, or collect more data points to gain more information about how the data are distributed.
 
 ```{r}
+#| echo: true
 shapiro.test(oxygen_fit$residuals)
 ad.test(oxygen_fit$residuals)
 ```
@@ -988,6 +1139,158 @@ anova(oxygen_fit)
 
 
 
+## Python
+```{python}
+#| echo: true
+# Calculate the mean for each group
+group_means = data_oxygen.mean()
+group_means
+```
+
+```{python}
+#| echo: true
+data_oxygen_tidy = pd.read_csv("./data/data_oxygen_tidy.csv")
+```
+
+The fitted value can also be obtained from the fitted result by the fitted linear model from `formula.ols()`. `oxygen_fit.fittedvalues` gives us fitted values for all observations. Note that the first 10 observations all have the same fitted value 2.2 because they are all from the first group (1 km). Similarly for other groups.
+
+In the formula, since the variable `km` is in fact categorical, we need to add `C()` to turn its type from integer to string.
+
+```{python}
+#| echo: true
+oxygen_fit = sm.formula.ols(formula='oxygen ~ C(km)', data=data_oxygen_tidy).fit()
+oxygen_fit.fittedvalues
+```
+
+We can organize the fitted values, saving them as a data frame like the original data `data_oxygen`.
+
+```{python}
+#| echo: true
+fitted_val = np.reshape(oxygen_fit.fittedvalues.values, (10, 4), order='F')
+pd.DataFrame(fitted_val, columns=['1KM', '5KM', '10KM', '20KM'])
+```
+
+
+------------------------------------------
+
+Now let's check the residuals $e_{ij} = y_{ij} - \bar{y}_{i\cdot}$. We can obtain the residuals using its definition 
+
+```{python}
+#| echo: true
+data_oxygen_tidy['oxygen'].values - oxygen_fit.fittedvalues.values
+```
+
+or we can simply grab them from the fitted result:
+
+```{python}
+#| echo: true
+oxygen_fit.resid
+```
+
+```{python}
+# https://www.statsmodels.org/stable/generated/statsmodels.graphics.gofplots.qqplot.html
+sm.qqplot(oxygen_fit.resid, line='r')
+plt.title("Normal Probability Plot for Residuals")
+plt.show()
+```
+
+
+The [Shapiro](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.shapiro.html) test and [Anderson-Darling](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.anderson.html) test give us a different conclusion. We could either transform the data to make it look more normal, or collect more data points to gain more information about how the data are distributed.
+
+```{python}
+#| echo: true
+# Shapiro-Wilk test for normality
+stats.shapiro(oxygen_fit.resid)
+```
+
+```{python}
+#| echo: true
+# Anderson-Darling test for normality
+stats.anderson(oxygen_fit.resid)
+```
+
+
+**Residual plots** is another good way to check the model assumptions, especially whether or not the homogeneity of variance is hold. A residual plot is a scatterplot of $e_{ij}$ (y-axis) versus $\hat{y}_{ij}$ (x-axis).
+
+
+
+```{python}
+#| echo: true
+#| eval: false
+plt.scatter(oxygen_fit.fittedvalues, oxygen_fit.resid)
+```
+
+
+```{python}
+#| echo: false
+# Residuals vs Fitted values plot
+plt.scatter(oxygen_fit.fittedvalues, oxygen_fit.resid, c='red')
+plt.axhline(y=0, color='black', linestyle='--')
+plt.xlabel("Fitted Values")
+plt.ylabel("Residuals")
+plt.title("Residuals vs Fitted Values")
+plt.show()
+```
+
+If the homogeneity of variance holds, the residual points should be scattered around value 0 with the same degree of spreadness. Due to the cone shape, we see that the residual variance is increasing with the fitted values or kilometers, a sign of non-constant variances. We can conclude that $Var(\epsilon_{ij})$ is not constant. We can further say that this variance is a function of $\bar{y}_{i\cdot}$.
+
+
+<!-- ## Correct Analysis Based on Transformed Data -->
+
+Since the model assumptions are violated, we transform our data to correct unequal variances. As we learned in the previous section, we use the transformation $Y_T = \sqrt{Y + 0.375}$. The transformed data set is called `data_oxygen_tidy_trans`.
+
+```{python}
+#| echo: true
+data_oxygen_tidy_trans = data_oxygen_tidy.copy()
+# Apply the transformation to the first column (oxygen)
+data_oxygen_tidy_trans['oxygen'] = np.sqrt(data_oxygen_tidy['oxygen'] + 0.375)
+```
+
+We then fit ANOVA model on the transformed data.
+
+```{python}
+#| echo: true
+oxygen_fit_trans = sm.formula.ols(formula='oxygen ~ C(km)',
+                                  data=data_oxygen_tidy_trans).fit()
+sm.stats.anova_lm(oxygen_fit_trans)
+```
+
+We can check the model assumptions on the transformed data too to make sure that fitting ANOVA to the data makes sense.
+
+```{python}
+# QQ plot and residual plot for the transformed model
+fig, axs = plt.subplots(1, 2, figsize=(12, 6))
+sm.qqplot(oxygen_fit_trans.resid, line='r', ax=axs[0])
+axs[0].set_title("Normal Probability Plot for Residuals (Transformed)")
+
+axs[1].scatter(oxygen_fit_trans.fittedvalues, oxygen_fit_trans.resid, c='red')
+axs[1].axhline(y=0, color='black', linestyle='--')
+axs[1].set_xlabel("Fitted Values")
+axs[1].set_ylabel("Residuals")
+axs[1].set_title("Residuals vs Fitted Values (Transformed)")
+
+plt.tight_layout()
+plt.show()
+```
+
+```{python}
+stats.shapiro(oxygen_fit_trans.resid)
+stats.anderson(oxygen_fit_trans.resid)
+```
+
+From the qqplot and the testing results we can see that the transformed data are more like a normal distribution. There is no significant pattern in the residual plot, showing that unequal variances have been corrected.
+
+This result is more convincing than the one using the original data that violates the ANOVA model assumptions. Although the two models both reject the null hypothesis, the numerical results obtained from the transformed data interpret the relationship between the response and the factors more accurately.
+
+```{python}
+#| echo: true
+oxygen_fit = sm.formula.ols('oxygen ~ C(km)', data=data_oxygen_tidy).fit()
+sm.stats.anova_lm(oxygen_fit)
+```
+
+
+:::
+
 
 ## Nonparametric Approach: Kruskal-Wallis Test
 
@@ -1008,9 +1311,15 @@ There is **no** requirement that the populations have a normal distribution or a
 The testing details are skipped here, but let's see how we can perform this test to answer our question when the normality assumption of ANOVA is not satisfied.
 
 
-----------------------------------------------------------------------
+<!-- ---------------------------------------------------------------------- -->
 
-<span style="color:blue">  **Example: `airquality` data** </span>
+
+
+<!-- <span style="color:blue">  **Example: `airquality` data** </span> -->
+
+::: {.panel-tabset}
+
+## R
 
 We use the R built-in data set `airquality` for illustration. The data collected daily air quality measurements in New York, May to September 1973.
 
@@ -1038,6 +1347,21 @@ car::qqPlot(Ozone ~ Month, data = air_data, layout=c(1, 5))
 ```
 <!-- kruskal.test(Ozone ~ Month, data = airquality)  -->
 
+## Python
+
+We use the R built-in data set `airquality` for illustration. The data collected daily air quality measurements in New York, May to September 1973. We use `dropna()` to remove observations with missing values.
+
+```{python}
+#| echo: true
+# Load air quality data
+airquality = pd.read_csv("./data/airquality.csv")
+air_data = airquality.dropna()
+air_data
+```
+
+:::
+
+
 What we can do is to use a more formal testing procedure to decide whether are not the normality is satisfied. There are several methods for normality test out there such as **Kolmogorov-Smirnov (K-S) test**, **Shapiro-Wilk's test**, and **Anderson-Darling test**.
 
 The K-S test can be used to compare a sample against any reference distribution, not just the normal distribution. However, the K-S test is more focused on the central part of the distribution and might miss deviations in the tails. It is generally less powerful for detecting deviations from normality compared to other tests like the Shapiro-Wilk or Anderson-Darling tests.
@@ -1047,6 +1371,12 @@ The Shapiro-Wilk test is specifically designed to assess the normality of a dist
 <!-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3693611/ -->
 
 When we do the normality test, the null hypothesis of these tests is that *"sample distribution IS normal"*. If the test is significant, the distribution is non-normal.
+
+
+
+::: {.panel-tabset}
+
+## R
 
 To perform Shapiro-Wilk test, we use `shapiro.test()` function in R. Note that May and Semptember are not normal.
 
@@ -1086,6 +1416,62 @@ kruskal.test(formula = Ozone ~ Month, data = air_data)
 It's an (approximate) $\chi^2$ test with degrees of freedom $k-1$. Here, we have $k=5$ months. Since $p$-value is approaching to 0, we reject $H_0$. We conclude that there is sufficient evidence to reject the claim that the 5 monthly ozone densities in New York have the same median.
 
 
+
+## Python
+
+To perform Shapiro-Wilk test, we use [`shapiro()`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.shapiro.html) function in `scipy.stats`. Note that May and Semptember are not normal.
+
+```{python}
+#| echo: true
+stats.shapiro(x=air_data[air_data['Month'] == 5]['Ozone'])
+stats.shapiro(x=air_data[air_data['Month'] == 9]['Ozone'])
+```
+
+To perform Anderson-Darling test, we use [`anderson()`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.anderson.html) function in `scipy.stats`.
+
+```{python}
+#| echo: true
+#| eval: true
+stats.anderson(x=air_data[air_data['Month'] == 5]['Ozone'])
+stats.anderson(x=air_data[air_data['Month'] == 9]['Ozone'])
+```
+
+For the K-S test, we use [`kstest()`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.kstest.html) function `scipy.stats`. We need to add "norm" in the function, so that it knows you are comparing your data with the normal distribution.
+
+```{python}
+#| echo: true
+stats.kstest(rvs=air_data[air_data['Month'] == 5]['Ozone'], cdf='norm')
+stats.kstest(rvs=air_data[air_data['Month'] == 9]['Ozone'], cdf='norm')
+```
+
+
+We just conform that not all sub-samples are normally distributed, and using the Kruskal-Wallis test could be making more sense. We use [`kruskal()`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.kruskal.html) in `scipy.stats` to perform such test.
+<!-- - Just one line of code in R to do Kruskal-Wallis test! -->
+
+```{python}
+#| echo: true
+# Kruskal-Wallis test for Ozone levels across different months
+stats.kruskal(air_data[air_data['Month'] == 5]['Ozone'],
+              air_data[air_data['Month'] == 6]['Ozone'],
+              air_data[air_data['Month'] == 7]['Ozone'],
+              air_data[air_data['Month'] == 8]['Ozone'],
+              air_data[air_data['Month'] == 9]['Ozone'])
+```
+
+::: {.callout-note}
+A more concise way to write the code is
+```{python}
+#| echo: true
+#| eval: false
+# Kruskal-Wallis test for Ozone levels across different months
+stats.kruskal(*[air_data[air_data['Month']==m]['Ozone'] for m in sorted(air_data['Month'].unique())])
+```
+:::
+
+
+It's an (approximate) $\chi^2$ test with degrees of freedom $k-1$. Here, we have $k=5$ months. Since $p$-value is approaching to 0, we reject $H_0$. We conclude that there is sufficient evidence to reject the claim that the 5 monthly ozone densities in New York have the same median.
+
+:::
 
 
 <!-- ## Pairwise Comparison -->
