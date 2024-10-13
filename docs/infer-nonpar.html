@@ -607,6 +607,13 @@ window.Quarto = {
 <!-- # ``` -->
 <!-- ![](./figures/signed_rank_example.png){height=350px width=990px} -->
 <!-- ## Example 6.9:  Wilcoxon Signed-Rank Test in R -->
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <p>We will perform the Wilcoxon signed-rank test using R. First we prepare the data set <code>paired_data</code> in R like this:</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
@@ -650,7 +657,7 @@ Warning
 <p>The <code>x</code> and <code>y</code> data should be consistent with <code>alternative</code>. If we put <code>paired_data$b</code> in the <code>x</code> argument, and <code>paired_data$a</code> in the <code>y</code> argument, then <code>alternative = "less"</code> should be set. The order matters.</p>
 </div>
 </div>
-<p>Our dataset consists of 20 observations, but it’s important to note that we have a tie in the sixth observation where brand A and brand B have the same measurements. If you do not specify <code>exact=TRUE</code> in the function, R will issue a warning and automatically use the normal approximation with continuity correction. The following two code snippets will produce the same result.</p>
+<p>Our dataset consists of 20 observations, but it’s important to note that we have a tie in the sixth observation where brand A and brand B have the same measurements. If you do not specify <code>exact=FALSE</code> in the function, R will issue a warning and automatically use the normal approximation with continuity correction. The following two code snippets will produce the same result.</p>
 <div class="cell">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/wilcox.test.html">wilcox.test</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">paired_data</span><span class="op">$</span><span class="va">a</span>, y <span class="op">=</span> <span class="va">paired_data</span><span class="op">$</span><span class="va">b</span>, mu <span class="op">=</span> <span class="fl">0</span>, </span>
 <span>            alternative <span class="op">=</span> <span class="st">"greater"</span>, paired <span class="op">=</span> <span class="cn">TRUE</span>, conf.int <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -750,6 +757,120 @@ sample estimates:
 </div>
 </div>
 <p>As the sample size increases, the exact p-value and confidence interval will become increasingly similar to those obtained using the normal approximation.</p>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<p>We will perform the Wilcoxon signed-rank test using Python. First we prepare the data set <code>paired_data</code> in Python like this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>paired_data <span class="op">=</span> pd.read_csv(<span class="st">"./data/paired_data_nonpar.csv"</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>paired_data[<span class="st">'difference'</span>] <span class="op">=</span> paired_data[<span class="st">'a'</span>] <span class="op">-</span> paired_data[<span class="st">'b'</span>]</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>paired_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    Field      a      b  difference
+0       1  211.4  186.3        25.1
+1       2  204.4  205.7        -1.3
+2       3  202.0  184.4        17.6
+3       4  201.9  203.6        -1.7
+4       5  202.4  180.4        22.0
+5       6  202.0  202.0         0.0
+6       7  202.4  181.5        20.9
+7       8  207.1  186.7        20.4
+8       9  203.6  205.7        -2.1
+9      10  216.0  189.1        26.9
+10     11  208.9  183.6        25.3
+11     12  208.7  188.7        20.0
+12     13  213.8  188.6        25.2
+13     14  201.6  204.2        -2.6
+14     15  201.8  181.6        20.2
+15     16  200.3  208.7        -8.4
+16     17  201.8  181.5        20.3
+17     18  201.5  208.7        -7.2
+18     19  212.1  186.8        25.3
+19     20  203.4  182.9        20.5</code></pre>
+</div>
+</div>
+<p>The command <code>wilcoxon()</code> in <code>scipy.stats</code> can perform the Wilcoxon signed-rank test. The arguments <code>x</code> and <code>y</code> are the paired data from Brand A and Brand B, respectively. We set <code>alternative = "greater"</code> because we would like to know whether brand A (in <code>x</code>) tends to produce <em>more</em> grass than brand B (in <code>y</code>).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> wilcoxon</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The <code>x</code> and <code>y</code> data should be consistent with <code>alternative</code>. If we put <code>paired_data$b</code> in the <code>x</code> argument, and <code>paired_data$a</code> in the <code>y</code> argument, then <code>alternative = "less"</code> should be set. The order matters.</p>
+</div>
+</div>
+<p>When <span class="math inline">\(n\)</span> is sufficiently large, the null distribution of the normalized test statistic is approximately normal, and <code>method = 'approx'</code> can be used to compute the p-value. When <span class="math inline">\(n\)</span> is small, the normal approximation may not be accurate, and <code>method='exact'</code> is preferred. The default <code>method='auto'</code>, selects between the two: when <span class="math inline">\(n &lt;= 50\)</span> and there are no zeros, the exact method is used; otherwise, the approximate method is used.</p>
+<p>Our dataset consists of 20 observations, but it’s important to note that we have a tie in the sixth observation where brand A and brand B have the same measurements. If you do not set <code>method='approx'</code> in the function, Python will issue a warning and automatically use the normal approximation with or without continuity correction based on the argument <code>correction</code>. By default, <code>correction=False</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># by default method='auto' which is 'exact' in our case</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>wilcoxon(x<span class="op">=</span>paired_data[<span class="st">'a'</span>], y<span class="op">=</span>paired_data[<span class="st">'b'</span>], </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>         alternative<span class="op">=</span><span class="st">'greater'</span>, method<span class="op">=</span><span class="st">'auto'</span>, correction<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>/Users/chenghanyu/.virtualenvs/r-reticulate/lib/python3.12/site-packages/scipy/stats/_axis_nan_policy.py:531: UserWarning: Exact p-value calculation does not work if there are zeros. Switching to normal approximation.
+  res = hypotest_fun_out(*samples, **kwds)
+WilcoxonResult(statistic=169.0, pvalue=0.0014510517244235824)</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># method='auto' which is 'exact'. correction=True</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>wilcoxon(x<span class="op">=</span>paired_data[<span class="st">'a'</span>], y<span class="op">=</span>paired_data[<span class="st">'b'</span>], </span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>         alternative<span class="op">=</span><span class="st">'greater'</span>, method<span class="op">=</span><span class="st">'auto'</span>, correction<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>WilcoxonResult(statistic=169.0, pvalue=0.0015492135924460434)</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>wilcoxon(x<span class="op">=</span>paired_data[<span class="st">'a'</span>], y<span class="op">=</span>paired_data[<span class="st">'b'</span>], </span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>         alternative<span class="op">=</span><span class="st">'greater'</span>, correction<span class="op">=</span><span class="va">True</span>, method<span class="op">=</span><span class="st">'approx'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>WilcoxonResult(statistic=169.0, pvalue=0.0015492135924460434)</code></pre>
+</div>
+</div>
+<p>If we remove the sixth observation, the exact p-value and confidence interval can be constructed. In the following examples, the first two code chunks will yield the same result, both utilizing the exact p-value. However, the third code chunk, with <code>method='approx'</code>, will use the normal approximation to calculate the p-value instead.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Removing the 6th observation for paired test</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>paired_data <span class="op">=</span> paired_data.drop(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co">## correction does not mattter </span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>wilcoxon(paired_data[<span class="st">'a'</span>], paired_data[<span class="st">'b'</span>], </span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>         alternative<span class="op">=</span><span class="st">'greater'</span>, method<span class="op">=</span><span class="st">'exact'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>WilcoxonResult(statistic=169.0, pvalue=0.00084686279296875)</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co">## correction does not mattter</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>wilcoxon(paired_data[<span class="st">'a'</span>], paired_data[<span class="st">'b'</span>],</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>         alternative<span class="op">=</span><span class="st">'greater'</span>,method<span class="op">=</span><span class="st">'auto'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>WilcoxonResult(statistic=169.0, pvalue=0.00084686279296875)</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>wilcoxon(paired_data[<span class="st">'a'</span>], paired_data[<span class="st">'b'</span>], </span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>         alternative<span class="op">=</span><span class="st">'greater'</span>, correction<span class="op">=</span><span class="va">True</span>, method<span class="op">=</span><span class="st">'approx'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>WilcoxonResult(statistic=169.0, pvalue=0.0015492135924460434)</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>wilcoxon(paired_data[<span class="st">'a'</span>], paired_data[<span class="st">'b'</span>], </span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>         alternative<span class="op">=</span><span class="st">'greater'</span>, correction<span class="op">=</span><span class="va">False</span>, method<span class="op">=</span><span class="st">'approx'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>WilcoxonResult(statistic=169.0, pvalue=0.0014510517244235824)</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </section><section id="wilcoxon-rank-sum-test-mann-whitney-u-test1-for-two-independent-samples" class="level2" data-number="23.3"><h2 data-number="23.3" class="anchored" data-anchor-id="wilcoxon-rank-sum-test-mann-whitney-u-test1-for-two-independent-samples">
 <span class="header-section-number">23.3</span> Wilcoxon Rank-Sum Test (Mann-Whitney U Test)<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> for Two Independent Samples</h2>
 <p>Wilcoxon rank-sum test is the nonparametric version of the <strong>independent two-sample <span class="math inline">\(t\)</span>-test</strong>. The only requirementof this method is that the two independent samples are random samples.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> The two populations can be <strong>non-normal and follow any distribution</strong>.</p>
@@ -835,7 +956,15 @@ sample estimates:
 </li>
 </ul></section></section><section id="example-of-wilcoxon-rank-sum-test-example-6.5-of-smd" class="level2" data-number="23.4"><h2 data-number="23.4" class="anchored" data-anchor-id="example-of-wilcoxon-rank-sum-test-example-6.5-of-smd">
 <span class="header-section-number">23.4</span> Example of Wilcoxon Rank-Sum Test (Example 6.5 of SMD)</h2>
-<p>Many states are considering lowering the blood-alcohol level at which a driver is designated as driving under the influence (DUI) of alcohol. An investigator for a legislative committee designed the following test to study the effect of alcohol on reaction time. Ten participants consumed a specified amount of alcohol. Another group of 10 participants consumed the same amount of a nonalcoholic drink, a placebo. The two groups did not know whether they were receiving alcohol or the placebo. The 20 participants’ average reaction times (in seconds) to a series of simulated driving situations are saved in <code>two_sample_data</code> in R shown below. Does it appear that alcohol consumption increases reaction time?</p>
+<p>Many states are considering lowering the blood-alcohol level at which a driver is designated as driving under the influence (DUI) of alcohol. An investigator for a legislative committee designed the following test to study the effect of alcohol on reaction time. Ten participants consumed a specified amount of alcohol. Another group of 10 participants consumed the same amount of a nonalcoholic drink, a placebo. The two groups did not know whether they were receiving alcohol or the placebo.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<p>The 20 participants’ average reaction times (in seconds) to a series of simulated driving situations are saved in <code>two_sample_data</code> in R shown below. Does it appear that alcohol consumption increases reaction time?</p>
 <!-- ### Example 6.5: Wilcoxon Rank-Sum Test in R -->
 <!-- - An investigator is interested to study the effect of alcohol on reaction time. The following data is collected on the reaction time to an instruction. -->
 <div class="cell">
@@ -857,7 +986,7 @@ sample estimates:
 <!-- \tiny -->
 <p>To perform the Wilcoxon rank-sum test, we again use the function <code><a href="https://rdrr.io/r/stats/wilcox.test.html">wilcox.test()</a></code>. This time <code>paired = FALSE</code> should be used because we are dealing with two independent samples. In this example, the sample size is 10, so we can consider using the small-size procedure. In R, we set <code>exact = TRUE</code>.</p>
 <div class="cell">
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/wilcox.test.html">wilcox.test</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">two_sample_data</span><span class="op">$</span><span class="va">Placebo</span>, y <span class="op">=</span> <span class="va">two_sample_data</span><span class="op">$</span><span class="va">Alcohol</span>, mu <span class="op">=</span> <span class="fl">0</span>, </span>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/wilcox.test.html">wilcox.test</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">two_sample_data</span><span class="op">$</span><span class="va">Placebo</span>, y <span class="op">=</span> <span class="va">two_sample_data</span><span class="op">$</span><span class="va">Alcohol</span>, mu <span class="op">=</span> <span class="fl">0</span>, </span>
 <span>            alternative <span class="op">=</span> <span class="st">"less"</span>, paired <span class="op">=</span> <span class="cn">FALSE</span>, conf.int <span class="op">=</span> <span class="cn">TRUE</span>, </span>
 <span>            exact <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -876,7 +1005,7 @@ difference in location
 </div>
 <p>We could still use the normal approximation that is mainly for studies with a large sample size, like the the following code chunk is doing. The two results are different, and since the sample size is small, the first approach is preferred.</p>
 <div class="cell">
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/wilcox.test.html">wilcox.test</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">two_sample_data</span><span class="op">$</span><span class="va">Placebo</span>, y <span class="op">=</span> <span class="va">two_sample_data</span><span class="op">$</span><span class="va">Alcohol</span>, mu <span class="op">=</span> <span class="fl">0</span>, </span>
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/wilcox.test.html">wilcox.test</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">two_sample_data</span><span class="op">$</span><span class="va">Placebo</span>, y <span class="op">=</span> <span class="va">two_sample_data</span><span class="op">$</span><span class="va">Alcohol</span>, mu <span class="op">=</span> <span class="fl">0</span>, </span>
 <span>            alternative <span class="op">=</span> <span class="st">"less"</span>, paired <span class="op">=</span> <span class="cn">FALSE</span>, conf.int <span class="op">=</span> <span class="cn">TRUE</span>, </span>
 <span>            exact <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -891,6 +1020,62 @@ alternative hypothesis: true location shift is less than 0
 sample estimates:
 difference in location 
             -0.6100186 </code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<p>The 20 participants’ average reaction times (in seconds) to a series of simulated driving situations are saved in <code>two_sample_data</code> in Python shown below. Does it appear that alcohol consumption increases reaction time?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>two_sample_data <span class="op">=</span> pd.read_csv(<span class="st">"./data/two_sample_data_nonpar.csv"</span>)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>two_sample_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Placebo  Alcohol
+0     0.90     1.46
+1     0.37     1.45
+2     1.63     1.76
+3     0.83     1.44
+4     0.95     1.11
+5     0.78     3.07
+6     0.86     0.98
+7     0.61     1.27
+8     0.38     2.56
+9     1.97     1.32</code></pre>
+</div>
+</div>
+<p>To perform the Wilcoxon rank-sum test, we use the function <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.mannwhitneyu.html"><code>mannwhitneyu()</code></a> in <code>scipy.stats</code>. In this example, the sample size is 10, so we can consider using the small-size procedure. In Python, we set <code>method='exact'</code>. By default, the function use <code>method='auto'</code> which chooses <code>'exact'</code> when the size of one of the samples is less than or equal to 8 and there are no ties, and chooses the method <code>'asymptotic'</code> otherwise.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Mann-Whitney U test (two-sample)</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> mannwhitneyu</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>mannwhitneyu(x<span class="op">=</span>two_sample_data[<span class="st">'Placebo'</span>], </span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>             y<span class="op">=</span>two_sample_data[<span class="st">'Alcohol'</span>],</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>             alternative<span class="op">=</span><span class="st">'less'</span>,</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>             method<span class="op">=</span><span class="st">'exact'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>MannwhitneyuResult(statistic=15.0, pvalue=0.0034207278789322136)</code></pre>
+</div>
+</div>
+<p>We could still use the normal approximation that is mainly for studies with a large sample size, like the the following code chunk is doing. The two results are different, and since the sample size is small, the exact approach is preferred.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>mannwhitneyu(x<span class="op">=</span>two_sample_data[<span class="st">'Placebo'</span>], </span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>             y<span class="op">=</span>two_sample_data[<span class="st">'Alcohol'</span>],</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>             alternative<span class="op">=</span><span class="st">'less'</span>,</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>             method<span class="op">=</span><span class="st">'asymptotic'</span>,</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>             use_continuity<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>MannwhitneyuResult(statistic=15.0, pvalue=0.004554248199015482)</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>mannwhitneyu(x<span class="op">=</span>two_sample_data[<span class="st">'Placebo'</span>], </span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>             y<span class="op">=</span>two_sample_data[<span class="st">'Alcohol'</span>],</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>             alternative<span class="op">=</span><span class="st">'less'</span>,</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>             method<span class="op">=</span><span class="st">'asymptotic'</span>,</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>             use_continuity<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>MannwhitneyuResult(statistic=15.0, pvalue=0.004075485796751346)</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 </section><section id="kruskal-wallis-test-for-three-or-more-samples" class="level2" data-number="23.5"><h2 data-number="23.5" class="anchored" data-anchor-id="kruskal-wallis-test-for-three-or-more-samples">
@@ -1476,7 +1661,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
 <li class="nav-item compact">
-    <a class="nav-link active" href="https://github.com/chenghanyustats/introstatsbook" aria-current="page">
+    <a class="nav-link" href="https://github.com/chenghanyustats/introstatsbook">
       <i class="bi bi-github" role="img">
 </i> 
     </a>

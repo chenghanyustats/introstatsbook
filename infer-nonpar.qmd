@@ -148,6 +148,9 @@ grass than brand B.
 
 <!-- ## Example 6.9:  Wilcoxon Signed-Rank Test in R -->
 
+::: {.panel-tabset}
+
+## R
 We will perform the Wilcoxon signed-rank test using R. First we prepare the data set `paired_data` in R like this:
 
 ```{r signed_rank_test_data}
@@ -173,7 +176,7 @@ The `x` and `y` data should be consistent with `alternative`. If we put `paired_
 :::
 
 
-Our dataset consists of 20 observations, but it's important to note that we have a tie in the sixth observation where brand A and brand B have the same measurements. If you do not specify `exact=TRUE` in the function, R will issue a warning and automatically use the normal approximation with continuity correction. The following two code snippets will produce the same result.
+Our dataset consists of 20 observations, but it's important to note that we have a tie in the sixth observation where brand A and brand B have the same measurements. If you do not specify `exact=FALSE` in the function, R will issue a warning and automatically use the normal approximation with continuity correction. The following two code snippets will produce the same result.
 
 ```{r}
 #| label: wilcox_paired_warn
@@ -217,7 +220,89 @@ wilcox.test(x = paired_data$a, y = paired_data$b, mu = 0,
 
 As the sample size increases, the exact p-value and confidence interval will become increasingly similar to those obtained using the normal approximation.
 
+## Python
 
+We will perform the Wilcoxon signed-rank test using Python. First we prepare the data set `paired_data` in Python like this:
+
+
+```{python}
+import pandas as pd
+paired_data = pd.read_csv("./data/paired_data_nonpar.csv")
+paired_data['difference'] = paired_data['a'] - paired_data['b']
+paired_data
+```
+
+
+The command `wilcoxon()` in `scipy.stats` can perform the Wilcoxon signed-rank test. The arguments `x` and `y` are the paired data from Brand A and Brand B, respectively. We set `alternative = "greater"` because we would like to know whether brand A (in `x`) tends to produce *more* grass than brand B (in `y`).
+
+```{python}
+#| echo: true
+from scipy.stats import wilcoxon
+```
+
+:::{.callout-warning}
+The `x` and `y` data should be consistent with `alternative`. If we put `paired_data$b` in the `x` argument, and `paired_data$a` in the `y` argument, then `alternative = "less"` should be set. The order matters.
+:::
+
+When $n$ is sufficiently large, the null distribution of the normalized test statistic is approximately normal, and `method = 'approx'` can be used to compute the p-value. When $n$ is small, the normal approximation may not be accurate, and `method='exact'` is preferred. The default `method='auto'`, selects between the two: when $n <= 50$ and there are no zeros, the exact method is used; otherwise, the approximate method is used.
+
+
+Our dataset consists of 20 observations, but it's important to note that we have a tie in the sixth observation where brand A and brand B have the same measurements. If you do not set `method='approx'` in the function, Python will issue a warning and automatically use the normal approximation with or without continuity correction based on the argument `correction`. By default, `correction=False`.
+
+
+```{python}
+# by default method='auto' which is 'exact' in our case
+wilcoxon(x=paired_data['a'], y=paired_data['b'], 
+         alternative='greater', method='auto', correction=False)
+```
+
+
+```{python}
+# method='auto' which is 'exact'. correction=True
+wilcoxon(x=paired_data['a'], y=paired_data['b'], 
+         alternative='greater', method='auto', correction=True)
+```
+
+
+```{python}
+wilcoxon(x=paired_data['a'], y=paired_data['b'], 
+         alternative='greater', correction=True, method='approx')
+```
+
+
+
+If we remove the sixth observation, the exact p-value and confidence interval can be constructed. In the following examples, the first two code chunks will yield the same result, both utilizing the exact p-value. However, the third code chunk, with `method='approx'`, will use the normal approximation to calculate the p-value instead.
+
+
+
+```{python}
+# Removing the 6th observation for paired test
+paired_data = paired_data.drop(5)
+```
+
+```{python}
+## correction does not mattter 
+wilcoxon(paired_data['a'], paired_data['b'], 
+         alternative='greater', method='exact')
+```
+
+```{python}
+## correction does not mattter
+wilcoxon(paired_data['a'], paired_data['b'],
+         alternative='greater',method='auto')
+```
+
+```{python}
+wilcoxon(paired_data['a'], paired_data['b'], 
+         alternative='greater', correction=True, method='approx')
+```
+
+```{python}
+wilcoxon(paired_data['a'], paired_data['b'], 
+         alternative='greater', correction=False, method='approx')
+```
+
+:::
 
 
 
@@ -329,7 +414,14 @@ The procedures for conducting the Wilcoxon rank-sum test differ slightly dependi
 
 ## Example of Wilcoxon Rank-Sum Test (Example 6.5 of SMD)
 
-Many states are considering lowering the blood-alcohol level at which a driver is designated as driving under the influence (DUI) of alcohol. An investigator for a legislative committee designed the following test to study the effect of alcohol on reaction time. Ten participants consumed a specified amount of alcohol. Another group of 10 participants consumed the same amount of a nonalcoholic drink, a placebo. The two groups did not know whether they were receiving alcohol or the placebo. The 20 participants' average reaction times (in seconds) to a series of simulated driving situations are saved in `two_sample_data` in R shown below. Does it appear that alcohol consumption increases reaction time?
+Many states are considering lowering the blood-alcohol level at which a driver is designated as driving under the influence (DUI) of alcohol. An investigator for a legislative committee designed the following test to study the effect of alcohol on reaction time. Ten participants consumed a specified amount of alcohol. Another group of 10 participants consumed the same amount of a nonalcoholic drink, a placebo. The two groups did not know whether they were receiving alcohol or the placebo. 
+
+::: {.panel-tabset}
+
+
+## R 
+
+The 20 participants' average reaction times (in seconds) to a series of simulated driving situations are saved in `two_sample_data` in R shown below. Does it appear that alcohol consumption increases reaction time?
 
 
 <!-- ### Example 6.5: Wilcoxon Rank-Sum Test in R -->
@@ -364,6 +456,49 @@ wilcox.test(x = two_sample_data$Placebo, y = two_sample_data$Alcohol, mu = 0,
             alternative = "less", paired = FALSE, conf.int = TRUE, 
             exact = FALSE)
 ```
+
+
+## Python
+
+The 20 participants' average reaction times (in seconds) to a series of simulated driving situations are saved in `two_sample_data` in Python shown below. Does it appear that alcohol consumption increases reaction time?
+
+```{python}
+two_sample_data = pd.read_csv("./data/two_sample_data_nonpar.csv")
+two_sample_data
+```
+
+
+To perform the Wilcoxon rank-sum test, we use the function [`mannwhitneyu()`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.mannwhitneyu.html) in `scipy.stats`. In this example, the sample size is 10, so we can consider using the small-size procedure. In Python, we set `method='exact'`. By default, the function use `method='auto'` which chooses `'exact'` when the size of one of the samples is less than or equal to 8 and there are no ties, and chooses the method `'asymptotic'` otherwise.
+
+```{python}
+# Mann-Whitney U test (two-sample)
+from scipy.stats import mannwhitneyu
+mannwhitneyu(x=two_sample_data['Placebo'], 
+             y=two_sample_data['Alcohol'],
+             alternative='less',
+             method='exact')
+```
+
+We could still use the normal approximation that is mainly for studies with a large sample size, like the the following code chunk is doing. The two results are different, and since the sample size is small, the exact approach is preferred.
+
+```{python}
+mannwhitneyu(x=two_sample_data['Placebo'], 
+             y=two_sample_data['Alcohol'],
+             alternative='less',
+             method='asymptotic',
+             use_continuity=True)
+```
+
+```{python}
+mannwhitneyu(x=two_sample_data['Placebo'], 
+             y=two_sample_data['Alcohol'],
+             alternative='less',
+             method='asymptotic',
+             use_continuity=False)
+```
+
+:::
+
 
 
 ## Kruskal-Wallis Test for Three or More Samples
