@@ -609,7 +609,15 @@ Figure&nbsp;26.2: Source: Table 14.15 in SMD
 <li><p>To test main effect of factor B, use <span class="math inline">\(F_{test} = \frac{MSB}{MSE}\)</span> with <span class="math inline">\(df_1 = b-1\)</span> and <span class="math inline">\(df_2 = ab(n-1)\)</span>.</p></li>
 </ul></section><section id="example-of-two-way-anova-example-14.6-in-smd" class="level2" data-number="26.6"><h2 data-number="26.6" class="anchored" data-anchor-id="example-of-two-way-anova-example-14.6-in-smd">
 <span class="header-section-number">26.6</span> Example of Two-way ANOVA (Example 14.6 in SMD)</h2>
-<p>Determine the effects of 4 different pesticides on the yield of fruit from 3 different varieties of a citrus tree. Eight trees from each variety were randomly selected from an orchard. The 4 pesticides were then randomly assigned to 2 trees of each variety, and applications were made according to recommended levels. The data are saved in the R data frame <code>data_pesticide</code>.</p>
+<p>Determine the effects of 4 different pesticides on the yield of fruit from 3 different varieties of a citrus tree. Eight trees from each variety were randomly selected from an orchard. The 4 pesticides were then randomly assigned to 2 trees of each variety, and applications were made according to recommended levels.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<p>The data are saved in the R data frame <code>data_pesticide</code>.</p>
 <div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_pesticide</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -684,6 +692,93 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <div>
 <figure class="figure"><p><img src="model-twoway_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<p>The data are saved in the Python DataFrame <code>data_pesticide</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>data_pesticide</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    Yield  Variety  Pesticide
+0      49        1          1
+1      50        1          2
+2      43        1          3
+3      53        1          4
+4      39        1          1
+5      55        1          2
+6      38        1          3
+7      48        1          4
+8      55        2          1
+9      67        2          2
+10     53        2          3
+11     85        2          4
+12     41        2          1
+13     58        2          2
+14     42        2          3
+15     73        2          4
+16     66        3          1
+17     85        3          2
+18     69        3          3
+19     85        3          4
+20     68        3          1
+21     92        3          2
+22     62        3          3
+23     99        3          4</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>data_pesticide.info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 24 entries, 0 to 23
+Data columns (total 3 columns):
+ #   Column     Non-Null Count  Dtype
+---  ------     --------------  -----
+ 0   Yield      24 non-null     int64
+ 1   Variety    24 non-null     int64
+ 2   Pesticide  24 non-null     int64
+dtypes: int64(3)
+memory usage: 708.0 bytes</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>data_pesticide[<span class="st">'Pesticide'</span>] <span class="op">=</span> data_pesticide[<span class="st">'Pesticide'</span>].astype(<span class="bu">str</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>data_pesticide[<span class="st">'Variety'</span>] <span class="op">=</span> data_pesticide[<span class="st">'Variety'</span>].astype(<span class="bu">str</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Note that the two factors need to be a vector of type string. To fit a two-way ANOVA, we can use <code>ols()</code> and <code>anova_lm()</code>. In the formula, we use <code>Pesticide * Variety</code> to tell <code>ols()</code> to do two-way ANOVA with interaction. This is equivalent to <code>Pesticide + Variety + Pesticide:Variety</code>, where each variable name represents their main effect, and <code>Pesticide:Variety</code> is the specific interaction term. If we put <code>Yield ~ Pesticide + Variety</code> in the formula, a two-way ANOVA without interaction is performed.</p>
+<p>The ANOVA table is generated by <code>sm.stats.anova_lm(twoway_fit)</code>. We first look at the interaction term. The p-value is greater than 0.05 and we have insufficient evidence to indicate an interaction between pesticide levels and variety of trees levels.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.formula.api <span class="im">import</span> ols</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>twoway_fit <span class="op">=</span> ols(<span class="st">'Yield ~ Pesticide * Variety'</span>, data<span class="op">=</span>data_pesticide).fit()</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>sm.stats.anova_lm(twoway_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                     df       sum_sq      mean_sq          F    PR(&gt;F)
+Pesticide           3.0  2227.458333   742.486111  17.556322  0.000110
+Variety             2.0  3996.083333  1998.041667  47.244335  0.000002
+Pesticide:Variety   6.0   456.916667    76.152778   1.800657  0.181684
+Residual           12.0   507.500000    42.291667        NaN       NaN</code></pre>
+</div>
+</div>
+<p>Because interaction is not significant, we then can test the main effects of the 2 factors. The first row tests the main effect of Pesticide, and the second row tests the main effect of Variety. Both effects are significant. We conclude that there is a difference in mean yields among 4 pesticides and there is a difference in mean yields among 3 varieties of trees.</p>
+<p>Lastly, we can use command <a href="https://www.statsmodels.org/dev/generated/statsmodels.graphics.factorplots.interaction_plot.html"><code>interaction_plot()</code></a> from <code>statsmodels.graphics.factorplots</code> to generate the interaction plot or the <strong>profile plot</strong>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.graphics.factorplots <span class="im">import</span> interaction_plot</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> interaction_plot(</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>data_pesticide[<span class="st">'Pesticide'</span>],</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    trace<span class="op">=</span>data_pesticide[<span class="st">'Variety'</span>],</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    response<span class="op">=</span>data_pesticide[<span class="st">'Yield'</span>],</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Interaction Plot (Profile Plot)'</span>)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="model-twoway_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -1264,7 +1359,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
 <li class="nav-item compact">
-    <a class="nav-link active" href="https://github.com/chenghanyustats/introstatsbook" aria-current="page">
+    <a class="nav-link" href="https://github.com/chenghanyustats/introstatsbook">
       <i class="bi bi-github" role="img">
 </i> 
     </a>
