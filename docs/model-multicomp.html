@@ -520,7 +520,15 @@ window.Quarto = {
 <p>In this chapter we will learn how to do multiple pairwise comparisons or testings simultaneously while controlling the familywise error rate at a low level, reducing the number of false positives, or mitigating the inflated Type-I error rate due to multiple comparisons. The main methods introduced here include <strong>Bonferroni correction</strong>, <strong>Fisher’s LSD (Least Significant Difference)</strong>, <strong>Tukey’s HSD (honestly significant difference)</strong>, and <strong>Dunnett’s Method</strong>. Before we jump into these methods, let’s first look at an examples, refreshing our knowledge of ANOVA.</p>
 <hr>
 <p><span style="color:blue"> <strong>Example of Multiple Comparison: ANOVA (Example 9.4 in SMD)</strong> </span></p>
-<p>A study was done to test 5 different agents used to control weeds. Each of these agents were applied to sample of 6 one-acre plots. The hay was harvested and the total yield was recorded. The data set is saved in the R data frame <code>data_weed</code>.</p>
+<p>A study was done to test 5 different agents used to control weeds. Each of these agents were applied to sample of 6 one-acre plots. The hay was harvested and the total yield was recorded.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<p>The data set is saved in the R data frame <code>data_weed</code>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output cell-output-stdout">
 <pre><code>   yield agent type
@@ -567,6 +575,61 @@ window.Quarto = {
      5        1.50     0.127           6 Chm2</code></pre>
 </div>
 </div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<p>The data set is saved in the Python data frame <code>data_weed</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the data from a CSV file</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>data_weed <span class="op">=</span> pd.read_csv(<span class="st">"./data/data_weed.csv"</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>data_weed</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     yield  agent  type
+0   1.0480      1   NaN
+1   1.0896      1   NaN
+2   1.3151      1   NaN
+3   1.1275      1   NaN
+4   1.1349      1   NaN
+5   1.3348      1   NaN
+6   1.3659      2  Bio1
+7   1.1238      2  Bio1
+8   1.2049      2  Bio1
+9   1.2387      2  Bio1
+10  1.4730      2  Bio1
+11  1.3517      2  Bio1
+12  1.3621      3  Bio2
+13  1.3342      3  Bio2
+14  1.2703      3  Bio2
+15  1.4950      3  Bio2
+16  1.3714      3  Bio2
+17  1.1350      3  Bio2
+18  1.6369      4  Chm1
+19  1.4142      4  Chm1
+20  1.3014      4  Chm1
+21  1.4625      4  Chm1
+22  1.3093      4  Chm1
+23  1.3657      4  Chm1
+24  1.4532      5  Chm2
+25  1.3362      5  Chm2
+26  1.6145      5  Chm2
+27  1.5390      5  Chm2
+28  1.3967      5  Chm2
+29  1.6603      5  Chm2</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code> agent sample_mean sample_sd sample_size type
+     1        1.17     0.120           6 None
+     2        1.29     0.127           6 Bio1
+     3        1.33     0.120           6 Bio2
+     4        1.42     0.125           6 Chm1
+     5        1.50     0.127           6 Chm2</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 <!-- # ```{r} -->
 <!-- # #| out-width: 100% -->
 <!-- # knitr::include_graphics("./images/img-model/ex9_3.png") -->
@@ -578,8 +641,15 @@ window.Quarto = {
 </ul>
 <!-- ![Table 9.1 in Stats](./figures/ex9_3.png){height=220px width=690px} --><p>The first question can be answered by ANOVA. Let’s check the assumptions, and perform ANOVA. <!-- ## Example 9.3 Check Equal Variances {.smaller} --></p>
 <p>First we check the equality of variances <span class="math inline">\(H_0: \sigma_1^2 = \dots = \sigma_5^2\)</span>.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-forge.r-project.org/projects/car/">car</a></span><span class="op">)</span></span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-forge.r-project.org/projects/car/">car</a></span><span class="op">)</span></span>
 <span><span class="op">(</span><span class="va">levene_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/car/man/leveneTest.html">leveneTest</a></span><span class="op">(</span><span class="va">yield</span> <span class="op">~</span> <span class="va">agent</span>, data <span class="op">=</span> <span class="va">data_weed</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Levene's Test for Homogeneity of Variance (center = median)
@@ -587,7 +657,7 @@ window.Quarto = {
 group  4    0.12   0.97
       25               </code></pre>
 </div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Bartlett test is adapted for normally distributed data.</span></span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Bartlett test is adapted for normally distributed data.</span></span>
 <span><span class="op">(</span><span class="va">bartlett_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/bartlett.test.html">bartlett.test</a></span><span class="op">(</span><span class="va">yield</span> <span class="op">~</span> <span class="va">agent</span>, data <span class="op">=</span> <span class="va">data_weed</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -596,7 +666,7 @@ group  4    0.12   0.97
 data:  yield by agent
 Bartlett's K-squared = 0.03, df = 4, p-value = 1</code></pre>
 </div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># The Fligner-Killeen test is most robust against departures from normality. Use it when there are outliers.</span></span>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># The Fligner-Killeen test is most robust against departures from normality. Use it when there are outliers.</span></span>
 <span><span class="op">(</span><span class="va">fligner_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/fligner.test.html">fligner.test</a></span><span class="op">(</span><span class="va">yield</span> <span class="op">~</span> <span class="va">agent</span>, data <span class="op">=</span> <span class="va">data_weed</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -606,10 +676,9 @@ data:  yield by agent
 Fligner-Killeen:med chi-squared = 0.4, df = 4, p-value = 1</code></pre>
 </div>
 </div>
-<!-- ## Example 9.3 Check Normality -->
 <p>Then we check the normality assumption <span class="math inline">\(H_0:\)</span> Data are generated from a normal distribution for each type of weed agents. The qqplot looks good.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-forge.r-project.org/projects/car/">car</a></span><span class="op">)</span></span>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-forge.r-project.org/projects/car/">car</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/car/man/qqPlot.html">qqPlot</a></span><span class="op">(</span><span class="va">yield</span> <span class="op">~</span> <span class="va">type</span>, data <span class="op">=</span> <span class="va">data_weed</span>, layout<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -618,6 +687,57 @@ Fligner-Killeen:med chi-squared = 0.4, df = 4, p-value = 1</code></pre>
 </div>
 </div>
 </div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy.stats <span class="im">as</span> stats</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.formula.api <span class="im">import</span> ols</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Levene's Test</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co"># https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.levene.html</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>stats.levene(data_weed[<span class="st">'yield'</span>][data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="dv">1</span>],</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>             data_weed[<span class="st">'yield'</span>][data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="dv">2</span>],</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>             data_weed[<span class="st">'yield'</span>][data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="dv">3</span>],</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>             data_weed[<span class="st">'yield'</span>][data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="dv">4</span>],</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>             data_weed[<span class="st">'yield'</span>][data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="dv">5</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>LeveneResult(statistic=0.11984660886763815, pvalue=0.9741358089178117)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Bartlett's Test </span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.bartlett.html</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>stats.bartlett(data_weed[<span class="st">'yield'</span>][data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="dv">1</span>],</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>               data_weed[<span class="st">'yield'</span>][data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="dv">2</span>],</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>               data_weed[<span class="st">'yield'</span>][data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="dv">3</span>],</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>               data_weed[<span class="st">'yield'</span>][data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="dv">4</span>],</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>               data_weed[<span class="st">'yield'</span>][data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="dv">5</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>BartlettResult(statistic=0.02859647293854971, pvalue=0.99989874938744)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fligner-Killeen Test</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.fligner.html</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>stats.fligner(data_weed[<span class="st">'yield'</span>][data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="dv">1</span>],</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>              data_weed[<span class="st">'yield'</span>][data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="dv">2</span>],</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>              data_weed[<span class="st">'yield'</span>][data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="dv">3</span>],</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>              data_weed[<span class="st">'yield'</span>][data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="dv">4</span>],</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>              data_weed[<span class="st">'yield'</span>][data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="dv">5</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>FlignerResult(statistic=0.4334833327653211, pvalue=0.9796448746915967)</code></pre>
+</div>
+</div>
+<p>Then we check the normality assumption <span class="math inline">\(H_0:\)</span> Data are generated from a normal distribution for each type of weed agents. The qqplot looks good.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-multicomp_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="1440"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- ## Example 9.3 Check Normality -->
 <!-- ## Example 9.3 ANOVA -->
 <p>Next, we perform ANOVA to test if there is a difference among the agents.</p>
 <ul>
@@ -627,8 +747,15 @@ Fligner-Killeen:med chi-squared = 0.4, df = 4, p-value = 1</code></pre>
 &amp;H_1: \mu_i \ne \mu_j \text{ for some pairs } (i, j)
 \end{align}\)</span> </li>
 </ul>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">yield</span> <span class="op">~</span> <span class="va">agent</span>, data <span class="op">=</span> <span class="va">data_weed</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">yield</span> <span class="op">~</span> <span class="va">agent</span>, data <span class="op">=</span> <span class="va">data_weed</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Variance Table
 
@@ -638,6 +765,21 @@ agent      4  0.365  0.0912    5.96 0.0016 **
 Residuals 25  0.383  0.0153                  
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co">## need to rename yield. need to figure out why</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>data_weed.rename(columns<span class="op">=</span>{<span class="st">'yield'</span>: <span class="st">'yield_value'</span>}, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>sm.stats.anova_lm(ols(<span class="st">'yield_value ~ C(agent)'</span>, data<span class="op">=</span>data_weed).fit())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            df    sum_sq   mean_sq         F    PR(&gt;F)
+C(agent)   4.0  0.364675  0.091169  5.958351  0.001647
+Residual  25.0  0.382525  0.015301       NaN       NaN</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <p>We reject <span class="math inline">\(H_0\)</span>, and conclude that there is a difference among the agents.</p>
@@ -650,11 +792,31 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 \end{align}\)</span> </span></li>
 </ul>
 <p>Here shows the boxplot for each weed agent. The ANOVA has told us there are some mean yield differences among these agents, and we are going to find out which 2 agents or which pair produce statistically discernible different mean yields.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="model-multicomp_files/figure-html/ex9_3_boxplot-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-multicomp_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -675,7 +837,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="model-multicomp_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<figure class="figure"><p><img src="model-multicomp_files/figure-html/unnamed-chunk-12-3.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -738,9 +900,16 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p>We can see that Chm2 (Agent 5) and Chm1 (Agent 4) are different from Control (Agent 1), but Bio1 and Bio2 are not significantly different from the control group.</p>
 <!-- ## Example 9.3 Bonferroni Method in R (Most Conservative) {.smaller} -->
 <p><span class="math inline">\(\color{blue}{|\overline{y}_i - \overline{y}_j| &gt; t_{\frac{\alpha}{2m}, df_{W}}\sqrt{s_W^2\left( \frac{1}{n_i} + \frac{1}{n_j}\right)}}\)</span></p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
 <p>Let me first show how I do the Bonferroni correction using R step by step.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">y_bar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1.175</span>, <span class="fl">1.293</span>, <span class="fl">1.328</span>, <span class="fl">1.415</span>, <span class="fl">1.500</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">y_bar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1.175</span>, <span class="fl">1.293</span>, <span class="fl">1.328</span>, <span class="fl">1.415</span>, <span class="fl">1.500</span><span class="op">)</span></span>
 <span><span class="co">## all pairs</span></span>
 <span><span class="op">(</span><span class="va">y_bar_pair</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/combn.html">combn</a></span><span class="op">(</span><span class="va">y_bar</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -748,7 +917,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 [1,] 1.18 1.18 1.18 1.18 1.29 1.29 1.29 1.33 1.33  1.42
 [2,] 1.29 1.33 1.42 1.50 1.33 1.42 1.50 1.42 1.50  1.50</code></pre>
 </div>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## all pair distances |y_bar_i - y_bar_j|</span></span>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## all pair distances |y_bar_i - y_bar_j|</span></span>
 <span><span class="va">y_bar_dist</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">y_bar_pair</span>, <span class="fl">2</span>, <span class="va">dist</span><span class="op">)</span></span>
 <span><span class="va">dd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/combn.html">combn</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">y_bar_dist</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">dd</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, <span class="va">dd</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span>, sep <span class="op">=</span> <span class="st">" vs "</span><span class="op">)</span></span>
@@ -759,27 +928,33 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## set values</span></span>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## set values</span></span>
 <span><span class="va">alpha</span> <span class="op">&lt;-</span> <span class="fl">0.05</span>; <span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Special.html">choose</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">2</span><span class="op">)</span>; <span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">6</span></span>
 <span></span>
 <span><span class="co">## perform anova</span></span>
 <span><span class="va">aov_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aov.html">aov</a></span><span class="op">(</span><span class="va">yield</span> <span class="op">~</span> <span class="va">agent</span>, data <span class="op">=</span> <span class="va">data_weed</span><span class="op">)</span> </span>
 <span></span>
 <span><span class="co">## extract df_W</span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/df.residual.html">df.residual</a></span><span class="op">(</span><span class="va">aov_res</span><span class="op">)</span> </span>
-<span></span>
-<span><span class="co">## extract s_W</span></span>
-<span><span class="va">sw</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/sigma.html">sigma</a></span><span class="op">(</span><span class="va">aov_res</span><span class="op">)</span> </span>
-<span></span>
-<span><span class="co">## critical value of bonferroni</span></span>
-<span><span class="va">t_bon</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">qt</a></span><span class="op">(</span>p <span class="op">=</span> <span class="va">alpha</span> <span class="op">/</span> <span class="op">(</span><span class="fl">2</span> <span class="op">*</span> <span class="va">m</span><span class="op">)</span>, df <span class="op">=</span> <span class="va">df</span>, lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## margin of error</span></span>
+<span><span class="op">(</span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/df.residual.html">df.residual</a></span><span class="op">(</span><span class="va">aov_res</span><span class="op">)</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 25</code></pre>
+</div>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## extract s_W</span></span>
+<span><span class="op">(</span><span class="va">sw</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/sigma.html">sigma</a></span><span class="op">(</span><span class="va">aov_res</span><span class="op">)</span> <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.124</code></pre>
+</div>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## critical value of bonferroni</span></span>
+<span><span class="op">(</span><span class="va">t_bon</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">qt</a></span><span class="op">(</span>p <span class="op">=</span> <span class="va">alpha</span> <span class="op">/</span> <span class="op">(</span><span class="fl">2</span> <span class="op">*</span> <span class="va">m</span><span class="op">)</span>, df <span class="op">=</span> <span class="va">df</span>, lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3.08</code></pre>
+</div>
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## margin of error</span></span>
 <span><span class="op">(</span><span class="va">E_bon</span> <span class="op">&lt;-</span> <span class="va">t_bon</span> <span class="op">*</span> <span class="va">sw</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="va">n</span> <span class="op">+</span> <span class="fl">1</span><span class="op">/</span><span class="va">n</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.22</code></pre>
 </div>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## decision</span></span>
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## decision</span></span>
 <span><span class="op">(</span><span class="va">y_bar_dist</span> <span class="op">&gt;</span> <span class="va">E_bon</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>1 vs 2 1 vs 3 1 vs 4 1 vs 5 2 vs 3 2 vs 4 2 vs 5 3 vs 4 3 vs 5 4 vs 5 
@@ -799,11 +974,11 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <!-- round(pt(ts, df = 2 * n - 2, lower.tail = FALSE) * 2, 4)  ## p-value -->
 <!-- ``` -->
 <!-- ## Example 9.3 Bonferroni Method in R {.smaller} -->
-<p>There is a shortcut to do Bonferroni correction for pairwise comparisons. We can use the function <code><a href="https://rdrr.io/r/stats/pairwise.t.test.html">pairwise.t.test()</a></code>. If we want to do 2-sample pooled <span class="math inline">\(t\)</span> test, aregument <code>pool.sd</code> should be FALSE because this argument is for the pooled variance pooled by all groups combined, not group <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>. The <code>p.adjust.method</code> is <code>none</code> because we do not control or adjust FWER. The <code>var.equal</code> should be <code>TRUE</code>, so that the pooled <span class="math inline">\(t\)</span> test is used. Otherwise, it will perform 2 sample <span class="math inline">\(t\)</span> test with non-equal variances.</p>
+<p>There is a shortcut to do Bonferroni correction for pairwise comparisons. We can use the function <code><a href="https://rdrr.io/r/stats/pairwise.t.test.html">pairwise.t.test()</a></code>. If we want to do 2-sample pooled <span class="math inline">\(t\)</span> test, argument <code>pool.sd</code> should be FALSE because this argument is for the pooled variance pooled by all groups combined, not group <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>. The <code>p.adjust.method</code> is <code>none</code> because we do not control or adjust FWER. The <code>var.equal</code> should be <code>TRUE</code>, so that the pooled <span class="math inline">\(t\)</span> test is used. Otherwise, it will perform 2 sample <span class="math inline">\(t\)</span> test with non-equal variances.</p>
 <p>The output is a matrix including p-values of all pair comparison testings. We can tell which pairs are significant by comparing their p-value with the significance level <span class="math inline">\(\alpha\)</span>.</p>
 <p>If we want to do Bonferroni correction, use <code>p.adjust.method = "bonferroni"</code>. Again, in Bonferroni, (1, 4) and (1, 5) are statistically significantly different. In traditional 2 sample <span class="math inline">\(t\)</span> test, significant results include (1, 4), (1, 5), (2, 5), and (3, 5).</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## individual 2-sample pooled t-test but not pooled by all groups</span></span>
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## individual 2-sample pooled t-test but not pooled by all groups</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/pairwise.t.test.html">pairwise.t.test</a></span><span class="op">(</span><span class="va">data_weed</span><span class="op">$</span><span class="va">yield</span>, <span class="va">data_weed</span><span class="op">$</span><span class="va">agent</span>, pool.sd <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>                p.adjust.method <span class="op">=</span> <span class="st">"none"</span>, var.equal <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -820,7 +995,7 @@ data:  data_weed$yield and data_weed$agent
 
 P value adjustment method: none </code></pre>
 </div>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## Bonferroni correction</span></span>
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## Bonferroni correction</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/pairwise.t.test.html">pairwise.t.test</a></span><span class="op">(</span><span class="va">data_weed</span><span class="op">$</span><span class="va">yield</span>, <span class="va">data_weed</span><span class="op">$</span><span class="va">agent</span>, </span>
 <span>                p.adjust.method <span class="op">=</span> <span class="st">"bonferroni"</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -836,6 +1011,185 @@ data:  data_weed$yield and data_weed$agent
 5 0.001 0.077 0.237 1.000
 
 P value adjustment method: bonferroni </code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
+<p>Let me first show how I do the Bonferroni correction using Python step by step.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> itertools</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Given data</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>y_bar <span class="op">=</span> np.array([<span class="fl">1.175</span>, <span class="fl">1.293</span>, <span class="fl">1.328</span>, <span class="fl">1.415</span>, <span class="fl">1.500</span>])</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="co"># All pairs</span></span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>y_bar_pair <span class="op">=</span> np.array(<span class="bu">list</span>(itertools.combinations(y_bar, <span class="dv">2</span>)))</span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>y_bar_pair</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>array([[1.175, 1.293],
+       [1.175, 1.328],
+       [1.175, 1.415],
+       [1.175, 1.5  ],
+       [1.293, 1.328],
+       [1.293, 1.415],
+       [1.293, 1.5  ],
+       [1.328, 1.415],
+       [1.328, 1.5  ],
+       [1.415, 1.5  ]])</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># All pair distances |y_bar_i - y_bar_j|</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>y_bar_dist <span class="op">=</span> np.<span class="bu">abs</span>(y_bar_pair[:, <span class="dv">0</span>] <span class="op">-</span> y_bar_pair[:, <span class="dv">1</span>])</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>y_bar_dist</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>array([0.118, 0.153, 0.24 , 0.325, 0.035, 0.122, 0.207, 0.087, 0.172,
+       0.085])</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Combination indices (for naming)</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>dd <span class="op">=</span> np.array(<span class="bu">list</span>(itertools.combinations(<span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">6</span>), <span class="dv">2</span>)))</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Create names for the distances</span></span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>y_bar_dist_names <span class="op">=</span> [<span class="ss">f"</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss"> vs </span><span class="sc">{</span>j<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> i, j <span class="kw">in</span> dd]</span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the distances with names</span></span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>y_bar_dist_dict <span class="op">=</span> <span class="bu">dict</span>(<span class="bu">zip</span>(y_bar_dist_names, y_bar_dist))</span>
+<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>y_bar_dist_dict</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'1 vs 2': 0.11799999999999988, '1 vs 3': 0.15300000000000002, '1 vs 4': 0.24, '1 vs 5': 0.32499999999999996, '2 vs 3': 0.03500000000000014, '2 vs 4': 0.12200000000000011, '2 vs 5': 0.20700000000000007, '3 vs 4': 0.08699999999999997, '3 vs 5': 0.17199999999999993, '4 vs 5': 0.08499999999999996}</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> t</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.formula.api <span class="im">import</span> ols</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Set values</span></span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>alpha <span class="op">=</span> <span class="fl">0.05</span></span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> math.comb(<span class="dv">5</span>, <span class="dv">2</span>)  <span class="co"># Equivalent to choose(5, 2)</span></span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">6</span></span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Assuming 'data_weed' is your DataFrame and 'yield' and 'agent' are column names</span></span>
+<span id="cb48-12"><a href="#cb48-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform ANOVA</span></span>
+<span id="cb48-13"><a href="#cb48-13" aria-hidden="true" tabindex="-1"></a>data_weed[<span class="st">'agent'</span>] <span class="op">=</span> data_weed[<span class="st">'agent'</span>].astype(<span class="bu">str</span>)</span>
+<span id="cb48-14"><a href="#cb48-14" aria-hidden="true" tabindex="-1"></a>model_fit <span class="op">=</span> ols(<span class="st">'yield_value ~ agent'</span>, data<span class="op">=</span>data_weed).fit()</span>
+<span id="cb48-15"><a href="#cb48-15" aria-hidden="true" tabindex="-1"></a>anova_table <span class="op">=</span> sm.stats.anova_lm(model_fit)</span>
+<span id="cb48-16"><a href="#cb48-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-17"><a href="#cb48-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract df_W (degrees of freedom) and s_W (residual standard deviation)</span></span>
+<span id="cb48-18"><a href="#cb48-18" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> model_fit.df_resid</span>
+<span id="cb48-19"><a href="#cb48-19" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>25.0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>sw <span class="op">=</span> np.sqrt(anova_table[<span class="st">'mean_sq'</span>].iloc[<span class="dv">1</span>])</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>sw</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.12369717161951066</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Critical value for Bonferroni correction</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>t_bon <span class="op">=</span> t.ppf(<span class="dv">1</span> <span class="op">-</span> alpha <span class="op">/</span> (<span class="dv">2</span> <span class="op">*</span> m), df)</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>t_bon</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>3.078199460536119</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Margin of error</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>E_bon <span class="op">=</span> t_bon <span class="op">*</span> sw <span class="op">*</span> np.sqrt((<span class="dv">1</span><span class="op">/</span>n <span class="op">+</span> <span class="dv">1</span><span class="op">/</span>n))</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>E_bon</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.2198345252258888</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assuming y_bar_dist was already calculated (from previous code)</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Decision</span></span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>y_bar_dist <span class="op">&gt;</span> E_bon</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>array([False, False,  True,  True, False, False, False, False, False,
+       False])</code></pre>
+</div>
+</div>
+<p>If we don’t do any correction, we can do pairwise t test for all pairs directly using <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ttest_ind.html"><code>ttest_ind()</code></a> that conducts t-test for the means of two independent samples. It is brutal force, and there should be a better way to conduct all pairwise two-sample pooled t test separately by default.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> stats</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>test12 <span class="op">=</span> stats.ttest_ind(data_weed.loc[data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="st">'1'</span>, <span class="st">'yield_value'</span>],</span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>                         data_weed.loc[data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="st">'2'</span>, <span class="st">'yield_value'</span>])</span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>test12.pvalue</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.12937022290977485</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>test13 <span class="op">=</span> stats.ttest_ind(data_weed.loc[data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="st">'1'</span>, <span class="st">'yield_value'</span>],</span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>                         data_weed.loc[data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="st">'3'</span>, <span class="st">'yield_value'</span>])</span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>test13.pvalue</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.051684324302770854</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>test14 <span class="op">=</span> stats.ttest_ind(data_weed.loc[data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="st">'1'</span>, <span class="st">'yield_value'</span>],</span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>                         data_weed.loc[data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="st">'4'</span>, <span class="st">'yield_value'</span>])</span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>test14.pvalue                  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.0068949544337039625</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>test15 <span class="op">=</span> stats.ttest_ind(data_weed.loc[data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="st">'1'</span>, <span class="st">'yield_value'</span>],</span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>                         data_weed.loc[data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="st">'5'</span>, <span class="st">'yield_value'</span>])</span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>test15.pvalue                       </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.0010440332236669495</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>test23 <span class="op">=</span> stats.ttest_ind(data_weed.loc[data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="st">'2'</span>, <span class="st">'yield_value'</span>],</span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>                         data_weed.loc[data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="st">'3'</span>, <span class="st">'yield_value'</span>]) </span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>test23.pvalue</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.6335961134332914</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>test24 <span class="op">=</span> stats.ttest_ind(data_weed.loc[data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="st">'2'</span>, <span class="st">'yield_value'</span>],</span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>                         data_weed.loc[data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="st">'4'</span>, <span class="st">'yield_value'</span>])</span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>test24.pvalue</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.12419123394098548</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>test25 <span class="op">=</span> stats.ttest_ind(data_weed.loc[data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="st">'2'</span>, <span class="st">'yield_value'</span>],</span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>                         data_weed.loc[data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="st">'5'</span>, <span class="st">'yield_value'</span>])</span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>test25.pvalue</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.01786227373198035</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>test34 <span class="op">=</span> stats.ttest_ind(data_weed.loc[data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="st">'3'</span>, <span class="st">'yield_value'</span>],</span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>                         data_weed.loc[data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="st">'4'</span>, <span class="st">'yield_value'</span>])</span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>test34.pvalue</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.24606446614093755</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>test35 <span class="op">=</span> stats.ttest_ind(data_weed.loc[data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="st">'3'</span>, <span class="st">'yield_value'</span>],</span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>                         data_weed.loc[data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="st">'5'</span>, <span class="st">'yield_value'</span>])</span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>test35.pvalue</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.0360878773096397</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>test45 <span class="op">=</span> stats.ttest_ind(data_weed.loc[data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="st">'4'</span>, <span class="st">'yield_value'</span>],</span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>                         data_weed.loc[data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="st">'5'</span>, <span class="st">'yield_value'</span>])</span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>test45.pvalue</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.2687698246654925</code></pre>
+</div>
+</div>
+<p>There is a shortcut to do Bonferroni correction for pairwise comparisons. We can use the method <code>t_test_pairwise()</code>. The output saved in <code>result_frame</code> is a matrix including p-values of all pair comparison testings. We can tell which pairs are significant by comparing their p-value with the significance level <span class="math inline">\(\alpha\)</span>.</p>
+<p>If we want to do Bonferroni correction, use <code>method='bonferroni'</code>. Again, in Bonferroni, (1, 4) and (1, 5) are statistically significantly different. In traditional 2 sample <span class="math inline">\(t\)</span> test, significant results include (1, 4), (1, 5), (2, 5), and (3, 5).</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a>pairwise_t_results <span class="op">=</span> model_fit.t_test_pairwise(term_name<span class="op">=</span><span class="st">'agent'</span>, method<span class="op">=</span><span class="st">'bonferroni'</span>, alpha<span class="op">=</span><span class="fl">0.05</span>)</span>
+<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a>pairwise_t_results.result_frame</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         coef   std err  ...  pvalue-bonferroni  reject-bonferroni
+2-1  0.118017  0.071417  ...           1.000000              False
+3-1  0.153017  0.071417  ...           0.420707              False
+4-1  0.240017  0.071417  ...           0.024990               True
+5-1  0.325000  0.071417  ...           0.001194               True
+3-2  0.035000  0.071417  ...           1.000000              False
+4-2  0.122000  0.071417  ...           0.999726              False
+5-2  0.206983  0.071417  ...           0.076997              False
+4-3  0.087000  0.071417  ...           1.000000              False
+5-3  0.171983  0.071417  ...           0.237341              False
+5-4  0.084983  0.071417  ...           1.000000              False
+
+[10 rows x 8 columns]</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <p>For each pair, we can draw its confidence interval for <span class="math inline">\(\mu_i - \mu_j\)</span>. The CI formula is <span class="math inline">\(\color{blue}{(\overline{y}_i - \overline{y}_j) \pm t_{\frac{\alpha}{2m}, df_{W}}\sqrt{s_W^2\left( \frac{1}{n_i} + \frac{1}{n_j}\right)}}\)</span>. The yellow dot represents <span class="math inline">\(\overline{y}_i - \overline{y}_j\)</span>. Centered at <span class="math inline">\(\overline{y}_i - \overline{y}_j\)</span>, we plus and minus the margin of error <span class="math inline">\(t_{\frac{\alpha}{2m}, df_{W}}\sqrt{s_W^2\left( \frac{1}{n_i} + \frac{1}{n_j}\right)}\)</span> to get the upper and lower bound of the CI. If the CI does not include zero, we conclude that <span class="math inline">\(\mu_i\)</span> and <span class="math inline">\(\mu_j\)</span> are not equal. Here again <span class="math inline">\(\mu_1\)</span> and <span class="math inline">\(\mu_4\)</span> are different. <span class="math inline">\(\mu_1\)</span> and <span class="math inline">\(\mu_5\)</span> are different too.</p>
@@ -898,21 +1252,31 @@ P value adjustment method: bonferroni </code></pre>
 <!-- ## Example 9.3 Fisher’s LSD in R --><ul>
 <li><span class="math inline">\(\color{blue}{|\overline{y}_i - \overline{y}_j| &gt; t_{\frac{\alpha}{2}, df_{W}}\sqrt{s_W^2\left( \frac{1}{n_i} + \frac{1}{n_j}\right)}}\)</span></li>
 </ul>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-6-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-1" role="tab" aria-controls="tabset-6-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-2" role="tab" aria-controls="tabset-6-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-6-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-6-1-tab">
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb81"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 25</code></pre>
 </div>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sw</span> <span class="op">^</span> <span class="fl">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb83"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sw</span> <span class="op">^</span> <span class="fl">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.0153</code></pre>
 </div>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">t_lsd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">qt</a></span><span class="op">(</span>p <span class="op">=</span> <span class="va">alpha</span><span class="op">/</span><span class="fl">2</span>, df <span class="op">=</span> <span class="va">df</span>, lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="op">(</span><span class="va">E_lsd</span> <span class="op">&lt;-</span> <span class="va">t_lsd</span> <span class="op">*</span> <span class="va">sw</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="va">n</span> <span class="op">+</span> <span class="fl">1</span><span class="op">/</span><span class="va">n</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">t_lsd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">qt</a></span><span class="op">(</span>p <span class="op">=</span> <span class="va">alpha</span><span class="op">/</span><span class="fl">2</span>, df <span class="op">=</span> <span class="va">df</span>, lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.06</code></pre>
+</div>
+<div class="sourceCode" id="cb87"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">E_lsd</span> <span class="op">&lt;-</span> <span class="va">t_lsd</span> <span class="op">*</span> <span class="va">sw</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="va">n</span> <span class="op">+</span> <span class="fl">1</span><span class="op">/</span><span class="va">n</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.147</code></pre>
 </div>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">y_bar_dist</span> <span class="op">&gt;</span> <span class="va">E_lsd</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb89"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">y_bar_dist</span> <span class="op">&gt;</span> <span class="va">E_lsd</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>1 vs 2 1 vs 3 1 vs 4 1 vs 5 2 vs 3 2 vs 4 2 vs 5 3 vs 4 3 vs 5 4 vs 5 
  FALSE   TRUE   TRUE   TRUE  FALSE  FALSE   TRUE  FALSE   TRUE  FALSE </code></pre>
@@ -923,7 +1287,7 @@ P value adjustment method: bonferroni </code></pre>
 <!-- ## Example 9.3 Fisher’s LSD in R {.smaller} -->
 <p>If we use <code><a href="https://rdrr.io/r/stats/pairwise.t.test.html">pairwise.t.test()</a></code>, <code>pool.sd = TRUE</code> because we do use the pooled variance <span class="math inline">\(s_W^2\)</span> that is pooled by all 5 samples. <code>p.adjust.method = "none"</code> because Fisher’s LSD does not adjust the Type I error rate. It still uses <span class="math inline">\(\alpha\)</span> in every individual testing. The p-value result for every pair comparison shows that if <span class="math inline">\(\alpha = 0.05\)</span> is the threshold or cutoff value, (1, 3), (1, 4), (1, 5), (2, 5), and (3, 5) pair comparisons reject their <span class="math inline">\(H_0\)</span> and conclude that there is a mean yield difference between their groups.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/pairwise.t.test.html">pairwise.t.test</a></span><span class="op">(</span><span class="va">data_weed</span><span class="op">$</span><span class="va">yield</span>, <span class="va">data_weed</span><span class="op">$</span><span class="va">agent</span>, pool.sd <span class="op">=</span> <span class="cn">TRUE</span>, </span>
+<div class="sourceCode" id="cb91"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/pairwise.t.test.html">pairwise.t.test</a></span><span class="op">(</span><span class="va">data_weed</span><span class="op">$</span><span class="va">yield</span>, <span class="va">data_weed</span><span class="op">$</span><span class="va">agent</span>, pool.sd <span class="op">=</span> <span class="cn">TRUE</span>, </span>
 <span>                p.adjust.method <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="co">## Fisher’s LSD</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -938,6 +1302,41 @@ data:  data_weed$yield and data_weed$agent
 5 1e-04 0.008 0.024 0.245
 
 P value adjustment method: none </code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-6-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-2-tab">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>25.0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a>sw <span class="op">**</span> <span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.015300990266666674</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a>t_lsd <span class="op">=</span> t.ppf(<span class="dv">1</span> <span class="op">-</span> alpha<span class="op">/</span><span class="dv">2</span>, df)</span>
+<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a>t_lsd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2.059538552753294</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a>E_lsd <span class="op">=</span> t_lsd <span class="op">*</span> sw <span class="op">*</span> np.sqrt(<span class="dv">1</span><span class="op">/</span>n <span class="op">+</span> <span class="dv">1</span><span class="op">/</span>n)</span>
+<span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a>E_lsd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.14708523139370552</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a>y_bar_dist <span class="op">&gt;</span> E_lsd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>array([False,  True,  True,  True, False, False,  True, False,  True,
+       False])</code></pre>
+</div>
+</div>
+<p>The following should be replaced with LSD method which is still not found in any Python package. Need to update this.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a>pairwise_t_results <span class="op">=</span> model_fit.t_test_pairwise(term_name<span class="op">=</span><span class="st">'agent'</span>, method<span class="op">=</span><span class="st">'bonferroni'</span>, alpha<span class="op">=</span><span class="fl">0.05</span>)</span>
+<span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a>pairwise_t_results.result_frame</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
 </div>
 </div>
 <!-- ## Example 9.3 Fisher’s LSD in R {.smaller} -->
@@ -991,24 +1390,31 @@ P value adjustment method: none </code></pre>
 <!-- ## Example 9.3 Tukey's HSD in R --><ul>
 <li><span class="math inline">\(\color{blue}{|\overline{y}_i - \overline{y}_j| &gt; q_{\alpha}(k, df_{W})\sqrt{\frac{s_W^2}{n}}}\)</span></li>
 </ul>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-7-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-1" role="tab" aria-controls="tabset-7-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-7-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-2" role="tab" aria-controls="tabset-7-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-7-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-7-1-tab">
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb105"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 25</code></pre>
 </div>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sw</span><span class="op">^</span><span class="fl">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb107"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sw</span><span class="op">^</span><span class="fl">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.0153</code></pre>
 </div>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">q_tukey</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Tukey.html">qtukey</a></span><span class="op">(</span>p <span class="op">=</span> <span class="va">alpha</span>, nmeans <span class="op">=</span> <span class="fl">5</span>, df <span class="op">=</span> <span class="va">df</span>, lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb109"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">q_tukey</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Tukey.html">qtukey</a></span><span class="op">(</span>p <span class="op">=</span> <span class="va">alpha</span>, nmeans <span class="op">=</span> <span class="fl">5</span>, df <span class="op">=</span> <span class="va">df</span>, lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 4.15</code></pre>
 </div>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">E_tukey</span> <span class="op">&lt;-</span> <span class="va">q_tukey</span> <span class="op">*</span> <span class="va">sw</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">/</span> <span class="va">n</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb111"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">E_tukey</span> <span class="op">&lt;-</span> <span class="va">q_tukey</span> <span class="op">*</span> <span class="va">sw</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">/</span> <span class="va">n</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.21</code></pre>
 </div>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">y_bar_dist</span> <span class="op">&gt;</span> <span class="va">E_tukey</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb113"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">y_bar_dist</span> <span class="op">&gt;</span> <span class="va">E_tukey</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>1 vs 2 1 vs 3 1 vs 4 1 vs 5 2 vs 3 2 vs 4 2 vs 5 3 vs 4 3 vs 5 4 vs 5 
  FALSE  FALSE   TRUE   TRUE  FALSE  FALSE  FALSE  FALSE  FALSE  FALSE </code></pre>
@@ -1019,7 +1425,7 @@ P value adjustment method: none </code></pre>
 <!-- ## Example 9.3 Tukey's HSD in R  -->
 <p>A faster way to conduct Tukey’s HSD test is to use R function <code><a href="https://rdrr.io/r/stats/TukeyHSD.html">TukeyHSD()</a></code>. After doing ANOVA, we can save the result, say <code>res_aov</code>, then to implement Tukey method, just put the ANOVA result in the function <code><a href="https://rdrr.io/r/stats/TukeyHSD.html">TukeyHSD()</a></code>. It will provide all information for each pair comparison.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">res_aov</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aov.html">aov</a></span><span class="op">(</span><span class="va">yield</span> <span class="op">~</span> <span class="va">agent</span>, data <span class="op">=</span> <span class="va">data_weed</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb115"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">res_aov</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aov.html">aov</a></span><span class="op">(</span><span class="va">yield</span> <span class="op">~</span> <span class="va">agent</span>, data <span class="op">=</span> <span class="va">data_weed</span><span class="op">)</span></span>
 <span><span class="op">(</span><span class="va">tukey_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/TukeyHSD.html">TukeyHSD</a></span><span class="op">(</span><span class="va">res_aov</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Tukey multiple comparisons of means
@@ -1048,7 +1454,64 @@ $agent
 <!-- tukey_test_2 <- glht(res_aov, linfct = mcp(agent = "Tukey")) -->
 <!-- summary(tukey_test_2) -->
 <!-- ``` -->
-<p>In the output, <code>diff</code> is <span class="math inline">\(\overline{y}_i - \overline{y}_j\)</span> where <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> are shown in the first column. <code>lwr</code> and <code>upr</code> are the lower bound and upper bound of the CI for <span class="math inline">\(\mu_i - \mu_j\)</span>, respectively. The last column represents p-values. With <span class="math inline">\(\alpha_F = 0.05\)</span>, (4, 1) and (5, 1) are statistically discernible. Their corresponding lower bound is greater than zero, meaning that it’s CI for <span class="math inline">\(\mu_i - \mu_j\)</span> does not cover zero, so <span class="math inline">\(\mu_i - \mu_j\)</span> is statistically significantly different from zero.</p>
+<p>In the output, <code>diff</code> is <span class="math inline">\(\overline{y}_i - \overline{y}_j\)</span> where <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> are shown in the first column. <code>lwr</code> and <code>upr</code> are the lower bound and upper bound of the CI for <span class="math inline">\(\mu_i - \mu_j\)</span>, respectively. The adjusted p-values are shown in the <code>p-adj</code> column. With <span class="math inline">\(\alpha_F = 0.05\)</span>, (4, 1) and (5, 1) are statistically discernible. Their corresponding lower bound is greater than zero, meaning that it’s CI for <span class="math inline">\(\mu_i - \mu_j\)</span> does not cover zero, so <span class="math inline">\(\mu_i - \mu_j\)</span> is statistically significantly different from zero.</p>
+</div>
+<div id="tabset-7-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-7-2-tab">
+<p>The studentized range distribution in Python is implemented by the function <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.studentized_range.html"><code>studentized_range</code></a>, again from <code>scipy.stats</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb117"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>25.0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb119"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a>sw<span class="op">**</span><span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.015300990266666674</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb121"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb121-1"><a href="#cb121-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> studentized_range</span>
+<span id="cb121-2"><a href="#cb121-2" aria-hidden="true" tabindex="-1"></a>q_tukey <span class="op">=</span> studentized_range.ppf(q<span class="op">=</span><span class="dv">1</span><span class="op">-</span>alpha, k<span class="op">=</span><span class="dv">5</span>, df<span class="op">=</span>df)</span>
+<span id="cb121-3"><a href="#cb121-3" aria-hidden="true" tabindex="-1"></a>q_tukey</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>4.1533633299635335</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb123"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a>E_tukey <span class="op">=</span> q_tukey <span class="op">*</span> sw <span class="op">*</span> np.sqrt(<span class="dv">1</span> <span class="op">/</span> n)</span>
+<span id="cb123-2"><a href="#cb123-2" aria-hidden="true" tabindex="-1"></a>E_tukey</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.2097413545569429</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb125"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb125-1"><a href="#cb125-1" aria-hidden="true" tabindex="-1"></a>y_bar_dist <span class="op">&gt;</span> E_tukey</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>array([False, False,  True,  True, False, False, False, False, False,
+       False])</code></pre>
+</div>
+</div>
+<p>A faster way to conduct Tukey’s HSD test is to use Python function <code>pairwise_tukeyhsd()</code> from <code>statsmodels.stats.multicomp</code>. It will provide all information for each pair comparison.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb127"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb127-1"><a href="#cb127-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.stats.multicomp <span class="im">import</span> pairwise_tukeyhsd</span>
+<span id="cb127-2"><a href="#cb127-2" aria-hidden="true" tabindex="-1"></a>tukey <span class="op">=</span> pairwise_tukeyhsd(endog<span class="op">=</span>data_weed[<span class="st">'yield_value'</span>], </span>
+<span id="cb127-3"><a href="#cb127-3" aria-hidden="true" tabindex="-1"></a>                          groups<span class="op">=</span>data_weed[<span class="st">'agent'</span>], alpha<span class="op">=</span><span class="fl">0.05</span>)</span>
+<span id="cb127-4"><a href="#cb127-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(tukey)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Multiple Comparison of Means - Tukey HSD, FWER=0.05
+===================================================
+group1 group2 meandiff p-adj   lower  upper  reject
+---------------------------------------------------
+     1      2    0.118 0.4797 -0.0917 0.3278  False
+     1      3    0.153 0.2342 -0.0567 0.3628  False
+     1      4     0.24 0.0192  0.0303 0.4498   True
+     1      5    0.325  0.001  0.1153 0.5347   True
+     2      3    0.035 0.9876 -0.1747 0.2447  False
+     2      4    0.122 0.4472 -0.0877 0.3317  False
+     2      5    0.207 0.0543 -0.0028 0.4167  False
+     3      4    0.087 0.7411 -0.1227 0.2967  False
+     3      5    0.172 0.1461 -0.0378 0.3817  False
+     4      5    0.085 0.7569 -0.1248 0.2947  False
+---------------------------------------------------</code></pre>
+</div>
+</div>
+<p>In the output, <code>meandiff</code> is <span class="math inline">\(\overline{y}_i - \overline{y}_j\)</span> where <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> are shown in the first column. <code>lower</code> and <code>upper</code> are the lower bound and upper bound of the CI for <span class="math inline">\(\mu_i - \mu_j\)</span>, respectively. The last column represents p-values. With <span class="math inline">\(\alpha_F = 0.05\)</span>, (4, 1) and (5, 1) are statistically discernible. Their corresponding lower bound is greater than zero, meaning that it’s CI for <span class="math inline">\(\mu_i - \mu_j\)</span> does not cover zero, so <span class="math inline">\(\mu_i - \mu_j\)</span> is statistically significantly different from zero.</p>
+</div>
+</div>
+</div>
 <!-- ## Example 9.3 Tukey's HSD in R {.smaller} -->
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -1084,23 +1547,89 @@ $agent
 <li><p>Only the chemical agents 4 and 5 are different from control. No biological agents are different from control.</p></li>
 </ul>
 <!-- ## Example 9.3 Dunnett's Method in R --><p><span class="math inline">\(\color{blue}{|\overline{y}_i - \overline{y}_j| &gt; d_{\alpha}(t - 1, df_{W})\sqrt{\frac{2s_W^2}{n}}}\)</span></p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-8-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-1" role="tab" aria-controls="tabset-8-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-8-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-2" role="tab" aria-controls="tabset-8-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-8-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-8-1-tab">
 <p>There is no R built-in function that computes <span class="math inline">\(d_{\alpha}\)</span> critical value. But we can install the package <code>nCDunnett</code>, and use the function <code><a href="https://rdrr.io/pkg/nCDunnett/man/nCDunnett.html">qNCDun()</a></code>. NC stands for Non-Central. The argument <code>p</code> is the probability to the left tail and keep in mind that the subscript <span class="math inline">\(\alpha\)</span> in the critical value is the probability to the right tail. So we get to put <span class="math inline">\(1-\alpha\)</span> there. <code>nu</code> is the degrees of freedom. <code>rho</code> here we use 0.5, meaning that all sample sizes are equal. The sample size in each group is 6, and we need to specify it 4 times corresponding to the number of non-control groups. <code>delta</code> is the non-centrality parameter that needs to be specified 4 times too. Here we assume they are all zero, i.e., the test uses the central distribution.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">nCDunnett</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb129"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">nCDunnett</span><span class="op">)</span></span>
 <span><span class="op">(</span><span class="va">d_dun</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/nCDunnett/man/nCDunnett.html">qNCDun</a></span><span class="op">(</span>p <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">alpha</span>, nu <span class="op">=</span> <span class="va">df</span>, </span>
 <span>                rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span><span class="op">)</span>, </span>
 <span>                delta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, two.sided <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2.61</code></pre>
 </div>
-<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">E_dun</span> <span class="op">&lt;-</span> <span class="va">d_dun</span> <span class="op">*</span> <span class="va">sw</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">2</span> <span class="op">/</span> <span class="va">n</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb131"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">E_dun</span> <span class="op">&lt;-</span> <span class="va">d_dun</span> <span class="op">*</span> <span class="va">sw</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">2</span> <span class="op">/</span> <span class="va">n</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.186</code></pre>
 </div>
-<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">y_bar_dist</span> <span class="op">&gt;</span> <span class="va">E_dun</span>, <span class="fl">4</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb133"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">y_bar_dist</span> <span class="op">&gt;</span> <span class="va">E_dun</span>, <span class="fl">4</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>1 vs 2 1 vs 3 1 vs 4 1 vs 5 
  FALSE  FALSE   TRUE   TRUE </code></pre>
+</div>
+</div>
+<p><a href="https://andrisignorell.github.io/DescTools/reference/DunnettTest.html"><code>DescTools.DunnettTest()</code></a> performs Dunnett’s test that does multiple comparisons of means against a control group.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb135"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://andrisignorell.github.io/DescTools/">DescTools</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'DescTools'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:car':
+
+    Recode</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:openintro':
+
+    cards</code></pre>
+</div>
+<div class="sourceCode" id="cb139"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://andrisignorell.github.io/DescTools/reference/DunnettTest.html">DunnettTest</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">data_weed</span><span class="op">$</span><span class="va">yield</span>, g<span class="op">=</span><span class="va">data_weed</span><span class="op">$</span><span class="va">agent</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  Dunnett's test for comparing several treatments with a control :  
+    95% family-wise confidence level
+
+$`1`
+     diff  lwr.ci upr.ci    pval    
+2-1 0.118 -0.0682  0.304 0.30737    
+3-1 0.153 -0.0332  0.339 0.12931    
+4-1 0.240  0.0538  0.426 0.00845 ** 
+5-1 0.325  0.1387  0.511 0.00043 ***
+
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-8-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-8-2-tab">
+<p>There is no functions in Python that calculates probabilities and quantiles of the Dunnett’s distribution.</p>
+<p><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.dunnett.html"><code>scipy.stats.dunnett()</code></a> performs Dunnett’s test that does multiple comparisons of means against a control group.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb141"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb141-1"><a href="#cb141-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> dunnett</span>
+<span id="cb141-2"><a href="#cb141-2" aria-hidden="true" tabindex="-1"></a>dunnett_res <span class="op">=</span> dunnett(data_weed[data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="st">'2'</span>][<span class="st">'yield_value'</span>], </span>
+<span id="cb141-3"><a href="#cb141-3" aria-hidden="true" tabindex="-1"></a>                      data_weed[data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="st">'3'</span>][<span class="st">'yield_value'</span>],</span>
+<span id="cb141-4"><a href="#cb141-4" aria-hidden="true" tabindex="-1"></a>                      data_weed[data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="st">'4'</span>][<span class="st">'yield_value'</span>],</span>
+<span id="cb141-5"><a href="#cb141-5" aria-hidden="true" tabindex="-1"></a>                      data_weed[data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="st">'5'</span>][<span class="st">'yield_value'</span>],</span>
+<span id="cb141-6"><a href="#cb141-6" aria-hidden="true" tabindex="-1"></a>                      control<span class="op">=</span>data_weed[data_weed[<span class="st">'agent'</span>] <span class="op">==</span> <span class="st">'1'</span>][<span class="st">'yield_value'</span>],</span>
+<span id="cb141-7"><a href="#cb141-7" aria-hidden="true" tabindex="-1"></a>                      alternative<span class="op">=</span><span class="st">'two-sided'</span>)</span>
+<span id="cb141-8"><a href="#cb141-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(dunnett_res)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Dunnett's test (95.0% Confidence Interval)
+Comparison               Statistic  p-value  Lower CI  Upper CI
+ (Sample 0 - Control)      1.653     0.307    -0.068     0.304
+ (Sample 1 - Control)      2.143     0.129    -0.033     0.339
+ (Sample 2 - Control)      3.361     0.009     0.054     0.426
+ (Sample 3 - Control)      4.551     0.000     0.139     0.511</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <!-- ## Example 9.3 Dunnett's Method in R {.smaller} -->
@@ -1156,7 +1685,7 @@ Note
 <p><span class="math display">\[\color{blue}{\boxed{|\overline{y}_i - \overline{y}_j| &gt; \sqrt{(t-1) F_{\alpha, t-1, N-t}}\sqrt{s_W^2\left( \frac{1}{n_i} + \frac{1}{n_j}\right)}}}\]</span> For pairwise comparisons, the Scheffé test has <em>lower</em> statistical power than other tests, even more conservative than Bonferroni method. To increase power, the Scheffé method needs larger sample size.</p>
 </li>
 </ul>
-<!-- corresponds exactly to the F-test in the following sense. If the F-test rejects the null hypothesis at level  --><!-- , then there exists at least one contrast which would be rejected using the Scheffé procedure at level  --><!-- . Therefore, Scheffé provides  --><!--  level protection against rejecting the null hypothesis when it is true, regardless of how many contrasts of the means are tested. --><!-- https://stattrek.com/anova/follow-up-tests/scheffe -->
+<!-- https://scikit-posthocs.readthedocs.io/en/latest/generated/scikit_posthocs.posthoc_scheffe.html --><!--           1         2         3         4         5 --><!-- 1  1.000000  0.610533  0.357310  0.046289  0.003531 --><!-- 2  0.610533  1.000000  0.992897  0.580259  0.110873 --><!-- 3  0.357310  0.992897  1.000000  0.827009  0.247179 --><!-- 4  0.046289  0.580259  0.827009  1.000000  0.838763 --><!-- 5  0.003531  0.110873  0.247179  0.838763  1.000000 --><!-- corresponds exactly to the F-test in the following sense. If the F-test rejects the null hypothesis at level  --><!-- , then there exists at least one contrast which would be rejected using the Scheffé procedure at level  --><!-- . Therefore, Scheffé provides  --><!--  level protection against rejecting the null hypothesis when it is true, regardless of how many contrasts of the means are tested. --><!-- https://stattrek.com/anova/follow-up-tests/scheffe -->
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
@@ -1732,7 +2261,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
 <li class="nav-item compact">
-    <a class="nav-link active" href="https://github.com/chenghanyustats/introstatsbook" aria-current="page">
+    <a class="nav-link" href="https://github.com/chenghanyustats/introstatsbook">
       <i class="bi bi-github" role="img">
 </i> 
     </a>

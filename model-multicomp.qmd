@@ -61,7 +61,13 @@ In this chapter we will learn how to do multiple pairwise comparisons or testing
 
 <span style="color:blue"> **Example of Multiple Comparison: ANOVA (Example 9.4 in SMD)** </span>
 
-A study was done to test 5 different agents used to control weeds. Each of these agents were applied to sample of 6 one-acre plots. The hay was harvested and the total yield was recorded. The data set is saved in the R data frame `data_weed`.
+A study was done to test 5 different agents used to control weeds. Each of these agents were applied to sample of 6 one-acre plots. The hay was harvested and the total yield was recorded. 
+
+::: {.panel-tabset}
+
+## R
+
+The data set is saved in the R data frame `data_weed`.
 
 ```{r}
 set.seed(123)
@@ -89,6 +95,23 @@ as.data.frame(data_weed |>
   bind_cols(type = c("None", "Bio1", "Bio2", "Chm1", "Chm2"))), row.names = FALSE)
 ```
 
+## Python
+
+The data set is saved in the Python data frame `data_weed`.
+
+```{python}
+#| echo: true
+import pandas as pd
+# Load the data from a CSV file
+data_weed = pd.read_csv("./data/data_weed.csv")
+data_weed
+```
+
+```{r, ref.label="data_summary"}
+
+```
+
+:::
 <!-- # ```{r} -->
 <!-- # #| out-width: 100% -->
 <!-- # knitr::include_graphics("./images/img-model/ex9_3.png") -->
@@ -106,6 +129,11 @@ The first question can be answered by ANOVA. Let's check the assumptions, and pe
 
 First we check the equality of variances $H_0: \sigma_1^2 = \dots = \sigma_5^2$.
 
+
+::: {.panel-tabset}
+
+## R
+
 ```{r}
 #| label: ex9_3_variance_test
 #| echo: true
@@ -116,10 +144,6 @@ library(car)
 # The Fligner-Killeen test is most robust against departures from normality. Use it when there are outliers.
 (fligner_test <- fligner.test(yield ~ agent, data = data_weed))
 ```
-
-
-
-<!-- ## Example 9.3 Check Normality -->
 
 Then we check the normality assumption $H_0:$ Data are generated from a normal distribution for each type of weed agents. The qqplot looks good.
 
@@ -138,6 +162,60 @@ qqPlot(yield ~ type, data = data_weed, layout=c(1, 5))
 ```
 
 
+## Python
+
+```{python}
+#| echo: true
+import scipy.stats as stats
+import statsmodels.api as sm
+from statsmodels.formula.api import ols
+
+# Levene's Test
+# https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.levene.html
+stats.levene(data_weed['yield'][data_weed['agent'] == 1],
+             data_weed['yield'][data_weed['agent'] == 2],
+             data_weed['yield'][data_weed['agent'] == 3],
+             data_weed['yield'][data_weed['agent'] == 4],
+             data_weed['yield'][data_weed['agent'] == 5])
+
+# Bartlett's Test 
+# https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.bartlett.html
+stats.bartlett(data_weed['yield'][data_weed['agent'] == 1],
+               data_weed['yield'][data_weed['agent'] == 2],
+               data_weed['yield'][data_weed['agent'] == 3],
+               data_weed['yield'][data_weed['agent'] == 4],
+               data_weed['yield'][data_weed['agent'] == 5])
+
+# Fligner-Killeen Test
+# https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.fligner.html
+stats.fligner(data_weed['yield'][data_weed['agent'] == 1],
+              data_weed['yield'][data_weed['agent'] == 2],
+              data_weed['yield'][data_weed['agent'] == 3],
+              data_weed['yield'][data_weed['agent'] == 4],
+              data_weed['yield'][data_weed['agent'] == 5])
+```
+
+
+Then we check the normality assumption $H_0:$ Data are generated from a normal distribution for each type of weed agents. The qqplot looks good.
+
+```{python}
+import matplotlib.pyplot as plt
+import statsmodels.api as sm
+import numpy as np
+fig, axs = plt.subplots(1, 5, figsize=(15, 5))
+for i in range(5):
+    sm.qqplot(data_weed['yield'][data_weed['agent'] == i+1], line='45', ax=axs[i],fit=True)
+    axs[i].set_title(f'Agent {i+1}')
+plt.tight_layout()
+plt.show()
+```
+
+
+:::
+
+
+<!-- ## Example 9.3 Check Normality -->
+
 
 
 <!-- ## Example 9.3 ANOVA -->
@@ -149,11 +227,28 @@ Next, we perform ANOVA to test if there is a difference among the agents.
   &H_1: \mu_i \ne \mu_j \text{ for some pairs } (i, j)
   \end{align}$ </span>
 
+
+::: {.panel-tabset}
+
+## R
+
 ```{r ex9_3_anova, echo=1}
 anova(lm(yield ~ agent, data = data_weed))
 # ## method 2
 # summary(aov(yield ~ agent, data = data_weed))
 ```
+
+## Python
+
+```{python}
+#| echo: true
+## need to rename yield. need to figure out why
+data_weed.rename(columns={'yield': 'yield_value'}, inplace=True)
+sm.stats.anova_lm(ols('yield_value ~ C(agent)', data=data_weed).fit())
+```
+
+:::
+
 
 We reject $H_0$, and conclude that there is a difference among the agents.
 
@@ -170,11 +265,28 @@ In the ANOVA, we only conclude that mean yields are different under different ag
 Here shows the boxplot for each weed agent. The ANOVA has told us there are some mean yield differences among these agents, and we are going to find out which 2 agents or which pair produce statistically discernible different mean yields.
 
 
+::: {.panel-tabset}
+
+## R
+
 
 ```{r ex9_3_boxplot, echo=FALSE, fig.height=2.5}
 par(mar = c(4,4,2,1))
 boxplot(yield ~ agent, data = data_weed, las = 1, xlab = "agent", col = 2:6)
 ```
+
+
+## Python
+
+```{python}
+import seaborn as sns
+sns.boxplot(data=data_weed, x="agent", y="yield_value")
+plt.show()
+```
+
+:::
+
+
 
 ## Familywise Error Rate (FWER) and Bonferroni Correction
 
@@ -296,6 +408,10 @@ We can see that Chm2 (Agent 5) and Chm1 (Agent 4) are different from Control (Ag
 <!-- ## Example 9.3 Bonferroni Method in R (Most Conservative) {.smaller} -->
 $\color{blue}{|\overline{y}_i - \overline{y}_j| > t_{\frac{\alpha}{2m}, df_{W}}\sqrt{s_W^2\left( \frac{1}{n_i} + \frac{1}{n_j}\right)}}$
 
+::: {.panel-tabset}
+
+## R
+
 Let me first show how I do the Bonferroni correction using R step by step.
 
 ```{r}
@@ -320,13 +436,13 @@ alpha <- 0.05; m <- choose(5, 2); n <- 6
 aov_res <- aov(yield ~ agent, data = data_weed) 
 
 ## extract df_W
-df <- df.residual(aov_res) 
+(df <- df.residual(aov_res)) 
 
 ## extract s_W
-sw <- sigma(aov_res) 
+(sw <- sigma(aov_res) )
 
 ## critical value of bonferroni
-t_bon <- qt(p = alpha / (2 * m), df = df, lower.tail = FALSE)
+(t_bon <- qt(p = alpha / (2 * m), df = df, lower.tail = FALSE))
 
 ## margin of error
 (E_bon <- t_bon * sw * sqrt((1/n + 1/n)))
@@ -353,7 +469,7 @@ t_bon <- qt(p = alpha / (2 * m), df = df, lower.tail = FALSE)
 
 <!-- ## Example 9.3 Bonferroni Method in R {.smaller} -->
 
-There is a shortcut to do Bonferroni correction for pairwise comparisons. We can use the function `pairwise.t.test()`. If we want to do 2-sample pooled $t$ test, aregument `pool.sd` should be FALSE because this argument is for the pooled variance pooled by all groups combined, not group $i$ and $j$. The `p.adjust.method` is `none` because we do not control or adjust FWER. The `var.equal` should be `TRUE`, so that the pooled $t$ test is used. Otherwise, it will perform 2 sample $t$ test with non-equal variances.
+There is a shortcut to do Bonferroni correction for pairwise comparisons. We can use the function `pairwise.t.test()`. If we want to do 2-sample pooled $t$ test, argument `pool.sd` should be FALSE because this argument is for the pooled variance pooled by all groups combined, not group $i$ and $j$. The `p.adjust.method` is `none` because we do not control or adjust FWER. The `var.equal` should be `TRUE`, so that the pooled $t$ test is used. Otherwise, it will perform 2 sample $t$ test with non-equal variances.
 
 The output is a matrix including p-values of all pair comparison testings. We can tell which pairs are significant by comparing their p-value with the significance level $\alpha$.
 
@@ -374,7 +490,148 @@ pairwise.t.test(data_weed$yield, data_weed$agent,
 ```
 
 
+
+
+## Python
+
+Let me first show how I do the Bonferroni correction using Python step by step.
+
+```{python}
+#| echo: true
+import itertools
+# Given data
+y_bar = np.array([1.175, 1.293, 1.328, 1.415, 1.500])
+
+# All pairs
+y_bar_pair = np.array(list(itertools.combinations(y_bar, 2)))
+y_bar_pair
+
+# All pair distances |y_bar_i - y_bar_j|
+y_bar_dist = np.abs(y_bar_pair[:, 0] - y_bar_pair[:, 1])
+y_bar_dist
+
+# Combination indices (for naming)
+dd = np.array(list(itertools.combinations(range(1, 6), 2)))
+
+# Create names for the distances
+y_bar_dist_names = [f"{i} vs {j}" for i, j in dd]
+
+# Display the distances with names
+y_bar_dist_dict = dict(zip(y_bar_dist_names, y_bar_dist))
+y_bar_dist_dict
+```
+
+```{python}
+#| echo: true
+from scipy.stats import t
+import math
+import statsmodels.api as sm
+from statsmodels.formula.api import ols
+
+# Set values
+alpha = 0.05
+m = math.comb(5, 2)  # Equivalent to choose(5, 2)
+n = 6
+
+# Assuming 'data_weed' is your DataFrame and 'yield' and 'agent' are column names
+# Perform ANOVA
+data_weed['agent'] = data_weed['agent'].astype(str)
+model_fit = ols('yield_value ~ agent', data=data_weed).fit()
+anova_table = sm.stats.anova_lm(model_fit)
+
+# Extract df_W (degrees of freedom) and s_W (residual standard deviation)
+df = model_fit.df_resid
+df
+
+sw = np.sqrt(anova_table['mean_sq'].iloc[1])
+sw
+
+# Critical value for Bonferroni correction
+t_bon = t.ppf(1 - alpha / (2 * m), df)
+t_bon
+# Margin of error
+E_bon = t_bon * sw * np.sqrt((1/n + 1/n))
+E_bon
+
+# Assuming y_bar_dist was already calculated (from previous code)
+# Decision
+y_bar_dist > E_bon
+
+```
+
+
+
+```{python}
+#| echo: false
+#| eval: false
+import statsmodels.api as sm
+from statsmodels.stats.multicomp import MultiComparison
+from scipy.stats import ttest_rel, ttest_ind
+data_weed['agent'] = data_weed['agent'].astype(str)
+mc = MultiComparison(data_weed['yield_value'], data_weed['agent'])
+res = mc.allpairtest(ttest_ind, method='bonf')
+print(res[0])
+```
+
+
+If we don't do any correction, we can do pairwise t test for all pairs directly using [`ttest_ind()`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ttest_ind.html) that conducts t-test for the means of two independent samples. It is brutal force, and there should be a better way to conduct all pairwise two-sample pooled t test separately by default.
+
+```{python}
+#| echo: true
+from scipy import stats
+test12 = stats.ttest_ind(data_weed.loc[data_weed['agent'] == '1', 'yield_value'],
+                         data_weed.loc[data_weed['agent'] == '2', 'yield_value'])
+test12.pvalue
+test13 = stats.ttest_ind(data_weed.loc[data_weed['agent'] == '1', 'yield_value'],
+                         data_weed.loc[data_weed['agent'] == '3', 'yield_value'])
+test13.pvalue
+test14 = stats.ttest_ind(data_weed.loc[data_weed['agent'] == '1', 'yield_value'],
+                         data_weed.loc[data_weed['agent'] == '4', 'yield_value'])
+test14.pvalue                  
+test15 = stats.ttest_ind(data_weed.loc[data_weed['agent'] == '1', 'yield_value'],
+                         data_weed.loc[data_weed['agent'] == '5', 'yield_value'])
+test15.pvalue                       
+test23 = stats.ttest_ind(data_weed.loc[data_weed['agent'] == '2', 'yield_value'],
+                         data_weed.loc[data_weed['agent'] == '3', 'yield_value']) 
+test23.pvalue
+test24 = stats.ttest_ind(data_weed.loc[data_weed['agent'] == '2', 'yield_value'],
+                         data_weed.loc[data_weed['agent'] == '4', 'yield_value'])
+test24.pvalue
+test25 = stats.ttest_ind(data_weed.loc[data_weed['agent'] == '2', 'yield_value'],
+                         data_weed.loc[data_weed['agent'] == '5', 'yield_value'])
+test25.pvalue
+test34 = stats.ttest_ind(data_weed.loc[data_weed['agent'] == '3', 'yield_value'],
+                         data_weed.loc[data_weed['agent'] == '4', 'yield_value'])
+test34.pvalue
+test35 = stats.ttest_ind(data_weed.loc[data_weed['agent'] == '3', 'yield_value'],
+                         data_weed.loc[data_weed['agent'] == '5', 'yield_value'])
+test35.pvalue
+test45 = stats.ttest_ind(data_weed.loc[data_weed['agent'] == '4', 'yield_value'],
+                         data_weed.loc[data_weed['agent'] == '5', 'yield_value'])
+test45.pvalue
+```
+
+
+There is a shortcut to do Bonferroni correction for pairwise comparisons. We can use the method `t_test_pairwise()`. The output saved in `result_frame` is a matrix including p-values of all pair comparison testings. We can tell which pairs are significant by comparing their p-value with the significance level $\alpha$.
+
+If we want to do Bonferroni correction, use `method='bonferroni'`. Again, in Bonferroni,  (1, 4) and (1, 5) are statistically significantly different. In traditional 2 sample $t$ test, significant results include (1, 4), (1, 5), (2, 5), and (3, 5).
+
+
+```{python}
+#| echo: true
+pairwise_t_results = model_fit.t_test_pairwise(term_name='agent', method='bonferroni', alpha=0.05)
+pairwise_t_results.result_frame
+```
+
+:::
+
+
+
+
 For each pair, we can draw its confidence interval for $\mu_i - \mu_j$. The CI formula is $\color{blue}{(\overline{y}_i - \overline{y}_j) \pm t_{\frac{\alpha}{2m}, df_{W}}\sqrt{s_W^2\left( \frac{1}{n_i} + \frac{1}{n_j}\right)}}$. The yellow dot represents $\overline{y}_i - \overline{y}_j$. Centered at $\overline{y}_i - \overline{y}_j$, we plus and minus the margin of error $t_{\frac{\alpha}{2m}, df_{W}}\sqrt{s_W^2\left( \frac{1}{n_i} + \frac{1}{n_j}\right)}$ to get the upper and lower bound of the CI. If the CI does not include zero, we conclude that $\mu_i$ and $\mu_j$ are not equal. Here again $\mu_1$ and $\mu_4$ are different. $\mu_1$ and $\mu_5$ are different too.
+
+
+
 
 
 <!-- ## Example 9.3 Bonferroni Method in R {.smaller} -->
@@ -455,6 +712,10 @@ The process of doing Fisher's LSD is pretty similar to doing Bonferroni.
 - $\color{blue}{|\overline{y}_i - \overline{y}_j| > t_{\frac{\alpha}{2}, df_{W}}\sqrt{s_W^2\left( \frac{1}{n_i} + \frac{1}{n_j}\right)}}$
 
 
+::: {.panel-tabset}
+
+## R
+
 ```{r lsd, echo=-c(1:5), tidy=FALSE}
 # y_bar <- c(1.175, 1.293, 1.328, 1.415, 1.500)
 # (y_bar_pair <- combn(y_bar, 2))  ## all pairs
@@ -463,7 +724,7 @@ The process of doing Fisher's LSD is pretty similar to doing Bonferroni.
 # alpha <- 0.05; m <- choose(5, 2); n <- 6; df <- 25; mse <- 0.0153
 df
 sw ^ 2
-t_lsd <- qt(p = alpha/2, df = df, lower.tail = FALSE)
+(t_lsd <- qt(p = alpha/2, df = df, lower.tail = FALSE))
 (E_lsd <- t_lsd * sw * sqrt(1/n + 1/n))
 (y_bar_dist > E_lsd)
 ```
@@ -485,6 +746,45 @@ pairwise.t.test(data_weed$yield, data_weed$agent, pool.sd = TRUE,
 # res_aov <- aov(yield ~ agent, data = data_weed)
 # LSD.test(res_aov, "agent") 
 ```
+
+
+## Python
+
+```{python}
+#| echo: true
+df
+sw ** 2
+t_lsd = t.ppf(1 - alpha/2, df)
+t_lsd
+E_lsd = t_lsd * sw * np.sqrt(1/n + 1/n)
+E_lsd
+y_bar_dist > E_lsd
+```
+
+
+The following should be replaced with LSD method which is still not found in any Python package. Need to update this.
+
+```{python}
+#| echo: false
+#| eval: false
+import statsmodels.api as sm
+from statsmodels.stats.multicomp import MultiComparison
+from scipy.stats import ttest_rel, ttest_ind
+mc = MultiComparison(data_weed['yield_value'], data_weed['agent'])
+res = mc.allpairtest(ttest_ind)
+print(res[0])
+```
+
+
+```{python}
+#| echo: true
+#| eval: false
+pairwise_t_results = model_fit.t_test_pairwise(term_name='agent', method='bonferroni', alpha=0.05)
+pairwise_t_results.result_frame
+```
+:::
+
+
 
 
 <!-- ## Example 9.3 Fisher’s LSD in R {.smaller} -->
@@ -562,6 +862,12 @@ In R, we can use **`qtukey(p = alpha, nmeans = k, df = v, lower.tail = FALSE)`**
 <!-- ## Example 9.3 Tukey's HSD in R -->
 - $\color{blue}{|\overline{y}_i - \overline{y}_j| > q_{\alpha}(k, df_{W})\sqrt{\frac{s_W^2}{n}}}$
 
+
+
+::: {.panel-tabset}
+
+## R
+
 ```{r tukey, echo=-c(1:5), tidy=FALSE}
 # y_bar <- c(1.175, 1.293, 1.328, 1.415, 1.500)
 # (y_bar_pair <- combn(y_bar, 2))  ## all pairs
@@ -597,7 +903,43 @@ res_aov <- aov(yield ~ agent, data = data_weed)
 <!-- summary(tukey_test_2) -->
 <!-- ``` -->
 
-In the output, `diff` is $\overline{y}_i - \overline{y}_j$ where $i$ and $j$ are shown in the first column. `lwr` and `upr` are the lower bound and upper bound of the CI for $\mu_i - \mu_j$, respectively. The last column represents p-values. With $\alpha_F = 0.05$, (4, 1) and (5, 1) are statistically discernible. Their corresponding lower bound is greater than zero, meaning that it's CI for $\mu_i - \mu_j$ does not cover zero, so $\mu_i - \mu_j$ is statistically significantly different from zero.
+In the output, `diff` is $\overline{y}_i - \overline{y}_j$ where $i$ and $j$ are shown in the first column. `lwr` and `upr` are the lower bound and upper bound of the CI for $\mu_i - \mu_j$, respectively. The adjusted p-values are shown in the `p-adj` column. With $\alpha_F = 0.05$, (4, 1) and (5, 1) are statistically discernible. Their corresponding lower bound is greater than zero, meaning that it's CI for $\mu_i - \mu_j$ does not cover zero, so $\mu_i - \mu_j$ is statistically significantly different from zero.
+
+
+## Python
+
+The studentized range distribution in Python is implemented by the function [`studentized_range`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.studentized_range.html), again from `scipy.stats`.
+
+```{python}
+#| echo: true
+
+df
+sw**2
+from scipy.stats import studentized_range
+q_tukey = studentized_range.ppf(q=1-alpha, k=5, df=df)
+q_tukey
+E_tukey = q_tukey * sw * np.sqrt(1 / n)
+E_tukey
+y_bar_dist > E_tukey
+```
+
+
+A faster way to conduct Tukey's HSD test is to use Python function `pairwise_tukeyhsd()` from `statsmodels.stats.multicomp`. It will provide all information for each pair comparison.
+
+
+```{python}
+#| echo: true
+from statsmodels.stats.multicomp import pairwise_tukeyhsd
+tukey = pairwise_tukeyhsd(endog=data_weed['yield_value'], 
+                          groups=data_weed['agent'], alpha=0.05)
+print(tukey)
+```
+
+In the output, `meandiff` is $\overline{y}_i - \overline{y}_j$ where $i$ and $j$ are shown in the first column. `lower` and `upper` are the lower bound and upper bound of the CI for $\mu_i - \mu_j$, respectively. The last column represents p-values. With $\alpha_F = 0.05$, (4, 1) and (5, 1) are statistically discernible. Their corresponding lower bound is greater than zero, meaning that it's CI for $\mu_i - \mu_j$ does not cover zero, so $\mu_i - \mu_j$ is statistically significantly different from zero.
+
+
+:::
+
 
 <!-- ## Example 9.3 Tukey's HSD in R {.smaller} -->
 ```{r}
@@ -691,6 +1033,12 @@ $\color{blue}{|\overline{y}_i - \overline{y}_j| > d_{\alpha}(t - 1, df_{W})\sqrt
 
 ```
 
+
+
+::: {.panel-tabset}
+
+## R
+
 There is no R built-in function that computes $d_{\alpha}$ critical value. But we can install the package `nCDunnett`, and use the function `qNCDun()`. NC stands for Non-Central. The argument `p` is the probability to the left tail and keep in mind that the subscript $\alpha$ in the critical value is the probability to the right tail. So we get to put $1-\alpha$ there. `nu` is the degrees of freedom. `rho` here we use 0.5, meaning that all sample sizes are equal. The sample size in each group is 6, and we need to specify it 4 times corresponding to the number of non-control groups. `delta` is the non-centrality parameter that needs to be specified 4 times too. Here we assume they are all zero, i.e., the test uses the central distribution.
 
 
@@ -708,6 +1056,34 @@ library(nCDunnett)
 head(y_bar_dist > E_dun, 4)
 ```
 
+[`DescTools.DunnettTest()`](https://andrisignorell.github.io/DescTools/reference/DunnettTest.html) performs Dunnett’s test that does multiple comparisons of means against a control group.
+
+
+```{r}
+#| echo: true
+library(DescTools)
+DunnettTest(x=data_weed$yield, g=data_weed$agent)
+```
+
+## Python
+
+There is no functions in Python that calculates probabilities and quantiles of the Dunnett's distribution.
+
+[`scipy.stats.dunnett()`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.dunnett.html) performs Dunnett’s test that does multiple comparisons of means against a control group.
+
+```{python}
+#| echo: true
+from scipy.stats import dunnett
+dunnett_res = dunnett(data_weed[data_weed['agent'] == '2']['yield_value'], 
+                      data_weed[data_weed['agent'] == '3']['yield_value'],
+                      data_weed[data_weed['agent'] == '4']['yield_value'],
+                      data_weed[data_weed['agent'] == '5']['yield_value'],
+                      control=data_weed[data_weed['agent'] == '1']['yield_value'],
+                      alternative='two-sided')
+print(dunnett_res)
+```
+
+:::
 
 
 <!-- ## Example 9.3 Dunnett's Method in R {.smaller} -->
@@ -797,6 +1173,21 @@ f_scheffe <- qf(p = alpha, df1 = 4, df2 = 25, lower.tail = FALSE)
 (E_scheffe <- sqrt(4 * f_scheffe) * sw * sqrt((1/n + 1/n)))
 ```
   
+
+<!-- https://scikit-posthocs.readthedocs.io/en/latest/generated/scikit_posthocs.posthoc_scheffe.html -->
+```{python}
+#| eval: false
+from scikit_posthocs import posthoc_scheffe
+scheffe_result = posthoc_scheffe(data_weed, val_col='yield_value', group_col='agent')
+print(scheffe_result)
+```
+
+<!--           1         2         3         4         5 -->
+<!-- 1  1.000000  0.610533  0.357310  0.046289  0.003531 -->
+<!-- 2  0.610533  1.000000  0.992897  0.580259  0.110873 -->
+<!-- 3  0.357310  0.992897  1.000000  0.827009  0.247179 -->
+<!-- 4  0.046289  0.580259  0.827009  1.000000  0.838763 -->
+<!-- 5  0.003531  0.110873  0.247179  0.838763  1.000000 -->
 
 <!-- corresponds exactly to the F-test in the following sense. If the F-test rejects the null hypothesis at level  -->
 <!-- , then there exists at least one contrast which would be rejected using the Scheffé procedure at level  -->
