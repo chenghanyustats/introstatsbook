@@ -219,7 +219,11 @@ The bottom row in @fig-correlation shows several nonlinear $X$-$Y$ relationships
 knitr::include_graphics("./images/img-model/corr_ex.svg")
 ```
 
-<span style="color:red"> ***Example in R*** </span>
+::::: {.panel-tabset}
+
+## R
+
+<!-- <span style="color:red"> ***Example in R*** </span> -->
 
 In R, we use the function `cor()` to calculate the correlation coefficient $r$. We put the two variables' data in the first two arguments `x` and `y`. Here we use the built-in `mtcars` dataset, and calculate the correlation between the high miles per gallon (`mpg`) and car weight (`wt`). The coefficient is $r =$ ```r round(cor(x = mtcars$wt, y = mtcars$mpg), 2)```. Usually, when $|r| > 0.7$, the linear relationship is considered strong, and $|r| < 0.3$ for weak linear relationship.
 
@@ -253,6 +257,53 @@ knitr::include_graphics("./images/img-model/car.jpeg")
 :::
 ::::
 
+## Python
+
+
+In Python, we use the function [`corr()`](https://pandas.pydata.org/docs/reference/api/pandas.Series.corr.html#pandas.Series.corr) to calculate the correlation coefficient $r$ for two pd.Series. The syntax is like `first_pd.Series.corr(second_pd.Series)`.
+
+Here we use the built-in `mtcars` dataset, and calculate the correlation between the high miles per gallon (`mpg`) and car weight (`wt`). The coefficient is $r =$ ```r round(cor(x = mtcars$wt, y = mtcars$mpg), 2)```. Usually, when $|r| > 0.7$, the linear relationship is considered strong, and $|r| < 0.3$ for weak linear relationship.
+
+
+::::{.columns}
+:::{.column width="49%"}
+
+```{python}
+import pandas as pd
+mtcars = pd.read_csv("./data/mtcars.csv")
+```
+
+```{python}
+#| echo: true
+import matplotlib.pyplot as plt
+# Scatter plot of MPG vs. Weight
+plt.scatter(mtcars['wt'], mtcars['mpg'], 
+            color='blue')
+plt.title('MPG vs. Weight')
+plt.xlabel('Car Weight')
+plt.ylabel('Miles Per Gallon')
+plt.show()
+```
+:::
+
+:::{.column width="2%"}
+:::
+
+:::{.column width="49%"}
+```{python}
+#| echo: true
+mtcars['wt'].corr(mtcars['mpg'])
+```
+
+```{r}
+#| fig-cap: "Source: unsplash-sippakorn yamkasikorn"
+knitr::include_graphics("./images/img-model/car.jpeg")
+```
+:::
+::::
+
+
+:::::
 ## Meaning of Regression
 
 <span style="color:blue"> **What is Regression?** </span>
@@ -700,7 +751,11 @@ Nowadays we use computing software to get the estimates, but it's good to to kno
 
 -------------------------------------------------------------------
 
-<span style="color:blue"> **Fit a Simple Linear Regression in R** </span>
+::: {.panel-tabset}
+
+## R
+
+<!-- <span style="color:blue"> **Fit a Simple Linear Regression in R** </span> -->
 
 We use the `mpg` data set in the `ggplot2` package to demonstrate doing regression analysis in R. In particular, we grab the variable `hwy` as our response and `disp` as our predictor.
 
@@ -796,6 +851,104 @@ abline(reg_fit, col = "#FFCC00", lwd = 3)
 
 
 
+## Python
+
+
+We use the `mpg` data set in the `ggplot2` package to demonstrate doing regression analysis in Python. In particular, we grab the variable `hwy` as our response and `disp` as our predictor.
+
+<!-- <span style="color:blue"> **`mpg` Data** </span> -->
+
+```{python}
+mpg = pd.read_csv("./data/mpg.csv")
+mpg.head()
+```
+
+
+<span style="color:red"> **Highway MPG `hwy` vs. Displacement `displ`** </span>
+
+First we create the scatter plot.
+
+
+```{python}
+#| echo: true
+plt.scatter(mpg['displ'], mpg['hwy'], 
+            color='blue')
+plt.title('Highway MPG vs. Engine Displacement (litres)')
+plt.xlabel('Displacement (litres)')
+plt.ylabel('Highway MPG')
+plt.show()
+```
+
+
+
+
+<span style="color:red"> **Fit Simple Linear Regression** </span>
+
+To fit a linear regression, we use the `ols()` function. As we learned in ANOVA @sec-model-anova, we write the formula `'hwy ~ displ'`, and specify the data set `mpg`. We save the fitted result in the object `reg_fit`. 
+
+
+`reg_fit.summary()` will output the OLS regression results. The output prints $b_0 = 35.70$ and $b_1 = -3.53$, the least squares estimate of $\beta_0$ and $\beta_1$. So the sample regression function or regression line is $$\widehat{hwy} = 35.7 - 3.53 \times disp.$$
+
+For one unit (litre) increase of the displacement, we expect the highway MPG to be decreased, *on average*, by 3.53 miles.
+
+
+```{python}
+#| echo: true
+from statsmodels.formula.api import ols
+# Fit a simple linear regression model
+reg_fit = ols('hwy ~ displ', data=mpg).fit()
+reg_fit.summary()
+```
+
+
+```{python}
+#| echo: true
+## All fields and methods in the reg_fit object
+dir(reg_fit)
+```
+
+```{python}
+#| echo: true
+## parameter coefficient estimates
+reg_fit.params
+```
+
+
+<span style="color:red"> **Fitted Values of $y$** </span>
+
+
+```{python}
+#| echo: true
+## the first 5 observed response value y
+mpg['hwy'].head(5).values
+## the first 5 fitted value y_hat
+reg_fit.fittedvalues.head(5).values
+## the first 5 predictor value x
+mpg['displ'].head(5).values
+len(reg_fit.fittedvalues)
+```
+
+
+<!-- --------------------------------------------------------------- -->
+
+<span style="color:red"> **Add a Regression Line** </span>
+
+To add the fitted regression line, we add another plot with y values being `reg_fit.fittedvalues`.
+```{python}
+#| echo: true
+plt.scatter(x=mpg['displ'], y=mpg['hwy'], color='navy')
+plt.plot(mpg['displ'], reg_fit.fittedvalues, color='#FFCC00', linewidth=3)
+plt.title('Highway MPG vs. Engine Displacement (litres)')
+plt.xlabel('Displacement (litres)')
+plt.ylabel('Highway MPG')
+plt.show()
+```
+
+:::
+
+
+
+
 
 -------------------------------------------------------------------
 
@@ -821,9 +974,14 @@ By the way, $E(MS_{res}) = \sigma^2$. Therefore, $\hat{\sigma}^2$ is an unbiased
 
 <!-- -------------------------------------------------------------------- -->
 
-<span style="color:red"> **Standard Error of Regression in R** </span>
+::: {.panel-tabset}
 
-The standard error $\hat{\sigma}^2$ information is saved in the summary of the fitted result. In the summary output, $\hat{\sigma}^2$ is shown as `Residual standard error`. The degrees of freedom is $n - 2 = 234 - 2 = 232.$
+## R
+<!-- <span style="color:red"> **Standard Error of Regression in R** </span> -->
+
+Please be careful that R provide the standard error $\hat{\sigma}$, not $\hat{\sigma}^2$ which is $MS_{res}$.
+
+The standard error $\hat{\sigma}$ information is saved in the summary of the fitted result. In the summary output, $\hat{\sigma}$ is shown as `Residual standard error`. The degrees of freedom is $n - 2 = 234 - 2 = 232.$
 
 ```{r}
 #| echo: true
@@ -832,7 +990,7 @@ The standard error $\hat{\sigma}^2$ information is saved in the summary of the f
 ```
 
 
-We can grab the $\hat{\sigma}^2$ value in the summary object `summ_reg_fit` by `summ_reg_fit$sigma`. 
+We can grab the $\hat{\sigma}$ value in the summary object `summ_reg_fit` by `summ_reg_fit$sigma`. 
 
 ```{r}
 #| echo: true
@@ -848,8 +1006,34 @@ It is not hard to compute the $MS_{res}$ directly from its definition, the sum o
 ```{r}
 #| echo: true
 # from reg_fit
-sqrt(sum(reg_fit$residuals^2) / reg_fit$df.residual)
+sum(reg_fit$residuals^2) / reg_fit$df.residual
 ```
+
+
+
+## Python
+
+The standard error $\hat{\sigma}^2$ information is saved in the fitted result, `reg_fit.mse_resid`, short for mean square error of residuals.
+
+If we want the standard error, $\hat{\sigma} = \sqrt{MS_{res}}$, we need to remember to take a square root.
+
+```{python}
+#| echo: true
+import numpy as np
+reg_fit.mse_resid
+np.sqrt(reg_fit.mse_resid)
+```
+
+```{python}
+#| echo: true
+# from reg_fit to compute MS_res
+np.sum(reg_fit.resid ** 2) / reg_fit.df_resid
+```
+
+
+:::
+
+
 
 
 ## Confidence Intervals and Hypothesis Testing for $\beta_0$ and $\beta_1$
@@ -870,7 +1054,12 @@ The $(1-\alpha)100\%$ CI for $\beta_0$ is $$b_0 \pm t_{\alpha/2, n-2}\sqrt{\hat{
 
 <!-- ----------------------------------------------------------------- -->
 
-<span style="color:red"> **Confidence Intervals in R** </span>
+<!-- <span style="color:red"> **Confidence Intervals in R** </span> -->
+
+
+::: {.panel-tabset}
+
+## R
 
 To grab the confidence interval for $\beta_0$ and $\beta_1$, we simply put the fitted result into the `confint()` function. By default, the confidence level is 95%, but any other level can be specified. We say we are 95% confident that one unit increase of displacement will result in a decrease in highway miles per gallon on average by 3.91 to 3.15 miles.
 
@@ -880,6 +1069,17 @@ To grab the confidence interval for $\beta_0$ and $\beta_1$, we simply put the f
 confint(reg_fit, level = 0.95)
 ```
 
+
+## Python
+
+To grab the confidence interval for $\beta_0$ and $\beta_1$, we simply use the method `conf_int()` of the fitted object. By default, the confidence level is 95%, but any other level can be specified. We say we are 95% confident that one unit increase of displacement will result in a decrease in highway miles per gallon on average by 3.91 to 3.15 miles.
+
+```{python}
+#| echo: true
+reg_fit.conf_int(alpha=0.05)
+```
+
+:::
 
 
 -------------------------------------------------------------------
@@ -909,7 +1109,12 @@ The hypothesis testing for $\beta_0$ and $\beta_1$ is straightforward. Here I ju
 
 
 
-<span style="color:red"> **Testing in R** </span>
+<!-- <span style="color:red"> **Testing in R** </span> -->
+
+::: {.panel-tabset}
+
+## R
+
 
 The two-sided test result for $\beta_0$ and $\beta_1$ can be found in the summary output. There is a Coeffifcients table in the middle of the output. We can extract the table by check `summ_reg_fit$coefficients`. The first row is for intercept and the second for the slope. The columns from left to right are LSEs, the standard errors of LSEs, the $t$ test statistics, and $p$-values.
 
@@ -926,6 +1131,26 @@ summ_reg_fit$coefficients
 Notice that the testing output is for the two-sided test with hypothesized value being equal to zero. The first row tests whether or not $\beta_0 = 0$ and the second tests whether or not $\beta_1 = 0$.
 
 
+## Python
+
+he two-sided test result for $\beta_0$ and $\beta_1$ can be found in the summary output. There is a Coeffifcients table in the middle of the output. The first row is for intercept and the second for the slope. The columns from left to right are LSEs, the standard errors of LSEs, the $t$ test statistics, and $p$-values. The last two columns show their confidence interval.
+
+
+```{python}
+#| echo: true
+reg_fit.summary()
+```
+
+```{python}
+#| echo: true
+reg_fit.pvalues
+```
+
+
+Notice that the testing output and the p-values `reg_fit.pvalues` are for the two-sided test with hypothesized value being equal to zero. The first row tests whether or not $\beta_0 = 0$ and the second tests whether or not $\beta_1 = 0$.
+
+
+:::
 
 <span style="color:red"> ***Interpretation of Testing Results*** </span>
 
@@ -1102,8 +1327,12 @@ A larger value of $F_{test}$ indicates that the regression is significant. $H_0$
 Note that ANOVA is designed to test the $H_0$ that **all** predictors have no value in predicting $y$. In simple linear regression, there is only one predictor, so one means all. The $F$-test of ANOVA gives the exactly same result as a two-sided $t$-test of $H_0: \beta_1 = 0$. 
 
 
+::: {.panel-tabset} 
 
-<span style="color:red"> **ANOVA Table in R** </span>
+
+## R
+
+<!-- <span style="color:red"> **ANOVA Table in R** </span> -->
 
 To get the ANOVA table, we put the fitted result into the function `anova()`. For simple linear regression, the ANOVA $F$ test is equivalent to the marginal $t$ test for $\beta_1$ where $H_0: \beta_1 = 0; \quad H_1: \beta_1 \ne 0$.  In particular $t_{test}^2 = F_{test}$.
 
@@ -1116,6 +1345,25 @@ anova(reg_fit)
 summ_reg_fit$coefficients
 summ_reg_fit$coefficients[2, 3] ^ 2
 ```
+
+## Python
+
+To get the ANOVA table, we put the fitted result into the function `sm.stats.anova_lm()`. For simple linear regression, the ANOVA $F$ test is equivalent to the marginal $t$ test for $\beta_1$ where $H_0: \beta_1 = 0; \quad H_1: \beta_1 \ne 0$.  In particular $t_{test}^2 = F_{test}$.
+
+```{python}
+#| echo: true
+import statsmodels.api as sm
+sm.stats.anova_lm(reg_fit)
+```
+
+```{python}
+#| echo: true
+reg_fit.tvalues
+reg_fit.tvalues.iloc[1] ** 2
+reg_fit.fvalue
+```
+
+:::
 
 
 
@@ -1147,7 +1395,15 @@ knitr::include_graphics("./images/img-model/r_square.png")
 
 <!-- ------------------------------------------------------------------- -->
 
-<span style="color:red"> **$R^2$ in R** </span>
+<!-- <span style="color:red"> **$R^2$ in R** </span> -->
+
+
+
+::: {.panel-tabset} 
+
+
+## R
+
 
 The $R^2$ value is shown in the summary output at the near bottom. We can also use `summ_reg_fit$r.squared` to get the value. The variable `disp` explains about 59% of the variation of `hwy`.
 
@@ -1162,7 +1418,18 @@ summ_reg_fit
 summ_reg_fit$r.squared
 ```
 
+## Python
 
+The $R^2$ value is shown in the summary output on the topright. We can also use `reg_fit.rsquared` to get the value. The variable `disp` explains about 59% of the variation of `hwy`.
+
+
+```{python}
+#| echo: true
+reg_fit.rsquared
+```
+
+
+:::
 
 ## Prediction
 
@@ -1218,7 +1485,12 @@ The PI is wider as it includes the uncertainty about $b_0$, $b_1$ as well as $y_
 
 <!-- -------------------------------------------------------------------- -->
 
-<span style="color:blue"> **Prediction in R** </span>
+<!-- <span style="color:blue"> **Prediction in R** </span> -->
+
+::: {.panel-tabset} 
+
+
+## R
 
 To predict either the mean response or a new observation, we use the function `predict()`. The first argument is out fitted object `reg_fit`. Then we need to provide the predictor value for prediction in the argument `newdata`. Be careful that it has to be a data frame type, and variable's name should be exactly the same as the predictor's name in the original data set `mpg` when we fit the regression. If we want to get the confidence interval for the mean response, we specify "confidence" in the argument `interval`. If instead we want the prediction interval for a new response, we specify "predict".
 
@@ -1231,11 +1503,33 @@ predict(reg_fit, newdata = data.frame(displ = 5.5), interval = "confidence", lev
 predict(reg_fit, newdata = data.frame(displ = 5.5), interval = "predict", level = 0.95)
 ```
 
+
+## Python
+
+To predict either the mean response or a new observation, we use the method [`get_prediction()`](https://www.statsmodels.org/dev/generated/statsmodels.regression.linear_model.OLSResults.get_prediction.html). The first argument `exog` is the values for which you want to predict. `exog` means exogenous variables. Be careful that it has to be array_like type. 
+
+If we want to get the confidence interval for the mean response, `predict.conf_int()` provides that. If instead we want the prediction interval for a new response, we need to check the `predict.summary_frame()`. The prediction interval is saved in 'obs_ci_lower' and 'obs_ci_upper'.
+
+```{python}
+#| echo: true
+new_data = pd.DataFrame({'displ': [5.5]})
+predict = reg_fit.get_prediction(new_data)
+predict.conf_int()
+summary_frame = predict.summary_frame(alpha=0.05)
+summary_frame[['mean_ci_lower', 'mean_ci_upper']]
+summary_frame[['obs_ci_lower', 'obs_ci_upper']]
+```
+
+:::
+
+
+
 The 95% CI for the mean `hwy` when `disp = 5.5` is between 15.36 and 17.2, while The 95% PI for `hwy` of a car with `disp = 5.5` is between 8.67 and 23.89. The PI is much wider than the CI because the variance of $y$ for any given $x$ is quite large in this example. We are quite certain about the mean miles per gallon, but we are asked to predict a car's miles per gallon, it's hard to provide a precise estimation because of large individual variability. 
 
 <!-- :::{layout-ncol=2} -->
 ```{r}
-#| echo: true 
+#| echo: true
+#| code-fold: true
 par(mar = c(3, 3, 0, 0), mgp = c(2, 0.5, 0), mfrow = c(1, 1))
 ## Data and regression line
 plot(x = mpg$displ, y = mpg$hwy, las = 1, pch = 19, cex = 0.5, 
@@ -1563,7 +1857,11 @@ df_boot_samples_100_hist +
 
 <!-- - A 95% confidence interval is bounded by the middle 95% of the bootstrap distribution. -->
 
-As discussed in @sec-inter-bt, we can use the `boot` package and its function `boot()` to do bootstrappingin R.
+::: {.panel-tabset}
+
+## R
+
+As discussed in @sec-infer-bt, we can use the `boot` package and its function `boot()` to do bootstrappingin R.
 
 ```{r}
 #| echo: true
@@ -1610,6 +1908,46 @@ boot.ci(boot.out = boot_lm, index = 2,
 There are several ways of conducting bootstrapping in R. Here we choose to to use the `boot` package. Other popular packages include [`car`](https://www.john-fox.ca/Companion/), and [`infer`](https://infer.netlify.app/) packages of the [`tidymodels`](https://www.tidymodels.org/) ecosystem. The `car` package is useful for regression analysis, and `tidymodels` is a trendy R framework of doing data science and machine learning.
 :::
 
+## Python
+
+To do bootstrapped regression in Python, we can use the [`resample()`](https://scikit-learn.org/1.5/modules/generated/sklearn.utils.resample.html#sklearn.utils.resample) function in `sklearn.utils` to resample the response and predictor values in the data set with replacement. For each resmaple data, we fit the ols regression, then extract it parameter estimates. All boostrapped samples of coefficients are saved in the object `boot_coefs`. For better presentation, it is converted into a DataFrame.
+
+
+
+
+```{python}
+#| echo: true
+# Bootstrapping
+from sklearn.utils import resample
+boot_coefs = [ols('hwy ~ displ', data=resample(mpg[['displ', 'hwy']], replace=True)).fit().params for i in range(100)]
+boot_coefs = pd.DataFrame(boot_coefs)
+boot_coefs.head()
+```
+
+
+
+```{python}
+#| echo: true
+# Histograms of bootstrap distribution
+plt.figure(figsize=(12, 5))
+plt.subplot(1, 2, 1)
+plt.hist(boot_coefs['Intercept'])
+plt.title("Bootstrap Distribution: Intercept")
+plt.subplot(1, 2, 2)
+plt.hist(boot_coefs['displ'])
+plt.title("Bootstrap Distribution: Slope")
+plt.show()
+```
+
+The bootstrapped confidence intervals are obtained by finding the 2.5\% and 97.5\% quantiles of the bootstrapped samples.
+
+```{python}
+#| echo: true
+np.percentile(a=boot_coefs['Intercept'], q=[2.5, 97.5])
+np.percentile(a=boot_coefs['displ'], q=[2.5, 97.5])
+```
+
+:::
 
 
 <!-- ## [R Lab]{.pink} Fit Regression to Bootstrap Samples {visibility="hidden"} -->
@@ -1730,9 +2068,24 @@ In fact, when all the predictors in the regression model are categorical variabl
 
 Suppose now we want to see how the transmission type `trans` affects high miles per gallon `hwy`. 
 
+::: {.panel-tabset}
+
+## R
+
 ```{r}
 mpg[, c("hwy", "trans")]
 ```
+
+
+## Python
+
+```{python}
+mpg[["hwy", "trans"]]
+```
+
+:::
+
+
 
 Note that `trans` has so many different categories or "values" because of the parentheses terms. We can remove them so that the `trans` variable only has two categories: `auto` and `manual`, where `auto` means automatic transmission, and `manual` means manual transmission. The cleaned data set is called `mpg_trans`.
 
@@ -1742,6 +2095,16 @@ mpg_trans <- mpg
 mpg_trans$trans[grepl("auto", mpg_trans$trans)] <- "auto"
 mpg_trans$trans[grepl("manual", mpg_trans$trans)] <- "manual"
 ```
+
+```{python}
+mpg_trans = mpg.copy()
+mpg_trans['trans'] = np.where(mpg_trans['trans'].str.contains('auto'), 'auto', 'manual')
+```
+
+
+::: {.panel-tabset}
+
+## R
 
 ```{r}
 #| echo: true
@@ -1761,6 +2124,27 @@ We use exactly the same command `lm()` to fit the regression when the predictor 
 #| echo: true
 lm(hwy ~ trans, data = mpg_trans)
 ```
+
+
+## Python
+
+```{python}
+#| echo: true
+mpg_trans[["hwy", "trans"]]
+```
+
+
+We use exactly the same command `ols()` to fit the regression when the predictor is categorical.
+
+```{python}
+#| echo: true
+reg_fit_trans = ols('hwy ~ trans', data=mpg_trans).fit()
+reg_fit_trans.summary()
+reg_fit_trans.params
+```
+
+:::
+
 
 Writing code is a piece of cake. The more important thing is how we interpret the fitted result. Here, the variable `trans` has 2 categories. R will choose one as the *baseline level* that is used to compare to other levels, in this case, the only other variable. By default, R will choose the baseline level according to the category names alphabetically. Since `a` comes earlier than `m`, R chooses `auto` as the baseline level.
 

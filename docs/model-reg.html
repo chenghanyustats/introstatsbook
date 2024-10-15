@@ -617,7 +617,14 @@ Figure&nbsp;27.5: Examples of relationships between two variables and their corr
 </div>
 </div>
 </div>
-<p><span style="color:red"> <strong><em>Example in R</em></strong> </span></p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<!-- <span style="color:red"> ***Example in R*** </span> -->
 <p>In R, we use the function <code><a href="https://rdrr.io/r/stats/cor.html">cor()</a></code> to calculate the correlation coefficient <span class="math inline">\(r\)</span>. We put the two variables’ data in the first two arguments <code>x</code> and <code>y</code>. Here we use the built-in <code>mtcars</code> dataset, and calculate the correlation between the high miles per gallon (<code>mpg</code>) and car weight (<code>wt</code>). The coefficient is <span class="math inline">\(r =\)</span> <code>-0.87</code>. Usually, when <span class="math inline">\(|r| &gt; 0.7\)</span>, the linear relationship is considered strong, and <span class="math inline">\(|r| &lt; 0.3\)</span> for weak linear relationship.</p>
 <div class="columns">
 <div class="column" style="width:49%;">
@@ -649,6 +656,50 @@ Figure&nbsp;27.5: Examples of relationships between two variables and their corr
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="./images/img-model/car.jpeg" class="img-fluid figure-img" width="3360"></p>
 <figcaption>Source: unsplash-sippakorn yamkasikorn</figcaption></figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<p>In Python, we use the function <a href="https://pandas.pydata.org/docs/reference/api/pandas.Series.corr.html#pandas.Series.corr"><code>corr()</code></a> to calculate the correlation coefficient <span class="math inline">\(r\)</span> for two pd.Series. The syntax is like <code>first_pd.Series.corr(second_pd.Series)</code>.</p>
+<p>Here we use the built-in <code>mtcars</code> dataset, and calculate the correlation between the high miles per gallon (<code>mpg</code>) and car weight (<code>wt</code>). The coefficient is <span class="math inline">\(r =\)</span> <code>-0.87</code>. Usually, when <span class="math inline">\(|r| &gt; 0.7\)</span>, the linear relationship is considered strong, and <span class="math inline">\(|r| &lt; 0.3\)</span> for weak linear relationship.</p>
+<div class="columns">
+<div class="column" style="width:49%;">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Scatter plot of MPG vs. Weight</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>plt.scatter(mtcars[<span class="st">'wt'</span>], mtcars[<span class="st">'mpg'</span>], </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>            color<span class="op">=</span><span class="st">'blue'</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'MPG vs. Weight'</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Car Weight'</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Miles Per Gallon'</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:2%;">
+
+</div><div class="column" style="width:49%;">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>mtcars[<span class="st">'wt'</span>].corr(mtcars[<span class="st">'mpg'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>-0.8676593765172281</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="./images/img-model/car.jpeg" class="img-fluid figure-img" width="3360"></p>
+<figcaption>Source: unsplash-sippakorn yamkasikorn</figcaption></figure>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -985,7 +1036,7 @@ Figure&nbsp;27.16: One data set can have multiple fitted regression lines.
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -994,7 +1045,7 @@ Figure&nbsp;27.16: One data set can have multiple fitted regression lines.
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1003,7 +1054,7 @@ Figure&nbsp;27.16: One data set can have multiple fitted regression lines.
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1023,7 +1074,14 @@ Figure&nbsp;27.16: One data set can have multiple fitted regression lines.
 <!-- ## What can we learn from the formula of $b_0$ and $b_1$? -->
 <!-- ::: -->
 <hr>
-<p><span style="color:blue"> <strong>Fit a Simple Linear Regression in R</strong> </span></p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<!-- <span style="color:blue"> **Fit a Simple Linear Regression in R** </span> -->
 <p>We use the <code>mpg</code> data set in the <code>ggplot2</code> package to demonstrate doing regression analysis in R. In particular, we grab the variable <code>hwy</code> as our response and <code>disp</code> as our predictor.</p>
 <!-- <span style="color:blue"> **`mpg` Data** </span> -->
 <div class="cell" data-layout-align="center">
@@ -1047,13 +1105,13 @@ Figure&nbsp;27.16: One data set can have multiple fitted regression lines.
 <p><span style="color:red"> <strong>Highway MPG <code>hwy</code> vs.&nbsp;Displacement <code>displ</code></strong> </span></p>
 <p>First we create the scatter plot.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">mpg</span><span class="op">$</span><span class="va">displ</span>, y <span class="op">=</span> <span class="va">mpg</span><span class="op">$</span><span class="va">hwy</span>,</span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">mpg</span><span class="op">$</span><span class="va">displ</span>, y <span class="op">=</span> <span class="va">mpg</span><span class="op">$</span><span class="va">hwy</span>,</span>
 <span>     las <span class="op">=</span> <span class="fl">1</span>, pch <span class="op">=</span> <span class="fl">19</span>, col <span class="op">=</span> <span class="st">"navy"</span>, cex <span class="op">=</span> <span class="fl">0.5</span>,</span>
 <span>     xlab <span class="op">=</span> <span class="st">"Displacement (litres)"</span>, ylab <span class="op">=</span> <span class="st">"Highway MPG"</span>,</span>
 <span>     main <span class="op">=</span> <span class="st">"Highway MPG vs. Engine Displacement (litres)"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1064,7 +1122,7 @@ Figure&nbsp;27.16: One data set can have multiple fitted regression lines.
 <!-- ::::{.columns} -->
 <!-- :::{.column width="49%"} -->
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">reg_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">hwy</span> <span class="op">~</span> <span class="va">displ</span>, data <span class="op">=</span> <span class="va">mpg</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">reg_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">hwy</span> <span class="op">~</span> <span class="va">displ</span>, data <span class="op">=</span> <span class="va">mpg</span><span class="op">)</span></span>
 <span><span class="va">reg_fit</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -1081,18 +1139,18 @@ Coefficients:
 <!-- ::: -->
 <!-- :::{.column width="49%"} -->
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/typeof.html">typeof</a></span><span class="op">(</span><span class="va">reg_fit</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/typeof.html">typeof</a></span><span class="op">(</span><span class="va">reg_fit</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "list"</code></pre>
 </div>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## all elements in reg_fit</span></span>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## all elements in reg_fit</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">reg_fit</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] "coefficients"  "residuals"     "effects"       "rank"         
  [5] "fitted.values" "assign"        "qr"            "df.residual"  
  [9] "xlevels"       "call"          "terms"         "model"        </code></pre>
 </div>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## use $ to extract an element of a list</span></span>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## use $ to extract an element of a list</span></span>
 <span><span class="va">reg_fit</span><span class="op">$</span><span class="va">coefficients</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(Intercept)       displ 
@@ -1103,23 +1161,23 @@ Coefficients:
 <!-- :::: -->
 <p><span style="color:red"> <strong>Fitted Values of <span class="math inline">\(y\)</span></strong> </span></p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## the first 5 observed response value y</span></span>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## the first 5 observed response value y</span></span>
 <span><span class="va">mpg</span><span class="op">$</span><span class="va">hwy</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 29 29 31 30 26</code></pre>
 </div>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## the first 5 fitted value y_hat</span></span>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## the first 5 fitted value y_hat</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">reg_fit</span><span class="op">$</span><span class="va">fitted.values</span>, <span class="fl">5</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       1        2        3        4        5 
 29.34259 29.34259 28.63647 28.63647 25.81200 </code></pre>
 </div>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## the first 5 predictor value x</span></span>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## the first 5 predictor value x</span></span>
 <span><span class="va">mpg</span><span class="op">$</span><span class="va">displ</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1.8 1.8 2.0 2.0 2.8</code></pre>
 </div>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">reg_fit</span><span class="op">$</span><span class="va">fitted.values</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">reg_fit</span><span class="op">$</span><span class="va">fitted.values</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 234</code></pre>
 </div>
@@ -1128,14 +1186,229 @@ Coefficients:
 <p><span style="color:red"> <strong>Add a Regression Line</strong> </span></p>
 <p>To add the fitted regression line, we just put the fitted result <code>reg_fit</code> into the function <code><a href="https://rdrr.io/r/graphics/abline.html">abline()</a></code>.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">mpg</span><span class="op">$</span><span class="va">displ</span>, y <span class="op">=</span> <span class="va">mpg</span><span class="op">$</span><span class="va">hwy</span>, las <span class="op">=</span> <span class="fl">1</span>, pch <span class="op">=</span> <span class="fl">19</span>, col <span class="op">=</span> <span class="st">"navy"</span>, cex <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">mpg</span><span class="op">$</span><span class="va">displ</span>, y <span class="op">=</span> <span class="va">mpg</span><span class="op">$</span><span class="va">hwy</span>, las <span class="op">=</span> <span class="fl">1</span>, pch <span class="op">=</span> <span class="fl">19</span>, col <span class="op">=</span> <span class="st">"navy"</span>, cex <span class="op">=</span> <span class="fl">0.5</span>,</span>
 <span>     xlab <span class="op">=</span> <span class="st">"Displacement (litres)"</span>, ylab <span class="op">=</span> <span class="st">"Highway MPG"</span>,</span>
 <span>     main <span class="op">=</span> <span class="st">"Highway MPG vs. Engine Displacement (litres)"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span><span class="va">reg_fit</span>, col <span class="op">=</span> <span class="st">"#FFCC00"</span>, lwd <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<p>We use the <code>mpg</code> data set in the <code>ggplot2</code> package to demonstrate doing regression analysis in Python. In particular, we grab the variable <code>hwy</code> as our response and <code>disp</code> as our predictor.</p>
+<!-- <span style="color:blue"> **`mpg` Data** </span> -->
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>  manufacturer model  displ  year  cyl       trans drv  cty  hwy fl    class
+0         audi    a4    1.8  1999    4    auto(l5)   f   18   29  p  compact
+1         audi    a4    1.8  1999    4  manual(m5)   f   21   29  p  compact
+2         audi    a4    2.0  2008    4  manual(m6)   f   20   31  p  compact
+3         audi    a4    2.0  2008    4    auto(av)   f   21   30  p  compact
+4         audi    a4    2.8  1999    6    auto(l5)   f   16   26  p  compact</code></pre>
+</div>
+</div>
+<p><span style="color:red"> <strong>Highway MPG <code>hwy</code> vs.&nbsp;Displacement <code>displ</code></strong> </span></p>
+<p>First we create the scatter plot.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(mpg[<span class="st">'displ'</span>], mpg[<span class="st">'hwy'</span>], </span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>            color<span class="op">=</span><span class="st">'blue'</span>)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Highway MPG vs. Engine Displacement (litres)'</span>)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Displacement (litres)'</span>)</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Highway MPG'</span>)</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><span style="color:red"> <strong>Fit Simple Linear Regression</strong> </span></p>
+<p>To fit a linear regression, we use the <code>ols()</code> function. As we learned in ANOVA <a href="model-anova.html" class="quarto-xref"><span>Chapter 24</span></a>, we write the formula <code>'hwy ~ displ'</code>, and specify the data set <code>mpg</code>. We save the fitted result in the object <code>reg_fit</code>.</p>
+<p><code>reg_fit.summary()</code> will output the OLS regression results. The output prints <span class="math inline">\(b_0 = 35.70\)</span> and <span class="math inline">\(b_1 = -3.53\)</span>, the least squares estimate of <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>. So the sample regression function or regression line is <span class="math display">\[\widehat{hwy} = 35.7 - 3.53 \times disp.\]</span></p>
+<p>For one unit (litre) increase of the displacement, we expect the highway MPG to be decreased, <em>on average</em>, by 3.53 miles.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.formula.api <span class="im">import</span> ols</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit a simple linear regression model</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>reg_fit <span class="op">=</span> ols(<span class="st">'hwy ~ displ'</span>, data<span class="op">=</span>mpg).fit()</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>reg_fit.summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>OLS Regression Results</caption>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Dep. Variable:</td>
+<td>hwy</td>
+<td data-quarto-table-cell-role="th">R-squared:</td>
+<td>0.587</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Model:</td>
+<td>OLS</td>
+<td data-quarto-table-cell-role="th">Adj. R-squared:</td>
+<td>0.585</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Method:</td>
+<td>Least Squares</td>
+<td data-quarto-table-cell-role="th">F-statistic:</td>
+<td>329.5</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Date:</td>
+<td>Mon, 14 Oct 2024</td>
+<td data-quarto-table-cell-role="th">Prob (F-statistic):</td>
+<td>2.04e-46</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Time:</td>
+<td>17:23:53</td>
+<td data-quarto-table-cell-role="th">Log-Likelihood:</td>
+<td>-645.62</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">No. Observations:</td>
+<td>234</td>
+<td data-quarto-table-cell-role="th">AIC:</td>
+<td>1295.</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Df Residuals:</td>
+<td>232</td>
+<td data-quarto-table-cell-role="th">BIC:</td>
+<td>1302.</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Df Model:</td>
+<td>1</td>
+<td data-quarto-table-cell-role="th"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Covariance Type:</td>
+<td>nonrobust</td>
+<td data-quarto-table-cell-role="th"></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd">
+<td></td>
+<td data-quarto-table-cell-role="th">coef</td>
+<td data-quarto-table-cell-role="th">std err</td>
+<td data-quarto-table-cell-role="th">t</td>
+<td data-quarto-table-cell-role="th">P&gt;|t|</td>
+<td data-quarto-table-cell-role="th">[0.025</td>
+<td data-quarto-table-cell-role="th">0.975]</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Intercept</td>
+<td>35.6977</td>
+<td>0.720</td>
+<td>49.555</td>
+<td>0.000</td>
+<td>34.278</td>
+<td>37.117</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">displ</td>
+<td>-3.5306</td>
+<td>0.195</td>
+<td>-18.151</td>
+<td>0.000</td>
+<td>-3.914</td>
+<td>-3.147</td>
+</tr>
+</tbody></table>
+<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Omnibus:</td>
+<td>45.280</td>
+<td data-quarto-table-cell-role="th">Durbin-Watson:</td>
+<td>0.954</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Prob(Omnibus):</td>
+<td>0.000</td>
+<td data-quarto-table-cell-role="th">Jarque-Bera (JB):</td>
+<td>90.192</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Skew:</td>
+<td>0.961</td>
+<td data-quarto-table-cell-role="th">Prob(JB):</td>
+<td>2.60e-20</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Kurtosis:</td>
+<td>5.357</td>
+<td data-quarto-table-cell-role="th">Cond. No.</td>
+<td>11.3</td>
+</tr>
+</tbody></table>
+<br><br>Notes:<br>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co">## All fields and methods in the reg_fit object</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="bu">dir</span>(reg_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>['HC0_se', 'HC1_se', 'HC2_se', 'HC3_se', '_HCCM', '__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__getstate__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_abat_diagonal', '_cache', '_data_attr', '_data_in_cache', '_get_robustcov_results', '_get_wald_nonlinear', '_is_nested', '_transform_predict_exog', '_use_t', '_wexog_singular_values', 'aic', 'bic', 'bse', 'centered_tss', 'compare_f_test', 'compare_lm_test', 'compare_lr_test', 'condition_number', 'conf_int', 'conf_int_el', 'cov_HC0', 'cov_HC1', 'cov_HC2', 'cov_HC3', 'cov_kwds', 'cov_params', 'cov_type', 'df_model', 'df_resid', 'diagn', 'eigenvals', 'el_test', 'ess', 'f_pvalue', 'f_test', 'fittedvalues', 'fvalue', 'get_influence', 'get_prediction', 'get_robustcov_results', 'info_criteria', 'initialize', 'k_constant', 'llf', 'load', 'model', 'mse_model', 'mse_resid', 'mse_total', 'nobs', 'normalized_cov_params', 'outlier_test', 'params', 'predict', 'pvalues', 'remove_data', 'resid', 'resid_pearson', 'rsquared', 'rsquared_adj', 'save', 'scale', 'ssr', 'summary', 'summary2', 't_test', 't_test_pairwise', 'tvalues', 'uncentered_tss', 'use_t', 'wald_test', 'wald_test_terms', 'wresid']</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co">## parameter coefficient estimates</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>reg_fit.params</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Intercept    35.697651
+displ        -3.530589
+dtype: float64</code></pre>
+</div>
+</div>
+<p><span style="color:red"> <strong>Fitted Values of <span class="math inline">\(y\)</span></strong> </span></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co">## the first 5 observed response value y</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>mpg[<span class="st">'hwy'</span>].head(<span class="dv">5</span>).values</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>array([29, 29, 31, 30, 26])</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co">## the first 5 fitted value y_hat</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>reg_fit.fittedvalues.head(<span class="dv">5</span>).values</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>array([29.3425912 , 29.3425912 , 28.63647344, 28.63647344, 25.81200239])</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co">## the first 5 predictor value x</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>mpg[<span class="st">'displ'</span>].head(<span class="dv">5</span>).values</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>array([1.8, 1.8, 2. , 2. , 2.8])</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(reg_fit.fittedvalues)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>234</code></pre>
+</div>
+</div>
+<!-- --------------------------------------------------------------- -->
+<p><span style="color:red"> <strong>Add a Regression Line</strong> </span></p>
+<p>To add the fitted regression line, we add another plot with y values being <code>reg_fit.fittedvalues</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(x<span class="op">=</span>mpg[<span class="st">'displ'</span>], y<span class="op">=</span>mpg[<span class="st">'hwy'</span>], color<span class="op">=</span><span class="st">'navy'</span>)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>plt.plot(mpg[<span class="st">'displ'</span>], reg_fit.fittedvalues, color<span class="op">=</span><span class="st">'#FFCC00'</span>, linewidth<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Highway MPG vs. Engine Displacement (litres)'</span>)</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Displacement (litres)'</span>)</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Highway MPG'</span>)</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-42-3.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -1162,10 +1435,18 @@ Note
 <p><span class="math inline">\(MS_{res}\)</span> is often shown in computer output as <span class="math inline">\(\texttt{MS(Error)}\)</span> or <span class="math inline">\(\texttt{MS(Residual)}\)</span>.</p>
 <p>By the way, <span class="math inline">\(E(MS_{res}) = \sigma^2\)</span>. Therefore, <span class="math inline">\(\hat{\sigma}^2\)</span> is an unbiased estimator for <span class="math inline">\(\sigma^2\)</span>.</p>
 <!-- -------------------------------------------------------------------- -->
-<p><span style="color:red"> <strong>Standard Error of Regression in R</strong> </span></p>
-<p>The standard error <span class="math inline">\(\hat{\sigma}^2\)</span> information is saved in the summary of the fitted result. In the summary output, <span class="math inline">\(\hat{\sigma}^2\)</span> is shown as <code>Residual standard error</code>. The degrees of freedom is <span class="math inline">\(n - 2 = 234 - 2 = 232.\)</span></p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
+<!-- <span style="color:red"> **Standard Error of Regression in R** </span> -->
+<p>Please be careful that R provide the standard error <span class="math inline">\(\hat{\sigma}\)</span>, not <span class="math inline">\(\hat{\sigma}^2\)</span> which is <span class="math inline">\(MS_{res}\)</span>.</p>
+<p>The standard error <span class="math inline">\(\hat{\sigma}\)</span> information is saved in the summary of the fitted result. In the summary output, <span class="math inline">\(\hat{\sigma}\)</span> is shown as <code>Residual standard error</code>. The degrees of freedom is <span class="math inline">\(n - 2 = 234 - 2 = 232.\)</span></p>
 <div class="cell" data-layout-align="center" data-output.lines="[15,16]">
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">summ_reg_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">reg_fit</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span><span class="va">summ_reg_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">reg_fit</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>...
 
@@ -1173,16 +1454,16 @@ Residual standard error: 3.836 on 232 degrees of freedom
 ...</code></pre>
 </div>
 </div>
-<p>We can grab the <span class="math inline">\(\hat{\sigma}^2\)</span> value in the summary object <code>summ_reg_fit</code> by <code>summ_reg_fit$sigma</code>.</p>
+<p>We can grab the <span class="math inline">\(\hat{\sigma}\)</span> value in the summary object <code>summ_reg_fit</code> by <code>summ_reg_fit$sigma</code>.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># lots of fitted information saved in summary(reg_fit)!</span></span>
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># lots of fitted information saved in summary(reg_fit)!</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">summ_reg_fit</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] "call"          "terms"         "residuals"     "coefficients" 
  [5] "aliased"       "sigma"         "df"            "r.squared"    
  [9] "adj.r.squared" "fstatistic"    "cov.unscaled" </code></pre>
 </div>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># residual standard error (sigma_hat)</span></span>
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># residual standard error (sigma_hat)</span></span>
 <span><span class="va">summ_reg_fit</span><span class="op">$</span><span class="va">sigma</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 3.835985</code></pre>
@@ -1190,10 +1471,35 @@ Residual standard error: 3.836 on 232 degrees of freedom
 </div>
 <p>It is not hard to compute the <span class="math inline">\(MS_{res}\)</span> directly from its definition, the sum of squared residuals divided by residual degrees of freedom.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># from reg_fit</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">reg_fit</span><span class="op">$</span><span class="va">residuals</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span> <span class="op">/</span> <span class="va">reg_fit</span><span class="op">$</span><span class="va">df.residual</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># from reg_fit</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">reg_fit</span><span class="op">$</span><span class="va">residuals</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span> <span class="op">/</span> <span class="va">reg_fit</span><span class="op">$</span><span class="va">df.residual</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 3.835985</code></pre>
+<pre><code>[1] 14.71478</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+<p>The standard error <span class="math inline">\(\hat{\sigma}^2\)</span> information is saved in the fitted result, <code>reg_fit.mse_resid</code>, short for mean square error of residuals.</p>
+<p>If we want the standard error, <span class="math inline">\(\hat{\sigma} = \sqrt{MS_{res}}\)</span>, we need to remember to take a square root.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>reg_fit.mse_resid</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>14.71478021118735</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>np.sqrt(reg_fit.mse_resid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>3.835984907580757</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># from reg_fit to compute MS_res</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>np.<span class="bu">sum</span>(reg_fit.resid <span class="op">**</span> <span class="dv">2</span>) <span class="op">/</span> reg_fit.df_resid</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>14.714780211187357</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 </section><section id="confidence-intervals-and-hypothesis-testing-for-beta_0-and-beta_1" class="level2" data-number="27.4"><h2 data-number="27.4" class="anchored" data-anchor-id="confidence-intervals-and-hypothesis-testing-for-beta_0-and-beta_1">
@@ -1206,14 +1512,35 @@ Residual standard error: 3.836 on 232 degrees of freedom
 <p>Therefore, the <span class="math inline">\((1-\alpha)100\%\)</span> CI for <span class="math inline">\(\beta_1\)</span> is <span class="math display">\[b_1 \pm t_{\alpha/2, n-2}\sqrt{\hat{\sigma}^2/S_{xx}}.\]</span></p>
 <p>The <span class="math inline">\((1-\alpha)100\%\)</span> CI for <span class="math inline">\(\beta_0\)</span> is <span class="math display">\[b_0 \pm t_{\alpha/2, n-2}\sqrt{\hat{\sigma}^2\left(\frac{1}{n} + \frac{\overline{x}^2}{S_{xx}}\right)}.\]</span></p>
 <!-- ----------------------------------------------------------------- -->
-<p><span style="color:red"> <strong>Confidence Intervals in R</strong> </span></p>
+<!-- <span style="color:red"> **Confidence Intervals in R** </span> -->
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
 <p>To grab the confidence interval for <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>, we simply put the fitted result into the <code><a href="https://rdrr.io/r/stats/confint.html">confint()</a></code> function. By default, the confidence level is 95%, but any other level can be specified. We say we are 95% confident that one unit increase of displacement will result in a decrease in highway miles per gallon on average by 3.91 to 3.15 miles.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html">confint</a></span><span class="op">(</span><span class="va">reg_fit</span>, level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html">confint</a></span><span class="op">(</span><span class="va">reg_fit</span>, level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                2.5 %   97.5 %
 (Intercept) 34.278353 37.11695
 displ       -3.913828 -3.14735</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
+<p>To grab the confidence interval for <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>, we simply use the method <code>conf_int()</code> of the fitted object. By default, the confidence level is 95%, but any other level can be specified. We say we are 95% confident that one unit increase of displacement will result in a decrease in highway miles per gallon on average by 3.91 to 3.15 miles.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>reg_fit.conf_int(alpha<span class="op">=</span><span class="fl">0.05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   0         1
+Intercept  34.278353  37.11695
+displ      -3.913828  -3.14735</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <hr>
@@ -1247,10 +1574,16 @@ displ       -3.913828 -3.14735</code></pre>
 </ul>
 </li>
 </ul>
-<p><span style="color:red"> <strong>Testing in R</strong> </span></p>
+<!-- <span style="color:red"> **Testing in R** </span> --><div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
 <p>The two-sided test result for <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> can be found in the summary output. There is a Coeffifcients table in the middle of the output. We can extract the table by check <code>summ_reg_fit$coefficients</code>. The first row is for intercept and the second for the slope. The columns from left to right are LSEs, the standard errors of LSEs, the <span class="math inline">\(t\)</span> test statistics, and <span class="math inline">\(p\)</span>-values.</p>
 <div class="cell" data-layout-align="center" data-output.lines="[9,10,11,12]">
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">summ_reg_fit</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">summ_reg_fit</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>...
 Coefficients:
@@ -1261,7 +1594,7 @@ displ        -3.5306     0.1945  -18.15   &lt;2e-16 ***
 </div>
 </div>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">summ_reg_fit</span><span class="op">$</span><span class="va">coefficients</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">summ_reg_fit</span><span class="op">$</span><span class="va">coefficients</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>             Estimate Std. Error   t value      Pr(&gt;|t|)
 (Intercept) 35.697651  0.7203676  49.55477 2.123519e-125
@@ -1269,6 +1602,141 @@ displ       -3.530589  0.1945137 -18.15085  2.038974e-46</code></pre>
 </div>
 </div>
 <p>Notice that the testing output is for the two-sided test with hypothesized value being equal to zero. The first row tests whether or not <span class="math inline">\(\beta_0 = 0\)</span> and the second tests whether or not <span class="math inline">\(\beta_1 = 0\)</span>.</p>
+</div>
+<div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
+<p>he two-sided test result for <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> can be found in the summary output. There is a Coeffifcients table in the middle of the output. The first row is for intercept and the second for the slope. The columns from left to right are LSEs, the standard errors of LSEs, the <span class="math inline">\(t\)</span> test statistics, and <span class="math inline">\(p\)</span>-values. The last two columns show their confidence interval.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>reg_fit.summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>OLS Regression Results</caption>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Dep. Variable:</td>
+<td>hwy</td>
+<td data-quarto-table-cell-role="th">R-squared:</td>
+<td>0.587</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Model:</td>
+<td>OLS</td>
+<td data-quarto-table-cell-role="th">Adj. R-squared:</td>
+<td>0.585</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Method:</td>
+<td>Least Squares</td>
+<td data-quarto-table-cell-role="th">F-statistic:</td>
+<td>329.5</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Date:</td>
+<td>Mon, 14 Oct 2024</td>
+<td data-quarto-table-cell-role="th">Prob (F-statistic):</td>
+<td>2.04e-46</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Time:</td>
+<td>17:23:53</td>
+<td data-quarto-table-cell-role="th">Log-Likelihood:</td>
+<td>-645.62</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">No. Observations:</td>
+<td>234</td>
+<td data-quarto-table-cell-role="th">AIC:</td>
+<td>1295.</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Df Residuals:</td>
+<td>232</td>
+<td data-quarto-table-cell-role="th">BIC:</td>
+<td>1302.</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Df Model:</td>
+<td>1</td>
+<td data-quarto-table-cell-role="th"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Covariance Type:</td>
+<td>nonrobust</td>
+<td data-quarto-table-cell-role="th"></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd">
+<td></td>
+<td data-quarto-table-cell-role="th">coef</td>
+<td data-quarto-table-cell-role="th">std err</td>
+<td data-quarto-table-cell-role="th">t</td>
+<td data-quarto-table-cell-role="th">P&gt;|t|</td>
+<td data-quarto-table-cell-role="th">[0.025</td>
+<td data-quarto-table-cell-role="th">0.975]</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Intercept</td>
+<td>35.6977</td>
+<td>0.720</td>
+<td>49.555</td>
+<td>0.000</td>
+<td>34.278</td>
+<td>37.117</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">displ</td>
+<td>-3.5306</td>
+<td>0.195</td>
+<td>-18.151</td>
+<td>0.000</td>
+<td>-3.914</td>
+<td>-3.147</td>
+</tr>
+</tbody></table>
+<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Omnibus:</td>
+<td>45.280</td>
+<td data-quarto-table-cell-role="th">Durbin-Watson:</td>
+<td>0.954</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Prob(Omnibus):</td>
+<td>0.000</td>
+<td data-quarto-table-cell-role="th">Jarque-Bera (JB):</td>
+<td>90.192</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Skew:</td>
+<td>0.961</td>
+<td data-quarto-table-cell-role="th">Prob(JB):</td>
+<td>2.60e-20</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Kurtosis:</td>
+<td>5.357</td>
+<td data-quarto-table-cell-role="th">Cond. No.</td>
+<td>11.3</td>
+</tr>
+</tbody></table>
+<br><br>Notes:<br>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>reg_fit.pvalues</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Intercept    2.123519e-125
+displ         2.038974e-46
+dtype: float64</code></pre>
+</div>
+</div>
+<p>Notice that the testing output and the p-values <code>reg_fit.pvalues</code> are for the two-sided test with hypothesized value being equal to zero. The first row tests whether or not <span class="math inline">\(\beta_0 = 0\)</span> and the second tests whether or not <span class="math inline">\(\beta_1 = 0\)</span>.</p>
+</div>
+</div>
+</div>
 <p><span style="color:red"> <strong><em>Interpretation of Testing Results</em></strong> </span></p>
 <p>Suppose we do the test <span style="color:blue"> <span class="math inline">\(H_0: \beta_1 = 0 \quad H_1: \beta_1 \ne 0\)</span> </span>. <em>Failing to reject <span class="math inline">\(H_0: \beta_1 = 0\)</span></em> implies there is <em>no (statistically significant) linear relationship</em> between (the mean of) <span class="math inline">\(Y\)</span> and <span class="math inline">\(X\)</span>. But be careful. They could have some other type of relationship.</p>
 <div class="cell" data-layout-align="center">
@@ -1436,10 +1904,17 @@ H_1&amp;: \text{At least one regression coefficient except the incercept is not 
 <span class="math inline">\(\text{$p$-value} = P(F_{1, n-2} &gt; F_{test}) &lt; \alpha\)</span>.</li>
 </ul>
 <p>Note that ANOVA is designed to test the <span class="math inline">\(H_0\)</span> that <strong>all</strong> predictors have no value in predicting <span class="math inline">\(y\)</span>. In simple linear regression, there is only one predictor, so one means all. The <span class="math inline">\(F\)</span>-test of ANOVA gives the exactly same result as a two-sided <span class="math inline">\(t\)</span>-test of <span class="math inline">\(H_0: \beta_1 = 0\)</span>.</p>
-<p><span style="color:red"> <strong>ANOVA Table in R</strong> </span></p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-6-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-1" role="tab" aria-controls="tabset-6-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-2" role="tab" aria-controls="tabset-6-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-6-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-6-1-tab">
+<!-- <span style="color:red"> **ANOVA Table in R** </span> -->
 <p>To get the ANOVA table, we put the fitted result into the function <code><a href="https://rdrr.io/r/stats/anova.html">anova()</a></code>. For simple linear regression, the ANOVA <span class="math inline">\(F\)</span> test is equivalent to the marginal <span class="math inline">\(t\)</span> test for <span class="math inline">\(\beta_1\)</span> where <span class="math inline">\(H_0: \beta_1 = 0; \quad H_1: \beta_1 \ne 0\)</span>. In particular <span class="math inline">\(t_{test}^2 = F_{test}\)</span>.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="va">reg_fit</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="va">reg_fit</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Variance Table
 
@@ -1452,15 +1927,46 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">summ_reg_fit</span><span class="op">$</span><span class="va">coefficients</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">summ_reg_fit</span><span class="op">$</span><span class="va">coefficients</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>             Estimate Std. Error   t value      Pr(&gt;|t|)
 (Intercept) 35.697651  0.7203676  49.55477 2.123519e-125
 displ       -3.530589  0.1945137 -18.15085  2.038974e-46</code></pre>
 </div>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">summ_reg_fit</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span><span class="fl">2</span>, <span class="fl">3</span><span class="op">]</span> <span class="op">^</span> <span class="fl">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">summ_reg_fit</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span><span class="fl">2</span>, <span class="fl">3</span><span class="op">]</span> <span class="op">^</span> <span class="fl">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 329.4533</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-6-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-2-tab">
+<p>To get the ANOVA table, we put the fitted result into the function <code>sm.stats.anova_lm()</code>. For simple linear regression, the ANOVA <span class="math inline">\(F\)</span> test is equivalent to the marginal <span class="math inline">\(t\)</span> test for <span class="math inline">\(\beta_1\)</span> where <span class="math inline">\(H_0: \beta_1 = 0; \quad H_1: \beta_1 \ne 0\)</span>. In particular <span class="math inline">\(t_{test}^2 = F_{test}\)</span>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>sm.stats.anova_lm(reg_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             df       sum_sq      mean_sq           F        PR(&gt;F)
+displ       1.0  4847.833384  4847.833384  329.453333  2.038974e-46
+Residual  232.0  3413.829009    14.714780         NaN           NaN</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>reg_fit.tvalues</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Intercept    49.554769
+displ       -18.150849
+dtype: float64</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>reg_fit.tvalues.iloc[<span class="dv">1</span>] <span class="op">**</span> <span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>329.45333294759047</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>reg_fit.fvalue</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>329.45333294759075</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <hr>
@@ -1486,10 +1992,17 @@ Figure&nbsp;27.20: Examples of <span class="math inline">\(R^2\)</span> being eq
 </div>
 </div>
 <!-- ------------------------------------------------------------------- -->
-<p><span style="color:red"> <strong><span class="math inline">\(R^2\)</span> in R</strong> </span></p>
+<!-- <span style="color:red"> **$R^2$ in R** </span> -->
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-7-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-1" role="tab" aria-controls="tabset-7-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-7-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-2" role="tab" aria-controls="tabset-7-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-7-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-7-1-tab">
 <p>The <span class="math inline">\(R^2\)</span> value is shown in the summary output at the near bottom. We can also use <code>summ_reg_fit$r.squared</code> to get the value. The variable <code>disp</code> explains about 59% of the variation of <code>hwy</code>.</p>
 <div class="cell" data-layout-align="center" data-output.lines="[16,17]">
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">summ_reg_fit</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb81"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">summ_reg_fit</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>...
 Residual standard error: 3.836 on 232 degrees of freedom
@@ -1498,9 +2011,21 @@ Multiple R-squared:  0.5868,    Adjusted R-squared:  0.585
 </div>
 </div>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">summ_reg_fit</span><span class="op">$</span><span class="va">r.squared</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb83"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">summ_reg_fit</span><span class="op">$</span><span class="va">r.squared</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.5867867</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-7-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-7-2-tab">
+<p>The <span class="math inline">\(R^2\)</span> value is shown in the summary output on the topright. We can also use <code>reg_fit.rsquared</code> to get the value. The variable <code>disp</code> explains about 59% of the variation of <code>hwy</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>reg_fit.rsquared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.586786672398904</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 </section><section id="prediction" class="level2" data-number="27.6"><h2 data-number="27.6" class="anchored" data-anchor-id="prediction">
@@ -1549,26 +2074,59 @@ What is the difference between CI for <span class="math inline">\(E(y\mid x_0)\)
 </div>
 <p>The PI is wider as it includes the uncertainty about <span class="math inline">\(b_0\)</span>, <span class="math inline">\(b_1\)</span> as well as <span class="math inline">\(y_0\)</span> due to error, <span class="math inline">\(\epsilon\)</span>. The uncertainty about <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span> is always there because their value varies from sample to sample, and this causes the uncertainty about the mean response, or the location of the distribution of <span class="math inline">\(y\)</span> at any given level of <span class="math inline">\(x\)</span>. The PI also considers the uncertainty about the draw of the distribution of <span class="math inline">\(y\)</span>, measured by <span class="math inline">\(\sigma^2\)</span>. Intuitively it is harder to predict a specific response value due to the additional randomness or variation within the probability distribution of <span class="math inline">\(y\)</span>. Given the same significance level <span class="math inline">\(\alpha\)</span>, we are more uncertain about what its value is, and the uncertainty band is wider, resulting in a less precise estimation.</p>
 <!-- -------------------------------------------------------------------- -->
-<p><span style="color:blue"> <strong>Prediction in R</strong> </span></p>
+<!-- <span style="color:blue"> **Prediction in R** </span> -->
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-8-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-1" role="tab" aria-controls="tabset-8-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-8-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-2" role="tab" aria-controls="tabset-8-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-8-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-8-1-tab">
 <p>To predict either the mean response or a new observation, we use the function <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code>. The first argument is out fitted object <code>reg_fit</code>. Then we need to provide the predictor value for prediction in the argument <code>newdata</code>. Be careful that it has to be a data frame type, and variable’s name should be exactly the same as the predictor’s name in the original data set <code>mpg</code> when we fit the regression. If we want to get the confidence interval for the mean response, we specify “confidence” in the argument <code>interval</code>. If instead we want the prediction interval for a new response, we specify “predict”.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## CI for the mean response</span></span>
+<div class="sourceCode" id="cb87"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## CI for the mean response</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">reg_fit</span>, newdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>displ <span class="op">=</span> <span class="fl">5.5</span><span class="op">)</span>, interval <span class="op">=</span> <span class="st">"confidence"</span>, level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       fit      lwr      upr
 1 16.27941 15.35839 17.20043</code></pre>
 </div>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## PI for the new observation</span></span>
+<div class="sourceCode" id="cb89"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## PI for the new observation</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">reg_fit</span>, newdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>displ <span class="op">=</span> <span class="fl">5.5</span><span class="op">)</span>, interval <span class="op">=</span> <span class="st">"predict"</span>, level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       fit      lwr      upr
 1 16.27941 8.665682 23.89314</code></pre>
 </div>
 </div>
+</div>
+<div id="tabset-8-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-8-2-tab">
+<p>To predict either the mean response or a new observation, we use the method <a href="https://www.statsmodels.org/dev/generated/statsmodels.regression.linear_model.OLSResults.get_prediction.html"><code>get_prediction()</code></a>. The first argument <code>exog</code> is the values for which you want to predict. <code>exog</code> means exogenous variables. Be careful that it has to be array_like type.</p>
+<p>If we want to get the confidence interval for the mean response, <code>predict.conf_int()</code> provides that. If instead we want the prediction interval for a new response, we need to check the <code>predict.summary_frame()</code>. The prediction interval is saved in ‘obs_ci_lower’ and ‘obs_ci_upper’.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a>new_data <span class="op">=</span> pd.DataFrame({<span class="st">'displ'</span>: [<span class="fl">5.5</span>]})</span>
+<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>predict <span class="op">=</span> reg_fit.get_prediction(new_data)</span>
+<span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a>predict.conf_int()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>array([[15.35839096, 17.20043427]])</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a>summary_frame <span class="op">=</span> predict.summary_frame(alpha<span class="op">=</span><span class="fl">0.05</span>)</span>
+<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a>summary_frame[[<span class="st">'mean_ci_lower'</span>, <span class="st">'mean_ci_upper'</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   mean_ci_lower  mean_ci_upper
+0      15.358391      17.200434</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a>summary_frame[[<span class="st">'obs_ci_lower'</span>, <span class="st">'obs_ci_upper'</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   obs_ci_lower  obs_ci_upper
+0      8.665682     23.893144</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 <p>The 95% CI for the mean <code>hwy</code> when <code>disp = 5.5</code> is between 15.36 and 17.2, while The 95% PI for <code>hwy</code> of a car with <code>disp = 5.5</code> is between 8.67 and 23.89. The PI is much wider than the CI because the variance of <span class="math inline">\(y\)</span> for any given <span class="math inline">\(x\)</span> is quite large in this example. We are quite certain about the mean miles per gallon, but we are asked to predict a car’s miles per gallon, it’s hard to provide a precise estimation because of large individual variability.</p>
 <!-- :::{layout-ncol=2} -->
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, mgp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">0.5</span>, <span class="fl">0</span><span class="op">)</span>, mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb97"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, mgp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">0.5</span>, <span class="fl">0</span><span class="op">)</span>, mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## Data and regression line</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">mpg</span><span class="op">$</span><span class="va">displ</span>, y <span class="op">=</span> <span class="va">mpg</span><span class="op">$</span><span class="va">hwy</span>, las <span class="op">=</span> <span class="fl">1</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">0.5</span>, </span>
 <span>     ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">7.5</span>, <span class="fl">45</span><span class="op">)</span>, xlab <span class="op">=</span> <span class="st">"Displacement (litres)"</span>, </span>
@@ -1579,9 +2137,9 @@ What is the difference between CI for <span class="math inline">\(E(y\mid x_0)\)
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/segments.html">segments</a></span><span class="op">(</span>x0 <span class="op">=</span> <span class="fl">5.52</span>, y0 <span class="op">=</span> <span class="fl">15.35839</span>, y1 <span class="op">=</span> <span class="fl">17.20043</span>, col <span class="op">=</span> <span class="st">"red"</span>, lwd <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/segments.html">segments</a></span><span class="op">(</span>x0 <span class="op">=</span> <span class="fl">5.48</span>, y0 <span class="op">=</span> <span class="fl">8.665682</span>, y1 <span class="op">=</span> <span class="fl">23.89314</span>, col <span class="op">=</span> <span class="st">"blue"</span>, lwd <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>h <span class="op">=</span> <span class="fl">16.27941</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
+</details><div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-47-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-67-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1590,7 +2148,7 @@ What is the difference between CI for <span class="math inline">\(E(y\mid x_0)\)
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-48-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-68-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1611,7 +2169,7 @@ What is the difference between CI for <span class="math inline">\(E(y\mid x_0)\)
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-50-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-70-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1620,7 +2178,7 @@ What is the difference between CI for <span class="math inline">\(E(y\mid x_0)\)
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-51-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-71-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1633,7 +2191,7 @@ What is the difference between CI for <span class="math inline">\(E(y\mid x_0)\)
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-52-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-72-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1642,7 +2200,7 @@ What is the difference between CI for <span class="math inline">\(E(y\mid x_0)\)
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-53-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-73-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1655,7 +2213,7 @@ What is the difference between CI for <span class="math inline">\(E(y\mid x_0)\)
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-54-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-74-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1664,7 +2222,7 @@ What is the difference between CI for <span class="math inline">\(E(y\mid x_0)\)
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-55-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-75-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1678,7 +2236,7 @@ What is the difference between CI for <span class="math inline">\(E(y\mid x_0)\)
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-56-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-76-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1687,7 +2245,7 @@ What is the difference between CI for <span class="math inline">\(E(y\mid x_0)\)
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-58-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-78-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1701,7 +2259,7 @@ What is the difference between CI for <span class="math inline">\(E(y\mid x_0)\)
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-61-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-81-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1710,7 +2268,7 @@ What is the difference between CI for <span class="math inline">\(E(y\mid x_0)\)
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-62-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-82-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1718,9 +2276,16 @@ What is the difference between CI for <span class="math inline">\(E(y\mid x_0)\)
 </div>
 </div>
 <!-- - A 95% confidence interval is bounded by the middle 95% of the bootstrap distribution. -->
-<p>As discussed in <span class="quarto-unresolved-ref">?sec-inter-bt</span>, we can use the <code>boot</code> package and its function <code><a href="https://rdrr.io/pkg/boot/man/boot.html">boot()</a></code> to do bootstrappingin R.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-9-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-1" role="tab" aria-controls="tabset-9-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-9-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-2" role="tab" aria-controls="tabset-9-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-9-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-9-1-tab">
+<p>As discussed in <a href="infer-bt.html" class="quarto-xref"><span>Chapter 15</span></a>, we can use the <code>boot</code> package and its function <code><a href="https://rdrr.io/pkg/boot/man/boot.html">boot()</a></code> to do bootstrappingin R.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb98"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2024</span><span class="op">)</span></span>
 <span><span class="va">coef_fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">index</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">hwy</span> <span class="op">~</span> <span class="va">displ</span>, data <span class="op">=</span> <span class="va">data</span>, subset <span class="op">=</span> <span class="va">index</span><span class="op">)</span><span class="op">)</span></span>
@@ -1745,12 +2310,12 @@ t2* -3.530589 -0.03859401   0.2745006</code></pre>
 </div>
 <p>The function <code>coef_fn</code> returns the regression coefficient estimates from the bootstrapped samples that are the statistics needed for the argument <code>statistic</code> in the <code><a href="https://rdrr.io/pkg/boot/man/boot.html">boot()</a></code> function. We generate 100 bootstrap samples, and 100 corresponding bootstrap intercepts and slopes. The bootstrapping result is saved in the object <code>boot_lm</code> which is a list. <code>boot_lm$t0</code> saves the <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span> estimates from the original data, and <code>boot_lm$t</code> saves the 100 bootstrap estimated intercepts and slopes. The bias shown in the printed output is the difference between the mean of bootstrap estimates and the original coefficient estimates. The std. error is derived from sd(boot_mean$t) that estimates the variance of the sample mean.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">boot_lm</span><span class="op">$</span><span class="va">t0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb100"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">boot_lm</span><span class="op">$</span><span class="va">t0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(Intercept)       displ 
   35.697651   -3.530589 </code></pre>
 </div>
-<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">boot_lm</span><span class="op">$</span><span class="va">t</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb102"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">boot_lm</span><span class="op">$</span><span class="va">t</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         [,1]      [,2]
 [1,] 37.07809 -3.862234
@@ -1764,14 +2329,14 @@ t2* -3.530589 -0.03859401   0.2745006</code></pre>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-65-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-85-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>We can get the confidence intervals for intercept and slope using <code><a href="https://rdrr.io/pkg/boot/man/boot.ci.html">boot.ci()</a></code> as we do in <a href="infer-bt.html" class="quarto-xref"><span>Chapter 15</span></a>.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/boot/man/boot.ci.html">boot.ci</a></span><span class="op">(</span>boot.out <span class="op">=</span> <span class="va">boot_lm</span>, index <span class="op">=</span> <span class="fl">1</span>, </span>
+<div class="sourceCode" id="cb104"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/boot/man/boot.ci.html">boot.ci</a></span><span class="op">(</span>boot.out <span class="op">=</span> <span class="va">boot_lm</span>, index <span class="op">=</span> <span class="fl">1</span>, </span>
 <span>        type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"norm"</span>,<span class="st">"basic"</span>, <span class="st">"perc"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>BOOTSTRAP CONFIDENCE INTERVAL CALCULATIONS
@@ -1788,7 +2353,7 @@ Calculations and Intervals on Original Scale
 Some basic intervals may be unstable
 Some percentile intervals may be unstable</code></pre>
 </div>
-<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/boot/man/boot.ci.html">boot.ci</a></span><span class="op">(</span>boot.out <span class="op">=</span> <span class="va">boot_lm</span>, index <span class="op">=</span> <span class="fl">2</span>,</span>
+<div class="sourceCode" id="cb106"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/boot/man/boot.ci.html">boot.ci</a></span><span class="op">(</span>boot.out <span class="op">=</span> <span class="va">boot_lm</span>, index <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>        type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"norm"</span>,<span class="st">"basic"</span>, <span class="st">"perc"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>BOOTSTRAP CONFIDENCE INTERVAL CALCULATIONS
@@ -1817,6 +2382,55 @@ Note
 </div>
 <div class="callout-body-container callout-body">
 <p>There are several ways of conducting bootstrapping in R. Here we choose to to use the <code>boot</code> package. Other popular packages include <a href="https://www.john-fox.ca/Companion/"><code>car</code></a>, and <a href="https://infer.netlify.app/"><code>infer</code></a> packages of the <a href="https://www.tidymodels.org/"><code>tidymodels</code></a> ecosystem. The <code>car</code> package is useful for regression analysis, and <code>tidymodels</code> is a trendy R framework of doing data science and machine learning.</p>
+</div>
+</div>
+</div>
+<div id="tabset-9-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-9-2-tab">
+<p>To do bootstrapped regression in Python, we can use the <a href="https://scikit-learn.org/1.5/modules/generated/sklearn.utils.resample.html#sklearn.utils.resample"><code>resample()</code></a> function in <code>sklearn.utils</code> to resample the response and predictor values in the data set with replacement. For each resmaple data, we fit the ols regression, then extract it parameter estimates. All boostrapped samples of coefficients are saved in the object <code>boot_coefs</code>. For better presentation, it is converted into a DataFrame.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb108"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Bootstrapping</span></span>
+<span id="cb108-2"><a href="#cb108-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.utils <span class="im">import</span> resample</span>
+<span id="cb108-3"><a href="#cb108-3" aria-hidden="true" tabindex="-1"></a>boot_coefs <span class="op">=</span> [ols(<span class="st">'hwy ~ displ'</span>, data<span class="op">=</span>resample(mpg[[<span class="st">'displ'</span>, <span class="st">'hwy'</span>]], replace<span class="op">=</span><span class="va">True</span>)).fit().params <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">100</span>)]</span>
+<span id="cb108-4"><a href="#cb108-4" aria-hidden="true" tabindex="-1"></a>boot_coefs <span class="op">=</span> pd.DataFrame(boot_coefs)</span>
+<span id="cb108-5"><a href="#cb108-5" aria-hidden="true" tabindex="-1"></a>boot_coefs.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Intercept     displ
+0  35.899716 -3.732333
+1  36.372482 -3.673642
+2  37.271359 -4.037736
+3  36.474859 -3.728134
+4  36.841229 -3.817928</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb110"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Histograms of bootstrap distribution</span></span>
+<span id="cb110-2"><a href="#cb110-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>))</span>
+<span id="cb110-3"><a href="#cb110-3" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
+<span id="cb110-4"><a href="#cb110-4" aria-hidden="true" tabindex="-1"></a>plt.hist(boot_coefs[<span class="st">'Intercept'</span>])</span>
+<span id="cb110-5"><a href="#cb110-5" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Bootstrap Distribution: Intercept"</span>)</span>
+<span id="cb110-6"><a href="#cb110-6" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>)</span>
+<span id="cb110-7"><a href="#cb110-7" aria-hidden="true" tabindex="-1"></a>plt.hist(boot_coefs[<span class="st">'displ'</span>])</span>
+<span id="cb110-8"><a href="#cb110-8" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Bootstrap Distribution: Slope"</span>)</span>
+<span id="cb110-9"><a href="#cb110-9" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="model-reg_files/figure-html/unnamed-chunk-88-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="1152"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The bootstrapped confidence intervals are obtained by finding the 2.5% and 97.5% quantiles of the bootstrapped samples.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb111"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a>np.percentile(a<span class="op">=</span>boot_coefs[<span class="st">'Intercept'</span>], q<span class="op">=</span>[<span class="fl">2.5</span>, <span class="fl">97.5</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>array([34.15081503, 37.22960253])</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb113"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a>np.percentile(a<span class="op">=</span>boot_coefs[<span class="st">'displ'</span>], q<span class="op">=</span>[<span class="fl">2.5</span>, <span class="fl">97.5</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>array([-4.00029952, -3.0768446 ])</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <!-- ## [R Lab]{.pink} Fit Regression to Bootstrap Samples {visibility="hidden"} -->
@@ -1896,6 +2510,13 @@ Note
 <section id="categorical-predictors-and-dummy-variables" class="level3" data-number="27.8.1"><h3 data-number="27.8.1" class="anchored" data-anchor-id="categorical-predictors-and-dummy-variables">
 <span class="header-section-number">27.8.1</span> Categorical predictors and dummy variables</h3>
 <p>Suppose now we want to see how the transmission type <code>trans</code> affects high miles per gallon <code>hwy</code>.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-10-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-10-1" role="tab" aria-controls="tabset-10-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-10-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-10-2" role="tab" aria-controls="tabset-10-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-10-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-10-1-tab">
 <div class="cell" data-layout-align="center">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 234 × 2
@@ -1914,9 +2535,39 @@ Note
 # ℹ 224 more rows</code></pre>
 </div>
 </div>
-<p>Note that <code>trans</code> has so many different categories or “values” because of the parentheses terms. We can remove them so that the <code>trans</code> variable only has two categories: <code>auto</code> and <code>manual</code>, where <code>auto</code> means automatic transmission, and <code>manual</code> means manual transmission. The cleaned data set is called <code>mpg_trans</code>.</p>
+</div>
+<div id="tabset-10-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-10-2-tab">
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mpg_trans</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"hwy"</span>, <span class="st">"trans"</span><span class="op">)</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     hwy       trans
+0     29    auto(l5)
+1     29  manual(m5)
+2     31  manual(m6)
+3     30    auto(av)
+4     26    auto(l5)
+..   ...         ...
+229   28    auto(s6)
+230   29  manual(m6)
+231   26    auto(l5)
+232   26  manual(m5)
+233   26    auto(s6)
+
+[234 rows x 2 columns]</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Note that <code>trans</code> has so many different categories or “values” because of the parentheses terms. We can remove them so that the <code>trans</code> variable only has two categories: <code>auto</code> and <code>manual</code>, where <code>auto</code> means automatic transmission, and <code>manual</code> means manual transmission. The cleaned data set is called <code>mpg_trans</code>.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-11-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-11-1" role="tab" aria-controls="tabset-11-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-11-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-11-2" role="tab" aria-controls="tabset-11-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-11-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-11-1-tab">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb117"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mpg_trans</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"hwy"</span>, <span class="st">"trans"</span><span class="op">)</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 234 × 2
      hwy trans 
@@ -1936,14 +2587,14 @@ Note
 </div>
 <p>Before we fit a regression model, we need to make sure that the categorical variable is of type <code>character</code> or <code>factor</code> in R.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/typeof.html">typeof</a></span><span class="op">(</span><span class="va">mpg_trans</span><span class="op">$</span><span class="va">trans</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb119"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/typeof.html">typeof</a></span><span class="op">(</span><span class="va">mpg_trans</span><span class="op">$</span><span class="va">trans</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "character"</code></pre>
 </div>
 </div>
 <p>We use exactly the same command <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> to fit the regression when the predictor is categorical.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">hwy</span> <span class="op">~</span> <span class="va">trans</span>, data <span class="op">=</span> <span class="va">mpg_trans</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb121"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">hwy</span> <span class="op">~</span> <span class="va">trans</span>, data <span class="op">=</span> <span class="va">mpg_trans</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -1952,6 +2603,158 @@ lm(formula = hwy ~ trans, data = mpg_trans)
 Coefficients:
 (Intercept)  transmanual  
      22.293        3.486  </code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-11-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-11-2-tab">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb123"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a>mpg_trans[[<span class="st">"hwy"</span>, <span class="st">"trans"</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     hwy   trans
+0     29    auto
+1     29  manual
+2     31  manual
+3     30    auto
+4     26    auto
+..   ...     ...
+229   28    auto
+230   29  manual
+231   26    auto
+232   26  manual
+233   26    auto
+
+[234 rows x 2 columns]</code></pre>
+</div>
+</div>
+<p>We use exactly the same command <code>ols()</code> to fit the regression when the predictor is categorical.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb125"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb125-1"><a href="#cb125-1" aria-hidden="true" tabindex="-1"></a>reg_fit_trans <span class="op">=</span> ols(<span class="st">'hwy ~ trans'</span>, data<span class="op">=</span>mpg_trans).fit()</span>
+<span id="cb125-2"><a href="#cb125-2" aria-hidden="true" tabindex="-1"></a>reg_fit_trans.summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>OLS Regression Results</caption>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Dep. Variable:</td>
+<td>hwy</td>
+<td data-quarto-table-cell-role="th">R-squared:</td>
+<td>0.076</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Model:</td>
+<td>OLS</td>
+<td data-quarto-table-cell-role="th">Adj. R-squared:</td>
+<td>0.072</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Method:</td>
+<td>Least Squares</td>
+<td data-quarto-table-cell-role="th">F-statistic:</td>
+<td>19.08</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Date:</td>
+<td>Mon, 14 Oct 2024</td>
+<td data-quarto-table-cell-role="th">Prob (F-statistic):</td>
+<td>1.89e-05</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Time:</td>
+<td>17:23:56</td>
+<td data-quarto-table-cell-role="th">Log-Likelihood:</td>
+<td>-739.78</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">No. Observations:</td>
+<td>234</td>
+<td data-quarto-table-cell-role="th">AIC:</td>
+<td>1484.</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Df Residuals:</td>
+<td>232</td>
+<td data-quarto-table-cell-role="th">BIC:</td>
+<td>1490.</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Df Model:</td>
+<td>1</td>
+<td data-quarto-table-cell-role="th"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Covariance Type:</td>
+<td>nonrobust</td>
+<td data-quarto-table-cell-role="th"></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd">
+<td></td>
+<td data-quarto-table-cell-role="th">coef</td>
+<td data-quarto-table-cell-role="th">std err</td>
+<td data-quarto-table-cell-role="th">t</td>
+<td data-quarto-table-cell-role="th">P&gt;|t|</td>
+<td data-quarto-table-cell-role="th">[0.025</td>
+<td data-quarto-table-cell-role="th">0.975]</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Intercept</td>
+<td>22.2930</td>
+<td>0.458</td>
+<td>48.696</td>
+<td>0.000</td>
+<td>21.391</td>
+<td>23.195</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">trans[T.manual]</td>
+<td>3.4862</td>
+<td>0.798</td>
+<td>4.368</td>
+<td>0.000</td>
+<td>1.914</td>
+<td>5.059</td>
+</tr>
+</tbody></table>
+<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Omnibus:</td>
+<td>5.531</td>
+<td data-quarto-table-cell-role="th">Durbin-Watson:</td>
+<td>0.610</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Prob(Omnibus):</td>
+<td>0.063</td>
+<td data-quarto-table-cell-role="th">Jarque-Bera (JB):</td>
+<td>5.215</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Skew:</td>
+<td>0.350</td>
+<td data-quarto-table-cell-role="th">Prob(JB):</td>
+<td>0.0737</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Kurtosis:</td>
+<td>3.209</td>
+<td data-quarto-table-cell-role="th">Cond. No.</td>
+<td>2.41</td>
+</tr>
+</tbody></table>
+<br><br>Notes:<br>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+</div>
+<div class="sourceCode cell-code" id="cb126"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb126-1"><a href="#cb126-1" aria-hidden="true" tabindex="-1"></a>reg_fit_trans.params</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Intercept          22.292994
+trans[T.manual]     3.486227
+dtype: float64</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <p>Writing code is a piece of cake. The more important thing is how we interpret the fitted result. Here, the variable <code>trans</code> has 2 categories. R will choose one as the <em>baseline level</em> that is used to compare to other levels, in this case, the only other variable. By default, R will choose the baseline level according to the category names alphabetically. Since <code>a</code> comes earlier than <code>m</code>, R chooses <code>auto</code> as the baseline level.</p>
@@ -2664,7 +3467,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
 <li class="nav-item compact">
-    <a class="nav-link active" href="https://github.com/chenghanyustats/introstatsbook" aria-current="page">
+    <a class="nav-link" href="https://github.com/chenghanyustats/introstatsbook">
       <i class="bi bi-github" role="img">
 </i> 
     </a>
