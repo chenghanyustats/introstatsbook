@@ -480,7 +480,12 @@ Based on the MLR model and assumptions, the LS estimator ${\bf b} = (b_0, b_1, \
 
 <!-- ## [R Lab]{.pink} [Delivery Time Data](./data/data-ex-3-1.csv) -->
 
-In this chapter, we use [Delivery Time Data](./data/data-ex-3-1.csv) of Example 3.1 from [Introduction to Linear Regression Analysis, 6th edition](https://www.wiley.com/en-us/Introduction+to+Linear+Regression+Analysis%2C+6th+Edition-p-9781119578758) to demo MLR in R.
+In this chapter, we use [Delivery Time Data](./data/data-ex-3-1.csv) of Example 3.1 from [Introduction to Linear Regression Analysis, 6th edition](https://www.wiley.com/en-us/Introduction+to+Linear+Regression+Analysis%2C+6th+Edition-p-9781119578758) to demo MLR.
+
+
+::: {.panel-tabset}
+
+## R
 
 ```{r}
 #| echo: true
@@ -490,6 +495,18 @@ delivery_data <- delivery[, -1]
 colnames(delivery_data) <- c("time", "cases", "distance")
 delivery_data
 ```
+
+## Python
+
+```{python}
+#| echo: true
+import pandas as pd
+delivery_data = pd.read_csv('./data/delivery_data.csv')
+delivery_data
+```
+
+:::
+
 
 - $y$: the amount of time required by the route driver to stock the vending machines with beverages
 
@@ -511,13 +528,19 @@ Always get to know your data set before you fit any statistical or machine learn
 
 Each plot shows the relationship between a pair of variables.
 
+
+::: {.panel-tabset}
+
+## R
+
+
+
 ```{r}
 #| echo: !expr c(2)
 #| out-width: 78%
 par(mar = c(2, 2, 0, 0), mgp = c(2, 1, 0))
 pairs(delivery_data)
 ```
-
 
 <!-- ## [R Lab]{.pink} 3D Scatterplot -->
 
@@ -536,9 +559,6 @@ scatterplot3d(x = delivery_data$cases, y = delivery_data$distance, z = delivery_
 ```
 
 
-
-<!-- ## [R Lab]{.pink} Multiple Linear Regression -->
-
 To fit the MLR model, we again use `lm()`. In the `furmula` argument, we use `+` to add predictors. `coef(delivery_lm)` or `delivery_lm$coef` can be used to grab the LS estimates of coefficients.
 
 ```{r}
@@ -546,6 +566,71 @@ To fit the MLR model, we again use `lm()`. In the `furmula` argument, we use `+`
 delivery_lm <- lm(time ~ cases + distance, data = delivery_data)
 coef(delivery_lm)
 ```
+
+
+
+## Python
+
+```{python}
+#| echo: true
+#| message: false
+import matplotlib.pyplot as plt
+pd.plotting.scatter_matrix(delivery_data, figsize=(8, 8))
+plt.show()
+```
+
+
+Sometimes a 3D scatterplot is useful in visualizing the relationship between the response and the regressors when there are only two regressors.
+
+
+```{python}
+#| echo: true
+#| code-fold: true
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ax.scatter(delivery_data['cases'], 
+           delivery_data['distance'], 
+           delivery_data['time'])
+ax.set_xlabel('Cases')
+ax.set_ylabel('Distance')
+ax.set_zlabel('Time')
+plt.show()
+```
+
+
+To fit the MLR model, we again use `ols()`. In the `furmula` argument, we use `+` to add predictors. `delivery_ols.params` can be used to grab the LS estimates of coefficients.
+
+```{python}
+#| echo: true
+from statsmodels.formula.api import ols
+delivery_ols = ols(formula='time ~ cases + distance', data=delivery_data).fit()
+delivery_ols.params
+```
+
+:::{.callout-note}
+There is another function [`OLS()`](https://www.statsmodels.org/dev/generated/statsmodels.regression.linear_model.OLS.html) that takes response vector `y` and design matrix `X` as input arguments to fit the linear regression model.
+
+```{python}
+#| echo: true
+#| eval: false
+import statsmodels.api as sm
+X = delivery_data[['cases', 'distance']]
+X = sm.add_constant(X)  # Adds a constant term to the predictor
+y = delivery_data['time']
+delivery_OLS = sm.OLS(y, X).fit()
+```
+:::
+
+
+
+
+
+:::
+
+
+
+<!-- ## [R Lab]{.pink} Multiple Linear Regression -->
+
 
 $$\hat{y} = 2.34 + 1.62x_1 + 0.014x_2$$
 Interpretation of coefficients needs additional attention.
@@ -633,6 +718,11 @@ $\hat{\sigma}^2$ of SLR may be quite larger than the $\hat{\sigma}^2$ of MLR if 
 
 <span style="color:blue"> **Example: Estimation of $\sigma^2$** </span>
 
+
+::: {.panel-tabset}
+
+## R
+
 Here I show three methods to obtain the $\sigma^2$ estimate. The method 1 first compute the summary of the fitted result, which is saved as a list, then get the element `sigma` that is $\hat{\sigma}$. If you look at the summary output, the value of $\hat{\sigma}$ is shown in the row: 
 `Residual standard error: 3.26 on 22 degrees of freedom`
 
@@ -687,6 +777,41 @@ SS_res1 / (n - 3)
 <!-- <h2> CI for the Mean Response  </h2> -->
 <!-- <h2> PI for New Observations  </h2> -->
 
+## Python
+
+Here I show three methods to obtain the $\sigma^2$ estimate. The method 1 obtains the mean square error of residual from the fitted object.
+
+```{python}
+#| echo: true
+# Method 1: Residual standard error
+delivery_ols.mse_resid
+```
+
+The second method simply uses the definition of $MS_{res}$. We first calculate $SS_{res}$, then divide it by $n-3$ because in this example, we have 2 predictors $(k = 2)$, and 3 coefficients $\beta_0$, $\beta_1$, and $\beta_2$.
+
+```{python}
+#| echo: true
+# Method 2: Residual Sum of Squares (RSS) and variance estimation
+n = len(delivery_ols.resid)
+import numpy as np
+SS_res = np.sum(delivery_ols.resid ** 2)
+SS_res
+SS_res / (n - 3)
+```
+
+
+The third method also uses the definition of $MS_{res}$. The difference is that here we use $\sum_{i=1}^n(y_i - \hat{y}_i)^2$ instead of $\sum_{i=1}^ne_i^2$.
+
+```{python}
+#| echo: true
+# Method 3: Another way to calculate RSS and variance estimation
+SS_res1 = np.sum((delivery_data['time'] - delivery_ols.fittedvalues) ** 2)
+SS_res1
+SS_res1 / (n - 3)
+```
+
+
+:::
 
 
 ### Wald CI for Coefficients
@@ -699,12 +824,30 @@ where $se(b_j)$ is the standard error of $b_j$. The formula come from the fact t
 
 <span style="color:blue"> **Example: Wald CI for Coefficients** </span>
 
+
+::: {.panel-tabset}
+
+## R
+
+
 We simply use `confint()`command with the fitted result put inside to obtain the CI for coefficients.
 
 ```{r}
 #| echo: true
 (ci <- confint(delivery_lm))
 ```
+
+
+## Python
+
+```{python}
+#| echo: true
+ci = delivery_ols.conf_int()
+ci
+```
+
+:::
+
 
 
 These are **marginal** CIs separately for each $b_j$. These interval estimates do not take correlation of coefficients into account. One coefficient may be higher when another is lower. We can only use the intervals one at a time when doing interval estimation. When we want to do interval estimation for several coefficients together at the same time, these intervals are not that accurate.
@@ -754,6 +897,13 @@ The correlation matrix of the coefficient vector ${\bf b} = (b_0, b_1, b_2)'$ is
 
 <span style="color:blue"> **Example: Correlated Coefficients** </span>
 
+
+
+::: {.panel-tabset}
+
+## R
+
+
 We use `vcov()` to obtain the variance-covariance matrix of $b_j$s. The square root of its diagonal terms are $se(b_0)$, $se(b_1)$, and $se(b_2)$ respectively.
 
 ```{r}
@@ -776,6 +926,35 @@ We can convert the covariance matrix into a correlation matrix using `cov2cor()`
 ## correlation matrix
 cov2cor(V)
 ```
+
+
+## Python
+
+
+We use `cov_params()` to obtain the variance-covariance matrix of $b_j$s. The square root of its diagonal terms are $se(b_0)$, $se(b_1)$, and $se(b_2)$ respectively.
+
+```{python}
+#| echo: true
+## variance-covariance matrix
+V = delivery_ols.cov_params()
+V
+## standard error
+np.sqrt(np.diag(V))
+```
+
+
+We can convert the covariance matrix into a correlation matrix using `sm.stats.moment_helpers.cov2corr()`. Clearly $b_1$ and $b_2$ are negatively correlated. The individual CI previously obtained ignores the correlation between $b_j$s.
+
+```{python}
+#| echo: true
+import statsmodels.api as sm
+## correlation matrix
+sm.stats.moment_helpers.cov2corr(V)
+```
+
+
+:::
+
 
 How do we specify a confidence level that applies **simultaneously** to a **set** of interval estimates? For example, a $95\%$ confidence "interval" for both $b_1$ and $b_2$?
 
@@ -855,6 +1034,13 @@ $$\left(\hat{y}_0 - t_{\alpha/2, n-p} ~ se(\hat{y}_0), \quad \hat{y}_0 + t_{\alp
 
 <span style="color:blue"> **Example: CI for the Mean Response** </span>
 
+
+
+
+::: {.panel-tabset}
+
+## R
+
 We learned how to use `predict()` in the previous chapter. For MLR, we need to specify the 2 predictor values `cases = 8`, and `distance = 275`, and save it as a data frame in the `newdata` argument. Note that the name `cases` and `distance` should be exactly the same as their column name of the data `delivery_data`.
 
 ```{r}
@@ -863,6 +1049,19 @@ predict(delivery_lm,
         newdata = data.frame(cases = 8, distance = 275),
         interval = "confidence", level = 0.95)
 ```
+
+## Python
+
+We learned how to use `get_prediction()` in the previous chapter. For MLR, we need to specify the 2 predictor values `cases = 8`, and `distance = 275`, and save it as a DataFrame in the `exog` argument. Note that the name `cases` and `distance` should be exactly the same as their column name of the data `delivery_data`.
+
+```{python}
+#| echo: true
+new_data = pd.DataFrame({'cases': [8], 'distance': [275]})
+predict = delivery_ols.get_prediction(exog=new_data)
+predict.conf_int()
+```
+
+:::
 
 
 <!-- ::: notes -->
@@ -890,8 +1089,14 @@ $$\left(\hat{y}_0 - t_{\alpha/2, n-p} ~se(y_0 - \hat{y}_0), \quad \hat{y}_0 + t_
 
 <span style="color:blue"> **Example: PI for New Observations** </span>
 
-When predicting a new observation with uncertainty, we use `interval = "predict"`. The interpretation is the same as the one in SLR.
 
+
+
+::: {.panel-tabset}
+
+## R
+
+When predicting a new observation with uncertainty, we use `interval = "predict"`. The interpretation is the same as the one in SLR.
 
 ```{r}
 #| echo: true
@@ -900,7 +1105,18 @@ predict(delivery_lm,
         interval = "predict", level = 0.95)
 ```
 
+## Python
 
+When predicting a new observation with uncertainty, we use `summary_frame()`, then grab 'obs_ci_lower' and 'obs_ci_upper' from the output. The interpretation is the same as the one in SLR.
+
+```{python}
+#| echo: true
+summary_frame = predict.summary_frame(alpha=0.05)
+summary_frame[['obs_ci_lower', 'obs_ci_upper']]
+```
+
+
+:::
 <!-- ::: notes -->
 <!-- - Predict the future observation $y_0$ when ${\bf x} = {\bf x}_0$. -->
 <!-- - A point estimate is $\hat{y}_0 = {\bf x}_0'\bf b$. -->
@@ -946,6 +1162,13 @@ Usually we fix all other predictors ($x_2$ in the example) at their average. In 
 
 <span style="color:blue"> **Example: Predictor Effect Plots** </span>
 
+
+
+::: {.panel-tabset}
+
+## R
+
+
 The command `predictorEffects()` in the `effects` package is used to generate the predictor effect plots.
 
 ```{r}
@@ -983,6 +1206,22 @@ plot(effects::predictorEffects(predictor = "distance", mod = delivery_lm))
 The shaded area represents pointwise 95\% confidence interval about the fitted line, without correction for simultaneous statistical inference. The short vertical lines at the bottom indicate the values of predictors. The interval length is larger when the predictor value is away from its average. Since our model is linear, the mean of time increases linearly as cases or distance increases.
 
 
+
+## Python
+
+So far to my knowledge there is no Python function for creating predictor effect plots. However, `statsmodels` does offer other useful [regression plots](https://www.statsmodels.org/stable/examples/notebooks/generated/regression_plots.html).
+
+```{python}
+#| echo: false
+#| eval: false
+import effects
+import classes
+effect_plot = effects.Effect("predictor_variable", model)
+effect_plot.plot()
+plt.show()
+```
+
+:::
 <!-- - rug plot -->
 
 <!-- -  -->
@@ -1074,6 +1313,11 @@ If there is only one nonzero coefficient, and we reject the null, basically, the
 <span style="color:blue">
 $H_0: \beta_{1} = \beta_{2} = 0 \quad H_1: \beta_j \ne 0 \text{ for at least one } j$ </span>
 
+
+::: {.panel-tabset}
+
+## R
+
 If we check the summary of the fitted result, it shows some t values and p-values, but no ANOVA table shows up.
 
 ```{r}
@@ -1082,6 +1326,19 @@ If we check the summary of the fitted result, it shows some t values and p-value
 #| class-output: my_class800
 summ_delivery
 ```
+
+
+## Python
+
+If we check the summary of the fitted result, it shows some t values and p-values, but no ANOVA table shows up.
+
+```{python}
+#| echo: true
+delivery_ols.summary()
+```
+
+:::
+
 
 How do we obtain the ANOVA Table?
 
@@ -1093,12 +1350,29 @@ How do we obtain the ANOVA Table?
 | Residual | $SS_{res}$ | $n-k-1$   |  $MS_{res}$ |   |  | 
 | Total | $SS_{T}$ | $n-1$   |   |   |  | 
 
+
+
+::: {.panel-tabset}
+
+## R
+
 We may think using `anova(delivery_lm)` as we do for SLR. 
 
 ```{r}
 #| echo: true
 anova(delivery_lm) ## This is for sequential F-test
 ```
+
+
+## Python
+
+We may think using `sm.stats.anova_lm(delivery_ols)` as we do for SLR. 
+```{python}
+#| echo: true
+sm.stats.anova_lm(delivery_ols)
+```
+
+:::
 
 Unfortunately, this ANOVA table is so called **Type-I** ANOVA table in literature for a **sequential F-test**, which is *NOT* what we want.
 
@@ -1146,6 +1420,11 @@ knitr::include_graphics("./images/img-model/anova_ex.png")
 <!-- ::: {.column width="50%"} -->
 <!-- ::: {.fragment} -->
 
+
+::: {.panel-tabset}
+
+## R
+
 To generate the ANOVA table using R, we first create the null model and save its fitted result. When there is no predictors in the model, we write `time ~ 1` where `1` represents the intercept term. Then we are comparing the two model fitted results using `anova(null_lm, delivery_lm)`.
 
 ```{r}
@@ -1159,12 +1438,31 @@ anova(null_lm, delivery_lm)
 <!-- ::: -->
 <!-- ::: -->
 <!-- :::: -->
-
 Notice that the output is not exactly the same as the ANOVA table, but both are equivalent. We just need to carefully and correctly interpret the R output. The first row shows the $SS_T$ value in the `RSS` column. `RSS` is the residual sum of squares $SS_{res}$. The first model (Model 1) is the null model. Because there is no predictors, all variation of $y$ is due to random errors, and therefore there is no $SS_R$, and $SS_{res} = SS_T$.
 
 The second row provides information about $SS_R$ and $SS_{res}$ of the full model (Model 2). $SS_R$ is shown in the column `Sum of Sq`, and $SS_{res}$ again in the column `RSS`. 
 
 In Row 2, `Res.Df` is the residual degrees of freedom, and `Df` is the regression degrees of freedom. The value 24 in Row 1, the residual degrees of freedom of the null model, is worked as the *total* degrees of freedom, the same idea that its $SS_{res}$ works as $SS_T$.
+
+
+## Python
+
+To generate the ANOVA table using Python, we first create the null model and save its fitted result. When there is no predictors in the model, we write `time ~ 1` where `1` represents the intercept term. Then we are comparing the two model fitted results using `sm.stats.anova_lm(null_ols, delivery_ols)`.
+
+```{python}
+#| echo: true
+## regression with intercept only
+null_ols = ols('time ~ 1', data=delivery_data).fit()
+sm.stats.anova_lm(null_ols, delivery_ols)
+```
+
+Notice that the output is not exactly the same as the ANOVA table, but both are equivalent. We just need to carefully and correctly interpret the Python output. The first row shows the $SS_T$ value in the `ssr` column. `ssr` is the sum of squares residual $SS_{res}$. The first model (Model 1) is the null model. Because there is no predictors, all variation of $y$ is due to random errors, and therefore there is no $SS_R$, and $SS_{res} = SS_T$.
+
+The second row provides information about $SS_R$ and $SS_{res}$ of the full model (Model 2). $SS_R$ is shown in the column `ss_diff`, and $SS_{res}$ again in the column `ssr`. 
+
+In Row 2, `df_resid` is the residual degrees of freedom, and `df_diff` is the regression degrees of freedom. The value 24 in Row 1, the residual degrees of freedom of the null model, is worked as the *total* degrees of freedom, the same idea that its $SS_{res}$ works as $SS_T$.
+:::
+
 
 The output does not provide the mean square information, but it can be easily calculated.
 
@@ -1224,7 +1522,16 @@ The new added regressor should have explanatory power for $y$ large enough, so t
 
 ----------------------------------------------------------------
 
+
+
+
+
 <span style="color:blue"> **Example: $R^2$ and Adjusted $R^2$** </span>
+
+
+::: {.panel-tabset}
+
+## R
 
 To get $R^2$ and adjusted $R^2$ in R, we check the summary output. They can also be extracted from the summary list.
 
@@ -1241,6 +1548,25 @@ summ_delivery$r.squared
 summ_delivery$adj.r.squared
 ```
 
+
+## Python
+
+To get $R^2$ and adjusted $R^2$ in Python, we check the summary output which is shown at the topright corner. They can also be extracted from the fitted object.
+
+
+```{python}
+#| echo: true
+delivery_ols.summary()
+```
+
+
+```{python}
+#| echo: true
+delivery_ols.rsquared
+delivery_ols.rsquared_adj
+```
+
+:::
 
 ### Tests on Individual Regression Coefficients
 
@@ -1267,12 +1593,39 @@ Suppose we would like to assess the effect of $x_2$ (distance) given that $x_1$ 
 <span style="color:blue">
 $H_0: \beta_{2} = 0 \quad H_1: \beta_2 \ne 0$ </span>
 
+
+::: {.panel-tabset}
+
+## R
+
 The marginal test results are shown in the summary of fitted result. The t test statistic value is 3.98, and p-value is close to zero, concluding that $\beta_2 \ne 0$.
 
 ```{r}
 #| echo: true
 summ_delivery$coefficients
 ```
+
+
+## Python
+
+The marginal test results are shown in the summary of fitted result. The t test statistic value is 3.98, and p-value is close to zero, concluding that $\beta_2 \ne 0$.
+
+```{python}
+#| echo: true
+delivery_ols.summary()
+```
+
+Each piece of information can be obtained from the fiited object.
+
+```{python}
+#| echo: true
+delivery_ols.params
+delivery_ols.bse
+delivery_ols.tvalues
+delivery_ols.pvalues
+```
+
+:::
 
 <!-- :::  notes -->
 
