@@ -347,7 +347,8 @@ $$\ln \left( \frac{\pi(x)}{1 - \pi(x)} \right)= \beta_0 + \beta_1x$$
 - $\beta_1$ is the change in **log odds** associated with one-unit increase in $x$.
 :::
 
-## Logistic Regression in R
+
+<span style="color:blue"> **Example: Logistic Regression** </span>
 
 
 ::::{.columns}
@@ -375,11 +376,28 @@ knitr::include_graphics("./images/img-model/height.jpeg")
 :::
 ::::
 
+
+
+::::: {.panel-tabset}
+
+## R
+
+
 ```{r}
 body <- read.table("./data/body.txt", header = TRUE)
 head(body)
 ```
 
+
+## Python
+
+```{python}
+import pandas as pd
+body = pd.read_table("./data/body.txt", sep='\s+')
+body.head()
+```
+
+:::::
 
 Again, we are not using gender to predict someone's height, which is usually done by linear regression. Instead, our response variable is a binary categorical variable, and we are doing classification with a numeric predictor.
 
@@ -393,6 +411,11 @@ A basic data summary by gender tells us that height plays a role in distinguish 
 
 <!-- ::::{.columns} -->
 <!-- :::{.column width="49%"} -->
+
+::::: {.panel-tabset}
+
+## R
+
 ```{r}
 table(body$GENDER)
 summary(body[body$GENDER == 1, ]$HEIGHT)
@@ -411,9 +434,37 @@ boxplot(body$HEIGHT ~ body$GENDER)
 <!-- ::: -->
 <!-- :::: -->
 
+
+## Python
+
+```{python}
+# Show the distribution of GENDER
+body['GENDER'].value_counts()
+body[body['GENDER'] == 1]['HEIGHT'].describe()
+body[body['GENDER'] == 0]['HEIGHT'].describe()
+```
+
+
+```{python}
+import matplotlib.pyplot as plt
+import seaborn as sns
+plt.figure()
+sns.boxplot(x='GENDER', y='HEIGHT', data=body)
+plt.show()
+```
+
+
+:::::
+
 ---------------------------------------------------------------------
 
 <span style="color:blue"> **Model Fitting** </span>
+
+
+
+::::: {.panel-tabset}
+
+## R
 
 We use the function `glm()` in R to fit a logistic regression model. "glm" means **g**eneralized **l**inear **m**odel (GLM). Linear regression is a linear model, and it is a normal model because the response variable is normally distributed given $x$. The models for non-normal response variables generalizes the linear regression model, and hence belong to GLM. The logistic regression whose response is Bernoulli or binomial distributed is a GLM. There are other GLMs such as Poisson regression and gamma regression. They are often discussed in the second course of Linear Models or a separate Generalized Linear Models course.
 
@@ -431,6 +482,41 @@ logit_fit <- glm(GENDER ~ HEIGHT, data = body, family = "binomial")
 summ_logit_fit$coefficients
 ```
 
+## Python
+
+We use the function [`statsmodels.formula.api.logit()`](https://www.statsmodels.org/stable/generated/statsmodels.formula.api.logit.html) in Python to fit a logistic regression model. In the function, we use exactly the same syntax as `ols()`.
+
+
+```{python}
+from statsmodels.formula.api import logit
+logit_fit = logit(formula='GENDER ~ HEIGHT', data=body).fit()
+logit_fit.summary()
+```
+
+```{python}
+logit_fit.params
+```
+
+:::{.callout-note}
+
+There is another function [Logit()](https://www.statsmodels.org/stable/generated/statsmodels.discrete.discrete_model.Logit.html#statsmodels.discrete.discrete_model.Logit) that uses the response vector and design matrix to perform logistic regression.
+
+```{python}
+#| eval: false
+X = body[['HEIGHT']]
+y = body['GENDER']
+import statsmodels.api as sm
+logit_model_fit = sm.Logit(y, sm.add_constant(X)).fit()
+logit_model_fit.summary()
+```
+
+
+:::
+
+
+:::::
+
+
 Based on the fitted result, we learn that
 $$\hat{\eta}(x) = \ln \left( \frac{\hat{\pi}(x)}{1 - \hat{\pi}(x)}\right) = \ln (\text{odds}_{x}) =  \hat{\beta}_0 + \hat{\beta}_1x = -40.55 + 0.24 \times \text{HEIGHT}$$
 
@@ -441,6 +527,11 @@ Since $\hat{\eta}(x+1) = \hat{\beta}_0 + \hat{\beta}_1(x+1)$, $\hat{\eta}(x+1) -
 A one centimeter increase in `HEIGHT` increases the *log odds* of being male by 0.24 units.
 
 The **odds ratio**, $\widehat{OR} = \frac{\text{odds}_{x+1}}{\text{odds}_{x}} = e^{\hat{\beta}_1} = e^{0.24} = 1.273$. Therefore, the odds of being male increases by 27.3% with an additional one centimeter of `HEIGHT`.
+
+
+
+
+
 
 ------------------------------------------------------------------------
 
@@ -460,13 +551,42 @@ $$ \hat{\pi}(x = 170) = \frac{\exp(\hat{\beta}_0+\hat{\beta}_1 x)}{1+\exp(\hat{\
 
 Through the formula, we learn that from our model, when a person is 170cm tall, the probability that this person is male is about 63/3\%.
 
+
+::: {.panel-tabset}
+
+## R 
 `predict(logit_fit, type = "response")` gives us a vector of $\hat{\pi}(x_i)$ of all responses in the data. When `type = "link"`, `predict()` gives us $\hat{\eta}(x_i)$ because in literature, $\eta(x) = \ln \left( \frac{\hat{\pi}(x)}{1 - \hat{\pi}(x)}\right)$ is called the **link function**. To predict a specific probability at some $x$ value, we use `newdata = data.frame(HEIGHT = 170)`. Remember the variable name should be exactly the same as the name in the original data set.
 
 ```{r, echo=TRUE}
 pi_hat <- predict(logit_fit, type = "response")
 eta_hat <- predict(logit_fit, type = "link")  ## default gives us b0 + b1*x
-predict(logit_fit, newdata = data.frame(HEIGHT = 170), type = "response")
 ```
+
+```{r}
+predict(logit_fit, newdata = data.frame(HEIGHT = 170), type = "response")
+predict(logit_fit, newdata = data.frame(HEIGHT = 170), type = "link")
+```
+
+## Python
+
+[`logit_fit.predict(which='mean')`](https://www.statsmodels.org/stable/generated/statsmodels.discrete.discrete_model.Logit.predict.html) gives us a vector of $\hat{\pi}(x_i)$ of all responses in the data because the probability is the mean of the Bernoulli distribution. When `which='linear'`, `predict()` gives us $\hat{\eta}(x_i)$ which is a linear function of $x$. To predict a specific probability at some $x$ value, we use `newinput = pd.DataFrame({'HEIGHT': [170]})` and [`get_prediction(newinput)`](https://www.statsmodels.org/dev/generated/statsmodels.discrete.discrete_model.LogitResults.get_prediction.html). Remember the variable name should be exactly the same as the name in the original data set.
+
+
+```{python}
+pi_hat = logit_fit.predict(which='mean')
+eta_hat = logit_fit.predict(which='linear') ## default gives us b0 + b1*x
+```
+
+```{python}
+# Create new data for prediction
+newinput = pd.DataFrame({'HEIGHT': [170]})
+predict = logit_fit.get_prediction(newinput)
+predict.predicted
+predict.linpred
+```
+
+
+:::
 
 <span style="color:red"> ***Probability Curve*** </span>
 
@@ -474,9 +594,25 @@ predict(logit_fit, newdata = data.frame(HEIGHT = 170), type = "response")
 ## What is the probability of being male when the `HEIGHT` is 160 cm? What about when the `HEIGHT`is 180 cm?
 :::
 
+:::{.panel-tabset}
+
+## R
+
 ```{r}
 predict(logit_fit, newdata = data.frame(HEIGHT = c(160, 170, 180)), type = "response")
 ```
+
+## Python
+
+```{python}
+# Make predictions for new HEIGHT values
+newheight = pd.DataFrame({'HEIGHT': [160, 170, 180]})
+pred = logit_fit.get_prediction(newheight)
+pred.predicted
+```
+
+:::
+
 
 The blue S-shaped curve is the estimated probability curve. It can be plotted using `pi_hat`.
 
@@ -547,8 +683,11 @@ A good classifier accurately identifies a high number of TNs and TPs while minim
 
 <span style="color:blue"> **Example: Confusion Matrix** </span>
 
-To produce a confusion matrix, we need two things: the true response labels, and the classification from the model. In the example, the true labels are just `body$GENDER` data. For the classification result, we need to make a binary decision from the estimated probabilities obtained from the model. Here we use 0.5 as the threshold. If $\hat{\pi}(x) > 0.5$, then we label the response as 1, and 0 otherwise. We then can simply use `table()` function to generate a confusion matrix.
+::: {.panel-tabset}
 
+## R
+
+To produce a confusion matrix, we need two things: the true response labels, and the classification from the model. In the example, the true labels are just `body$GENDER` data. For the classification result, we need to make a binary decision from the estimated probabilities obtained from the model. Here we use 0.5 as the threshold. If $\hat{\pi}(x) > 0.5$, then we label the response as 1, and 0 otherwise. We then can simply use `table()` function to generate a confusion matrix.
 
 ```{r confusion, echo=TRUE, eval=TRUE}
 prob <- predict(logit_fit, type = "response")
@@ -562,6 +701,30 @@ gender_predict <- (prob > 0.5) * 1
 ## confusion matrix
 table(gender_predict, gender_true)
 ```
+
+## Python
+
+To produce a confusion matrix, we need two things: the true response labels, and the classification from the model. In the example, the true labels are just `body['GENDER']` data. For the classification result, we need to make a binary decision from the estimated probabilities obtained from the model. Here we use 0.5 as the threshold. If $\hat{\pi}(x) > 0.5$, then we label the response as 1, and 0 otherwise. We then can simply use [`confusion_matrix()`](https://scikit-learn.org/1.5/modules/generated/sklearn.metrics.confusion_matrix.html) function from `sklearn.metrics` to generate a confusion matrix.
+
+```{python}
+prob = logit_fit.predict()
+
+## true observations
+gender_true = body['GENDER']
+
+## predicted labels
+gender_predict = (prob > 0.5).astype(int)
+
+# Confusion matrix
+from sklearn.metrics import confusion_matrix
+confusion_matrix(gender_true, gender_predict)
+```
+
+:::
+
+
+
+
 
 The true positive rate is 124/(124+29) = `r round(124/(124+29), 3)`, and the true negative rate is 118/(118+29) = `r round(118/(118+29), 3)`. The overall accuracy is (124 + 118) /(124 + 29 + 29 + 118) = `r round((124 + 118) /(124 + 29 + 29 + 118), 3)`.
 <!-- -------------------------------------------------------------------- -->

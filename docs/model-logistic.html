@@ -467,9 +467,8 @@ window.Quarto = {
 <li><a href="#regression-vs.-classification" id="toc-regression-vs.-classification" class="nav-link active" data-scroll-target="#regression-vs.-classification"><span class="header-section-number">29.1</span> Regression vs.&nbsp;Classification</a></li>
   <li><a href="#introduction-to-logistic-regression" id="toc-introduction-to-logistic-regression" class="nav-link" data-scroll-target="#introduction-to-logistic-regression"><span class="header-section-number">29.2</span> Introduction to Logistic Regression</a></li>
   <li><a href="#simple-logistic-regression-model" id="toc-simple-logistic-regression-model" class="nav-link" data-scroll-target="#simple-logistic-regression-model"><span class="header-section-number">29.3</span> Simple Logistic Regression Model</a></li>
-  <li><a href="#logistic-regression-in-r" id="toc-logistic-regression-in-r" class="nav-link" data-scroll-target="#logistic-regression-in-r"><span class="header-section-number">29.4</span> Logistic Regression in R</a></li>
-  <li><a href="#evaluation-metrics" id="toc-evaluation-metrics" class="nav-link" data-scroll-target="#evaluation-metrics"><span class="header-section-number">29.5</span> Evaluation Metrics</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">29.6</span> Exercises</a></li>
+  <li><a href="#evaluation-metrics" id="toc-evaluation-metrics" class="nav-link" data-scroll-target="#evaluation-metrics"><span class="header-section-number">29.4</span> Evaluation Metrics</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">29.5</span> Exercises</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/model-logistic.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -801,8 +800,7 @@ Note
 </ul>
 </div>
 </div>
-</section><section id="logistic-regression-in-r" class="level2" data-number="29.4"><h2 data-number="29.4" class="anchored" data-anchor-id="logistic-regression-in-r">
-<span class="header-section-number">29.4</span> Logistic Regression in R</h2>
+<p><span style="color:blue"> <strong>Example: Logistic Regression</strong> </span></p>
 <div class="columns">
 <div class="column" style="width:49%;">
 <p>We use the <code>body</code> data to demonstrate the implementation of logistic regression. The response variable is <code>GENDER</code>, and the predictor is <code>HEIGHT</code>. We would like to use logistic regression to predict whether a person is male or female using the height information of that person.</p>
@@ -825,6 +823,13 @@ Note
 </div>
 </div>
 </div>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">body</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.table</a></span><span class="op">(</span><span class="st">"./data/body.txt"</span>, header <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">body</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -845,25 +850,52 @@ Note
 6 112.0     31.4 31.1</code></pre>
 </div>
 </div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>body <span class="op">=</span> pd.read_table(<span class="st">"./data/body.txt"</span>, sep<span class="op">=</span><span class="st">'\s+'</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>body.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   AGE  GENDER  PULSE  SYSTOLIC  ...  HEIGHT  WAIST  ARM_CIRC   BMI
+0   43       0     80       100  ...   172.0  120.4      40.7  33.3
+1   57       1     84       112  ...   186.0  107.8      37.0  28.0
+2   38       0     94       134  ...   154.4  120.3      44.3  45.4
+3   80       1     74       126  ...   160.5   97.2      30.3  28.4
+4   34       1     50       114  ...   179.0   95.1      34.0  25.9
+
+[5 rows x 15 columns]</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 <p>Again, we are not using gender to predict someone’s height, which is usually done by linear regression. Instead, our response variable is a binary categorical variable, and we are doing classification with a numeric predictor.</p>
 <hr>
 <p><span style="color:blue"> <strong>Data Summary</strong> </span></p>
 <p>A basic data summary by gender tells us that height plays a role in distinguish male from female, so using height to classify gender would be helpful.</p>
 <!-- ::::{.columns} -->
 <!-- :::{.column width="49%"} -->
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
 <div class="cell">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">body</span><span class="op">$</span><span class="va">GENDER</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">body</span><span class="op">$</span><span class="va">GENDER</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
   0   1 
 147 153 </code></pre>
 </div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">body</span><span class="op">[</span><span class="va">body</span><span class="op">$</span><span class="va">GENDER</span> <span class="op">==</span> <span class="fl">1</span>, <span class="op">]</span><span class="op">$</span><span class="va">HEIGHT</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">body</span><span class="op">[</span><span class="va">body</span><span class="op">$</span><span class="va">GENDER</span> <span class="op">==</span> <span class="fl">1</span>, <span class="op">]</span><span class="op">$</span><span class="va">HEIGHT</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
   155.0   169.1   173.8   174.1   179.4   193.3 </code></pre>
 </div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">body</span><span class="op">[</span><span class="va">body</span><span class="op">$</span><span class="va">GENDER</span> <span class="op">==</span> <span class="fl">0</span>, <span class="op">]</span><span class="op">$</span><span class="va">HEIGHT</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">body</span><span class="op">[</span><span class="va">body</span><span class="op">$</span><span class="va">GENDER</span> <span class="op">==</span> <span class="fl">0</span>, <span class="op">]</span><span class="op">$</span><span class="va">HEIGHT</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
   134.5   156.5   162.2   161.7   166.8   181.4 </code></pre>
@@ -874,22 +906,81 @@ Note
 <!-- ::: -->
 <!-- :::{.column width="49%"} -->
 <div class="cell">
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/boxplot.html">boxplot</a></span><span class="op">(</span><span class="va">body</span><span class="op">$</span><span class="va">HEIGHT</span> <span class="op">~</span> <span class="va">body</span><span class="op">$</span><span class="va">GENDER</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/boxplot.html">boxplot</a></span><span class="op">(</span><span class="va">body</span><span class="op">$</span><span class="va">HEIGHT</span> <span class="op">~</span> <span class="va">body</span><span class="op">$</span><span class="va">GENDER</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="model-logistic_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="model-logistic_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 </div>
 <!-- ::: -->
 <!-- :::: -->
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Show the distribution of GENDER</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>body[<span class="st">'GENDER'</span>].value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>GENDER
+1    153
+0    147
+Name: count, dtype: int64</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>body[body[<span class="st">'GENDER'</span>] <span class="op">==</span> <span class="dv">1</span>][<span class="st">'HEIGHT'</span>].describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>count    153.000000
+mean     174.124837
+std        7.100975
+min      155.000000
+25%      169.100000
+50%      173.800000
+75%      179.400000
+max      193.300000
+Name: HEIGHT, dtype: float64</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>body[body[<span class="st">'GENDER'</span>] <span class="op">==</span> <span class="dv">0</span>][<span class="st">'HEIGHT'</span>].describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>count    147.000000
+mean     161.687075
+std        7.482960
+min      134.500000
+25%      156.500000
+50%      162.200000
+75%      166.750000
+max      181.400000
+Name: HEIGHT, dtype: float64</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>sns.boxplot(x<span class="op">=</span><span class="st">'GENDER'</span>, y<span class="op">=</span><span class="st">'HEIGHT'</span>, data<span class="op">=</span>body)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="model-logistic_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 <hr>
 <p><span style="color:blue"> <strong>Model Fitting</strong> </span></p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
 <p>We use the function <code><a href="https://rdrr.io/r/stats/glm.html">glm()</a></code> in R to fit a logistic regression model. “glm” means <strong>g</strong>eneralized <strong>l</strong>inear <strong>m</strong>odel (GLM). Linear regression is a linear model, and it is a normal model because the response variable is normally distributed given <span class="math inline">\(x\)</span>. The models for non-normal response variables generalizes the linear regression model, and hence belong to GLM. The logistic regression whose response is Bernoulli or binomial distributed is a GLM. There are other GLMs such as Poisson regression and gamma regression. They are often discussed in the second course of Linear Models or a separate Generalized Linear Models course.</p>
 <p>In the function, we use the same formula syntax as <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>, and one additional job we need to do is specify the family of the GLM. <code>family = "binomial"</code> should be used because the logistic regression is a binomial regression.</p>
 <div class="cell" data-highlight.output="[10,11,12]" data-output.lines="-1">
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">logit_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span><span class="va">GENDER</span> <span class="op">~</span> <span class="va">HEIGHT</span>, data <span class="op">=</span> <span class="va">body</span>, family <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">logit_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span><span class="va">GENDER</span> <span class="op">~</span> <span class="va">HEIGHT</span>, data <span class="op">=</span> <span class="va">body</span>, family <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span></span>
 <span><span class="op">(</span><span class="va">summ_logit_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">logit_fit</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -914,11 +1005,133 @@ Number of Fisher Scoring iterations: 5</code></pre>
 </div>
 <p><br></p>
 <div class="cell">
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">summ_logit_fit</span><span class="op">$</span><span class="va">coefficients</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">summ_logit_fit</span><span class="op">$</span><span class="va">coefficients</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>               Estimate Std. Error   z value     Pr(&gt;|z|)
 (Intercept) -40.5480864 4.63083742 -8.756102 2.021182e-18
 HEIGHT        0.2417325 0.02758399  8.763507 1.892674e-18</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+<p>We use the function <a href="https://www.statsmodels.org/stable/generated/statsmodels.formula.api.logit.html"><code>statsmodels.formula.api.logit()</code></a> in Python to fit a logistic regression model. In the function, we use exactly the same syntax as <code>ols()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.formula.api <span class="im">import</span> logit</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>logit_fit <span class="op">=</span> logit(formula<span class="op">=</span><span class="st">'GENDER ~ HEIGHT'</span>, data<span class="op">=</span>body).fit()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Optimization terminated successfully.
+         Current function value: 0.419162
+         Iterations 7</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>logit_fit.summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Logit Regression Results</caption>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Dep. Variable:</td>
+<td>GENDER</td>
+<td data-quarto-table-cell-role="th">No. Observations:</td>
+<td>300</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Model:</td>
+<td>Logit</td>
+<td data-quarto-table-cell-role="th">Df Residuals:</td>
+<td>298</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Method:</td>
+<td>MLE</td>
+<td data-quarto-table-cell-role="th">Df Model:</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Date:</td>
+<td>Tue, 15 Oct 2024</td>
+<td data-quarto-table-cell-role="th">Pseudo R-squ.:</td>
+<td>0.3951</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Time:</td>
+<td>10:37:11</td>
+<td data-quarto-table-cell-role="th">Log-Likelihood:</td>
+<td>-125.75</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">converged:</td>
+<td>True</td>
+<td data-quarto-table-cell-role="th">LL-Null:</td>
+<td>-207.88</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Covariance Type:</td>
+<td>nonrobust</td>
+<td data-quarto-table-cell-role="th">LLR p-value:</td>
+<td>1.320e-37</td>
+</tr>
+</tbody>
+</table>
+<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd">
+<td></td>
+<td data-quarto-table-cell-role="th">coef</td>
+<td data-quarto-table-cell-role="th">std err</td>
+<td data-quarto-table-cell-role="th">z</td>
+<td data-quarto-table-cell-role="th">P&gt;|z|</td>
+<td data-quarto-table-cell-role="th">[0.025</td>
+<td data-quarto-table-cell-role="th">0.975]</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Intercept</td>
+<td>-40.5481</td>
+<td>4.631</td>
+<td>-8.756</td>
+<td>0.000</td>
+<td>-49.625</td>
+<td>-31.471</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">HEIGHT</td>
+<td>0.2417</td>
+<td>0.028</td>
+<td>8.763</td>
+<td>0.000</td>
+<td>0.188</td>
+<td>0.296</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>logit_fit.params</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Intercept   -40.548086
+HEIGHT        0.241733
+dtype: float64</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>There is another function <a href="https://www.statsmodels.org/stable/generated/statsmodels.discrete.discrete_model.Logit.html#statsmodels.discrete.discrete_model.Logit">Logit()</a> that uses the response vector and design matrix to perform logistic regression.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> body[[<span class="st">'HEIGHT'</span>]]</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> body[<span class="st">'GENDER'</span>]</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>logit_model_fit <span class="op">=</span> sm.Logit(y, sm.add_constant(X)).fit()</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>logit_model_fit.summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 <p>Based on the fitted result, we learn that <span class="math display">\[\hat{\eta}(x) = \ln \left( \frac{\hat{\pi}(x)}{1 - \hat{\pi}(x)}\right) = \ln (\text{odds}_{x}) =  \hat{\beta}_0 + \hat{\beta}_1x = -40.55 + 0.24 \times \text{HEIGHT}\]</span></p>
@@ -934,14 +1147,51 @@ HEIGHT        0.2417325 0.02758399  8.763507 1.892674e-18</code></pre>
 <p>Once we obtain the coefficient estimates and the predictor value, we just need to plug them into the logistic function to obtain the probability we want.</p>
 <p><span class="math display">\[ \hat{\pi}(x = 170) = \frac{\exp(\hat{\beta}_0+\hat{\beta}_1 x)}{1+\exp(\hat{\beta}_0+\hat{\beta}_1 x)} = \frac{\exp(-40.55+0.24 \times 170)}{1+\exp(-40.55+0.24 \times 170)} = 0.633 = 63.3\%\]</span></p>
 <p>Through the formula, we learn that from our model, when a person is 170cm tall, the probability that this person is male is about 63/3%.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
 <p><code>predict(logit_fit, type = "response")</code> gives us a vector of <span class="math inline">\(\hat{\pi}(x_i)\)</span> of all responses in the data. When <code>type = "link"</code>, <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> gives us <span class="math inline">\(\hat{\eta}(x_i)\)</span> because in literature, <span class="math inline">\(\eta(x) = \ln \left( \frac{\hat{\pi}(x)}{1 - \hat{\pi}(x)}\right)\)</span> is called the <strong>link function</strong>. To predict a specific probability at some <span class="math inline">\(x\)</span> value, we use <code>newdata = data.frame(HEIGHT = 170)</code>. Remember the variable name should be exactly the same as the name in the original data set.</p>
 <div class="cell">
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pi_hat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">logit_fit</span>, type <span class="op">=</span> <span class="st">"response"</span><span class="op">)</span></span>
-<span><span class="va">eta_hat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">logit_fit</span>, type <span class="op">=</span> <span class="st">"link"</span><span class="op">)</span>  <span class="co">## default gives us b0 + b1*x</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">logit_fit</span>, newdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>HEIGHT <span class="op">=</span> <span class="fl">170</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">"response"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pi_hat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">logit_fit</span>, type <span class="op">=</span> <span class="st">"response"</span><span class="op">)</span></span>
+<span><span class="va">eta_hat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">logit_fit</span>, type <span class="op">=</span> <span class="st">"link"</span><span class="op">)</span>  <span class="co">## default gives us b0 + b1*x</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">logit_fit</span>, newdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>HEIGHT <span class="op">=</span> <span class="fl">170</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">"response"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        1 
 0.6333105 </code></pre>
+</div>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">logit_fit</span>, newdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>HEIGHT <span class="op">=</span> <span class="fl">170</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">"link"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        1 
+0.5464453 </code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
+<p><a href="https://www.statsmodels.org/stable/generated/statsmodels.discrete.discrete_model.Logit.predict.html"><code>logit_fit.predict(which='mean')</code></a> gives us a vector of <span class="math inline">\(\hat{\pi}(x_i)\)</span> of all responses in the data because the probability is the mean of the Bernoulli distribution. When <code>which='linear'</code>, <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> gives us <span class="math inline">\(\hat{\eta}(x_i)\)</span> which is a linear function of <span class="math inline">\(x\)</span>. To predict a specific probability at some <span class="math inline">\(x\)</span> value, we use <code>newinput = pd.DataFrame({'HEIGHT': [170]})</code> and <a href="https://www.statsmodels.org/dev/generated/statsmodels.discrete.discrete_model.LogitResults.get_prediction.html"><code>get_prediction(newinput)</code></a>. Remember the variable name should be exactly the same as the name in the original data set.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>pi_hat <span class="op">=</span> logit_fit.predict(which<span class="op">=</span><span class="st">'mean'</span>)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>eta_hat <span class="op">=</span> logit_fit.predict(which<span class="op">=</span><span class="st">'linear'</span>) <span class="co">## default gives us b0 + b1*x</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create new data for prediction</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>newinput <span class="op">=</span> pd.DataFrame({<span class="st">'HEIGHT'</span>: [<span class="dv">170</span>]})</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>predict <span class="op">=</span> logit_fit.get_prediction(newinput)</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>predict.predicted</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>array([0.63331048])</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>predict.linpred</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>array([0.54644529])</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <p><span style="color:red"> <strong><em>Probability Curve</em></strong> </span></p>
@@ -958,11 +1208,32 @@ What is the probability of being male when the <code>HEIGHT</code> is 160 cm? Wh
 
 </div>
 </div>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
 <div class="cell">
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">logit_fit</span>, newdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>HEIGHT <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">160</span>, <span class="fl">170</span>, <span class="fl">180</span><span class="op">)</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">"response"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">logit_fit</span>, newdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>HEIGHT <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">160</span>, <span class="fl">170</span>, <span class="fl">180</span><span class="op">)</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">"response"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        1         2         3 
 0.1334399 0.6333105 0.9509103 </code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make predictions for new HEIGHT values</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>newheight <span class="op">=</span> pd.DataFrame({<span class="st">'HEIGHT'</span>: [<span class="dv">160</span>, <span class="dv">170</span>, <span class="dv">180</span>]})</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>pred <span class="op">=</span> logit_fit.get_prediction(newheight)</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>pred.predicted</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>array([0.13343992, 0.63331048, 0.95091031])</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <p>The blue S-shaped curve is the estimated probability curve. It can be plotted using <code>pi_hat</code>.</p>
@@ -984,8 +1255,8 @@ What is the probability of being male when the <code>HEIGHT</code> is 160 cm? Wh
 </ul>
 </div>
 </div>
-</section><section id="evaluation-metrics" class="level2" data-number="29.5"><h2 data-number="29.5" class="anchored" data-anchor-id="evaluation-metrics">
-<span class="header-section-number">29.5</span> Evaluation Metrics</h2>
+</section><section id="evaluation-metrics" class="level2" data-number="29.4"><h2 data-number="29.4" class="anchored" data-anchor-id="evaluation-metrics">
+<span class="header-section-number">29.4</span> Evaluation Metrics</h2>
 <!-- <span style="color:blue"> **Sensitivity and Specificity** </span> -->
 <p>Having probabilities is just a intermediate step. Most of the time our final goal is to classify our response, doing a binary decision. Given a predicted probability, we may correctly classify the label, or mis-classify the label. To know whether or not our model does a good job on classification, we need some evaluation metrics.</p>
 <p>First, we can use a tool called a <strong>confusion matrix</strong> to display all possible outcomes in a binary classification scenario. In this context, let’s designate 0 as Negative and 1 as Positive, regardless of what these values represent. If the actual truth is 0 and we classify the response as 0, this outcome is a True Negative (TN), meaning we made a correct decision. However, if we classify the response as 1 instead, we commit an error, resulting in a False Positive (FP). In this case, the true condition is Negative, but our model incorrectly predicts it as Positive.</p>
@@ -1023,9 +1294,16 @@ What is the probability of being male when the <code>HEIGHT</code> is 160 cm? Wh
 </ul>
 <hr>
 <p><span style="color:blue"> <strong>Example: Confusion Matrix</strong> </span></p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-6-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-1" role="tab" aria-controls="tabset-6-1" aria-selected="true">R</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-2" role="tab" aria-controls="tabset-6-2" aria-selected="false">Python</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-6-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-6-1-tab">
 <p>To produce a confusion matrix, we need two things: the true response labels, and the classification from the model. In the example, the true labels are just <code>body$GENDER</code> data. For the classification result, we need to make a binary decision from the estimated probabilities obtained from the model. Here we use 0.5 as the threshold. If <span class="math inline">\(\hat{\pi}(x) &gt; 0.5\)</span>, then we label the response as 1, and 0 otherwise. We then can simply use <code><a href="https://rdrr.io/r/base/table.html">table()</a></code> function to generate a confusion matrix.</p>
 <div class="cell">
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">prob</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">logit_fit</span>, type <span class="op">=</span> <span class="st">"response"</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">prob</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">logit_fit</span>, type <span class="op">=</span> <span class="st">"response"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## true observations</span></span>
 <span><span class="va">gender_true</span> <span class="op">&lt;-</span> <span class="va">body</span><span class="op">$</span><span class="va">GENDER</span></span>
@@ -1040,6 +1318,29 @@ What is the probability of being male when the <code>HEIGHT</code> is 160 cm? Wh
 gender_predict   0   1
              0 118  29
              1  29 124</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-6-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-2-tab">
+<p>To produce a confusion matrix, we need two things: the true response labels, and the classification from the model. In the example, the true labels are just <code>body['GENDER']</code> data. For the classification result, we need to make a binary decision from the estimated probabilities obtained from the model. Here we use 0.5 as the threshold. If <span class="math inline">\(\hat{\pi}(x) &gt; 0.5\)</span>, then we label the response as 1, and 0 otherwise. We then can simply use <a href="https://scikit-learn.org/1.5/modules/generated/sklearn.metrics.confusion_matrix.html"><code>confusion_matrix()</code></a> function from <code>sklearn.metrics</code> to generate a confusion matrix.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>prob <span class="op">=</span> logit_fit.predict()</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="co">## true observations</span></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>gender_true <span class="op">=</span> body[<span class="st">'GENDER'</span>]</span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a><span class="co">## predicted labels</span></span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>gender_predict <span class="op">=</span> (prob <span class="op">&gt;</span> <span class="fl">0.5</span>).astype(<span class="bu">int</span>)</span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Confusion matrix</span></span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> confusion_matrix</span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>confusion_matrix(gender_true, gender_predict)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>array([[118,  29],
+       [ 29, 124]])</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <p>The true positive rate is 124/(124+29) = 0.81, and the true negative rate is 118/(118+29) = 0.803. The overall accuracy is (124 + 118) /(124 + 29 + 29 + 118) = 0.807. <!-- -------------------------------------------------------------------- --></p>
@@ -1060,8 +1361,8 @@ Figure&nbsp;29.7: ROC curve for Gender ~ Height
 </div>
 </div>
 </div>
-</section><section id="exercises" class="level2" data-number="29.6"><h2 data-number="29.6" class="anchored" data-anchor-id="exercises">
-<span class="header-section-number">29.6</span> Exercises</h2>
+</section><section id="exercises" class="level2" data-number="29.5"><h2 data-number="29.5" class="anchored" data-anchor-id="exercises">
+<span class="header-section-number">29.5</span> Exercises</h2>
 <ol type="1">
 <li>The following logistic regression equation is used for predicting whether a bear is male or female. The value of <span class="math inline">\(\pi\)</span> is the probability that the bear is male. <span class="math display">\[\log\left(\frac{\pi}{1-\pi}\right) = 2.3 - 0.0573 (\text{Length}) + 0.00842(\text{Weight})\]</span>
 <ol type="a">
@@ -1651,7 +1952,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
 <li class="nav-item compact">
-    <a class="nav-link active" href="https://github.com/chenghanyustats/introstatsbook" aria-current="page">
+    <a class="nav-link" href="https://github.com/chenghanyustats/introstatsbook">
       <i class="bi bi-github" role="img">
 </i> 
     </a>
