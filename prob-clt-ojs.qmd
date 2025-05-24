@@ -1,0 +1,322 @@
+---
+# title: "Observable JS CLT"
+execute:
+  echo: false
+---
+
+
+```{ojs}
+//| echo: false
+viewof dist_type = Inputs.select(['beta', 'bimodal', 'binomial', 'cauchy', 'chi2', 'lognormal', 'poisson', 'studentt', 'uniform',], {value: "uniform", label: "data distribution:"})
+```
+
+```{ojs}
+// Returns a normal deviate (mu=0, sigma=1).
+function randn() {
+  let u, v, x, y, q;
+  do {
+    u = Math.random();
+    v = 1.7156 * (Math.random() - 0.5);
+    x = u - 0.449871;
+    y = Math.abs(v) + 0.386595;
+    q = x * x + y * (0.19600 * y - 0.25472 * x);
+  } while (q > 0.27597 && (q > 0.27846 || v * v > -4 * Math.log(u) * u * u));
+  return v / u;
+}
+```
+
+```{ojs}
+//| echo: false
+viewof params_clt = {
+  var form;
+    if (dist_type == 'binomial'){
+    form = Inputs.form([
+      Inputs.range([1, 30], {value: 10, step: 1, label: tex`\text{# of trials }n`}),
+      Inputs.range([Number.EPSILON, 1 - Number.EPSILON], {value: 0.3, step: 0.01, label: tex`\text{success prob }\pi`})
+    ])
+  }
+  if (dist_type == 'poisson'){
+    form = Inputs.form([
+      Inputs.range([0, 10], {value: 1, step: 0.1, label: tex`\text{mean }\lambda`})
+    ])
+  }
+  if (dist_type == 'beta'){
+    form = Inputs.form([
+      Inputs.range([0.1, 20], {value: 3, step: 0.1, label: tex`\text{shape }\alpha`}),
+      Inputs.range([0.1, 20], {value: 5, step: 0.1, label: tex`\text{shape }\beta`})
+    ])
+  }
+  if (dist_type == 'cauchy'){
+    form = Inputs.form([
+      Inputs.range([-5, 5], {value: 0, step: 0.1, label: tex`\text{location }m`}),
+      Inputs.range([0.1, 5], {value: 1, step: 0.1, label: tex`\text{scale }\gamma`}),
+    ])
+  }
+  else if (dist_type == 'uniform'){
+    form = Inputs.form([
+      Inputs.range([-5, 5], {value: 0, step: 0.1, label: tex`\text{lower limit }a`}),
+      Inputs.range([-5, 5], {value: 1, step: 0.1, label: tex`\text{upper limit }b`})
+    ])
+  }
+  else if (dist_type == 'studentt'){
+    form = Inputs.form([
+      Inputs.range([-5, 5], {value: 0, step: 0.1, label: tex`\text{location }\mu`}),
+      Inputs.range([0.1, 5], {value: 1, step: 0.1, label: tex`\text{scale }\sigma`}),
+      Inputs.range([1, 50], {value: 4, step: 1, label: tex`\text{df }\nu`})
+    ])
+  }
+  else if (dist_type == 'chi2'){
+    form = Inputs.form([
+      Inputs.range([1, 50], {value: 3, step: 1, label: tex`\text{df }\nu`})
+    ])
+  }
+  else if (dist_type == 'lognormal'){
+    form = Inputs.form([
+      Inputs.range([-5,5], {value: 0, step: 0.1, label: tex`\text{location }\mu`}),
+      Inputs.range([0.1,5], {value: 1, step: 0.1, label: tex`\text{scale }\sigma`})
+    ])
+  }
+  else if (dist_type == 'bimodal'){
+    form = Inputs.form([
+      Inputs.range([-5,5], {value: -2, step: 0.1, label: tex`\text{location }\mu_1`}),
+      Inputs.range([-5,5], {value: 2, step: 0.1, label: tex`\text{location }\mu_2`}),
+      Inputs.range([0.1,5], {value: 1, step: 0.1, label: tex`\text{scale }\sigma_1`}),
+      Inputs.range([0.1,5], {value: 1, step: 0.1, label: tex`\text{scale }\sigma_2`}),
+      Inputs.range([0,1], {value: 0.5, step: 0.01, label: tex`\text{weight }w_1`})
+    ])
+  }
+  return form;
+}
+```
+
+```{ojs}
+viewof sample_size = Inputs.range([1, 1000], {value: 2, step: 1, label: tex`\text{sample size }n:`})
+```
+
+
+
+```{ojs}
+jStat = require('jstat')
+```
+
+```{ojs}
+nRep = 5000
+```
+
+```{ojs}
+function rand_bimodal(mu1,mu2,sigma1,sigma2,vikt){
+  const comp = Math.random() < vikt
+  return comp ?  jStat.normal.sample(mu1,sigma1) : jStat.normal.sample(mu2,sigma2)
+}
+```
+
+```{ojs}
+function rand_lognormal(mu, sigma){
+  return jStat.lognormal.sample(mu, sigma)
+}
+```
+
+```{ojs}
+function rand_chi2(df){
+  return jStat.chisquare.sample(df)
+}
+```
+
+```{ojs}
+function rand_studentt(location, scale, df){
+  return location + scale * jStat.studentt.sample(df)
+}
+```
+
+```{ojs}
+// Returns a gamma deviate by the method of Marsaglia and Tsang.
+function randg(shape) {
+  let oalph = shape, a1, a2, u, v, x, mat;
+  if (!shape) shape = 1;
+  if (shape < 1) shape += 1;
+  a1 = shape - 1 / 3;
+  a2 = 1 / Math.sqrt(9 * a1);
+  do {
+    do {
+      x = randn();
+      v = 1 + a2 * x;
+    } while (v <= 0);
+    v = v * v * v;
+    u = Math.random();
+  } while (
+    u > 1 - 0.331 * Math.pow(x, 4) &&
+    Math.log(u) > 0.5 * x * x + a1 * (1 - v + Math.log(v))
+  );
+  if (shape === oalph) return a1 * v; // alpha > 1
+  do u = Math.random(); while (u === 0); // alpha < 1
+  return Math.pow(u, 1 / oalph) * a1 * v;
+}
+```
+
+```{ojs}
+function randb(alpha, beta) {
+  const u = randg(alpha);
+  return u / (u + randg(beta));
+}
+```
+
+```{ojs}
+function binomialSample(n,p){
+  return d3.sum(d3.range(n).map(d => Math.random()<p))
+}
+```
+
+```{ojs}
+data = {
+  const size = 1000;
+  if (dist_type == 'binomial'){
+    const n = params_clt[0];
+    const p = params_clt[1];
+    return d3.range(size).map(d => ({x: binomialSample(n, p)})) 
+  }
+  if (dist_type == 'poisson'){
+    const lambda = params_clt[0];
+    return d3.range(size).map(d => ({x: jStat.poisson.sample(lambda)}))
+  }
+  if (dist_type == 'beta'){
+    const alpha = params_clt[0];
+    const beta = params_clt[1];
+    return d3.range(size).map(d => ({x: randb(alpha, beta)}))
+  }
+  if (dist_type == 'cauchy'){
+    const location = params_clt[0];
+    const scale = params_clt[1];
+    const df = 1;
+    return d3.range(size).map(d => ({x: rand_studentt(location, scale, df)}))
+  }
+  else if (dist_type == 'uniform'){
+    const min = params_clt[0];
+    const max = params_clt[1];
+    return d3.range(size).map(d => ({x: Math.random() * (max-min) + min}))
+  }
+  else if (dist_type == 'studentt'){
+    const location = params_clt[0];
+    const scale = params_clt[1];
+    const df = params_clt[2];
+    return d3.range(size).map(d => ({x: rand_studentt(location, scale, df)}))
+  }
+  else if (dist_type == 'chi2'){
+    const df = params_clt[0];
+    return d3.range(size).map(d => ({x: rand_chi2(df)}))
+  }
+  else if (dist_type == 'lognormal'){
+    const mu = params_clt[0];
+    const sigma = params_clt[1];
+    return d3.range(size).map(d => ({x: rand_lognormal(mu, sigma)}))
+  }
+  else if (dist_type == 'bimodal'){
+    const mu1 = params_clt[0];
+    const mu2 = params_clt[1];
+    const sigma1 = params_clt[2];
+    const sigma2 = params_clt[3];
+    const vikt = params_clt[4];
+    return d3.range(size).map(d => ({x: rand_bimodal(mu1, mu2, sigma1, sigma1, vikt)}))
+  }
+  
+}
+```
+
+```{ojs}
+pltdata = {
+  if (discrete){
+    return Plot.plot({
+      caption:html`<span style="color:#6C8EBF">a single dataset simulated from the data distribution.</span> `,
+      marks: [
+        Plot.barY(data, Plot.groupX({y: "count"}, {x: "x", fill: "colors[0]"})),
+        Plot.ruleY([0])
+      ]
+    }) 
+  }
+  else {
+    
+    return Plot.plot({
+      caption:html`<span style="color:#6C8EBF">a single dataset simulated from the data distribution.</span> `,
+      marks: [
+        Plot.rectY(data.filter(d => Math.abs(d.x) <=50), Plot.binX({y: "count"}, {x: "x", fill: colors[0]})),
+        Plot.ruleY([0])
+      ]
+    })
+  }
+}
+```
+
+
+<!--     marks: [ -->
+<!--       Plot.ruleY([0]), -->
+<!--       Plot.barY(poispdf,{x: "x", y: "pdf", fill: "#C1E1C1", strokeWidth: 0, opacity: 1, -->
+<!--                 title: (d) => `P(X=${d.x}) = ${(d.pdf).toPrecision(4)}`}), -->
+<!--       Plot.barY(poispdf, {filter: d => d.x <= params_pois[1], x: "x", y: "pdf", fill: "#50C878", opacity: 1, -->
+<!--                 title: (d) => `P(X=${d.x}) = ${(d.pdf).toPrecision(4)}`}) -->
+<!--     ] -->
+
+    
+```{ojs}
+means = sample_finite_pop(data, sample_size, nRep)
+```
+
+```{ojs}
+pltmeans = Plot.plot({
+  caption:html`<span style="color:#bb989a">distribution of the sample mean from samples with n = ${sample_size} observations.</span> `,
+  x: {
+    label: "sample means"
+  },
+  y:{
+    axis: false
+  },
+  marks: [
+    Plot.rectY(means, Plot.binX({y: "count"}, {x: "mean", fill: colors[8]})),
+    //Plot.areaY(means, Plot.binX({y: "count", filter: null}, {x: "mean", fillOpacity: 0.2})),
+    //Plot.lineY(means, Plot.binX({y: "count", filter: null}, {x: "mean"})),
+    Plot.ruleY([0])
+  ]
+})
+```
+
+```{ojs}
+import {colors} from "@mattiasvillani/statistics-tools"
+```
+
+```{ojs}
+function sample_finite_pop(data, n, nRep){
+  // Sample nRep samples of size n from the data and return the mean in each sample
+  var samplemeans = [];
+  for (let i = 0; i < nRep; ++i) {
+    samplemeans.push({sample: i+1, mean: d3.mean(ss.sample(data, n).map(d => d.x))})
+  }
+  return samplemeans;
+}
+```
+
+```{ojs}
+ss = require('simple-statistics')
+```
+
+```{ojs}
+discrete = (["poisson", "binomial"].includes(dist_type))
+```
+
+
+```{ojs}
+plt = html`<html>
+ <head>
+ </head>
+ <body>
+    <div class="container" style="display: flex; height: 400px;">
+        <div style="width: 44%;">
+            ${pltdata}
+        </div>
+        <div style="width: 2%;">
+           
+        </div>
+        <div style="width: 44%;">
+            ${pltmeans}
+        </div>
+ </body>
+</html>`
+```
+

@@ -1,0 +1,77 @@
+---
+# title: "Observable JS LLN"
+execute:
+  echo: false
+---
+
+
+```{ojs}
+//| echo: false
+viewof samplesize = Inputs.range([1, 10000], {value: 10, label: tex`n`, step: 1})
+```
+
+
+```{ojs}
+//| echo: false
+viewof param_lln = Inputs.form([
+  Inputs.range([-5, 10], {value: 1, label: tex`\mu`, step: 0.01}),
+  Inputs.range([0.01, 10], {value: 1, label: tex`\sigma`, step: 0.01})
+])
+```
+
+
+```{ojs}
+//| echo: false
+//| fig-cap: "Source: <https://observablehq.com/@mattiasvillani/law-large-numbers>"
+pltkonv = {
+  return Plot.plot({
+    y: { label: "sample mean"},
+    x: { label: "number of observations"},
+  marks: [
+    Plot.ruleX([0]),
+    Plot.lineY([{x: 0, y: param_lln[0]},{x: samplesize, y: param_lln[0]}], {x: "x", y: "y", stroke: "orange"}),
+    Plot.lineY(running_means, {x: "x", y: "y", stroke: "steelblue"})
+  ]
+})
+}
+```
+
+```{ojs}
+running_means = xall.slice(0, samplesize).map(function(x, i) {
+    return { x: i + 1, y: d3.mean(xall.slice(0, i + 1)) };
+  });
+```
+
+```{ojs}
+xall = d3.range(10000).map( x => jstat.normal.sample(param_lln[0],param_lln[1]))
+```
+
+```{ojs}
+jstat = require('jstat')
+```
+
+```{ojs}
+function toc(selector = "h2,h3", heading = "<b>Table of Contents</b>") {
+  return Generators.observe(notify => {
+    let headings = [];
+
+    function observed() {
+      const h = Array.from(document.querySelectorAll(selector));
+      if (h.length !== headings.length || h.some((h, i) => headings[i] !== h)) {
+        notify(html`${heading}<ul>${Array.from(headings = h, h => {
+          return Object.assign(
+            html`<li><a href=#${h.id}>${DOM.text(h.textContent)}`,
+            {onclick: e => (e.preventDefault(), h.scrollIntoView())}
+          );
+        })}`);
+      }
+    }
+
+    const observer = new MutationObserver(observed);
+    observer.observe(document.body, {childList: true, subtree: true});
+    observed();
+    return () => observer.disconnect();
+  });
+}
+```
+

@@ -1,0 +1,153 @@
+---
+# title: "Observable JS Approximating the Binomial distribution by Poisson"
+execute:
+  echo: false
+---
+
+
+```{ojs}
+//| echo: false
+viewof params_binom_pois = Inputs.form([
+      Inputs.range([1, 200], {value: 10, step: 1, label: tex`n`}),
+      Inputs.range([0.001, 1], {value: 0.5, step: 0.001, label: tex`\pi`}),
+    ])
+```
+
+
+```{ojs}
+viewof kvantil_binom_pois = Inputs.range([0, params_binom_pois[0]], {value: 3, step: 1, label: "quantile"})
+```
+
+
+```{ojs}
+moments_binom_pois = tex`
+\text{If } X \sim \operatorname{Binom}(${params_binom_pois[0]},${params_binom_pois[1]}) \text{ then }\\[0.5em]
+
+
+E( X) =n  \pi = ${(params_binom_pois[0]*params_binom_pois[1]).toPrecision(3)} \\[0.5em]
+Var( X) =n  \pi (1-\pi) =${(params_binom_pois[0]*params_binom_pois[1]*(1-params_binom_pois[1])).toPrecision(3)} \\[0.5em]
+
+`
+```
+
+
+```{ojs}
+cdfs_poisapprox = 
+{
+  var cdf;
+  if (poisapprox){
+      cdf = tex`
+        \begin{array}{ll}
+        \text{Exact:} & P( X\leq ${kvantil_binom_pois}) =${binomcdf_binom_pois.toPrecision(3)} \\[0.25em]
+        \text{Poisson approx} & P( X\leq ${kvantil_binom_pois}) =${poissonapproxcdf.toPrecision(3)} 
+        \end{array}
+        `
+  }
+  else{
+      cdf = tex`
+        \begin{array}{ll}
+        \text{Exact:} & P( X\leq ${kvantil_binom_pois}) =${binomcdf_binom_pois.toPrecision(3)}
+        \end{array}
+        ` 
+  }
+  return cdf;
+}
+```
+
+
+```{ojs}
+viewof plotselector = Inputs.checkbox(["poisson"], {label: "plot approximation:", value: ["poisson approximation"]})
+```
+
+```{ojs}
+plt_pdf = Plot.plot({
+    color: {
+          legend: true,
+          domain: legenddomain.filter( (d,i) => boolselect[i]),
+          range: legendcolor.filter( (d,i) => boolselect[i])
+        },
+    x: {
+      label: "x",
+      axis: true,
+      domain: xrange
+    },
+    y: {
+      label: "P(X = x)",
+      domain: [0,1.1*jstat.binomial.pdf(params_binom_pois[0]*params_binom_pois[1], params_binom_pois[0],params_binom_pois[1])]
+    },
+  tooltip: {
+    fill: "b39640",
+    stroke: "b39640",
+    opacity: 1,
+  },
+    marks: [
+      Plot.ruleY([0]),
+      Plot.barY(approxpdf,{x: "x", y: "binompdf", fill : "#C1CFE4", strokeWidth: 0, opacity: 0.8, 
+        title: (d) => `P(X=${d.x}) = ${(d.binompdf).toPrecision(4)}`}),
+      Plot.barY(approxpdf, {filter: d => d.x <= kvantil_binom_pois, x: "x", y: "binompdf", fill: "#98afd2", opacity: 1,
+        title: (d) => `P(X=${d.x}) = ${(d.binompdf).toPrecision(4)}`}),
+      
+      // Plot.line(approxpdf, {filter: d => normalapprox, x: "x", y: "normalpdf", stroke : "#AB8D61", strokeWidth: 3}),
+      // Plot.dot(approxpdf, {filter: d => normalapprox, x: "x", y: "normalpdf", stroke : "#AB8D61", strokeWidth: 3}),
+      
+      // Plot.line(approxpdf, {filter: d => normalapproxcorr, x: "x", y: "normalpdfcorr", stroke : "#007878", strokeWidth: 3}),
+      // Plot.dot(approxpdf, {filter: d => normalapproxcorr, x: "x", y: "normalpdfcorr", stroke : "#007878", strokeWidth: 3}),
+      
+      Plot.ruleX(approxpdf, {filter: d => poisapprox && d.x >= 0, x: "x", y: "poissonpdf", stroke: "#780000", strokeWidth: 2}),  
+      Plot.dot(approxpdf, {filter: d => poisapprox && d.x >= 0, x: "x", y: "poissonpdf", fill: "#780000", r: 5}),
+    ]
+  })
+```
+
+
+```{ojs}
+approxpdf = {
+  const x = xrange;
+  const approxpdf = x.map(x => ({
+    x: x, 
+    binompdf: jstat.binomial.pdf(x, params_binom_pois[0], params_binom_pois[1]),
+    // normalpdf: jstat.normal.pdf(x, params[0]*params[1], Math.sqrt(params[0]*params[1]*(1-params[1]))), 
+    // normalpdfcorr: jstat.normal.pdf(x + 0.5, params[0]*params[1], Math.sqrt(params[0]*params[1]*(1-params[1]))),
+    poissonpdf: jstat.poisson.pdf(x, params_binom_pois[0]*params_binom_pois[1])
+  }));
+  return approxpdf
+}
+```
+
+```{ojs}
+xrange = d3.range(0, high + 1, 1);
+```
+
+```{ojs}
+high = Math.ceil(jstat.normal.inv(0.9999, params_binom_pois[0]*params_binom_pois[1], Math.sqrt(params_binom_pois[0]*params_binom_pois[1]*(1-params_binom_pois[1]))))
+```
+
+<!-- ```{ojs} -->
+<!-- //low = Math.floor(jstat.normal.inv(0.0001, params_binom_pois[0]*params_binom_pois[1], Math.sqrt(params_binom_pois[0]*params_binom_pois[1]*(1-params_binom_pois[1])))) -->
+<!-- ``` -->
+
+```{ojs}
+legendcolor = ["#C1CFE4", "#AB8D61", "#007878", "#780000"]
+```
+
+```{ojs}
+boolselect = [true, poisapprox]
+```
+
+```{ojs}
+poisapprox = plotselector.includes("poisson")
+```
+
+
+```{ojs}
+legenddomain = ["binomial", "poisson"]
+```
+
+```{ojs}
+poissonapproxcdf = jstat.poisson.cdf(kvantil_binom_pois, params_binom_pois[0]*params_binom_pois[1])
+```
+
+```{ojs}
+binomcdf_binom_pois = jstat.binomial.cdf(kvantil_binom_pois, params_binom_pois[0], params_binom_pois[1]);
+```
+
