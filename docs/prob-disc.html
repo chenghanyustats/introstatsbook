@@ -2,10 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.555">
+<meta name="generator" content="quarto-1.7.7">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="description" content="An introductory statistical data science book for STEM students.">
-<title>Introduction to Statistics - 10&nbsp; Discrete Probability Distributions</title>
+<title>Observable JS Poisson Distribution – Introduction to Statistics</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -31,7 +31,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -68,12 +68,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-91e0721f6a50cd2c1d42ea2de0943486.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-288caa2835e8f3ae9b218c52903e6099.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap-d93f0da6b6e6724898f2795888d050da.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-5142df6085ee636785797f8402c7d873.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -99,7 +99,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+}</script><script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script><link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
 const typesetMath = (el) => {
   if (window.MathJax) {
     // MathJax Typeset
@@ -130,13 +131,13 @@ window.Quarto = {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./prob.html">Probability</a></li><li class="breadcrumb-item"><a href="./prob-disc.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Discrete Probability Distributions</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./prob.html">Probability</a></li><li class="breadcrumb-item"><a href="./prob-disc.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Observable JS Poisson Distribution</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
-      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
@@ -149,23 +150,23 @@ window.Quarto = {
     <a href="https://github.com/chenghanyustats/introstatsbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
     <a href="./Introduction-to-Statistics.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
     <div class="dropdown">
-      <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Share"><i class="bi bi-share"></i></a>
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Share"><i class="bi bi-share"></i></a>
       <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
 <li>
             <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=%7Curl%7C">
-              <i class="bi bi-bi-twitter pe-1"></i>
+              <i class="bi bi-twitter pe-1"></i>
             Twitter
             </a>
           </li>
           <li>
             <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=%7Curl%7C">
-              <i class="bi bi-bi-facebook pe-1"></i>
+              <i class="bi bi-facebook pe-1"></i>
             Facebook
             </a>
           </li>
           <li>
             <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=%7Curl%7C">
-              <i class="bi bi-bi-linkedin pe-1"></i>
+              <i class="bi bi-linkedin pe-1"></i>
             LinkedIn
             </a>
           </li>
@@ -192,7 +193,7 @@ window.Quarto = {
       <div class="sidebar-item-container"> 
             <a href="./intro.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Statistics and Data</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -227,7 +228,7 @@ window.Quarto = {
       <div class="sidebar-item-container"> 
             <a href="./datasummary.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Summarizing Data</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -250,7 +251,7 @@ window.Quarto = {
       <div class="sidebar-item-container"> 
             <a href="./prob.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Probability</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -276,7 +277,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./prob-disc.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Discrete Probability Distributions</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Observable JS Poisson Distribution</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -303,7 +304,7 @@ window.Quarto = {
       <div class="sidebar-item-container"> 
             <a href="./infer.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Statistical Inference</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -374,7 +375,7 @@ window.Quarto = {
       <div class="sidebar-item-container"> 
             <a href="./model.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Statistical Models</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -435,9 +436,9 @@ window.Quarto = {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
  <span class="menu-text">Appendices</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -472,8 +473,8 @@ window.Quarto = {
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/chenghanyustats/introstatsbook/edit/main/prob-disc.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/chenghanyustats/introstatsbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./prob.html">Probability</a></li><li class="breadcrumb-item"><a href="./prob-disc.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Discrete Probability Distributions</span></a></li></ol></nav><div class="quarto-title">
-<h1 class="title"><span id="sec-prob-disc" class="quarto-section-identifier"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Discrete Probability Distributions</span></span></h1>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./prob.html">Probability</a></li><li class="breadcrumb-item"><a href="./prob-disc.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Observable JS Poisson Distribution</span></a></li></ol></nav><div class="quarto-title">
+<h1 class="title">Observable JS Poisson Distribution</h1>
 </div>
 
 
@@ -531,7 +532,7 @@ window.Quarto = {
 <p>We can also display the probability distribution using graphs. We put possible values of <span class="math inline">\(X\)</span> in the x-axis, and the y-axis stands for the probability <span class="math inline">\(P(X=x)\)</span>. Then for each <span class="math inline">\(x\)</span>, we draw a vertical bar at <span class="math inline">\(X=x\)</span> from <span class="math inline">\(y = 0\)</span> to <span class="math inline">\(y = P(X=x)\)</span>. <a href="#fig-prob-hist" class="quarto-xref">Figure&nbsp;<span>10.1</span></a> shows the discrete probability distribution of two coin flips as a graph.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-prob-hist" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<div id="fig-prob-hist" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-prob-hist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="prob-disc_files/figure-html/fig-prob-hist-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
 </div>
@@ -541,7 +542,8 @@ Figure&nbsp;10.1: Discrete probability distribution of two coin flips as a graph
 </div>
 </div>
 </div>
-<p>If you love math, you can specify the probability distribution using mathematical formula: <span class="math display">\[
+<p>If you love math, you can specify the probability distribution using mathematical formula:</p>
+<p><span class="math display">\[
 P(X = x)=
 \begin{cases}
 {2 \choose x}\left( \frac{1}{4}\right), ~~ x = 0, 1, 2,\\
@@ -639,6 +641,171 @@ Warning
 <p>The binomial probability function is <span class="math display">\[ \color{blue}{P(X = x \mid n, \pi) = \frac{n!}{x!(n-x)!}\pi^x(1-\pi)^{n-x}, \quad x = 0, 1, 2, \dots, n}\]</span></p>
 <p>It is not that important to memorize the formula as nowadays we use computing software to obtain <span class="math inline">\(P(X = x)\)</span> for any <span class="math inline">\(x\)</span>. Notice that the maximal possible number of <span class="math inline">\(x\)</span> is <span class="math inline">\(n\)</span>, the number of trials. We cannot have 5 successes when there are only 4 trials in the experiment. Second, when both <span class="math inline">\(n\)</span> and <span class="math inline">\(pi\)</span> are known and fixed, with a value of <span class="math inline">\(x\)</span>, everything in the formula is known, and the probability can be calculated.</p>
 <p>It can be shown that the binomial distribution has mean <span class="math inline">\(\mu = E(X) = n\pi\)</span> and variance <span class="math inline">\(\sigma^2 = Var(X) = n\pi(1-\pi)\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb1" data-startfrom="0" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line -1;"><span id="cb1-0"><a href="#cb1-0" aria-hidden="true" tabindex="-1"></a>viewof params <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">form</span>([</span>
+<span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>      Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">1</span><span class="op">,</span> <span class="dv">200</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="fu">tex</span><span class="vs">`n`</span>})<span class="op">,</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>      Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.01</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="fu">tex</span><span class="vs">`</span><span class="sc">\p</span><span class="vs">i`</span>})<span class="op">,</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    ])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb2" data-startfrom="0" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line -1;"><span id="cb2-0"><a href="#cb2-0" aria-hidden="true" tabindex="-1"></a>viewof kvantil <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">1</span><span class="op">,</span> params[<span class="dv">0</span>]]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">3</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"quantile"</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb3" data-startfrom="0" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line -1;"><span id="cb3-0"><a href="#cb3-0" aria-hidden="true" tabindex="-1"></a>viewof approx <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">toggle</span>({<span class="dt">label</span><span class="op">:</span> <span class="st">"show normal approximation"</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="kw">false</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb4" data-startfrom="0" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line -1;"><span id="cb4-0"><a href="#cb4-0" aria-hidden="true" tabindex="-1"></a>jstat <span class="op">=</span> <span class="pp">require</span>(<span class="st">'jstat'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb5" data-startfrom="0" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line -1;"><span id="cb5-0"><a href="#cb5-0" aria-hidden="true" tabindex="-1"></a>binomcdf <span class="op">=</span> jstat<span class="op">.</span><span class="at">binomial</span><span class="op">.</span><span class="fu">cdf</span>(kvantil<span class="op">,</span> params[<span class="dv">0</span>]<span class="op">,</span> params[<span class="dv">1</span>])<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-5" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb6" data-startfrom="0" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line -1;"><span id="cb6-0"><a href="#cb6-0" aria-hidden="true" tabindex="-1"></a>normalapproxpdf <span class="op">=</span> {</span>
+<span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> x <span class="op">=</span> d3<span class="op">.</span><span class="fu">range</span>(<span class="dv">0</span><span class="op">,</span> params[<span class="dv">0</span>]<span class="op">,</span> <span class="dv">1</span>)<span class="op">;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> normalapproxpdf <span class="op">=</span> x<span class="op">.</span><span class="fu">map</span>(x <span class="kw">=&gt;</span> ({<span class="dt">x</span><span class="op">:</span> x<span class="op">,</span> <span class="dt">pdf</span><span class="op">:</span> jstat<span class="op">.</span><span class="at">normal</span><span class="op">.</span><span class="fu">pdf</span>(x<span class="op">,</span> params[<span class="dv">0</span>]<span class="op">*</span>params[<span class="dv">1</span>]<span class="op">,</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(params[<span class="dv">0</span>]<span class="op">*</span>params[<span class="dv">1</span>]<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>params[<span class="dv">1</span>])))}))<span class="op">;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> normalapproxpdf</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-6" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb7" data-startfrom="0" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line -1;"><span id="cb7-0"><a href="#cb7-0" aria-hidden="true" tabindex="-1"></a>normalapproxcdf <span class="op">=</span> jstat<span class="op">.</span><span class="at">normal</span><span class="op">.</span><span class="fu">cdf</span>(kvantil<span class="op">,</span> params[<span class="dv">0</span>]<span class="op">*</span>params[<span class="dv">1</span>]<span class="op">,</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(params[<span class="dv">0</span>]<span class="op">*</span>params[<span class="dv">1</span>]<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>params[<span class="dv">1</span>])))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-7" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb8" data-startfrom="0" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line -1;"><span id="cb8-0"><a href="#cb8-0" aria-hidden="true" tabindex="-1"></a>normalapproxcdf_corrected <span class="op">=</span> jstat<span class="op">.</span><span class="at">normal</span><span class="op">.</span><span class="fu">cdf</span>(kvantil<span class="op">+</span><span class="fl">0.5</span><span class="op">,</span> params[<span class="dv">0</span>]<span class="op">*</span>params[<span class="dv">1</span>]<span class="op">,</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(params[<span class="dv">0</span>]<span class="op">*</span>params[<span class="dv">1</span>]<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>params[<span class="dv">1</span>])))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-8" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb9" data-startfrom="0" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line -1;"><span id="cb9-0"><a href="#cb9-0" aria-hidden="true" tabindex="-1"></a>binompdf <span class="op">=</span> {</span>
+<span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> x <span class="op">=</span> d3<span class="op">.</span><span class="fu">range</span>(<span class="dv">0</span><span class="op">,</span> params[<span class="dv">0</span>]<span class="op">+</span><span class="dv">1</span><span class="op">,</span> <span class="dv">1</span>)<span class="op">;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> binompdf <span class="op">=</span> x<span class="op">.</span><span class="fu">map</span>(x <span class="kw">=&gt;</span> ({<span class="dt">x</span><span class="op">:</span> x<span class="op">,</span> <span class="dt">pdf</span><span class="op">:</span> jstat<span class="op">.</span><span class="at">binomial</span><span class="op">.</span><span class="fu">pdf</span>(x<span class="op">,</span> params[<span class="dv">0</span>]<span class="op">,</span> params[<span class="dv">1</span>])<span class="op">,</span> <span class="dt">type</span><span class="op">:</span> <span class="st">"exact"</span>}))<span class="op">;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> normalapproxpdf <span class="op">=</span> x<span class="op">.</span><span class="fu">map</span>(x <span class="kw">=&gt;</span> ({<span class="dt">x</span><span class="op">:</span> x<span class="op">,</span> <span class="dt">pdf</span><span class="op">:</span> jstat<span class="op">.</span><span class="at">normal</span><span class="op">.</span><span class="fu">pdf</span>(x<span class="op">,</span> params[<span class="dv">0</span>]<span class="op">*</span>params[<span class="dv">1</span>]<span class="op">,</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(params[<span class="dv">0</span>]<span class="op">*</span>params[<span class="dv">1</span>]<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>params[<span class="dv">1</span>])))<span class="op">,</span><span class="dt">type</span><span class="op">:</span> <span class="st">"approx"</span>}))<span class="op">;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> data <span class="op">=</span> binompdf<span class="op">.</span><span class="fu">concat</span>(normalapproxpdf)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> data</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-9" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb10" data-startfrom="-1" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line -2;"><span id="cb10--1"><a href="#cb10--1" aria-hidden="true" tabindex="-1"></a>moments <span class="op">=</span> <span class="fu">tex</span><span class="vs">`</span></span>
+<span id="cb10-0"><a href="#cb10-0" aria-hidden="true" tabindex="-1"></a><span class="sc">\t</span><span class="vs">ext{If } X </span><span class="sc">\s</span><span class="vs">im </span><span class="sc">\o</span><span class="vs">peratorname{Binom}(</span><span class="sc">${</span>params[<span class="dv">0</span>]<span class="sc">}</span><span class="vs">,</span><span class="sc">${</span>params[<span class="dv">1</span>]<span class="sc">}</span><span class="vs">) </span><span class="sc">\t</span><span class="vs">ext{ then }</span><span class="sc">\\</span><span class="vs">[0.5em]</span></span>
+<span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="vs">E( X) =n  </span><span class="sc">\p</span><span class="vs">i = </span><span class="sc">${</span>(params[<span class="dv">0</span>]<span class="op">*</span>params[<span class="dv">1</span>])<span class="op">.</span><span class="fu">toPrecision</span>(<span class="dv">3</span>)<span class="sc">}</span><span class="vs"> </span><span class="sc">\\</span><span class="vs">[0.5em]</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="vs">Var( X) =n  </span><span class="sc">\p</span><span class="vs">i (1-</span><span class="sc">\p</span><span class="vs">i) =</span><span class="sc">${</span>(params[<span class="dv">0</span>]<span class="op">*</span>params[<span class="dv">1</span>]<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>params[<span class="dv">1</span>]))<span class="op">.</span><span class="fu">toPrecision</span>(<span class="dv">3</span>)<span class="sc">}</span><span class="vs"> </span><span class="sc">\\</span><span class="vs">[0.5em]</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="vs">`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-10" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb11" data-startfrom="0" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line -1;"><span id="cb11-0"><a href="#cb11-0" aria-hidden="true" tabindex="-1"></a>cdfs <span class="op">=</span> </span>
+<span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> cdf<span class="op">;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (approx){</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  cdf <span class="op">=</span> <span class="fu">tex</span><span class="vs">`</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="vs">  </span><span class="sc">\b</span><span class="vs">egin{array}{ll}</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="vs">  </span><span class="sc">\t</span><span class="vs">ext{Exact binomial:} &amp; P( X</span><span class="sc">\l</span><span class="vs">eq </span><span class="sc">${</span>kvantil<span class="sc">}</span><span class="vs">) =</span><span class="sc">${</span>binomcdf<span class="op">.</span><span class="fu">toPrecision</span>(<span class="dv">4</span>)<span class="sc">}</span><span class="vs"> </span><span class="sc">\\</span><span class="vs">[0.25em]</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="vs">  </span><span class="sc">\t</span><span class="vs">ext{Normal approx:} &amp; P( X</span><span class="sc">\l</span><span class="vs">eq </span><span class="sc">${</span>kvantil<span class="sc">}</span><span class="vs">) =</span><span class="sc">${</span>normalapproxcdf<span class="op">.</span><span class="fu">toPrecision</span>(<span class="dv">4</span>)<span class="sc">}</span><span class="vs"> </span><span class="sc">\\</span><span class="vs">[0.25em]</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="vs">  </span><span class="sc">\t</span><span class="vs">ext{Normal approx - corr:} &amp; P( X</span><span class="sc">\l</span><span class="vs">eq </span><span class="sc">${</span>kvantil<span class="sc">}</span><span class="vs">)  =</span><span class="sc">${</span>normalapproxcdf_corrected<span class="op">.</span><span class="fu">toPrecision</span>(<span class="dv">4</span>)<span class="sc">}</span><span class="vs"> </span><span class="sc">\\</span><span class="vs">[1em]</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="vs">  </span><span class="sc">\e</span><span class="vs">nd{array}</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="vs">  `</span>}</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span>{</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>   cdf <span class="op">=</span> <span class="fu">tex</span><span class="vs">`</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="vs">  </span><span class="sc">\b</span><span class="vs">egin{array}{ll}</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="vs">  </span><span class="sc">\t</span><span class="vs">ext{Exact:} &amp; P( X</span><span class="sc">\l</span><span class="vs">eq </span><span class="sc">${</span>kvantil<span class="sc">}</span><span class="vs">) =</span><span class="sc">${</span>binomcdf<span class="op">.</span><span class="fu">toPrecision</span>(<span class="dv">4</span>)<span class="sc">}</span><span class="vs"> </span><span class="sc">\\</span><span class="vs">[1em]</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="vs">  </span><span class="sc">\e</span><span class="vs">nd{array}</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="vs">  `</span> </span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> cdf<span class="op">;</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-11" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb12" data-startfrom="1" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>plt_binom <span class="op">=</span> Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">color</span><span class="op">:</span> { </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>      <span class="dt">legend</span><span class="op">:</span> approx</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">x</span><span class="op">:</span> {</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>      <span class="dt">label</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>      <span class="dt">axis</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>      <span class="dt">domain</span><span class="op">:</span> d3<span class="op">.</span><span class="fu">range</span>(<span class="dv">0</span><span class="op">,</span> params[<span class="dv">0</span>]<span class="op">+</span><span class="dv">1</span><span class="op">,</span> <span class="dv">1</span>)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">y</span><span class="op">:</span> {</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>      <span class="dt">label</span><span class="op">:</span> <span class="st">"P(X = x)"</span><span class="op">,</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>      <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span><span class="fl">1.1</span><span class="op">*</span>jstat<span class="op">.</span><span class="at">binomial</span><span class="op">.</span><span class="fu">pdf</span>(params[<span class="dv">0</span>]<span class="op">*</span>params[<span class="dv">1</span>]<span class="op">,</span> params[<span class="dv">0</span>]<span class="op">,</span>params[<span class="dv">1</span>])]</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  <span class="dt">tooltip</span><span class="op">:</span> {</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    <span class="dt">fill</span><span class="op">:</span> <span class="st">"#C04000"</span><span class="op">,</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    <span class="dt">stroke</span><span class="op">:</span> <span class="st">"#C04000"</span><span class="op">,</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    <span class="dt">opacity</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="dv">0</span>])<span class="op">,</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">barY</span>(binompdf<span class="op">,</span>{<span class="dt">filter</span><span class="op">:</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">type</span> <span class="op">==</span> <span class="st">"exact"</span><span class="op">,</span> <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"pdf"</span><span class="op">,</span> <span class="dt">fill</span> <span class="op">:</span> <span class="st">"orange"</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">opacity</span><span class="op">:</span> <span class="fl">0.8</span><span class="op">,</span> </span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>        <span class="dt">title</span><span class="op">:</span> (d) <span class="kw">=&gt;</span> <span class="vs">`P(X=</span><span class="sc">${</span>d<span class="op">.</span><span class="at">x</span><span class="sc">}</span><span class="vs">) = </span><span class="sc">${</span>(d<span class="op">.</span><span class="at">pdf</span>)<span class="op">.</span><span class="fu">toPrecision</span>(<span class="dv">4</span>)<span class="sc">}</span><span class="vs">`</span>})<span class="op">,</span></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">barY</span>(binompdf<span class="op">,</span> {<span class="dt">filter</span><span class="op">:</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">type</span> <span class="op">==</span> <span class="st">"exact"</span> <span class="op">&amp;&amp;</span> d<span class="op">.</span><span class="at">x</span> <span class="op">&lt;=</span> kvantil<span class="op">,</span> <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"pdf"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"darkorange"</span><span class="op">,</span> <span class="dt">opacity</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>        <span class="dt">title</span><span class="op">:</span> (d) <span class="kw">=&gt;</span> <span class="vs">`P(X=</span><span class="sc">${</span>d<span class="op">.</span><span class="at">x</span><span class="sc">}</span><span class="vs">) = </span><span class="sc">${</span>(d<span class="op">.</span><span class="at">pdf</span>)<span class="op">.</span><span class="fu">toPrecision</span>(<span class="dv">4</span>)<span class="sc">}</span><span class="vs">`</span>})<span class="op">,</span></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">line</span>(normalapproxpdf<span class="op">,</span> {<span class="dt">filter</span><span class="op">:</span> d <span class="kw">=&gt;</span> approx<span class="op">,</span> <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"pdf"</span><span class="op">,</span> <span class="dt">stroke</span> <span class="op">:</span> <span class="st">"steelblue"</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span>})    </span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>  })</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="fig-ojs-cell-12" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-ojs-cell-12-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div id="ojs-cell-12" data-nodetype="declaration">
+
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ojs-cell-12-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10.2: Source: <a href="https://observablehq.com/@mattiasvillani/binomial-distribution" class="uri">https://observablehq.com/@mattiasvillani/binomial-distribution</a>
+</figcaption></figure>
+</div>
+</div>
 <div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -681,15 +848,15 @@ If we toss a fair coin two times independently and let <span class="math inline"
 </div>
 <p>Suppose it’s a binomial experiment with <span class="math inline">\(n = 15\)</span> and <span class="math inline">\(\pi = 0.2\)</span>. Let <span class="math inline">\(X\)</span> be the number of drivers exceeding limit. Then <span class="math inline">\(X \sim binomial(15, 0.2)\)</span>. Therefore,</p>
 <p><span class="math display">\[ \color{blue}{P(X = x \mid n=15, \pi=0.2) = \frac{15!}{x!(15-x)!}(0.2)^x(1-0.2)^{15-x}, \quad x = 0, 1, 2, \dots, 15.}\]</span></p>
-<p>Since we know the value of parameter <span class="math inline">\(n\)</span> and <span class="math inline">\(\pi\)</span>, the entire binomial distribution can be described, as shown in <a href="#fig-binomial-plot" class="quarto-xref">Figure&nbsp;<span>10.2</span></a>.</p>
+<p>Since we know the value of parameter <span class="math inline">\(n\)</span> and <span class="math inline">\(\pi\)</span>, the entire binomial distribution can be described, as shown in <a href="#fig-binomial-plot" class="quarto-xref">Figure&nbsp;<span>10.3</span></a>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-binomial-plot" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<div id="fig-binomial-plot" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-binomial-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="prob-disc_files/figure-html/fig-binomial-plot-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-binomial-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;10.2: Binomial Distribution Example <span class="math inline">\(X \sim binomial(15, 0.2).\)</span>
+Figure&nbsp;10.3: Binomial Distribution Example <span class="math inline">\(X \sim binomial(15, 0.2).\)</span>
 </figcaption></figure>
 </div>
 </div>
@@ -725,24 +892,18 @@ Figure&nbsp;10.2: Binomial Distribution Example <span class="math inline">\(X \s
 <p>For the binomial distribution, we use <strong><code>dbinom(x, size, prob)</code></strong> to compute <span class="math inline">\(P(X = x)\)</span>, where <code>size</code> is the number of trials and <code>prob</code> is the probability of success. Besides <span class="math inline">\(x\)</span>, we need to provide the values of <code>size</code> and <code>prob</code> because remember that they are the parameters of the binomial distribution. Without them, we cannot have a specific binomial distribution, and its probability cannot be calculated.</p>
 <p>To obtain <span class="math inline">\(P(X = 6)\)</span> where <span class="math inline">\(X \sim binomial(n=15, \pi=0.2)\)</span>, in R, we do</p>
 <div class="cell">
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## 1. P(X = 6)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">dbinom</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">6</span>, size <span class="op">=</span> <span class="fl">15</span>, prob <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.04299262</code></pre>
 </div>
 </div>
 <p>To answer the second question <span class="math inline">\(P(X \ge 6)\)</span>, we can use the function <strong><code>pbinom(q, size, prob)</code></strong> that calculates <span class="math inline">\(P(X \le q)\)</span> for <span class="math inline">\(X \sim bionomial(n = \texttt{size}, \pi = \texttt{prob})\)</span>. Notice that <span class="math inline">\(P(X &gt;= 6) = 1 - P(X &lt;= 5)\)</span>, so in R, we can do</p>
 <div class="cell">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## 2. P(X &gt;= 6) = 1 - P(X &lt;= 5)</span></span>
-<span><span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">pbinom</a></span><span class="op">(</span>q <span class="op">=</span> <span class="fl">5</span>, size <span class="op">=</span> <span class="fl">15</span>, prob <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.06105143</code></pre>
 </div>
 </div>
 <p>By default, the function <code>pbinom(q, size, prob)</code> calculates the probability <span class="math inline">\(P(X \le q)\)</span> which is the left or <strong>lower tail</strong> part of the distribution. The function provides an argument <code>lower.tail</code> that is logical, and is <code>TRUE</code> by default. When we set <code>lower.tail = FALSE</code> in the function, it will instead calculate <span class="math inline">\(P(X &gt; q)\)</span> which is the right or <strong>upper tail</strong> part of the distribution. Since <span class="math inline">\(P(X \ge 6) = P(X &gt; 5)\)</span>, in R we can do</p>
 <div class="cell">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## 2. P(X &gt;= 6) = P(X &gt; 5)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">pbinom</a></span><span class="op">(</span>q <span class="op">=</span> <span class="fl">5</span>, size <span class="op">=</span> <span class="fl">15</span>, prob <span class="op">=</span> <span class="fl">0.2</span>, lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.06105143</code></pre>
 </div>
@@ -772,7 +933,7 @@ Figure&nbsp;10.2: Binomial Distribution Example <span class="math inline">\(X \s
 <!-- :::: -->
 <p>Below is an example of how to generate the binomial probability distribution as a graph.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">15</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">dbinom</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">15</span>, size <span class="op">=</span> <span class="fl">15</span>, prob <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span>, </span>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">15</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">dbinom</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">15</span>, size <span class="op">=</span> <span class="fl">15</span>, prob <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span>, </span>
 <span>     type <span class="op">=</span> <span class="st">'h'</span>, xlab <span class="op">=</span> <span class="st">"x"</span>, ylab <span class="op">=</span> <span class="st">"P(X = x)"</span>, </span>
 <span>     lwd <span class="op">=</span> <span class="fl">5</span>, main <span class="op">=</span> <span class="st">"Binomial(15, 0.2)"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -835,30 +996,30 @@ Figure&nbsp;10.2: Binomial Distribution Example <span class="math inline">\(X \s
 <p>For the binomial distribution, we use <code>binom.pmf(k, n, p)</code> to compute <span class="math inline">\(P(X = k)\)</span>, where <code>n</code> is the number of trials and <code>p</code> is the probability of success. Besides <code>k</code>, we need to provide the values of <code>n</code> and <code>p</code> because remember that they are the parameters of the binomial distribution. Without them, we cannot have a specific binomial distribution, and its probability cannot be calculated.</p>
 <p>To obtain <span class="math inline">\(P(X = 6)\)</span> where <span class="math inline">\(X \sim binomial(n=15, \pi=0.2)\)</span>, in Python, we do</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> binom</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> binom</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Binomial distribution calculations</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. P(X = 6)</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>binom.pmf(k<span class="op">=</span><span class="dv">6</span>, n<span class="op">=</span><span class="dv">15</span>, p<span class="op">=</span><span class="fl">0.2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Binomial distribution calculations</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. P(X = 6)</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>binom.pmf(k<span class="op">=</span><span class="dv">6</span>, n<span class="op">=</span><span class="dv">15</span>, p<span class="op">=</span><span class="fl">0.2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.04299262263296005</code></pre>
 </div>
 </div>
 <p>To answer the second question <span class="math inline">\(P(X \ge 6)\)</span>, we can use the function <strong><code>binom.cdf(k, n, p)</code></strong> that calculates <span class="math inline">\(P(X \le k)\)</span> for <span class="math inline">\(X \sim bionomial(n = \texttt{n}, \pi = \texttt{p})\)</span>. Notice that <span class="math inline">\(P(X &gt;= 6) = 1 - P(X &lt;= 5)\)</span>, so in Python, we can do</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. P(X &gt;= 6) = 1 - P(X &lt;= 5)</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="op">-</span> binom.cdf(k<span class="op">=</span><span class="dv">5</span>, n<span class="op">=</span><span class="dv">15</span>, p<span class="op">=</span><span class="fl">0.2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. P(X &gt;= 6) = 1 - P(X &lt;= 5)</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="op">-</span> binom.cdf(k<span class="op">=</span><span class="dv">5</span>, n<span class="op">=</span><span class="dv">15</span>, p<span class="op">=</span><span class="fl">0.2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.06105142961766408</code></pre>
 </div>
 </div>
 <p>The function <code>binom.cdf(q, n, p)</code> calculates the probability <span class="math inline">\(P(X \le k)\)</span> which is the left or <strong>lower tail</strong> part of the distribution. We can use <code>binom.sf(q, n, p)</code> to calculate <span class="math inline">\(P(X &gt; q)\)</span> which is the right or <strong>upper tail</strong> part of the distribution. Since <span class="math inline">\(P(X \ge 6) = P(X &gt; 5)\)</span>, in Python we can do</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Alternatively, using the upper tail probability</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>binom.sf(<span class="dv">5</span>, n<span class="op">=</span><span class="dv">15</span>, p<span class="op">=</span><span class="fl">0.2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Alternatively, using the upper tail probability</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>binom.sf(<span class="dv">5</span>, n<span class="op">=</span><span class="dv">15</span>, p<span class="op">=</span><span class="fl">0.2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.061051429617664056</code></pre>
 </div>
@@ -866,16 +1027,9 @@ Figure&nbsp;10.2: Binomial Distribution Example <span class="math inline">\(X \s
 <p>Notice that we use <code>k=5</code> instead of <code>k=6</code> because we want <span class="math inline">\(P(X &gt; 5)\)</span>. The probability value is the same as the value before.</p>
 <p>Below is an example of how to generate the binomial probability distribution as a graph. We use the stem plot <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.stem.html">plt.stem()</a>.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>np.arange(<span class="dv">0</span>, <span class="dv">16</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15])</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>plt.stem(np.arange(<span class="dv">0</span>, <span class="dv">16</span>), binom.pmf(np.arange(<span class="dv">0</span>, <span class="dv">16</span>), n<span class="op">=</span><span class="dv">15</span>, p<span class="op">=</span><span class="fl">0.2</span>), </span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>         basefmt<span class="op">=</span><span class="st">" "</span>)</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"x"</span>)</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"P(X = x)"</span>)</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Binomial(15, 0.2)"</span>)</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="prob-disc_files/figure-html/binom-plot-py-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
@@ -902,6 +1056,96 @@ Figure&nbsp;10.2: Binomial Distribution Example <span class="math inline">\(X \s
 <p>Again, the parameter <span class="math inline">\(\lambda\)</span> determines the shape of the distribution. The constant <span class="math inline">\(e\)</span> is the Euler’s number that is approximately <span class="math inline">\(2.7182818284\)</span>. <span class="math inline">\(x! = x \times (x-1) \times \cdots \times 2 \times 1\)</span> and <span class="math inline">\(0! = 1\)</span>. Note that the possible value of <span class="math inline">\(x\)</span> could be any positive integer. Theoretically speaking, there is no upper limit for the number of occurrences of any event. No worries. You don’t need to memorize the formula, but it’s good to recognize it.</p>
 <p>One interesting property of the Poisson distribution is that its mean and variance are both equal to its parameter <span class="math inline">\(\lambda\)</span>. So a <span class="math inline">\(Poisson(5)\)</span> distribution has mean and variance being equal to 5.</p>
 <!-- - Both the mean and the variance are equal to $\lambda$. -->
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb25" data-startfrom="0" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line -1;"><span id="cb25-0"><a href="#cb25-0" aria-hidden="true" tabindex="-1"></a>viewof params_pois <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">form</span>([</span>
+<span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>      Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.1</span><span class="op">,</span> <span class="dv">20</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="fu">tex</span><span class="vs">`</span><span class="sc">\l</span><span class="vs">ambda:`</span>})<span class="op">,</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>      Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">1</span><span class="op">,</span> <span class="dv">40</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"quantile:"</span>})</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    ])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-13" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb26" data-startfrom="0" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line -1;"><span id="cb26-0"><a href="#cb26-0" aria-hidden="true" tabindex="-1"></a>dist_quantile <span class="op">=</span> <span class="fu">tex</span><span class="vs">`</span><span class="sc">\t</span><span class="vs">ext{If } X </span><span class="sc">\s</span><span class="vs">im </span><span class="sc">\o</span><span class="vs">peratorname{Poisson}(</span><span class="sc">${</span>params_pois[<span class="dv">0</span>]<span class="sc">}</span><span class="vs">) </span><span class="sc">\t</span><span class="vs">ext{ then } `</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-14" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb27" data-startfrom="0" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line -1;"><span id="cb27-0"><a href="#cb27-0" aria-hidden="true" tabindex="-1"></a>moments_pois <span class="op">=</span> <span class="fu">tex</span><span class="vs">`</span></span>
+<span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="sc">\b</span><span class="vs">egin{aligned}</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="vs">&amp;</span><span class="sc">\m</span><span class="vs">athrm{E}( X) =  </span><span class="sc">\l</span><span class="vs">ambda = </span><span class="sc">${</span>params_pois[<span class="dv">0</span>]<span class="op">.</span><span class="fu">toPrecision</span>(<span class="dv">3</span>)<span class="sc">}</span><span class="vs"> </span><span class="sc">\\</span><span class="vs">[0.5em]</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="vs">&amp;</span><span class="sc">\m</span><span class="vs">athrm{Var}( X) =  </span><span class="sc">\l</span><span class="vs">ambda  = </span><span class="sc">${</span>params_pois[<span class="dv">0</span>]<span class="op">.</span><span class="fu">toPrecision</span>(<span class="dv">3</span>)<span class="sc">}</span><span class="vs"> </span><span class="sc">\\</span><span class="vs">[0.5em]</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="vs">&amp;</span><span class="sc">\m</span><span class="vs">athrm{P}( X</span><span class="sc">\l</span><span class="vs">eq </span><span class="sc">${</span>params_pois[<span class="dv">1</span>]<span class="sc">}</span><span class="vs">) =</span><span class="sc">${</span>poiscdf<span class="op">.</span><span class="fu">toPrecision</span>(<span class="dv">4</span>)<span class="sc">}</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="sc">\e</span><span class="vs">nd{aligned}</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="vs">`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-15" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb28" data-startfrom="1" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>plt_pois <span class="op">=</span> Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">color</span><span class="op">:</span> {</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>      <span class="dt">legend</span><span class="op">:</span> <span class="kw">false</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">x</span><span class="op">:</span> {</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>      <span class="dt">label</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>      <span class="dt">axis</span><span class="op">:</span> <span class="kw">true</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">y</span><span class="op">:</span> {</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>      <span class="dt">label</span><span class="op">:</span> <span class="st">"P(X = x)"</span><span class="op">,</span></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>      <span class="dt">axis</span><span class="op">:</span> <span class="kw">true</span></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>  <span class="dt">tooltip</span><span class="op">:</span> {</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>    <span class="dt">fill</span><span class="op">:</span> <span class="st">"#097969"</span><span class="op">,</span></span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>    <span class="dt">stroke</span><span class="op">:</span> <span class="st">"#097969"</span><span class="op">,</span></span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>    <span class="dt">opacity</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span></span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>    <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="dv">0</span>])<span class="op">,</span></span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">barY</span>(poispdf<span class="op">,</span>{<span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"pdf"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"#C1E1C1"</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">opacity</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span></span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>                <span class="dt">title</span><span class="op">:</span> (d) <span class="kw">=&gt;</span> <span class="vs">`P(X=</span><span class="sc">${</span>d<span class="op">.</span><span class="at">x</span><span class="sc">}</span><span class="vs">) = </span><span class="sc">${</span>(d<span class="op">.</span><span class="at">pdf</span>)<span class="op">.</span><span class="fu">toPrecision</span>(<span class="dv">4</span>)<span class="sc">}</span><span class="vs">`</span>})<span class="op">,</span></span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">barY</span>(poispdf<span class="op">,</span> {<span class="dt">filter</span><span class="op">:</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">x</span> <span class="op">&lt;=</span> params_pois[<span class="dv">1</span>]<span class="op">,</span> <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"pdf"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"#50C878"</span><span class="op">,</span> <span class="dt">opacity</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span></span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a>                <span class="dt">title</span><span class="op">:</span> (d) <span class="kw">=&gt;</span> <span class="vs">`P(X=</span><span class="sc">${</span>d<span class="op">.</span><span class="at">x</span><span class="sc">}</span><span class="vs">) = </span><span class="sc">${</span>(d<span class="op">.</span><span class="at">pdf</span>)<span class="op">.</span><span class="fu">toPrecision</span>(<span class="dv">4</span>)<span class="sc">}</span><span class="vs">`</span>})</span>
+<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a>  })</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="fig-ojs-cell-16" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-ojs-cell-16-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div id="ojs-cell-16" data-nodetype="declaration">
+
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ojs-cell-16-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10.4: Source: <a href="https://observablehq.com/@mattiasvillani/poisson-distribution" class="uri">https://observablehq.com/@mattiasvillani/poisson-distribution</a>
+</figcaption></figure>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb29" data-startfrom="0" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line -1;"><span id="cb29-0"><a href="#cb29-0" aria-hidden="true" tabindex="-1"></a>poispdf <span class="op">=</span> {</span>
+<span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> x <span class="op">=</span> d3<span class="op">.</span><span class="fu">range</span>(<span class="dv">0</span><span class="op">,</span> params_pois[<span class="dv">0</span>] <span class="op">+</span> <span class="dv">4</span><span class="op">*</span><span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(params_pois[<span class="dv">0</span>])<span class="op">,</span> <span class="dv">1</span>)<span class="op">;</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> data <span class="op">=</span> x<span class="op">.</span><span class="fu">map</span>(x <span class="kw">=&gt;</span> ({<span class="dt">x</span><span class="op">:</span> x<span class="op">,</span> <span class="dt">pdf</span><span class="op">:</span> jstat<span class="op">.</span><span class="at">poisson</span><span class="op">.</span><span class="fu">pdf</span>(x<span class="op">,</span> params_pois[<span class="dv">0</span>])}))<span class="op">;</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> data</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-17" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb30" data-startfrom="0" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line -1;"><span id="cb30-0"><a href="#cb30-0" aria-hidden="true" tabindex="-1"></a>poiscdf <span class="op">=</span> jstat<span class="op">.</span><span class="at">poisson</span><span class="op">.</span><span class="fu">cdf</span>(params_pois[<span class="dv">1</span>]<span class="op">,</span> params_pois[<span class="dv">0</span>])<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-18" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
 <hr>
 <p><span style="color:blue"> <strong>Assumptions and Properties of Poisson Variables</strong> </span></p>
 <p>As the binomial distribution, the Poisson distribution comes from the Poisson experiment having the following properties and assumptions:</p>
@@ -973,27 +1217,17 @@ What are the differences between Binomial and Poisson distributions?
 <li><p><strong><code>ppois(q, lambda, lower.tail = FALSE)</code></strong> to compute <span class="math inline">\(P(X &gt; q \mid \lambda)\)</span></p></li>
 </ul>
 <div class="cell">
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 1.</span></span>
-<span><span class="op">(</span><span class="va">lam</span> <span class="op">&lt;-</span> <span class="fl">4200</span> <span class="op">/</span> <span class="fl">365</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 11.50685</code></pre>
 </div>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## 2. P(X = 10)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/Poisson.html">dpois</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">10</span>, lambda <span class="op">=</span> <span class="va">lam</span><span class="op">)</span>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.112834</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## 3.</span></span>
-<span><span class="co">## P(X &gt; 10) = 1 - P(X &lt;= 10)</span></span>
-<span><span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Poisson.html">ppois</a></span><span class="op">(</span>q <span class="op">=</span> <span class="fl">10</span>, lambda <span class="op">=</span> <span class="va">lam</span><span class="op">)</span>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.5990436</code></pre>
 </div>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## P(X &gt; 10)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/Poisson.html">ppois</a></span><span class="op">(</span>q <span class="op">=</span> <span class="fl">10</span>, lambda <span class="op">=</span> <span class="va">lam</span>, </span>
-<span>      lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.5990436</code></pre>
 </div>
@@ -1020,7 +1254,7 @@ What are the differences between Binomial and Poisson distributions?
 <!-- :::: -->
 <p>Below is an example of how to generate the Poisson probability distribution as a graph.</p>
 <div class="cell">
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">24</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Poisson.html">dpois</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">24</span>, lambda <span class="op">=</span> <span class="va">lam</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">'h'</span>, </span>
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">24</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Poisson.html">dpois</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">24</span>, lambda <span class="op">=</span> <span class="va">lam</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">'h'</span>, </span>
 <span>     lwd <span class="op">=</span> <span class="fl">5</span>, ylab <span class="op">=</span> <span class="st">"P(X = x)"</span>, xlab <span class="op">=</span> <span class="st">"x"</span>, </span>
 <span>     main <span class="op">=</span> <span class="st">"Poisson(11.5)"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -1041,42 +1275,32 @@ What are the differences between Binomial and Poisson distributions?
 <li><p><strong><code>poisson.sf(k, mu = lambda)</code></strong> to compute <span class="math inline">\(P(X &gt; k \mid \lambda)\)</span></p></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> poisson</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> poisson</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Calculate lambda</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>lam <span class="op">=</span> <span class="dv">4200</span> <span class="op">/</span> <span class="dv">365</span></span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>lam</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>11.506849315068493</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co">## 2. P(X = 10)</span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>poisson.pmf(k<span class="op">=</span><span class="dv">10</span>, mu<span class="op">=</span>lam)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.1128340209466802</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co">## 3.</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="co">## P(X &gt; 10) = 1 - P(X &lt;= 10)</span></span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="op">-</span> poisson.cdf(<span class="dv">10</span>, mu<span class="op">=</span>lam)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.5990435715682069</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co">## P(X &gt; 10)</span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>poisson.sf(<span class="dv">10</span>, mu<span class="op">=</span>lam)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.5990435715682069</code></pre>
 </div>
 </div>
 <p>Below is an example of how to generate the Poisson probability distribution as a graph.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>plt.stem(np.arange(<span class="dv">0</span>, <span class="dv">25</span>), poisson.pmf(np.arange(<span class="dv">0</span>, <span class="dv">25</span>), mu<span class="op">=</span>lam), </span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>         basefmt<span class="op">=</span><span class="st">" "</span>)</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"x"</span>)</span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"P(X = x)"</span>)</span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Poisson(11.5)"</span>)</span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>plt.stem(np.arange(<span class="dv">0</span>, <span class="dv">25</span>), poisson.pmf(np.arange(<span class="dv">0</span>, <span class="dv">25</span>), mu<span class="op">=</span>lam), </span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>         basefmt<span class="op">=</span><span class="st">" "</span>)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"x"</span>)</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"P(X = x)"</span>)</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Poisson(11.5)"</span>)</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="prob-disc_files/figure-html/pois-plot-py-1.png" class="img-fluid figure-img" width="672"></p>
@@ -1173,7 +1397,16 @@ What are the differences between Binomial and Poisson distributions?
 <ol>
 <li id="fn1"><p>It is a little misleading. The <code>'h'</code> type here is just a notation for this bar-like plotting type, not really the histogram we discussed in <a href="data-graphics.html" class="quarto-xref"><span>Chapter 5</span></a>. To draw a histogram, we use the function <code><a href="https://rdrr.io/r/graphics/hist.html">hist()</a></code>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>In this Poisson distribution section, the word event means an incident or happening. It is not the event used in probability, which is a set conceptually.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</ol></section></main><!-- /main --><script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZpZXdvZiBwYXJhbXMgPSBJbnB1dHMuZm9ybShbXG4gICAgICBJbnB1dHMucmFuZ2UoWzEsIDIwMF0sIHt2YWx1ZTogMTAsIHN0ZXA6IDEsIGxhYmVsOiB0ZXhgbmB9KSxcbiAgICAgIElucHV0cy5yYW5nZShbMCwgMV0sIHt2YWx1ZTogMC41LCBzdGVwOiAwLjAxLCBsYWJlbDogdGV4YFxccGlgfSksXG4gICAgXSlcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMiIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZpZXdvZiBrdmFudGlsID0gSW5wdXRzLnJhbmdlKFsxLCBwYXJhbXNbMF1dLCB7dmFsdWU6IDMsIHN0ZXA6IDEsIGxhYmVsOiBcInF1YW50aWxlXCJ9KVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0zIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoidmlld29mIGFwcHJveCA9IElucHV0cy50b2dnbGUoe2xhYmVsOiBcInNob3cgbm9ybWFsIGFwcHJveGltYXRpb25cIiwgdmFsdWU6IGZhbHNlfSlcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtNCIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6ImpzdGF0ID0gcmVxdWlyZSgnanN0YXQnKVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC01IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiYmlub21jZGYgPSBqc3RhdC5iaW5vbWlhbC5jZGYoa3ZhbnRpbCwgcGFyYW1zWzBdLCBwYXJhbXNbMV0pO1xuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC02IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoibm9ybWFsYXBwcm94cGRmID0ge1xuICBjb25zdCB4ID0gZDMucmFuZ2UoMCwgcGFyYW1zWzBdLCAxKTtcbiAgY29uc3Qgbm9ybWFsYXBwcm94cGRmID0geC5tYXAoeCA9PiAoe3g6IHgsIHBkZjoganN0YXQubm9ybWFsLnBkZih4LCBwYXJhbXNbMF0qcGFyYW1zWzFdLCBNYXRoLnNxcnQocGFyYW1zWzBdKnBhcmFtc1sxXSooMS1wYXJhbXNbMV0pKSl9KSk7XG4gIHJldHVybiBub3JtYWxhcHByb3hwZGZcbn1cbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtNyIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6Im5vcm1hbGFwcHJveGNkZiA9IGpzdGF0Lm5vcm1hbC5jZGYoa3ZhbnRpbCwgcGFyYW1zWzBdKnBhcmFtc1sxXSwgTWF0aC5zcXJ0KHBhcmFtc1swXSpwYXJhbXNbMV0qKDEtcGFyYW1zWzFdKSkpXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTgiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJub3JtYWxhcHByb3hjZGZfY29ycmVjdGVkID0ganN0YXQubm9ybWFsLmNkZihrdmFudGlsKzAuNSwgcGFyYW1zWzBdKnBhcmFtc1sxXSwgTWF0aC5zcXJ0KHBhcmFtc1swXSpwYXJhbXNbMV0qKDEtcGFyYW1zWzFdKSkpXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTkiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJiaW5vbXBkZiA9IHtcbiAgY29uc3QgeCA9IGQzLnJhbmdlKDAsIHBhcmFtc1swXSsxLCAxKTtcbiAgY29uc3QgYmlub21wZGYgPSB4Lm1hcCh4ID0+ICh7eDogeCwgcGRmOiBqc3RhdC5iaW5vbWlhbC5wZGYoeCwgcGFyYW1zWzBdLCBwYXJhbXNbMV0pLCB0eXBlOiBcImV4YWN0XCJ9KSk7XG4gIGNvbnN0IG5vcm1hbGFwcHJveHBkZiA9IHgubWFwKHggPT4gKHt4OiB4LCBwZGY6IGpzdGF0Lm5vcm1hbC5wZGYoeCwgcGFyYW1zWzBdKnBhcmFtc1sxXSwgTWF0aC5zcXJ0KHBhcmFtc1swXSpwYXJhbXNbMV0qKDEtcGFyYW1zWzFdKSkpLHR5cGU6IFwiYXBwcm94XCJ9KSk7XG4gIGNvbnN0IGRhdGEgPSBiaW5vbXBkZi5jb25jYXQobm9ybWFsYXBwcm94cGRmKVxuICByZXR1cm4gZGF0YVxufVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0xMCIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6Im1vbWVudHMgPSB0ZXhgXG5cXHRleHR7SWYgfSBYIFxcc2ltIFxcb3BlcmF0b3JuYW1le0Jpbm9tfSgke3BhcmFtc1swXX0sJHtwYXJhbXNbMV19KSBcXHRleHR7IHRoZW4gfVxcXFxbMC41ZW1dXG5cbkUoIFgpID1uICBcXHBpID0gJHsocGFyYW1zWzBdKnBhcmFtc1sxXSkudG9QcmVjaXNpb24oMyl9IFxcXFxbMC41ZW1dXG5WYXIoIFgpID1uICBcXHBpICgxLVxccGkpID0keyhwYXJhbXNbMF0qcGFyYW1zWzFdKigxLXBhcmFtc1sxXSkpLnRvUHJlY2lzaW9uKDMpfSBcXFxcWzAuNWVtXVxuXG5gXG5cbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMTEiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJjZGZzID0gXG57XG4gIHZhciBjZGY7XG4gIGlmIChhcHByb3gpe1xuICBjZGYgPSB0ZXhgXG4gIFxcYmVnaW57YXJyYXl9e2xsfVxuICBcXHRleHR7RXhhY3QgYmlub21pYWw6fSAmIFAoIFhcXGxlcSAke2t2YW50aWx9KSA9JHtiaW5vbWNkZi50b1ByZWNpc2lvbig0KX0gXFxcXFswLjI1ZW1dXG4gIFxcdGV4dHtOb3JtYWwgYXBwcm94On0gJiBQKCBYXFxsZXEgJHtrdmFudGlsfSkgPSR7bm9ybWFsYXBwcm94Y2RmLnRvUHJlY2lzaW9uKDQpfSBcXFxcWzAuMjVlbV1cbiAgXFx0ZXh0e05vcm1hbCBhcHByb3ggLSBjb3JyOn0gJiBQKCBYXFxsZXEgJHtrdmFudGlsfSkgID0ke25vcm1hbGFwcHJveGNkZl9jb3JyZWN0ZWQudG9QcmVjaXNpb24oNCl9IFxcXFxbMWVtXVxuICBcXGVuZHthcnJheX1cbiAgYH1cbiAgZWxzZXtcbiAgIGNkZiA9IHRleGBcbiAgXFxiZWdpbnthcnJheX17bGx9XG4gIFxcdGV4dHtFeGFjdDp9ICYgUCggWFxcbGVxICR7a3ZhbnRpbH0pID0ke2Jpbm9tY2RmLnRvUHJlY2lzaW9uKDQpfSBcXFxcWzFlbV1cbiAgXFxlbmR7YXJyYXl9XG4gIGAgXG4gIH1cbiAgcmV0dXJuIGNkZjtcbn1cbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMTIiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJwbHRfYmlub20gPSBQbG90LnBsb3Qoe1xuICAgIGNvbG9yOiB7IFxuICAgICAgbGVnZW5kOiBhcHByb3hcbiAgICB9LFxuICAgIHg6IHtcbiAgICAgIGxhYmVsOiBcInhcIixcbiAgICAgIGF4aXM6IHRydWUsXG4gICAgICBkb21haW46IGQzLnJhbmdlKDAsIHBhcmFtc1swXSsxLCAxKVxuICAgIH0sXG4gICAgeToge1xuICAgICAgbGFiZWw6IFwiUChYID0geClcIixcbiAgICAgIGRvbWFpbjogWzAsMS4xKmpzdGF0LmJpbm9taWFsLnBkZihwYXJhbXNbMF0qcGFyYW1zWzFdLCBwYXJhbXNbMF0scGFyYW1zWzFdKV1cbiAgICB9LFxuICB0b29sdGlwOiB7XG4gICAgZmlsbDogXCIjQzA0MDAwXCIsXG4gICAgc3Ryb2tlOiBcIiNDMDQwMDBcIixcbiAgICBvcGFjaXR5OiAxLFxuICB9LFxuICAgIG1hcmtzOiBbXG4gICAgICBQbG90LnJ1bGVZKFswXSksXG4gICAgICBQbG90LmJhclkoYmlub21wZGYse2ZpbHRlcjogZCA9PiBkLnR5cGUgPT0gXCJleGFjdFwiLCB4OiBcInhcIiwgeTogXCJwZGZcIiwgZmlsbCA6IFwib3JhbmdlXCIsIHN0cm9rZVdpZHRoOiAwLCBvcGFjaXR5OiAwLjgsIFxuICAgICAgICB0aXRsZTogKGQpID0+IGBQKFg9JHtkLnh9KSA9ICR7KGQucGRmKS50b1ByZWNpc2lvbig0KX1gfSksXG4gICAgICBQbG90LmJhclkoYmlub21wZGYsIHtmaWx0ZXI6IGQgPT4gZC50eXBlID09IFwiZXhhY3RcIiAmJiBkLnggPD0ga3ZhbnRpbCwgeDogXCJ4XCIsIHk6IFwicGRmXCIsIGZpbGw6IFwiZGFya29yYW5nZVwiLCBvcGFjaXR5OiAxLFxuICAgICAgICB0aXRsZTogKGQpID0+IGBQKFg9JHtkLnh9KSA9ICR7KGQucGRmKS50b1ByZWNpc2lvbig0KX1gfSksXG4gICAgICBQbG90LmxpbmUobm9ybWFsYXBwcm94cGRmLCB7ZmlsdGVyOiBkID0+IGFwcHJveCwgeDogXCJ4XCIsIHk6IFwicGRmXCIsIHN0cm9rZSA6IFwic3RlZWxibHVlXCIsIHN0cm9rZVdpZHRoOiAyfSkgICAgXG4gICAgXVxuICB9KVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0xMyIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZpZXdvZiBwYXJhbXNfcG9pcyA9IElucHV0cy5mb3JtKFtcbiAgICAgIElucHV0cy5yYW5nZShbMC4xLCAyMF0sIHt2YWx1ZTogMiwgc3RlcDogMC4xLCBsYWJlbDogdGV4YFxcbGFtYmRhOmB9KSxcbiAgICAgIElucHV0cy5yYW5nZShbMSwgNDBdLCB7dmFsdWU6IDEsIHN0ZXA6IDEsIGxhYmVsOiBcInF1YW50aWxlOlwifSlcbiAgICBdKVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0xNCIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6ImRpc3RfcXVhbnRpbGUgPSB0ZXhgXFx0ZXh0e0lmIH0gWCBcXHNpbSBcXG9wZXJhdG9ybmFtZXtQb2lzc29ufSgke3BhcmFtc19wb2lzWzBdfSkgXFx0ZXh0eyB0aGVuIH0gYFxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0xNSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6Im1vbWVudHNfcG9pcyA9IHRleGBcblxcYmVnaW57YWxpZ25lZH1cbiZcXG1hdGhybXtFfSggWCkgPSAgXFxsYW1iZGEgPSAke3BhcmFtc19wb2lzWzBdLnRvUHJlY2lzaW9uKDMpfSBcXFxcWzAuNWVtXVxuJlxcbWF0aHJte1Zhcn0oIFgpID0gIFxcbGFtYmRhICA9ICR7cGFyYW1zX3BvaXNbMF0udG9QcmVjaXNpb24oMyl9IFxcXFxbMC41ZW1dXG4mXFxtYXRocm17UH0oIFhcXGxlcSAke3BhcmFtc19wb2lzWzFdfSkgPSR7cG9pc2NkZi50b1ByZWNpc2lvbig0KX1cblxcZW5ke2FsaWduZWR9XG5gXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTE2IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoicGx0X3BvaXMgPSBQbG90LnBsb3Qoe1xuICAgIGNvbG9yOiB7XG4gICAgICBsZWdlbmQ6IGZhbHNlXG4gICAgfSxcbiAgICB4OiB7XG4gICAgICBsYWJlbDogXCJ4XCIsXG4gICAgICBheGlzOiB0cnVlXG4gICAgfSxcbiAgICB5OiB7XG4gICAgICBsYWJlbDogXCJQKFggPSB4KVwiLFxuICAgICAgYXhpczogdHJ1ZVxuICAgIH0sXG4gIHRvb2x0aXA6IHtcbiAgICBmaWxsOiBcIiMwOTc5NjlcIixcbiAgICBzdHJva2U6IFwiIzA5Nzk2OVwiLFxuICAgIG9wYWNpdHk6IDEsXG4gIH0sXG4gICAgbWFya3M6IFtcbiAgICAgIFBsb3QucnVsZVkoWzBdKSxcbiAgICAgIFBsb3QuYmFyWShwb2lzcGRmLHt4OiBcInhcIiwgeTogXCJwZGZcIiwgZmlsbDogXCIjQzFFMUMxXCIsIHN0cm9rZVdpZHRoOiAwLCBvcGFjaXR5OiAxLFxuICAgICAgICAgICAgICAgIHRpdGxlOiAoZCkgPT4gYFAoWD0ke2QueH0pID0gJHsoZC5wZGYpLnRvUHJlY2lzaW9uKDQpfWB9KSxcbiAgICAgIFBsb3QuYmFyWShwb2lzcGRmLCB7ZmlsdGVyOiBkID0+IGQueCA8PSBwYXJhbXNfcG9pc1sxXSwgeDogXCJ4XCIsIHk6IFwicGRmXCIsIGZpbGw6IFwiIzUwQzg3OFwiLCBvcGFjaXR5OiAxLFxuICAgICAgICAgICAgICAgIHRpdGxlOiAoZCkgPT4gYFAoWD0ke2QueH0pID0gJHsoZC5wZGYpLnRvUHJlY2lzaW9uKDQpfWB9KVxuICAgIF1cbiAgfSlcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMTciLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJwb2lzcGRmID0ge1xuICBjb25zdCB4ID0gZDMucmFuZ2UoMCwgcGFyYW1zX3BvaXNbMF0gKyA0Kk1hdGguc3FydChwYXJhbXNfcG9pc1swXSksIDEpO1xuICBjb25zdCBkYXRhID0geC5tYXAoeCA9PiAoe3g6IHgsIHBkZjoganN0YXQucG9pc3Nvbi5wZGYoeCwgcGFyYW1zX3BvaXNbMF0pfSkpO1xuICByZXR1cm4gZGF0YVxufVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0xOCIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InBvaXNjZGYgPSBqc3RhdC5wb2lzc29uLmNkZihwYXJhbXNfcG9pc1sxXSwgcGFyYW1zX3BvaXNbMF0pO1xuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdwYXJhbXMnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgna3ZhbnRpbCcpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdhcHByb3gnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgncGFyYW1zX3BvaXMnKSJ9XX0=
+</script><script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../..";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -1352,18 +1585,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -1395,7 +1617,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp("https:\/\/chenghanyu-introstatsbook\.netlify\.app\/");
@@ -1403,7 +1645,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
@@ -1500,7 +1742,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {

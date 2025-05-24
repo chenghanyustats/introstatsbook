@@ -1,0 +1,140 @@
+---
+title: "Observable JS Binomial Distribution"
+execute:
+  echo: false
+---
+
+
+```{ojs}
+//| echo: false
+viewof params = Inputs.form([
+      Inputs.range([1, 200], {value: 10, step: 1, label: tex`n`}),
+      Inputs.range([0, 1], {value: 0.5, step: 0.01, label: tex`\pi`}),
+    ])
+```
+
+
+```{ojs}
+//| echo: false
+viewof kvantil = Inputs.range([1, params[0]], {value: 3, step: 1, label: "quantile"})
+```
+
+
+```{ojs}
+//| echo: false
+viewof approx = Inputs.toggle({label: "show normal approximation", value: false})
+```
+
+
+```{ojs}
+//| echo: false
+jstat = require('jstat')
+```
+
+
+```{ojs}
+//| echo: false
+binomcdf = jstat.binomial.cdf(kvantil, params[0], params[1]);
+```
+
+
+```{ojs}
+//| echo: false
+normalapproxpdf = {
+  const x = d3.range(0, params[0], 1);
+  const normalapproxpdf = x.map(x => ({x: x, pdf: jstat.normal.pdf(x, params[0]*params[1], Math.sqrt(params[0]*params[1]*(1-params[1])))}));
+  return normalapproxpdf
+}
+```
+
+```{ojs}
+//| echo: false
+normalapproxcdf = jstat.normal.cdf(kvantil, params[0]*params[1], Math.sqrt(params[0]*params[1]*(1-params[1])))
+```
+
+
+
+```{ojs}
+//| echo: false
+normalapproxcdf_corrected = jstat.normal.cdf(kvantil+0.5, params[0]*params[1], Math.sqrt(params[0]*params[1]*(1-params[1])))
+```
+
+```{ojs}
+//| echo: false
+binompdf = {
+  const x = d3.range(0, params[0]+1, 1);
+  const binompdf = x.map(x => ({x: x, pdf: jstat.binomial.pdf(x, params[0], params[1]), type: "exact"}));
+  const normalapproxpdf = x.map(x => ({x: x, pdf: jstat.normal.pdf(x, params[0]*params[1], Math.sqrt(params[0]*params[1]*(1-params[1]))),type: "approx"}));
+  const data = binompdf.concat(normalapproxpdf)
+  return data
+}
+```
+
+```{ojs}
+moments = tex`
+\text{If } X \sim \operatorname{Binom}(${params[0]},${params[1]}) \text{ then }\\[0.5em]
+
+E( X) =n  \pi = ${(params[0]*params[1]).toPrecision(3)} \\[0.5em]
+Var( X) =n  \pi (1-\pi) =${(params[0]*params[1]*(1-params[1])).toPrecision(3)} \\[0.5em]
+
+`
+
+```
+
+
+```{ojs}
+//| echo: false
+cdfs = 
+{
+  var cdf;
+  if (approx){
+  cdf = tex`
+  \begin{array}{ll}
+  \text{Exact binomial:} & P( X\leq ${kvantil}) =${binomcdf.toPrecision(4)} \\[0.25em]
+  \text{Normal approx:} & P( X\leq ${kvantil}) =${normalapproxcdf.toPrecision(4)} \\[0.25em]
+  \text{Normal approx - corr:} & P( X\leq ${kvantil})  =${normalapproxcdf_corrected.toPrecision(4)} \\[1em]
+  \end{array}
+  `}
+  else{
+   cdf = tex`
+  \begin{array}{ll}
+  \text{Exact:} & P( X\leq ${kvantil}) =${binomcdf.toPrecision(4)} \\[1em]
+  \end{array}
+  ` 
+  }
+  return cdf;
+}
+```
+
+
+```{ojs}
+//| echo: false
+//| fig-cap: "Source: <https://observablehq.com/@mattiasvillani/binomial-distribution>"
+plt_binom = Plot.plot({
+    color: { 
+      legend: approx
+    },
+    x: {
+      label: "x",
+      axis: true,
+      domain: d3.range(0, params[0]+1, 1)
+    },
+    y: {
+      label: "P(X = x)",
+      domain: [0,1.1*jstat.binomial.pdf(params[0]*params[1], params[0],params[1])]
+    },
+  tooltip: {
+    fill: "#C04000",
+    stroke: "#C04000",
+    opacity: 1,
+  },
+    marks: [
+      Plot.ruleY([0]),
+      Plot.barY(binompdf,{filter: d => d.type == "exact", x: "x", y: "pdf", fill : "orange", strokeWidth: 0, opacity: 0.8, 
+        title: (d) => `P(X=${d.x}) = ${(d.pdf).toPrecision(4)}`}),
+      Plot.barY(binompdf, {filter: d => d.type == "exact" && d.x <= kvantil, x: "x", y: "pdf", fill: "darkorange", opacity: 1,
+        title: (d) => `P(X=${d.x}) = ${(d.pdf).toPrecision(4)}`}),
+      Plot.line(normalapproxpdf, {filter: d => approx, x: "x", y: "pdf", stroke : "steelblue", strokeWidth: 2})    
+    ]
+  })
+```

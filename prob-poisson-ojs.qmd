@@ -1,0 +1,79 @@
+---
+title: "Observable JS Poisson Distribution"
+execute:
+  echo: false
+---
+
+
+```{ojs}
+//| echo: false
+viewof params_pois = Inputs.form([
+      Inputs.range([0.1, 20], {value: 2, step: 0.1, label: tex`\lambda:`}),
+      Inputs.range([1, 40], {value: 1, step: 1, label: "quantile:"})
+    ])
+```
+
+
+```{ojs}
+//| echo: false
+dist_quantile = tex`\text{If } X \sim \operatorname{Poisson}(${params_pois[0]}) \text{ then } `
+```
+
+
+```{ojs}
+//| echo: false
+moments_pois = tex`
+\begin{aligned}
+&\mathrm{E}( X) =  \lambda = ${params_pois[0].toPrecision(3)} \\[0.5em]
+&\mathrm{Var}( X) =  \lambda  = ${params_pois[0].toPrecision(3)} \\[0.5em]
+&\mathrm{P}( X\leq ${params_pois[1]}) =${poiscdf.toPrecision(4)}
+\end{aligned}
+`
+```
+
+
+```{ojs}
+//| echo: false
+//| fig-cap: "Source: <https://observablehq.com/@mattiasvillani/poisson-distribution>"
+plt_pois = Plot.plot({
+    color: {
+      legend: false
+    },
+    x: {
+      label: "x",
+      axis: true
+    },
+    y: {
+      label: "P(X = x)",
+      axis: true
+    },
+  tooltip: {
+    fill: "#097969",
+    stroke: "#097969",
+    opacity: 1,
+  },
+    marks: [
+      Plot.ruleY([0]),
+      Plot.barY(poispdf,{x: "x", y: "pdf", fill: "#C1E1C1", strokeWidth: 0, opacity: 1,
+                title: (d) => `P(X=${d.x}) = ${(d.pdf).toPrecision(4)}`}),
+      Plot.barY(poispdf, {filter: d => d.x <= params_pois[1], x: "x", y: "pdf", fill: "#50C878", opacity: 1,
+                title: (d) => `P(X=${d.x}) = ${(d.pdf).toPrecision(4)}`})
+    ]
+  })
+```
+
+
+```{ojs}
+//| echo: false
+poispdf = {
+  const x = d3.range(0, params_pois[0] + 4*Math.sqrt(params_pois[0]), 1);
+  const data = x.map(x => ({x: x, pdf: jstat.poisson.pdf(x, params_pois[0])}));
+  return data
+}
+```
+
+```{ojs}
+//| echo: false
+poiscdf = jstat.poisson.cdf(params_pois[1], params_pois[0]);
+```
+
