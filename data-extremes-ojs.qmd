@@ -1,0 +1,53 @@
+---
+# title: "Observable JS extreme values"
+execute:
+  echo: false
+---
+
+
+```{ojs}
+//| echo: false
+viewof N = Inputs.range([2, 100], {value: 10, step: 1, label: "number of data points"})
+```
+
+
+```{ojs}
+viewof maxscalefact = Inputs.range([1, 5], {value: 1, label: "Multiply the largest data point with", step: 1})
+```
+
+
+```{ojs}
+Plot.plot({
+  color: {legend: true},
+  x: {
+    domain: [0, 500]
+  },
+  height: 100,
+  marks: [
+    Plot.dotX(datascaled, {filter: d => d.type == "data points" || d.type == "max value", x: "data", stroke: "type", strokeWidth: "width", symbol: "symbol", r: "radius"}),
+    Plot.tickX(datascaled, {filter: d => d.type == "mean" || d.type == "median", x: "data", stroke: "type", strokeWidth: "width", symbol: "symbol"}),
+  ]
+})
+```
+
+```{ojs}
+jstat = require('jstat')
+```
+
+```{ojs}
+pop = d3.sort(d3.range(N).map(d => Math.round(jstat.normal.sample( 50, 10 ).toFixed(2))))
+```
+
+```{ojs}
+datascaled = {
+  var tmp;
+  tmp = pop.map(d => ({data: d, type: "data points", width: 1, symbol: "circle", radius: 1}))
+  tmp[tmp.length - 1] = {data: d3.max(pop)*maxscalefact, type: "max value", width: 3, symbol: "circle", radius: 1}
+  const meanval = d3.mean(tmp.map(d => d.data))
+  const medianval = d3.median(tmp.map(d => d.data))
+  tmp.push(({data: meanval, type: "mean", width: 3, symbol: "diamond", radius: 3}))
+  tmp.push(({data: medianval, type: "median", width: 3, symbol: "square", radius: 3}))
+  return tmp
+}
+```
+

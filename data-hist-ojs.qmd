@@ -1,0 +1,57 @@
+---
+# title: "Observable JS "
+execute:
+  echo: false
+---
+
+
+```{ojs}
+//| echo: false
+viewof bin_input = Inputs.form([
+  Inputs.select(['manual choice','sturges','scott'], {value: "manuellt val", label: "method for bins:"}),
+  Inputs.range([2, 25], {value: 10, step: 1, label: "number of bins"})])
+```
+
+
+```{ojs}
+//| fig-cap: "Source: <https://observablehq.com/@mattiasvillani/histogram-the-choice-of-bins>"
+plt = {
+  var plt;
+  if (bin_input[0] == 'manual choice'){
+  plt = Plot.plot({
+    caption: 'Histogram of the age distribution on the Titanic',
+    facet: {
+      data: titanic,
+      x: "Sex"
+    },
+    marks: [
+      Plot.rectY(titanic, Plot.binX({y: "count"}, {x: "Age", thresholds: bin_input[1], fill: "Sex"})),
+      Plot.ruleY([0])
+    ]
+  })
+  }else{
+  plt = Plot.plot({
+    caption: 'Histogram of the age distribution on the Titanic',
+    facet: {
+      data: titanic,
+      x: "Sex"
+    },
+    marks: [
+      Plot.rectY(titanic, Plot.binX({y: "count"}, {x: "Age", thresholds: bin_input[0], fill: "Sex"})),
+      Plot.ruleY([0])
+    ]
+  })
+  }
+  return plt;
+}
+```
+
+
+
+```{ojs}
+Ch3data = FileAttachment("./data/OnlyTitanic.xlsx").xlsx("Titanic")
+```
+
+```{ojs}
+titanic = Ch3data.sheet(0, { headers: true })
+```
