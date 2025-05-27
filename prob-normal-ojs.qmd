@@ -1,0 +1,133 @@
+---
+# title: "Observable JS Normal distribution"
+execute:
+  echo: false
+---
+
+
+```{ojs}
+//| echo: false
+viewof params = Inputs.form([
+      Inputs.range([-3, 3], {value: 0, step: 0.1, label: tex`\mu:`}),
+      Inputs.range([0.1, 3], {value: 1, step: 0.1, label: tex`\sigma:`}),
+      Inputs.range([-10, 10], {value: -1.96, step: 0.01, label: "quantile:"})
+    ])
+```
+
+
+```{ojs}
+dist_quantile = tex`\text{If } X \sim N(${params[0]},${params[1]}) \text{ then } \\[1em]` 
+```
+
+
+```{ojs}
+moments = tex`
+\begin{aligned}
+&E( X) = \mu = ${params[0].toPrecision(3)} \\[0.5em]
+&Var( X) =\sigma^2 = ${(params[1]**2).toPrecision(3)} \\[0.5em]
+&P( X\leq ${params[2]}) =${normcdf.toPrecision(4)}
+\end{aligned}
+`
+```
+
+```{ojs}
+//| fig-cap: "Source: <https://observablehq.com/@mattiasvillani/normal-gaussian-distribution>"
+sidebysideplot = html`<html>
+ <head>
+ </head>
+ <body>
+    <div class="container" style="display: flex; height: 250px;">
+        <div style="width: 50%;">
+            ${plt_pdf}
+        </div>
+        <div style="width: 50%;">
+            ${plt_pdf_interval}
+        </div>
+    </div>
+ </body>
+</html>
+<br><br><br>
+`
+```
+
+```{ojs}
+import {interval} from '@mootari/range-slider@1781'
+```
+
+
+
+```{ojs}
+plt_pdf = Plot.plot({
+    color: {
+      legend: true
+    },
+    x: {
+      label: "x",
+      axis: true
+    },
+    y: {
+      axis: true,
+      label: "Normal density value f(x)",
+      domain: [0,jstat.normal.pdf(params[0], params[0], params[1])]
+    },
+    marks: [
+      Plot.ruleY([0]),
+      Plot.line(normpdf, {x: "x", y: "pdf", stroke : "steelblue", strokeWidth: 2}),
+      Plot.areaY(normpdf, {filter: d => d.x <= params[2], x: "x", y: "pdf", fill: "steelblue", opacity: 0.2})
+    ]
+  })
+```
+
+```{ojs}
+plt_pdf_interval = Plot.plot({
+    color: {
+      legend: true
+    },
+    x: {
+      label: "x",
+      axis: true,
+      domain: [params[0] - 4*params[1], params[0] + 4*params[1]]
+    },
+    y: {
+      axis: false,
+      domain: [0,1.01*jstat.normal.pdf(params[0], params[0], params[1])]
+    },
+    marks: [
+      Plot.ruleY([0]),
+      Plot.line(normpdf, {x: "x", y: "pdf", stroke : "steelblue", strokeWidth: 2}),
+      // 1 std
+      Plot.areaY(normpdf, {filter: d => d.x >= params[0] - 1*params[1] && d.x <= params[0] + 1*params[1], x: "x", y: "pdf", fill: "#6CB4EE", opacity: 0.5}),
+      // 2 std
+      Plot.areaY(normpdf, {filter: d => d.x > params[0] - 2*params[1] && d.x < params[0] - 1*params[1], x: "x", y: "pdf", fill: "#0066b2", opacity: 0.7}),
+      Plot.areaY(normpdf, {filter: d => d.x >= params[0] + 1*params[1] && d.x <= params[0] + 2*params[1], x: "x", y: "pdf", fill: "#0066b2", opacity: 0.7}),
+      // 3 std
+      Plot.areaY(normpdf, {filter: d => d.x > params[0] - 3*params[1] && d.x <= params[0] - 2*params[1], x: "x", y: "pdf", fill: "#002D62", opacity: 0.7}),
+      Plot.areaY(normpdf, {filter: d => d.x > params[0] + 2*params[1] && d.x <= params[0] + 3*params[1], x: "x", y: "pdf", fill: "#002D62", opacity: 0.7}),
+      Plot.text(textdata, {x: "x", y: "y", text: "text", dy: 0, fontSize: 20, textAnchor: "middle", frameAnchor: "middle"})
+    ]
+  })
+```
+
+```{ojs}
+normpdf = {
+  const x = d3.range(-10, 10, 0.01);
+  const normpdf = x.map(x => ({x: x, pdf: jstat.normal.pdf(x, params[0], params[1])}));
+  return normpdf
+}
+```
+
+```{ojs}
+normcdf = jstat.normal.cdf(params[2], params[0], params[1]);
+```
+
+```{ojs}
+maxpdf = jstat.normal.pdf(params[0], params[0], params[1])
+```
+
+```{ojs}
+textdata = [{x: params[0], y: 0.12*maxpdf, text: "68%"},{x: params[0] - 1.5*params[1], y: 0.12*maxpdf, text: "95%"},{x: params[0] - 2.5*params[1], y: 0.12*maxpdf, text: "99.7%"}]
+```
+
+```{ojs}
+jstat = require('jstat')
+```
