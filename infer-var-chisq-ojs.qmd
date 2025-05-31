@@ -1,0 +1,77 @@
+---
+# title: "Observable JS Chisq distribution"
+execute:
+  echo: false
+---
+
+<!-- ```{ojs} -->
+<!-- md_colour = Inputs.color({label: "Highlight color cells", value: "#F0F0F0"}) -->
+<!-- ``` -->
+
+```{ojs}
+viewof params = Inputs.form([
+      Inputs.range([1, 100], {value: 4, step: 1, label: tex`\nu`}),
+      Inputs.range([0.01, 50], {value: 2, step: 0.01, label: "quantile:"})
+    ])
+```
+
+
+```{ojs}
+//| echo: false
+dist_quantile = tex`\text{If } X \sim \chi^2_{${params[0]}} \text{ then } `
+```
+
+
+```{ojs}
+moments = tex`
+\begin{aligned}
+&E( X) =\nu = ${params[0].toPrecision(3)} \\[1em]
+&Var( X) =2\nu= ${(2*params[0]).toPrecision(3)} \\[1em]
+&P( X\leq ${params[1]}) =${chisquarecdf.toPrecision(4)}
+\end{aligned}
+`
+```
+
+```{ojs}
+//| fig-cap: "Source: <https://observablehq.com/@mattiasvillani/chi2-distribution>"
+plt_pdf = Plot.plot({
+    color: {
+      legend: true
+    },
+    x: {
+      label: "x",
+      axis: true
+    },
+    y: {
+      label: "f(x)",
+      //axis: false,
+      domain: [0,jstat.chisquare.pdf(Math.max(0,params[0]-2), params[0])]
+    },
+    marks: [
+      Plot.ruleY([0]),
+      Plot.ruleX([0]),
+      Plot.line(chisquarepdf, {x: "x", y: "pdf", stroke : "steelblue", strokeWidth: 2}),
+      Plot.areaY(chisquarepdf, {filter: d => d.x <= params[1], x: "x", y: "pdf", fill: "steelblue", opacity: 0.2})
+    ]
+  })
+```
+
+
+```{ojs}
+chisquarepdf = {
+  const x = d3.range(0.01, params[0]+5*Math.sqrt(2*params[0]), 0.01);
+  const pdf = x.map(x => ({x: x, pdf: jstat.chisquare.pdf(x, params[0])}));
+  return pdf
+}
+```
+
+
+```{ojs}
+chisquarecdf = jstat.chisquare.cdf(params[1], params[0]);
+```
+
+
+```{ojs}
+jstat = require('jstat')
+```
+

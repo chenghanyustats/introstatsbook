@@ -4,124 +4,154 @@ execute:
   echo: false
 ---
 
+<!-- ```{ojs} -->
+<!-- md_colour = Inputs.color({label: "Highlight color cells", value: "#F0F0F0"}) -->
+<!-- ``` -->
+
+```{ojs}
+datatext = md`**Data**`
+```
+
 
 ```{ojs}
 //| echo: false
-viewof settings = Inputs.form([
-  Inputs.range([-5, 5], {value: 1, label: tex`\text{pop mean, }\mu`, step: 0.01}),
-  Inputs.range([0.01, 5], {value: 1, label: tex`\text{pop stdev, }\sigma`, step: 0.01}),
-  Inputs.range([0, 99], {value: 90, label: "confidence level", step: 1}),
-  Inputs.range([0, 200], {value: 50, label: "sample size, n", step: 1})
-  ])
+viewof n = Inputs.range([1, 100], {value: 50, step: 1, label: tex`n`})
 ```
 
 
 ```{ojs}
-viewof nrep = Scrubber(d3.ticks(1, 1000, 1000), {
-  autoplay: false,
-  loop: false,
-  initial: 1,
-  delay: 350,
-  format: x => `number of datasets = ${x.toFixed(0)}`
-})
+viewof s = Inputs.range([0, n], {value: 30, step: 1, label: tex`y`})
 ```
 
-
+```{ojs}
+md`**Prior**`
+```
 
 ```{ojs}
-textinfo = md`
-Out of a total of ${nrep} samples, ${d3.sum(data.map(d => d.rep <= nrep && (mu >= d.lower && mu <= d.upper)))} (**<span style="color:red">${(d3.sum(data.map(d => d.rep <= nrep && (mu >= d.lower && mu <= d.upper)))*100/nrep).toFixed(3)}%</span>**) of the ${confidence}% confidence intervals contained the true population mean ${tex`\mu= `} ${mu}.
+viewof priorsettings = Inputs.form([
+      Inputs.range([0.5, 100], {value: 45, step: 0.1, label: tex`\alpha`}),
+      Inputs.range([0.5, 100], {value: 55, step: 0.1, label: tex`\beta`})
+    ])
+```
+
+```{ojs}
+postresultstext = html`<div width: 100%;">
+<table>
+  <tr>
+    <td style="width:25%"><b>Prior mean</b>:</td>
+    <td>${tex`\mathbb{E}( \theta) = ${priormean.toPrecision(3)}`}</td>
+    <td style="width:25%"><b>Posterior mean</b>:</td>
+    <td>${tex`\mathbb{E}( \theta \vert \boldsymbol{y}) = ${postmean.toPrecision(3)}`}</td>
+  </tr>
+  <tr>
+    <td style="width:25%"><b>Prior st.dev</b>:</td>
+    <td>${tex`\mathbb{S}( \theta) = ${Math.sqrt(priorvariance).toPrecision(3)}`}</td>
+    <td style="width:25%"><b>Posterior st.dev</b>:</td>
+    <td>${tex`\mathbb{S}( \theta \vert \boldsymbol{y}) = ${Math.sqrt(postvariance).toPrecision(3)}`}</td>
+  </tr>
+</table>
 `
 ```
 
 ```{ojs}
-viewof lockvertical = Inputs.toggle({label: "Lock vertical axis", value: false})
+//| fig-cap: "Source: <https://observablehq.com/@mattiasvillani/bayesian-inference-for-bernoulli-iid-data>"
+plt_pdf = Plot.plot({
+    color: {
+      legend: true,
+      domain: ["prior","likelihood","posterior"],
+      range: ["#D6B656", "#6C8EBF", "#B85450"]
+    },
+    x: {
+      label: "theta",
+      axis: true
+    },
+    y: {
+      axis: false,
+      domain: [0,1.02*maxpdf]
+    },
+  caption:  "Prior-to-Posterior mapping. The likelihood is normalized.",
+    marks: [
+      Plot.ruleY([0]),
+      Plot.line(densdata, {x: "theta", y: "pdf", stroke: "type", strokeWidth: 2.5}),
+      //Plot.areaY(densdata, {filter: d => d.theta <= post_quantile && d.type == "posterior", x: "theta", y: "pdf", 
+      //                      fill: "orange", opacity: 0.2})
+    ]
+  })
 ```
-
-```{ojs}
-//| fig-cap: "Source: <https://observablehq.com/@mattiasvillani/confidence-interval-for-a-mean>"
-plt = Plot.plot({
-  style: {fontSize: "12px"},
-  width: 960,
-  y: {
-    label: "mean",
-    domain: lockvertical ? [mu- 3, mu + 3] : [mu - 5*sigma/Math.sqrt(nobs),mu + 5*sigma/Math.sqrt(nobs)]
-  },
-  x: {
-    label: "sample number",
-    domain:  [0, nrep]
-  },
-  marks: [
-    Plot.ruleX([0]),    
-    Plot.ruleX(data, {
-      filter: d => (d.rep <= nrep && mu >= d.lower && mu <= d.upper),
-      x: "rep",
-      y1: "lower",
-      y2: "upper",  
-      stroke: "steelblue",
-      strokeWidth: 1.5
-    }),
-    Plot.dot(data, {filter: d => (d.rep <= nrep && mu >= d.lower && mu <= d.upper), x: "rep", y: "xbar", fill: "steelblue", r: 3}),
-
-    Plot.ruleX(data, {
-      filter: d => d.rep <= nrep && (mu < d.lower || mu > d.upper),
-      x: "rep",
-      y1: "lower",
-      y2: "upper",  
-      stroke: "orange",
-      strokeWidth: 1.5
-    }),
-    Plot.dot(data, {filter: d => d.rep <= nrep && (mu < d.lower || mu > d.upper), x: "rep", y: "xbar", fill: "orange", r: 3}),
-    Plot.ruleY([mu], {stroke: "#D22B2B", strokeWidth: 1.5})
-
-  ]
-})
-```
-
-
-```{ojs}
-import {Scrubber} from "@mbostock/scrubber"
-```
-
-
-```{ojs}
-function simulate_means(mu, sigma, nobs, nrep){
-  
-  const tvalue = jstat.studentt.inv(1-(1-(confidence/100))/2, nobs-1);
-  var data = [];
-  for (let j = 1; j <= nrep; j++){
-        let sample = d3.range(nobs).map(d => d3.randomNormal(mu,sigma)())
-        let xbar = d3.mean(sample)
-        let s = jstat.stdev(sample, true) 
-        let lower = xbar - tvalue*s/Math.sqrt(nobs)
-        let upper = xbar + tvalue*s/Math.sqrt(nobs)
-        data.push({rep: j, xbar: xbar, lower: lower, upper: upper})
-  }
-  return data
-}
-```
-
 
 ```{ojs}
 jstat = require('jstat')
 ```
 
-
 ```{ojs}
-mu = settings[0]
-sigma = settings[1]
-confidence = settings[2]
-nobs = settings[3]
+alpha = priorsettings[0]
+beta = priorsettings[1]
 ```
 
+
 ```{ojs}
-data = {
-  nobs;
-  mu;
-  sigma;
-  const d = new Date();
-  let time = d.getTime();
-  const data = simulate_means(mu, sigma, nobs, 1000)
-  return data
+d = 
+{
+  const alpha = priorsettings[0]
+  const beta = priorsettings[1]
+  return {n:n, s: s, alpha: alpha, beta: beta, alphapost: alpha + s, betapost: beta + n - s}
 }
 ```
+
+
+```{ojs}
+densdata = {
+  const lowprob = 0.005
+  const highprob = 1 - lowprob
+  const xlimlow = d3.min([
+    jstat.beta.inv(lowprob, d.alpha, d.beta), 
+    jstat.beta.inv(lowprob, d.s, d.n - d.s),
+    jstat.beta.inv(lowprob, d.alpha + d.s, d.beta + d.n - d.s) 
+  ])
+  const xlimhigh = d3.max([
+    jstat.beta.inv(highprob, d.alpha, d.beta), 
+    jstat.beta.inv(highprob, d.s, d.n - d.s),
+    jstat.beta.inv(highprob, d.alpha + d.s, d.beta + d.n - d.s) 
+  ])
+  const thetas = d3.range(xlimlow, xlimhigh, (xlimhigh-xlimlow)/200 );
+  const priorpdf = thetas.map(theta => (
+  {
+    theta: theta, 
+    pdf: jstat.beta.pdf(theta, d.alpha , d.beta),
+    type: "prior"
+  }
+  ));
+  const likepdf = thetas.map(theta => (
+  {
+    theta: theta, 
+    pdf: jstat.beta.pdf(theta, d.s, d.n - d.s),
+    type: "likelihood"
+  }
+  ));
+  const postpdf = thetas.map(theta => (
+  {
+    theta: theta, 
+    pdf: jstat.beta.pdf(theta, d.alpha + d.s, d.beta + d.n - d.s),
+    type: "posterior"
+  }
+  ));
+  return priorpdf.concat(likepdf).concat(postpdf)
+}
+```
+
+
+
+
+```{ojs}
+maxpdf = d3.max(densdata.map(d => d.pdf))
+priormean = d.alpha/(d.alpha + d.beta)
+postmean = (d.alphapost)/(d.alphapost + d.betapost)
+priorvariance = (d.alpha*d.beta)/((d.alpha + d.beta)**2 * (d.alpha + d.beta + 1))
+postvariance = (d.alphapost*d.betapost)/((d.alphapost + d.betapost)**2 * (d.alphapost + d.betapost + 1))
+```
+
+```{ojs}
+colors = ["#6C8EBF", "#D6B656", "#B85450", "#006d77",     
+            "#bf9d6c", "#55a12a", "#a6bbd8","#e6d399", "#d49896", "#66a7ad", "#bf8d6c", "#407d24"]
+```
+

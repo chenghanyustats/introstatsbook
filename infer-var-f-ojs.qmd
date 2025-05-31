@@ -1,0 +1,105 @@
+---
+# title: "Observable JS F-distribution"
+execute:
+  echo: false
+---
+
+<!-- ```{ojs} -->
+<!-- md_colour = Inputs.color({label: "Highlight color cells", value: "#F0F0F0"}) -->
+<!-- ``` -->
+
+```{ojs}
+viewof params_f = Inputs.form([
+      Inputs.range([1, 100], {value: 4, step: 1, label: tex`\nu_1`}),
+      Inputs.range([1, 100], {value: 4, step: 1, label: tex`\nu_2`}),
+      Inputs.range([0.01, 10], {value: 2, step: 0.01, label: "quantile:"})
+    ])
+```
+
+
+```{ojs}
+dist_quantile_f = tex`\text{If } X \sim F(${nu1},${nu2}) \text{ then } `
+```
+
+
+```{ojs}
+moments_f = {
+  if (nu2>4){
+    return tex`
+      \begin{aligned}
+        &E( X) =\frac{\nu_2}{\nu_2-2} = ${(nu2/(nu2-2)).toPrecision(3)} \text{ if } \nu_2>2\\[1em]
+        &Var( X) = 2\Big(\frac{\nu_2}{\nu_2-2}\Big)^2\frac{\nu_1+\nu_2-2}{\nu_1(\nu_2-4)} = 
+        ${(2*(nu2/(nu2-2))**2 * ((nu1+nu2-2)/(nu1*(nu2-4)))).toPrecision(3)} \text{ if } \nu_2>4 \\[1em]
+        &P( X\leq ${quantile}) =${fcdf.toPrecision(4)}
+      \end{aligned}
+    `
+  }
+  else{
+    if (nu2>2 && nu2<=4){
+      return tex`
+      \begin{aligned}
+        &E( X) =\frac{\nu_2}{\nu_2-2} = ${(nu2/(nu2-2)).toPrecision(3)} \text{ if } \nu_2>2\\[1em]
+        &Var( X) = \text{ does not exist if } \nu_2>4 \\[1em]
+        &P( X\leq ${quantile}) =${fcdf.toPrecision(4)}
+      \end{aligned}
+    `
+    }
+    else{
+    return tex`
+      \begin{aligned}
+        &E( X) =\text{ does not exist if } \nu_2>2\\[1em]
+        &Var( X) = \text{ does not exist if } \nu_2>4 \\[1em]
+        &P( X\leq ${quantile}) =${fcdf.toPrecision(4)}
+      \end{aligned}
+    `
+    }
+  }
+  
+}
+```
+
+```{ojs}
+//| fig-cap: "Source: <https://observablehq.com/@mattiasvillani/f-distribution>"
+plt_pdf_f = Plot.plot({
+    color: {
+      legend: true
+    },
+    x: {
+      label: "x",
+      axis: true
+    },
+    y: {
+      label: "f(x)",
+      //axis: false,
+      //domain: [0,jstat.chisquare.pdf(mode, nu1, nu2)]
+    },
+    marks: [
+      Plot.ruleY([0]),
+      Plot.ruleX([0]),
+      Plot.line(fpdf, {x: "x", y: "pdf", stroke : "purple", strokeWidth: 2}),
+      Plot.areaY(fpdf, {filter: d => d.x <= quantile, x: "x", y: "pdf", fill: "purple", opacity: 0.2})
+    ]
+  })
+```
+
+
+```{ojs}
+nu1 = params_f[0]
+nu2 = params_f[1]
+quantile = params_f[2]
+```
+
+
+```{ojs}
+fpdf = {
+  const x = d3.range(0.01, jstat.centralF.inv( 0.99, nu1, nu2 ), 0.01);
+  const pdf = x.map(x => ({x: x, pdf: jstat.centralF.pdf(x, nu1, nu2 )}));
+  return pdf
+}
+```
+
+
+```{ojs}
+fcdf = jstat.centralF.cdf(quantile, nu1, nu2);
+```
+
