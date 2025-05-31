@@ -1,0 +1,127 @@
+---
+# title: "Observable JS Confidence interval"
+execute:
+  echo: false
+---
+
+
+```{ojs}
+//| echo: false
+viewof settings = Inputs.form([
+  Inputs.range([-5, 5], {value: 1, label: tex`\text{pop mean, }\mu`, step: 0.01}),
+  Inputs.range([0.01, 5], {value: 1, label: tex`\text{pop stdev, }\sigma`, step: 0.01}),
+  Inputs.range([0, 99], {value: 90, label: "confidence level", step: 1}),
+  Inputs.range([0, 200], {value: 50, label: "sample size, n", step: 1})
+  ])
+```
+
+
+```{ojs}
+viewof nrep = Scrubber(d3.ticks(1, 1000, 1000), {
+  autoplay: false,
+  loop: false,
+  initial: 1,
+  delay: 350,
+  format: x => `number of datasets = ${x.toFixed(0)}`
+})
+```
+
+
+
+```{ojs}
+textinfo = md`
+Out of a total of ${nrep} samples, ${d3.sum(data.map(d => d.rep <= nrep && (mu >= d.lower && mu <= d.upper)))} (**<span style="color:red">${(d3.sum(data.map(d => d.rep <= nrep && (mu >= d.lower && mu <= d.upper)))*100/nrep).toFixed(3)}%</span>**) of the ${confidence}% confidence intervals contained the true population mean ${tex`\mu= `} ${mu}.
+`
+```
+
+```{ojs}
+viewof lockvertical = Inputs.toggle({label: "Lock vertical axis", value: false})
+```
+
+```{ojs}
+//| fig-cap: "Source: <https://observablehq.com/@mattiasvillani/confidence-interval-for-a-mean>"
+plt = Plot.plot({
+  style: {fontSize: "12px"},
+  width: 960,
+  y: {
+    label: "mean",
+    domain: lockvertical ? [mu- 3, mu + 3] : [mu - 5*sigma/Math.sqrt(nobs),mu + 5*sigma/Math.sqrt(nobs)]
+  },
+  x: {
+    label: "sample number",
+    domain:  [0, nrep]
+  },
+  marks: [
+    Plot.ruleX([0]),    
+    Plot.ruleX(data, {
+      filter: d => (d.rep <= nrep && mu >= d.lower && mu <= d.upper),
+      x: "rep",
+      y1: "lower",
+      y2: "upper",  
+      stroke: "steelblue",
+      strokeWidth: 1.5
+    }),
+    Plot.dot(data, {filter: d => (d.rep <= nrep && mu >= d.lower && mu <= d.upper), x: "rep", y: "xbar", fill: "steelblue", r: 3}),
+
+    Plot.ruleX(data, {
+      filter: d => d.rep <= nrep && (mu < d.lower || mu > d.upper),
+      x: "rep",
+      y1: "lower",
+      y2: "upper",  
+      stroke: "orange",
+      strokeWidth: 1.5
+    }),
+    Plot.dot(data, {filter: d => d.rep <= nrep && (mu < d.lower || mu > d.upper), x: "rep", y: "xbar", fill: "orange", r: 3}),
+    Plot.ruleY([mu], {stroke: "#D22B2B", strokeWidth: 1.5})
+
+  ]
+})
+```
+
+
+```{ojs}
+import {Scrubber} from "@mbostock/scrubber"
+```
+
+
+```{ojs}
+function simulate_means(mu, sigma, nobs, nrep){
+  
+  const tvalue = jstat.studentt.inv(1-(1-(confidence/100))/2, nobs-1);
+  var data = [];
+  for (let j = 1; j <= nrep; j++){
+        let sample = d3.range(nobs).map(d => d3.randomNormal(mu,sigma)())
+        let xbar = d3.mean(sample)
+        let s = jstat.stdev(sample, true) 
+        let lower = xbar - tvalue*s/Math.sqrt(nobs)
+        let upper = xbar + tvalue*s/Math.sqrt(nobs)
+        data.push({rep: j, xbar: xbar, lower: lower, upper: upper})
+  }
+  return data
+}
+```
+
+
+```{ojs}
+jstat = require('jstat')
+```
+
+
+```{ojs}
+mu = settings[0]
+sigma = settings[1]
+confidence = settings[2]
+nobs = settings[3]
+```
+
+```{ojs}
+data = {
+  nobs;
+  mu;
+  sigma;
+  const d = new Date();
+  let time = d.getTime();
+  const data = simulate_means(mu, sigma, nobs, 1000)
+  return data
+}
+```

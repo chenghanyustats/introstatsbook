@@ -1,0 +1,295 @@
+---
+# title: "Observable JS Hopothesis testing"
+execute:
+  echo: false
+---
+
+
+```{ojs}
+//| echo: false
+hypotext = 
+{
+  var hyposign;
+  if (alternative == 'equal to'){
+    hyposign = "\\neq"
+  }else if (alternative == 'less than'){
+    hyposign = "<"
+  }else{
+    hyposign = ">"
+  }
+   return tex`\textbf{Hypotheses }\\
+              H_0: \mu = \mu_0 = ${mu0}\\
+              H_A: \mu ${hyposign} \mu_0 = ${mu0}`
+}
+```
+
+
+```{ojs}
+tobstext = 
+{
+   return tex`\textbf{Test statistic }\\
+    t_{obs} = \frac{\bar x -\mu_0}{\frac{s}{\sqrt{n}}} = \frac{${xbar.toFixed(3)} - ${mu0.toFixed(3)}}{\frac{${s.toFixed(3)}}{\sqrt{${n}}}} = ${tobs.toFixed(3)}`
+}
+```
+
+
+
+```{ojs}
+tcrittext = 
+{
+   return tex`\textbf{Critical value }\\
+t_{crit} = t_{${alphaside}, \,${n-1}} = ${tcrit.toPrecision(4)}`
+}
+```
+
+```{ojs}
+pvaluetext = {
+  var rejecttext;
+  var sign;
+  if (pvaluestudentt < alpha){
+    rejecttext = " \\textbf{we reject} ";
+    sign = "<";
+  }else{
+    rejecttext = "we \\textbf{do not reject} ";
+    sign = "\\geq";
+  }
+   return tex`\textbf{p-value}\\
+p\text{-value}=${pvaluestudentt.toPrecision(4)}`
+}
+```
+
+```{ojs}
+pconclusion = {
+  var rejecttext;
+  var sign;
+  if (pvaluestudentt < alpha){
+    rejecttext = "We\\textcolor{red}{ \\textbf{reject}}\ ";
+    sign = "<";
+  }else{
+    rejecttext = "We\\textcolor{steelblue}{ \\textbf{do not reject}} ";
+    sign = "\\geq";
+  }
+   return tex`\text{${rejecttext}} H_0 \text{ at } ${(alpha*100).toFixed(1)}\% \text{ significance level.}  `
+}
+```
+
+
+```{ojs}
+viewof inputs = Inputs.form([
+      Inputs.range([2, 1000], {value: 5, step: 1, label: tex`\text{sample size }n`}), 
+      Inputs.range([-10, 10], {value: 1.7, step: 0.01, label: tex`\text{sample mean }\bar x`}),
+      Inputs.range([Number.EPSILON, 10], {value: 0.5, step: 0.1, label: tex`\text{sample stdev }s`}),
+      Inputs.range([0.001, 1], {value: 0.05, step: 0.001, label: tex`\text{significance lvl }\alpha`}),
+      Inputs.range([-10, 10], {value: 1, step: 0.1, label: tex`\text{null value }\mu_0`}),
+      Inputs.select(["equal to","greater than", "less than"], {label: tex`\text{alternative}`})
+    ])
+```
+
+
+```{ojs}
+viewof toggles = Inputs.form([
+  Inputs.toggle({value: true, label: "show critical regions"}),
+  Inputs.toggle({value: false, label: "show p-values"})
+  ])
+```
+
+```{ojs}
+plt = Plot.plot({
+    color: {
+      legend: false
+    },
+    x: {
+      label: "t-statistic",
+      axis: true,
+      domain: [-10,10]
+    },
+    y: {
+      axis: false,
+      domain: [0,max_y]
+    },
+    marks: [
+      Plot.ruleY([0]),
+      Plot.line(pdfdata, {filter: d => d.dist == "student-t" && d.type == "pdf", x: "x", y: "pdf", stroke : "dist", strokeWidth: 2}),
+      Plot.areaY(pdfdata, {filter: d => showpvalue && side == "left" && d.x <= tobs && 
+          d.dist == "student-t" && d.type == "pdf", x: "x", y: "pdf", fill: "orange", opacity: 0.5}),
+      Plot.areaY(pdfdata, {filter: d => showpvalue && side == "right" && d.x >= tobs && 
+        d.dist == "student-t" && d.type == "pdf", x: "x", y: "pdf", fill: "orange", opacity: 0.5}),
+      Plot.areaY(pdfdata, {filter: d => showpvalue && side == "both" && d.x <= -Math.abs(tobs) && 
+          d.dist == "student-t" && d.type == "pdf", x: "x", y: "pdf", fill: "orange", opacity: 0.5}),
+      Plot.areaY(pdfdata, {filter: d => showpvalue && side == "both" && d.x >= Math.abs(tobs) && 
+        d.dist == "student-t" && d.type == "pdf", x: "x", y: "pdf", fill: "orange", opacity: 0.5}),
+      
+      Plot.dot([{x: tobs, y: 0}], {x: "x", y: "y", fill: conclusioncolor, symbol: "circle", r: 5}),
+      Plot.arrow([{x1: tobs, y1: max_y/12, x2:tobs, y2: 0.01}], {x1: "x1", y1: "y1", x2: "x2", y2: "y2", stroke: conclusioncolor}),
+      Plot.text([{x1: tobs, y1: bignudge*max_y/12, texter: "t(obs)"}], {x: "x1", y: "y1", text: "texter", fontSize: textfontsize}),
+      
+      Plot.ruleX([{x: tcrit, y: max_y/4}], {filter: d => showcrit && side == "both", x: "x", y: "y", fill: "green"}),
+      Plot.ruleX([{x: -tcrit, y: max_y/4}], {filter: d => showcrit && side == "both", x: "x", y: "y", fill: "green"}),
+      Plot.text([{x1: tcrit, y1: nudge*max_y/4, texter: "t(crit)"}], 
+                {filter: d => showcrit && side == "both",x: "x1", y: "y1", text: "texter", fontSize: textfontsize}),
+      Plot.text([{x1: -tcrit, y1: nudge*max_y/4, texter: "-t(crit)"}], 
+                {filter: d => showcrit && side == "both",x: "x1", y: "y1", text: "texter", fontSize: textfontsize}),
+
+      Plot.ruleX([{x: tcrit, y: max_y/4}], {filter: d => showcrit && side == "right", x: "x", y: "y", fill: "green"}),
+      Plot.text([{x1: tcrit, y1: nudge*max_y/4, texter: "t(crit)"}], 
+                {filter: d => showcrit && side == "right",x: "x1", y: "y1", text: "texter", fontSize: textfontsize}),
+      
+      Plot.ruleX([{x: -tcrit, y: max_y/4}], {filter: d => showcrit && side == "left", x: "x", y: "y", fill: "green"}),
+      Plot.text([{x1: -tcrit, y1: nudge*max_y/4, texter: "-t(crit)"}], 
+                {filter: d => showcrit && side == "left",x: "x1", y: "y1", text: "texter", fontSize: textfontsize}),
+
+      Plot.arrow([{x1: tcrit*bignudge, y1: max_y/6, x2:10, y2: max_y/6}], {filter: d => showcrit && side == "right", 
+                                                                  x1: "x1", y1: "y1", x2: "x2", y2: "y2", stroke: "red"}),
+      Plot.arrow([{x1: -tcrit*bignudge, y1: max_y/6, x2:-10, y2: max_y/6}], {filter: d => showcrit && side == "left", 
+                                                                    x1: "x1", y1: "y1", x2: "x2", y2: "y2", stroke: "red"}),
+      Plot.arrow([{x1: tcrit*bignudge, y1: max_y/6, x2:10, y2: max_y/6}], {filter: d => showcrit && side == "both", 
+                                                                  x1: "x1", y1: "y1", x2: "x2", y2: "y2", stroke: "red"}),
+      Plot.arrow([{x1: -tcrit*bignudge, y1: max_y/6, x2:-10, y2: max_y/6}], {filter: d => showcrit && side == "both", 
+                                                                    x1: "x1", y1: "y1", x2: "x2", y2: "y2", stroke: "red"}),
+      Plot.text([{x1: (-10 - tcrit*bignudge)/2, y1: max_y/4, texter: "Reject H₀"}], 
+                {filter: d => showcrit && side == "left", x: "x1", y: "y1", text: "texter", fontSize: textfontsize}),
+      Plot.text([{x1: (10 + tcrit*bignudge)/2, y1: max_y/4, texter: "Reject H₀"}], 
+                {filter: d => showcrit && side == "right", x: "x1", y: "y1", text: "texter", fontSize: textfontsize}),
+      Plot.text([{x1: (-10 - tcrit*bignudge)/2, y1: max_y/4, texter: "Reject H₀"}], 
+                {filter: d => showcrit && side == "both", x: "x1", y: "y1", text: "texter", fontSize: textfontsize}),
+      Plot.text([{x1: (10 + tcrit*bignudge)/2, y1: max_y/4, texter: "Reject H₀"}], 
+                {filter: d => showcrit && side == "both", x: "x1", y: "y1", text: "texter", fontSize: textfontsize})
+    ]
+  })
+```
+
+```{ojs}
+jstat = require('jstat')
+```
+
+
+```{ojs}
+textfontsize = 12
+```
+
+```{ojs}
+showcrit = toggles[0]
+```
+
+```{ojs}
+showpvalue = toggles[1]
+```
+
+```{ojs}
+n = inputs[0]
+xbar = inputs[1]
+s = inputs[2]
+alpha = inputs[3]
+mu0 = inputs[4]
+alternative = inputs[5]
+```
+
+```{ojs}
+alphaside = {
+  if (alternative == 'equal to'){
+    return alpha/2
+  }else{
+    return alpha
+  }
+}
+```
+
+```{ojs}
+tobs = (xbar-mu0)/(s/Math.sqrt(n))
+```
+
+```{ojs}
+tcrit = jstat.studentt.inv(1-alphaside, n-1)
+```
+
+```{ojs}
+zcrit = jstat.normal.inv(1-alphaside, 0, 1)
+```
+
+```{ojs}
+pvaluestudentt = {
+  if (alternative == 'equal to'){
+      return 2*jstat.studentt.cdf(-Math.abs(tobs), n-1)
+  }else if(alternative == 'less than'){
+    return jstat.studentt.cdf(tobs, n-1)
+  }else{
+    return 1-jstat.studentt.cdf(tobs, n-1)
+  }
+}
+```
+
+```{ojs}
+//| fig-cap: "Source: <https://observablehq.com/@mattiasvillani/hypothesis-test-mean>"
+pdfdata = {
+  const x = d3.range(-10, 10, 0.01);
+  var data = x.map(x => ({x: x, pdf: jstat.normal.pdf(x, 0, 1), dist: "normal", type: "pdf"}));
+  const studentpdf = x.map(x => ({x: x, pdf: jstat.studentt.pdf(x, n-1), dist: "student-t", type: "pdf"}));
+  data = data.concat(studentpdf)
+  data = data.concat(tcritdata)
+   data = data.concat(tobsdata)
+  return data
+}
+```
+
+```{ojs}
+max_y = 1.05*jstat.normal.pdf(0, 0, 1)
+```
+
+```{ojs}
+twosided = alternative == 'equal to'
+```
+
+
+```{ojs}
+side = {
+  if (alternative == 'less than'){
+    return "left"
+  }else if(alternative == 'greater than'){
+    return "right"
+  }else{
+    return "both"
+  }
+}
+```
+
+```{ojs}
+tcritdata = {
+  if (twosided){
+    return [{x: tcrit, y: max_y/4, dist: "student-t", type: "crit"}, {x: -tcrit, y: max_y/4, dist: "student-t", type: "crit"}]
+  }else if (alternative == 'less than'){
+    return [{x: -Math.abs(tcrit), y: max_y/4, dist: "student-t", type: "crit"}]
+  }else
+  {
+    return [{x: Math.abs(tcrit), y: max_y/4, dist: "student-t", type: "crit"}]
+  }
+}
+```
+
+```{ojs}
+tobsdata = {
+  if (twosided){
+    return [{x: tobs, y: 0, dist: "student-t", type: "obs"}, {x: -tobs, y: 0, dist: "student-t", type: "obs"}]
+  }else if (alternative == 'less than'){
+    return [{x: -Math.abs(tobs), y: 0, dist: "student-t", type: "obs"}]
+  }else
+  {
+    return [{x: Math.abs(tobs), y: 0, dist: "student-t", type: "obs"}]
+  }
+}
+```
+
+```{ojs}
+conclusioncolor = {
+  if(pvaluestudentt < alpha){
+    return "red"
+  }else{
+    return "steelblue"
+  }
+}
+```
+
+```{ojs}
+nudge = 1.1
+bignudge = 1.3
+```
+

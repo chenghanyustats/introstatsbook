@@ -1,0 +1,94 @@
+---
+# title: "Observable JS Type I & type II error"
+execute:
+  echo: false
+---
+
+
+```{ojs}
+//| echo: false
+viewof inputs_err = Inputs.form([
+      Inputs.range([-3, 3], {value: 0, step: 0.1, label: tex`\mu_0`}),
+      Inputs.range([-5, 5], {value: 2, step: 0.1, label: tex`\mu_A`}),
+      Inputs.range([0.1, 2.5], {value: 1, step: 0.01, label: tex`\sigma`}),
+      Inputs.range([1, 20], {value: 10, step: 1, label: "n"}),
+      Inputs.range([0, 1], {value: 0.05, step: 0.001, label: tex`\alpha`}),
+    ])
+```
+
+
+```{ojs}
+probserrors = tex`
+\begin{aligned}
+&\text{Type I error: }\alpha = P(\text{rejecting } H_0 \vert H_0 \text{ true}) =${alpha.toPrecision(3)} \\[0.2em]
+&\text{Type II error: }\beta = P(\text{not rejecting } H_0 \vert H_0 \text{ not true}) =${beta.toPrecision(3)} \\[0.2em]
+&\text{Power: }1-\beta = P(\text{reject } H_0 \vert H_0 \text{ not true}) =${(1-beta).toPrecision(3)} 
+\end{aligned}
+`
+```
+
+
+
+```{ojs}
+//| fig-cap: "Source: <https://observablehq.com/@mattiasvillani/hypothesis-test-for-a-mean-type-i-and-ii-errors>"
+plt_pdf_err = Plot.plot({
+  caption:html` 
+  <span style="color:steelblue">probability of type I error: &alpha; = Pr(reject H0 | H0 true)</span><br>
+  <span style="color:#A9A9A9">probability of type II error: &beta; = Pr(not rejecting H0 | H0 not true)</span> <br>
+  <span style="color:#FFAC1C">test power: 1-&beta; = Pr(reject H0 | H0 not true)</span> 
+  `,
+    color: {
+      legend: true
+    },
+    x: {
+      label: "xBar",
+      axis: true
+    },
+    y: {
+      axis: false,
+      domain: [0,1.02*maxpdf]
+    },
+    marks: [
+      Plot.ruleY([0]),
+      Plot.areaY(pdfdata_err, {filter: d => d.x  <= zcrit_right && d.x  >= zcrit_left && d.type == "HA", x: "x", y: "pdf", fill: "#C0C0C0", opacity: 0.3}),
+      Plot.areaY(pdfdata_err, {filter: d => d.x  > zcrit_right && d.type == "HA", x: "x", y: "pdf", fill: "orange", opacity: 0.5}),
+      Plot.areaY(pdfdata_err, {filter: d => d.x  < zcrit_left && d.type == "HA", x: "x", y: "pdf", fill: "orange", opacity: 0.5}),
+      Plot.areaY(pdfdata_err, {filter: d => d.x  >= zcrit_right && d.type == "H0", x: "x", y: "pdf", fill: "steelblue", opacity: 0.7}),
+      Plot.areaY(pdfdata_err, {filter: d => d.x  <= zcrit_left && d.type == "H0", x: "x", y: "pdf", fill: "steelblue", opacity: 0.7}),
+      Plot.line(pdfdata_err, {x: "x", y: "pdf", stroke : "type", strokeWidth: 2})
+    ]
+  })
+```
+
+```{ojs}
+mu0_err = inputs_err[0]
+muA_err = inputs_err[1]
+sigma_err = inputs_err[2]
+n_err = inputs_err[3]
+alpha_err = inputs_err[4]
+```
+
+```{ojs}
+pdfdata_err = {
+  const x = d3.range(-10, 10, 0.01);
+  const normpdfH0 = x.map(x => ({x: x, pdf: jstat.normal.pdf(x, mu0_err, sigma_err/Math.sqrt(n_err)), type: "H0"}));
+  const normpdfHA = x.map(x => ({x: x, pdf: jstat.normal.pdf(x, muA_err, sigma_err/Math.sqrt(n_err)), type: "HA"}));
+  return normpdfH0.concat(normpdfHA)
+}
+```
+
+
+```{ojs}
+zcrit_right = mu0_err + jstat.normal.inv(1-alpha_err/2, 0, 1)*(sigma_err/Math.sqrt(n_err))
+zcrit_left = mu0_err - jstat.normal.inv(1-alpha_err/2, 0, 1)*(sigma_err/Math.sqrt(n_err))
+```
+
+
+```{ojs}
+beta = jstat.normal.cdf(zcrit_right, muA_err, sigma_err/Math.sqrt(n_err)) - jstat.normal.cdf(zcrit_left, muA_err, sigma_err/Math.sqrt(n_err));
+```
+
+```{ojs}
+maxpdf = Math.max(jstat.normal.pdf(mu0_err, mu0_err, sigma_err/Math.sqrt(n_err)), jstat.normal.pdf(muA_err, muA_err, sigma_err/Math.sqrt(n_err)))
+```
+
