@@ -27,9 +27,9 @@ moments_f = {
   if (nu2>4){
     return tex`
       \begin{aligned}
-        &E( X) =\frac{\nu_2}{\nu_2-2} = ${(nu2/(nu2-2)).toPrecision(3)} \text{ if } \nu_2>2\\[1em]
+        &E( X) =\frac{\nu_2}{\nu_2-2} = ${(nu2/(nu2-2)).toPrecision(3)} \\[1em]
         &Var( X) = 2\Big(\frac{\nu_2}{\nu_2-2}\Big)^2\frac{\nu_1+\nu_2-2}{\nu_1(\nu_2-4)} = 
-        ${(2*(nu2/(nu2-2))**2 * ((nu1+nu2-2)/(nu1*(nu2-4)))).toPrecision(3)} \text{ if } \nu_2>4 \\[1em]
+        ${(2*(nu2/(nu2-2))**2 * ((nu1+nu2-2)/(nu1*(nu2-4)))).toPrecision(3)} \\[1em]
         &P( X\leq ${quantile}) =${fcdf.toPrecision(4)}
       \end{aligned}
     `
@@ -38,8 +38,8 @@ moments_f = {
     if (nu2>2 && nu2<=4){
       return tex`
       \begin{aligned}
-        &E( X) =\frac{\nu_2}{\nu_2-2} = ${(nu2/(nu2-2)).toPrecision(3)} \text{ if } \nu_2>2\\[1em]
-        &Var( X) = \text{ does not exist if } \nu_2>4 \\[1em]
+        &E( X) =\frac{\nu_2}{\nu_2-2} = ${(nu2/(nu2-2)).toPrecision(3)} ( \nu_2>2 \text{ is needed} )\\[1em]
+        &Var( X) = \text{ does not exist} ( \nu_2>4 \text{ is needed} ) \\[1em]
         &P( X\leq ${quantile}) =${fcdf.toPrecision(4)}
       \end{aligned}
     `
@@ -47,8 +47,8 @@ moments_f = {
     else{
     return tex`
       \begin{aligned}
-        &E( X) =\text{ does not exist if } \nu_2>2\\[1em]
-        &Var( X) = \text{ does not exist if } \nu_2>4 \\[1em]
+        &E( X) =\text{ does not exist} ( \nu_2>2 \text{ is needed} )\\[1em]
+        &Var( X) = \text{ does not exist} ( \nu_2>4 \text{ is needed} ) \\[1em]
         &P( X\leq ${quantile}) =${fcdf.toPrecision(4)}
       \end{aligned}
     `

@@ -1,0 +1,111 @@
+---
+# title: "Observable JS t-distribution"
+execute:
+  echo: false
+---
+
+<!-- ```{ojs} -->
+<!-- md_colour = Inputs.color({label: "Highlight color cells", value: "#F0F0F0"}) -->
+<!-- ``` -->
+
+```{ojs}
+viewof myinputs = Inputs.form([
+      Inputs.range([1, 100], {value: 4, step: 1, label: tex`\text{DF }\nu:`}),
+      Inputs.range([-8, 8], {value: -1.96, step: 0.01, label: "Quantile:"})
+    ])
+```
+
+
+```{ojs}
+tailprobs = tex`\text{Normal distribution: } P(X\leq ${myinputs[1]})=${normcdf.toPrecision(4)} \\ \text{Student-}t \text{ distribution: } P(X\leq ${myinputs[1]})=${studentcdf.toPrecision(4)}`
+```
+
+
+```{ojs}
+//| fig-cap: "Source: <https://observablehq.com/@mattiasvillani/student-t>"
+plt_t = Plot.plot({
+    color: {
+      legend: true
+    },
+    x: {
+      label: "x",
+      axis: true
+    },
+    y: {
+      axis: false,
+      domain: [0,0.4]
+    },
+    marks: [
+      Plot.ruleY([0]),
+      Plot.line(data_t, {x: "x", y: "pdf", stroke : "dist", strokeWidth: 2}),
+      Plot.areaY(data_t, {filter: d => d.x <= myinputs[1] && d.dist == "normal", x: "x", y: "pdf", fill: "steelblue", opacity: 0.2}),
+      Plot.areaY(data_t, {filter: d => d.x <= myinputs[1] && d.dist == "student-t", x: "x", y: "pdf", fill: "orange", opacity: 0.2}),
+      
+    ]
+  })
+```
+
+
+```{ojs}
+viewof myinputs_zoom = Inputs.form([
+      Inputs.range([1, 100], {value: 10, step: 1, label: tex`\text{DF }\nu:`}),
+      Inputs.range([-8, -3], {value: -5, step: 0.01, label: "Quantile:"})
+    ])
+```
+
+```{ojs}
+//| fig-cap: "Source: <https://observablehq.com/@mattiasvillani/student-t>"
+Plot.plot({
+    caption: html`Zoom in the left tail`,
+    color: {
+      legend: true
+    },
+    x: {
+      label: "x",
+      axis: true,
+      ticks: [-8,-7,-6,-5,-4,-3, myinputs_zoom[1]],
+      domain: [-8,-3]
+    },
+    y: {
+      axis: true,
+      domain: [0,0.01]
+    },
+    marks: [
+      Plot.ruleY([0]),     
+      Plot.ruleX([-10]), 
+      Plot.ruleX([myinputs_zoom[1]], {stroke: "gray", strokeOpacity: 0.4}),
+      Plot.line(data_zoom, {filter: d => d.x <= -3, x: "x", y: "pdf", stroke : "dist", strokeWidth: 2}),
+      //Plot.areaY(data, {filter: d => d.x <= myinputs[1] && d.dist == "normal", x: "x", y: "pdf", fill: "steelblue", opacity: 0.2}),
+      //Plot.areaY(data, {filter: d => d.x <= myinputs[1] && d.dist == "student-t", x: "x", y: "pdf", fill: "orange", opacity: 0.2}),
+    ]
+  })
+```
+
+
+```{ojs}
+data_t = {
+  const x = d3.range(-8, 8, 0.01);
+  const normpdf = x.map(x => ({x: x, pdf: jstat.normal.pdf(x, 0, 1), dist: "normal"}));
+  const studentpdf = x.map(x => ({x: x, pdf: jstat.studentt.pdf(x, myinputs[0]), dist: "student-t"}));
+  const data = normpdf.concat(studentpdf)
+  return data
+}
+```
+
+
+```{ojs}
+data_zoom = {
+  const x = d3.range(-10, -3, 0.01);
+  const normpdf = x.map(x => ({x: x, pdf: jstat.normal.pdf(x, 0, 1), dist: "normal"}));
+  const studentpdf = x.map(x => ({x: x, pdf: jstat.studentt.pdf(x, myinputs_zoom[0]), dist: "student-t"}));
+  const data = normpdf.concat(studentpdf)
+  return data
+}
+```
+
+
+```{ojs}
+normcdf = jstat.normal.cdf(myinputs[1], 0, 1);
+studentcdf = jstat.studentt.cdf(myinputs[1], myinputs[0]);
+```
+  

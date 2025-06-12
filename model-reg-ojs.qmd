@@ -1,0 +1,206 @@
+---
+# title: "Observable JS linear regression"
+execute:
+  echo: false
+---
+
+<!-- ```{ojs} -->
+<!-- md_colour = Inputs.color({label: "Highlight color cells", value: "#F0F0F0"}) -->
+<!-- ``` -->
+
+```{ojs}
+viewof n = Inputs.range([20, 1000], {value: 20, step: 1, label: tex`\text{sample size, }n`});
+viewof beta0 = Inputs.range([-2, 2], {value: -1, step: 0.1, label: tex`\text{intercept, }\beta_0`})
+viewof beta1 = Inputs.range([-2, 2], {value: 1, step: 0.1, label: tex`\text{slope, }\beta_1`})
+viewof sigmaepsilon = Inputs.range([0, 1], {value: 0.5, step: 0.1, label: tex`\text{sd of error, }\sigma`})
+```
+
+
+```{ojs}
+viewof sampleno = Scrubber(d3.ticks(1, 1000, 1000), {
+  autoplay: false,
+  loop: false,
+  delay: 1000,
+  initial: 199,
+  format: x => `dataset nummer: ${x.toFixed(0)}`
+})
+```
+
+
+```{ojs}
+estimates = tex`\text{Estimated intercept: } b_0 = ${data_estimates[1][sampleno-1].intercept.toPrecision(4)} \\ \text{Estimated slope: } b_1 =${data_estimates[1][sampleno-1].lutning.toPrecision(4)}`
+```
+
+
+```{ojs}
+//| fig-cap: "Source: <https://observablehq.com/@mattiasvillani/samplingfordelningen-linear-regression>"
+plt = Plot.plot({
+  caption: html`<span style="color:orange">Population Model</span> <br> <span style="color:steelblue">Estimated regression line</span>`,
+  color: {legend: true},
+  x: {domain: [-1, 1]},
+  //y: {domain: [-3,3]},
+  y: {domain: [beta0 + (-1)*beta1 - 3*sigmaepsilon, beta0 + 1*beta1 + 3*sigmaepsilon]},
+  marks: [
+    Plot.ruleY([beta0 + (-1)*beta1 - 3*sigmaepsilon]),
+    Plot.ruleX([-1]),
+    Plot.line(
+      [{x: -1, y: beta0 + (-1)*beta1}, {x:  1, y: beta0 + (1)*beta1}], 
+      {x: "x", y: "y", stroke: "orange", strokeWidth: 2}
+    ),
+    Plot.dot(data_estimates[0][sampleno-1], {x: "x", y: "y", strokeOpacity: 0.5, r: 2, fill: colors[0]}),
+    Plot.line(
+      [{x: -1, y: data_estimates[1][sampleno-1].intercept + (-1)*data_estimates[1][sampleno-1].lutning}, 
+       {x:  1, y: data_estimates[1][sampleno-1].intercept + (1)*data_estimates[1][sampleno-1].lutning}
+      ], 
+      {x: "x", y: "y", stroke: "steelblue", strokeWidth: 2}
+    ),
+  ],
+})
+```
+
+
+```{ojs}
+samplingplots = html`<html>
+ <head>
+ </head>
+ <body>
+    <div class="container" style="display: flex; height: 400px;">
+        <div style="width: 50%">
+            ${histintercept}
+        </div>
+        <div style="width: 50%">
+            ${histlutning}
+        </div>
+    </div>
+ </body>
+</html>
+`
+```
+
+```{ojs}
+import {lm} from "@chrispahm/linear-models-in-observable-notebooks"
+import {summary} from "@chrispahm/linear-models-in-observable-notebooks"
+import {Histogram} from "@d3/histogram"
+import {Scrubber} from "@mbostock/scrubber"
+```
+
+
+```{ojs}
+jstat = require('jstat')
+```
+
+
+```{ojs}
+math = require('mathjs')
+```
+
+
+```{ojs}
+function simulate_and_estimate(n, beta0, beta1, sigmaepsilon, nrep){
+  const x = d3.range(-1, 1, 2/n);
+  const xbar = d3.mean(x)
+  const SSx = d3.sum(math.dotPow(math.subtract(x, xbar), 2))
+  var data = [];
+  var coef = [];
+  for (let j = 1; j <= nrep; j++){
+    var dataset = x.map(x => ({sample_id: j, x: x, y: beta0 + beta1*x + jstat.normal.sample(0,sigmaepsilon)}))
+    data.push(dataset);
+    let y = dataset.map(d => d.y)
+    let ybar = d3.mean(y)
+    let SSxy = d3.sum(math.dotMultiply(math.subtract(x, xbar), math.subtract(y, ybar))  )
+    let b1 = SSxy/SSx
+    let b0 = ybar - b1*xbar
+    //let linear_model = lm('y ~ x', dataset);
+    coef.push(
+      {
+        sample_id: j, 
+        //intercept: linear_model.coefficients[0],
+        //lutning: linear_model.coefficients[1],
+        intercept: b0,
+        lutning: b1
+      }
+    )
+  }
+  return [data, coef]
+}
+```
+  
+
+```{ojs}
+data_estimates = simulate_and_estimate(n, beta0, beta1, sigmaepsilon, 1000)
+```
+
+```{ojs}
+b0samp_range = [d3.min(data_estimates[1].map( d => d.intercept)),d3.max(data_estimates[1].map( d => d.intercept))]
+b1samp_range = [d3.min(data_estimates[1].map( d => d.lutning)),d3.max(data_estimates[1].map( d => d.lutning))]
+sampdist_theo = {
+  const x = d3.range(-1, 1, 2/n);
+  const xbar = d3.mean(x)
+  const sumsquares = d3.sum(math.dotPow(math.subtract(x, xbar), 2))
+  const stdb0 = sigmaepsilon*math.sqrt((1/n) + ((xbar**2)/sumsquares))
+  const stdb1 = sigmaepsilon/math.sqrt(sumsquares)
+  const x_b0 = d3.range(beta0 - 4*stdb0, beta0 + 4*stdb0, 1/500);
+  const x_b1 = d3.range(beta1 - 4*stdb1, beta1 + 4*stdb1, 1/500);
+  var pdfb0 = [];
+  var pdfb1 = [];
+  for (let j = 1; j <= x_b0.length; j++){
+    pdfb0.push({
+      x: x_b0[j-1], 
+      pdf: jstat.normal.pdf(x_b0[j-1], beta0, stdb0)
+    })
+  }
+  for (let j = 1; j <= x_b1.length; j++){
+    pdfb1.push({
+      x: x_b1[j-1], 
+      pdf: jstat.normal.pdf(x_b1[j-1], beta1, stdb1),
+    })
+  }
+  return  [pdfb0, pdfb1]
+}
+```
+
+```{ojs}
+histintercept = Plot.plot({
+  caption:html`
+  <span style="color:midnightblue">theoretical sampling distribution for b<sub>0</sub> </span> <br>
+  <span style="color:steelblue">histogram of estimates from the simulated dataset</span><br>
+&#128992; population &beta;<sub>0</sub> <br>
+&#128309; estimated b<sub>0</sub> for the current data.
+  `,
+  y: {axis: false},
+  x: {domain: [beta0 -0.5, beta0 + 0.5]},
+  marks: [
+    Plot.rectY(data_estimates[1].filter((d,i) => i<= (sampleno-1)), Plot.binX({y: d => (d.length/sampleno)/(20/sampleno)}, {x: "intercept", thresholds: d3.range(b0samp_range[0], b0samp_range[1], 20/sampleno), fill: "steelblue", opacity: 0.5}) ),
+    Plot.ruleY([0]),
+    Plot.dot([{beta0: beta0}], {x: "beta0", y: 0, r: 5, fill: "orange"}),
+    Plot.dot([data_estimates[1][sampleno-1]], {x: "intercept", y: 0, r: 5, fill: "steelblue"}),
+    Plot.lineY(sampdist_theo[0], {x: "x", y: "pdf", stroke: "midnightblue", strokeWidth: 2.5})
+  ],
+})
+```
+
+
+```{ojs}
+histlutning = Plot.plot({
+  caption:html` 
+  <span style="color:midnightblue">theoretical sampling distribution for b<sub>1</sub></span> <br>
+  <span style="color:steelblue">histogram of estimates from the simulated dataset</span><br>
+&#128992; population &beta;<sub>1</sub> <br>
+&#128309; estimated b<sub>1</sub> for the current data.
+  `,
+  y: {axis: false},
+  x: {domain: [beta1 -0.5, beta1 + 0.5]},
+  marks: [
+    Plot.rectY(data_estimates[1].filter((d,i) => i<= (sampleno-1)), Plot.binX({y: d => (d.length/sampleno)/(20/sampleno)}, {x: "lutning", thresholds: d3.range(b1samp_range[0], b1samp_range[1], 20/sampleno), fill: "steelblue", opacity: 0.5}) ),
+    Plot.ruleY([0]),
+    Plot.dot([{beta1: beta1}], {x: "beta1", y: 0, r: 5, fill: "orange"}),
+    Plot.dot([data_estimates[1][sampleno-1]], {x: "lutning", y: 0, r: 5, fill: "steelblue"}),
+    Plot.lineY(sampdist_theo[1], {x: "x", y: "pdf", stroke: "midnightblue", strokeWidth: 2.5})
+  ],
+})  
+```
+
+```{ojs}
+colors = d3.schemePaired
+```
+
